@@ -38,7 +38,7 @@ public final class IndexingScheduleConverter {
 
         OffsetDateTime startTime = obj.getStartTime();
         indexingSchedule.setStartTime(startTime);
-        indexingSchedule.validate();
+
         return indexingSchedule;
     }
 

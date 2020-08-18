@@ -55,7 +55,7 @@ public final class TagScoringFunctionConverter {
                 ScoringFunctionInterpolationConverter.map(obj.getInterpolation());
             tagScoringFunction.setInterpolation(interpolation);
         }
-        tagScoringFunction.validate();
+
         return tagScoringFunction;
     }
 

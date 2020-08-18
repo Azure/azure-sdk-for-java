@@ -78,17 +78,4 @@ public class PatternCaptureTokenFilter extends TokenFilter {
         this.preserveOriginal = preserveOriginal;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (getPatterns() == null) {
-            throw new IllegalArgumentException("Missing required property patterns in model PatternCaptureTokenFilter");
-        }
-    }
 }

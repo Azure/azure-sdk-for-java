@@ -130,17 +130,4 @@ public class SynonymTokenFilter extends TokenFilter {
         this.expand = expand;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (getSynonyms() == null) {
-            throw new IllegalArgumentException("Missing required property synonyms in model SynonymTokenFilter");
-        }
-    }
 }

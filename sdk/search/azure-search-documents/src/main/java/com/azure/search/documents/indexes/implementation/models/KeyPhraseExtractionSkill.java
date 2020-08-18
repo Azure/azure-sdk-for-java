@@ -82,14 +82,4 @@ public class KeyPhraseExtractionSkill extends SearchIndexerSkill {
         this.maxKeyPhraseCount = maxKeyPhraseCount;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-    }
 }

@@ -47,17 +47,4 @@ public class HighWaterMarkChangeDetectionPolicy extends DataChangeDetectionPolic
      * @param highWaterMarkColumnName the highWaterMarkColumnName value to set.
      * @return the HighWaterMarkChangeDetectionPolicy object itself.
      */
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (getHighWaterMarkColumnName() == null) {
-            throw new IllegalArgumentException(
-                    "Missing required property highWaterMarkColumnName in model HighWaterMarkChangeDetectionPolicy");
-        }
-    }
 }

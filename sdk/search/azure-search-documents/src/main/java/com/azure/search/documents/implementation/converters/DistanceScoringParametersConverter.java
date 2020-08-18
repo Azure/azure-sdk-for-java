@@ -11,33 +11,29 @@ import com.azure.search.documents.indexes.models.DistanceScoringParameters;
  */
 public final class DistanceScoringParametersConverter {
     /**
-     * Maps from {@link com.azure.search.documents.indexes.implementation.models.DistanceScoringParameters} to
-     * {@link DistanceScoringParameters}.
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.DistanceScoringParameters} to {@link
+     * DistanceScoringParameters}.
      */
-    public static DistanceScoringParameters map(com.azure.search.documents.indexes.implementation.models.DistanceScoringParameters obj) {
+    public static DistanceScoringParameters map(
+        com.azure.search.documents.indexes.implementation.models.DistanceScoringParameters obj) {
         if (obj == null) {
             return null;
         }
-        DistanceScoringParameters distanceScoringParameters = new DistanceScoringParameters(
-            obj.getReferencePointParameter(), obj.getBoostingDistance());
 
-        return distanceScoringParameters;
+        return new DistanceScoringParameters(obj.getReferencePointParameter(), obj.getBoostingDistance());
     }
 
     /**
-     * Maps from {@link DistanceScoringParameters} to
-     * {@link com.azure.search.documents.indexes.implementation.models.DistanceScoringParameters}.
+     * Maps from {@link DistanceScoringParameters} to {@link com.azure.search.documents.indexes.implementation.models.DistanceScoringParameters}.
      */
-    public static com.azure.search.documents.indexes.implementation.models.DistanceScoringParameters map(DistanceScoringParameters obj) {
+    public static com.azure.search.documents.indexes.implementation.models.DistanceScoringParameters map(
+        DistanceScoringParameters obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.indexes.implementation.models.DistanceScoringParameters distanceScoringParameters =
-            new com.azure.search.documents.indexes.implementation.models.DistanceScoringParameters(
-                obj.getReferencePointParameter(), obj.getBoostingDistance());
 
-        distanceScoringParameters.validate();
-        return distanceScoringParameters;
+        return new com.azure.search.documents.indexes.implementation.models.DistanceScoringParameters(
+            obj.getReferencePointParameter(), obj.getBoostingDistance());
     }
 
     private DistanceScoringParametersConverter() {

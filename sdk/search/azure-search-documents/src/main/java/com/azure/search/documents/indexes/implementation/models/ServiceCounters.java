@@ -156,41 +156,4 @@ public final class ServiceCounters {
      * @param synonymMapCounter the synonymMapCounter value to set.
      * @return the ServiceCounters object itself.
      */
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getDocumentCounter() == null) {
-            throw new IllegalArgumentException("Missing required property documentCounter in model ServiceCounters");
-        } else {
-            getDocumentCounter().validate();
-        }
-        if (getIndexCounter() == null) {
-            throw new IllegalArgumentException("Missing required property indexCounter in model ServiceCounters");
-        } else {
-            getIndexCounter().validate();
-        }
-        if (getIndexerCounter() == null) {
-            throw new IllegalArgumentException("Missing required property indexerCounter in model ServiceCounters");
-        } else {
-            getIndexerCounter().validate();
-        }
-        if (getDataSourceCounter() == null) {
-            throw new IllegalArgumentException("Missing required property dataSourceCounter in model ServiceCounters");
-        } else {
-            getDataSourceCounter().validate();
-        }
-        if (getStorageSizeCounter() == null) {
-            throw new IllegalArgumentException("Missing required property storageSizeCounter in model ServiceCounters");
-        } else {
-            getStorageSizeCounter().validate();
-        }
-        if (getSynonymMapCounter() == null) {
-            throw new IllegalArgumentException("Missing required property synonymMapCounter in model ServiceCounters");
-        } else {
-            getSynonymMapCounter().validate();
-        }
-    }
 }

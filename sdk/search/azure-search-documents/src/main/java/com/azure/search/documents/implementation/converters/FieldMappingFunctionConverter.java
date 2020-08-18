@@ -50,7 +50,7 @@ public final class FieldMappingFunctionConverter {
                     Map.Entry::getValue));
             fieldMappingFunction.setParameters(parameters);
         }
-        fieldMappingFunction.validate();
+
         return fieldMappingFunction;
     }
 

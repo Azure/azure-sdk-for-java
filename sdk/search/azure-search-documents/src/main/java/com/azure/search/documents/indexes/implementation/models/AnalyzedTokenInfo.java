@@ -91,11 +91,4 @@ public final class AnalyzedTokenInfo {
     public int getPosition() {
         return this.position;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {}
 }

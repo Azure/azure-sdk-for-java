@@ -93,8 +93,8 @@ public final class AutocompleteRequest {
     /** Creates an instance of AutocompleteRequest class. */
     @JsonCreator
     public AutocompleteRequest(
-            @JsonProperty(value = "search") String searchText,
-            @JsonProperty(value = "suggesterName") String suggesterName) {
+            @JsonProperty(value = "search", required = true) String searchText,
+            @JsonProperty(value = "suggesterName", required = true) String suggesterName) {
         this.searchText = searchText;
         this.suggesterName = suggesterName;
     }
@@ -311,19 +311,5 @@ public final class AutocompleteRequest {
     public AutocompleteRequest setTop(Integer top) {
         this.top = top;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getSearchText() == null) {
-            throw new IllegalArgumentException("Missing required property searchText in model AutocompleteRequest");
-        }
-        if (getSuggesterName() == null) {
-            throw new IllegalArgumentException("Missing required property suggesterName in model AutocompleteRequest");
-        }
     }
 }

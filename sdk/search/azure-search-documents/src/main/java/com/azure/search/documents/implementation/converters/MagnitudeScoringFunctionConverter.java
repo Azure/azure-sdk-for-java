@@ -54,7 +54,6 @@ public final class MagnitudeScoringFunctionConverter {
             magnitudeScoringFunction.setInterpolation(interpolation);
         }
 
-        magnitudeScoringFunction.validate();
         return magnitudeScoringFunction;
     }
 

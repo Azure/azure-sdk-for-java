@@ -36,15 +36,4 @@ public final class ListIndexesResult {
     public List<SearchIndex> getIndexes() {
         return this.indexes;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getIndexes() != null) {
-            getIndexes().forEach(e -> e.validate());
-        }
-    }
 }

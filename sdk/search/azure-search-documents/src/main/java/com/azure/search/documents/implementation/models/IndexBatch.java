@@ -22,7 +22,7 @@ public final class IndexBatch {
 
     /** Creates an instance of IndexBatch class. */
     @JsonCreator
-    public IndexBatch(@JsonProperty(value = "value") List<IndexAction> actions) {
+    public IndexBatch(@JsonProperty(value = "value", required = true) List<IndexAction> actions) {
         this.actions = actions;
     }
 
@@ -41,16 +41,4 @@ public final class IndexBatch {
      * @param actions the actions value to set.
      * @return the IndexBatch object itself.
      */
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getActions() == null) {
-            throw new IllegalArgumentException("Missing required property actions in model IndexBatch");
-        } else {
-            getActions().forEach(e -> e.validate());
-        }
-    }
 }

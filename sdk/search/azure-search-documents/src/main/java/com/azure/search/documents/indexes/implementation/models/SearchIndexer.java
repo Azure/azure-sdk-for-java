@@ -304,24 +304,4 @@ public final class SearchIndexer {
         this.eTag = eTag;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getSchedule() != null) {
-            getSchedule().validate();
-        }
-        if (getParameters() != null) {
-            getParameters().validate();
-        }
-        if (getFieldMappings() != null) {
-            getFieldMappings().forEach(e -> e.validate());
-        }
-        if (getOutputFieldMappings() != null) {
-            getOutputFieldMappings().forEach(e -> e.validate());
-        }
-    }
 }

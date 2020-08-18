@@ -33,7 +33,7 @@ public final class AnalyzedTokenInfoConverter {
         com.azure.search.documents.indexes.implementation.models.AnalyzedTokenInfo analyzedTokenInfo =
             new com.azure.search.documents.indexes.implementation.models.AnalyzedTokenInfo(obj.getToken(),
                 obj.getStartOffset(), obj.getEndOffset(), obj.getPosition());
-        analyzedTokenInfo.validate();
+
         return analyzedTokenInfo;
     }
 

@@ -135,7 +135,7 @@ public final class SearchFieldConverter {
 
         Boolean key = obj.isKey();
         searchField.setKey(key);
-        searchField.validate();
+
         return searchField;
     }
 

@@ -57,7 +57,7 @@ public final class DistanceScoringFunctionConverter {
                 ScoringFunctionInterpolationConverter.map(obj.getInterpolation());
             distanceScoringFunction.setInterpolation(interpolation);
         }
-        distanceScoringFunction.validate();
+
         return distanceScoringFunction;
     }
 

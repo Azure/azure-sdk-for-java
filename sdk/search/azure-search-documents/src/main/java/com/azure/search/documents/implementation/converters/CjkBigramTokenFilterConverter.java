@@ -53,7 +53,7 @@ public final class CjkBigramTokenFilterConverter {
                 obj.getIgnoreScripts().stream().map(CjkBigramTokenFilterScriptsConverter::map).collect(Collectors.toList());
             cjkBigramTokenFilter.setIgnoreScripts(ignoreScripts);
         }
-        cjkBigramTokenFilter.validate();
+
         return cjkBigramTokenFilter;
     }
 

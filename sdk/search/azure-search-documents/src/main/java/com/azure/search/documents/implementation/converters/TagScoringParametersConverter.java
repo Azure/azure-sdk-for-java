@@ -31,7 +31,7 @@ public final class TagScoringParametersConverter {
         }
         com.azure.search.documents.indexes.implementation.models.TagScoringParameters tagScoringParameters =
             new com.azure.search.documents.indexes.implementation.models.TagScoringParameters(obj.getTagsParameter());
-        tagScoringParameters.validate();
+
         return tagScoringParameters;
     }
 

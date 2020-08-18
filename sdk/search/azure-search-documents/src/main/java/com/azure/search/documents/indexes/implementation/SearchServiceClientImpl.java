@@ -215,13 +215,6 @@ public final class SearchServiceClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ServiceStatistics>> getServiceStatisticsWithResponseAsync(
             RequestOptions requestOptions, Context context) {
-        if (this.getEndpoint() == null) {
-            return Mono.error(
-                    new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
-        }
-        if (requestOptions != null) {
-            requestOptions.validate();
-        }
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {

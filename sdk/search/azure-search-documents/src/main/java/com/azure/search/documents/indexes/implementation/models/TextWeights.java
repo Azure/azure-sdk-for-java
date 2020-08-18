@@ -44,14 +44,4 @@ public final class TextWeights {
      * @param weights the weights value to set.
      * @return the TextWeights object itself.
      */
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getWeights() == null) {
-            throw new IllegalArgumentException("Missing required property weights in model TextWeights");
-        }
-    }
 }

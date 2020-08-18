@@ -67,7 +67,7 @@ public final class ShaperSkillConverter {
 
         String description = obj.getDescription();
         shaperSkill.setDescription(description);
-        shaperSkill.validate();
+
         return shaperSkill;
     }
 

@@ -67,7 +67,7 @@ public final class ConditionalSkillConverter {
 
         String description = obj.getDescription();
         conditionalSkill.setDescription(description);
-        conditionalSkill.validate();
+
         return conditionalSkill;
     }
 

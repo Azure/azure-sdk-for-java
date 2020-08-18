@@ -102,7 +102,6 @@ public final class IndexerExecutionResultConverter {
         OffsetDateTime endTime = obj.getEndTime();
         PrivateFieldAccessHelper.set(indexerExecutionResult, "endTime", endTime);
 
-        indexerExecutionResult.validate();
         return indexerExecutionResult;
     }
 

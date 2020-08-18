@@ -36,15 +36,4 @@ public final class ListSynonymMapsResult {
     public List<SynonymMap> getSynonymMaps() {
         return this.synonymMaps;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getSynonymMaps() != null) {
-            getSynonymMaps().forEach(e -> e.validate());
-        }
-    }
 }

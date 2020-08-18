@@ -46,9 +46,10 @@ public final class IndexingResult {
     /** Creates an instance of IndexingResult class. */
     @JsonCreator
     public IndexingResult(
-            @JsonProperty(value = "key") String key,
-            @JsonProperty(value = "status") boolean succeeded,
-            @JsonProperty(value = "statusCode") int statusCode) {
+            @JsonProperty(value = "key", required = true, access = JsonProperty.Access.WRITE_ONLY) String key,
+            @JsonProperty(value = "status", required = true, access = JsonProperty.Access.WRITE_ONLY) boolean succeeded,
+            @JsonProperty(value = "statusCode", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    int statusCode) {
         this.key = key;
         this.succeeded = succeeded;
         this.statusCode = statusCode;
@@ -94,11 +95,4 @@ public final class IndexingResult {
     public int getStatusCode() {
         return this.statusCode;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {}
 }

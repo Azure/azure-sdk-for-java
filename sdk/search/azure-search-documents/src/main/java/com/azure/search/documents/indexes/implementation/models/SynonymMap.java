@@ -171,15 +171,4 @@ public final class SynonymMap {
         this.eTag = eTag;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getEncryptionKey() != null) {
-            getEncryptionKey().validate();
-        }
-    }
 }

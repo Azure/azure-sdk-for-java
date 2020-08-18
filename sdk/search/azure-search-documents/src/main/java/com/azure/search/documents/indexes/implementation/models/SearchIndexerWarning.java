@@ -102,11 +102,4 @@ public final class SearchIndexerWarning {
     public String getDocumentationLink() {
         return this.documentationLink;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {}
 }

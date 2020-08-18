@@ -14,7 +14,8 @@ public final class HighWaterMarkChangeDetectionPolicyConverter {
      * Maps from {@link com.azure.search.documents.indexes.implementation.models.HighWaterMarkChangeDetectionPolicy} to
      * {@link HighWaterMarkChangeDetectionPolicy}.
      */
-    public static HighWaterMarkChangeDetectionPolicy map(com.azure.search.documents.indexes.implementation.models.HighWaterMarkChangeDetectionPolicy obj) {
+    public static HighWaterMarkChangeDetectionPolicy map(
+        com.azure.search.documents.indexes.implementation.models.HighWaterMarkChangeDetectionPolicy obj) {
         if (obj == null) {
             return null;
         }
@@ -22,17 +23,16 @@ public final class HighWaterMarkChangeDetectionPolicyConverter {
     }
 
     /**
-     * Maps from {@link HighWaterMarkChangeDetectionPolicy} to
-     * {@link com.azure.search.documents.indexes.implementation.models.HighWaterMarkChangeDetectionPolicy}.
+     * Maps from {@link HighWaterMarkChangeDetectionPolicy} to {@link com.azure.search.documents.indexes.implementation.models.HighWaterMarkChangeDetectionPolicy}.
      */
-    public static com.azure.search.documents.indexes.implementation.models.HighWaterMarkChangeDetectionPolicy map(HighWaterMarkChangeDetectionPolicy obj) {
+    public static com.azure.search.documents.indexes.implementation.models.HighWaterMarkChangeDetectionPolicy map(
+        HighWaterMarkChangeDetectionPolicy obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.indexes.implementation.models.HighWaterMarkChangeDetectionPolicy highWaterMarkChangeDetectionPolicy =
-            new com.azure.search.documents.indexes.implementation.models.HighWaterMarkChangeDetectionPolicy(obj.getHighWaterMarkColumnName());
-        highWaterMarkChangeDetectionPolicy.validate();
-        return highWaterMarkChangeDetectionPolicy;
+
+        return new com.azure.search.documents.indexes.implementation.models.HighWaterMarkChangeDetectionPolicy(
+            obj.getHighWaterMarkColumnName());
     }
 
     private HighWaterMarkChangeDetectionPolicyConverter() {

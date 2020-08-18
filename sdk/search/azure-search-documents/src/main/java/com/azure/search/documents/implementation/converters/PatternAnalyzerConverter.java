@@ -68,7 +68,7 @@ public final class PatternAnalyzerConverter {
             List<String> stopwords = new ArrayList<>(obj.getStopwords());
             patternAnalyzer.setStopwords(stopwords);
         }
-        patternAnalyzer.validate();
+
         return patternAnalyzer;
     }
 

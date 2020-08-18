@@ -70,7 +70,7 @@ public final class StopwordsTokenFilterConverter {
                 StopwordsListConverter.map(obj.getStopwordsList());
             stopwordsTokenFilter.setStopwordsList(stopwordsList);
         }
-        stopwordsTokenFilter.validate();
+
         return stopwordsTokenFilter;
     }
 

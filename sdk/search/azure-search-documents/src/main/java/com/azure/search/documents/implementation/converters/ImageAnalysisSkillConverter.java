@@ -106,7 +106,7 @@ public final class ImageAnalysisSkillConverter {
                 obj.getDetails().stream().map(ImageDetailConverter::map).collect(Collectors.toList());
             imageAnalysisSkill.setDetails(details);
         }
-        imageAnalysisSkill.validate();
+
         return imageAnalysisSkill;
     }
 

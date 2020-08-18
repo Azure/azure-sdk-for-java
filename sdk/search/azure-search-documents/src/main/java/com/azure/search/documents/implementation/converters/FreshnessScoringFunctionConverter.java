@@ -55,7 +55,6 @@ public final class FreshnessScoringFunctionConverter {
             freshnessScoringFunction.setInterpolation(interpolation);
         }
 
-        freshnessScoringFunction.validate();
         return freshnessScoringFunction;
     }
 

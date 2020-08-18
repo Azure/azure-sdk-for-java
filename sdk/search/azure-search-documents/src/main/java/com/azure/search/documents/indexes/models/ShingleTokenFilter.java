@@ -65,7 +65,7 @@ public final class ShingleTokenFilter extends TokenFilter {
      * spaces, dashes or underscores, can only start and end with alphanumeric
      * characters, and is limited to 128 characters.
      */
-    public ShingleTokenFilter(String name) {
+    public ShingleTokenFilter(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 

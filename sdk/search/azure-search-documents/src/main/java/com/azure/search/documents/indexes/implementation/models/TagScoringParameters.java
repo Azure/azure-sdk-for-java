@@ -43,14 +43,4 @@ public final class TagScoringParameters {
      * @param tagsParameter the tagsParameter value to set.
      * @return the TagScoringParameters object itself.
      */
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getTagsParameter() == null) {
-            throw new IllegalArgumentException("Missing required property tagsParameter in model TagScoringParameters");
-        }
-    }
 }

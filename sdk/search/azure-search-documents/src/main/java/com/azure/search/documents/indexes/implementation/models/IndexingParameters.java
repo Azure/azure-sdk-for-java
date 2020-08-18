@@ -130,15 +130,4 @@ public final class IndexingParameters {
         this.configuration = configuration;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getConfiguration() != null) {
-            getConfiguration().validate();
-        }
-    }
 }

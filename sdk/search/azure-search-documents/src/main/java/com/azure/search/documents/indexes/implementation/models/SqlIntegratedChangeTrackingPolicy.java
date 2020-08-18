@@ -16,14 +16,4 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("#Microsoft.Azure.Search.SqlIntegratedChangeTrackingPolicy")
 @JsonFlatten
 @Immutable
-public class SqlIntegratedChangeTrackingPolicy extends DataChangeDetectionPolicy {
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-    }
-}
+public class SqlIntegratedChangeTrackingPolicy extends DataChangeDetectionPolicy {}

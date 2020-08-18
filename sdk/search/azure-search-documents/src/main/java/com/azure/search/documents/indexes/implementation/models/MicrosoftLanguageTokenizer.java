@@ -114,14 +114,4 @@ public class MicrosoftLanguageTokenizer extends LexicalTokenizer {
         this.language = language;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-    }
 }

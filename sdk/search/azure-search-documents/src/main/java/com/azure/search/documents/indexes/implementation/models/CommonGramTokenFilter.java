@@ -111,17 +111,4 @@ public class CommonGramTokenFilter extends TokenFilter {
         this.useQueryMode = useQueryMode;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (getCommonWords() == null) {
-            throw new IllegalArgumentException("Missing required property commonWords in model CommonGramTokenFilter");
-        }
-    }
 }

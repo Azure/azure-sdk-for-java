@@ -118,18 +118,4 @@ public final class InputFieldMappingEntry {
         this.inputs = inputs;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getName() == null) {
-            throw new IllegalArgumentException("Missing required property name in model InputFieldMappingEntry");
-        }
-        if (getInputs() != null) {
-            getInputs().forEach(e -> e.validate());
-        }
-    }
 }

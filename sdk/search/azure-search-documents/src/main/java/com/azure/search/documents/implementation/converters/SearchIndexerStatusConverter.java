@@ -74,7 +74,6 @@ public final class SearchIndexerStatusConverter {
             PrivateFieldAccessHelper.set(searchIndexerStatus, "lastResult", lastResult);
         }
 
-        searchIndexerStatus.validate();
         return searchIndexerStatus;
     }
 

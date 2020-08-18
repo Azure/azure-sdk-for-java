@@ -76,17 +76,4 @@ public class KeepTokenFilter extends TokenFilter {
         this.lowerCaseKeepWords = lowerCaseKeepWords;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (getKeepWords() == null) {
-            throw new IllegalArgumentException("Missing required property keepWords in model KeepTokenFilter");
-        }
-    }
 }

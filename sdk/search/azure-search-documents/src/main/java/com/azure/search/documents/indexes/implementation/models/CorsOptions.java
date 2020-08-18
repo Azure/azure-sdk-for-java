@@ -76,15 +76,4 @@ public final class CorsOptions {
         this.maxAgeInSeconds = maxAgeInSeconds;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getAllowedOrigins() == null) {
-            throw new IllegalArgumentException("Missing required property allowedOrigins in model CorsOptions");
-        }
-    }
 }

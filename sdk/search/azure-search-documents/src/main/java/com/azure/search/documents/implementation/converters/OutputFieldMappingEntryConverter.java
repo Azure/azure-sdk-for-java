@@ -40,7 +40,6 @@ public final class OutputFieldMappingEntryConverter {
         String targetName = obj.getTargetName();
         outputFieldMappingEntry.setTargetName(targetName);
 
-        outputFieldMappingEntry.validate();
         return outputFieldMappingEntry;
     }
 

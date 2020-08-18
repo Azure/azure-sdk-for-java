@@ -53,16 +53,4 @@ public class MappingCharFilter extends CharFilter {
      * @param mappings the mappings value to set.
      * @return the MappingCharFilter object itself.
      */
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (getMappings() == null) {
-            throw new IllegalArgumentException("Missing required property mappings in model MappingCharFilter");
-        }
-    }
 }

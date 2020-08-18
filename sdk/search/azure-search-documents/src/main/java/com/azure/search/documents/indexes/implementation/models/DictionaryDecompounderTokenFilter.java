@@ -165,18 +165,4 @@ public class DictionaryDecompounderTokenFilter extends TokenFilter {
         this.onlyLongestMatch = onlyLongestMatch;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (getWordList() == null) {
-            throw new IllegalArgumentException(
-                    "Missing required property wordList in model DictionaryDecompounderTokenFilter");
-        }
-    }
 }

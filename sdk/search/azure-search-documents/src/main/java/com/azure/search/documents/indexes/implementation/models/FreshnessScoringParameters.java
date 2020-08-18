@@ -45,15 +45,4 @@ public final class FreshnessScoringParameters {
      * @param boostingDuration the boostingDuration value to set.
      * @return the FreshnessScoringParameters object itself.
      */
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getBoostingDuration() == null) {
-            throw new IllegalArgumentException(
-                    "Missing required property boostingDuration in model FreshnessScoringParameters");
-        }
-    }
 }

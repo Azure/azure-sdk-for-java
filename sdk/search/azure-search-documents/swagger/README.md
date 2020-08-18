@@ -26,7 +26,8 @@ npm install -g autorest
 
 ### Generation
 
-There are two swaggers for search: index and service. They always under same package version, e.g. `--tag=package-2019-05-searchindex-preview` and `--tag=package-2019-05-searchservice-preview`.
+There are two swaggers for Azure Search, `searchindex` and `searchservice`. They always under same package version, e.g. 
+`--tag=package-2020-06-searchindex` and `--tag=package-2020-06-searchservice`.
 
 ```ps
 cd <swagger-folder>
@@ -48,6 +49,7 @@ These are the global settings for SearchServiceClient and SearchIndexClient.
 opt-in-extensible-enums: true
 openapi-type: data-plane
 ```
+
 ### Tag: package-2020-06-searchservice
 
 These settings apply only when `--tag=package-2020-06-searchservice` is specified on the command line.
@@ -55,9 +57,10 @@ These settings apply only when `--tag=package-2020-06-searchservice` is specifie
 ``` yaml $(tag) == 'package-2020-06-searchservice'
 namespace: com.azure.search.documents.indexes
 input-file:
-- https://github.com/Azure/azure-rest-api-specs/blob/6a024fe462c3a4b0b720183c1d8c6f96b261a386/specification/search/data-plane/Azure.Search/preview/2020-06-30/searchservice.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/6a024fe462c3a4b0b720183c1d8c6f96b261a386/specification/search/data-plane/Azure.Search/preview/2020-06-30/searchservice.json
 models-subpackage: implementation.models
 custom-types-subpackage: models
+custom-types: IndexingParametersConfiguration,BlobIndexerDataToExtract,DataToExtract,BlobIndexerImageAction,ImageAction,BlobIndexerPDFTextRotationAlgorithm,PdfTextRotationAlgorithm,BlobIndexerParsingMode,ParsingMode,IndexerExecutionEnvironment,ExecutionEnvironment
 ```
 
 ### Tag: package-2020-06-searchindex
@@ -67,51 +70,9 @@ These settings apply only when `--tag=package-2020-06-searchindex` is specified 
 ``` yaml $(tag) == 'package-2020-06-searchindex'
 namespace: com.azure.search.documents
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/0bc7853cb4d824bb6c310344dcc1b5f77cbe6bdd/specification/search/data-plane/Azure.Search/preview/2020-06-30/searchindex.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/search/data-plane/Azure.Search/preview/2020-06-30/searchindex.json
 models-subpackage: implementation.models
 custom-types-subpackage: models
-```
-
-### Tag: package-2019-05-searchservice-preview
-
-These settings apply only when `--tag=package-2019-05-searchservice-preview` is specified on the command line.
-
-``` yaml $(tag) == 'package-2019-05-searchservice-preview'
-namespace: com.azure.search.documents.indexes
-input-file:
-- https://github.com/Azure/azure-rest-api-specs/blob/master/specification/search/data-plane/Azure.Search/preview/2019-05-06-preview/searchservice.json
-models-subpackage: implementation.models
-custom-types-subpackage: models
-```
-
-### Tag: package-2019-05-searchindex-preview
-
-These settings apply only when `--tag=package-2019-05-searchindex-preview` is specified on the command line.
-
-``` yaml $(tag) == 'package-2019-05-searchindex-preview'
-namespace: com.azure.search.documents
-input-file:
-- https://github.com/Azure/azure-rest-api-specs/blob/master/specification/search/data-plane/Azure.Search/preview/2019-05-06-preview/searchindex.json
-models-subpackage: implementation.models
-custom-types-subpackage: models
-```
-
-### Tag: package-2019-05-searchservice
-
-These settings apply only when `--tag=package-2019-05-searchservice` is specified on the command line.
-
-``` yaml $(tag) == 'package-2019-05-searchservice'
-input-file:
-- https://github.com/Azure/azure-rest-api-specs/blob/master/specification/search/data-plane/Azure.Search/stable/2019-05-06/searchservice.json
-```
-
-### Tag: package-2019-05-searchindex
-
-These settings apply only when `--tag=package-2019-05-searchindex` is specified on the command line.
-
-``` yaml $(tag) == 'package-2019-05-searchindex'
-input-file:
-- https://github.com/Azure/azure-rest-api-specs/blob/master/specification/search/data-plane/Azure.Search/stable/2019-05-06/searchindex.json
 ```
 
 ---
@@ -131,7 +92,6 @@ generate-client-interfaces: false
 context-client-method-parameter: true
 generate-client-as-impl: true
 required-fields-as-ctor-args: true
-client-side-validations: true
 license-header: |-
   Copyright (c) Microsoft Corporation. All rights reserved.
   Licensed under the MIT License.
@@ -139,9 +99,9 @@ license-header: |-
   Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 vararg-properties: >-
-  AutocompleteOptions.searchFields,
-  SearchOptions.facets, SearchOptions.highlightFields, SearchOptions.orderBy, SearchOptions.scoringParameters, SearchOptions.searchFields, SearchOptions.select,
-  SuggestOptions.orderBy, SuggestOptions.searchFields, SuggestOptions.select, CorsOptions.allowedOrigins
+  AutocompleteOptions.searchFields, SearchOptions.facets, SearchOptions.highlightFields, SearchOptions.orderBy, 
+  SearchOptions.scoringParameters, SearchOptions.searchFields, SearchOptions.select, SuggestOptions.orderBy, 
+  SuggestOptions.searchFields, SuggestOptions.select, CorsOptions.allowedOrigins
 ```
 
 ### Set odata.metadata Accept header in operations

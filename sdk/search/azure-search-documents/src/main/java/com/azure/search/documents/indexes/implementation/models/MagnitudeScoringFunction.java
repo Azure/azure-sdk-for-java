@@ -48,19 +48,4 @@ public final class MagnitudeScoringFunction extends ScoringFunction {
      * @param parameters the parameters value to set.
      * @return the MagnitudeScoringFunction object itself.
      */
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (getParameters() == null) {
-            throw new IllegalArgumentException(
-                    "Missing required property parameters in model MagnitudeScoringFunction");
-        } else {
-            getParameters().validate();
-        }
-    }
 }

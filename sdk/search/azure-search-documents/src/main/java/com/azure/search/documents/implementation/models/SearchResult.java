@@ -41,7 +41,9 @@ public final class SearchResult {
 
     /** Creates an instance of SearchResult class. */
     @JsonCreator
-    public SearchResult(@JsonProperty(value = "@search.score") double score) {
+    public SearchResult(
+            @JsonProperty(value = "@search.score", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    double score) {
         this.score = score;
     }
 
@@ -92,11 +94,4 @@ public final class SearchResult {
         }
         additionalProperties.put(key, value);
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {}
 }

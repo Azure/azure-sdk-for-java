@@ -84,7 +84,7 @@ public final class OcrSkillConverter {
 
         Boolean shouldDetectOrientation = obj.setShouldDetectOrientation();
         ocrSkill.setShouldDetectOrientation(shouldDetectOrientation);
-        ocrSkill.validate();
+
         return ocrSkill;
     }
 

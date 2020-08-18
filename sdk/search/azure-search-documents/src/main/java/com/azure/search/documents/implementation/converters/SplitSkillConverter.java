@@ -96,7 +96,7 @@ public final class SplitSkillConverter {
                 SplitSkillLanguageConverter.map(obj.getDefaultLanguageCode());
             splitSkill.setDefaultLanguageCode(defaultLanguageCode);
         }
-        splitSkill.validate();
+
         return splitSkill;
     }
 

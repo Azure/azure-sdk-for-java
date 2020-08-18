@@ -67,7 +67,9 @@ public final class SearchDocumentsResult {
 
     /** Creates an instance of SearchDocumentsResult class. */
     @JsonCreator
-    public SearchDocumentsResult(@JsonProperty(value = "value") List<SearchResult> results) {
+    public SearchDocumentsResult(
+            @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    List<SearchResult> results) {
         this.results = results;
     }
 
@@ -133,29 +135,5 @@ public final class SearchDocumentsResult {
      */
     public String getNextLink() {
         return this.nextLink;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getFacets() != null) {
-            getFacets()
-                    .values()
-                    .forEach(
-                            e -> {
-                                if (e != null) {
-                                    e.forEach(e1 -> e1.validate());
-                                }
-                            });
-        }
-        if (getNextPageParameters() != null) {
-            getNextPageParameters().validate();
-        }
-        if (getResults() != null) {
-            getResults().forEach(e -> e.validate());
-        }
     }
 }

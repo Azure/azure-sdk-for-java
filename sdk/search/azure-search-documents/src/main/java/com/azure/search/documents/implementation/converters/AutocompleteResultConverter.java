@@ -51,7 +51,6 @@ public final class AutocompleteResultConverter {
         Double coverage = obj.getCoverage();
         PrivateFieldAccessHelper.set(autocompleteResult, "coverage", coverage);
 
-        autocompleteResult.validate();
         return autocompleteResult;
     }
 

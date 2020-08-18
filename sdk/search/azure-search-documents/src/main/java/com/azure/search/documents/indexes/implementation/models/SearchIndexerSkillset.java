@@ -142,18 +142,4 @@ public final class SearchIndexerSkillset {
         this.eTag = eTag;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getSkills() != null) {
-            getSkills().forEach(e -> e.validate());
-        }
-        if (getCognitiveServicesAccount() != null) {
-            getCognitiveServicesAccount().validate();
-        }
-    }
 }

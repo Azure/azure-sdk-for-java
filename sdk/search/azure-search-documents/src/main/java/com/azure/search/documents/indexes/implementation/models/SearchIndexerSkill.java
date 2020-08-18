@@ -189,21 +189,4 @@ public class SearchIndexerSkill {
      * @param outputs the outputs value to set.
      * @return the SearchIndexerSkill object itself.
      */
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getInputs() == null) {
-            throw new IllegalArgumentException("Missing required property inputs in model SearchIndexerSkill");
-        } else {
-            getInputs().forEach(e -> e.validate());
-        }
-        if (getOutputs() == null) {
-            throw new IllegalArgumentException("Missing required property outputs in model SearchIndexerSkill");
-        } else {
-            getOutputs().forEach(e -> e.validate());
-        }
-    }
 }

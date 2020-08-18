@@ -57,7 +57,7 @@ public final class PatternTokenizerConverter {
 
         Integer group = obj.getGroup();
         patternTokenizer.setGroup(group);
-        patternTokenizer.validate();
+
         return patternTokenizer;
     }
 

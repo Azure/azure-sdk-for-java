@@ -41,16 +41,4 @@ public final class AnalyzeResult {
      * @param tokens the tokens value to set.
      * @return the AnalyzeResult object itself.
      */
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getTokens() == null) {
-            throw new IllegalArgumentException("Missing required property tokens in model AnalyzeResult");
-        } else {
-            getTokens().forEach(e -> e.validate());
-        }
-    }
 }

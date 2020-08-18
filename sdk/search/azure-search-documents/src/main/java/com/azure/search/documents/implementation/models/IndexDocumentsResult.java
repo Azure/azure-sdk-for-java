@@ -23,7 +23,9 @@ public final class IndexDocumentsResult {
 
     /** Creates an instance of IndexDocumentsResult class. */
     @JsonCreator
-    public IndexDocumentsResult(@JsonProperty(value = "value") List<IndexingResult> results) {
+    public IndexDocumentsResult(
+            @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    List<IndexingResult> results) {
         this.results = results;
     }
 
@@ -34,16 +36,5 @@ public final class IndexDocumentsResult {
      */
     public List<IndexingResult> getResults() {
         return this.results;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getResults() != null) {
-            getResults().forEach(e -> e.validate());
-        }
     }
 }

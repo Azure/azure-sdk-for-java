@@ -189,18 +189,4 @@ public final class IndexerExecutionResult {
     public String getFinalTrackingState() {
         return this.finalTrackingState;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getErrors() != null) {
-            getErrors().forEach(e -> e.validate());
-        }
-        if (getWarnings() != null) {
-            getWarnings().forEach(e -> e.validate());
-        }
-    }
 }

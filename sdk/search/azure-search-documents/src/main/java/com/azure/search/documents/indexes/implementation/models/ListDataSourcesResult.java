@@ -36,15 +36,4 @@ public final class ListDataSourcesResult {
     public List<SearchIndexerDataSource> getDataSources() {
         return this.dataSources;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getDataSources() != null) {
-            getDataSources().forEach(e -> e.validate());
-        }
-    }
 }

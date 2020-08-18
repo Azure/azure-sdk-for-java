@@ -94,18 +94,4 @@ public final class FieldMapping {
         this.mappingFunction = mappingFunction;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getSourceFieldName() == null) {
-            throw new IllegalArgumentException("Missing required property sourceFieldName in model FieldMapping");
-        }
-        if (getMappingFunction() != null) {
-            getMappingFunction().validate();
-        }
-    }
 }

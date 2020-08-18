@@ -384,42 +384,4 @@ public final class SearchIndex {
         this.eTag = eTag;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getFields() != null) {
-            getFields().forEach(e -> e.validate());
-        }
-        if (getScoringProfiles() != null) {
-            getScoringProfiles().forEach(e -> e.validate());
-        }
-        if (getCorsOptions() != null) {
-            getCorsOptions().validate();
-        }
-        if (getSuggesters() != null) {
-            getSuggesters().forEach(e -> e.validate());
-        }
-        if (getAnalyzers() != null) {
-            getAnalyzers().forEach(e -> e.validate());
-        }
-        if (getTokenizers() != null) {
-            getTokenizers().forEach(e -> e.validate());
-        }
-        if (getTokenFilters() != null) {
-            getTokenFilters().forEach(e -> e.validate());
-        }
-        if (getCharFilters() != null) {
-            getCharFilters().forEach(e -> e.validate());
-        }
-        if (getEncryptionKey() != null) {
-            getEncryptionKey().validate();
-        }
-        if (getSimilarity() != null) {
-            getSimilarity().validate();
-        }
-    }
 }

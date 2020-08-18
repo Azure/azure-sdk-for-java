@@ -46,7 +46,7 @@ public final class KeywordMarkerTokenFilterConverter {
 
         Boolean ignoreCase = obj.isCaseIgnored();
         keywordMarkerTokenFilter.setIgnoreCase(ignoreCase);
-        keywordMarkerTokenFilter.validate();
+
         return keywordMarkerTokenFilter;
     }
 

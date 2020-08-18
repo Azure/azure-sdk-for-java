@@ -54,14 +54,4 @@ public class UaxUrlEmailTokenizer extends LexicalTokenizer {
         this.maxTokenLength = maxTokenLength;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-    }
 }

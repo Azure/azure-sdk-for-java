@@ -69,7 +69,7 @@ public final class LanguageDetectionSkillConverter {
 
         String description = obj.getDescription();
         languageDetectionSkill.setDescription(description);
-        languageDetectionSkill.validate();
+
         return languageDetectionSkill;
     }
 

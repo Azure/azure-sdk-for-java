@@ -75,14 +75,4 @@ public class LexicalTokenizer {
      * @param name the name value to set.
      * @return the LexicalTokenizer object itself.
      */
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getName() == null) {
-            throw new IllegalArgumentException("Missing required property name in model LexicalTokenizer");
-        }
-    }
 }

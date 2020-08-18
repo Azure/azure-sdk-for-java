@@ -36,15 +36,4 @@ public final class ListSkillsetsResult {
     public List<SearchIndexerSkillset> getSkillsets() {
         return this.skillsets;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getSkillsets() != null) {
-            getSkillsets().forEach(e -> e.validate());
-        }
-    }
 }

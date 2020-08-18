@@ -78,17 +78,4 @@ public class KeywordMarkerTokenFilter extends TokenFilter {
         this.ignoreCase = ignoreCase;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (getKeywords() == null) {
-            throw new IllegalArgumentException("Missing required property keywords in model KeywordMarkerTokenFilter");
-        }
-    }
 }

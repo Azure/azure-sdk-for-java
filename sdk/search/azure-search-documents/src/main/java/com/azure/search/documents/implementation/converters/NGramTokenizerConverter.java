@@ -57,7 +57,7 @@ public final class NGramTokenizerConverter {
 
         Integer minGram = obj.getMinGram();
         nGramTokenizer.setMinGram(minGram);
-        nGramTokenizer.validate();
+
         return nGramTokenizer;
     }
 

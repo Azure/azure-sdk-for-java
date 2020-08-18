@@ -108,15 +108,4 @@ public class ScoringFunction {
         this.interpolation = interpolation;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getFieldName() == null) {
-            throw new IllegalArgumentException("Missing required property fieldName in model ScoringFunction");
-        }
-    }
 }

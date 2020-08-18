@@ -83,7 +83,7 @@ public final class SentimentSkillConverter {
                 SentimentSkillLanguageConverter.map(obj.getDefaultLanguageCode());
             sentimentSkill.setDefaultLanguageCode(defaultLanguageCode);
         }
-        sentimentSkill.validate();
+
         return sentimentSkill;
     }
 

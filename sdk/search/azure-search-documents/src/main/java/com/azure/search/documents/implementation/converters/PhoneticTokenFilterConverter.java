@@ -50,7 +50,7 @@ public final class PhoneticTokenFilterConverter {
                 PhoneticEncoderConverter.map(obj.getEncoder());
             phoneticTokenFilter.setEncoder(encoder);
         }
-        phoneticTokenFilter.validate();
+
         return phoneticTokenFilter;
     }
 

@@ -104,14 +104,4 @@ public class EdgeNGramTokenFilter extends TokenFilter {
         this.side = side;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-    }
 }

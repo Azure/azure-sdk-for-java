@@ -122,27 +122,4 @@ public final class SearchResourceEncryptionKey {
         this.accessCredentials = accessCredentials;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getKeyName() == null) {
-            throw new IllegalArgumentException(
-                    "Missing required property keyName in model SearchResourceEncryptionKey");
-        }
-        if (getKeyVersion() == null) {
-            throw new IllegalArgumentException(
-                    "Missing required property keyVersion in model SearchResourceEncryptionKey");
-        }
-        if (getVaultUri() == null) {
-            throw new IllegalArgumentException(
-                    "Missing required property vaultUri in model SearchResourceEncryptionKey");
-        }
-        if (getAccessCredentials() != null) {
-            getAccessCredentials().validate();
-        }
-    }
 }

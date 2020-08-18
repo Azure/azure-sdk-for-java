@@ -182,17 +182,4 @@ public class WebApiSkill extends SearchIndexerSkill {
         this.degreeOfParallelism = degreeOfParallelism;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (getUri() == null) {
-            throw new IllegalArgumentException("Missing required property uri in model WebApiSkill");
-        }
-    }
 }

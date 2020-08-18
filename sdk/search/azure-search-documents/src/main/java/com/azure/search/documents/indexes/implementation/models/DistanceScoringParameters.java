@@ -70,15 +70,4 @@ public final class DistanceScoringParameters {
      * @param boostingDistance the boostingDistance value to set.
      * @return the DistanceScoringParameters object itself.
      */
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getReferencePointParameter() == null) {
-            throw new IllegalArgumentException(
-                    "Missing required property referencePointParameter in model DistanceScoringParameters");
-        }
-    }
 }

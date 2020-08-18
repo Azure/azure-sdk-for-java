@@ -59,7 +59,7 @@ public final class EdgeNGramTokenizerConverter {
 
         Integer minGram = obj.getMinGram();
         edgeNGramTokenizer.setMinGram(minGram);
-        edgeNGramTokenizer.validate();
+
         return edgeNGramTokenizer;
     }
 

@@ -59,7 +59,7 @@ public final class SearchIndexerErrorConverter {
 
         String key = obj.getKey();
         PrivateFieldAccessHelper.set(searchIndexerError, "key", key);
-        searchIndexerError.validate();
+
         return searchIndexerError;
     }
 

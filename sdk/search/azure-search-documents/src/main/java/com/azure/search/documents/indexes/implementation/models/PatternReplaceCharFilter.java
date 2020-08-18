@@ -72,20 +72,4 @@ public class PatternReplaceCharFilter extends CharFilter {
      * @param replacement the replacement value to set.
      * @return the PatternReplaceCharFilter object itself.
      */
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (getPattern() == null) {
-            throw new IllegalArgumentException("Missing required property pattern in model PatternReplaceCharFilter");
-        }
-        if (getReplacement() == null) {
-            throw new IllegalArgumentException(
-                    "Missing required property replacement in model PatternReplaceCharFilter");
-        }
-    }
 }

@@ -510,21 +510,4 @@ public final class SearchField {
         this.fields = fields;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getName() == null) {
-            throw new IllegalArgumentException("Missing required property name in model SearchField");
-        }
-        if (getType() == null) {
-            throw new IllegalArgumentException("Missing required property type in model SearchField");
-        }
-        if (getFields() != null) {
-            getFields().forEach(e -> e.validate());
-        }
-    }
 }

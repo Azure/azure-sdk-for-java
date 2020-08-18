@@ -51,14 +51,4 @@ public class ElisionTokenFilter extends TokenFilter {
         this.articles = articles;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-    }
 }

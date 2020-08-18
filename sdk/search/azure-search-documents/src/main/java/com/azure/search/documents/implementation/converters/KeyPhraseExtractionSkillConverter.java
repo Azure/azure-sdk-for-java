@@ -90,7 +90,7 @@ public final class KeyPhraseExtractionSkillConverter {
                 KeyPhraseExtractionSkillLanguageConverter.map(obj.getDefaultLanguageCode());
             keyPhraseExtractionSkill.setDefaultLanguageCode(defaultLanguageCode);
         }
-        keyPhraseExtractionSkill.validate();
+
         return keyPhraseExtractionSkill;
     }
 

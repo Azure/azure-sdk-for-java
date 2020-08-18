@@ -72,20 +72,4 @@ public class PatternReplaceTokenFilter extends TokenFilter {
      * @param replacement the replacement value to set.
      * @return the PatternReplaceTokenFilter object itself.
      */
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (getPattern() == null) {
-            throw new IllegalArgumentException("Missing required property pattern in model PatternReplaceTokenFilter");
-        }
-        if (getReplacement() == null) {
-            throw new IllegalArgumentException(
-                    "Missing required property replacement in model PatternReplaceTokenFilter");
-        }
-    }
 }

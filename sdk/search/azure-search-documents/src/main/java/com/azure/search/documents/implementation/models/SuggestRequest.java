@@ -107,8 +107,8 @@ public final class SuggestRequest {
     /** Creates an instance of SuggestRequest class. */
     @JsonCreator
     public SuggestRequest(
-            @JsonProperty(value = "search") String searchText,
-            @JsonProperty(value = "suggesterName") String suggesterName) {
+            @JsonProperty(value = "search", required = true) String searchText,
+            @JsonProperty(value = "suggesterName", required = true) String suggesterName) {
         this.searchText = searchText;
         this.suggesterName = suggesterName;
     }
@@ -353,19 +353,5 @@ public final class SuggestRequest {
     public SuggestRequest setTop(Integer top) {
         this.top = top;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getSearchText() == null) {
-            throw new IllegalArgumentException("Missing required property searchText in model SuggestRequest");
-        }
-        if (getSuggesterName() == null) {
-            throw new IllegalArgumentException("Missing required property suggesterName in model SuggestRequest");
-        }
     }
 }

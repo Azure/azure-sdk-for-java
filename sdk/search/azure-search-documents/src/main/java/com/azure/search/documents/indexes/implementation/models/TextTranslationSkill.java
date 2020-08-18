@@ -116,18 +116,4 @@ public class TextTranslationSkill extends SearchIndexerSkill {
         this.suggestedFrom = suggestedFrom;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (getDefaultToLanguageCode() == null) {
-            throw new IllegalArgumentException(
-                    "Missing required property defaultToLanguageCode in model TextTranslationSkill");
-        }
-    }
 }

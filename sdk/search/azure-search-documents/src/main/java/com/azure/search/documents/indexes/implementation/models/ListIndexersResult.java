@@ -36,15 +36,4 @@ public final class ListIndexersResult {
     public List<SearchIndexer> getIndexers() {
         return this.indexers;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getIndexers() != null) {
-            getIndexers().forEach(e -> e.validate());
-        }
-    }
 }

@@ -57,7 +57,7 @@ public final class SearchIndexerWarningConverter {
 
         String key = obj.getKey();
         PrivateFieldAccessHelper.set(searchIndexerWarning, "key", key);
-        searchIndexerWarning.validate();
+
         return searchIndexerWarning;
     }
 

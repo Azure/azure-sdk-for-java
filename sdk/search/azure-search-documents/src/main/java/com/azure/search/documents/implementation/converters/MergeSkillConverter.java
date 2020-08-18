@@ -77,7 +77,7 @@ public final class MergeSkillConverter {
 
         String insertPreTag = obj.getInsertPreTag();
         mergeSkill.setInsertPreTag(insertPreTag);
-        mergeSkill.validate();
+
         return mergeSkill;
     }
 

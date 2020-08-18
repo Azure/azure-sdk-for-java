@@ -57,13 +57,9 @@ public final class ServiceCountersConverter {
             obj.getDocumentCounter() == null ? null
                 : ResourceCounterConverter.map(obj.getIndexerCounter());
 
-
-        com.azure.search.documents.indexes.implementation.models.ServiceCounters serviceCounters =
-            new com.azure.search.documents.indexes.implementation.models.ServiceCounters(
-                documentCounter, indexCounter, indexerCounter, dataSourceCounter, storageSizeCounter,
-                synonymMapCounter);
-        serviceCounters.validate();
-        return serviceCounters;
+        return new com.azure.search.documents.indexes.implementation.models.ServiceCounters(
+            documentCounter, indexCounter, indexerCounter, dataSourceCounter, storageSizeCounter,
+            synonymMapCounter);
     }
 
     private ServiceCountersConverter() {

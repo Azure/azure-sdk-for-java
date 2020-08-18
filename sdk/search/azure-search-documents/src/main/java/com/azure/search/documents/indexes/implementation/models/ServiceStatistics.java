@@ -64,21 +64,4 @@ public final class ServiceStatistics {
      * @param limits the limits value to set.
      * @return the ServiceStatistics object itself.
      */
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getCounters() == null) {
-            throw new IllegalArgumentException("Missing required property counters in model ServiceStatistics");
-        } else {
-            getCounters().validate();
-        }
-        if (getLimits() == null) {
-            throw new IllegalArgumentException("Missing required property limits in model ServiceStatistics");
-        } else {
-            getLimits().validate();
-        }
-    }
 }

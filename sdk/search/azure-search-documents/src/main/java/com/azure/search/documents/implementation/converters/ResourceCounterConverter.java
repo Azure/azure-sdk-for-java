@@ -36,7 +36,7 @@ public final class ResourceCounterConverter {
 
         Long quota = obj.getQuota();
         resourceCounter.setQuota(quota);
-        resourceCounter.validate();
+
         return resourceCounter;
     }
 

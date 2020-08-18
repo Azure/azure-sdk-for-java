@@ -47,16 +47,4 @@ public class CognitiveServicesAccountKey extends CognitiveServicesAccount {
      * @param key the key value to set.
      * @return the CognitiveServicesAccountKey object itself.
      */
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (getKey() == null) {
-            throw new IllegalArgumentException("Missing required property key in model CognitiveServicesAccountKey");
-        }
-    }
 }

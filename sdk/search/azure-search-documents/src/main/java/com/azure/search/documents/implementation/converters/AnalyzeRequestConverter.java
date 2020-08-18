@@ -84,7 +84,7 @@ public final class AnalyzeRequestConverter {
                 LexicalTokenizerNameConverter.map(obj.getTokenizerName());
             analyzeRequest.setTokenizer(tokenizer);
         }
-        analyzeRequest.validate();
+
         return analyzeRequest;
     }
 

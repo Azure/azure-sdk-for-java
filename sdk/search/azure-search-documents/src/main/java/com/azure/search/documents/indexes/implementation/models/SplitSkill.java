@@ -105,14 +105,4 @@ public class SplitSkill extends SearchIndexerSkill {
         this.maximumPageLength = maximumPageLength;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-    }
 }

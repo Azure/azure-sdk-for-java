@@ -52,7 +52,7 @@ public final class ServiceStatisticsConverter {
                 : ServiceLimitsConverter.map(obj.getLimits());
         com.azure.search.documents.indexes.implementation.models.ServiceStatistics serviceStatistics =
             new com.azure.search.documents.indexes.implementation.models.ServiceStatistics(counters, limits);
-        serviceStatistics.validate();
+
         return serviceStatistics;
     }
 

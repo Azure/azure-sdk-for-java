@@ -49,16 +49,4 @@ public class SnowballTokenFilter extends TokenFilter {
      * @param language the language value to set.
      * @return the SnowballTokenFilter object itself.
      */
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (getLanguage() == null) {
-            throw new IllegalArgumentException("Missing required property language in model SnowballTokenFilter");
-        }
-    }
 }

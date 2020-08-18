@@ -58,7 +58,7 @@ public final class DictionaryDecompounderTokenFilterConverter {
 
         Integer minWordSize = obj.getMinWordSize();
         dictionaryDecompounderTokenFilter.setMinWordSize(minWordSize);
-        dictionaryDecompounderTokenFilter.validate();
+
         return dictionaryDecompounderTokenFilter;
     }
 

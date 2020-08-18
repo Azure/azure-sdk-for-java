@@ -106,7 +106,7 @@ public final class EntityRecognitionSkillConverter {
 
         Double minimumPrecision = obj.getMinimumPrecision();
         entityRecognitionSkill.setMinimumPrecision(minimumPrecision);
-        entityRecognitionSkill.validate();
+
         return entityRecognitionSkill;
     }
 

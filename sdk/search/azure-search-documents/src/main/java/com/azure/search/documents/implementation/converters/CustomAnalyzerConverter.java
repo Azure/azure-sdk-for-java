@@ -71,7 +71,6 @@ public final class CustomAnalyzerConverter {
             customAnalyzer.setTokenFilters(tokenFilters);
         }
 
-        customAnalyzer.validate();
         return customAnalyzer;
     }
 

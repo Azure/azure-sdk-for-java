@@ -92,17 +92,4 @@ public final class Suggester {
      * @param sourceFields the sourceFields value to set.
      * @return the Suggester object itself.
      */
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getName() == null) {
-            throw new IllegalArgumentException("Missing required property name in model Suggester");
-        }
-        if (getSourceFields() == null) {
-            throw new IllegalArgumentException("Missing required property sourceFields in model Suggester");
-        }
-    }
 }

@@ -38,11 +38,8 @@ public final class StemmerTokenFilterConverter {
         com.azure.search.documents.indexes.implementation.models.StemmerTokenFilterLanguage language =
             obj.getLanguage() == null ? null
             : StemmerTokenFilterLanguageConverter.map(obj.getLanguage());
-        com.azure.search.documents.indexes.implementation.models.StemmerTokenFilter stemmerTokenFilter =
-            new com.azure.search.documents.indexes.implementation.models.StemmerTokenFilter(obj.getName(), language);
 
-        stemmerTokenFilter.validate();
-        return stemmerTokenFilter;
+        return new com.azure.search.documents.indexes.implementation.models.StemmerTokenFilter(obj.getName(), language);
     }
 
     private StemmerTokenFilterConverter() {

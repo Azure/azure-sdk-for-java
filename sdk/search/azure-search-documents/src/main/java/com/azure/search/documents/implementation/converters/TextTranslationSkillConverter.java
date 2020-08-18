@@ -102,7 +102,7 @@ public final class TextTranslationSkillConverter {
                 TextTranslationSkillLanguageConverter.map(obj.getSuggestedFrom());
             textTranslationSkill.setSuggestedFrom(suggestedFrom);
         }
-        textTranslationSkill.validate();
+
         return textTranslationSkill;
     }
 

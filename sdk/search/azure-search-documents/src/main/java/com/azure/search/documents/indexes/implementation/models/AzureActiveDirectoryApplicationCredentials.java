@@ -73,16 +73,4 @@ public final class AzureActiveDirectoryApplicationCredentials {
         this.applicationSecret = applicationSecret;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getApplicationId() == null) {
-            throw new IllegalArgumentException(
-                    "Missing required property applicationId in model AzureActiveDirectoryApplicationCredentials");
-        }
-    }
 }

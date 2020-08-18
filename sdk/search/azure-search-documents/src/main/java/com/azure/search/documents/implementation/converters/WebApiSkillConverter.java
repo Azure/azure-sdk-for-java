@@ -106,7 +106,7 @@ public final class WebApiSkillConverter {
 
         Integer degreeOfParallelism = obj.getDegreeOfParallelism();
         webApiSkill.setDegreeOfParallelism(degreeOfParallelism);
-        webApiSkill.validate();
+
         return webApiSkill;
     }
 

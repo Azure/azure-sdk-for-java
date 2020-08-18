@@ -38,11 +38,7 @@ public final class TextWeightsConverter {
         Map<String, Double> weights = obj.getWeights() == null ? null
             : obj.getWeights().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
-        com.azure.search.documents.indexes.implementation.models.TextWeights textWeights =
-            new com.azure.search.documents.indexes.implementation.models.TextWeights(weights);
-
-        textWeights.validate();
-        return textWeights;
+        return new com.azure.search.documents.indexes.implementation.models.TextWeights(weights);
     }
 
     private TextWeightsConverter() {

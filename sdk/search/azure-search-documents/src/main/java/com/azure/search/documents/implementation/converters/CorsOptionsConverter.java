@@ -35,7 +35,7 @@ public final class CorsOptionsConverter {
 
         Long maxAgeInSeconds = obj.getMaxAgeInSeconds();
         corsOptions.setMaxAgeInSeconds(maxAgeInSeconds);
-        corsOptions.validate();
+
         return corsOptions;
     }
 

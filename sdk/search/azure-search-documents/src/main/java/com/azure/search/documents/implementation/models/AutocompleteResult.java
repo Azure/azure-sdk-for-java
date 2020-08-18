@@ -30,7 +30,9 @@ public final class AutocompleteResult {
 
     /** Creates an instance of AutocompleteResult class. */
     @JsonCreator
-    public AutocompleteResult(@JsonProperty(value = "value") List<AutocompleteItem> results) {
+    public AutocompleteResult(
+            @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    List<AutocompleteItem> results) {
         this.results = results;
     }
 
@@ -51,16 +53,5 @@ public final class AutocompleteResult {
      */
     public List<AutocompleteItem> getResults() {
         return this.results;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getResults() != null) {
-            getResults().forEach(e -> e.validate());
-        }
     }
 }

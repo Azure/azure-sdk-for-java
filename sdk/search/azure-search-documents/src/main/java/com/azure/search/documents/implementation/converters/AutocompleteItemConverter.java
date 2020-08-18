@@ -6,8 +6,8 @@ package com.azure.search.documents.implementation.converters;
 import com.azure.search.documents.models.AutocompleteItem;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.AutocompleteItem} and
- * {@link AutocompleteItem}.
+ * A converter between {@link com.azure.search.documents.implementation.models.AutocompleteItem} and {@link
+ * AutocompleteItem}.
  */
 public final class AutocompleteItemConverter {
     /**
@@ -27,11 +27,9 @@ public final class AutocompleteItemConverter {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.AutocompleteItem autocompleteItem =
-            new com.azure.search.documents.implementation.models.AutocompleteItem(obj.getText(), obj.getQueryPlusText());
 
-        autocompleteItem.validate();
-        return autocompleteItem;
+        return new com.azure.search.documents.implementation.models.AutocompleteItem(obj.getText(),
+            obj.getQueryPlusText());
     }
 
     private AutocompleteItemConverter() {

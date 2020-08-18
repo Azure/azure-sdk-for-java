@@ -53,16 +53,4 @@ public class StemmerOverrideTokenFilter extends TokenFilter {
      * @param rules the rules value to set.
      * @return the StemmerOverrideTokenFilter object itself.
      */
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (getRules() == null) {
-            throw new IllegalArgumentException("Missing required property rules in model StemmerOverrideTokenFilter");
-        }
-    }
 }

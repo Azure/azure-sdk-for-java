@@ -47,7 +47,7 @@ public final class FieldMappingConverter {
                 FieldMappingFunctionConverter.map(obj.getMappingFunction());
             fieldMapping.setMappingFunction(mappingFunction);
         }
-        fieldMapping.validate();
+
         return fieldMapping;
     }
 

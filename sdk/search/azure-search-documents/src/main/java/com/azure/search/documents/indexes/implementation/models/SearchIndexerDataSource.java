@@ -220,24 +220,4 @@ public final class SearchIndexerDataSource {
         this.eTag = eTag;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getCredentials() != null) {
-            getCredentials().validate();
-        }
-        if (getContainer() != null) {
-            getContainer().validate();
-        }
-        if (getDataChangeDetectionPolicy() != null) {
-            getDataChangeDetectionPolicy().validate();
-        }
-        if (getDataDeletionDetectionPolicy() != null) {
-            getDataDeletionDetectionPolicy().validate();
-        }
-    }
 }

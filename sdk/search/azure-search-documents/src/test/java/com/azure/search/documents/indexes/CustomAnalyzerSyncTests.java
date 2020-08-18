@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.indexes;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.ExpandableStringEnum;
@@ -340,7 +341,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
     public void canUseAllRegexFlagsNullNameAnalyzer() {
         SearchIndex index = createTestIndex(null).setAnalyzers(new PatternAnalyzer(null));
 
-        assertThrows(IllegalArgumentException.class, () ->
+        assertThrows(HttpResponseException.class, () ->
             searchIndexClient.createIndex(index), "Missing required property name in model LexicalAnalyzer");
 
     }
@@ -453,7 +454,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
         SearchIndex index = createTestIndex(null)
             .setTokenizers(new PatternTokenizer(null));
 
-        assertThrows(IllegalArgumentException.class, () ->
+        assertThrows(HttpResponseException.class, () ->
             searchIndexClient.createIndex(index), "Missing required property name in model SearchIndexer");
 
     }

@@ -77,14 +77,4 @@ public class NGramTokenFilter extends TokenFilter {
         this.maxGram = maxGram;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-    }
 }

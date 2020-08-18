@@ -158,15 +158,4 @@ public final class AnalyzeRequest {
         this.charFilters = charFilters;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getText() == null) {
-            throw new IllegalArgumentException("Missing required property text in model AnalyzeRequest");
-        }
-    }
 }
