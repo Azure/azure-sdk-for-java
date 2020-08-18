@@ -8,17 +8,14 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpLoggingPolicy;
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.http.policy.RequestIdPolicy;
-import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.*;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -33,27 +30,61 @@ public final class DigitalTwinsClientBuilder {
     private static final Pattern ADT_PUBLIC_SCOPE_VALIDATION_PATTERN = Pattern.compile("(ppe|azure)\\.net");
     private static final String[] ADT_PUBLIC_SCOPE = new String[]{"https://digitaltwins.azure.net" + "/.default"};
 
-    private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
+    // This is the name of the properties file in this repo that contains the default properties
+    private static final String DIGITAL_TWINS_PROPERTIES = "azure-digital-twins.properties";
+
+    // These are the keys to the above properties file that define the sdk's name and version for use in the user agent string
+    private static final String SDK_NAME = "name";
+    private static final String SDK_VERSION = "version";
+
+    private final List<HttpPipelinePolicy> additionalPolicies;
+
     // mandatory
     private String endpoint;
     private TokenCredential tokenCredential;
+
     // optional/have default values
     private DigitalTwinsServiceVersion serviceVersion;
     private HttpPipeline httpPipeline;
     private HttpClient httpClient;
-    private HttpLogOptions logOptions;
-    private RetryPolicy retryPolicy;
+    private HttpLogOptions httpLogOptions;
+    private HttpPipelinePolicy retryPolicy;
+
+    // Right now, Azure Digital Twins does not send a retry-after header on its throttling messages. If it adds support later, then
+    // these values should match the header name (for instance, "x-ms-retry-after-ms" or "Retry-After") and the time unit
+    // of the header's value. These null values are equivalent to just constructing "new RetryPolicy()"
+    private static final String retryAfterHeader = null;
+    private static final ChronoUnit retryAfterTimeUnit = null;
+    private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy(retryAfterHeader, retryAfterTimeUnit);
+
+    private final Map<String, String> properties;
+
+    private Configuration configuration;
+
+    public DigitalTwinsClientBuilder()
+    {
+        additionalPolicies = new ArrayList<>();
+        properties = CoreUtils.getProperties(DIGITAL_TWINS_PROPERTIES);
+        httpLogOptions = new HttpLogOptions();
+    }
 
     private static HttpPipeline buildPipeline(TokenCredential tokenCredential, String endpoint,
-                                              HttpLogOptions logOptions, HttpClient httpClient,
-                                              List<HttpPipelinePolicy> additionalPolicies, RetryPolicy retryPolicy) {
+                                              HttpLogOptions httpLogOptions, HttpClient httpClient,
+                                              List<HttpPipelinePolicy> additionalPolicies, HttpPipelinePolicy retryPolicy,
+                                              Configuration configuration, Map<String, String> properties) {
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
+
+        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
+
+        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, configuration));
 
         // Adds a "x-ms-client-request-id" header to each request. This header is useful for tracing requests through Azure ecosystems
         policies.add(new RequestIdPolicy());
 
-        // Only the RequestIdPolicy will take effect prior to the retry policy
+        // Only the RequestIdPolicy  and UserIdPolicy will take effect prior to the retry policy since neither of those need
+        // to change in any way upon retry
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
         policies.add(retryPolicy);
@@ -67,10 +98,12 @@ public final class DigitalTwinsClientBuilder {
 
         policies.addAll(additionalPolicies);
 
-        // Custom policies, authentication policy, and add date policy all take place after the retry policy
+        // Custom policies, authentication policy, and add date policy all take place after the retry policy which means
+        // they will be applied once per retry. For instance, the AddDatePolicy will add a different date time header
+        // each time the retry is attempted.
         HttpPolicyProviders.addAfterRetryPolicies(policies);
 
-        policies.add(new HttpLoggingPolicy(logOptions));
+        policies.add(new HttpLoggingPolicy(httpLogOptions));
 
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
@@ -106,21 +139,39 @@ public final class DigitalTwinsClientBuilder {
         Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
 
+        Configuration buildConfiguration = this.configuration;
+        if (buildConfiguration == null)
+        {
+            buildConfiguration = Configuration.getGlobalConfiguration().clone();
+        }
+
         // Set defaults for these fields if they were not set while building the client
-        this.serviceVersion = this.serviceVersion != null ? this.serviceVersion : DigitalTwinsServiceVersion.getLatest();
-        this.retryPolicy = this.retryPolicy != null ? this.retryPolicy : new RetryPolicy(); // Default is exponential backoff
+        DigitalTwinsServiceVersion serviceVersion = this.serviceVersion;
+        if (serviceVersion == null)
+        {
+            serviceVersion = DigitalTwinsServiceVersion.getLatest();
+        }
+
+        // Default is exponential backoff
+        HttpPipelinePolicy retryPolicy = this.retryPolicy;
+        if (retryPolicy == null)
+        {
+            retryPolicy = DEFAULT_RETRY_POLICY;
+        }
 
         if (this.httpPipeline == null) {
             this.httpPipeline = buildPipeline(
                 this.tokenCredential,
                 this.endpoint,
-                this.logOptions,
+                this.httpLogOptions,
                 this.httpClient,
                 this.additionalPolicies,
-                this.retryPolicy);
+                retryPolicy,
+                buildConfiguration,
+                this.properties);
         }
 
-        return new DigitalTwinsAsyncClient(this.httpPipeline, this.serviceVersion, this.endpoint);
+        return new DigitalTwinsAsyncClient(this.httpPipeline, serviceVersion, this.endpoint);
     }
 
     /**
@@ -179,10 +230,10 @@ public final class DigitalTwinsClientBuilder {
      *
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return the updated DigitalTwinsClientBuilder instance for fluent building.
-     * @throws NullPointerException If {@code logOptions} is {@code null}.
+     * @throws NullPointerException If {@code httpLogOptions} is {@code null}.
      */
     public DigitalTwinsClientBuilder httpLogOptions(HttpLogOptions logOptions) {
-        this.logOptions = logOptions;
+        this.httpLogOptions = logOptions;
         return this;
     }
 
@@ -200,15 +251,16 @@ public final class DigitalTwinsClientBuilder {
     }
 
     /**
-     * Sets the request retry options for all the requests made through the client. By default, the pipeline will
-     * use an exponential backoff retry value as detailed in {@link RetryPolicy#RetryPolicy()}.
+     * Sets the {@link HttpPipelinePolicy} that is used as the retry policy for each request that is sent.
      *
-     * @param retryPolicy {@link RetryPolicy}.
-     * @return the updated DigitalTwinsClientBuilder instance for fluent building.
-     * @throws NullPointerException If {@code retryOptions} is {@code null}.
+     * The default retry policy will be used if not provided. The default retry policy is {@link RetryPolicy#RetryPolicy()}.
+     * For implementing custom retry logic, see {@link RetryPolicy} as an example.
+     *
+     * @param retryPolicy the retry policy applied to each request.
+     * @return The updated ConfigurationClientBuilder object.
      */
-    public DigitalTwinsClientBuilder retryOptions(RetryPolicy retryPolicy) {
-        this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
+    public DigitalTwinsClientBuilder retryPolicy(HttpPipelinePolicy retryPolicy) {
+        this.retryPolicy = retryPolicy;
         return this;
     }
 
@@ -222,6 +274,20 @@ public final class DigitalTwinsClientBuilder {
      */
     public DigitalTwinsClientBuilder httpPipeline(HttpPipeline httpPipeline) {
         this.httpPipeline = httpPipeline;
+        return this;
+    }
+
+    /**
+     * Sets the configuration store that is used during construction of the service client.
+     *
+     * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
+     * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
+     *
+     * @param configuration The configuration store used to
+     * @return The updated DigitalTwinsClientBuilder object for fluent building.
+     */
+    public DigitalTwinsClientBuilder configuration(Configuration configuration) {
+        this.configuration = configuration;
         return this;
     }
 }
