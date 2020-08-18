@@ -11,18 +11,21 @@ package com.microsoft.azure.management.network.v2019_06_01.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.management.network.v2019_06_01.ErrorResponseException;
+import com.microsoft.azure.management.network.v2019_06_01.TagsObject;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.HTTP;
+import retrofit2.http.PATCH;
 import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -78,6 +81,10 @@ public class ConnectionMonitorsInner {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2019_06_01.ConnectionMonitors beginDelete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("networkWatcherName") String networkWatcherName, @Path("connectionMonitorName") String connectionMonitorName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2019_06_01.ConnectionMonitors updateTags" })
+        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}")
+        Observable<Response<ResponseBody>> updateTags(@Path("resourceGroupName") String resourceGroupName, @Path("networkWatcherName") String networkWatcherName, @Path("connectionMonitorName") String connectionMonitorName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body TagsObject parameters, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2019_06_01.ConnectionMonitors stop" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}/stop")
@@ -542,6 +549,191 @@ public class ConnectionMonitorsInner {
         return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Update tags of the specified connection monitor.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionMonitorName The name of the connection monitor.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ConnectionMonitorResultInner object if successful.
+     */
+    public ConnectionMonitorResultInner updateTags(String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
+        return updateTagsWithServiceResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName).toBlocking().single().body();
+    }
+
+    /**
+     * Update tags of the specified connection monitor.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionMonitorName The name of the connection monitor.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ConnectionMonitorResultInner> updateTagsAsync(String resourceGroupName, String networkWatcherName, String connectionMonitorName, final ServiceCallback<ConnectionMonitorResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateTagsWithServiceResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName), serviceCallback);
+    }
+
+    /**
+     * Update tags of the specified connection monitor.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionMonitorName The name of the connection monitor.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ConnectionMonitorResultInner object
+     */
+    public Observable<ConnectionMonitorResultInner> updateTagsAsync(String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
+        return updateTagsWithServiceResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName).map(new Func1<ServiceResponse<ConnectionMonitorResultInner>, ConnectionMonitorResultInner>() {
+            @Override
+            public ConnectionMonitorResultInner call(ServiceResponse<ConnectionMonitorResultInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Update tags of the specified connection monitor.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionMonitorName The name of the connection monitor.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ConnectionMonitorResultInner object
+     */
+    public Observable<ServiceResponse<ConnectionMonitorResultInner>> updateTagsWithServiceResponseAsync(String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (networkWatcherName == null) {
+            throw new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null.");
+        }
+        if (connectionMonitorName == null) {
+            throw new IllegalArgumentException("Parameter connectionMonitorName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2019-06-01";
+        final Map<String, String> tags = null;
+        TagsObject parameters = new TagsObject();
+        parameters.withTags(null);
+        return service.updateTags(resourceGroupName, networkWatcherName, connectionMonitorName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ConnectionMonitorResultInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ConnectionMonitorResultInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ConnectionMonitorResultInner> clientResponse = updateTagsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Update tags of the specified connection monitor.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionMonitorName The name of the connection monitor.
+     * @param tags Resource tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ConnectionMonitorResultInner object if successful.
+     */
+    public ConnectionMonitorResultInner updateTags(String resourceGroupName, String networkWatcherName, String connectionMonitorName, Map<String, String> tags) {
+        return updateTagsWithServiceResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName, tags).toBlocking().single().body();
+    }
+
+    /**
+     * Update tags of the specified connection monitor.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionMonitorName The name of the connection monitor.
+     * @param tags Resource tags.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ConnectionMonitorResultInner> updateTagsAsync(String resourceGroupName, String networkWatcherName, String connectionMonitorName, Map<String, String> tags, final ServiceCallback<ConnectionMonitorResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateTagsWithServiceResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName, tags), serviceCallback);
+    }
+
+    /**
+     * Update tags of the specified connection monitor.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionMonitorName The name of the connection monitor.
+     * @param tags Resource tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ConnectionMonitorResultInner object
+     */
+    public Observable<ConnectionMonitorResultInner> updateTagsAsync(String resourceGroupName, String networkWatcherName, String connectionMonitorName, Map<String, String> tags) {
+        return updateTagsWithServiceResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName, tags).map(new Func1<ServiceResponse<ConnectionMonitorResultInner>, ConnectionMonitorResultInner>() {
+            @Override
+            public ConnectionMonitorResultInner call(ServiceResponse<ConnectionMonitorResultInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Update tags of the specified connection monitor.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionMonitorName The name of the connection monitor.
+     * @param tags Resource tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ConnectionMonitorResultInner object
+     */
+    public Observable<ServiceResponse<ConnectionMonitorResultInner>> updateTagsWithServiceResponseAsync(String resourceGroupName, String networkWatcherName, String connectionMonitorName, Map<String, String> tags) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (networkWatcherName == null) {
+            throw new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null.");
+        }
+        if (connectionMonitorName == null) {
+            throw new IllegalArgumentException("Parameter connectionMonitorName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        Validator.validate(tags);
+        final String apiVersion = "2019-06-01";
+        TagsObject parameters = new TagsObject();
+        parameters.withTags(tags);
+        return service.updateTags(resourceGroupName, networkWatcherName, connectionMonitorName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ConnectionMonitorResultInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ConnectionMonitorResultInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ConnectionMonitorResultInner> clientResponse = updateTagsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ConnectionMonitorResultInner> updateTagsDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ConnectionMonitorResultInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ConnectionMonitorResultInner>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
