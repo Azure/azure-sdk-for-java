@@ -42,4 +42,15 @@ public interface ConfigurationStores extends SupportsCreating<ConfigurationStore
      */
     Observable<ApiKey> regenerateKeyAsync(String resourceGroupName, String configStoreName);
 
+    /**
+     * Lists a configuration store key-value.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param configStoreName The name of the configuration store.
+     * @param listKeyValueParameters The parameters for retrieving a key-value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<KeyValue> listKeyValueAsync(String resourceGroupName, String configStoreName, ListKeyValueParameters listKeyValueParameters);
+
 }
