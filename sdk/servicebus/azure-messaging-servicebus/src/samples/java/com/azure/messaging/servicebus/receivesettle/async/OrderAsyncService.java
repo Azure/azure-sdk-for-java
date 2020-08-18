@@ -10,10 +10,17 @@ import reactor.core.publisher.Mono;
 import java.util.*;
 import java.util.stream.Stream;
 
+/**
+ * An order service that save orders and possibly throw exception for each operation.
+ */
 public class OrderAsyncService {
     private final Random rand = new Random();
     private final ClientLogger logger = new ClientLogger(OrderSyncService.class);
 
+    /**
+     * Simulate an order creation or update
+     * Exception might be thrown before or after the order is saved (logged)
+     */
     public Mono<Void> createOrReplaceOrder(Order order){
         Order workOrder;
         if (order.getId() == null) {
@@ -31,6 +38,10 @@ public class OrderAsyncService {
             .then(this.throwRandomError());
     }
 
+    /**
+     * Simulate to create and/or update a batch of orders in a single transaction.
+     * Exception might be thrown before or after the orders are saved (logged)
+     */
     public Mono<Void> batchCreateOrReplaceOrder(Stream<Order> orders) {
         return this.throwRandomError().then(
             Mono.fromRunnable(() -> orders.forEach(order -> {
@@ -46,6 +57,9 @@ public class OrderAsyncService {
         );
     }
 
+    /**
+     * Simulate the reality to throw a network exception or service exception.
+     */
     private Mono<Void> throwRandomError() {
         int nextInt = rand.nextInt(100);
         if(nextInt == 1) {

@@ -21,14 +21,14 @@ public class MessageReceiverAsyncApp {
     }
 
     /**
-     * Receive messages and process them one by one.
+     * Keep receiving messages and process them one by one.
      */
     public void processMessageOneByOne() {
         receiverClient.receiveMessages().flatMap(messageReceiverWorker::processMessageOneByOne).blockLast();
     }
 
     /**
-     * Receive messages and process them in batches.
+     * Keep receiving messages and process them in batches.
      */
     public void processMessageInBatch() {
         receiverClient.receiveMessages().bufferTimeout(5, Duration.ofSeconds(2)).map(IterableStream::of).flatMap(messageReceiverWorker::processMessageInBatch).blockLast();

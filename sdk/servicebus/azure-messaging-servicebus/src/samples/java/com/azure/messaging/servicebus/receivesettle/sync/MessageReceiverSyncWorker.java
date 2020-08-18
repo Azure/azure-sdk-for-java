@@ -13,6 +13,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * MessageReceiverSyncApp receives messages then use one or multiple MessageReceiverSyncWorker
+ * to process the messages.
+ * This sample code uses only one MessageReceiverSyncWorker.
+ */
 public class MessageReceiverSyncWorker {
     private final OrderSyncService orderService;
     private final ServiceBusReceiverClient receiverClient;

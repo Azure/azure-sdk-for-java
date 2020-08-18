@@ -19,9 +19,6 @@ public class OrderSyncService {
     /**
      * Simulate an order creation or update
      * Exception might be thrown before or after the order is saved (logged)
-     * @param order
-     * @throws OrderServiceFailureException
-     * @throws NetworkFailureException
      */
     public void createOrReplaceOrder(Order order) throws OrderServiceFailureException, NetworkFailureException {
         this.throwRandomError();
@@ -39,9 +36,6 @@ public class OrderSyncService {
     /**
      * Simulate to create and/or update a batch of orders in a single transaction.
      * Exception might be thrown before or after the orders are saved (logged)
-     * @param orders
-     * @throws OrderServiceFailureException
-     * @throws NetworkFailureException
      */
     public void batchCreateOrReplaceOrder(Stream<Order> orders)  throws OrderServiceFailureException, NetworkFailureException {
         this.throwRandomError();
@@ -60,8 +54,6 @@ public class OrderSyncService {
 
     /**
      * Simulate the reality to throw a network exception or service exception.
-     * @throws OrderServiceFailureException
-     * @throws NetworkFailureException
      */
     private void throwRandomError() throws OrderServiceFailureException, NetworkFailureException {
         int nextInt = rand.nextInt(200);
