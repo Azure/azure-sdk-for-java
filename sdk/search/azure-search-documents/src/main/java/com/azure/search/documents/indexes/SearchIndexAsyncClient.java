@@ -12,6 +12,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.search.documents.SearchAsyncClient;
 import com.azure.search.documents.SearchClientBuilder;
 import com.azure.search.documents.SearchServiceVersion;
@@ -72,15 +73,19 @@ public final class SearchIndexAsyncClient {
      */
     private final SearchServiceClientImpl restClient;
 
+    private final JsonSerializer serializer;
+
     /**
      * The pipeline that powers this client.
      */
     private final HttpPipeline httpPipeline;
 
-    SearchIndexAsyncClient(String endpoint, SearchServiceVersion serviceVersion, HttpPipeline httpPipeline) {
+    SearchIndexAsyncClient(String endpoint, SearchServiceVersion serviceVersion, HttpPipeline httpPipeline,
+        JsonSerializer serializer) {
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
         this.httpPipeline = httpPipeline;
+        this.serializer = serializer;
 
         this.restClient = new SearchServiceClientImplBuilder()
             .endpoint(endpoint)
@@ -115,7 +120,8 @@ public final class SearchIndexAsyncClient {
      * @return a {@link SearchAsyncClient} created from the service client configuration
      */
     public SearchAsyncClient getSearchAsyncClient(String indexName) {
-        return getSearchClientBuilder(indexName).buildAsyncClient();
+        return getSearchClientBuilder(indexName)
+            .buildAsyncClient();
     }
 
     SearchClientBuilder getSearchClientBuilder(String indexName) {
@@ -123,7 +129,8 @@ public final class SearchIndexAsyncClient {
             .endpoint(endpoint)
             .indexName(indexName)
             .serviceVersion(serviceVersion)
-            .pipeline(httpPipeline);
+            .pipeline(httpPipeline)
+            .serializer(serializer);
     }
 
     /**

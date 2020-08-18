@@ -1,6 +1,7 @@
 # Release History
 
 ## 12.7.0-beta.1 (Unreleased)
+- Fixed a bug that would cause auth failures when building a client by passing an endpoint which had a sas token with protocol set to https,http
 - Added support for the 2020-02-10 service version. 
 - Added support to getFileRanges on a previous snapshot. 
 - Added support to set whether or not smb multichannel is enabled.
@@ -151,4 +152,3 @@ demonstrate the new API.
     - `azure-storage-file` contains a `FileServiceClient`,  `FileServiceAsyncClient`, `ShareClient`, `ShareAsyncClient`, `DirectoryClient`, `DirectoryAsyncClient`, `FileClient` and `FileAsyncClient` for storage file operations.
 - Client instances are scoped to storage file service.
 - Reactive streams support using [Project Reactor](https://projectreactor.io/).
-
