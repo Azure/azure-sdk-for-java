@@ -8,7 +8,8 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.CookiePolicy;
-import com.azure.core.http.policy.HostPolicy;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.TimeoutPolicy;
 import com.azure.core.management.AzureEnvironment;
@@ -24,11 +25,15 @@ import com.azure.resourcemanager.test.utils.AuthFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.ProxySelector;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.Charset;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,6 +69,11 @@ public abstract class ResourceManagerTestBase extends TestBase {
                     put("activeDirectoryResourceId", PLAYBACK_URI);
                     put("activeDirectoryGraphResourceId", PLAYBACK_URI);
                 }}));
+    private static final OutputStream EMPTY_OUTPUT_STREAM = new OutputStream() {
+        @Override
+        public void write(int b) {
+        }
+    };
 
     private final ClientLogger logger = new ClientLogger(ResourceManagerTestBase.class);
     private AzureProfile testProfile;
@@ -116,23 +126,48 @@ public abstract class ResourceManagerTestBase extends TestBase {
         TokenCredential credential;
         HttpPipeline httpPipeline;
         Map<String, String> textReplacementRules = new HashMap<>();
+        String logLevel = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_LOG_LEVEL);
+        HttpLogDetailLevel httpLogDetailLevel;
+
+        try {
+            httpLogDetailLevel = HttpLogDetailLevel.valueOf(logLevel);
+        } catch (Exception e) {
+            if (isPlaybackMode()) {
+                httpLogDetailLevel = HttpLogDetailLevel.NONE;
+                logger.error("Environment variable '{}' has not been set yet. Using 'NONE' for PLAYBACK.", new Object[]{"AZURE_LOG_LEVEL"});
+            } else {
+                httpLogDetailLevel = HttpLogDetailLevel.BODY_AND_HEADERS;
+                logger.error("Environment variable '{}' has not been set yet. Using 'BODY_AND_HEADERS' for RECORD/LIVE.", new Object[]{"AZURE_LOG_LEVEL"});
+            }
+        }
+
+
+        if (httpLogDetailLevel == HttpLogDetailLevel.NONE) {
+            try {
+                System.setOut(new PrintStream(EMPTY_OUTPUT_STREAM, false, Charset.defaultCharset().name()));
+                System.setErr(new PrintStream(EMPTY_OUTPUT_STREAM, false, Charset.defaultCharset().name()));
+            } catch (UnsupportedEncodingException e) {
+            }
+        }
 
         if (isPlaybackMode()) {
             if (interceptorManager.getRecordedData() == null) {
                 skipInPlayback();
                 return;
             }
-            testProfile = PLAYBACK_PROFILE;
 
+            testProfile = PLAYBACK_PROFILE;
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new TextReplacementPolicy(interceptorManager.getRecordedData(), textReplacementRules));
-            policies.add(new HostPolicy(PLAYBACK_URI + "/"));
             policies.add(new CookiePolicy());
-            httpPipeline = buildHttpPipeline(null, testProfile, policies, interceptorManager.getPlaybackClient());
-
+            httpPipeline = buildHttpPipeline(
+                null,
+                testProfile,
+                new HttpLogOptions().setLogLevel(httpLogDetailLevel),
+                policies,
+                interceptorManager.getPlaybackClient());
             textReplacementRules.put(PLAYBACK_URI_BASE + "1234", PLAYBACK_URI);
             addTextReplacementRules(textReplacementRules);
-            logger.info(PLAYBACK_URI);
         } else {
             if (System.getenv(AZURE_AUTH_LOCATION) != null) { // Record mode
                 final File credFile = new File(System.getenv(AZURE_AUTH_LOCATION));
@@ -170,7 +205,11 @@ public abstract class ResourceManagerTestBase extends TestBase {
                 policies.add(new TextReplacementPolicy(interceptorManager.getRecordedData(), textReplacementRules));
             }
             httpPipeline = buildHttpPipeline(
-                credential, testProfile, policies, generateHttpClientWithProxy(null));
+                credential,
+                testProfile,
+                new HttpLogOptions().setLogLevel(httpLogDetailLevel),
+                policies,
+                generateHttpClientWithProxy(null));
 
             textReplacementRules.put(testProfile.getSubscriptionId(), ZERO_SUBSCRIPTION);
             textReplacementRules.put(testProfile.getTenantId(), ZERO_TENANT);
@@ -235,7 +274,11 @@ public abstract class ResourceManagerTestBase extends TestBase {
     }
 
     protected abstract HttpPipeline buildHttpPipeline(
-        TokenCredential credential, AzureProfile profile, List<HttpPipelinePolicy> policies, HttpClient httpClient);
+        TokenCredential credential,
+        AzureProfile profile,
+        HttpLogOptions httpLogOptions,
+        List<HttpPipelinePolicy> policies,
+        HttpClient httpClient);
 
     protected abstract void initializeClients(HttpPipeline httpPipeline, AzureProfile profile);
 

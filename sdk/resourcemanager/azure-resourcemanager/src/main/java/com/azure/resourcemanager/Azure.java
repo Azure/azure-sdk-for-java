@@ -376,7 +376,7 @@ public final class Azure {
         //        this.eventHubManager = EventHubManager.authenticate(restClient, subscriptionId, sdkContext);
         this.appPlatformManager = AppPlatformManager.authenticate(httpPipeline, profile, sdkContext);
         this.privateDnsZoneManager = PrivateDnsZoneManager.authenticate(httpPipeline, profile, sdkContext);
-        this.subscriptionId = profile.subscriptionId();
+        this.subscriptionId = profile.getSubscriptionId();
         this.authenticated = authenticated;
     }
 

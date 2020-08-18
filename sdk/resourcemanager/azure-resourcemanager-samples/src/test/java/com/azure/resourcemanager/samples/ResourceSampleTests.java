@@ -34,7 +34,7 @@ public class ResourceSampleTests extends SamplesTestBase {
         Assertions.assertTrue(DeployUsingARMTemplateAsync.runSample(azure));
     }
 
-    @Test()
+    @Test
     public void testDeployUsingARMTemplateWithDeploymentOperations() {
         if (isPlaybackMode()) {
             Assertions.assertTrue(DeployUsingARMTemplateWithDeploymentOperations.runSample(azure, 0));

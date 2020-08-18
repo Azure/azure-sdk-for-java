@@ -87,7 +87,9 @@ public final class PrivateDnsZoneManager extends Manager<PrivateDnsZoneManager, 
             profile,
             new PrivateDnsManagementClientBuilder()
                 .pipeline(httpPipeline)
-                .subscriptionId(profile.subscriptionId())
+                .environment(profile.getEnvironment())
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
                 .buildClient(),
             sdkContext
         );

@@ -8,6 +8,7 @@ module com.azure.resourcemanager {
     requires transitive com.azure.resourcemanager.cosmos;
     requires transitive com.azure.resourcemanager.monitor;
     requires transitive com.azure.resourcemanager.sql;
+    requires transitive com.azure.resourcemanager.privatedns;
 
     exports com.azure.resourcemanager;
 }
