@@ -5,6 +5,8 @@
 package com.azure.messaging.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.messaging.servicebus.implementation.models.MessagingSku;
+import com.azure.messaging.servicebus.implementation.models.NamespaceType;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -87,7 +89,7 @@ public final class NamespaceProperties {
      * @param alias the alias value to set.
      * @return the NamespaceProperties object itself.
      */
-    NamespaceProperties setAlias(String alias) {
+    public NamespaceProperties setAlias(String alias) {
         this.alias = alias;
         return this;
     }
@@ -127,7 +129,7 @@ public final class NamespaceProperties {
      * @param messagingSku the messagingSku value to set.
      * @return the NamespaceProperties object itself.
      */
-    NamespaceProperties setMessagingSku(MessagingSku messagingSku) {
+    public NamespaceProperties setMessagingSku(MessagingSku messagingSku) {
         this.messagingSku = messagingSku;
         return this;
     }
@@ -147,7 +149,7 @@ public final class NamespaceProperties {
      * @param messagingUnits the messagingUnits value to set.
      * @return the NamespaceProperties object itself.
      */
-    NamespaceProperties setMessagingUnits(Integer messagingUnits) {
+    public NamespaceProperties setMessagingUnits(Integer messagingUnits) {
         this.messagingUnits = messagingUnits;
         return this;
     }
@@ -167,7 +169,7 @@ public final class NamespaceProperties {
      * @param modifiedTime the modifiedTime value to set.
      * @return the NamespaceProperties object itself.
      */
-    NamespaceProperties setModifiedTime(OffsetDateTime modifiedTime) {
+    public NamespaceProperties setModifiedTime(OffsetDateTime modifiedTime) {
         this.modifiedTime = modifiedTime;
         return this;
     }
@@ -187,7 +189,7 @@ public final class NamespaceProperties {
      * @param name the name value to set.
      * @return the NamespaceProperties object itself.
      */
-    NamespaceProperties setName(String name) {
+    public NamespaceProperties setName(String name) {
         this.name = name;
         return this;
     }

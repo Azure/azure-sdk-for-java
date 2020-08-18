@@ -4,43 +4,14 @@
 
 package com.azure.messaging.servicebus.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** The TrueFilter model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("TrueFilter")
 @JacksonXmlRootElement(localName = "TrueFilter")
-@Fluent
-public final class TrueFilter extends RuleFilter {
-    /*
-     * The SqlExpression property.
-     */
-    @JacksonXmlProperty(
-            localName = "SqlExpression",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private String sqlExpression;
-
-    /**
-     * Get the sqlExpression property: The SqlExpression property.
-     *
-     * @return the sqlExpression value.
-     */
-    public String getSqlExpression() {
-        return this.sqlExpression;
-    }
-
-    /**
-     * Set the sqlExpression property: The SqlExpression property.
-     *
-     * @param sqlExpression the sqlExpression value to set.
-     * @return the TrueFilter object itself.
-     */
-    public TrueFilter setSqlExpression(String sqlExpression) {
-        this.sqlExpression = sqlExpression;
-        return this;
-    }
-}
+@Immutable
+public final class TrueFilter extends SqlFilter {}
