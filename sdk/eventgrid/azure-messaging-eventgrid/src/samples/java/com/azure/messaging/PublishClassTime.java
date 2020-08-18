@@ -5,10 +5,6 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.messaging.eventgrid.CloudEvent;
 import com.azure.messaging.eventgrid.EventGridPublisherClient;
 import com.azure.messaging.eventgrid.EventGridPublisherClientBuilder;
-import com.azure.storage.blob.BlobContainerClient;
-import com.azure.storage.blob.BlobServiceClient;
-import com.azure.storage.blob.BlobServiceClientBuilder;
-import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -16,10 +12,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -28,13 +21,11 @@ public class PublishClassTime {
 
     public static final int REPEATS = 100;
 
-    @Disabled("Sample code, requires system environment endpoints")
+    @Disabled("Sample code, requires system environment variables for endpoint and key")
     @Test
-    public void publishEvents() throws InterruptedException, IOException {
+    public void publishEvents() throws InterruptedException {
         String key = System.getenv("DEMO_KEY");
         String endpoint = System.getenv("DEMO_ENDPOINT");
-        String blobConnection = System.getenv("BLOB_CONNECTION");
-        String blobEndpoint = System.getenv("BLOB_ENDPOINT");
 
         JacksonAdapter customSerializer = new JacksonAdapter();
 
@@ -59,18 +50,9 @@ public class PublishClassTime {
             .serializer(customSerializer)
             .buildClient();
 
-        // Blob Storage client
-        BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
-            .endpoint(blobEndpoint)
-            .connectionString(blobConnection)
-            .buildClient();
-
         Random random = new Random();
 
         for (int i = 0; i < REPEATS; i++) {
-            if (i % 10 == 0) {
-                createDeleteBlob(blobServiceClient);
-            }
 
             publish(egClient, random);
             Thread.sleep(1000);
@@ -79,24 +61,6 @@ public class PublishClassTime {
 
     }
 
-    public static void createDeleteBlob(BlobServiceClient blobServiceClient) throws IOException {
-        BlobContainerClient blobContainerClient = blobServiceClient.getBlobContainerClient("books");
-
-        BlockBlobClient blobClient = blobContainerClient.getBlobClient("books.txt").getBlockBlobClient();
-
-        String data = "War and Peace";
-        InputStream dataStream = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
-        blobClient.upload(dataStream, data.length());
-        dataStream.close();
-
-        System.out.println("Uploaded: " + data);
-
-        blobClient.delete();
-
-        System.out.println("Deleted: " + data);
-
-        System.out.println();
-    }
 
     public static void publish(EventGridPublisherClient egClient, Random random) {
         List<CloudEvent> events = new ArrayList<>();
