@@ -3184,7 +3184,7 @@ public final class Utils {
             .append("\n\tUrl: ").append(springApp.url())
             .append("\n\tHttps Only: ").append(springApp.isHttpsOnly())
             .append("\n\tFully Qualified Domain Name: ").append(springApp.fqdn())
-            .append("\n\tActive Deployment Name: ").append(springApp.activeDeployment());
+            .append("\n\tActive Deployment Name: ").append(springApp.activeDeploymentName());
 
         if (springApp.temporaryDisk() != null) {
             info.append("\n\tTemporary Disk:")

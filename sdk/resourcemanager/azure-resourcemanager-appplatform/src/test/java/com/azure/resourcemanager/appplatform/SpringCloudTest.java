@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.appplatform;
 
+import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.appplatform.models.ConfigServerProperties;
 import com.azure.resourcemanager.appplatform.models.RuntimeVersion;
 import com.azure.resourcemanager.appplatform.models.SpringApp;
@@ -28,6 +29,7 @@ import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.compress.utils.IOUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 
 import javax.xml.bind.DatatypeConverter;
 import java.io.ByteArrayInputStream;
@@ -59,7 +61,6 @@ public class SpringCloudTest extends AppPlatformTest {
         String serviceName = generateRandomResourceName("springsvc", 15);
         String appName = "gateway";
         String deploymentName = generateRandomResourceName("deploy", 15);
-        String deploymentName1 = generateRandomResourceName("deploy", 15);
         Region region = Region.US_EAST;
 
         Assertions.assertTrue(appPlatformManager.springServices().checkNameAvailability(serviceName, region).nameAvailable());
@@ -104,27 +105,22 @@ public class SpringCloudTest extends AppPlatformTest {
             .create();
 
         Assertions.assertNotNull(app.url());
-        Assertions.assertNotNull(app.activeDeployment());
+        Assertions.assertNotNull(app.activeDeploymentName());
 
         Assertions.assertTrue(requestSuccess(app.url()));
 
-        app.update()
-            .withoutDeployment(app.activeDeployment())
-            .deployJar(deploymentName, jarFile)
-            .apply();
-
-        Assertions.assertNotNull(app.url());
-        Assertions.assertEquals(deploymentName, app.activeDeployment());
-        Assertions.assertEquals(1, app.deployments().list().stream().count());
-
-        Assertions.assertTrue(requestSuccess(app.url()));
-
-        SpringAppDeployment deployment = app.deployments().getByName(app.activeDeployment());
-        deployment.update()
+        SpringAppDeployment deployment = app.getActiveDeployment();
+        deployment
+            .update()
             .withCpu(2)
             .withMemory(4)
             .withRuntime(RuntimeVersion.JAVA_11)
+            .withJarFile(jarFile)
             .apply();
+
+        Assertions.assertNotNull(app.url());
+        Assertions.assertEquals(1, app.deployments().list().stream().count());
+        Assertions.assertTrue(requestSuccess(app.url()));
 
         Assertions.assertEquals(2, deployment.settings().cpu());
         Assertions.assertEquals(4, deployment.settings().memoryInGB());
@@ -139,16 +135,15 @@ public class SpringCloudTest extends AppPlatformTest {
             extraTarGzSource(sourceCodeFolder, new URL(PIGGYMETRICS_TAR_GZ_URL));
         }
 
-        deployment = app.deployments().define(deploymentName1)
+        deployment = app.deployments().define(deploymentName)
             .withSourceCodeFolder(sourceCodeFolder)
             .withTargetModule("gateway")
-            .withSettingsFromActiveDeployment()
             .withActivation()
             .create();
         app.refresh();
 
-        Assertions.assertEquals(deploymentName1, app.activeDeployment());
-        Assertions.assertEquals(2, deployment.settings().cpu());
+        Assertions.assertEquals(deploymentName, app.activeDeploymentName());
+        Assertions.assertEquals(1, deployment.settings().cpu());
         Assertions.assertNotNull(deployment.getLogFileUrl());
 
         Assertions.assertTrue(requestSuccess(app.url()));
@@ -157,6 +152,27 @@ public class SpringCloudTest extends AppPlatformTest {
             .withoutDefaultPublicEndpoint()
             .apply();
         Assertions.assertFalse(app.isPublic());
+
+        app.deployments().list().forEach(deploy -> {
+            if (!deploy.name().equals(deploymentName)) {
+                app.deployments().deleteById(deploy.id());
+            }
+        });
+        Assertions.assertEquals(1, app.deployments().list().stream().count());
+
+        service.apps().deleteById(app.id());
+        Assertions.assertEquals(404,
+            service.apps().getByIdAsync(app.id()).map(o -> 200)
+                .onErrorResume(e ->
+                    Mono.just(e instanceof ManagementException ? ((ManagementException) e).getResponse().getStatusCode() : 400))
+                .block());
+
+        appPlatformManager.springServices().deleteById(service.id());
+        Assertions.assertEquals(404,
+            appPlatformManager.springServices().getByIdAsync(service.id()).map(o -> 200)
+                .onErrorResume(e ->
+                    Mono.just(e instanceof ManagementException ? ((ManagementException) e).getResponse().getStatusCode() : 400))
+                .block());
     }
 
     @Test

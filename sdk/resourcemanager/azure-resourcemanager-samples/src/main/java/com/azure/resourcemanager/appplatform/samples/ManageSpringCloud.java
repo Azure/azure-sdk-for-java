@@ -110,8 +110,12 @@ public class ManageSpringCloud {
             SpringApp gateway = service.apps().define("gateway")
                 .withDefaultPublicEndpoint()
                 .withHttpsOnly()
-                .deploySource("default", sourceCodeFolder, "gateway")
                 .create();
+            gateway.getActiveDeployment()
+                .update()
+                .withSourceCodeFolder(sourceCodeFolder)
+                .withTargetModule("gateway")
+                .apply();
 
             System.out.println("Created spring cloud service gateway");
             Utils.print(gateway);
@@ -121,8 +125,12 @@ public class ManageSpringCloud {
 
             System.out.printf("Creating spring cloud app auth-service in resource group %s ...%n", rgName);
             SpringApp authService = service.apps().define("auth-service")
-                .deploySource("default", sourceCodeFolder, "auth-service")
                 .create();
+            authService.getActiveDeployment()
+                .update()
+                .withSourceCodeFolder(sourceCodeFolder)
+                .withTargetModule("auth-service")
+                .apply();
 
             System.out.println("Created spring cloud service auth-service");
             Utils.print(authService);
@@ -132,8 +140,12 @@ public class ManageSpringCloud {
 
             System.out.printf("Creating spring cloud app account-service in resource group %s ...%n", rgName);
             SpringApp accountService = service.apps().define("account-service")
-                .deploySource("default", sourceCodeFolder, "account-service")
                 .create();
+            accountService.getActiveDeployment()
+                .update()
+                .withSourceCodeFolder(sourceCodeFolder)
+                .withTargetModule("account-service")
+                .apply();
 
             System.out.println("Created spring cloud service account-service");
             Utils.print(accountService);
