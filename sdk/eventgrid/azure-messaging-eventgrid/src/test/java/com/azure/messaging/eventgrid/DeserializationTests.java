@@ -4,8 +4,11 @@
 
 package com.azure.messaging.eventgrid;
 
+import com.azure.messaging.eventgrid.models.ContosoItemReceivedEventData;
+import com.azure.messaging.eventgrid.models.ContosoItemSentEventData;
+import com.azure.messaging.eventgrid.models.DroneShippingInfo;
+import com.azure.messaging.eventgrid.models.RocketShippingInfo;
 import com.azure.messaging.eventgrid.systemevents.*;
-import com.azure.messaging.eventgrid.models.*;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -16,7 +19,6 @@ import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Base64;
 import java.util.List;
@@ -86,9 +88,9 @@ public class DeserializationTests {
     public void consumeStorageBlobDeletedEventWithExtraProperty() throws IOException {
         String jsonData = getTestPayloadFromFile("StorageBlobDeletedEventWithExtraProperty.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
 
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof StorageBlobDeletedEventData);
@@ -101,8 +103,8 @@ public class DeserializationTests {
         // using a storageBlobDeletedEvent
         String jsonData = getTestPayloadFromFile("EventGridEventNoArray.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertEquals(1, events.length);
@@ -115,19 +117,16 @@ public class DeserializationTests {
     public void consumeCloudEventWithoutArrayBrackets() throws IOException {
         String jsonData = getTestPayloadFromFile("CloudEventNoArray.json");
 
-        EventGridConsumer consumer = new EventGridConsumerBuilder()
-            .addDataMapping("Contoso.Items.ItemReceived", ContosoItemReceivedEventData.class)
-            .buildConsumer();
-
-        List<CloudEvent> events = consumer.deserializeCloudEvents(jsonData);
+        List<CloudEvent> events = CloudEvent.parse(jsonData);
 
         assertNotNull(events);
         assertEquals(1, events.size());
 
         assertEquals(events.get(0).getSpecVersion(), "1.0");
 
-        assertTrue(events.get(0).getData() instanceof ContosoItemReceivedEventData);
-        ContosoItemReceivedEventData data = (ContosoItemReceivedEventData) events.get(0).getData();
+        ContosoItemReceivedEventData data = events.get(0).getData(ContosoItemReceivedEventData.class);
+        assertNotNull(data);
+
         assertEquals("512d38b6-c7b8-40c8-89fe-f46f9e9622b6", data.getItemSku());
 
         Map<String, Object> additionalProperties = events.get(0).getExtensionAttributes();
@@ -138,18 +137,29 @@ public class DeserializationTests {
     }
 
     @Test
-    public void consumeCloudEventWithNullData() throws IOException {
-        String jsonData = getTestPayloadFromFile("NullData.json");
-        EventGridConsumer consumer = new EventGridConsumerBuilder()
-            .addDataMapping("Contoso.Items.ItemRecieved", Void.TYPE)
-            .buildConsumer();
+    public void consumeEventGridEventWithNullData() throws IOException {
+        // using a storageBlobDeletedEvent
+        String jsonData = getTestPayloadFromFile("EventGridNullData.json");
+        //
 
-        List<CloudEvent> events = consumer.deserializeCloudEvents(jsonData);
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
+
+        assertNotNull(events);
+        assertEquals(1, events.length);
+        assertNull(events[0].getData());
+        assertEquals("/blobServices/default/containers/testcontainer/blobs/testfile.txt", events[0].getSubject());
+    }
+
+    @Test
+    public void consumeCloudEventWithNullData() throws IOException {
+        String jsonData = getTestPayloadFromFile("CloudEventNullData.json");
+
+        List<CloudEvent> events = CloudEvent.parse(jsonData);
 
         assertNotNull(events);
         assertEquals(1, events.size());
 
-        assertEquals(events.get(0).getSpecVersion(), "1.0");
+        assertEquals("1.0", events.get(0).getSpecVersion());
 
         assertNull(events.get(0).getData());
     }
@@ -157,20 +167,17 @@ public class DeserializationTests {
     @Test
     public void consumeCloudEventWithBinaryData() throws IOException {
         String jsonData = getTestPayloadFromFile("CloudEventBinaryData.json");
-        EventGridConsumer consumer = new EventGridConsumerBuilder()
-            .addDataMapping("Contoso.Items.ItemRecieved", Void.TYPE)
-            .buildConsumer();
 
         byte[] data = Base64.getDecoder().decode("samplebinarydata");
 
-        List<CloudEvent> events = consumer.deserializeCloudEvents(jsonData);
+        List<CloudEvent> events = CloudEvent.parse(jsonData);
 
         assertNotNull(events);
         assertEquals(1, events.size());
 
         assertEquals(events.get(0).getSpecVersion(), "1.0");
 
-        byte[] eventData = events.get(0).getBinaryData();
+        byte[] eventData = (byte[]) events.get(0).getData();
 
         assertNotNull(eventData);
 
@@ -181,19 +188,16 @@ public class DeserializationTests {
     public void consumeCloudEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("CloudEvent.json");
 
-        EventGridConsumer consumer = new EventGridConsumerBuilder()
-            .addDataMapping("Contoso.Items.ItemReceived", ContosoItemReceivedEventData.class)
-            .buildConsumer();
-
-        List<CloudEvent> events = consumer.deserializeCloudEvents(jsonData);
+        List<CloudEvent> events = CloudEvent.parse(jsonData);
 
         assertNotNull(events);
         assertEquals(1, events.size());
 
         assertEquals(events.get(0).getSpecVersion(), "1.0");
 
-        assertTrue(events.get(0).getData() instanceof ContosoItemReceivedEventData);
-        ContosoItemReceivedEventData data = (ContosoItemReceivedEventData) events.get(0).getData();
+        ContosoItemReceivedEventData data = events.get(0).getData(ContosoItemReceivedEventData.class);
+        assertNotNull(data);
+
         assertEquals("512d38b6-c7b8-40c8-89fe-f46f9e9622b6", data.getItemSku());
 
         Map<String, Object> additionalProperties = events.get(0).getExtensionAttributes();
@@ -205,72 +209,16 @@ public class DeserializationTests {
     }
 
     @Test
-    public void consumeCustomSchemaEvent() throws IOException {
-        String jsonData = getTestPayloadFromFile("CustomSchemaEvent.json");
-
-        EventGridConsumer consumer = new EventGridConsumerBuilder()
-            .addDataMapping("Contoso.Items.ItemReceived", ContosoItemReceivedEventData.class)
-            .buildConsumer();
-
-        List<CustomSchema> events = consumer.deserializeCustomEvents(jsonData, CustomSchema.class);
-
-        assertNotNull(events);
-        assertEquals(1, events.size());
-
-        ContosoItemSentEventData sentData = events.get(0).getSentData();
-
-        assertNotNull(sentData);
-        assertEquals("1234567890", sentData.getShippingInfo().getShipmentId());
-
-
-        Map<String, Object> additionalProperties = events.get(0).getAdditionalProperties();
-
-        assertNotNull(additionalProperties);
-        assertTrue(additionalProperties.containsKey("foo"));
-        assertEquals("bar", additionalProperties.get("foo"));
-    }
-
-    @Test
-    public void consumeCustomSchemaEventWithoutArrayBrackets() throws IOException {
-        String jsonData = getTestPayloadFromFile("CustomSchemaEventNoArray.json");
-
-        EventGridConsumer consumer = new EventGridConsumerBuilder()
-            .addDataMapping("Contoso.Items.ItemReceived", ContosoItemReceivedEventData.class)
-            .buildConsumer();
-
-        List<CustomSchema> events = consumer.deserializeCustomEvents(jsonData, CustomSchema.class);
-
-        assertNotNull(events);
-        assertEquals(1, events.size());
-
-        ContosoItemSentEventData sentData = events.get(0).getSentData();
-
-        assertNotNull(sentData);
-        assertEquals("1234567890", sentData.getShippingInfo().getShipmentId());
-
-
-        Map<String, Object> additionalProperties = events.get(0).getAdditionalProperties();
-
-        assertNotNull(additionalProperties);
-        assertTrue(additionalProperties.containsKey("foo"));
-        assertEquals("bar", additionalProperties.get("foo"));
-    }
-
-    @Test
     public void consumeCustomEvents() throws IOException {
         String jsonData = getTestPayloadFromFile("CustomEvents.json");
-        //
-        EventGridConsumer consumer = new EventGridConsumerBuilder()
-            .addDataMapping("Contoso.Items.ItemSent", ContosoItemSentEventData.class)
-            .addDataMapping("Contoso.Items.ItemReceived", ContosoItemReceivedEventData.class)
-            .buildConsumer();
 
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertEquals(1, events.length);
-        assertTrue(events[0].getData() instanceof ContosoItemReceivedEventData);
-        ContosoItemReceivedEventData eventData = (ContosoItemReceivedEventData) events[0].getData();
+        assertNotNull(events[0].getData(ContosoItemReceivedEventData.class));
+        ContosoItemReceivedEventData eventData = events[0].getData(ContosoItemReceivedEventData.class);
         assertEquals("512d38b6-c7b8-40c8-89fe-f46f9e9622b6", eventData.getItemSku());
     }
 
@@ -279,35 +227,30 @@ public class DeserializationTests {
         String jsonData = getTestPayloadFromFile("CustomEventWithArrayData.json");
         //
 
-        ContosoItemReceivedEventData[] arr = {new ContosoItemReceivedEventData()};
 
-        EventGridConsumer consumer = new EventGridConsumerBuilder()
-            .addDataMapping("Contoso.Items.ItemReceived", arr.getClass())
-            .buildConsumer();
-
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertEquals(1, events.length);
-        assertTrue(events[0].getData() instanceof ContosoItemReceivedEventData[]);
-        ContosoItemReceivedEventData[] eventData = (ContosoItemReceivedEventData[]) events[0].getData();
+        ContosoItemReceivedEventData[] eventData = events[0].getData(ContosoItemReceivedEventData[].class);
+        assertNotNull(eventData);
+
         assertEquals("512d38b6-c7b8-40c8-89fe-f46f9e9622b6", (eventData[0]).getItemSku());
     }
 
     @Test
     public void consumeCustomEventWithBooleanData() throws IOException {
         String jsonData = getTestPayloadFromFile("CustomEventWithBooleanData.json");
-        //
-        EventGridConsumer consumer = new EventGridConsumerBuilder()
-            .addDataMapping("Contoso.Items.ItemReceived", Boolean.class)
-            .buildConsumer();
 
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertEquals(1, events.length);
-        assertTrue(events[0].getData() instanceof Boolean);
-        Boolean eventData = (Boolean) events[0].getData();
+
+        Boolean eventData = events[0].getData(Boolean.class);
+        assertNotNull(eventData);
+
         assertTrue(eventData);
     }
 
@@ -315,34 +258,37 @@ public class DeserializationTests {
     public void consumeCustomEventWithStringData() throws IOException {
         String jsonData = getTestPayloadFromFile("CustomEventWithStringData.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
 
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertEquals(1, events.length);
-        assertTrue(events[0].getData() instanceof String);
-        String eventData = (String) events[0].getData();
+
+        String eventData = events[0].getData(String.class);
+        assertNotNull(eventData);
+
         assertEquals("stringdata", eventData);
     }
 
     @Test
     public void consumeCustomEventWithPolymorphicData() throws IOException {
         String jsonData = getTestPayloadFromFile("CustomEventWithPolymorphicData.json");
-        //
-        EventGridConsumer consumer = new EventGridConsumerBuilder()
-            .addDataMapping("Contoso.Items.ItemSent", ContosoItemSentEventData.class)
-            .buildConsumer();
 
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertEquals(2, events.length);
-        assertTrue(events[0].getData() instanceof ContosoItemSentEventData);
-        assertTrue(events[1].getData() instanceof ContosoItemSentEventData);
-        ContosoItemSentEventData eventData0 = (ContosoItemSentEventData) events[0].getData();
+
+        ContosoItemSentEventData eventData0 = events[0].getData(ContosoItemSentEventData.class);
+        ContosoItemSentEventData eventData1 = events[1].getData(ContosoItemSentEventData.class);
+
+        assertNotNull(eventData0);
+        assertNotNull(eventData1);
+
         assertTrue(eventData0.getShippingInfo() instanceof DroneShippingInfo);
-        ContosoItemSentEventData eventData1 = (ContosoItemSentEventData) events[1].getData();
+
         assertTrue(eventData1.getShippingInfo() instanceof RocketShippingInfo);
     }
 
@@ -351,8 +297,8 @@ public class DeserializationTests {
     public void consumeMultipleEventsInSameBatch() throws IOException {
         String jsonData = getTestPayloadFromFile("MultipleEventsInSameBatch.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertEquals(4, events.length);
@@ -369,8 +315,8 @@ public class DeserializationTests {
     public void consumeAppConfigurationKeyValueDeletedEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("AppConfigurationKeyValueDeleted.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof AppConfigurationKeyValueDeletedEventData);
@@ -382,8 +328,8 @@ public class DeserializationTests {
     public void consumeAppConfigurationKeyValueModifiedEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("AppConfigurationKeyValueModified.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof AppConfigurationKeyValueModifiedEventData);
@@ -396,8 +342,8 @@ public class DeserializationTests {
     public void consumeContainerRegistryImagePushedEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("ContainerRegistryImagePushedEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof ContainerRegistryImagePushedEventData);
@@ -409,8 +355,8 @@ public class DeserializationTests {
     public void consumeContainerRegistryImageDeletedEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("ContainerRegistryImageDeletedEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof ContainerRegistryImageDeletedEventData);
@@ -422,8 +368,8 @@ public class DeserializationTests {
     public void consumeContainerRegistryChartDeletedEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("ContainerRegistryChartDeletedEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof ContainerRegistryChartDeletedEventData);
@@ -435,8 +381,8 @@ public class DeserializationTests {
     public void consumeContainerRegistryChartPushedEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("ContainerRegistryChartPushedEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof ContainerRegistryChartPushedEventData);
@@ -449,8 +395,8 @@ public class DeserializationTests {
     public void consumeIoTHubDeviceCreatedEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("IoTHubDeviceCreatedEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof IotHubDeviceCreatedEventData);
@@ -462,8 +408,8 @@ public class DeserializationTests {
     public void consumeIoTHubDeviceDeletedEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("IoTHubDeviceDeletedEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof IotHubDeviceDeletedEventData);
@@ -475,8 +421,8 @@ public class DeserializationTests {
     public void consumeIoTHubDeviceConnectedEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("IoTHubDeviceConnectedEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof IotHubDeviceConnectedEventData);
@@ -488,8 +434,8 @@ public class DeserializationTests {
     public void consumeIoTHubDeviceDisconnectedEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("IoTHubDeviceDisconnectedEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof IotHubDeviceDisconnectedEventData);
@@ -501,8 +447,8 @@ public class DeserializationTests {
     public void consumeIoTHubDeviceTelemetryEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("IoTHubDeviceTelemetryEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof IotHubDeviceTelemetryEventData);
@@ -515,8 +461,8 @@ public class DeserializationTests {
     public void consumeEventGridSubscriptionValidationEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("EventGridSubscriptionValidationEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof SubscriptionValidationEventData);
@@ -528,8 +474,8 @@ public class DeserializationTests {
     public void consumeEventGridSubscriptionDeletedEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("EventGridSubscriptionDeletedEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof SubscriptionDeletedEventData);
@@ -542,8 +488,8 @@ public class DeserializationTests {
     public void consumeEventHubCaptureFileCreatedEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("EventHubCaptureFileCreatedEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof EventHubCaptureFileCreatedEventData);
@@ -556,8 +502,8 @@ public class DeserializationTests {
     public void consumeMapsGeoFenceEnteredEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("MapsGeofenceEnteredEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof MapsGeofenceEnteredEventData);
@@ -569,8 +515,8 @@ public class DeserializationTests {
     public void consumeMapsGeoFenceExitedEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("MapsGeofenceExitedEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof MapsGeofenceExitedEventData);
@@ -582,8 +528,8 @@ public class DeserializationTests {
     public void consumeMapsGeoFenceResultEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("MapsGeofenceResultEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof MapsGeofenceResultEventData);
@@ -596,8 +542,8 @@ public class DeserializationTests {
     public void consumeMediaJobCanceledEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("MediaJobCanceledEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof MediaJobCanceledEventData);
@@ -619,8 +565,8 @@ public class DeserializationTests {
     public void consumeMediaJobCancelingEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("MediaJobCancelingEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof MediaJobCancelingEventData);
@@ -633,8 +579,8 @@ public class DeserializationTests {
     public void consumeMediaJobProcessingEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("MediaJobProcessingEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof MediaJobProcessingEventData);
@@ -647,8 +593,8 @@ public class DeserializationTests {
     public void consumeMediaJobFinishedEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("MediaJobFinishedEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof MediaJobFinishedEventData);
@@ -669,8 +615,8 @@ public class DeserializationTests {
     public void consumeMediaJobErroredEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("MediaJobErroredEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof MediaJobErroredEventData);
@@ -690,8 +636,8 @@ public class DeserializationTests {
     public void consumeMediaJobOutputStateChangeEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("MediaJobOutputStateChangeEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof MediaJobOutputStateChangeEventData);
@@ -707,8 +653,8 @@ public class DeserializationTests {
     public void consumeMediaJobScheduledEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("MediaJobScheduledEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof MediaJobScheduledEventData);
@@ -721,8 +667,8 @@ public class DeserializationTests {
     public void consumeMediaJobOutputCanceledEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("MediaJobOutputCanceledEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof MediaJobOutputCanceledEventData);
@@ -736,8 +682,8 @@ public class DeserializationTests {
     public void consumeMediaJobOutputCancelingEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("MediaJobOutputCancelingEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof MediaJobOutputCancelingEventData);
@@ -751,8 +697,8 @@ public class DeserializationTests {
     public void consumeMediaJobOutputErroredEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("MediaJobOutputErroredEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof MediaJobOutputErroredEventData);
@@ -769,8 +715,8 @@ public class DeserializationTests {
     public void consumeMediaJobOutputFinishedEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("MediaJobOutputFinishedEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof MediaJobOutputFinishedEventData);
@@ -788,8 +734,8 @@ public class DeserializationTests {
     public void consumeMediaJobOutputProcessingEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("MediaJobOutputProcessingEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof MediaJobOutputProcessingEventData);
@@ -803,8 +749,8 @@ public class DeserializationTests {
     public void consumeMediaJobOutputScheduledEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("MediaJobOutputScheduledEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof MediaJobOutputScheduledEventData);
@@ -818,8 +764,8 @@ public class DeserializationTests {
     public void consumeMediaJobOutputProgressEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("MediaJobOutputProgressEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof MediaJobOutputProgressEventData);
@@ -835,8 +781,8 @@ public class DeserializationTests {
     public void consumeMediaJobStateChangeEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("MediaJobStateChangeEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof MediaJobStateChangeEventData);
@@ -849,8 +795,8 @@ public class DeserializationTests {
     public void consumeMediaLiveEventEncoderConnectedEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("MediaLiveEventEncoderConnectedEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof MediaLiveEventEncoderConnectedEventData);
@@ -865,8 +811,8 @@ public class DeserializationTests {
     public void consumeMediaLiveEventConnectionRejectedEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("MediaLiveEventConnectionRejectedEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof MediaLiveEventConnectionRejectedEventData);
@@ -878,8 +824,8 @@ public class DeserializationTests {
     public void consumeMediaLiveEventEncoderDisconnectedEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("MediaLiveEventEncoderDisconnectedEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof MediaLiveEventEncoderDisconnectedEventData);
@@ -894,8 +840,8 @@ public class DeserializationTests {
     public void consumeMediaLiveEventIncomingStreamReceivedEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("MediaLiveEventIncomingStreamReceivedEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof MediaLiveEventIncomingStreamReceivedEventData);
@@ -915,8 +861,8 @@ public class DeserializationTests {
     public void consumeMediaLiveEventIncomingStreamsOutOfSyncEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("MediaLiveEventIncomingStreamsOutOfSyncEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof MediaLiveEventIncomingStreamsOutOfSyncEventData);
@@ -933,8 +879,8 @@ public class DeserializationTests {
     public void consumeMediaLiveEventIncomingVideoStreamsOutOfSyncEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("MediaLiveEventIncomingVideoStreamsOutOfSyncEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof MediaLiveEventIncomingVideoStreamsOutOfSyncEventData);
@@ -950,8 +896,8 @@ public class DeserializationTests {
     public void consumeMediaLiveEventIncomingDataChunkDroppedEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("MediaLiveEventIncomingDataChunkDroppedEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof MediaLiveEventIncomingDataChunkDroppedEventData);
@@ -967,8 +913,8 @@ public class DeserializationTests {
     public void consumeMediaLiveEventIngestHeartbeatEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("MediaLiveEventIngestHeartbeatEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof MediaLiveEventIngestHeartbeatEventData);
@@ -986,8 +932,8 @@ public class DeserializationTests {
     public void consumeMediaLiveEventTrackDiscontinuityDetectedEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("MediaLiveEventTrackDiscontinuityDetectedEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof MediaLiveEventTrackDiscontinuityDetectedEventData);
@@ -1005,8 +951,8 @@ public class DeserializationTests {
     public void consumeResourceWriteFailureEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("ResourceWriteFailureEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof ResourceWriteFailureData);
@@ -1018,8 +964,8 @@ public class DeserializationTests {
     public void consumeResourceWriteCancelEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("ResourceWriteCancelEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof ResourceWriteCancelData);
@@ -1031,8 +977,8 @@ public class DeserializationTests {
     public void consumeResourceDeleteSuccessEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("ResourceDeleteSuccessEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof ResourceDeleteSuccessData);
@@ -1044,8 +990,8 @@ public class DeserializationTests {
     public void consumeResourceDeleteFailureEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("ResourceDeleteFailureEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof ResourceDeleteFailureData);
@@ -1057,8 +1003,8 @@ public class DeserializationTests {
     public void consumeResourceDeleteCancelEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("ResourceDeleteCancelEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof ResourceDeleteCancelData);
@@ -1070,8 +1016,8 @@ public class DeserializationTests {
     public void consumeResourceActionSuccessEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("ResourceActionSuccessEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof ResourceActionSuccessData);
@@ -1083,8 +1029,8 @@ public class DeserializationTests {
     public void consumeResourceActionFailureEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("ResourceActionFailureEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof ResourceActionFailureData);
@@ -1096,8 +1042,8 @@ public class DeserializationTests {
     public void consumeResourceActionCancelEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("ResourceActionCancelEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof ResourceActionCancelData);
@@ -1110,8 +1056,8 @@ public class DeserializationTests {
     public void consumeServiceBusActiveMessagesAvailableWithNoListenersEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("ServiceBusActiveMessagesAvailableWithNoListenersEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof ServiceBusActiveMessagesAvailableWithNoListenersEventData);
@@ -1123,8 +1069,8 @@ public class DeserializationTests {
     public void consumeServiceBusDeadletterMessagesAvailableWithNoListenersEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("ServiceBusDeadletterMessagesAvailableWithNoListenersEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof ServiceBusDeadletterMessagesAvailableWithNoListenersEventData);
@@ -1137,8 +1083,8 @@ public class DeserializationTests {
     public void consumeStorageBlobCreatedEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("StorageBlobCreatedEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof StorageBlobCreatedEventData);
@@ -1150,8 +1096,8 @@ public class DeserializationTests {
     public void consumeStorageBlobDeletedEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("StorageBlobDeletedEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof StorageBlobDeletedEventData);
@@ -1164,8 +1110,8 @@ public class DeserializationTests {
     public void consumeResourceWriteSuccessEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("ResourceWriteSuccessEvent.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
-        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        EventGridEvent[] events = EventGridEvent.parse(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertTrue(events[0].getData() instanceof ResourceWriteSuccessData);

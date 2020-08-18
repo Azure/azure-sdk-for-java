@@ -370,7 +370,7 @@ public class SystemEventMappings {
 
     /**
      * Get a mapping of all the system event type strings to their respective class. This is used by default in
-     * the {@link EventGridAsyncConsumer} and {@link EventGridConsumer} classes.
+     * the {@link EventGridEvent} and {@link CloudEvent} classes.
      * @return a mapping of all the system event strings to system event objects.
      */
     public static Map<String, Class<?>> getSystemEventMappings() {

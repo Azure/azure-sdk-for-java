@@ -7,9 +7,19 @@
 package com.azure.messaging.eventgrid;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.util.serializer.TypeReference;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import reactor.core.publisher.Flux;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -21,6 +31,13 @@ import java.util.UUID;
 public final class EventGridEvent {
 
     private final com.azure.messaging.eventgrid.implementation.models.EventGridEvent event;
+
+    private boolean parsed = false;
+
+    private static final JsonSerializer deserializer = new JacksonJsonSerializerBuilder()
+        .serializer(new JacksonAdapter().serializer() // this is a workaround to get the FlatteningDeserializer
+            .registerModule(new JavaTimeModule())) // probably also change this to DateTimeDeserializer when/if it
+        .build();                                  // becomes public in core
 
     /**
      * Create a new instance of the EventGridEvent, with the given required fields.
@@ -44,6 +61,24 @@ public final class EventGridEvent {
             .setEventType(eventType)
             .setDataVersion(dataVersion);
     }
+
+    public static List<EventGridEvent> parse(String json) {
+        return Flux.fromArray(deserializer
+            .deserialize(new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8)),
+                TypeReference.createInstance(com.azure.messaging.eventgrid.implementation.models.EventGridEvent[].class))
+        )
+            .map(event1 -> {
+                if (event1.getData() == null) {
+                    return new EventGridEvent(event1);
+                }
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                deserializer.serialize(stream, event1.getData());
+                return new EventGridEvent(event1).setData(stream.toByteArray()); // use BinaryData instead?
+            })
+            .collectList()
+            .block();
+    }
+
 
     /**
      * Get the unique id associated with this event.
@@ -94,16 +129,62 @@ public final class EventGridEvent {
         return this.event.getSubject();
     }
 
+
     /**
-     * Get the data associated with this event.
-     * @return the data, or null if this event type does not contain data.
+     * Get the data associated with this event. For use in a parsed event only.
+     * @return If the event was parsed from a Json, this method will return the rich
+     * system event data if it is a system event, and a {@code byte[]} otherwise, such as in the case of custom event
+     * data.
+     * @throws IllegalStateException If the event was not created through {@link EventGridEvent#parse(String)}.
      */
     public Object getData() {
-        return this.event.getData();
+        if (!parsed) {
+            // data was set instead of parsed, throw error
+            throw new IllegalStateException("This method should only be called on events created through the parse method");
+        }
+        String eventType = SystemEventMappings.canonicalizeEventType(event.getEventType());
+        if (SystemEventMappings.getSystemEventMappings().containsKey(eventType)) {
+            // system event
+            return deserializer.deserialize(new ByteArrayInputStream((byte[]) this.event.getData()),
+                TypeReference.createInstance(SystemEventMappings.getSystemEventMappings().get(eventType)));
+        }
+        return event.getData();
     }
 
     /**
-     * Set the data associated with this event. It will be serialized into Json format using a default Json serializer.
+     * Get the deserialized data property from the parsed event. The behavior is undefined if this method is called
+     * on an event that was not created through the parse method.
+     * @param clazz the class of the type to deserialize the data into.
+     * @param <T>   the type to deserialize the data into.
+     *
+     * @return the data deserialized into the given type using a default deserializer.
+     */
+    public <T> T getData(Class<T> clazz) {
+        return getData(clazz, deserializer);
+    }
+
+    /**
+     * Get the deserialized data property from the parsed event.
+     * @param clazz            the class of the type to deserialize the data into.
+     * @param dataDeserializer the deserializer to use.
+     * @param <T>              the type to deserialize the data into.
+     *
+     * @return the data deserialized into the given type using the given deserializer.
+     * @throws IllegalStateException If the event was not created through {@link EventGridEvent#parse(String)}.
+     */
+    public <T> T getData(Class<T> clazz, JsonSerializer dataDeserializer) {
+        if (!parsed) {
+            // data was set instead of parsed, throw exception because we don't know how the data relates to clazz
+            throw new IllegalStateException("This method should only be called on events created through the parse method");
+        }
+
+        return dataDeserializer.deserialize(new ByteArrayInputStream((byte[]) this.event.getData()),
+            TypeReference.createInstance(clazz));
+    }
+
+    /**
+     * Set the data associated with this event. It will be serialized into Json format using a default Json serializer
+     * when the event is sent from the publisher.
      * @param data the data to set.
      *
      * @return the event itself.
@@ -162,8 +243,9 @@ public final class EventGridEvent {
      * {@link EventGridEvent#EventGridEvent(String, String, String)} method to create an EventGridEvent.
      * @param impl the internal implementation model to construct the event.
      */
-    EventGridEvent(com.azure.messaging.eventgrid.implementation.models.EventGridEvent impl) {
+    private EventGridEvent(com.azure.messaging.eventgrid.implementation.models.EventGridEvent impl) {
         this.event = impl;
+        parsed = true;
     }
 
     /**
