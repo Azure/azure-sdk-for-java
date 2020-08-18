@@ -3,19 +3,19 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
-import com.azure.ai.formrecognizer.models.FormRecognizerErrorInformation;
 import com.azure.ai.formrecognizer.models.FormContentType;
+import com.azure.ai.formrecognizer.models.FormRecognizerErrorInformation;
 import com.azure.ai.formrecognizer.models.FormRecognizerException;
 import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
+import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.training.FormTrainingAsyncClient;
-import com.azure.ai.formrecognizer.training.models.TrainingOptions;
 import com.azure.ai.formrecognizer.training.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.training.models.CustomFormModel;
 import com.azure.ai.formrecognizer.training.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.training.models.CustomFormModelStatus;
 import com.azure.ai.formrecognizer.training.models.TrainingFileFilter;
+import com.azure.ai.formrecognizer.training.models.TrainingOptions;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.polling.PollerFlux;
@@ -31,6 +31,7 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.util.List;
 
+import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.EXPECTED_MODEL_ID_NOT_FOUND_ERROR_CODE;
 import static com.azure.ai.formrecognizer.TestUtils.BLANK_FORM_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID;
@@ -211,13 +212,40 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             CustomFormModel createdModel = syncPoller.getFinalResult();
 
             StepVerifier.create(client.deleteModelWithResponse(createdModel.getModelId()))
-                .assertNext(response ->
-                    assertEquals(response.getStatusCode(), HttpResponseStatus.NO_CONTENT.code()))
+                .assertNext(response -> assertEquals(response.getStatusCode(), HttpResponseStatus.NO_CONTENT.code()))
                 .verifyComplete();
 
             StepVerifier.create(client.getCustomModelWithResponse(createdModel.getModelId()))
-                .verifyErrorSatisfies(throwable ->
-                    assertTrue(throwable.getMessage().contains("404")));
+                .verifyErrorSatisfies(throwable -> {
+                    assertEquals(HttpResponseException.class, throwable.getClass());
+                    final FormRecognizerErrorInformation errorInformation = (FormRecognizerErrorInformation)
+                        ((HttpResponseException) throwable).getValue();
+                    assertEquals(EXPECTED_MODEL_ID_NOT_FOUND_ERROR_CODE, errorInformation.getErrorCode());
+                });
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void deleteModelValidModelIdWithResponseWithoutTrainingLabels(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormTrainingAsyncClient(httpClient, serviceVersion);
+        beginTrainingUnlabeledRunner((trainingFilesUrl, notUseTrainingLabels) -> {
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller = client.beginTraining(trainingFilesUrl,
+                notUseTrainingLabels, new TrainingOptions().setPollInterval(durationTestMode)).getSyncPoller();
+            syncPoller.waitForCompletion();
+            CustomFormModel createdModel = syncPoller.getFinalResult();
+
+            StepVerifier.create(client.deleteModelWithResponse(createdModel.getModelId()))
+                .assertNext(response -> assertEquals(response.getStatusCode(), HttpResponseStatus.NO_CONTENT.code()))
+                .verifyComplete();
+
+            StepVerifier.create(client.getCustomModelWithResponse(createdModel.getModelId()))
+                .verifyErrorSatisfies(throwable -> {
+                    assertEquals(HttpResponseException.class, throwable.getClass());
+                    final FormRecognizerErrorInformation errorInformation = (FormRecognizerErrorInformation)
+                        ((HttpResponseException) throwable).getValue();
+                    assertEquals(EXPECTED_MODEL_ID_NOT_FOUND_ERROR_CODE, errorInformation.getErrorCode());
+                });
         });
     }
 
