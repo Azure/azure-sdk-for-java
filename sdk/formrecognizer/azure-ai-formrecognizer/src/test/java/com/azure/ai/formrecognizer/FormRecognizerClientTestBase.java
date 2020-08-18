@@ -90,12 +90,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     private static final String ITEMIZED_RECEIPT_VALUE = "Itemized";
     private static final String IS_PLAYBACK_MODE = "isPlaybackMode";
 
-    static final String OCR_EXTRACTION_INVALID_URL_ERROR = "OCR extraction error: [Wrong response code: "
-        + "InvalidImageURL. Message: Image URL is badly formatted..]";
-    static final String EXPECTED_INVALID_URL_ERROR_CODE = "3014";
-    static final String EXPECTED_INVALID_ANALYZE_EXCEPTION_MESSAGE =
-        "Analyze operation failed, " + "errorCode: [" + EXPECTED_INVALID_URL_ERROR_CODE + "], "
-            + "message: " + OCR_EXTRACTION_INVALID_URL_ERROR;
+    static final String EXPECTED_MODEL_ID_NOT_FOUND_ERROR_CODE = "1022";
+    static final String EXPECTED_URL_BADLY_FORMATTED_ERROR_CODE = "2001";
     static final String INVALID_ENDPOINT = "https://notreal.azure.com";
     static final String EXPECTED_BAD_ARGUMENT_CODE = "BadArgument";
     static final String EXPECTED_BAD_ARGUMENT_ERROR_MESSAGE = "Bad or unrecognizable request JSON or binary file.";
