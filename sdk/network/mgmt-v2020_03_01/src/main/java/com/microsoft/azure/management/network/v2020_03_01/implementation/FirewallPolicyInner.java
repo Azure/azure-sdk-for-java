@@ -12,7 +12,6 @@ import java.util.List;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.v2020_03_01.ProvisioningState;
 import com.microsoft.azure.management.network.v2020_03_01.AzureFirewallThreatIntelMode;
-import com.microsoft.azure.management.network.v2020_03_01.FirewallPolicyIntrusionSystemMode;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.rest.SkipParentValidation;
@@ -62,13 +61,6 @@ public class FirewallPolicyInner extends Resource {
      */
     @JsonProperty(value = "properties.threatIntelMode")
     private AzureFirewallThreatIntelMode threatIntelMode;
-
-    /**
-     * The operation mode for Intrusion system. Possible values include:
-     * 'Enabled', 'Disabled'.
-     */
-    @JsonProperty(value = "properties.intrusionSystemMode")
-    private FirewallPolicyIntrusionSystemMode intrusionSystemMode;
 
     /**
      * A unique read-only string that changes whenever the resource is updated.
@@ -155,26 +147,6 @@ public class FirewallPolicyInner extends Resource {
      */
     public FirewallPolicyInner withThreatIntelMode(AzureFirewallThreatIntelMode threatIntelMode) {
         this.threatIntelMode = threatIntelMode;
-        return this;
-    }
-
-    /**
-     * Get the operation mode for Intrusion system. Possible values include: 'Enabled', 'Disabled'.
-     *
-     * @return the intrusionSystemMode value
-     */
-    public FirewallPolicyIntrusionSystemMode intrusionSystemMode() {
-        return this.intrusionSystemMode;
-    }
-
-    /**
-     * Set the operation mode for Intrusion system. Possible values include: 'Enabled', 'Disabled'.
-     *
-     * @param intrusionSystemMode the intrusionSystemMode value to set
-     * @return the FirewallPolicyInner object itself.
-     */
-    public FirewallPolicyInner withIntrusionSystemMode(FirewallPolicyIntrusionSystemMode intrusionSystemMode) {
-        this.intrusionSystemMode = intrusionSystemMode;
         return this;
     }
 
