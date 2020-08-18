@@ -34,7 +34,7 @@ public class LengthTokenFilter extends TokenFilter {
 
     /** Creates an instance of LengthTokenFilter class. */
     @JsonCreator
-    public LengthTokenFilter(@JsonProperty(value = "name") String name) {
+    public LengthTokenFilter(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 

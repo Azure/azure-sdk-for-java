@@ -23,8 +23,8 @@ public class ShaperSkill extends SearchIndexerSkill {
     /** Creates an instance of ShaperSkill class. */
     @JsonCreator
     public ShaperSkill(
-            @JsonProperty(value = "inputs") List<InputFieldMappingEntry> inputs,
-            @JsonProperty(value = "outputs") List<OutputFieldMappingEntry> outputs) {
+            @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,
+            @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
     }
 

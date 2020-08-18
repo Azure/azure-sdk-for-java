@@ -73,7 +73,7 @@ public class TokenFilter {
 
     /** Creates an instance of TokenFilter class. */
     @JsonCreator
-    public TokenFilter(@JsonProperty(value = "name") String name) {
+    public TokenFilter(@JsonProperty(value = "name", required = true) String name) {
         this.name = name;
     }
 

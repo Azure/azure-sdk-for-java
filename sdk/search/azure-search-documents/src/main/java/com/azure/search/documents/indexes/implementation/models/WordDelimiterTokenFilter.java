@@ -96,7 +96,7 @@ public class WordDelimiterTokenFilter extends TokenFilter {
 
     /** Creates an instance of WordDelimiterTokenFilter class. */
     @JsonCreator
-    public WordDelimiterTokenFilter(@JsonProperty(value = "name") String name) {
+    public WordDelimiterTokenFilter(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 

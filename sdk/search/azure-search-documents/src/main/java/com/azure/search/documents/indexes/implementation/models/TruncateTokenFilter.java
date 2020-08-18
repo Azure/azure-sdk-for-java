@@ -27,7 +27,7 @@ public class TruncateTokenFilter extends TokenFilter {
 
     /** Creates an instance of TruncateTokenFilter class. */
     @JsonCreator
-    public TruncateTokenFilter(@JsonProperty(value = "name") String name) {
+    public TruncateTokenFilter(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 

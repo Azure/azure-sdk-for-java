@@ -76,8 +76,11 @@ public final class SearchIndexerDataSourceConverter {
                 : SearchIndexerDataContainerConverter.map(obj.getContainer());
         DataSourceCredentials credentials = new DataSourceCredentials();
         credentials.setConnectionString(obj.getConnectionString());
-        SearchIndexerDataSource searchIndexerDataSource =
-            new SearchIndexerDataSource(obj.getName(), type, credentials, container);
+        SearchIndexerDataSource searchIndexerDataSource = new SearchIndexerDataSource()
+            .setName(obj.getName())
+            .setType(type)
+            .setCredentials(credentials)
+            .setContainer(container);
 
         if (obj.getDataChangeDetectionPolicy() != null) {
             com.azure.search.documents.indexes.implementation.models.DataChangeDetectionPolicy

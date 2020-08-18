@@ -52,7 +52,7 @@ public class PathHierarchyTokenizerV2 extends LexicalTokenizer {
 
     /** Creates an instance of PathHierarchyTokenizerV2 class. */
     @JsonCreator
-    public PathHierarchyTokenizerV2(@JsonProperty(value = "name") String name) {
+    public PathHierarchyTokenizerV2(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 

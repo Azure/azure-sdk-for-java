@@ -22,7 +22,9 @@ public final class ListSkillsetsResult {
 
     /** Creates an instance of ListSkillsetsResult class. */
     @JsonCreator
-    public ListSkillsetsResult(@JsonProperty(value = "value") List<SearchIndexerSkillset> skillsets) {
+    public ListSkillsetsResult(
+            @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    List<SearchIndexerSkillset> skillsets) {
         this.skillsets = skillsets;
     }
 

@@ -28,8 +28,10 @@ public final class GetIndexStatisticsResult {
     /** Creates an instance of GetIndexStatisticsResult class. */
     @JsonCreator
     public GetIndexStatisticsResult(
-            @JsonProperty(value = "documentCount") long documentCount,
-            @JsonProperty(value = "storageSize") long storageSize) {
+            @JsonProperty(value = "documentCount", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    long documentCount,
+            @JsonProperty(value = "storageSize", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    long storageSize) {
         this.documentCount = documentCount;
         this.storageSize = storageSize;
     }

@@ -34,7 +34,7 @@ public class LimitTokenFilter extends TokenFilter {
 
     /** Creates an instance of LimitTokenFilter class. */
     @JsonCreator
-    public LimitTokenFilter(@JsonProperty(value = "name") String name) {
+    public LimitTokenFilter(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 

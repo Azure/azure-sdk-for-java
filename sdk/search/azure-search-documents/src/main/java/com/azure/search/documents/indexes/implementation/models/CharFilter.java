@@ -40,7 +40,7 @@ public class CharFilter {
 
     /** Creates an instance of CharFilter class. */
     @JsonCreator
-    public CharFilter(@JsonProperty(value = "name") String name) {
+    public CharFilter(@JsonProperty(value = "name", required = true) String name) {
         this.name = name;
     }
 

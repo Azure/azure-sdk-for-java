@@ -34,7 +34,7 @@ public class PhoneticTokenFilter extends TokenFilter {
 
     /** Creates an instance of PhoneticTokenFilter class. */
     @JsonCreator
-    public PhoneticTokenFilter(@JsonProperty(value = "name") String name) {
+    public PhoneticTokenFilter(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 

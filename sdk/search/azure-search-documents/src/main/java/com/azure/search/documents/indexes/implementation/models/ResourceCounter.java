@@ -27,7 +27,7 @@ public final class ResourceCounter {
 
     /** Creates an instance of ResourceCounter class. */
     @JsonCreator
-    public ResourceCounter(@JsonProperty(value = "usage") long usage) {
+    public ResourceCounter(@JsonProperty(value = "usage", required = true) long usage) {
         this.usage = usage;
     }
 

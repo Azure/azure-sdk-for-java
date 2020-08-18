@@ -163,7 +163,8 @@ public final class SearchField {
     /** Creates an instance of SearchField class. */
     @JsonCreator
     public SearchField(
-            @JsonProperty(value = "name") String name, @JsonProperty(value = "type") SearchFieldDataType type) {
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "type", required = true) SearchFieldDataType type) {
         this.name = name;
         this.type = type;
     }

@@ -26,9 +26,9 @@ public final class DistanceScoringFunction extends ScoringFunction {
     /** Creates an instance of DistanceScoringFunction class. */
     @JsonCreator
     public DistanceScoringFunction(
-            @JsonProperty(value = "fieldName") String fieldName,
-            @JsonProperty(value = "boost") double boost,
-            @JsonProperty(value = "distance") DistanceScoringParameters parameters) {
+            @JsonProperty(value = "fieldName", required = true) String fieldName,
+            @JsonProperty(value = "boost", required = true) double boost,
+            @JsonProperty(value = "distance", required = true) DistanceScoringParameters parameters) {
         super(fieldName, boost);
         this.parameters = parameters;
     }

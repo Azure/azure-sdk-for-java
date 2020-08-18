@@ -27,7 +27,7 @@ public final class OutputFieldMappingEntry {
 
     /** Creates an instance of OutputFieldMappingEntry class. */
     @JsonCreator
-    public OutputFieldMappingEntry(@JsonProperty(value = "name") String name) {
+    public OutputFieldMappingEntry(@JsonProperty(value = "name", required = true) String name) {
         this.name = name;
     }
 

@@ -36,7 +36,7 @@ public class LuceneStandardAnalyzer extends LexicalAnalyzer {
 
     /** Creates an instance of LuceneStandardAnalyzer class. */
     @JsonCreator
-    public LuceneStandardAnalyzer(@JsonProperty(value = "name") String name) {
+    public LuceneStandardAnalyzer(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 

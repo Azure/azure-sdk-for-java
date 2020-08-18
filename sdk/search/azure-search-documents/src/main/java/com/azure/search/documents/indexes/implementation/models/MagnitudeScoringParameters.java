@@ -35,8 +35,8 @@ public final class MagnitudeScoringParameters {
     /** Creates an instance of MagnitudeScoringParameters class. */
     @JsonCreator
     public MagnitudeScoringParameters(
-            @JsonProperty(value = "boostingRangeStart") double boostingRangeStart,
-            @JsonProperty(value = "boostingRangeEnd") double boostingRangeEnd) {
+            @JsonProperty(value = "boostingRangeStart", required = true) double boostingRangeStart,
+            @JsonProperty(value = "boostingRangeEnd", required = true) double boostingRangeEnd) {
         this.boostingRangeStart = boostingRangeStart;
         this.boostingRangeEnd = boostingRangeEnd;
     }

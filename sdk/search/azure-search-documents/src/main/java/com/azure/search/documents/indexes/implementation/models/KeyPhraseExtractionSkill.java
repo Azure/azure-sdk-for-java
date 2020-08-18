@@ -36,8 +36,8 @@ public class KeyPhraseExtractionSkill extends SearchIndexerSkill {
     /** Creates an instance of KeyPhraseExtractionSkill class. */
     @JsonCreator
     public KeyPhraseExtractionSkill(
-            @JsonProperty(value = "inputs") List<InputFieldMappingEntry> inputs,
-            @JsonProperty(value = "outputs") List<OutputFieldMappingEntry> outputs) {
+            @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,
+            @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
     }
 

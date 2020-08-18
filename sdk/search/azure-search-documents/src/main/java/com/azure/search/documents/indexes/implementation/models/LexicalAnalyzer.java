@@ -40,7 +40,7 @@ public class LexicalAnalyzer {
 
     /** Creates an instance of LexicalAnalyzer class. */
     @JsonCreator
-    public LexicalAnalyzer(@JsonProperty(value = "name") String name) {
+    public LexicalAnalyzer(@JsonProperty(value = "name", required = true) String name) {
         this.name = name;
     }
 

@@ -46,9 +46,10 @@ public class TextTranslationSkill extends SearchIndexerSkill {
     /** Creates an instance of TextTranslationSkill class. */
     @JsonCreator
     public TextTranslationSkill(
-            @JsonProperty(value = "inputs") List<InputFieldMappingEntry> inputs,
-            @JsonProperty(value = "outputs") List<OutputFieldMappingEntry> outputs,
-            @JsonProperty(value = "defaultToLanguageCode") TextTranslationSkillLanguage defaultToLanguageCode) {
+            @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,
+            @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs,
+            @JsonProperty(value = "defaultToLanguageCode", required = true)
+                    TextTranslationSkillLanguage defaultToLanguageCode) {
         super(inputs, outputs);
         this.defaultToLanguageCode = defaultToLanguageCode;
     }

@@ -29,7 +29,7 @@ public class UaxUrlEmailTokenizer extends LexicalTokenizer {
 
     /** Creates an instance of UaxUrlEmailTokenizer class. */
     @JsonCreator
-    public UaxUrlEmailTokenizer(@JsonProperty(value = "name") String name) {
+    public UaxUrlEmailTokenizer(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 

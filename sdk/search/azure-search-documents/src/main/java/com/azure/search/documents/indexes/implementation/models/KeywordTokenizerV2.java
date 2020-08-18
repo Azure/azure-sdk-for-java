@@ -29,7 +29,7 @@ public class KeywordTokenizerV2 extends LexicalTokenizer {
 
     /** Creates an instance of KeywordTokenizerV2 class. */
     @JsonCreator
-    public KeywordTokenizerV2(@JsonProperty(value = "name") String name) {
+    public KeywordTokenizerV2(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 

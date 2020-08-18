@@ -23,8 +23,8 @@ public class LanguageDetectionSkill extends SearchIndexerSkill {
     /** Creates an instance of LanguageDetectionSkill class. */
     @JsonCreator
     public LanguageDetectionSkill(
-            @JsonProperty(value = "inputs") List<InputFieldMappingEntry> inputs,
-            @JsonProperty(value = "outputs") List<OutputFieldMappingEntry> outputs) {
+            @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,
+            @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
     }
 

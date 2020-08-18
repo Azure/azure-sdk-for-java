@@ -28,7 +28,7 @@ public class ElisionTokenFilter extends TokenFilter {
 
     /** Creates an instance of ElisionTokenFilter class. */
     @JsonCreator
-    public ElisionTokenFilter(@JsonProperty(value = "name") String name) {
+    public ElisionTokenFilter(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 

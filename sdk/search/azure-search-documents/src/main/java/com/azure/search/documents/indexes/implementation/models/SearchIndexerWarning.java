@@ -50,7 +50,8 @@ public final class SearchIndexerWarning {
 
     /** Creates an instance of SearchIndexerWarning class. */
     @JsonCreator
-    public SearchIndexerWarning(@JsonProperty(value = "message") String message) {
+    public SearchIndexerWarning(
+            @JsonProperty(value = "message", required = true, access = JsonProperty.Access.WRITE_ONLY) String message) {
         this.message = message;
     }
 

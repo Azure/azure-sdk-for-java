@@ -36,9 +36,9 @@ public final class Suggester {
     /** Creates an instance of Suggester class. */
     @JsonCreator
     public Suggester(
-            @JsonProperty(value = "name") String name,
-            @JsonProperty(value = "searchMode") String searchMode,
-            @JsonProperty(value = "sourceFields") List<String> sourceFields) {
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "searchMode", required = true) String searchMode,
+            @JsonProperty(value = "sourceFields", required = true) List<String> sourceFields) {
         searchMode = "analyzingInfixMatching";
         this.name = name;
         this.searchMode = searchMode;

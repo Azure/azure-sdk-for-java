@@ -52,7 +52,7 @@ public final class AnalyzeRequest {
 
     /** Creates an instance of AnalyzeRequest class. */
     @JsonCreator
-    public AnalyzeRequest(@JsonProperty(value = "text") String text) {
+    public AnalyzeRequest(@JsonProperty(value = "text", required = true) String text) {
         this.text = text;
     }
 

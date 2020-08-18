@@ -26,9 +26,9 @@ public final class TagScoringFunction extends ScoringFunction {
     /** Creates an instance of TagScoringFunction class. */
     @JsonCreator
     public TagScoringFunction(
-            @JsonProperty(value = "fieldName") String fieldName,
-            @JsonProperty(value = "boost") double boost,
-            @JsonProperty(value = "tag") TagScoringParameters parameters) {
+            @JsonProperty(value = "fieldName", required = true) String fieldName,
+            @JsonProperty(value = "boost", required = true) double boost,
+            @JsonProperty(value = "tag", required = true) TagScoringParameters parameters) {
         super(fieldName, boost);
         this.parameters = parameters;
     }

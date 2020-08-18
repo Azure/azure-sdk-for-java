@@ -48,8 +48,8 @@ public class CustomAnalyzer extends LexicalAnalyzer {
     /** Creates an instance of CustomAnalyzer class. */
     @JsonCreator
     public CustomAnalyzer(
-            @JsonProperty(value = "name") String name,
-            @JsonProperty(value = "tokenizer") LexicalTokenizerName tokenizer) {
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "tokenizer", required = true) LexicalTokenizerName tokenizer) {
         super(name);
         this.tokenizer = tokenizer;
     }

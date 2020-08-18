@@ -22,7 +22,9 @@ public final class ListIndexesResult {
 
     /** Creates an instance of ListIndexesResult class. */
     @JsonCreator
-    public ListIndexesResult(@JsonProperty(value = "value") List<SearchIndex> indexes) {
+    public ListIndexesResult(
+            @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    List<SearchIndex> indexes) {
         this.indexes = indexes;
     }
 

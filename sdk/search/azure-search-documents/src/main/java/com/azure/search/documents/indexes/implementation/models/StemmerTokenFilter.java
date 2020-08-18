@@ -28,8 +28,8 @@ public class StemmerTokenFilter extends TokenFilter {
     /** Creates an instance of StemmerTokenFilter class. */
     @JsonCreator
     public StemmerTokenFilter(
-            @JsonProperty(value = "name") String name,
-            @JsonProperty(value = "language") StemmerTokenFilterLanguage language) {
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "language", required = true) StemmerTokenFilterLanguage language) {
         super(name);
         this.language = language;
     }

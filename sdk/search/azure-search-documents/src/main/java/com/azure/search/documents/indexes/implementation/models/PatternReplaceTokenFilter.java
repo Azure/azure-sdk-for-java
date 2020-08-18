@@ -34,9 +34,9 @@ public class PatternReplaceTokenFilter extends TokenFilter {
     /** Creates an instance of PatternReplaceTokenFilter class. */
     @JsonCreator
     public PatternReplaceTokenFilter(
-            @JsonProperty(value = "name") String name,
-            @JsonProperty(value = "pattern") String pattern,
-            @JsonProperty(value = "replacement") String replacement) {
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "pattern", required = true) String pattern,
+            @JsonProperty(value = "replacement", required = true) String replacement) {
         super(name);
         this.pattern = pattern;
         this.replacement = replacement;

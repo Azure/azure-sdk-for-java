@@ -29,7 +29,7 @@ public final class IndexingSchedule {
 
     /** Creates an instance of IndexingSchedule class. */
     @JsonCreator
-    public IndexingSchedule(@JsonProperty(value = "interval") Duration interval) {
+    public IndexingSchedule(@JsonProperty(value = "interval", required = true) Duration interval) {
         this.interval = interval;
     }
 

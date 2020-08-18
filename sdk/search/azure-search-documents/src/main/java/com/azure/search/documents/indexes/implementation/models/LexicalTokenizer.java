@@ -54,7 +54,7 @@ public class LexicalTokenizer {
 
     /** Creates an instance of LexicalTokenizer class. */
     @JsonCreator
-    public LexicalTokenizer(@JsonProperty(value = "name") String name) {
+    public LexicalTokenizer(@JsonProperty(value = "name", required = true) String name) {
         this.name = name;
     }
 

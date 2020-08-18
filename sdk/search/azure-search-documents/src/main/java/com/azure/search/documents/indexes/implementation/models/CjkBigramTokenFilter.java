@@ -35,7 +35,7 @@ public class CjkBigramTokenFilter extends TokenFilter {
 
     /** Creates an instance of CjkBigramTokenFilter class. */
     @JsonCreator
-    public CjkBigramTokenFilter(@JsonProperty(value = "name") String name) {
+    public CjkBigramTokenFilter(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 

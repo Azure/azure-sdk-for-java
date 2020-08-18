@@ -45,7 +45,7 @@ public class MicrosoftLanguageStemmingTokenizer extends LexicalTokenizer {
 
     /** Creates an instance of MicrosoftLanguageStemmingTokenizer class. */
     @JsonCreator
-    public MicrosoftLanguageStemmingTokenizer(@JsonProperty(value = "name") String name) {
+    public MicrosoftLanguageStemmingTokenizer(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 

@@ -45,9 +45,9 @@ public final class SearchResourceEncryptionKey {
     /** Creates an instance of SearchResourceEncryptionKey class. */
     @JsonCreator
     public SearchResourceEncryptionKey(
-            @JsonProperty(value = "keyVaultKeyName") String keyName,
-            @JsonProperty(value = "keyVaultKeyVersion") String keyVersion,
-            @JsonProperty(value = "keyVaultUri") String vaultUri) {
+            @JsonProperty(value = "keyVaultKeyName", required = true) String keyName,
+            @JsonProperty(value = "keyVaultKeyVersion", required = true) String keyVersion,
+            @JsonProperty(value = "keyVaultUri", required = true) String vaultUri) {
         this.keyName = keyName;
         this.keyVersion = keyVersion;
         this.vaultUri = vaultUri;

@@ -56,7 +56,9 @@ public final class SearchIndexerSkillsetConverter {
             obj.getSkills() == null ? null
                 : obj.getSkills().stream().map(SearchIndexerSkillConverter::map).collect(Collectors.toList());
         com.azure.search.documents.indexes.implementation.models.SearchIndexerSkillset searchIndexerSkillset =
-            new com.azure.search.documents.indexes.implementation.models.SearchIndexerSkillset(obj.getName(), skills);
+            new com.azure.search.documents.indexes.implementation.models.SearchIndexerSkillset()
+                .setName(obj.getName())
+                .setSkills(skills);
 
         if (obj.getCognitiveServicesAccount() != null) {
             com.azure.search.documents.indexes.implementation.models.CognitiveServicesAccount cognitiveServicesAccount =

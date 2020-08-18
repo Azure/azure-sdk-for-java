@@ -61,9 +61,9 @@ public class WebApiSkill extends SearchIndexerSkill {
     /** Creates an instance of WebApiSkill class. */
     @JsonCreator
     public WebApiSkill(
-            @JsonProperty(value = "inputs") List<InputFieldMappingEntry> inputs,
-            @JsonProperty(value = "outputs") List<OutputFieldMappingEntry> outputs,
-            @JsonProperty(value = "uri") String uri) {
+            @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,
+            @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs,
+            @JsonProperty(value = "uri", required = true) String uri) {
         super(inputs, outputs);
         this.uri = uri;
     }

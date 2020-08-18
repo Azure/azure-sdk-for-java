@@ -23,7 +23,7 @@ public final class TextWeights {
 
     /** Creates an instance of TextWeights class. */
     @JsonCreator
-    public TextWeights(@JsonProperty(value = "weights") Map<String, Double> weights) {
+    public TextWeights(@JsonProperty(value = "weights", required = true) Map<String, Double> weights) {
         this.weights = weights;
     }
 

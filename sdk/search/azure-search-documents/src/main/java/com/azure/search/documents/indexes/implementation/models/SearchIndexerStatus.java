@@ -42,9 +42,12 @@ public final class SearchIndexerStatus {
     /** Creates an instance of SearchIndexerStatus class. */
     @JsonCreator
     public SearchIndexerStatus(
-            @JsonProperty(value = "status") IndexerStatus status,
-            @JsonProperty(value = "executionHistory") List<IndexerExecutionResult> executionHistory,
-            @JsonProperty(value = "limits") SearchIndexerLimits limits) {
+            @JsonProperty(value = "status", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    IndexerStatus status,
+            @JsonProperty(value = "executionHistory", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    List<IndexerExecutionResult> executionHistory,
+            @JsonProperty(value = "limits", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    SearchIndexerLimits limits) {
         this.status = status;
         this.executionHistory = executionHistory;
         this.limits = limits;

@@ -34,7 +34,7 @@ public class NGramTokenFilter extends TokenFilter {
 
     /** Creates an instance of NGramTokenFilter class. */
     @JsonCreator
-    public NGramTokenFilter(@JsonProperty(value = "name") String name) {
+    public NGramTokenFilter(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 

@@ -36,7 +36,8 @@ public class PatternCaptureTokenFilter extends TokenFilter {
     /** Creates an instance of PatternCaptureTokenFilter class. */
     @JsonCreator
     public PatternCaptureTokenFilter(
-            @JsonProperty(value = "name") String name, @JsonProperty(value = "patterns") List<String> patterns) {
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "patterns", required = true) List<String> patterns) {
         super(name);
         this.patterns = patterns;
     }

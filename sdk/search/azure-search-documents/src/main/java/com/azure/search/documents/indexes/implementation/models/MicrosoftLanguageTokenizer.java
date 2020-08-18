@@ -45,7 +45,7 @@ public class MicrosoftLanguageTokenizer extends LexicalTokenizer {
 
     /** Creates an instance of MicrosoftLanguageTokenizer class. */
     @JsonCreator
-    public MicrosoftLanguageTokenizer(@JsonProperty(value = "name") String name) {
+    public MicrosoftLanguageTokenizer(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 

@@ -22,7 +22,9 @@ public final class ListDataSourcesResult {
 
     /** Creates an instance of ListDataSourcesResult class. */
     @JsonCreator
-    public ListDataSourcesResult(@JsonProperty(value = "value") List<SearchIndexerDataSource> dataSources) {
+    public ListDataSourcesResult(
+            @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    List<SearchIndexerDataSource> dataSources) {
         this.dataSources = dataSources;
     }
 

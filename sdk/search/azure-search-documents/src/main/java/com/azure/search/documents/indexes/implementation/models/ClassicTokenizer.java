@@ -29,7 +29,7 @@ public class ClassicTokenizer extends LexicalTokenizer {
 
     /** Creates an instance of ClassicTokenizer class. */
     @JsonCreator
-    public ClassicTokenizer(@JsonProperty(value = "name") String name) {
+    public ClassicTokenizer(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 

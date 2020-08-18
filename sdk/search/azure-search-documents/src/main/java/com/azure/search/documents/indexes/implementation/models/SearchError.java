@@ -35,7 +35,8 @@ public final class SearchError {
 
     /** Creates an instance of SearchError class. */
     @JsonCreator
-    public SearchError(@JsonProperty(value = "message") String message) {
+    public SearchError(
+            @JsonProperty(value = "message", required = true, access = JsonProperty.Access.WRITE_ONLY) String message) {
         this.message = message;
     }
 

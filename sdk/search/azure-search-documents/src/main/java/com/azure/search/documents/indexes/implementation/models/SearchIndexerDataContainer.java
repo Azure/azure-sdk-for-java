@@ -30,7 +30,7 @@ public final class SearchIndexerDataContainer {
 
     /** Creates an instance of SearchIndexerDataContainer class. */
     @JsonCreator
-    public SearchIndexerDataContainer(@JsonProperty(value = "name") String name) {
+    public SearchIndexerDataContainer(@JsonProperty(value = "name", required = true) String name) {
         this.name = name;
     }
 

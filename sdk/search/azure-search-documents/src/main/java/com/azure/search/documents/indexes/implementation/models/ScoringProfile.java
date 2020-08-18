@@ -43,7 +43,7 @@ public final class ScoringProfile {
 
     /** Creates an instance of ScoringProfile class. */
     @JsonCreator
-    public ScoringProfile(@JsonProperty(value = "name") String name) {
+    public ScoringProfile(@JsonProperty(value = "name", required = true) String name) {
         this.name = name;
     }
 

@@ -52,8 +52,8 @@ public class EntityRecognitionSkill extends SearchIndexerSkill {
     /** Creates an instance of EntityRecognitionSkill class. */
     @JsonCreator
     public EntityRecognitionSkill(
-            @JsonProperty(value = "inputs") List<InputFieldMappingEntry> inputs,
-            @JsonProperty(value = "outputs") List<OutputFieldMappingEntry> outputs) {
+            @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,
+            @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
     }
 

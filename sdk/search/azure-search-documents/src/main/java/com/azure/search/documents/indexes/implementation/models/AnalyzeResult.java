@@ -22,7 +22,7 @@ public final class AnalyzeResult {
 
     /** Creates an instance of AnalyzeResult class. */
     @JsonCreator
-    public AnalyzeResult(@JsonProperty(value = "tokens") List<AnalyzedTokenInfo> tokens) {
+    public AnalyzeResult(@JsonProperty(value = "tokens", required = true) List<AnalyzedTokenInfo> tokens) {
         this.tokens = tokens;
     }
 

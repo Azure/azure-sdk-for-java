@@ -26,9 +26,9 @@ public final class FreshnessScoringFunction extends ScoringFunction {
     /** Creates an instance of FreshnessScoringFunction class. */
     @JsonCreator
     public FreshnessScoringFunction(
-            @JsonProperty(value = "fieldName") String fieldName,
-            @JsonProperty(value = "boost") double boost,
-            @JsonProperty(value = "freshness") FreshnessScoringParameters parameters) {
+            @JsonProperty(value = "fieldName", required = true) String fieldName,
+            @JsonProperty(value = "boost", required = true) double boost,
+            @JsonProperty(value = "freshness", required = true) FreshnessScoringParameters parameters) {
         super(fieldName, boost);
         this.parameters = parameters;
     }

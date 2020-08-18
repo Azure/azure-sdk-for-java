@@ -34,9 +34,9 @@ public class PatternReplaceCharFilter extends CharFilter {
     /** Creates an instance of PatternReplaceCharFilter class. */
     @JsonCreator
     public PatternReplaceCharFilter(
-            @JsonProperty(value = "name") String name,
-            @JsonProperty(value = "pattern") String pattern,
-            @JsonProperty(value = "replacement") String replacement) {
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "pattern", required = true) String pattern,
+            @JsonProperty(value = "replacement", required = true) String replacement) {
         super(name);
         this.pattern = pattern;
         this.replacement = replacement;

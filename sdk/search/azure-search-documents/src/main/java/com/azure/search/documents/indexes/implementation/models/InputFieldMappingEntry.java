@@ -40,7 +40,7 @@ public final class InputFieldMappingEntry {
 
     /** Creates an instance of InputFieldMappingEntry class. */
     @JsonCreator
-    public InputFieldMappingEntry(@JsonProperty(value = "name") String name) {
+    public InputFieldMappingEntry(@JsonProperty(value = "name", required = true) String name) {
         this.name = name;
     }
 

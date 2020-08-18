@@ -29,7 +29,7 @@ public final class FieldMappingFunction {
 
     /** Creates an instance of FieldMappingFunction class. */
     @JsonCreator
-    public FieldMappingFunction(@JsonProperty(value = "name") String name) {
+    public FieldMappingFunction(@JsonProperty(value = "name", required = true) String name) {
         this.name = name;
     }
 

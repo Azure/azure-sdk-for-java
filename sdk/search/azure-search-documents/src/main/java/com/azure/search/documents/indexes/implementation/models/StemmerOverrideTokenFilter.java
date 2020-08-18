@@ -30,7 +30,8 @@ public class StemmerOverrideTokenFilter extends TokenFilter {
     /** Creates an instance of StemmerOverrideTokenFilter class. */
     @JsonCreator
     public StemmerOverrideTokenFilter(
-            @JsonProperty(value = "name") String name, @JsonProperty(value = "rules") List<String> rules) {
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "rules", required = true) List<String> rules) {
         super(name);
         this.rules = rules;
     }

@@ -30,7 +30,8 @@ public class MappingCharFilter extends CharFilter {
     /** Creates an instance of MappingCharFilter class. */
     @JsonCreator
     public MappingCharFilter(
-            @JsonProperty(value = "name") String name, @JsonProperty(value = "mappings") List<String> mappings) {
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "mappings", required = true) List<String> mappings) {
         super(name);
         this.mappings = mappings;
     }

@@ -28,8 +28,8 @@ public class SnowballTokenFilter extends TokenFilter {
     /** Creates an instance of SnowballTokenFilter class. */
     @JsonCreator
     public SnowballTokenFilter(
-            @JsonProperty(value = "name") String name,
-            @JsonProperty(value = "language") SnowballTokenFilterLanguage language) {
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "language", required = true) SnowballTokenFilterLanguage language) {
         super(name);
         this.language = language;
     }

@@ -30,8 +30,8 @@ public final class DistanceScoringParameters {
     /** Creates an instance of DistanceScoringParameters class. */
     @JsonCreator
     public DistanceScoringParameters(
-            @JsonProperty(value = "referencePointParameter") String referencePointParameter,
-            @JsonProperty(value = "boostingDistance") double boostingDistance) {
+            @JsonProperty(value = "referencePointParameter", required = true) String referencePointParameter,
+            @JsonProperty(value = "boostingDistance", required = true) double boostingDistance) {
         this.referencePointParameter = referencePointParameter;
         this.boostingDistance = boostingDistance;
     }

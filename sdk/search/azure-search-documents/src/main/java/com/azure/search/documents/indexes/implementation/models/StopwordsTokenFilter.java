@@ -50,7 +50,7 @@ public class StopwordsTokenFilter extends TokenFilter {
 
     /** Creates an instance of StopwordsTokenFilter class. */
     @JsonCreator
-    public StopwordsTokenFilter(@JsonProperty(value = "name") String name) {
+    public StopwordsTokenFilter(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 

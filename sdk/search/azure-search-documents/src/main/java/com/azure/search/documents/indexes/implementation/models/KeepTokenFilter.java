@@ -36,7 +36,8 @@ public class KeepTokenFilter extends TokenFilter {
     /** Creates an instance of KeepTokenFilter class. */
     @JsonCreator
     public KeepTokenFilter(
-            @JsonProperty(value = "name") String name, @JsonProperty(value = "keepWords") List<String> keepWords) {
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "keepWords", required = true) List<String> keepWords) {
         super(name);
         this.keepWords = keepWords;
     }

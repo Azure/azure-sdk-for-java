@@ -41,7 +41,7 @@ public class EdgeNGramTokenFilter extends TokenFilter {
 
     /** Creates an instance of EdgeNGramTokenFilter class. */
     @JsonCreator
-    public EdgeNGramTokenFilter(@JsonProperty(value = "name") String name) {
+    public EdgeNGramTokenFilter(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 

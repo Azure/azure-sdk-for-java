@@ -57,7 +57,8 @@ public class DictionaryDecompounderTokenFilter extends TokenFilter {
     /** Creates an instance of DictionaryDecompounderTokenFilter class. */
     @JsonCreator
     public DictionaryDecompounderTokenFilter(
-            @JsonProperty(value = "name") String name, @JsonProperty(value = "wordList") List<String> wordList) {
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "wordList", required = true) List<String> wordList) {
         super(name);
         this.wordList = wordList;
     }

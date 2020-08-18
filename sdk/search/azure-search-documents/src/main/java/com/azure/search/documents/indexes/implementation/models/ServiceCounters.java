@@ -52,12 +52,12 @@ public final class ServiceCounters {
     /** Creates an instance of ServiceCounters class. */
     @JsonCreator
     public ServiceCounters(
-            @JsonProperty(value = "documentCount") ResourceCounter documentCounter,
-            @JsonProperty(value = "indexesCount") ResourceCounter indexCounter,
-            @JsonProperty(value = "indexersCount") ResourceCounter indexerCounter,
-            @JsonProperty(value = "dataSourcesCount") ResourceCounter dataSourceCounter,
-            @JsonProperty(value = "storageSize") ResourceCounter storageSizeCounter,
-            @JsonProperty(value = "synonymMaps") ResourceCounter synonymMapCounter) {
+            @JsonProperty(value = "documentCount", required = true) ResourceCounter documentCounter,
+            @JsonProperty(value = "indexesCount", required = true) ResourceCounter indexCounter,
+            @JsonProperty(value = "indexersCount", required = true) ResourceCounter indexerCounter,
+            @JsonProperty(value = "dataSourcesCount", required = true) ResourceCounter dataSourceCounter,
+            @JsonProperty(value = "storageSize", required = true) ResourceCounter storageSizeCounter,
+            @JsonProperty(value = "synonymMaps", required = true) ResourceCounter synonymMapCounter) {
         this.documentCounter = documentCounter;
         this.indexCounter = indexCounter;
         this.indexerCounter = indexerCounter;

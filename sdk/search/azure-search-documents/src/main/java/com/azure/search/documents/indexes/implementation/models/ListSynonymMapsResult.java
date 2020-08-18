@@ -22,7 +22,9 @@ public final class ListSynonymMapsResult {
 
     /** Creates an instance of ListSynonymMapsResult class. */
     @JsonCreator
-    public ListSynonymMapsResult(@JsonProperty(value = "value") List<SynonymMap> synonymMaps) {
+    public ListSynonymMapsResult(
+            @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    List<SynonymMap> synonymMaps) {
         this.synonymMaps = synonymMaps;
     }
 

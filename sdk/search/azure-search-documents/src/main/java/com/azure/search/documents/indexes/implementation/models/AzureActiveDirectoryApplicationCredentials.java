@@ -30,7 +30,8 @@ public final class AzureActiveDirectoryApplicationCredentials {
 
     /** Creates an instance of AzureActiveDirectoryApplicationCredentials class. */
     @JsonCreator
-    public AzureActiveDirectoryApplicationCredentials(@JsonProperty(value = "applicationId") String applicationId) {
+    public AzureActiveDirectoryApplicationCredentials(
+            @JsonProperty(value = "applicationId", required = true) String applicationId) {
         this.applicationId = applicationId;
     }
 

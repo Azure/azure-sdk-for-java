@@ -36,7 +36,8 @@ public class KeywordMarkerTokenFilter extends TokenFilter {
     /** Creates an instance of KeywordMarkerTokenFilter class. */
     @JsonCreator
     public KeywordMarkerTokenFilter(
-            @JsonProperty(value = "name") String name, @JsonProperty(value = "keywords") List<String> keywords) {
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "keywords", required = true) List<String> keywords) {
         super(name);
         this.keywords = keywords;
     }

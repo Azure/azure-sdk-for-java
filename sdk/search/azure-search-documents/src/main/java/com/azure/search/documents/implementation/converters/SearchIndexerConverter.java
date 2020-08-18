@@ -71,8 +71,10 @@ public final class SearchIndexerConverter {
         }
         Objects.requireNonNull(obj.getName(), "The SearchIndexer name cannot be null");
         com.azure.search.documents.indexes.implementation.models.SearchIndexer searchIndexer =
-            new com.azure.search.documents.indexes.implementation.models.SearchIndexer(obj.getName(),
-                obj.getDataSourceName(), obj.getTargetIndexName());
+            new com.azure.search.documents.indexes.implementation.models.SearchIndexer()
+                .setName(obj.getName())
+                .setDataSourceName(obj.getDataSourceName())
+                .setTargetIndexName(obj.getTargetIndexName());
 
         if (obj.getSchedule() != null) {
             com.azure.search.documents.indexes.implementation.models.IndexingSchedule schedule =

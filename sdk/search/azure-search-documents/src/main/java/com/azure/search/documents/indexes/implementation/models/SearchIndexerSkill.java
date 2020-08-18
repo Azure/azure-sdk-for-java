@@ -81,8 +81,8 @@ public class SearchIndexerSkill {
     /** Creates an instance of SearchIndexerSkill class. */
     @JsonCreator
     public SearchIndexerSkill(
-            @JsonProperty(value = "inputs") List<InputFieldMappingEntry> inputs,
-            @JsonProperty(value = "outputs") List<OutputFieldMappingEntry> outputs) {
+            @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,
+            @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs) {
         this.inputs = inputs;
         this.outputs = outputs;
     }

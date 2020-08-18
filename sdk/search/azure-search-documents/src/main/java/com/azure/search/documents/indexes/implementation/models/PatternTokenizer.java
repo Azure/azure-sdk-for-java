@@ -43,7 +43,7 @@ public class PatternTokenizer extends LexicalTokenizer {
 
     /** Creates an instance of PatternTokenizer class. */
     @JsonCreator
-    public PatternTokenizer(@JsonProperty(value = "name") String name) {
+    public PatternTokenizer(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 

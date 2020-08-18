@@ -22,7 +22,7 @@ public final class TagScoringParameters {
 
     /** Creates an instance of TagScoringParameters class. */
     @JsonCreator
-    public TagScoringParameters(@JsonProperty(value = "tagsParameter") String tagsParameter) {
+    public TagScoringParameters(@JsonProperty(value = "tagsParameter", required = true) String tagsParameter) {
         this.tagsParameter = tagsParameter;
     }
 

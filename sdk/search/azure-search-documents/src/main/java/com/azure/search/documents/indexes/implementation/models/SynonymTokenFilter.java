@@ -54,7 +54,8 @@ public class SynonymTokenFilter extends TokenFilter {
     /** Creates an instance of SynonymTokenFilter class. */
     @JsonCreator
     public SynonymTokenFilter(
-            @JsonProperty(value = "name") String name, @JsonProperty(value = "synonyms") List<String> synonyms) {
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "synonyms", required = true) List<String> synonyms) {
         super(name);
         this.synonyms = synonyms;
     }

@@ -55,7 +55,7 @@ These settings apply only when `--tag=package-2020-06-searchservice` is specifie
 ``` yaml $(tag) == 'package-2020-06-searchservice'
 namespace: com.azure.search.documents.indexes
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/0bc7853cb4d824bb6c310344dcc1b5f77cbe6bdd/specification/search/data-plane/Azure.Search/preview/2020-06-30/searchservice.json
+- https://github.com/Azure/azure-rest-api-specs/blob/6a024fe462c3a4b0b720183c1d8c6f96b261a386/specification/search/data-plane/Azure.Search/preview/2020-06-30/searchservice.json
 models-subpackage: implementation.models
 custom-types-subpackage: models
 ```
@@ -171,4 +171,18 @@ directive:
       }
 
       return $;
+```
+
+### Remove required from properties that are optional
+
+``` yaml $(java)
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: >
+      delete $.SearchIndex.required;
+      delete $.SearchIndexer.required;
+      delete $.SearchIndexerDataSource.required;
+      delete $.SearchIndexerSkillset.required;
+      delete $.SynonymMap.required;
 ```

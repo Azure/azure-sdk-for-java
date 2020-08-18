@@ -60,8 +60,10 @@ public final class SearchIndexerError {
     /** Creates an instance of SearchIndexerError class. */
     @JsonCreator
     public SearchIndexerError(
-            @JsonProperty(value = "errorMessage") String errorMessage,
-            @JsonProperty(value = "statusCode") int statusCode) {
+            @JsonProperty(value = "errorMessage", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    String errorMessage,
+            @JsonProperty(value = "statusCode", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    int statusCode) {
         this.errorMessage = errorMessage;
         this.statusCode = statusCode;
     }

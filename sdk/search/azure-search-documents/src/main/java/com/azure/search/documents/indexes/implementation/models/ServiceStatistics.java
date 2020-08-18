@@ -28,8 +28,8 @@ public final class ServiceStatistics {
     /** Creates an instance of ServiceStatistics class. */
     @JsonCreator
     public ServiceStatistics(
-            @JsonProperty(value = "counters") ServiceCounters counters,
-            @JsonProperty(value = "limits") ServiceLimits limits) {
+            @JsonProperty(value = "counters", required = true) ServiceCounters counters,
+            @JsonProperty(value = "limits", required = true) ServiceLimits limits) {
         this.counters = counters;
         this.limits = limits;
     }

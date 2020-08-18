@@ -107,7 +107,9 @@ public final class SearchIndexConverter {
         List<com.azure.search.documents.indexes.implementation.models.SearchField> fields = obj.getFields() == null ?
             null : obj.getFields().stream().map(SearchFieldConverter::map).collect(Collectors.toList());
         com.azure.search.documents.indexes.implementation.models.SearchIndex searchIndex =
-            new com.azure.search.documents.indexes.implementation.models.SearchIndex(obj.getName(), fields);
+            new com.azure.search.documents.indexes.implementation.models.SearchIndex()
+                .setName(obj.getName())
+                .setFields(fields);
 
         if (obj.getTokenizers() != null) {
             List<com.azure.search.documents.indexes.implementation.models.LexicalTokenizer> tokenizers =

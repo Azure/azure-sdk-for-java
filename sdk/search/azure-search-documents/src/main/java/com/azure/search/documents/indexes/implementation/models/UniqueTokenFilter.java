@@ -28,7 +28,7 @@ public class UniqueTokenFilter extends TokenFilter {
 
     /** Creates an instance of UniqueTokenFilter class. */
     @JsonCreator
-    public UniqueTokenFilter(@JsonProperty(value = "name") String name) {
+    public UniqueTokenFilter(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 

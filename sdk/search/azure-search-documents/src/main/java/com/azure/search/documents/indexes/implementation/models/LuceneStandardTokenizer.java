@@ -28,7 +28,7 @@ public class LuceneStandardTokenizer extends LexicalTokenizer {
 
     /** Creates an instance of LuceneStandardTokenizer class. */
     @JsonCreator
-    public LuceneStandardTokenizer(@JsonProperty(value = "name") String name) {
+    public LuceneStandardTokenizer(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 

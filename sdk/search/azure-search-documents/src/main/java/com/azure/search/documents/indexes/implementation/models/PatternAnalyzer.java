@@ -47,7 +47,7 @@ public class PatternAnalyzer extends LexicalAnalyzer {
 
     /** Creates an instance of PatternAnalyzer class. */
     @JsonCreator
-    public PatternAnalyzer(@JsonProperty(value = "name") String name) {
+    public PatternAnalyzer(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 

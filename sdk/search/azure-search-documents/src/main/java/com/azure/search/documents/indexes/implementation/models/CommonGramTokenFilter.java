@@ -45,7 +45,8 @@ public class CommonGramTokenFilter extends TokenFilter {
     /** Creates an instance of CommonGramTokenFilter class. */
     @JsonCreator
     public CommonGramTokenFilter(
-            @JsonProperty(value = "name") String name, @JsonProperty(value = "commonWords") List<String> commonWords) {
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "commonWords", required = true) List<String> commonWords) {
         super(name);
         this.commonWords = commonWords;
     }

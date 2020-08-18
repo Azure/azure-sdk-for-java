@@ -22,7 +22,9 @@ public final class ListIndexersResult {
 
     /** Creates an instance of ListIndexersResult class. */
     @JsonCreator
-    public ListIndexersResult(@JsonProperty(value = "value") List<SearchIndexer> indexers) {
+    public ListIndexersResult(
+            @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    List<SearchIndexer> indexers) {
         this.indexers = indexers;
     }
 

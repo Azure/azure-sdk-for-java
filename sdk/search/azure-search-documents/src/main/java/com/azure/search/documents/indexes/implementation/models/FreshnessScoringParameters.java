@@ -23,7 +23,8 @@ public final class FreshnessScoringParameters {
 
     /** Creates an instance of FreshnessScoringParameters class. */
     @JsonCreator
-    public FreshnessScoringParameters(@JsonProperty(value = "boostingDuration") Duration boostingDuration) {
+    public FreshnessScoringParameters(
+            @JsonProperty(value = "boostingDuration", required = true) Duration boostingDuration) {
         this.boostingDuration = boostingDuration;
     }
 
