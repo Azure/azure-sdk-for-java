@@ -1,7 +1,8 @@
 # Release History
 
 ## 3.0.0-beta.2 (Unreleased)
-
+### Breaking Changes
+- Renamed `BoundingBox` model to `FieldBoundingBox`
 
 ## 3.0.0-beta.1 (2020-08-11)
 This beta version targets Azure Form Recognizer service API version v2.0.
