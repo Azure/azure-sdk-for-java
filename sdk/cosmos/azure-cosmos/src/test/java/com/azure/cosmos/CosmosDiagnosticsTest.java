@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.lang.reflect.Field;
@@ -75,6 +76,17 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         if (this.directClient != null) {
             this.directClient.close();
         }
+    }
+
+    @DataProvider(name = "query")
+    private Object[][] query() {
+        return new Object[][]{
+            {"Select * from c where c.id = 'wrongId'"},
+            {"Select top 1 * from c where c.id = 'wrongId'"},
+            {"Select * from c where c.id = 'wrongId' order by c.id"},
+            {"Select count(1) from c where c.id = 'wrongId' group by c.pk"},
+            {"Select distinct c.pk from c where c.id = 'wrongId'"},
+        };
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
@@ -232,38 +244,26 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
-    public void queryMetrics() {
+    @Test(groups = {"simple"}, dataProvider = "query", timeOut = TIMEOUT)
+    public void queryMetrics(String query) {
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setQueryMetricsEnabled(true);
-        List<String> queryList = new ArrayList<>();
-        String query = "Select * from c where c.id = 'wrongId'";
-        queryList.add(query);
-        query = "Select top 1 * from c where c.id = 'wrongId'";
-        queryList.add(query);
-        query = "Select * from c where c.id = 'wrongId' order by c.id";
-        queryList.add(query);
-        query = "Select count(1) from c where c.id = 'wrongId' group by c.pk";
-        queryList.add(query);
-        query = "Select distinct c.pk from c where c.id = 'wrongId'";
-        queryList.add(query);
         boolean qroupByFirstResponse = true; // TODO https://github.com/Azure/azure-sdk-for-java/issues/14142
-        for (String qry : queryList) {
-            Iterator<FeedResponse<InternalObjectNode>> iterator = this.container.queryItems(qry, options,
-                InternalObjectNode.class).iterableByPage().iterator();
-            assertThat(iterator.hasNext()).isTrue();
-            while (iterator.hasNext()) {
-                FeedResponse<InternalObjectNode> feedResponse = iterator.next();
-                String queryDiagnostics = feedResponse.getCosmosDiagnostics().toString();
-                assertThat(feedResponse.getResults().size()).isEqualTo(0);
-                if (!qry.contains("group by") || qroupByFirstResponse) { // TODO https://github.com/Azure/azure-sdk-for-java/issues/14142
-                    assertThat(queryDiagnostics).contains("Retrieved Document Count");
-                    assertThat(queryDiagnostics).contains("Query Preparation Times");
-                    assertThat(queryDiagnostics).contains("Runtime Execution Times");
-                    assertThat(queryDiagnostics).contains("Partition Execution Timeline");
-                    if (qry.contains("group by")) {
-                        qroupByFirstResponse = false;
-                    }
+        Iterator<FeedResponse<InternalObjectNode>> iterator = this.container.queryItems(query, options,
+            InternalObjectNode.class).iterableByPage().iterator();
+        assertThat(iterator.hasNext()).isTrue();
+        while (iterator.hasNext()) {
+            FeedResponse<InternalObjectNode> feedResponse = iterator.next();
+            String queryDiagnostics = feedResponse.getCosmosDiagnostics().toString();
+            assertThat(feedResponse.getResults().size()).isEqualTo(0);
+            if (!query.contains("group by") || qroupByFirstResponse) { // TODO https://github
+                // .com/Azure/azure-sdk-for-java/issues/14142
+                assertThat(queryDiagnostics).contains("Retrieved Document Count");
+                assertThat(queryDiagnostics).contains("Query Preparation Times");
+                assertThat(queryDiagnostics).contains("Runtime Execution Times");
+                assertThat(queryDiagnostics).contains("Partition Execution Timeline");
+                if (query.contains("group by")) {
+                    qroupByFirstResponse = false;
                 }
             }
         }
