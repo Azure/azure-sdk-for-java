@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Performance test.
@@ -34,7 +35,7 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
 
     @Override
     public Mono<Void> globalCleanupAsync() {
-        return Mono.fromFuture(sender.closeAsync().thenCombine(receiver.closeAsync(), (aVoid, aVoid2) -> true))
+        return Mono.when(Mono.fromFuture(CompletableFuture.allOf(sender.closeAsync(), receiver.closeAsync())))
             .then(super.globalCleanupAsync());
     }
 
@@ -78,10 +79,9 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
             .handle((messages, synchronousSink) -> {
                 int count = messages.size();
                 logger.verbose(" Async received  size of received :" + count);
-                System.out.println("Async received  size of received :" + count);
 
                 if (count <= 0) {
-                    throw logger.logExceptionAsWarning(new RuntimeException("Error. Should have received some messages."));
+                    synchronousSink.error(new RuntimeException("Error. Should have received some messages."));
                 }
                 synchronousSink.complete();
             });

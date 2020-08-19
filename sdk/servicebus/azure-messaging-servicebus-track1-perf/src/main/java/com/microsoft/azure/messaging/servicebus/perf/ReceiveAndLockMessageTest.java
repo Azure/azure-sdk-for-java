@@ -16,7 +16,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 /**
  * Performance test.
@@ -76,13 +77,16 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
     public Mono<Void> runAsync() {
         return Mono.fromFuture(receiver.receiveBatchAsync(options.getMessagesToReceive())
             .thenAccept(iMessages -> {
-                try {
-                    for (IMessage message : iMessages) {
-                        receiver.completeAsync(message.getLockToken()).get();
-                    }
-                } catch (InterruptedException | ExecutionException e) {
-                    throw logger.logExceptionAsWarning(new RuntimeException(e));
+                List<CompletableFuture<Void>> completeMessagesList = new ArrayList<>();
+                for (IMessage message : iMessages) {
+                    completeMessagesList.add(receiver.completeAsync(message.getLockToken()));
                 }
+
+                CompletableFuture.allOf(completeMessagesList.toArray(new CompletableFuture<?>[0]))
+                    .thenApply(v -> completeMessagesList.stream()
+                        .map(CompletableFuture::join)
+                        .collect(Collectors.toList())
+                    );
             }));
     }
 
@@ -92,7 +96,7 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
      */
     @Override
     public Mono<Void> globalCleanupAsync() {
-        return Mono.fromFuture(sender.closeAsync().thenCombine(receiver.closeAsync(), (aVoid, aVoid2) -> true))
+        return Mono.when(Mono.fromFuture(CompletableFuture.allOf(sender.closeAsync(), receiver.closeAsync())))
             .then(super.globalCleanupAsync());
     }
 }
