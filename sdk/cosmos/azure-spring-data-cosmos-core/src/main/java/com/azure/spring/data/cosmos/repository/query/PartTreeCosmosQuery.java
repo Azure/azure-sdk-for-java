@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.query;
 
+import com.azure.cosmos.implementation.guava25.base.Optional;
 import com.azure.spring.data.cosmos.core.CosmosOperations;
 import com.azure.spring.data.cosmos.core.mapping.CosmosPersistentProperty;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
@@ -41,7 +42,7 @@ public class PartTreeCosmosQuery extends AbstractCosmosQuery {
         final CosmosQuery query = creator.createQuery();
 
         if (tree.isLimiting()) {
-            query.setLimit(tree.getMaxResults() == null ? 0 : tree.getMaxResults());
+            query.setLimit(tree.getMaxResults());
         }
 
         return query;
