@@ -72,7 +72,7 @@ public class CosmosQuery {
     /**
      * To set PartTree
      *
-     * @param tree
+     * @param tree PartTree
      */
     public void setTree(PartTree tree) {
         if (this.tree == null) {
