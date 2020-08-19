@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.cosmosdb.v2019_08_01.implementation;
 
+import com.microsoft.azure.management.cosmosdb.v2019_08_01.TableGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.management.cosmosdb.v2019_08_01.ARMResourceProperties;
@@ -18,76 +19,29 @@ import com.microsoft.azure.management.cosmosdb.v2019_08_01.ARMResourceProperties
 @JsonFlatten
 public class TableGetResultsInner extends ARMResourceProperties {
     /**
-     * Name of the Cosmos DB table.
+     * The resource property.
      */
-    @JsonProperty(value = "properties.id", required = true)
-    private String tableGetResultsId;
+    @JsonProperty(value = "properties.resource")
+    private TableGetPropertiesResource resource;
 
     /**
-     * A system generated property. A unique identifier.
-     */
-    @JsonProperty(value = "properties._rid", access = JsonProperty.Access.WRITE_ONLY)
-    private String _rid;
-
-    /**
-     * A system generated property that denotes the last updated timestamp of
-     * the resource.
-     */
-    @JsonProperty(value = "properties._ts", access = JsonProperty.Access.WRITE_ONLY)
-    private Object _ts;
-
-    /**
-     * A system generated property representing the resource etag required for
-     * optimistic concurrency control.
-     */
-    @JsonProperty(value = "properties._etag", access = JsonProperty.Access.WRITE_ONLY)
-    private String _etag;
-
-    /**
-     * Get name of the Cosmos DB table.
+     * Get the resource value.
      *
-     * @return the tableGetResultsId value
+     * @return the resource value
      */
-    public String tableGetResultsId() {
-        return this.tableGetResultsId;
+    public TableGetPropertiesResource resource() {
+        return this.resource;
     }
 
     /**
-     * Set name of the Cosmos DB table.
+     * Set the resource value.
      *
-     * @param tableGetResultsId the tableGetResultsId value to set
+     * @param resource the resource value to set
      * @return the TableGetResultsInner object itself.
      */
-    public TableGetResultsInner withTableGetResultsId(String tableGetResultsId) {
-        this.tableGetResultsId = tableGetResultsId;
+    public TableGetResultsInner withResource(TableGetPropertiesResource resource) {
+        this.resource = resource;
         return this;
-    }
-
-    /**
-     * Get a system generated property. A unique identifier.
-     *
-     * @return the _rid value
-     */
-    public String _rid() {
-        return this._rid;
-    }
-
-    /**
-     * Get a system generated property that denotes the last updated timestamp of the resource.
-     *
-     * @return the _ts value
-     */
-    public Object _ts() {
-        return this._ts;
-    }
-
-    /**
-     * Get a system generated property representing the resource etag required for optimistic concurrency control.
-     *
-     * @return the _etag value
-     */
-    public String _etag() {
-        return this._etag;
     }
 
 }

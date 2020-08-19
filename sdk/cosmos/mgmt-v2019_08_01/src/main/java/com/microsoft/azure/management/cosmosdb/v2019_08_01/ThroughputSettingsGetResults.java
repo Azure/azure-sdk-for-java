@@ -29,29 +29,19 @@ public interface ThroughputSettingsGetResults extends HasInner<ThroughputSetting
     String location();
 
     /**
-     * @return the minimumThroughput value.
-     */
-    String minimumThroughput();
-
-    /**
      * @return the name value.
      */
     String name();
 
     /**
-     * @return the offerReplacePending value.
+     * @return the resource value.
      */
-    String offerReplacePending();
+    ThroughputSettingsGetPropertiesResource resource();
 
     /**
      * @return the tags value.
      */
     Map<String, String> tags();
-
-    /**
-     * @return the throughput value.
-     */
-    int throughput();
 
     /**
      * @return the type value.
