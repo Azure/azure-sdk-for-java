@@ -13,7 +13,7 @@ mvn clean install -f ../../eng/code-quality-reports/pom.xml
 mvn clean package -f pom.xml -DskipTests -Dgpg.skip -Ppackage-assembly
 ```
 
-and then the package will be generated. 
+and then the package will be generated.
 
 ## Run the WriteLatency workload
 
@@ -65,16 +65,16 @@ Latency
 
 ## Other Currently Supported Workloads
 
-* ReadLatency, 
-* WriteLatency, 
-* ReadThroughput, 
-* WriteThroughput, 
+* ReadLatency,
+* WriteLatency,
+* ReadThroughput,
+* WriteThroughput,
 * QueryInClauseParallel
 * ReadMyWrites
 
 
-You can provide ``--help`` to the tool to see the list of other work loads (read, etc) and other options. 
+You can provide ``--help`` to the tool to see the list of other work loads (read, etc) and other options.
 
 
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2Fmicrosoft-azure-cosmos-benchmark%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2Fazure-cosmos-benchmark%2FREADME.png)
