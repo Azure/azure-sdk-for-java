@@ -35,12 +35,14 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.IntStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.util.StringUtils;
 
 public class AppConfigurationPropertySource extends EnumerablePropertySource<ConfigurationClient> {
 
@@ -61,24 +63,36 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
     private static final String DEFAULT_ROLLOUT_PERCENTAGE = "defaultRolloutPercentage";
 
     private static final String DEFAULT_ROLLOUT_PERCENTAGE_CAPS = "DefaultRolloutPercentage";
+
     private static final ObjectMapper MAPPER = new ObjectMapper();
+
     private static final ObjectMapper CASE_INSENSITIVE_MAPPER = new ObjectMapper()
-        .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+            .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+
     private final String context;
+
     private final String label;
+
     private final Map<String, Object> properties = new LinkedHashMap<>();
+
     private final AppConfigurationProperties appConfigurationProperties;
+
     private final HashMap<String, KeyVaultClient> keyVaultClients;
+
     private final ClientStore clients;
+
     private final KeyVaultCredentialProvider keyVaultCredentialProvider;
+
     private final SecretClientBuilderSetup keyVaultClientProvider;
+
     private final AppConfigurationProviderProperties appProperties;
+
     private final ConfigStore configStore;
 
     AppConfigurationPropertySource(String context, ConfigStore configStore, String label,
-        AppConfigurationProperties appConfigurationProperties, ClientStore clients,
-        AppConfigurationProviderProperties appProperties, KeyVaultCredentialProvider keyVaultCredentialProvider,
-        SecretClientBuilderSetup keyVaultClientProvider) {
+            AppConfigurationProperties appConfigurationProperties, ClientStore clients,
+            AppConfigurationProviderProperties appProperties, KeyVaultCredentialProvider keyVaultCredentialProvider,
+            SecretClientBuilderSetup keyVaultClientProvider) {
         // The context alone does not uniquely define a PropertySource, append storeName
         // and label to uniquely define a PropertySource
         super(context + configStore.getEndpoint() + "/" + label);
@@ -95,10 +109,9 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
 
     private static List<Object> convertToListOrEmptyList(LinkedHashMap<String, Object> parameters, String key) {
         List<Object> listObjects = CASE_INSENSITIVE_MAPPER.convertValue(
-            parameters.get(key),
-            new TypeReference<List<Object>>() {
-            }
-        );
+                parameters.get(key),
+                new TypeReference<List<Object>>() {
+                });
         return listObjects == null ? emptyList() : listObjects;
     }
 
@@ -120,13 +133,15 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
      *
      * <p>
      * <b>Note</b>: Doesn't update Feature Management, just stores values in cache. Call
-     * {@code initFeatures} to update Feature Management, but make sure its done in the last {@code
+     * {@code initFeatures} to update Feature Management, but make sure its done in the
+     * last {@code
      * AppConfigurationPropertySource}
      * </p>
      *
      * @param featureSet The set of Feature Management Flags from various config stores.
      * @return Updated Feature Set from Property Source
-     * @throws IOException Thrown when processing key/value failed when reading feature flags
+     * @throws IOException Thrown when processing key/value failed when reading feature
+     * flags
      */
     FeatureSet initProperties(FeatureSet featureSet) throws IOException {
         String storeName = configStore.getEndpoint();
@@ -157,6 +172,13 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
                 if (entry != null) {
                     properties.put(key, entry);
                 }
+            } else if (StringUtils.hasText(setting.getContentType())
+                    && JsonConfigurationParser.isJsonContentType(setting.getContentType())) {
+                HashMap<String, Object> jsonSettings = JsonConfigurationParser.parseJsonSetting(setting);
+                for (Entry<String, Object> jsonSetting : jsonSettings.entrySet()) {
+                    key = jsonSetting.getKey().trim().substring(context.length());
+                    properties.put(key, jsonSetting.getValue());
+                }
             } else {
                 properties.put(key, setting.getValue());
             }
@@ -166,9 +188,11 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
     }
 
     /**
-     * Given a Setting's Key Vault Reference stored in the Settings value, it will get its entry in Key Vault.
+     * Given a Setting's Key Vault Reference stored in the Settings value, it will get its
+     * entry in Key Vault.
      *
-     * @param value {"uri": "&lt;your-vault-url&gt;/secret/&lt;secret&gt;/&lt;version&gt;"}
+     * @param value {"uri":
+     * "&lt;your-vault-url&gt;/secret/&lt;secret&gt;/&lt;version&gt;"}
      * @return Key Vault Secret Value
      */
     private String getKeyVaultEntry(String value) {
@@ -189,7 +213,7 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
             // one
             if (!keyVaultClients.containsKey(uri.getHost())) {
                 KeyVaultClient client = new KeyVaultClient(appConfigurationProperties, uri, keyVaultCredentialProvider,
-                    keyVaultClientProvider);
+                        keyVaultClientProvider);
                 keyVaultClients.put(uri.getHost(), client);
             }
             KeyVaultSecret secret = keyVaultClients.get(uri.getHost()).getSecret(uri, appProperties.getMaxRetryTime());
@@ -205,8 +229,9 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
     }
 
     /**
-     * Initializes Feature Management configurations. Only one {@code AppConfigurationPropertySource} can call this, and
-     * it needs to be done after the rest have run initProperties.
+     * Initializes Feature Management configurations. Only one
+     * {@code AppConfigurationPropertySource} can call this, and it needs to be done after
+     * the rest have run initProperties.
      *
      * @param featureSet Feature Flag info to be set to this property source.
      */
@@ -214,11 +239,11 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
         ObjectMapper featureMapper = new ObjectMapper();
         featureMapper.setPropertyNamingStrategy(PropertyNamingStrategy.KEBAB_CASE);
         properties.put(FEATURE_MANAGEMENT_KEY,
-            featureMapper.convertValue(featureSet.getFeatureManagement(), LinkedHashMap.class));
+                featureMapper.convertValue(featureSet.getFeatureManagement(), LinkedHashMap.class));
     }
 
     private FeatureSet addToFeatureSet(FeatureSet featureSet, List<ConfigurationSetting> settings, Date date)
-        throws IOException {
+            throws IOException {
         // Reading In Features
         for (ConfigurationSetting setting : settings) {
             Object feature = createFeature(setting);
@@ -232,7 +257,8 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
     /**
      * Creates a {@code Feature} from a {@code KeyValueItem}
      *
-     * @param item Used to create Features before being converted to be set into properties.
+     * @param item Used to create Features before being converted to be set into
+     * properties.
      * @return Feature created from KeyValueItem
      * @throws IOException
      */
@@ -240,7 +266,7 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
     private Object createFeature(ConfigurationSetting item) throws IOException {
         if (item.getContentType() == null || !item.getContentType().equals(FEATURE_FLAG_CONTENT_TYPE)) {
             String message = String.format("Found Feature Flag %s with invalid Content Type of %s", item.getKey(),
-                item.getContentType());
+                    item.getContentType());
             throw new IOException(message);
         }
         String key = getFeatureSimpleName(item);
@@ -279,7 +305,7 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
                 switchKeyValues(parameters, USERS_CAPS, USERS, mapValuesByIndex(users));
                 switchKeyValues(parameters, GROUPS_CAPS, GROUPS, mapValuesByIndex(groupRollouts));
                 switchKeyValues(parameters, DEFAULT_ROLLOUT_PERCENTAGE_CAPS, DEFAULT_ROLLOUT_PERCENTAGE,
-                    parameters.get(DEFAULT_ROLLOUT_PERCENTAGE_CAPS));
+                        parameters.get(DEFAULT_ROLLOUT_PERCENTAGE_CAPS));
 
                 featureFilterEvaluationContext.setParameters(parameters);
                 featureEnabledFor.put(filter, featureFilterEvaluationContext);
