@@ -4,6 +4,8 @@
 package com.azure.digitaltwins.core;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import reactor.core.publisher.Mono;
@@ -32,6 +34,9 @@ public class AsyncSample
         DigitalTwinsAsyncClient client = new DigitalTwinsClientBuilder()
             .tokenCredential(tokenCredential)
             .endpoint(endpoint)
+            .httpLogOptions(
+                new HttpLogOptions()
+                    .setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildAsyncClient();
 
         // Create relationship on a digital twin
