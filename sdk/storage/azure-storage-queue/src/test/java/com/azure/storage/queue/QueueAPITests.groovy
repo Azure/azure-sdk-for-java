@@ -441,6 +441,23 @@ class QueueAPITests extends APISpec {
         updateMsg == peekMsgIter.getMessageText()
     }
 
+    def "Update message no body"() {
+        given:
+        def messageText = "test message before update"
+        queueClient.create()
+        queueClient.sendMessage(messageText)
+
+        def dequeueMsg = queueClient.receiveMessage()
+        when:
+        def updateMsgResponse = queueClient.updateMessageWithResponse(dequeueMsg.getMessageId(),
+            dequeueMsg.getPopReceipt(), null, Duration.ofSeconds(1), null,  null)
+        sleepIfLive(2000)
+        def peekMsgIter = queueClient.peekMessage()
+        then:
+        QueueTestHelper.assertResponseStatusCode(updateMsgResponse, 204)
+        messageText == peekMsgIter.getMessageText()
+    }
+
     @Unroll
     def "Update message invalid args"() {
         given:

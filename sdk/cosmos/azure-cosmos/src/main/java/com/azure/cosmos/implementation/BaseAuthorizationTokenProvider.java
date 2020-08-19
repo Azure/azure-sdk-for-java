@@ -5,13 +5,11 @@ package com.azure.cosmos.implementation;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.models.ModelBridgeInternal;
 
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -19,6 +17,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * This class is used internally by client (for generating the auth header with master/system key)
@@ -31,8 +31,11 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
     private volatile String currentCredentialKey;
     private volatile MacPool macPool;
 
+    private final Lock macInstanceLock = new ReentrantLock();
+
     public BaseAuthorizationTokenProvider(AzureKeyCredential credential) {
         this.credential = credential;
+        reInitializeIfPossible();
     }
 
     private static String getResourceSegment(ResourceType resourceType) {
@@ -199,173 +202,48 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
 
         return resourceToken;
     }
-    public String generateKeyAuthorizationSignature(RequestVerb verb, URI uri, Map<String, String> headers) {
-        if (verb == null) {
-            throw new IllegalArgumentException(String.format(RMResources.StringArgumentNullOrEmpty, "verb"));
-        }
-
-        if (uri == null) {
-            throw new IllegalArgumentException("uri");
-        }
-
-        if (headers == null) {
-            throw new IllegalArgumentException("headers");
-        }
-        PathInfo pathInfo = new PathInfo(false, StringUtils.EMPTY, StringUtils.EMPTY, false);
-        getResourceTypeAndIdOrFullName(uri, pathInfo);
-        return generateKeyAuthorizationSignatureNew(verb, pathInfo.resourceIdOrFullName, pathInfo.resourcePath,
-                headers);
-    }
-
-    private String generateKeyAuthorizationSignatureNew(RequestVerb verb, String resourceIdValue, String resourceType,
-                                                        Map<String, String> headers) {
-        if (verb == null) {
-            throw new IllegalArgumentException(String.format(RMResources.StringArgumentNullOrEmpty, "verb"));
-        }
-
-        if (resourceType == null) {
-            throw new IllegalArgumentException(String.format(RMResources.StringArgumentNullOrEmpty, "resourceType")); // can be empty
-        }
-
-        if (headers == null) {
-            throw new IllegalArgumentException("headers");
-        }
-        // Order of the values included in the message payload is a protocol that
-        // clients/BE need to follow exactly.
-        // More headers can be added in the future.
-        // If any of the value is optional, it should still have the placeholder value
-        // of ""
-        // OperationType -> ResourceType -> ResourceId/OwnerId -> XDate -> Date
-
-        String authResourceId = getAuthorizationResourceIdOrFullName(resourceType, resourceIdValue);
-        String payLoad = generateMessagePayload(verb, authResourceId, resourceType, headers);
-
-        MacPool.ReUsableMac macInstance = this.getReUseableMacInstance();
-
-        try {
-            byte[] digest = macInstance.get().doFinal(payLoad.getBytes(StandardCharsets.UTF_8));
-            String authorizationToken = Utils.encodeBase64String(digest);
-            String authtoken = AUTH_PREFIX + authorizationToken;
-            return HttpUtils.urlEncode(authtoken);
-        }
-        finally {
-            macInstance.close();
-        }
-    }
 
     private MacPool.ReUsableMac getReUseableMacInstance() {
-
-        // Java == operator is reference equals not content
-        // leveraging reference comparison avoid hash computation
-        if (this.currentCredentialKey != this.credential.getKey()) {
-            synchronized (this.credential) {
-                if (this.currentCredentialKey != this.credential.getKey()) {
-                    byte[] masterKeyBytes = this.credential.getKey().getBytes(StandardCharsets.UTF_8);
-                    byte[] masterKeyDecodedBytes = Utils.Base64Decoder.decode(masterKeyBytes);
-                    SecretKey signingKey = new SecretKeySpec(masterKeyDecodedBytes, "HMACSHA256");
-                    try {
-                        Mac macInstance = Mac.getInstance("HMACSHA256");
-                        macInstance.init(signingKey);
-
-                        this.currentCredentialKey = this.credential.getKey();
-                        this.macPool = new MacPool(macInstance);
-                    } catch (NoSuchAlgorithmException | InvalidKeyException e) {
-                        throw new IllegalStateException(e);
-                    }
-                }
-            }
-        }
+        reInitializeIfPossible();
 
         return macPool.take();
     }
 
-    private String generateMessagePayload(RequestVerb verb, String resourceId, String resourceType,
-            Map<String, String> headers) {
-        String xDate = headers.get(HttpConstants.HttpHeaders.X_DATE);
-        String date = headers.get(HttpConstants.HttpHeaders.HTTP_DATE);
-        // At-least one of date header should present
-        // https://docs.microsoft.com/en-us/rest/api/documentdb/access-control-on-documentdb-resources
-        if (StringUtils.isEmpty(xDate) && (StringUtils.isEmpty(date) || StringUtils.isWhitespace(date))) {
-            headers.put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());
-            xDate = Utils.nowAsRFC1123();
-        }
+    /*
+     * Ensures that this.macInstance is initialized
+     * In-case of credential change, optimistically will try to refresh the macInstance
+     *
+     * Implementation is non-blocking, the one which acquire the lock will try to refresh
+     * with new credentials
+     *
+     * NOTE: Calling it CTOR ensured that default is initialized.
+     */
+    private void reInitializeIfPossible() {
+        // Java == operator is reference equals not content
+        // leveraging reference comparison avoid hash computation
+        if (this.currentCredentialKey != this.credential.getKey()) {
+            // Try to acquire the lock, the one who got lock will try to refresh the macInstance
+            boolean lockAcquired = this.macInstanceLock.tryLock();
+            if (lockAcquired) {
+                try {
+                    if (this.currentCredentialKey != this.credential.getKey()) {
+                        byte[] masterKeyBytes = this.credential.getKey().getBytes(StandardCharsets.UTF_8);
+                        byte[] masterKeyDecodedBytes = Utils.Base64Decoder.decode(masterKeyBytes);
+                        SecretKey signingKey = new SecretKeySpec(masterKeyDecodedBytes, "HMACSHA256");
+                        try {
+                            Mac macInstance = Mac.getInstance("HMACSHA256");
+                            macInstance.init(signingKey);
 
-        // for name based, it is case sensitive, we won't use the lower case
-        if (!PathsHelper.isNameBased(resourceId)) {
-            resourceId = resourceId.toLowerCase(Locale.ROOT);
-        }
-
-        StringBuilder payload = new StringBuilder();
-        payload.append(ModelBridgeInternal.toLower(verb))
-                .append('\n')
-                .append(resourceType.toLowerCase(Locale.ROOT))
-                .append('\n')
-                .append(resourceId)
-                .append('\n')
-                .append(xDate.toLowerCase(Locale.ROOT))
-                .append('\n')
-                .append(StringUtils.isEmpty(xDate) ? date.toLowerCase(Locale.ROOT) : "")
-                .append('\n');
-
-        return payload.toString();
-    }
-
-    private String getAuthorizationResourceIdOrFullName(String resourceType, String resourceIdOrFullName) {
-        if (StringUtils.isEmpty(resourceType) || StringUtils.isEmpty(resourceIdOrFullName)) {
-            return resourceIdOrFullName;
-        }
-        if (PathsHelper.isNameBased(resourceIdOrFullName)) {
-            // resource fullname is always end with name (not type segment like docs/colls).
-            return resourceIdOrFullName;
-        }
-
-        if (resourceType.equalsIgnoreCase(Paths.OFFERS_PATH_SEGMENT)
-                || resourceType.equalsIgnoreCase(Paths.PARTITIONS_PATH_SEGMENT)
-                || resourceType.equalsIgnoreCase(Paths.TOPOLOGY_PATH_SEGMENT)
-                || resourceType.equalsIgnoreCase(Paths.RID_RANGE_PATH_SEGMENT)) {
-            return resourceIdOrFullName;
-        }
-
-        ResourceId parsedRId = ResourceId.parse(resourceIdOrFullName);
-        if (resourceType.equalsIgnoreCase(Paths.DATABASES_PATH_SEGMENT)) {
-            return parsedRId.getDatabaseId().toString();
-        } else if (resourceType.equalsIgnoreCase(Paths.USERS_PATH_SEGMENT)) {
-            return parsedRId.getUserId().toString();
-        } else if (resourceType.equalsIgnoreCase(Paths.COLLECTIONS_PATH_SEGMENT)) {
-            return parsedRId.getDocumentCollectionId().toString();
-        } else if (resourceType.equalsIgnoreCase(Paths.DOCUMENTS_PATH_SEGMENT)) {
-            return parsedRId.getDocumentId().toString();
-        } else {
-            // leaf node
-            return resourceIdOrFullName;
-        }
-    }
-
-    private void getResourceTypeAndIdOrFullName(URI uri, PathInfo pathInfo) {
-        if (uri == null) {
-            throw new IllegalArgumentException("uri");
-        }
-
-        pathInfo.resourcePath = StringUtils.EMPTY;
-        pathInfo.resourceIdOrFullName = StringUtils.EMPTY;
-
-        String[] segments = StringUtils.split(uri.toString(), Constants.Properties.PATH_SEPARATOR);
-        if (segments == null || segments.length < 1) {
-            throw new IllegalArgumentException(RMResources.InvalidUrl);
-        }
-        // Authorization code is fine with Uri not having resource id and path.
-        // We will just return empty in that case
-        String pathAndQuery = StringUtils.EMPTY ;
-        if(StringUtils.isNotEmpty(uri.getPath())) {
-            pathAndQuery+= uri.getPath();
-        }
-        if(StringUtils.isNotEmpty(uri.getQuery())) {
-            pathAndQuery+="?";
-            pathAndQuery+= uri.getQuery();
-        }
-        if (!PathsHelper.tryParsePathSegments(pathAndQuery, pathInfo, null)) {
-            pathInfo.resourcePath = StringUtils.EMPTY;
-            pathInfo.resourceIdOrFullName = StringUtils.EMPTY;
+                            this.currentCredentialKey = this.credential.getKey();
+                            this.macPool = new MacPool(macInstance);
+                        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+                            throw new IllegalStateException(e);
+                        }
+                    }
+                } finally {
+                    this.macInstanceLock.unlock();
+                }
+            }
         }
     }
 }
