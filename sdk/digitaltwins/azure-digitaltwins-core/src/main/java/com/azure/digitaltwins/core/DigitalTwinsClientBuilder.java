@@ -52,7 +52,9 @@ public final class DigitalTwinsClientBuilder {
 
     // Right now, Azure Digital Twins does not send a retry-after header on its throttling messages. If it adds support later, then
     // these values should match the header name (for instance, "x-ms-retry-after-ms" or "Retry-After") and the time unit
-    // of the header's value. These null values are equivalent to just constructing "new RetryPolicy()"
+    // of the header's value. These null values are equivalent to just constructing "new RetryPolicy()". It is safe
+    // to use a null retryAfterHeader and a null retryAfterTimeUnit when constructing this retry policy as this
+    // constructor interprets that as saying "this service does not support retry after headers"
     private static final String retryAfterHeader = null;
     private static final ChronoUnit retryAfterTimeUnit = null;
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy(retryAfterHeader, retryAfterTimeUnit);
@@ -99,8 +101,11 @@ public final class DigitalTwinsClientBuilder {
         policies.addAll(additionalPolicies);
 
         // Custom policies, authentication policy, and add date policy all take place after the retry policy which means
-        // they will be applied once per retry. For instance, the AddDatePolicy will add a different date time header
-        // each time the retry is attempted.
+        // they will be applied once per http request, and once for every retried http request. For instance, the
+        // AddDatePolicy will add a date time header for each request that is sent, and if the http request fails
+        // and the retry policy dictates that the request should be retried, then the date time header policy will
+        // be applied again and the current date time will be put in the header instead of the date time from
+        // the first http request attempt.
         HttpPolicyProviders.addAfterRetryPolicies(policies);
 
         policies.add(new HttpLoggingPolicy(httpLogOptions));
