@@ -276,7 +276,7 @@ When updating a relationship edge, the patch string follows the below format
 
 <details><summary><b>Async APIs</b></summary>
 
-These APIs are invoked on DigitalTwinsAsyncClient.
+These APIs are invoked via DigitalTwinsAsyncClient.
 
 ```java
     /**
@@ -399,7 +399,7 @@ These APIs are invoked on DigitalTwinsAsyncClient.
 
 <details><summary><b>Sync APIs</b></summary>
 
-These APIs are invoked on DigitalTwinsClient.
+These APIs are invoked via DigitalTwinsClient.
 
 ```java
     /**
