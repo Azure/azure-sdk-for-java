@@ -91,7 +91,7 @@ public final class SubscriptionProperties {
      * @param description Options used to create a subscription.
      */
     SubscriptionProperties(SubscriptionDescription description) {
-        Objects.requireNonNull(description, "'options' cannot be null.");
+        Objects.requireNonNull(description, "'description' cannot be null.");
         this.accessedAt = description.getAccessedAt();
         this.autoDeleteOnIdle = description.getAutoDeleteOnIdle();
         this.createdAt = description.getCreatedAt();

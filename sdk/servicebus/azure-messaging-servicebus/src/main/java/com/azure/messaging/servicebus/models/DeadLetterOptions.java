@@ -6,7 +6,7 @@ package com.azure.messaging.servicebus.models;
 import java.util.Map;
 
 /**
- * Options to specify while putting message in deadletter queue.
+ * Options to specify while putting message in dead-letter queue.
  */
 public class DeadLetterOptions {
 
