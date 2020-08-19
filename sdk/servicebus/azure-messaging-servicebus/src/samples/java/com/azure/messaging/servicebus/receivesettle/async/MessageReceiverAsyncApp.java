@@ -13,6 +13,8 @@ import java.time.Duration;
 
 /**
  * Sample Application that uses async API to receive and settle messages.
+ * You can concurrently run multiple MessageReceiverAsyncApp and/or MessageReceiverSyncApp
+ * to receive from a service bus queue.
  */
 public class MessageReceiverAsyncApp {
     private final ServiceBusReceiverAsyncClient receiverClient;
