@@ -66,7 +66,7 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [maven]: https://maven.apache.org/
 [azure_spring_data_cosmos_core_readme_key_concepts]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/cosmos/azure-spring-data-cosmos-core/README.md#key-concepts
 [azure_spring_data_cosmos_core_readme_troubleshooting]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/cosmos/azure-spring-data-cosmos-core/README.md#troubleshooting
-[azure_spring_data_cosmos_docs]: https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-sdk-java-spring
+[azure_spring_data_cosmos_docs]: https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-sdk-java-spring-v3?tabs=explore
 [azure_spring_data_2_3_cosmos_maven]: https://search.maven.org/artifact/com.azure/azure-spring-data-2-3-cosmos
 [azure_spring_data_2_3_cosmos_maven_svg]: https://img.shields.io/maven-central/v/com.azure/azure-spring-data-2-3-cosmos.svg
 
