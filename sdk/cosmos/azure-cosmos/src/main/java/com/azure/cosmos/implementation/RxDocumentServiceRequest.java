@@ -17,7 +17,6 @@ import reactor.core.publisher.Flux;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -140,11 +139,13 @@ public class RxDocumentServiceRequest implements Cloneable {
      * Creates a AbstractDocumentServiceRequest
      *
      * @param operationType     the operation type.
+     * @param resourceIdOrFullName        the request id or full name.
      * @param resourceType      the resource type.
      * @param path              the path.
      * @param headers           the headers
      */
     private RxDocumentServiceRequest(OperationType operationType,
+            String resourceIdOrFullName,
             ResourceType resourceType,
             String path,
             Map<String, String> headers) {
@@ -155,13 +156,12 @@ public class RxDocumentServiceRequest implements Cloneable {
         this.headers = headers != null ? headers : new HashMap<>();
         this.activityId = Utils.randomUUID();
         this.isFeed = false;
-
+        PathInfo pathInfo = new PathInfo(false, null, null, false);
         if (StringUtils.isNotEmpty(path)) {
-            PathInfo pathInfo = new PathInfo(false, null, null, false);
             if (PathsHelper.tryParsePathSegments(path, pathInfo, null)) {
                 this.isNameBased = pathInfo.isNameBased;
                 this.isFeed = pathInfo.isFeed;
-                String resourceIdOrFullName = pathInfo.resourceIdOrFullName;
+                resourceIdOrFullName = pathInfo.resourceIdOrFullName;
                 if (!this.isNameBased) {
                 if (resourceType == ResourceType.Media) {
                     this.resourceId = getAttachmentIdFromMediaId(resourceIdOrFullName);
@@ -191,7 +191,7 @@ public class RxDocumentServiceRequest implements Cloneable {
             }
         } else {
             this.isNameBased = false;
-            this.resourceAddress = path;
+            this.resourceAddress = resourceIdOrFullName;
         }
 
         if (StringUtils.isNotEmpty(this.headers.get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID))) {
@@ -209,12 +209,14 @@ public class RxDocumentServiceRequest implements Cloneable {
      * @param headers           the request headers.
      */
     private RxDocumentServiceRequest(OperationType operationType,
+                                     String resourceId,
                                      ResourceType resourceType,
                                      ByteBuffer byteBuffer,
                                      String path,
                                      Map<String, String> headers,
                                      AuthorizationTokenType authorizationTokenType) {
         this(operationType,
+            resourceId,
             resourceType,
             path,
             headers);
@@ -232,12 +234,13 @@ public class RxDocumentServiceRequest implements Cloneable {
      * @param headers           the request headers.
      */
     private RxDocumentServiceRequest(OperationType operationType,
+            String resourceId,
             ResourceType resourceType,
             byte[] content,
             String path,
             Map<String, String> headers,
             AuthorizationTokenType authorizationTokenType) {
-        this(operationType, resourceType, wrapByteBuffer(content), path, headers, authorizationTokenType);
+        this(operationType, resourceId, resourceType, wrapByteBuffer(content), path, headers, authorizationTokenType);
     }
 
     /**
@@ -254,7 +257,7 @@ public class RxDocumentServiceRequest implements Cloneable {
                                      ByteBuffer byteBuffer,
                                      Map<String, String> headers,
                                      AuthorizationTokenType authorizationTokenType) {
-        this(operationType, resourceType, byteBuffer, path, headers, authorizationTokenType);
+        this(operationType, extractIdFromUri(path), resourceType, byteBuffer, path, headers, authorizationTokenType);
     }
 
     /**
@@ -271,7 +274,7 @@ public class RxDocumentServiceRequest implements Cloneable {
             byte[] byteContent,
             Map<String, String> headers,
             AuthorizationTokenType authorizationTokenType) {
-        this(operationType, resourceType, byteContent, path, headers, authorizationTokenType);
+        this(operationType, extractIdFromUri(path), resourceType, byteContent, path, headers, authorizationTokenType);
     }
 
     /**
@@ -286,7 +289,7 @@ public class RxDocumentServiceRequest implements Cloneable {
             String path,
             Map<String, String> headers,
             AuthorizationTokenType authorizationTokenType) {
-        this(operationType, resourceType, (byte[]) null, path, headers, authorizationTokenType);
+        this(operationType, extractIdFromUri(path), resourceType, (byte[]) null, path, headers, authorizationTokenType);
     }
 
     public void setContentBytes(byte[] contentBytes) {
@@ -645,7 +648,7 @@ public class RxDocumentServiceRequest implements Cloneable {
      */
     public static RxDocumentServiceRequest create(OperationType operation,
                                                   ResourceType resourceType) {
-        return new RxDocumentServiceRequest(operation, resourceType, null, null);
+        return new RxDocumentServiceRequest(operation, null, resourceType, null, null);
     }
 
     public static RxDocumentServiceRequest createFromName(
@@ -708,6 +711,43 @@ public class RxDocumentServiceRequest implements Cloneable {
                 true,
                 authorizationTokenType
         );
+    }
+
+    private static String extractIdFromUri(String path) {
+        if (path.length() == 0) {
+            return path;
+        }
+
+        if (path.charAt(path.length() - 1) != '/') {
+            path = path + '/';
+        }
+
+        if (path.charAt(0) != '/') {
+            path = '/' + path;
+        }
+        // This is a hack. We need a padding '=' so that path.split("/")
+        // returns even number of string pieces.
+        // TODO(pushi): Improve the code and remove the hack.
+        path = path + '=';
+
+        // The path will be in the form of
+        // /[resourceType]/[resourceId]/ or
+        // /[resourceType]/[resourceId]/[resourceType]/
+        // The result of split will be in the form of
+        // [[[resourceType], [resourceId] ... ,[resourceType], ""]
+        // In the first case, to extract the resourceId it will the element
+        // before last ( at length -2 ) and the type will before it
+        // ( at length -3 )
+        // In the second case, to extract the resource type it will the element
+        // before last ( at length -2 )
+        String[] pathParts = StringUtils.split(path, "/");
+        if (pathParts.length % 2 == 0) {
+            // request in form /[resourceType]/[resourceId]/.
+            return pathParts[pathParts.length - 2];
+        } else {
+            // request in form /[resourceType]/[resourceId]/[resourceType]/.
+            return pathParts[pathParts.length - 3];
+        }
     }
 
     static String getAttachmentIdFromMediaId(String mediaId) {
