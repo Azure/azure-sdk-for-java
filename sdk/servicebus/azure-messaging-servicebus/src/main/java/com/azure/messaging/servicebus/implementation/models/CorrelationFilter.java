@@ -21,7 +21,7 @@ import java.util.List;
 @Fluent
 public final class CorrelationFilter extends RuleFilter {
     /*
-     * The CorrelationId property.
+     * The correlationId property.
      */
     @JacksonXmlProperty(
             localName = "CorrelationId",
@@ -29,7 +29,7 @@ public final class CorrelationFilter extends RuleFilter {
     private String correlationId;
 
     /*
-     * The MessageId property.
+     * The messageId property.
      */
     @JacksonXmlProperty(
             localName = "MessageId",
@@ -37,7 +37,7 @@ public final class CorrelationFilter extends RuleFilter {
     private String messageId;
 
     /*
-     * The To property.
+     * The to property.
      */
     @JacksonXmlProperty(
             localName = "To",
@@ -45,7 +45,7 @@ public final class CorrelationFilter extends RuleFilter {
     private String to;
 
     /*
-     * The ReplyTo property.
+     * The replyTo property.
      */
     @JacksonXmlProperty(
             localName = "ReplyTo",
@@ -53,7 +53,7 @@ public final class CorrelationFilter extends RuleFilter {
     private String replyTo;
 
     /*
-     * The Label property.
+     * The label property.
      */
     @JacksonXmlProperty(
             localName = "Label",
@@ -61,7 +61,7 @@ public final class CorrelationFilter extends RuleFilter {
     private String label;
 
     /*
-     * The SessionId property.
+     * The sessionId property.
      */
     @JacksonXmlProperty(
             localName = "SessionId",
@@ -69,7 +69,7 @@ public final class CorrelationFilter extends RuleFilter {
     private String sessionId;
 
     /*
-     * The ReplyToSessionId property.
+     * The replyToSessionId property.
      */
     @JacksonXmlProperty(
             localName = "ReplyToSessionId",
@@ -77,7 +77,7 @@ public final class CorrelationFilter extends RuleFilter {
     private String replyToSessionId;
 
     /*
-     * The ContentType property.
+     * The contentType property.
      */
     @JacksonXmlProperty(
             localName = "ContentType",
@@ -95,7 +95,7 @@ public final class CorrelationFilter extends RuleFilter {
     }
 
     /*
-     * The Properties property.
+     * The properties property.
      */
     @JacksonXmlProperty(
             localName = "Properties",
@@ -103,7 +103,7 @@ public final class CorrelationFilter extends RuleFilter {
     private PropertiesWrapper properties;
 
     /**
-     * Get the correlationId property: The CorrelationId property.
+     * Get the correlationId property: The correlationId property.
      *
      * @return the correlationId value.
      */
@@ -112,7 +112,7 @@ public final class CorrelationFilter extends RuleFilter {
     }
 
     /**
-     * Set the correlationId property: The CorrelationId property.
+     * Set the correlationId property: The correlationId property.
      *
      * @param correlationId the correlationId value to set.
      * @return the CorrelationFilter object itself.
@@ -123,7 +123,7 @@ public final class CorrelationFilter extends RuleFilter {
     }
 
     /**
-     * Get the messageId property: The MessageId property.
+     * Get the messageId property: The messageId property.
      *
      * @return the messageId value.
      */
@@ -132,7 +132,7 @@ public final class CorrelationFilter extends RuleFilter {
     }
 
     /**
-     * Set the messageId property: The MessageId property.
+     * Set the messageId property: The messageId property.
      *
      * @param messageId the messageId value to set.
      * @return the CorrelationFilter object itself.
@@ -143,7 +143,7 @@ public final class CorrelationFilter extends RuleFilter {
     }
 
     /**
-     * Get the to property: The To property.
+     * Get the to property: The to property.
      *
      * @return the to value.
      */
@@ -152,7 +152,7 @@ public final class CorrelationFilter extends RuleFilter {
     }
 
     /**
-     * Set the to property: The To property.
+     * Set the to property: The to property.
      *
      * @param to the to value to set.
      * @return the CorrelationFilter object itself.
@@ -163,7 +163,7 @@ public final class CorrelationFilter extends RuleFilter {
     }
 
     /**
-     * Get the replyTo property: The ReplyTo property.
+     * Get the replyTo property: The replyTo property.
      *
      * @return the replyTo value.
      */
@@ -172,7 +172,7 @@ public final class CorrelationFilter extends RuleFilter {
     }
 
     /**
-     * Set the replyTo property: The ReplyTo property.
+     * Set the replyTo property: The replyTo property.
      *
      * @param replyTo the replyTo value to set.
      * @return the CorrelationFilter object itself.
@@ -183,7 +183,7 @@ public final class CorrelationFilter extends RuleFilter {
     }
 
     /**
-     * Get the label property: The Label property.
+     * Get the label property: The label property.
      *
      * @return the label value.
      */
@@ -192,7 +192,7 @@ public final class CorrelationFilter extends RuleFilter {
     }
 
     /**
-     * Set the label property: The Label property.
+     * Set the label property: The label property.
      *
      * @param label the label value to set.
      * @return the CorrelationFilter object itself.
@@ -203,7 +203,7 @@ public final class CorrelationFilter extends RuleFilter {
     }
 
     /**
-     * Get the sessionId property: The SessionId property.
+     * Get the sessionId property: The sessionId property.
      *
      * @return the sessionId value.
      */
@@ -212,7 +212,7 @@ public final class CorrelationFilter extends RuleFilter {
     }
 
     /**
-     * Set the sessionId property: The SessionId property.
+     * Set the sessionId property: The sessionId property.
      *
      * @param sessionId the sessionId value to set.
      * @return the CorrelationFilter object itself.
@@ -223,7 +223,7 @@ public final class CorrelationFilter extends RuleFilter {
     }
 
     /**
-     * Get the replyToSessionId property: The ReplyToSessionId property.
+     * Get the replyToSessionId property: The replyToSessionId property.
      *
      * @return the replyToSessionId value.
      */
@@ -232,7 +232,7 @@ public final class CorrelationFilter extends RuleFilter {
     }
 
     /**
-     * Set the replyToSessionId property: The ReplyToSessionId property.
+     * Set the replyToSessionId property: The replyToSessionId property.
      *
      * @param replyToSessionId the replyToSessionId value to set.
      * @return the CorrelationFilter object itself.
@@ -243,7 +243,7 @@ public final class CorrelationFilter extends RuleFilter {
     }
 
     /**
-     * Get the contentType property: The ContentType property.
+     * Get the contentType property: The contentType property.
      *
      * @return the contentType value.
      */
@@ -252,7 +252,7 @@ public final class CorrelationFilter extends RuleFilter {
     }
 
     /**
-     * Set the contentType property: The ContentType property.
+     * Set the contentType property: The contentType property.
      *
      * @param contentType the contentType value to set.
      * @return the CorrelationFilter object itself.
@@ -263,7 +263,7 @@ public final class CorrelationFilter extends RuleFilter {
     }
 
     /**
-     * Get the properties property: The Properties property.
+     * Get the properties property: The properties property.
      *
      * @return the properties value.
      */
@@ -275,7 +275,7 @@ public final class CorrelationFilter extends RuleFilter {
     }
 
     /**
-     * Set the properties property: The Properties property.
+     * Set the properties property: The properties property.
      *
      * @param properties the properties value to set.
      * @return the CorrelationFilter object itself.

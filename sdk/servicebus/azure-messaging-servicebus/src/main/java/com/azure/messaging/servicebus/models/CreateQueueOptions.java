@@ -4,7 +4,6 @@
 package com.azure.messaging.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusManagementAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusManagementClient;
 
@@ -20,13 +19,11 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 /**
  * Represents the set of options that can be specified for the creation of a queue.
  *
- * @see ServiceBusManagementAsyncClient#createQueue(CreateQueueOptions)
- * @see ServiceBusManagementClient#createQueue(CreateQueueOptions)
+ * @see ServiceBusManagementAsyncClient#createQueue(String, CreateQueueOptions)
+ * @see ServiceBusManagementClient#createQueue(String, CreateQueueOptions)
  */
 @Fluent
 public class CreateQueueOptions {
-    private final String name;
-
     private Duration autoDeleteOnIdle;
     private Duration defaultMessageTimeToLive;
     private boolean deadLetteringOnMessageExpiration;
@@ -61,20 +58,10 @@ public class CreateQueueOptions {
      *     <li>{@link #setStatus(EntityStatus)} is {@link EntityStatus#ACTIVE}.</li>
      * </ul>
      *
-     * @param queueName Name of the queue.
-     *
      * @throws NullPointerException if {@code queueName} is a null.
      * @throws IllegalArgumentException if {@code queueName} is an empty string.
      */
-    public CreateQueueOptions(String queueName) {
-        Objects.requireNonNull(queueName, "'queueName' cannot be null.");
-
-        if (queueName.isEmpty()) {
-            ClientLogger logger = new ClientLogger(CreateQueueOptions.class);
-            throw logger.logThrowableAsError(new IllegalArgumentException("Queue name cannot be empty."));
-        }
-
-        this.name = queueName;
+    public CreateQueueOptions() {
         this.autoDeleteOnIdle = MAX_DURATION;
         this.defaultMessageTimeToLive = MAX_DURATION;
         this.duplicateDetectionHistoryTimeWindow = DEFAULT_DUPLICATE_DETECTION_DURATION;
@@ -97,14 +84,7 @@ public class CreateQueueOptions {
      */
     public CreateQueueOptions(QueueProperties queue) {
         Objects.requireNonNull(queue, "'queue' cannot be null.");
-        Objects.requireNonNull(queue.getName(), "Queue name cannot be null.");
 
-        if (queue.getName().isEmpty()) {
-            final ClientLogger logger = new ClientLogger(CreateQueueOptions.class);
-            throw logger.logExceptionAsError(new IllegalArgumentException("Queue name cannot be empty."));
-        }
-
-        this.name = queue.getName();
         this.autoDeleteOnIdle = queue.getAutoDeleteOnIdle();
         this.defaultMessageTimeToLive = queue.getDefaultMessageTimeToLive();
 
@@ -124,15 +104,6 @@ public class CreateQueueOptions {
         this.requiresSession = queue.requiresSession();
         this.status = queue.getStatus();
         this.userMetadata = queue.getUserMetadata();
-    }
-
-    /**
-     * Gets the name of the queue.
-     *
-     * @return The name of the queue.
-     */
-    public String getName() {
-        return name;
     }
 
     /**

@@ -496,8 +496,8 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                         ModelBridgeInternal.getQueryPlanDiagnosticsContext(feedOfOrderByRowResults));
                 }).switchIfEmpty(Flux.defer(() -> {
                         // create an empty page if there is no result
-                        return Flux.just(BridgeInternal.createFeedResponse(Utils.immutableListOf(),
-                                headerResponse(tracker.getAndResetCharge())));
+                        return Flux.just(BridgeInternal.createFeedResponseWithQueryMetrics(Utils.immutableListOf(),
+                                headerResponse(tracker.getAndResetCharge()), queryMetricMap, null));
                     }));
         }
     }

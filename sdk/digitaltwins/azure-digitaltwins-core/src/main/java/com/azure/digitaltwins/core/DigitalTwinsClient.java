@@ -7,6 +7,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.Response;
 import com.azure.digitaltwins.core.models.DigitalTwinsGetByIdResponse;
 
 /**
@@ -53,7 +54,7 @@ public final class DigitalTwinsClient {
     // this annotation lets users know this method makes a call to the service and whether it returns a single resource or a collection of resources
     @ServiceMethod(returns = ReturnType.SINGLE)
     // TODO This is just a temporary implementation for test purposes. This should be spruced up/replaced once this API is actually designed
-    public DigitalTwinsGetByIdResponse getDigitalTwin(String digitalTwinId) {
+    public Response<Object> getDigitalTwin(String digitalTwinId) {
         // Blocking calls to the async client is the established pattern in track 2 Java SDKs
         return this.digitalTwinsAsyncClient.getDigitalTwin(digitalTwinId).block();
     }
