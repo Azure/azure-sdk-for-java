@@ -429,7 +429,7 @@ def main():
     # if the file changed flag is set, which only happens through a call to prep_version_file_for_source_testing,
     # then exit with a unique code that allows us to know that something changed.
     if (file_changed):
-        sys.exit(5678)
+        print('##vso[task.setvariable variable=ShouldRunSourceTests]true')
 
 if __name__ == '__main__':
     main()

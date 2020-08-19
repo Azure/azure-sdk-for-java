@@ -355,10 +355,10 @@ class APISpec extends Specification {
      * https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-blob-service-operations
      *
      * @param perRequestDataSize The amount of data expected to go out in each request. Will be used to calculate a
-     * timeout value--about 10s/MB. Won't be less than 1 minute.
+     * timeout value--about 20s/MB. Won't be less than 1 minute.
      */
     BlobServiceAsyncClient getPrimaryServiceClientForWrites(long perRequestDataSize) {
-        int retryTimeout = Math.toIntExact((long) (perRequestDataSize / Constants.MB) * 10)
+        int retryTimeout = Math.toIntExact((long) (perRequestDataSize / Constants.MB) * 20)
         retryTimeout = Math.max(60, retryTimeout)
         return getServiceClientBuilder(primaryCredential,
             String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))

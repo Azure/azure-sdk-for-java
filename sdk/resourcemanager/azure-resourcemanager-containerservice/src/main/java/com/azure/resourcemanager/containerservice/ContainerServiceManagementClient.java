@@ -14,6 +14,7 @@ import com.azure.resourcemanager.containerservice.fluent.ContainerServicesClient
 import com.azure.resourcemanager.containerservice.fluent.ManagedClustersClient;
 import com.azure.resourcemanager.containerservice.fluent.OpenShiftManagedClustersClient;
 import com.azure.resourcemanager.containerservice.fluent.OperationsClient;
+import com.azure.resourcemanager.containerservice.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 
@@ -146,6 +147,18 @@ public final class ContainerServiceManagementClient extends AzureServiceClient {
         return this.agentPools;
     }
 
+    /** The PrivateEndpointConnectionsClient object to access its operations. */
+    private final PrivateEndpointConnectionsClient privateEndpointConnections;
+
+    /**
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
+     *
+     * @return the PrivateEndpointConnectionsClient object.
+     */
+    public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
     /**
      * Initializes an instance of ContainerServiceManagementClient client.
      *
@@ -172,5 +185,6 @@ public final class ContainerServiceManagementClient extends AzureServiceClient {
         this.operations = new OperationsClient(this);
         this.managedClusters = new ManagedClustersClient(this);
         this.agentPools = new AgentPoolsClient(this);
+        this.privateEndpointConnections = new PrivateEndpointConnectionsClient(this);
     }
 }

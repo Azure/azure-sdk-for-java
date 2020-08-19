@@ -100,7 +100,7 @@
     "dir": "azure-resourcemanager-containerservice",
     "source": "specification/containerservice/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.containerservice",
-    "args": "--payload-flattening-threshold=1 --tag=package-2019-08 --title=ContainerServiceManagementClient --description=\"Container Service Client\""
+    "args": "--payload-flattening-threshold=1 --tag=package-2020-06 --title=ContainerServiceManagementClient --description=\"Container Service Client\""
   },
   "cosmos": {
     "dir": "azure-resourcemanager-cosmos",
@@ -232,6 +232,12 @@
     "package": "com.microsoft.azure.resourcemanager.powerbi",
     "args": "--payload-flattening-threshold=1 --tag=package-2016-01"
   },
+  "privatedns": {
+    "dir": "azure-resourcemanager-privatedns",
+    "source": "specification/privatedns/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.privatedns",
+    "args": "--payload-flattening-threshold=1 --tag=package-2018-09"
+  },
   "recoveryservices": {
     "dir": "azure-resourcemanager-recoveryservices",
     "source": "specification/recoveryservices/resource-manager/readme.md",
@@ -253,7 +259,7 @@
   "redis": {
     "dir": "azure-resourcemanager-redis",
     "source": "specification/redis/resource-manager/readme.md",
-    "package": "com.microsoft.azure.resourcemanager.redis",
+    "package": "com.azure.resourcemanager.redis",
     "args": "--payload-flattening-threshold=1 --tag=package-2018-03"
   },
   "relay": {

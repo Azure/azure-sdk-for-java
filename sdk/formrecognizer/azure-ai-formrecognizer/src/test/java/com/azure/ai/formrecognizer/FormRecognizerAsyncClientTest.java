@@ -675,10 +675,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                             .setPollInterval(durationTestMode))
                         .getSyncPoller().getFinalResult());
                 FormRecognizerErrorInformation errorInformation = formRecognizerException.getErrorInformation().get(0);
-                // TODO: Service bug https://github.com/Azure/azure-sdk-for-java/issues/12046
-                // assertEquals(EXPECTED_INVALID_URL_ERROR_CODE, errorInformation.getCode());
-                // assertEquals(OCR_EXTRACTION_INVALID_URL_ERROR, errorInformation.getMessage());
-                // assertEquals(EXPECTED_INVALID_ANALYZE_EXCEPTION_MESSAGE, formRecognizerException.getMessage());
+                assertEquals(EXPECTED_URL_BADLY_FORMATTED_ERROR_CODE, errorInformation.getErrorCode());
             }));
     }
 

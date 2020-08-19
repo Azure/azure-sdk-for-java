@@ -17,6 +17,7 @@ import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
@@ -35,6 +36,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
@@ -274,7 +276,9 @@ public final class RestProxy implements InvocationHandler {
             }
 
             if (isJson) {
-                request.setBody(serializer.serialize(bodyContentObject, SerializerEncoding.JSON));
+                ByteArrayOutputStream stream = new AccessibleByteArrayOutputStream();
+                serializer.serialize(bodyContentObject, SerializerEncoding.JSON, stream)
+                request.setBody(stream.toByteArray());
             } else if (FluxUtil.isFluxByteBuffer(methodParser.getBodyJavaType())) {
                 // Content-Length or Transfer-Encoding: chunked must be provided by a user-specified header when a
                 // Flowable<byte[]> is given for the body.
@@ -289,9 +293,9 @@ public final class RestProxy implements InvocationHandler {
             } else if (bodyContentObject instanceof ByteBuffer) {
                 request.setBody(Flux.just((ByteBuffer) bodyContentObject));
             } else {
-                request.setBody(
-                    serializer
-                        .serialize(bodyContentObject, SerializerEncoding.fromHeaders(request.getHeaders())));
+                ByteArrayOutputStream stream = new AccessibleByteArrayOutputStream();
+                serializer.serialize(bodyContentObject, SerializerEncoding.fromHeaders(request.getHeaders()), stream);
+                request.setBody(stream.toByteArray());
             }
         }
 

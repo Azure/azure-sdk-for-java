@@ -180,7 +180,7 @@ public class ReactiveCosmosTemplateIT {
             Person.class);
         StepVerifier.create(flux).expectNextCount(1).verifyComplete();
 
-        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
         Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
     }
@@ -331,7 +331,7 @@ public class ReactiveCosmosTemplateIT {
         Flux<Person> flux = cosmosTemplate.findAll(Person.class.getSimpleName(), Person.class);
         StepVerifier.create(flux).expectNextCount(2).verifyComplete();
 
-        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
         Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
 
@@ -348,7 +348,7 @@ public class ReactiveCosmosTemplateIT {
         flux = cosmosTemplate.findAll(Person.class.getSimpleName(), Person.class);
         StepVerifier.create(flux).expectNextCount(1).verifyComplete();
 
-        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
         Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
 
@@ -386,7 +386,7 @@ public class ReactiveCosmosTemplateIT {
             Person.class.getSimpleName());
         StepVerifier.create(personFluxIgnoreCase).expectNextCount(1).verifyComplete();
 
-        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
         Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
     }
@@ -406,7 +406,7 @@ public class ReactiveCosmosTemplateIT {
         final Mono<Boolean> existsIgnoreCase = cosmosTemplate.exists(queryIgnoreCase, Person.class, containerName);
         StepVerifier.create(existsIgnoreCase).expectNext(true).verifyComplete();
 
-        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
         Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
     }
@@ -416,7 +416,7 @@ public class ReactiveCosmosTemplateIT {
         final Mono<Long> count = cosmosTemplate.count(containerName);
         StepVerifier.create(count).expectNext((long) 1).verifyComplete();
 
-        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
         Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
     }

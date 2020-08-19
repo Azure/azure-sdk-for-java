@@ -1,5 +1,8 @@
 # Release History
 
+## 3.0.0-beta.2 (Unreleased)
+
+
 ## 3.0.0-beta.1 (2020-08-11)
 This beta version targets Azure Form Recognizer service API version v2.0.
 
@@ -27,7 +30,7 @@ respectively
 ## 1.0.0-beta.4 (2020-07-07)
 ### Breaking Changes
 - `beginRecognizeReceipt` APIs now return a `RecognizedForm` model instead of a `RecognizedReceipt`. See
-[this](https://github.com/Azure/azure-sdk-for-java/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/StronglyTypedRecognizedFormUSReceipt.java)
+[this](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/StronglyTypedRecognizedForm.java)
 suggested approach for extracting information from receipts.
 - Methods returning `textContent` have been renamed to `fieldElements` on `FieldData` and `FormTableCell`
 - Renamed `FormContent` to `FormElement`

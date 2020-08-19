@@ -2,7 +2,7 @@
 
 ## Checking out the code
 
-The SDK is open source and is available here [sdk](sdk/).
+The SDK is open source and is available here [sdk](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/).
 
 Clone the Repo
 
@@ -30,7 +30,7 @@ mvn test -DACCOUNT_HOST="https://REPLACE_ME_WITH_YOURS.documents.azure.com:443/"
 ## Import into Intellij or Eclipse
 
 - Load the main parent project pom file in Intellij/Eclipse (That should automatically load examples).
-- For running the samples you need a proper Azure Cosmos DB Endpoint. The endpoints are picked up from [TestConfigurations.java](examples/src/test/java/com/microsoft/azure/cosmosdb/rx/examples/TestConfigurations.java). There is a similar endpoint config file for the sdk tests [here](sdk/src/test/java/com/microsoft/azure/cosmosdb/rx/TestConfigurations.java).
+- For running the samples you need a proper Azure Cosmos DB Endpoint. The endpoints are picked up from [TestConfigurations.java](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/implementation/TestConfigurations.java).
 - You can pass your endpoint credentials as VM Arguments in Eclipse JUnit Run Config:
 
 ```bash

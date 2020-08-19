@@ -357,28 +357,42 @@
     </dependencies>
   </dependencyManagement>
 
+  <profiles>
+    <profile>
+      <id>dependency-checker</id>
+      <activation>
+        <property>
+          <name>dependency-checker</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <!-- This plugin validates that the artifacts in this BOM use a common dependency set. -->
+          <plugin>
+            <groupId>net.jonathangiles.tools</groupId>
+            <artifactId>dependencyChecker-maven-plugin</artifactId>
+            <version>1.0.4</version> <!-- {x-version-update;net.jonathangiles.tools:dependencyChecker-maven-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <phase>package</phase>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+                <configuration>
+                  <reporters>html</reporters>
+                  <showAll>true</showAll>
+                  <analyseBom>true</analyseBom>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
   <build>
     <plugins>
-      <!-- This plugin validates that the artifacts in this BOM use a common dependency set. -->
-      <plugin>
-        <groupId>net.jonathangiles.tools</groupId>
-        <artifactId>dependencyChecker-maven-plugin</artifactId>
-        <version>1.0.4</version> <!-- {x-version-update;net.jonathangiles.tools:dependencyChecker-maven-plugin;external_dependency} -->
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>check</goal>
-            </goals>
-            <configuration>
-              <reporters>html</reporters>
-              <showAll>true</showAll>
-              <analyseBom>true</analyseBom>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
       <!-- Copy the pom file to output -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
