@@ -21,7 +21,7 @@ public class CosmosQuery {
     private Sort sort = Sort.unsorted();
 
     private Pageable pageable = Pageable.unpaged();
-    
+
     private PartTree tree;
 
     /**
@@ -60,26 +60,27 @@ public class CosmosQuery {
         return pageable;
     }
 
-	/**
-	 * To get PartTree object
-	 * 
-	 * @return
-	 */
-	public PartTree getTree() {
-		return tree;
-	}
-	
-	/**
-	 * To set PartTree
-	 * 
-	 * @param tree
-	 */
-	public void setTree(PartTree tree) {
-		if (this.tree == null)
-			this.tree = tree;
-	}
+    /**
+     * To get PartTree object
+     *
+     * @return PartTree
+     */
+    public PartTree getTree() {
+        return tree;
+    }
 
-	/**
+    /**
+     * To set PartTree
+     *
+     * @param tree
+     */
+    public void setTree(PartTree tree) {
+        if (this.tree == null) {
+            this.tree = tree;
+        }
+    }
+
+    /**
      * With Sort
      *
      * @param sort Sort
@@ -131,13 +132,14 @@ public class CosmosQuery {
         }
 
         return partitionKeys.stream().filter(this::isCrossPartitionQuery)
-                .findFirst()
-                .map(p -> true)
-                .orElse(hasKeywordOr());
+            .findFirst()
+            .map(p -> true)
+            .orElse(hasKeywordOr());
     }
 
     /**
      * To get criteria by type
+     *
      * @param criteriaType the criteria type
      * @return Optional
      */
@@ -150,7 +152,7 @@ public class CosmosQuery {
             return Optional.of(criteria);
         }
 
-        for (final Criteria subCriteria: criteria.getSubCriteria()) {
+        for (final Criteria subCriteria : criteria.getSubCriteria()) {
             if (getCriteriaByType(criteriaType, subCriteria).isPresent()) {
                 return Optional.of(subCriteria);
             }
