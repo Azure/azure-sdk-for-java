@@ -8,10 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** The ManagedClusterIdentity model. */
 @Fluent
-public final class ManagedClusterIdentity {
+public class ManagedClusterIdentity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterIdentity.class);
 
     /*
@@ -37,6 +38,16 @@ public final class ManagedClusterIdentity {
      */
     @JsonProperty(value = "type")
     private ResourceIdentityType type;
+
+    /*
+     * The user identity associated with the managed cluster. This identity
+     * will be used in control plane and only one user assigned identity is
+     * allowed. The user identity dictionary key references will be ARM
+     * resource ids in the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     */
+    @JsonProperty(value = "userAssignedIdentities")
+    private Map<String, ManagedClusterIdentityUserAssignedIdentities> userAssignedIdentities;
 
     /**
      * Get the principalId property: The principal id of the system assigned identity which is used by master
@@ -82,10 +93,47 @@ public final class ManagedClusterIdentity {
     }
 
     /**
+     * Get the userAssignedIdentities property: The user identity associated with the managed cluster. This identity
+     * will be used in control plane and only one user assigned identity is allowed. The user identity dictionary key
+     * references will be ARM resource ids in the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     *
+     * @return the userAssignedIdentities value.
+     */
+    public Map<String, ManagedClusterIdentityUserAssignedIdentities> userAssignedIdentities() {
+        return this.userAssignedIdentities;
+    }
+
+    /**
+     * Set the userAssignedIdentities property: The user identity associated with the managed cluster. This identity
+     * will be used in control plane and only one user assigned identity is allowed. The user identity dictionary key
+     * references will be ARM resource ids in the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     *
+     * @param userAssignedIdentities the userAssignedIdentities value to set.
+     * @return the ManagedClusterIdentity object itself.
+     */
+    public ManagedClusterIdentity withUserAssignedIdentities(
+        Map<String, ManagedClusterIdentityUserAssignedIdentities> userAssignedIdentities) {
+        this.userAssignedIdentities = userAssignedIdentities;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (userAssignedIdentities() != null) {
+            userAssignedIdentities()
+                .values()
+                .forEach(
+                    e -> {
+                        if (e != null) {
+                            e.validate();
+                        }
+                    });
+        }
     }
 }

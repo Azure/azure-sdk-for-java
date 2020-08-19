@@ -4,41 +4,28 @@
 
 package com.azure.resourcemanager.sql.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for JobStepOutputType. */
-public enum JobStepOutputType {
-    /** Enum value SqlDatabase. */
-    SQL_DATABASE("SqlDatabase");
-
-    /** The actual serialized value for a JobStepOutputType instance. */
-    private final String value;
-
-    JobStepOutputType(String value) {
-        this.value = value;
-    }
+public final class JobStepOutputType extends ExpandableStringEnum<JobStepOutputType> {
+    /** Static value SqlDatabase for JobStepOutputType. */
+    public static final JobStepOutputType SQL_DATABASE = fromString("SqlDatabase");
 
     /**
-     * Parses a serialized value to a JobStepOutputType instance.
+     * Creates or finds a JobStepOutputType from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed JobStepOutputType object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding JobStepOutputType.
      */
     @JsonCreator
-    public static JobStepOutputType fromString(String value) {
-        JobStepOutputType[] items = JobStepOutputType.values();
-        for (JobStepOutputType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static JobStepOutputType fromString(String name) {
+        return fromString(name, JobStepOutputType.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known JobStepOutputType values. */
+    public static Collection<JobStepOutputType> values() {
+        return values(JobStepOutputType.class);
     }
 }

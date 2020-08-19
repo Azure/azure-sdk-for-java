@@ -2,4 +2,4 @@
 
 ## 2.0.0-beta.4 (Unreleased)
 
-- TODO
+- Support beginCreate/beginDelete for VirtualMachine and Disk

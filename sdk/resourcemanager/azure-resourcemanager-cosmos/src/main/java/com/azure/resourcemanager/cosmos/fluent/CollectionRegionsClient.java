@@ -214,6 +214,7 @@ public final class CollectionRegionsClient {
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
         }
         final String apiVersion = "2019-08-01";
+        context = this.client.mergeContext(context);
         return service
             .listMetrics(
                 this.client.getEndpoint(),

@@ -250,6 +250,7 @@ public final class BindingsClient {
         if (bindingName == null) {
             return Mono.error(new IllegalArgumentException("Parameter bindingName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -476,6 +477,7 @@ public final class BindingsClient {
         }
         BindingResourceInner bindingResource = new BindingResourceInner();
         bindingResource.withProperties(properties);
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -705,6 +707,7 @@ public final class BindingsClient {
         if (bindingName == null) {
             return Mono.error(new IllegalArgumentException("Parameter bindingName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -914,6 +917,7 @@ public final class BindingsClient {
         }
         BindingResourceInner bindingResource = new BindingResourceInner();
         bindingResource.withProperties(properties);
+        context = this.client.mergeContext(context);
         return service
             .update(
                 this.client.getEndpoint(),
@@ -1142,6 +1146,7 @@ public final class BindingsClient {
         if (appName == null) {
             return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
@@ -1199,7 +1204,7 @@ public final class BindingsClient {
         String resourceGroupName, String serviceName, String appName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, serviceName, appName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1281,6 +1286,7 @@ public final class BindingsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(

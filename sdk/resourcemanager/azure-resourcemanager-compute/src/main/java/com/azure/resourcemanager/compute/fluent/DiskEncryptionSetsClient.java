@@ -307,8 +307,12 @@ public final class DiskEncryptionSetsClient
             createOrUpdateWithResponseAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet);
         return this
             .client
-            .<DiskEncryptionSetInner, DiskEncryptionSetInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DiskEncryptionSetInner.class, DiskEncryptionSetInner.class);
+            .<DiskEncryptionSetInner, DiskEncryptionSetInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                DiskEncryptionSetInner.class,
+                DiskEncryptionSetInner.class,
+                Context.NONE);
     }
 
     /**
@@ -331,12 +335,17 @@ public final class DiskEncryptionSetsClient
         String diskEncryptionSetName,
         DiskEncryptionSetInner diskEncryptionSet,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet, context);
         return this
             .client
-            .<DiskEncryptionSetInner, DiskEncryptionSetInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DiskEncryptionSetInner.class, DiskEncryptionSetInner.class);
+            .<DiskEncryptionSetInner, DiskEncryptionSetInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                DiskEncryptionSetInner.class,
+                DiskEncryptionSetInner.class,
+                context);
     }
 
     /**
@@ -607,8 +616,12 @@ public final class DiskEncryptionSetsClient
             updateWithResponseAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet);
         return this
             .client
-            .<DiskEncryptionSetInner, DiskEncryptionSetInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DiskEncryptionSetInner.class, DiskEncryptionSetInner.class);
+            .<DiskEncryptionSetInner, DiskEncryptionSetInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                DiskEncryptionSetInner.class,
+                DiskEncryptionSetInner.class,
+                Context.NONE);
     }
 
     /**
@@ -631,12 +644,17 @@ public final class DiskEncryptionSetsClient
         String diskEncryptionSetName,
         DiskEncryptionSetUpdate diskEncryptionSet,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet, context);
         return this
             .client
-            .<DiskEncryptionSetInner, DiskEncryptionSetInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DiskEncryptionSetInner.class, DiskEncryptionSetInner.class);
+            .<DiskEncryptionSetInner, DiskEncryptionSetInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                DiskEncryptionSetInner.class,
+                DiskEncryptionSetInner.class,
+                context);
     }
 
     /**
@@ -1069,7 +1087,9 @@ public final class DiskEncryptionSetsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String diskEncryptionSetName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, diskEncryptionSetName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1088,9 +1108,12 @@ public final class DiskEncryptionSetsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String diskEncryptionSetName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, diskEncryptionSetName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1326,7 +1349,7 @@ public final class DiskEncryptionSetsClient
     public PagedFlux<DiskEncryptionSetInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1457,7 +1480,8 @@ public final class DiskEncryptionSetsClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DiskEncryptionSetInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

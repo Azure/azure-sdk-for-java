@@ -100,13 +100,13 @@
     "dir": "azure-resourcemanager-containerservice",
     "source": "specification/containerservice/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.containerservice",
-    "args": "--payload-flattening-threshold=1 --tag=package-2019-08 --title=ContainerServiceManagementClient --description=\"Container Service Client\""
+    "args": "--payload-flattening-threshold=1 --tag=package-2020-06 --title=ContainerServiceManagementClient --description=\"Container Service Client\""
   },
   "cosmos": {
     "dir": "azure-resourcemanager-cosmos",
     "source": "specification/cosmos-db/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.cosmos",
-    "args": "--payload-flattening-threshold=1 --tag=package-2019-08-preview"
+    "args": "--payload-flattening-threshold=0 --tag=package-2019-08-preview"
   },
   "customerinsights": {
     "dir": "azure-resourcemanager-customerinsights",
@@ -224,13 +224,19 @@
     "dir": "azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--payload-flattening-threshold=1 --tag=package-policy-2019-09"	
+    "args": "--payload-flattening-threshold=1 --tag=package-policy-2019-09"
   },
   "powerbi": {
     "dir": "azure-resourcemanager-powerbi",
     "source": "specification/powerbiembedded/resource-manager/readme.md",
     "package": "com.microsoft.azure.resourcemanager.powerbi",
     "args": "--payload-flattening-threshold=1 --tag=package-2016-01"
+  },
+  "privatedns": {
+    "dir": "azure-resourcemanager-privatedns",
+    "source": "specification/privatedns/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.privatedns",
+    "args": "--payload-flattening-threshold=1 --tag=package-2018-09"
   },
   "recoveryservices": {
     "dir": "azure-resourcemanager-recoveryservices",
@@ -253,7 +259,7 @@
   "redis": {
     "dir": "azure-resourcemanager-redis",
     "source": "specification/redis/resource-manager/readme.md",
-    "package": "com.microsoft.azure.resourcemanager.redis",
+    "package": "com.azure.resourcemanager.redis",
     "args": "--payload-flattening-threshold=1 --tag=package-2018-03"
   },
   "relay": {
@@ -326,7 +332,7 @@
     "dir": "azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-subscriptions-2020-01"
+    "args": "--tag=package-subscriptions-2020-01 --name-for-ungrouped-operations=ResourceName"
   },
   "trafficmanager": {
     "dir": "azure-resourcemanager-trafficmanager",

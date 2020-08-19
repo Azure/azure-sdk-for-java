@@ -280,7 +280,7 @@ public final class InboundNatRulesClient {
         String resourceGroupName, String loadBalancerName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, loadBalancerName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -436,7 +436,9 @@ public final class InboundNatRulesClient {
         String resourceGroupName, String loadBalancerName, String inboundNatRuleName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, loadBalancerName, inboundNatRuleName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -454,9 +456,12 @@ public final class InboundNatRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String loadBalancerName, String inboundNatRuleName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, loadBalancerName, inboundNatRuleName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -962,8 +967,12 @@ public final class InboundNatRulesClient {
                 resourceGroupName, loadBalancerName, inboundNatRuleName, inboundNatRuleParameters);
         return this
             .client
-            .<InboundNatRuleInner, InboundNatRuleInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), InboundNatRuleInner.class, InboundNatRuleInner.class);
+            .<InboundNatRuleInner, InboundNatRuleInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                InboundNatRuleInner.class,
+                InboundNatRuleInner.class,
+                Context.NONE);
     }
 
     /**
@@ -986,13 +995,14 @@ public final class InboundNatRulesClient {
         String inboundNatRuleName,
         InboundNatRuleInner inboundNatRuleParameters,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(
                 resourceGroupName, loadBalancerName, inboundNatRuleName, inboundNatRuleParameters, context);
         return this
             .client
-            .<InboundNatRuleInner, InboundNatRuleInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), InboundNatRuleInner.class, InboundNatRuleInner.class);
+            .<InboundNatRuleInner, InboundNatRuleInner>getLroResult(
+                mono, this.client.getHttpPipeline(), InboundNatRuleInner.class, InboundNatRuleInner.class, context);
     }
 
     /**

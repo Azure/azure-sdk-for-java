@@ -190,6 +190,7 @@ public final class RestorableDroppedDatabasesClient {
                         "Parameter restorableDroppededDatabaseId is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -382,6 +383,7 @@ public final class RestorableDroppedDatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        context = this.client.mergeContext(context);
         return service
             .listByServer(
                 this.client.getEndpoint(),

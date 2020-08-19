@@ -52,7 +52,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.0.9</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.jcraft</groupId>
@@ -93,27 +93,27 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>24.1.1-jre</version> <!-- {x-version-update;com.google.guava:guava;external_dependency} -->
+      <version>29.0-jre</version> <!-- {x-version-update;com.google.guava:guava;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.7.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.8.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.3.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <version>4.3.1</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-certificates</artifactId>
-      <version>4.0.4</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
+      <version>4.1.0</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-client</artifactId>
-      <version>4.9.1</version> <!-- {x-version-update;io.fabric8:kubernetes-client;external_dependency} -->
+      <version>4.10.3</version> <!-- {x-version-update;io.fabric8:kubernetes-client;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.sqlserver</groupId>
@@ -189,10 +189,10 @@
             <bannedDependencies>
               <includes>
                 <include>org.apache.httpcomponents:httpclient:[4.5.12]</include> <!-- {x-include-update;org.apache.httpcomponents:httpclient;external_dependency} -->
-                <include>io.fabric8:kubernetes-client:[4.9.1]</include> <!-- {x-include-update;io.fabric8:kubernetes-client;external_dependency} -->
+                <include>io.fabric8:kubernetes-client:[4.10.3]</include> <!-- {x-include-update;io.fabric8:kubernetes-client;external_dependency} -->
                 <include>com.jcraft:jsch:[0.1.55]</include> <!-- {x-include-update;resourcemanager_com.jcraft:jsch;external_dependency} -->
                 <include>org.slf4j:slf4j-simple:[1.7.30]</include> <!-- {x-include-update;org.slf4j:slf4j-simple;external_dependency} -->
-                <include>com.google.guava:guava:[24.1.1-jre]</include> <!-- {x-include-update;com.google.guava:guava;external_dependency} -->
+                <include>com.google.guava:guava:[29.0-jre]</include> <!-- {x-include-update;com.google.guava:guava;external_dependency} -->
                 <include>com.github.docker-java:docker-java:[3.2.1]</include> <!-- {x-include-update;com.github.docker-java:docker-java;external_dependency} -->
                 <include>com.microsoft.sqlserver:mssql-jdbc:[7.4.1.jre8]</include> <!-- {x-include-update;com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
                 <include>org.eclipse.jgit:org.eclipse.jgit:[4.5.7.201904151645-r]</include> <!-- {x-include-update;org.eclipse.jgit:org.eclipse.jgit;external_dependency} -->

@@ -12,7 +12,7 @@ import java.util.UUID;
 
 /** The ResourceIdentity model. */
 @Fluent
-public final class ResourceIdentity {
+public class ResourceIdentity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceIdentity.class);
 
     /*

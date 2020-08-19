@@ -80,7 +80,7 @@ public final class OperationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-06-01";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, context))
             .<PagedResponse<OperationValueInner>>map(
@@ -107,7 +107,8 @@ public final class OperationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-06-01";
+        context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), apiVersion, context)
             .map(

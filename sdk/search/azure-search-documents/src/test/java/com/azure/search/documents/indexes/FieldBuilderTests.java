@@ -32,14 +32,14 @@ public class FieldBuilderTests {
     public void hotelSearchableThrowException() {
         Exception exception = assertThrows(RuntimeException.class, () ->
             SearchIndexClient.buildSearchFields(HotelSearchException.class, null));
-        assertExceptionMassageAndDataType(exception, SearchFieldDataType.INT32, "hotelId");
+        assertExceptionMassageAndDataType(exception, SearchFieldDataType.INT32, "getHotelId");
     }
 
     @Test
     public void hotelListFieldSearchableThrowException() {
         Exception exception = assertThrows(RuntimeException.class, () ->
             SearchIndexClient.buildSearchFields(HotelSearchableExceptionOnList.class, null));
-        assertExceptionMassageAndDataType(exception, SearchFieldDataType.collection(SearchFieldDataType.INT32), "passcode");
+        assertExceptionMassageAndDataType(exception, SearchFieldDataType.collection(SearchFieldDataType.INT32), "getPasscode");
     }
 
     @Test

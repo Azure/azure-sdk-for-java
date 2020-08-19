@@ -14,9 +14,10 @@ import com.azure.spring.data.cosmos.Constants;
 public @interface CosmosIndexingPolicyCodeSnippet {
 
     // Indicate if indexing policy use automatic or not
+    // Default value is true
     boolean automatic() default Constants.DEFAULT_INDEXING_POLICY_AUTOMATIC;
 
-    // Indexing policy mode, option Consistent|Lazy|None.
+    // Indexing policy mode, option Consistent.
     IndexingMode mode() default IndexingMode.CONSISTENT;
 
     // Included paths for indexing
