@@ -19,16 +19,16 @@ import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.AspectSentiment;
-import com.azure.ai.textanalytics.models.MinedOpinion;
+import com.azure.ai.textanalytics.models.MinedOpinions;
 import com.azure.ai.textanalytics.models.OpinionSentiment;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
-import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.models.WarningCode;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -38,9 +38,12 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
+import static com.azure.ai.textanalytics.implementation.Utility.getEmptyErrorIdHttpResponse;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExist;
 import static com.azure.ai.textanalytics.implementation.Utility.toBatchStatistics;
@@ -56,7 +59,6 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  */
 class AnalyzeSentimentAsyncClient {
     private static final int NEUTRAL_SCORE_ZERO = 0;
-
     private final ClientLogger logger = new ClientLogger(AnalyzeSentimentAsyncClient.class);
     private final TextAnalyticsClientImpl service;
 
@@ -77,6 +79,7 @@ class AnalyzeSentimentAsyncClient {
      * @param documents The list of documents to analyze sentiments for.
      * @param options The additional configurable {@link AnalyzeSentimentOptions options} that may be passed when
      * analyzing sentiments.
+     *
      * @return A mono {@link Response} contains {@link AnalyzeSentimentResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is null.
@@ -86,10 +89,7 @@ class AnalyzeSentimentAsyncClient {
         Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options) {
         try {
             inputDocumentsValidation(documents);
-            return withContext(context -> getAnalyzedSentimentResponse(documents,
-                options == null ? false : options.isIncludeOpinionMining(),
-                options == null ? null : options.getRequestOptions(),
-                context));
+            return withContext(context -> getAnalyzedSentimentResponse(documents, options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -110,10 +110,7 @@ class AnalyzeSentimentAsyncClient {
         Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options, Context context) {
         try {
             inputDocumentsValidation(documents);
-            return getAnalyzedSentimentResponse(documents,
-                options == null ? false : options.isIncludeOpinionMining(),
-                options == null ? null : options.getRequestOptions(),
-                context);
+            return getAnalyzedSentimentResponse(documents, options, context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -131,10 +128,22 @@ class AnalyzeSentimentAsyncClient {
         Response<SentimentResponse> response) {
         final SentimentResponse sentimentResponse = response.getValue();
         final List<AnalyzeSentimentResult> analyzeSentimentResults = new ArrayList<>();
-        for (DocumentSentiment documentSentiment : sentimentResponse.getDocuments()) {
-            analyzeSentimentResults.add(convertToAnalyzeSentimentResult(documentSentiment));
+        final List<DocumentSentiment> documentSentiments = sentimentResponse.getDocuments();
+        for (DocumentSentiment documentSentiment : documentSentiments) {
+            analyzeSentimentResults.add(convertToAnalyzeSentimentResult(documentSentiment, documentSentiments));
         }
         for (DocumentError documentError : sentimentResponse.getErrors()) {
+            /*
+             *  TODO: Remove this after service update to throw exception.
+             *  Currently, service sets max limit of document size to 5, if the input documents size > 5, it will
+             *  have an id = "", empty id. In the future, they will remove this and throw HttpResponseException.
+             */
+            if (documentError.getId().isEmpty()) {
+                throw logger.logExceptionAsError(
+                    new HttpResponseException(documentError.getError().getInnererror().getMessage(),
+                        getEmptyErrorIdHttpResponse(new SimpleResponse<>(response, response.getValue())),
+                        documentError.getError().getInnererror().getCode()));
+            }
             analyzeSentimentResults.add(new AnalyzeSentimentResult(documentError.getId(), null,
                 toTextAnalyticsError(documentError.getError()), null));
         }
@@ -147,10 +156,12 @@ class AnalyzeSentimentAsyncClient {
      * Helper method to convert the service response of {@link DocumentSentiment} to {@link AnalyzeSentimentResult}.
      *
      * @param documentSentiment The {@link DocumentSentiment} returned by the service.
+     * @param documentSentimentList The document sentiment list returned by the service.
      *
      * @return The {@link AnalyzeSentimentResult} to be returned by the SDK.
      */
-    private AnalyzeSentimentResult convertToAnalyzeSentimentResult(DocumentSentiment documentSentiment) {
+    private AnalyzeSentimentResult convertToAnalyzeSentimentResult(DocumentSentiment documentSentiment,
+        List<DocumentSentiment> documentSentimentList) {
         // Document text sentiment
         final SentimentConfidenceScorePerLabel confidenceScorePerLabel = documentSentiment.getConfidenceScores();
         // Sentence text sentiment
@@ -161,7 +172,7 @@ class AnalyzeSentimentAsyncClient {
                 final SentenceSentimentValue sentenceSentimentValue = sentenceSentiment.getSentiment();
                 return new SentenceSentiment(sentenceSentiment.getText(),
                     TextSentiment.fromString(sentenceSentimentValue == null ? null : sentenceSentimentValue.toString()),
-                    toMinedOpinionList(sentenceSentiment),
+                    toMinedOpinionList(sentenceSentiment, documentSentimentList),
                     new SentimentConfidenceScores(confidenceScorePerSentence.getNegative(),
                         confidenceScorePerSentence.getNeutral(), confidenceScorePerSentence.getPositive())
                 );
@@ -197,22 +208,19 @@ class AnalyzeSentimentAsyncClient {
      * {@link AnalyzeSentimentResultCollection} from a {@link SimpleResponse} of {@link SentimentResponse}.
      *
      * @param documents A list of documents to be analyzed.
-     * @param includeOpinionMining The boolean indicator to include opinion mining data in the returned result. If this
-     * flag is specified, you'll get a {@code minedOpinions} property on SentenceSentiment. It's available start from
-     * v3.1-preview.1 service version.
-     * @param options The {@link TextAnalyticsRequestOptions} request options.
+     * @param options The additional configurable {@link AnalyzeSentimentOptions options} that may be passed when
+     * analyzing sentiments.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A mono {@link Response} contains {@link AnalyzeSentimentResultCollection}.
      */
     private Mono<Response<AnalyzeSentimentResultCollection>> getAnalyzedSentimentResponse(
-        Iterable<TextDocumentInput> documents, boolean includeOpinionMining, TextAnalyticsRequestOptions options,
-        Context context) {
+        Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options, Context context) {
         return service.sentimentWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
             options == null ? null : options.getModelVersion(),
             options == null ? null : options.isIncludeStatistics(),
-            includeOpinionMining,
+            options == null ? null : options.isIncludeOpinionMining(),
             context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
             .doOnSuccess(response -> logger.info("Analyzed sentiment for a batch of documents - {}", response))
@@ -224,32 +232,32 @@ class AnalyzeSentimentAsyncClient {
     /*
      * Transform SentenceSentiment's opinion mining to output that user can use.
      */
-    private IterableStream<MinedOpinion> toMinedOpinionList(
-        com.azure.ai.textanalytics.implementation.models.SentenceSentiment sentenceSentiment) {
+    private IterableStream<MinedOpinions> toMinedOpinionList(
+        com.azure.ai.textanalytics.implementation.models.SentenceSentiment sentenceSentiment,
+        List<DocumentSentiment> documentSentimentList) {
         // If include opinion mining indicator is false, the service return null for the aspect list.
-        if (sentenceSentiment.getAspects() == null) {
+        final List<SentenceAspect> sentenceAspects = sentenceSentiment.getAspects();
+        if (sentenceAspects == null) {
             return null;
         }
-        final List<SentenceAspect> sentenceAspects = sentenceSentiment.getAspects();
-        final List<MinedOpinion> minedOpinions = new ArrayList<>();
+        final List<MinedOpinions> minedOpinions = new ArrayList<>();
         sentenceAspects.forEach(sentenceAspect -> {
             final List<OpinionSentiment> opinionSentiments = new ArrayList<>();
             sentenceAspect.getRelations().forEach(aspectRelation -> {
                 final AspectRelationType aspectRelationType = aspectRelation.getRelationType();
-                final String refLink = aspectRelation.getRef();
-                final int refIndex = Integer.parseInt(refLink.substring(refLink.lastIndexOf("/") + 1));
-                if (AspectRelationType.OPINION.equals(aspectRelationType)) {
-                    opinionSentiments.add(toOpinionSentiment(sentenceSentiment.getOpinions().get(refIndex)));
+                final String opinionPointer = aspectRelation.getRef();
+                if (AspectRelationType.OPINION == aspectRelationType) {
+                    opinionSentiments.add(toOpinionSentiment(
+                        findSentimentOpinion(opinionPointer, documentSentimentList)));
                 }
             });
 
-            minedOpinions.add(new MinedOpinion(
+            minedOpinions.add(new MinedOpinions(
                 new AspectSentiment(sentenceAspect.getText(),
                     TextSentiment.fromString(sentenceAspect.getSentiment().toString()),
-                sentenceAspect.getOffset(), sentenceAspect.getLength(),
-                toSentimentConfidenceScores(sentenceAspect.getConfidenceScores())),
-                new IterableStream<>(opinionSentiments)
-                ));
+                    sentenceAspect.getOffset(), sentenceAspect.getLength(),
+                    toSentimentConfidenceScores(sentenceAspect.getConfidenceScores())),
+                new IterableStream<>(opinionSentiments)));
         });
 
         return new IterableStream<>(minedOpinions);
@@ -272,5 +280,62 @@ class AnalyzeSentimentAsyncClient {
             TextSentiment.fromString(sentenceOpinion.getSentiment().toString()),
             sentenceOpinion.getOffset(), sentenceOpinion.getLength(), sentenceOpinion.isNegated(),
             toSentimentConfidenceScores(sentenceOpinion.getConfidenceScores()));
+    }
+
+    /*
+     * Parses the reference pointer to an index array that contains document, sentence, and opinion indexes.
+     */
+    private int[] parseRefPointerToIndexArray(String referencePointer) {
+        // The pattern always start with character '#', the opinion index will existing in specified sentence, which
+        // is under specified document.
+        // example: #/documents/0/sentences/0/opinions/0
+        final String patternRegex = "#\\/documents\\/(\\d+)\\/sentences\\/(\\d+)\\/opinions\\/(\\d+)";
+        final Pattern pattern = Pattern.compile(patternRegex);
+        final Matcher matcher = pattern.matcher(referencePointer);
+        final boolean isMatched = matcher.find();
+
+        // The first index represents the document index, second one represents the sentence index,
+        // third ond represents the opinion index.
+        final int[] result = new int[3];
+        if (isMatched) {
+            String[] segments = referencePointer.split("/");
+            result[0] = Integer.parseInt(segments[2]);
+            result[1] = Integer.parseInt(segments[4]);
+            result[2] = Integer.parseInt(segments[6]);
+        } else {
+            throw logger.logExceptionAsError(new RuntimeException(
+                String.format("'referencePointer' %s is not a valid opinion pointer", referencePointer)));
+        }
+
+        return result;
+    }
+
+    /*
+     * Find the specific sentence opinion in the document sentiment list by given the opinion reference pointer.
+     */
+    private SentenceOpinion findSentimentOpinion(String opinionPointer, List<DocumentSentiment> documentSentimentList) {
+        final int[] opinionIndexes = parseRefPointerToIndexArray(opinionPointer);
+        final int documentIndex = opinionIndexes[0];
+        final int sentenceIndex = opinionIndexes[1];
+        final int opinionIndex = opinionIndexes[2];
+        if (documentIndex >= documentSentimentList.size()) {
+            throw logger.logExceptionAsError(
+                new RuntimeException(String.format("Invalid document index, %s.", documentIndex)));
+        }
+        final DocumentSentiment documentsentiment = documentSentimentList.get(documentIndex);
+
+        final List<com.azure.ai.textanalytics.implementation.models.SentenceSentiment> sentenceSentiments =
+            documentsentiment.getSentences();
+        if (sentenceIndex >= sentenceSentiments.size()) {
+            throw logger.logExceptionAsError(
+                new RuntimeException(String.format("Invalid sentence index, %s.", sentenceIndex)));
+        }
+
+        final List<SentenceOpinion> opinions = sentenceSentiments.get(sentenceIndex).getOpinions();
+        if (opinionIndex >= opinions.size()) {
+            throw logger.logExceptionAsError(
+                new RuntimeException(String.format("Invalid opinion index, %s.", opinionIndex)));
+        }
+        return opinions.get(opinionIndex);
     }
 }

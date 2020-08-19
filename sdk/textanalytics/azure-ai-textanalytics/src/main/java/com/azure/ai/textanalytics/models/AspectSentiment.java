@@ -20,7 +20,8 @@ public final class AspectSentiment {
      * Create an {@link AspectSentiment} model that describes aspect.
      *
      * @param text The aspect text property.
-     * @param sentiment The text sentiment label: POSITIVE, NEGATIVE.
+     * @param sentiment The text sentiment label: POSITIVE, NEGATIVE, MIXED. {@link TextSentiment} has
+     * {@code neutral} sentiment type additionally, but aspect sentiment can only be positive, negative, or mixed.
      * @param offset The offset of aspect text.
      * @param length The length of aspect text.
      * @param confidenceScores The {@link SentimentConfidenceScores}.
@@ -44,7 +45,9 @@ public final class AspectSentiment {
     }
 
     /**
-     * Get the aspect text sentiment label: POSITIVE, NEGATIVE.
+     * Get the aspect text sentiment label: POSITIVE, NEGATIVE, MIXED. {@link TextSentiment} has
+     * {@code neutral} sentiment type additionally, but aspect sentiment can only be positive, negative, or mixed.
+     *
      * @return The sentiment value.
      */
     public TextSentiment getSentiment() {
@@ -71,8 +74,9 @@ public final class AspectSentiment {
     }
 
     /**
-     * Get the confidence score of the sentiment label. All score values sum up to 1, higher the score value means
-     * higher confidence the sentiment label represents.
+     * Get the confidence score of the sentiment label. All score values sum up to 1, the higher the score, the
+     * higher the confidence in the sentiment. AspectSentiment only has positive or negative confidence score value
+     * because there is no neutral sentiment label in the AspectSentiment.
      *
      * @return The {@link SentimentConfidenceScores}.
      */

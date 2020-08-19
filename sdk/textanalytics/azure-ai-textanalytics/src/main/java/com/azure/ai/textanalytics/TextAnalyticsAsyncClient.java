@@ -663,14 +663,14 @@ public final class TextAnalyticsAsyncClient {
     /**
      * Returns a sentiment prediction, as well as confidence scores for each sentiment label (Positive, Negative, and
      * Neutral) for the document and each sentence within it. If the {@code includeOpinionMining} of
-     * {@link AnalyzeSentimentOptions} set to true, the output will include the opinion mining result. It mined the
-     * opinions of a sentence and conduct more granular analysis around the aspects of a product or service
+     * {@link AnalyzeSentimentOptions} set to true, the output will include the opinion mining results. It mines the
+     * opinions of a sentence and conducts more granular analysis around the aspects in the text
      * (also known as aspect-based sentiment analysis).
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Analyze the sentiments in a document with a provided language representation and
-     * {@link AnalyzeSentimentOptions} options. Subscribes to the call asynchronously and prints out the
-     * sentiment details when a response is received.</p>
+     * <p>Analyze the sentiment and mine the opinions for each sentence in a document with a provided language
+     * representation and {@link AnalyzeSentimentOptions} options. Subscribes to the call asynchronously and prints
+     * out the sentiment and mined opinions details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#String-String-AnalyzeSentimentOptions}
      *
@@ -734,20 +734,22 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeSentimentResultCollection> analyzeSentimentBatch(
         Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
-        return analyzeSentimentBatch(documents, language, new AnalyzeSentimentOptions().setRequestOptions(options));
+        return analyzeSentimentBatch(documents, language, new AnalyzeSentimentOptions()
+            .setIncludeStatistics(options == null ? false : options.isIncludeStatistics())
+            .setModelVersion(options == null ? null : options.getModelVersion()));
     }
 
     /**
      * Returns a sentiment prediction, as well as confidence scores for each sentiment label (Positive, Negative, and
      * Neutral) for the document and each sentence within it. If the {@code includeOpinionMining} of
-     * {@link AnalyzeSentimentOptions} set to true, the output will include the opinion mining result. It mined the
-     * opinions of a sentence and conduct more granular analysis around the aspects of a product or service
+     * {@link AnalyzeSentimentOptions} set to true, the output will include the opinion mining results. It mines the
+     * opinions of a sentence and conducts more granular analysis around the aspects in the text
      * (also known as aspect-based sentiment analysis).
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Analyze the sentiments in a list of documents with a provided language representation and
-     * {@link AnalyzeSentimentOptions} options. Subscribes to the call asynchronously and prints out the sentiment
-     * details when a response is received.</p>
+     * <p>Analyze the sentiments and mine the opinions for each sentence in a list of documents with a provided language
+     * representation and {@link AnalyzeSentimentOptions} options. Subscribes to the call asynchronously and prints out
+     * the sentiment and mined opinions details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentBatch#Iterable-String-AnalyzeSentimentOptions}
      *
@@ -802,21 +804,22 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeSentimentResultCollection>> analyzeSentimentBatchWithResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
-        return analyzeSentimentAsyncClient.analyzeSentimentBatch(documents,
-            new AnalyzeSentimentOptions().setRequestOptions(options));
+        return analyzeSentimentAsyncClient.analyzeSentimentBatch(documents, new AnalyzeSentimentOptions()
+            .setIncludeStatistics(options == null ? false : options.isIncludeStatistics())
+            .setModelVersion(options == null ? null : options.getModelVersion()));
     }
 
     /**
      * Returns a sentiment prediction, as well as confidence scores for each sentiment label (Positive, Negative, and
      * Neutral) for the document and each sentence within it. If the {@code includeOpinionMining} of
-     * {@link AnalyzeSentimentOptions} set to true, the output will include the opinion mining result. It mined the
-     * opinions of a sentence and conduct more granular analysis around the aspects of a product or service
+     * {@link AnalyzeSentimentOptions} set to true, the output will include the opinion mining results. It mines the
+     * opinions of a sentence and conducts more granular analysis around the aspects in the text
      * (also known as aspect-based sentiment analysis).
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Analyze sentiment in a list of {@link TextDocumentInput document} with provided
-     * {@link AnalyzeSentimentOptions} options. Subscribes to the call asynchronously and prints out the sentiment
-     * details when a response is received.</p>
+     * <p>Analyze sentiment and mine the opinions for each sentence in a list of
+     * {@link TextDocumentInput document} with provided {@link AnalyzeSentimentOptions} options. Subscribes to the call
+     * asynchronously and prints out the sentiment and mined opinions details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentBatch#Iterable-AnalyzeSentimentOptions}
      *

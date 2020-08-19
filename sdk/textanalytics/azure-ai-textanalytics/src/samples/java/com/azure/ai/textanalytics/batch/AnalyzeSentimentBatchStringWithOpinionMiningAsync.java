@@ -7,24 +7,17 @@ import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
+import com.azure.ai.textanalytics.models.AspectSentiment;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.MinedOpinion;
 import com.azure.ai.textanalytics.models.OpinionSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
-import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
-import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.core.credential.AzureKeyCredential;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import static com.azure.ai.textanalytics.models.TextSentiment.MIXED;
-import static com.azure.ai.textanalytics.models.TextSentiment.NEGATIVE;
-import static com.azure.ai.textanalytics.models.TextSentiment.POSITIVE;
 
 /**
  * Sample demonstrates how to asynchronously analyze the sentiments of {@code String} documents with opinion mining.
@@ -50,8 +43,7 @@ public class AnalyzeSentimentBatchStringWithOpinionMiningAsync {
         );
 
         AnalyzeSentimentOptions options = new AnalyzeSentimentOptions()
-            .setIncludeOpinionMining(true)
-            .setRequestOptions(new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest"));
+            .setIncludeOpinionMining(true).setIncludeStatistics(true).setModelVersion("latest");
 
         // Analyzing sentiment for each document in a batch of documents
         client.analyzeSentimentBatch(documents, "en", options).subscribe(
@@ -65,10 +57,6 @@ public class AnalyzeSentimentBatchStringWithOpinionMiningAsync {
 
                 // Analyzed sentiment for each document in a batch of documents
                 AtomicInteger counter = new AtomicInteger();
-
-                List<MinedOpinion> positiveMinedOpinions = new ArrayList<>();
-                List<MinedOpinion> mixedMinedOpinions = new ArrayList<>();
-                List<MinedOpinion> negativeMinedOpinions = new ArrayList<>();
                 for (AnalyzeSentimentResult analyzeSentimentResult : sentimentBatchResultCollection) {
                     // Analyzed sentiment for each document
                     System.out.printf("%nText = %s%n", documents.get(counter.getAndIncrement()));
@@ -83,47 +71,18 @@ public class AnalyzeSentimentBatchStringWithOpinionMiningAsync {
                             documentSentiment.getSentiment(), scores.getPositive(), scores.getNeutral(), scores.getNegative());
                         documentSentiment.getSentences().forEach(sentenceSentiment -> {
                             SentimentConfidenceScores sentenceScores = sentenceSentiment.getConfidenceScores();
-                            System.out.printf(
-                                "\tAnalyzed sentence sentiment: %s, positive score: %f, neutral score: %f, negative score: %f.%n",
+                            System.out.printf("\tSentence sentiment: %s, positive score: %f, neutral score: %f, negative score: %f.%n",
                                 sentenceSentiment.getSentiment(), sentenceScores.getPositive(), sentenceScores.getNeutral(), sentenceScores.getNegative());
-                            sentenceSentiment.getMinedOpinions().forEach(minedOpinion -> {
-                                TextSentiment aspectTextSentiment = minedOpinion.getAspect().getSentiment();
-                                if (NEGATIVE.equals(aspectTextSentiment)) {
-                                    negativeMinedOpinions.add(minedOpinion);
-                                } else if (POSITIVE.equals(aspectTextSentiment)) {
-                                    positiveMinedOpinions.add(minedOpinion);
-                                } else if (MIXED.equals(aspectTextSentiment)) {
-                                    mixedMinedOpinions.add(minedOpinion);
+                            sentenceSentiment.getMinedOpinions().forEach(minedOpinions -> {
+                                AspectSentiment aspectSentiment = minedOpinions.getAspect();
+                                System.out.printf("\t\tAspect sentiment: %s, aspect text: %s%n", aspectSentiment.getSentiment(),
+                                    aspectSentiment.getText());
+                                for (OpinionSentiment opinionSentiment : minedOpinions.getOpinions()) {
+                                    System.out.printf("\t\t\t'%s' opinion sentiment because of \"%s\". Is the aspect negated: %s.%n",
+                                        opinionSentiment.getSentiment(), opinionSentiment.getText(), opinionSentiment.isNegated());
                                 }
                             });
                         });
-                    }
-                }
-
-                System.out.printf("Positive aspects count: %d%n", positiveMinedOpinions.size());
-                for (MinedOpinion positiveMinedOpinion : positiveMinedOpinions) {
-                    System.out.printf("\tAspect: %s%n", positiveMinedOpinion.getAspect().getText());
-                    for (OpinionSentiment opinionSentiment : positiveMinedOpinion.getOpinions()) {
-                        System.out.printf("\t\t'%s' sentiment because of \"%s\". Is the aspect negated: %s.%n",
-                            opinionSentiment.getSentiment(), opinionSentiment.getText(), opinionSentiment.isNegated());
-                    }
-                }
-
-                System.out.printf("Mixed aspects count: %d%n", mixedMinedOpinions.size());
-                for (MinedOpinion mixedMinedOpinion : mixedMinedOpinions) {
-                    System.out.printf("\tAspect: %s%n", mixedMinedOpinion.getAspect().getText());
-                    for (OpinionSentiment opinionSentiment : mixedMinedOpinion.getOpinions()) {
-                        System.out.printf("\t\t'%s' sentiment because of \"%s\". Is the aspect negated: %s.%n",
-                            opinionSentiment.getSentiment(), opinionSentiment.getText(), opinionSentiment.isNegated());
-                    }
-                }
-
-                System.out.printf("Negative aspects count: %d%n", negativeMinedOpinions.size());
-                for (MinedOpinion negativeMinedOpinion : negativeMinedOpinions) {
-                    System.out.printf("\tAspect: %s%n", negativeMinedOpinion.getAspect().getText());
-                    for (OpinionSentiment opinionSentiment : negativeMinedOpinion.getOpinions()) {
-                        System.out.printf("\t\t'%s' sentiment because of \"%s\". Is the aspect negated: %s.%n",
-                            opinionSentiment.getSentiment(), opinionSentiment.getText(), opinionSentiment.isNegated());
                     }
                 }
             },

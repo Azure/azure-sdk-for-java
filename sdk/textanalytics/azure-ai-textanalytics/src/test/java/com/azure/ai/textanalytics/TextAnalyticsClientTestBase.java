@@ -11,7 +11,7 @@ import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
-import com.azure.ai.textanalytics.models.MinedOpinion;
+import com.azure.ai.textanalytics.models.MinedOpinions;
 import com.azure.ai.textanalytics.models.OpinionSentiment;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
@@ -410,9 +410,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     void analyzeBatchStringSentimentShowStatsAndIncludeOpinionMiningRunner(BiConsumer<List<String>, AnalyzeSentimentOptions> testRunner) {
         testRunner.accept(SENTIMENT_INPUTS,
-            new AnalyzeSentimentOptions()
-                .setRequestOptions(new TextAnalyticsRequestOptions().setIncludeStatistics(true))
-                .setIncludeOpinionMining(true));
+            new AnalyzeSentimentOptions().setIncludeStatistics(true).setIncludeOpinionMining(true));
     }
 
     void analyzeBatchSentimentShowStatsRunner(BiConsumer<List<TextDocumentInput>, TextAnalyticsRequestOptions> testRunner) {
@@ -422,10 +420,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     void analyzeBatchSentimentOpinionMining(BiConsumer<List<TextDocumentInput>, AnalyzeSentimentOptions> testRunner) {
         final List<TextDocumentInput> textDocumentInputs = TestUtils.getTextDocumentInputs(SENTIMENT_INPUTS);
-        AnalyzeSentimentOptions options = new AnalyzeSentimentOptions()
-            .setIncludeOpinionMining(true)
-            .setRequestOptions(new TextAnalyticsRequestOptions().setIncludeStatistics(true));
-        testRunner.accept(textDocumentInputs, options);
+        testRunner.accept(textDocumentInputs, new AnalyzeSentimentOptions().setIncludeOpinionMining(true)
+            .setIncludeStatistics(true));
     }
 
     // other Runners
@@ -680,12 +676,12 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      * @param expectedMinedOpinions a list of mined opinions returned by the service.
      * @param actualMinedOpinions a list of mined opinions returned by the API.
      */
-    static void validateSentenceMinedOpinions(List<MinedOpinion> expectedMinedOpinions,
-        List<MinedOpinion> actualMinedOpinions) {
+    static void validateSentenceMinedOpinions(List<MinedOpinions> expectedMinedOpinions,
+        List<MinedOpinions> actualMinedOpinions) {
         assertEquals(expectedMinedOpinions.size(), actualMinedOpinions.size());
         for (int i = 0; i < actualMinedOpinions.size(); i++) {
-            final MinedOpinion expectedMinedOpinion = expectedMinedOpinions.get(i);
-            final MinedOpinion actualMinedOpinion = actualMinedOpinions.get(i);
+            final MinedOpinions expectedMinedOpinion = expectedMinedOpinions.get(i);
+            final MinedOpinions actualMinedOpinion = actualMinedOpinions.get(i);
             validateAspectSentiment(expectedMinedOpinion.getAspect(), actualMinedOpinion.getAspect());
             validateAspectOpinionList(expectedMinedOpinion.getOpinions().stream().collect(Collectors.toList()),
                 actualMinedOpinion.getOpinions().stream().collect(Collectors.toList()));

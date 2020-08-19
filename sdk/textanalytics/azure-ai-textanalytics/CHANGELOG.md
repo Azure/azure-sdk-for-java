@@ -7,11 +7,9 @@
 **New features**
 - Text analytics SDK update the service to version `v3.1-preview.1` from `v3.0`.
 - Added support for the Opinion Mining feature. To use this feature, you need to make sure you are using the 
-service's v3.1-preview.1 API. To get this support pass `includeOpinionMining` as True when calling:
-  `analyzeSentiment(String document, String language, boolean includeOpinionMining)`
-  `analyzeSentimentBatch(Iterable<String> documents, String language, boolean includeOpinionMining, TextAnalyticsRequestOptions options)`
-  `analyzeSentimentBatchWithResponse(Iterable<TextDocumentInput> documents, boolean includeOpinionMining, TextAnalyticsRequestOptions options)`
-  
+service's v3.1-preview.1 API. To get this support pass `includeOpinionMining` as `true` in `AnalyzeSentimentOptions` 
+when calling the sentiment analysis endpoints.
+
 ## 5.0.0 (2020-07-27)
 - Re-release of version `1.0.1` with updated version `5.0.0`.
 

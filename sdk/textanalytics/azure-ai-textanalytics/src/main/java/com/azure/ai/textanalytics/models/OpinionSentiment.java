@@ -21,7 +21,8 @@ public final class OpinionSentiment {
      * Create an {@link OpinionSentiment} model that describes opinion sentiment.
      *
      * @param text The opinion text property.
-     * @param sentiment The text sentiment label: POSITIVE, NEGATIVE.
+     * @param sentiment The text sentiment label: POSITIVE, NEGATIVE, MIXED. {@link TextSentiment} has
+     * {@code neutral} sentiment type additionally, but opinion sentiment can only be positive, negative, or mixed.
      * @param offset The offset of opinion text.
      * @param length The length of opinion text.
      * @param isNegated The boolean indicator to show if the opinion text negated or not.
@@ -47,7 +48,9 @@ public final class OpinionSentiment {
     }
 
     /**
-     * Get the opinion text sentiment label: POSITIVE, NEGATIVE.
+     * Get the opinion text sentiment label: POSITIVE, NEGATIVE, MIXED. {@link TextSentiment} has
+     * {@code neutral} sentiment type additionally, but aspect sentiment can only be positive, negative, or mixed.
+     *
      * @return The sentiment value.
      */
     public TextSentiment getSentiment() {
@@ -82,8 +85,9 @@ public final class OpinionSentiment {
     }
 
     /**
-     * Get the confidence score of the sentiment label. All score values sum up to 1, higher the score value means
-     * higher confidence the sentiment label represents.
+     * Get the confidence score of the sentiment label. All score values sum up to 1, the higher the score, the
+     * higher the confidence in the sentiment. OpinionSentiment only has positive or negative confidence score value
+     * because there is no neutral sentiment label in the OpinionSentiment.
      *
      * @return The {@link SentimentConfidenceScores}.
      */
