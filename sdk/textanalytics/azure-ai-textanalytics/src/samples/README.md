@@ -27,8 +27,6 @@ The following sections provide several code snippets covering some of the most c
 - [Detect language in a document with asynchronous client][async_sample_detect_language]
 - [Recognize entities in a document][sample_entities]
 - [Recognize entities in a document with asynchronous client][async_sample_entities]
-- [Recognize Personally Identifiable Information in a document][sample_pii_entities]
-- [Recognize Personally Identifiable Information in a document with asynchronous client][async_sample_pii_entities]
 - [Recognize linked entities in a document][sample_linked_entities]
 - [Recognize linked entities in a document with asynchronous client][async_sample_linked_entities]
 - [Extract key phrases in a document][sample_key_phrases]
@@ -47,10 +45,6 @@ Batch Samples:
 - [Recognize entities in a batch of documents(Convenience)][sample_entities_batch_convenience]
 - [Recognize entities in a batch of documents with asynchronous client][async_sample_entities_batch]
 - [Recognize entities in a batch of documents with asynchronous client(Convenience)][async_sample_entities_batch_convenience]
-- [Recognize Personally Identifiable Information in a batch of documents][sample_pii_entities_batch]
-- [Recognize Personally Identifiable Information in a batch of documents(Convenience)][sample_pii_entities_batch_convenience]
-- [Recognize Personally Identifiable Information in a batch of documents with asynchronous client][async_sample_pii_entities_batch]
-- [Recognize Personally Identifiable Information in a batch of documents with asynchronous client(Convenience)][async_sample_pii_entities_batch_convenience]
 - [Recognize linked entities in a batch of documents][sample_linked_entities_batch]
 - [Recognize linked entities in a batch of documents(Convenience)][sample_linked_entities_batch_convenience]
 - [Recognize linked entities in a batch of documents with asynchronous client][async_sample_linked_entities_batch]
@@ -88,9 +82,6 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [async_sample_entities]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/RecognizeEntitiesAsync.java
 [async_sample_entities_batch]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeEntitiesBatchDocumentsAsync.java
 [async_sample_entities_batch_convenience]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeEntitiesBatchStringDocumentsAsync.java
-[async_sample_pii_entities]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/RecognizePiiEntitiesAsync.java
-[async_sample_pii_entities_batch]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizePiiEntitiesBatchDocumentsAsync.java
-[async_sample_pii_entities_batch_convenience]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeEntitiesBatchStringDocumentsAsync.java
 [async_sample_linked_entities]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/RecognizeLinkedEntitiesAsync.java
 [async_sample_linked_entities_batch]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeLinkedEntitiesBatchDocumentsAsync.java
 [async_sample_linked_entities_batch_convenience]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeLinkedEntitiesBatchStringDocumentsAsync.java
@@ -108,9 +99,6 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [sample_entities]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/RecognizeEntities.java
 [sample_entities_batch]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeEntitiesBatchDocuments.java
 [sample_entities_batch_convenience]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeEntitiesBatchStringDocuments.java
-[sample_pii_entities]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/RecognizePiiEntities.java
-[sample_pii_entities_batch]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizePiiEntitiesBatchDocuments.java
-[sample_pii_entities_batch_convenience]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizePiiEntitiesBatchStringDocuments.java
 [sample_linked_entities]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/RecognizeLinkedEntities.java
 [sample_linked_entities_batch]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeLinkedEntitiesBatchDocuments.java
 [sample_linked_entities_batch_convenience]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeLinkedEntitiesBatchStringDocuments.java
