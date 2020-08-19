@@ -24,17 +24,10 @@ class CreateSubscriptionOptionsTest {
      */
     @Test
     void constructor() {
-        // Arrange
-        final String topicName = "some-topic";
-        final String subscriptionName = "a-subscription";
-
         // Act
-        final CreateSubscriptionOptions actual = new CreateSubscriptionOptions(topicName, subscriptionName);
+        final CreateSubscriptionOptions actual = new CreateSubscriptionOptions();
 
         // Assert
-        assertEquals(topicName, actual.getTopicName());
-        assertEquals(subscriptionName, actual.getSubscriptionName());
-
         assertEquals(MAX_DURATION, actual.getAutoDeleteOnIdle());
         assertEquals(MAX_DURATION, actual.getDefaultMessageTimeToLive());
         assertTrue(actual.enableBatchedOperations());
@@ -49,8 +42,6 @@ class CreateSubscriptionOptionsTest {
     @Test
     void constructorWithOptions() {
         // Arrange
-        final String topicName = "some-topic";
-        final String subscriptionName = "some-subscription";
         final SubscriptionDescription description = new SubscriptionDescription()
             .setAutoDeleteOnIdle(Duration.ofSeconds(15))
             .setDefaultMessageTimeToLive(Duration.ofSeconds(50))
@@ -64,15 +55,11 @@ class CreateSubscriptionOptionsTest {
             .setUserMetadata("Test-queue-Metadata");
 
         final SubscriptionProperties expected = EntityHelper.toModel(description);
-        EntityHelper.setTopicName(expected, topicName);
-        EntityHelper.setSubscriptionName(expected, subscriptionName);
 
         // Act
         final CreateSubscriptionOptions actual = new CreateSubscriptionOptions(expected);
 
         // Assert
-        assertEquals(expected.getTopicName(), actual.getTopicName());
-        assertEquals(expected.getSubscriptionName(), actual.getSubscriptionName());
         assertEquals(expected.getAutoDeleteOnIdle(), actual.getAutoDeleteOnIdle());
         assertEquals(expected.getDefaultMessageTimeToLive(), actual.getDefaultMessageTimeToLive());
         assertFalse(actual.deadLetteringOnMessageExpiration());

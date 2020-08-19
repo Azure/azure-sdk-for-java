@@ -24,31 +24,31 @@ import com.azure.core.util.Context;
 import com.azure.messaging.servicebus.implementation.models.ServiceBusManagementErrorException;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in Entitys. */
-public final class EntitysImpl {
+/** An instance of this class provides access to all the operations defined in Entities. */
+public final class EntitiesImpl {
     /** The proxy service used to perform REST calls. */
-    private final EntitysService service;
+    private final EntitiesService service;
 
     /** The service client containing this operation class. */
     private final ServiceBusManagementClientImpl client;
 
     /**
-     * Initializes an instance of EntitysImpl.
+     * Initializes an instance of EntitiesImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    EntitysImpl(ServiceBusManagementClientImpl client) {
-        this.service = RestProxy.create(EntitysService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+    EntitiesImpl(ServiceBusManagementClientImpl client) {
+        this.service = RestProxy.create(EntitiesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for ServiceBusManagementClientEntitys to be used by the proxy service to
+     * The interface defining all the services for ServiceBusManagementClientEntities to be used by the proxy service to
      * perform REST calls.
      */
     @Host("https://{endpoint}")
     @ServiceInterface(name = "ServiceBusManagement")
-    private interface EntitysService {
+    private interface EntitiesService {
         @Get("/{entityName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
