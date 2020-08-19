@@ -28,18 +28,19 @@ public class OrderAsyncService {
      * @return Mono
      */
     public Mono<Void> createOrReplaceOrder(Order order) {
-        Order workOrder;
-        if (order.getId() == null) {
-            workOrder = new Order();
-            workOrder.setId(UUID.randomUUID().toString());
-            workOrder.setContent(order.getContent());
-        } else {
-            workOrder = order;
-        }
         return this.throwRandomError()
-            .then(
-                Mono.fromRunnable(() -> logger.info(String.format("Order saved {\"id\": %s, \"content\": %s}", workOrder.getId(), workOrder.getContent()))))
-            .then(this.throwRandomError());
+            .then(Mono.fromRunnable(() -> {
+                if (order.getId() == null) {
+                    Order newOrder = new Order();
+                    newOrder.setId(UUID.randomUUID().toString());
+                    newOrder.setContent(order.getContent());
+                    // simulate creating a new order
+                    logger.info(String.format("Order created: %s", newOrder));
+                } else {
+                    // simulate updating the order into repository.
+                    logger.info(String.format("Order updated %s", order));
+                }
+            })).then(this.throwRandomError());
     }
 
     /**
@@ -54,11 +55,14 @@ public class OrderAsyncService {
                 String orderId = order.getId();
                 if (orderId == null) {
                     Order newOrder = new Order();
-                    orderId = UUID.randomUUID().toString();
-                    newOrder.setId(orderId);
+                    newOrder.setId(UUID.randomUUID().toString());
                     newOrder.setContent(order.getContent());
+                    // simulate creating a new order
+                    logger.info(String.format("Order created with a batch: %s", newOrder));
+                } else {
+                    // simulate updating the order.
+                    logger.info(String.format("Order updated with a batch: %s", order));
                 }
-                logger.info(String.format("Order in batch saved {\"id\": %s, \"content\": %s}", orderId, order.getContent()));
             })).then(this.throwRandomError())
         );
     }

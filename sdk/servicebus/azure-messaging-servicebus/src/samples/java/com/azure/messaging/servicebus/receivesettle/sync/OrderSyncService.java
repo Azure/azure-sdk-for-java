@@ -30,10 +30,12 @@ public class OrderSyncService {
             Order newOrder = new Order();
             newOrder.setId(UUID.randomUUID().toString());
             newOrder.setContent(order.getContent());
-            order = newOrder;
+            // simulate creating a new order
+            logger.info(String.format("Order created: %s", newOrder));
+        } else {
+            // simulate updating the order into repository.
+            logger.info(String.format("Order updated %s", order));
         }
-        // simulate saving the order into repository.
-        logger.info(String.format("Order saved {\"id\": %s, \"content\": %s}", order.getId(), order.getContent()));
         this.throwRandomError();
     }
 
@@ -49,10 +51,12 @@ public class OrderSyncService {
                 Order newOrder = new Order();
                 newOrder.setId(UUID.randomUUID().toString());
                 newOrder.setContent(order.getContent());
-                order = newOrder;
+                // simulate creating a new order
+                logger.info(String.format("Order created with a batch: %s", newOrder));
+            } else {
+                // simulate updating the order.
+                logger.info(String.format("Order updated with a batch: %s", order));
             }
-            // simulate saving the order into repository.
-            logger.info(String.format("Order in batch saved {\"id\": %s, \"content\": %s}", order.getId(), order.getContent()));
         });
         this.throwRandomError();
     }
