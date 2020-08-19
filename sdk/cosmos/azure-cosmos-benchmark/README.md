@@ -7,9 +7,7 @@
 ```bash
 git clone https://github.com/Azure/azure-sdk-for-java.git
 cd azure-sdk-for-java
-mvn -e -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dspotbugs.skip=true  -Dcheckstyle.skip=true  -Drevapi.skip=true clean install
 cd sdk/cosmos/
-mvn clean install -f ../../eng/code-quality-reports/pom.xml
 mvn clean package -f pom.xml -DskipTests -Dgpg.skip -Ppackage-assembly
 ```
 
@@ -18,7 +16,7 @@ and then the package will be generated.
 ## Run the WriteLatency workload
 
 ```bash
-java -jar azure-cosmos-benchmark/target/azure-cosmos-benchmark-4.0.1-beta.3-jar-with-dependencies.jar \
+java -jar azure-cosmos-benchmark/target/azure-cosmos-benchmark-4.0.1-beta.1-jar-with-dependencies.jar \
  -serviceEndpoint $endpoint -masterKey $masterkey \
  -databaseId $dbname -collectionId $colname \
  -consistencyLevel Eventual -concurrency 10 -numberOfOperations 1000000 \
