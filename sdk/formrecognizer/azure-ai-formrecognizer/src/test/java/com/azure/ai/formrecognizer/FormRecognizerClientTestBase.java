@@ -15,7 +15,7 @@ import com.azure.ai.formrecognizer.implementation.models.PageResult;
 import com.azure.ai.formrecognizer.implementation.models.ReadResult;
 import com.azure.ai.formrecognizer.implementation.models.TextLine;
 import com.azure.ai.formrecognizer.implementation.models.TextWord;
-import com.azure.ai.formrecognizer.models.BoundingBox;
+import com.azure.ai.formrecognizer.models.FieldBoundingBox;
 import com.azure.ai.formrecognizer.models.FormElement;
 import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.FormLine;
@@ -259,10 +259,10 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         }
     }
 
-    private static void validateBoundingBoxData(List<Float> expectedBoundingBox, BoundingBox actualBoundingBox) {
-        if (actualBoundingBox != null && actualBoundingBox.getPoints() != null) {
+    private static void validateBoundingBoxData(List<Float> expectedBoundingBox, FieldBoundingBox actualFieldBoundingBox) {
+        if (actualFieldBoundingBox != null && actualFieldBoundingBox.getPoints() != null) {
             int i = 0;
-            for (Point point : actualBoundingBox.getPoints()) {
+            for (Point point : actualFieldBoundingBox.getPoints()) {
                 assertEquals(expectedBoundingBox.get(i), point.getX());
                 assertEquals(expectedBoundingBox.get(++i), point.getY());
                 i++;
