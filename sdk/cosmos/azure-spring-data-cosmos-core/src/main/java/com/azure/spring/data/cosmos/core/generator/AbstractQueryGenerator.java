@@ -254,9 +254,10 @@ public abstract class AbstractQueryGenerator {
                                                          toCosmosDbValue(p.getValue1())))
                                                      .collect(Collectors.toList());
 
-        if (query.getTree() != null && query.getTree().isLimiting()) {
-            queryString =
-                new StringBuilder(queryString).append("OFFSET 0 LIMIT ").append(query.getTree().getMaxResults()).toString();
+        if (query.getLimit() != 0) {
+            queryString = new StringBuilder(queryString)
+                .append("OFFSET 0 LIMIT ")
+                .append(query.getLimit()).toString();
         }
 
         return new SqlQuerySpec(queryString, sqlParameters);

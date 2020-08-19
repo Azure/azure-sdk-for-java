@@ -22,6 +22,7 @@ public class PartTreeCosmosQuery extends AbstractCosmosQuery {
 
     /**
      * Initialization
+     *
      * @param method CosmosQueryMethod
      * @param operations CosmosOperations
      */
@@ -39,7 +40,9 @@ public class PartTreeCosmosQuery extends AbstractCosmosQuery {
 
         final CosmosQuery query = creator.createQuery();
 
-        query.setTree(tree);
+        if (tree.isLimiting() && tree.getMaxResults() != null) {
+            query.setLimit(tree.getMaxResults());
+        }
 
         return query;
     }

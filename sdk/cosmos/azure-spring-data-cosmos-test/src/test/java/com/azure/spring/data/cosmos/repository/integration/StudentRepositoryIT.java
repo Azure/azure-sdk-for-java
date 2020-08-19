@@ -117,7 +117,7 @@ public class StudentRepositoryIT {
     @Test
     public void testFindByNot() {
         final List<Student> people = TestUtils.toList(repository.findByFirstNameNot("Mary"));
-        final List<Student> reference = Arrays.asList(STUDENT_1, STUDENT_2, STUDENT_3);
+        final List<Student> reference = Arrays.asList(STUDENT_1, STUDENT_2, STUDENT_3, STUDENT_4, STUDENT_5);
 
         assertPeopleEquals(people, reference);
     }
@@ -148,7 +148,7 @@ public class StudentRepositoryIT {
     public void testFindByStartsWithOrContaining() {
         List<Student> people = TestUtils.toList(repository.findByFirstNameStartsWithOrLastNameContaining("Zhen", "C"));
 
-        assertPeopleEquals(people, PEOPLE);
+        assertPeopleEquals(people, Arrays.asList(STUDENT_0, STUDENT_1, STUDENT_2, STUDENT_3));
 
         people = TestUtils.toList(repository.findByFirstNameStartsWithOrLastNameContaining("M", "N"));
 

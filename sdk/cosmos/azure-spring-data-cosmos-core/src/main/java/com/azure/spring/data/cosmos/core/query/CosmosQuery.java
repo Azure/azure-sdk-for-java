@@ -22,7 +22,7 @@ public class CosmosQuery {
 
     private Pageable pageable = Pageable.unpaged();
 
-    private PartTree tree;
+    private int limit;
 
     /**
      * Initialization
@@ -61,22 +61,22 @@ public class CosmosQuery {
     }
 
     /**
-     * To get PartTree object
+     * To get limit number
      *
-     * @return PartTree
+     * @return int limit
      */
-    public PartTree getTree() {
-        return tree;
+    public int getLimit() {
+        return limit;
     }
 
     /**
-     * To set PartTree
+     * To set limit number
      *
-     * @param tree PartTree
+     * @param limit int
      */
-    public void setTree(PartTree tree) {
-        if (this.tree == null) {
-            this.tree = tree;
+    public void setLimit(int limit) {
+        if (this.limit == 0) {
+            this.limit = limit;
         }
     }
 
@@ -132,9 +132,9 @@ public class CosmosQuery {
         }
 
         return partitionKeys.stream().filter(this::isCrossPartitionQuery)
-            .findFirst()
-            .map(p -> true)
-            .orElse(hasKeywordOr());
+                            .findFirst()
+                            .map(p -> true)
+                            .orElse(hasKeywordOr());
     }
 
     /**
