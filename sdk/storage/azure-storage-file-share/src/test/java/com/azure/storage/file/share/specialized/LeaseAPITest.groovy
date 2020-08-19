@@ -276,7 +276,7 @@ class LeaseAPITest extends APISpec {
     }
 
     @Unroll
-    def "Break container lease"() {
+    def "Break share lease"() {
         setup:
         def leaseClient = createLeaseClient(shareClient, getRandomUUID())
         leaseClient.acquireLeaseWithResponse(new ShareAcquireLeaseOptions().setDuration(leaseTime), null, null)
@@ -289,7 +289,7 @@ class LeaseAPITest extends APISpec {
         breakLeaseResponse.getValue() <= remainingTime
         validateBasicHeaders(breakLeaseResponse.getHeaders())
         if (breakPeriod != null) {
-            // If running in live mode wait for the lease to break so we can delete the container after the test completes
+            // If running in live mode wait for the lease to break so we can delete the share after the test completes
             sleepIfRecord(breakPeriod * 1000)
         }
 
@@ -301,7 +301,7 @@ class LeaseAPITest extends APISpec {
 
     }
 
-    def "Break container lease min"() {
+    def "Break share lease min"() {
         setup:
         setupShareLeaseCondition(shareClient, receivedLeaseID)
 
@@ -309,7 +309,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(shareClient).breakLeaseWithResponse(new ShareBreakLeaseOptions(), null, null).getStatusCode() == 202
     }
 
-    def "Break container lease error"() {
+    def "Break share lease error"() {
         setup:
         shareClient = shareBuilderHelper(interceptorManager, generateShareName()).buildClient()
 
@@ -320,7 +320,7 @@ class LeaseAPITest extends APISpec {
         thrown(ShareStorageException)
     }
 
-    def "Change container lease"() {
+    def "Change share lease"() {
         setup:
         def leaseID = setupShareLeaseCondition(shareClient, receivedLeaseID)
         def leaseClient = createLeaseClient(shareClient, leaseID)
@@ -332,7 +332,7 @@ class LeaseAPITest extends APISpec {
         validateBasicHeaders(changeLeaseResponse.getHeaders())
     }
 
-    def "Change container lease min"() {
+    def "Change share lease min"() {
         setup:
         def leaseID = setupShareLeaseCondition(shareClient, receivedLeaseID)
 
@@ -340,7 +340,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(shareClient, leaseID).changeLeaseWithResponse(getRandomUUID(), null, null).getStatusCode() == 200
     }
 
-    def "Change container lease error"() {
+    def "Change share lease error"() {
         setup:
         shareClient = shareBuilderHelper(interceptorManager, generateShareName()).buildClient()
 
