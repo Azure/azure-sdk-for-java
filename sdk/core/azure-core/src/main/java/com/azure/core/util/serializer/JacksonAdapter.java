@@ -129,7 +129,7 @@ public class JacksonAdapter implements SerializerAdapter {
         ByteArrayOutputStream stream = new AccessibleByteArrayOutputStream();
         serialize(object, encoding, stream);
 
-        return new String(stream.toByteArray(), StandardCharsets.UTF_8);
+        return new String(stream.toByteArray(), 0, stream.size(), StandardCharsets.UTF_8);
     }
 
     @Override
