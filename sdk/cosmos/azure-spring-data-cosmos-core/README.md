@@ -268,13 +268,13 @@ public class SampleApplication implements CommandLineRunner {
  type id can be annotated with `@GeneratedValue` to automatically generate a random UUID prior to insertion.
  <!-- embedme src/samples/java/com/azure/cosmos/GeneratedIdEntity.java#L8-L14 -->
  ```java
-public class GeneratedIdEntity {
-
-    @Id
-    @GeneratedValue
-    private String id;
-
-}
+ public class GeneratedIdEntity {
+ 
+     @Id
+     @GeneratedValue
+     private String id;
+ 
+ }
  ```
 - Custom container Name.
   By default, container name will be class name of user domain class. To customize it, add the `@Container(containerName="myCustomContainerName")` annotation to the domain class. The container field also supports SpEL expressions (eg. `container = "${dynamic.container.name}"` or `container = "#{@someBean.getContainerName()}"`) in order to provide container names programmatically/via configuration properties.
