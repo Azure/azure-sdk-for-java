@@ -267,42 +267,48 @@ public class GatewayAddressCache implements IAddressCache {
 
         addressQuery.put(HttpConstants.QueryStrings.PARTITION_KEY_RANGE_IDS, String.join(",", partitionKeyRangeIds));
         headers.put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());
-        String token;
 
-        token = this.tokenProvider.getUserAuthorizationToken(
-                collectionRid,
-                ResourceType.Document,
-                RequestVerb.GET,
-                headers,
-                AuthorizationTokenType.PrimaryMasterKey,
-                request.properties);
-
-        if (token == null && request.getIsNameBased()) {
-            // User doesn't have rid based resource token. Maybe user has name based.
-            String collectionAltLink = PathsHelper.getCollectionPath(request.getResourceAddress());
-            token = this.tokenProvider.getUserAuthorizationToken(
-                    collectionAltLink,
+        if (tokenProvider.getAuthorizationTokenType() != AuthorizationTokenType.AadToken) {
+            String token = this.tokenProvider.getUserAuthorizationToken(
+                    collectionRid,
                     ResourceType.Document,
                     RequestVerb.GET,
                     headers,
                     AuthorizationTokenType.PrimaryMasterKey,
                     request.properties);
+
+            if (token == null && request.getIsNameBased()) {
+                // User doesn't have rid based resource token. Maybe user has name based.
+                String collectionAltLink = PathsHelper.getCollectionPath(request.getResourceAddress());
+                token = this.tokenProvider.getUserAuthorizationToken(
+                        collectionAltLink,
+                        ResourceType.Document,
+                        RequestVerb.GET,
+                        headers,
+                        AuthorizationTokenType.PrimaryMasterKey,
+                        request.properties);
+            }
+
+            token = HttpUtils.urlEncode(token);
+            headers.put(HttpConstants.HttpHeaders.AUTHORIZATION, token);
         }
 
-        token = HttpUtils.urlEncode(token);
-        headers.put(HttpConstants.HttpHeaders.AUTHORIZATION, token);
         URI targetEndpoint = Utils.setQuery(this.addressEndpoint.toString(), Utils.createQuery(addressQuery));
         String identifier = logAddressResolutionStart(request, targetEndpoint);
 
-        HttpHeaders httpHeaders = new HttpHeaders(headers.size());
-        for (Map.Entry<String, String> entry : headers.entrySet()) {
-            httpHeaders.set(entry.getKey(), entry.getValue());
-        }
+        HttpHeaders httpHeaders = new HttpHeaders(headers);
 
         Instant addressCallStartTime = Instant.now();
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), httpHeaders);
 
-        Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
+        Mono<HttpResponse> httpResponseMono;
+        if (tokenProvider.getAuthorizationTokenType() != AuthorizationTokenType.AadToken) {
+            httpResponseMono = this.httpClient.send(httpRequest);
+        } else {
+            httpResponseMono = tokenProvider
+                .populateAuthorizationHeader(httpHeaders)
+                .flatMap(valueHttpHeaders -> this.httpClient.send(httpRequest));
+        }
 
         Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(httpResponseMono, httpRequest);
         return dsrObs.map(
@@ -469,27 +475,35 @@ public class GatewayAddressCache implements IAddressCache {
 
         queryParameters.put(HttpConstants.QueryStrings.FILTER, HttpUtils.urlEncode(this.protocolFilter));
         headers.put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());
-        String token = this.tokenProvider.getUserAuthorizationToken(
-                resourceAddress,
-                resourceType,
-                RequestVerb.GET,
-                headers,
-                AuthorizationTokenType.PrimaryMasterKey,
-                properties);
 
-        headers.put(HttpConstants.HttpHeaders.AUTHORIZATION, HttpUtils.urlEncode(token));
+        if (tokenProvider.getAuthorizationTokenType() != AuthorizationTokenType.AadToken) {
+            String token = this.tokenProvider.getUserAuthorizationToken(
+                    resourceAddress,
+                    resourceType,
+                    RequestVerb.GET,
+                    headers,
+                    AuthorizationTokenType.PrimaryMasterKey,
+                    properties);
+
+            headers.put(HttpConstants.HttpHeaders.AUTHORIZATION, HttpUtils.urlEncode(token));
+        }
+
         URI targetEndpoint = Utils.setQuery(this.addressEndpoint.toString(), Utils.createQuery(queryParameters));
         String identifier = logAddressResolutionStart(request, targetEndpoint);
 
-        HttpHeaders defaultHttpHeaders = new HttpHeaders(headers.size());
-        for (Map.Entry<String, String> entry : headers.entrySet()) {
-            defaultHttpHeaders.set(entry.getKey(), entry.getValue());
+        HttpHeaders defaultHttpHeaders = new HttpHeaders(headers);
+        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), defaultHttpHeaders);
+        Instant addressCallStartTime = Instant.now();
+        Mono<HttpResponse> httpResponseMono;
+
+        if (tokenProvider.getAuthorizationTokenType() != AuthorizationTokenType.AadToken) {
+            httpResponseMono = this.httpClient.send(httpRequest);
+        } else {
+            httpResponseMono = tokenProvider
+                .populateAuthorizationHeader(defaultHttpHeaders)
+                .flatMap(valueHttpHeaders -> this.httpClient.send(httpRequest));
         }
 
-        HttpRequest httpRequest;
-        httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), defaultHttpHeaders);
-        Instant addressCallStartTime = Instant.now();
-        Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
         Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(httpResponseMono, httpRequest);
 
         return dsrObs.map(
