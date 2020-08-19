@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.servicebus.receivesettle.async;
 
 import com.azure.core.util.IterableStream;
@@ -31,8 +34,9 @@ public class MessageReceiverAsyncWorker {
     /**
      * Convert a message to order and call the order service to process it.
      * Handle exceptions thrown from the order service.
+     *
      * @param messageContext The message context that includes the received message.
-     * @return
+     * @return A Mono.
      */
     public Mono<Void> processMessageOneByOne(ServiceBusReceivedMessageContext messageContext) {
         ServiceBusReceivedMessage message = messageContext.getMessage();
@@ -55,8 +59,9 @@ public class MessageReceiverAsyncWorker {
      * Handle exceptions thrown from the order service.
      * The underlying order service will save the order batch in a single transaction, so the message batch
      * will also be settled in a transaction.
+     *
      * @param messageContexts The message contexts, each of which includes a received message.
-     * @return
+     * @return A Mono.
      */
     public Mono<Void> processMessageInBatch(IterableStream<ServiceBusReceivedMessageContext> messageContexts) {
         List<ServiceBusReceivedMessage> messageList = messageContexts.stream().map(ServiceBusReceivedMessageContext::getMessage).collect(Collectors.toList());
@@ -64,14 +69,14 @@ public class MessageReceiverAsyncWorker {
         return receiverClient.createTransaction().flatMap(txContext -> orderService.batchCreateOrReplaceOrder(orders)
             .then(Flux.fromIterable(messageList).flatMap(message -> receiverClient.complete(message.getLockToken())).then())
             .onErrorResume(error -> {
-            if (error instanceof OrderServiceFailureException) {
-                return Flux.fromIterable(messageList).flatMap(message -> receiverClient.deadLetter(message.getLockToken())).then();
-            } else if (error instanceof NetworkFailureException) {
-                return Flux.fromIterable(messageList).flatMap(message -> receiverClient.abandon(message.getLockToken())).then();
-            } else {
-                return Flux.fromIterable(messageList).flatMap(message -> receiverClient.defer(message.getLockToken())).then();
-            }
-        }).then(receiverClient.commitTransaction(txContext)));
+                if (error instanceof OrderServiceFailureException) {
+                    return Flux.fromIterable(messageList).flatMap(message -> receiverClient.deadLetter(message.getLockToken())).then();
+                } else if (error instanceof NetworkFailureException) {
+                    return Flux.fromIterable(messageList).flatMap(message -> receiverClient.abandon(message.getLockToken())).then();
+                } else {
+                    return Flux.fromIterable(messageList).flatMap(message -> receiverClient.defer(message.getLockToken())).then();
+                }
+            }).then(receiverClient.commitTransaction(txContext)));
     }
 
     public Order convertMessageToOrder(ServiceBusReceivedMessage message) {

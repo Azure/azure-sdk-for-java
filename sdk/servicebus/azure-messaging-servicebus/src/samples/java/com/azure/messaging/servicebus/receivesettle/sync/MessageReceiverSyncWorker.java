@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.servicebus.receivesettle.sync;
 
 import com.azure.core.util.IterableStream;
@@ -30,6 +33,7 @@ public class MessageReceiverSyncWorker {
     /**
      * Convert a message to order and call the order service to process it.
      * Handle exceptions thrown from the order service.
+     *
      * @param messageContext The message context that includes the received message.
      */
     public void processMessageToOrder(ServiceBusReceivedMessageContext messageContext) {
@@ -52,6 +56,7 @@ public class MessageReceiverSyncWorker {
      * Handle exceptions thrown from the order service.
      * The underlying order service will save the order batch in a single transaction, so the message batch
      * will also be settled in a transaction.
+     *
      * @param messageContexts The message contexts, each of which includes a received message.
      */
     public void processMessageToOrderInBatch(IterableStream<ServiceBusReceivedMessageContext> messageContexts) {

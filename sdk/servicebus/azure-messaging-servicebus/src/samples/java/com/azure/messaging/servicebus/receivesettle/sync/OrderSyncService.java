@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.servicebus.receivesettle.sync;
 
 import com.azure.core.util.logging.ClientLogger;
@@ -5,8 +8,8 @@ import com.azure.messaging.servicebus.receivesettle.NetworkFailureException;
 import com.azure.messaging.servicebus.receivesettle.Order;
 import com.azure.messaging.servicebus.receivesettle.OrderServiceFailureException;
 
-import java.util.UUID;
 import java.util.Random;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 /**
@@ -18,11 +21,12 @@ public class OrderSyncService {
 
     /**
      * Simulate an order creation or update
-     * Exception might be thrown before or after the order is saved (logged)
+     * Exception might be thrown before or after the order is saved (logged).
+     * @param order The order to be created or replaced.
      */
     public void createOrReplaceOrder(Order order) throws OrderServiceFailureException, NetworkFailureException {
         this.throwRandomError();
-        if(order.getId() == null) {
+        if (order.getId() == null) {
             Order newOrder = new Order();
             newOrder.setId(UUID.randomUUID().toString());
             newOrder.setContent(order.getContent());
@@ -35,12 +39,13 @@ public class OrderSyncService {
 
     /**
      * Simulate to create and/or update a batch of orders in a single transaction.
-     * Exception might be thrown before or after the orders are saved (logged)
+     * Exception might be thrown before or after the orders are saved (logged)。
+     * @param orders The orders to be created or replaced.
      */
-    public void batchCreateOrReplaceOrder(Stream<Order> orders)  throws OrderServiceFailureException, NetworkFailureException {
+    public void batchCreateOrReplaceOrder(Stream<Order> orders) throws OrderServiceFailureException, NetworkFailureException {
         this.throwRandomError();
         orders.forEach(order -> {
-            if(order.getId() == null) {
+            if (order.getId() == null) {
                 Order newOrder = new Order();
                 newOrder.setId(UUID.randomUUID().toString());
                 newOrder.setContent(order.getContent());
@@ -57,7 +62,7 @@ public class OrderSyncService {
      */
     private void throwRandomError() throws OrderServiceFailureException, NetworkFailureException {
         int nextInt = rand.nextInt(200);
-        if(nextInt == 1) {
+        if (nextInt == 1) {
             logger.info("A simulated OrderServiceFailureException is thrown");
             throw new OrderServiceFailureException("A simulated service failure happens");
         } else if (nextInt == 2) {

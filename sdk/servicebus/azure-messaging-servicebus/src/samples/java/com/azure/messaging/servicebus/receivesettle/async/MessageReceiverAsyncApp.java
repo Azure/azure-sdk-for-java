@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.servicebus.receivesettle.async;
 
 import com.azure.core.util.IterableStream;
@@ -38,6 +41,8 @@ public class MessageReceiverAsyncApp {
         ClientLogger logger = new ClientLogger(MessageReceiverSyncApp.class);
         logger.info("Start of MessageReceiverAsyncApp");
         String serviceBusConnectionString = System.getenv("SERVICE_BUS_CONNECTION_STR");
+        // A connection string is like
+        // "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
         String queueName = System.getenv("SERVICE_BUS_QUEUE_NAME");
 
         ServiceBusReceiverAsyncClient receiverClient = new ServiceBusClientBuilder()
@@ -48,10 +53,12 @@ public class MessageReceiverAsyncApp {
         OrderAsyncService orderService = new OrderAsyncService();
         MessageReceiverAsyncWorker messageReceiverSyncWorker = new MessageReceiverAsyncWorker(receiverClient, orderService);
         MessageReceiverAsyncApp app = new MessageReceiverAsyncApp(receiverClient, messageReceiverSyncWorker);
-        try (receiverClient) {
+        try {
             app.processMessageOneByOne();
             //app.processMessageInBatch();
+        } finally {
+            receiverClient.close();
+            logger.info("End of MessageReceiverAsyncApp");
         }
-        logger.info("End of MessageReceiverAsyncApp");
     }
 }

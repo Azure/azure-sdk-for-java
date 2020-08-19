@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.servicebus.receivesettle;
 
 /**
@@ -7,27 +10,24 @@ public class Order {
     private String id;
     private String content;
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getId() {
         return id;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getContent() {
         return this.content;
     }
 
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     @Override
     public String toString() {
-        return "Order{" +
-            "id='" + id + '\'' +
-            ", content='" + content + '\'' +
-            '}';
+        return String.format("Order{id='%s', content='%s'}", this.id, this.content);
     }
 }
