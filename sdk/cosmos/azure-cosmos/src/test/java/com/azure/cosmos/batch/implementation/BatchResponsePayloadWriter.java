@@ -1,15 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.batch;
+package com.azure.cosmos.batch.implementation;
 
+import com.azure.cosmos.batch.TransactionalBatchOperationResult;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import java.util.List;
 
-import static com.azure.cosmos.batch.BatchRequestResponseConstant.*;
+import static com.azure.cosmos.batch.implementation.BatchRequestResponseConstant.*;
 
 public class BatchResponsePayloadWriter {
 

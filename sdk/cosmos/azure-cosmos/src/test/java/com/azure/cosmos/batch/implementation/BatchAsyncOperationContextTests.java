@@ -1,8 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.batch;
+package com.azure.cosmos.batch.implementation;
 
+import com.azure.cosmos.batch.TransactionalBatchOperationResult;
+import com.azure.cosmos.batch.implementation.BatchPartitionKeyRangeGoneRetryPolicy;
+import com.azure.cosmos.batch.implementation.ItemBatchOperation;
+import com.azure.cosmos.batch.implementation.ItemBatchOperationContext;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IRetryPolicy;
 import com.azure.cosmos.implementation.OperationType;

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.batch;
+package com.azure.cosmos.batch.implementation;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 

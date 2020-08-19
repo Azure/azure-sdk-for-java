@@ -1,14 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.batch;
+package com.azure.cosmos.batch.implementation;
 
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import org.testng.annotations.Test;
 
-import javax.rmi.CORBA.Util;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;

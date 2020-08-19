@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.batch;
+package com.azure.cosmos.batch.implementation;
 
 /**
  * This contains all the extra constants needed for batch/bulk. This will be usefull even if Hybrid row comes in.

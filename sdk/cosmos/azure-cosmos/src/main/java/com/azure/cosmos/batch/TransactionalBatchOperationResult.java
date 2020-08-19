@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.cosmos.batch.BatchRequestResponseConstant.*;
+import static com.azure.cosmos.batch.implementation.BatchRequestResponseConstant.*;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -325,7 +325,7 @@ public class TransactionalBatchOperationResult<TResource> {
      *
      * @return the response status
      */
-    protected HttpResponseStatus getResponseStatus() {
+    public HttpResponseStatus getResponseStatus() {
         return this.responseStatus;
     }
 

@@ -5,8 +5,8 @@ package com.azure.cosmos.batch.EmulatorTest;
 
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.batch.BatchAsyncContainerExecutor;
-import com.azure.cosmos.batch.ItemBatchOperation;
+import com.azure.cosmos.batch.implementation.BatchAsyncContainerExecutor;
+import com.azure.cosmos.batch.implementation.ItemBatchOperation;
 import com.azure.cosmos.batch.TransactionalBatchOperationResult;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-import static com.azure.cosmos.batch.BatchRequestResponseConstant.MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES;
+import static com.azure.cosmos.batch.implementation.BatchRequestResponseConstant.MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES;
 import static org.testng.Assert.*;
 
 public class BatchAsyncContainerExecutorTests extends BatchTestBase {

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.batch;
+package com.azure.cosmos.batch.implementation;
 
 import com.azure.cosmos.implementation.*;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
-import static com.azure.cosmos.batch.BatchRequestResponseConstant.*;
+import static com.azure.cosmos.batch.implementation.BatchRequestResponseConstant.*;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 

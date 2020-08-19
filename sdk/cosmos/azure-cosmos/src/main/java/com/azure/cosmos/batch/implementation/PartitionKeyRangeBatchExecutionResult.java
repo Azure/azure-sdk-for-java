@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.batch;
+package com.azure.cosmos.batch.implementation;
 
+import com.azure.cosmos.batch.TransactionalBatchResponse;
+import com.azure.cosmos.batch.implementation.ItemBatchOperation;
 import com.azure.cosmos.implementation.HttpConstants.SubStatusCodes;
 import io.netty.handler.codec.http.HttpResponseStatus;
 

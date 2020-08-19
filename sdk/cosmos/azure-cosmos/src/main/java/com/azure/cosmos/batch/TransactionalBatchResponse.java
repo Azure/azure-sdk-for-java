@@ -5,6 +5,8 @@ package com.azure.cosmos.batch;
 
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.batch.implementation.ItemBatchOperation;
+import com.azure.cosmos.batch.implementation.ServerBatchRequest;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;

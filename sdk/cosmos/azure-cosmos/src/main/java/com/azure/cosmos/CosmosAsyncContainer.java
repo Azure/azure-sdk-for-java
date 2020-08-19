@@ -3,8 +3,8 @@
 package com.azure.cosmos;
 
 import com.azure.core.util.Context;
-import com.azure.cosmos.batch.BatchAsyncContainerExecutor;
-import com.azure.cosmos.batch.ItemBatchOperation;
+import com.azure.cosmos.batch.implementation.BatchAsyncContainerExecutor;
+import com.azure.cosmos.batch.implementation.ItemBatchOperation;
 import com.azure.cosmos.batch.TransactionalBatchCore;
 import com.azure.cosmos.implementation.*;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
@@ -20,8 +20,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.cosmos.batch.BatchRequestResponseConstant.MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES;
-import static com.azure.cosmos.batch.BatchRequestResponseConstant.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
+import static com.azure.cosmos.batch.implementation.BatchRequestResponseConstant.MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES;
+import static com.azure.cosmos.batch.implementation.BatchRequestResponseConstant.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
 
 /**

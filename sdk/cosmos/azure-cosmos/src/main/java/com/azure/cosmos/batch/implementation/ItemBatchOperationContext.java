@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.batch;
+package com.azure.cosmos.batch.implementation;
 
+import com.azure.cosmos.batch.TransactionalBatchOperationResult;
 import com.azure.cosmos.implementation.IRetryPolicy.ShouldRetryResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

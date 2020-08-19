@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.batch;
+package com.azure.cosmos.batch.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -12,20 +12,12 @@ import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
-import io.netty.buffer.Unpooled;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.ByteBuffer;
-import java.nio.channels.AsynchronousByteChannel;
-import java.nio.channels.CompletionHandler;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 
-import static com.azure.cosmos.batch.BatchRequestResponseConstant.*;
+import static com.azure.cosmos.batch.implementation.BatchRequestResponseConstant.*;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;

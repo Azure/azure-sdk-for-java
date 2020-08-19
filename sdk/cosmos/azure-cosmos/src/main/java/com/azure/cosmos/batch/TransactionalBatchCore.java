@@ -5,6 +5,8 @@ package com.azure.cosmos.batch;
 
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosBridgeInternal;
+import com.azure.cosmos.batch.implementation.BatchExecutor;
+import com.azure.cosmos.batch.implementation.ItemBatchOperation;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.models.PartitionKey;

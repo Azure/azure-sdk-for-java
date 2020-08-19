@@ -4,7 +4,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.batch.ServerBatchRequest;
+import com.azure.cosmos.batch.implementation.ServerBatchRequest;
 import com.azure.cosmos.batch.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
