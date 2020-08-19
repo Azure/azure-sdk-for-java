@@ -26,7 +26,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-autoconfigure</artifactId>
-      <version>2.3.2.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
+      <version>2.3.3.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -101,7 +101,7 @@
     <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-redis</artifactId>
-      <version>2.3.2.RELEASE</version> <!-- {x-version-update;org.springframework.data:spring-data-redis;external_dependency} -->
+      <version>2.3.3.RELEASE</version> <!-- {x-version-update;org.springframework.data:spring-data-redis;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -109,7 +109,7 @@
     <dependency>
       <groupId>org.springframework.kafka</groupId>
       <artifactId>spring-kafka</artifactId>
-      <version>2.5.4.RELEASE</version> <!-- {x-version-update;org.springframework.kafka:spring-kafka;external_dependency} -->
+      <version>2.5.5.RELEASE</version> <!-- {x-version-update;org.springframework.kafka:spring-kafka;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -117,7 +117,7 @@
     <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-mongodb</artifactId>
-      <version>3.0.2.RELEASE</version> <!-- {x-version-update;org.springframework.data:spring-data-mongodb;external_dependency} -->
+      <version>3.0.3.RELEASE</version> <!-- {x-version-update;org.springframework.data:spring-data-mongodb;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -144,13 +144,13 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
-      <version>2.11.1</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+      <version>2.11.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>2.3.2.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>2.3.3.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -202,7 +202,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.fasterxml.jackson.core:jackson-core:[2.11.1]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-core:[2.11.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
                 <include>com.microsoft.azure:spring-cloud-azure-context:[1.2.8-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-context;current} -->
                 <include>com.microsoft.azure:spring-cloud-azure-telemetry:[1.2.8-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-telemetry;current} -->
                 <include>com.microsoft.azure:spring-integration-eventhubs:[1.2.8-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-integration-eventhubs;current} -->
@@ -211,10 +211,10 @@
                 <include>mysql:mysql-connector-java:[8.0.21]</include> <!-- {x-include-update;mysql:mysql-connector-java;external_dependency} -->
                 <include>org.hibernate.validator:hibernate-validator:[6.1.5.Final]</include> <!-- {x-include-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
                 <include>org.postgresql:postgresql:[42.2.14]</include> <!-- {x-include-update;org.postgresql:postgresql;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-autoconfigure:[2.3.2.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
-                <include>org.springframework.data:spring-data-mongodb:[3.0.2.RELEASE]</include> <!-- {x-include-update;org.springframework.data:spring-data-mongodb;external_dependency} -->
-                <include>org.springframework.data:spring-data-redis:[2.3.2.RELEASE]</include> <!-- {x-include-update;org.springframework.data:spring-data-redis;external_dependency} -->
-                <include>org.springframework.kafka:spring-kafka:[2.5.4.RELEASE]</include> <!-- {x-include-update;org.springframework.kafka:spring-kafka;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-autoconfigure:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
+                <include>org.springframework.data:spring-data-mongodb:[3.0.3.RELEASE]</include> <!-- {x-include-update;org.springframework.data:spring-data-mongodb;external_dependency} -->
+                <include>org.springframework.data:spring-data-redis:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.data:spring-data-redis;external_dependency} -->
+                <include>org.springframework.kafka:spring-kafka:[2.5.5.RELEASE]</include> <!-- {x-include-update;org.springframework.kafka:spring-kafka;external_dependency} -->
                 <include>org.springframework:spring-context-support:[5.2.8.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-context-support;external_dependency} -->
                 <include>org.springframework:spring-jdbc:[5.2.8.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-jdbc;external_dependency} -->
                 <include>org.springframework:spring-web:[5.2.8.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
