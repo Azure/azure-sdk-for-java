@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.query;
 
-import com.azure.cosmos.implementation.guava25.base.Optional;
 import com.azure.spring.data.cosmos.core.CosmosOperations;
 import com.azure.spring.data.cosmos.core.mapping.CosmosPersistentProperty;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
