@@ -21,8 +21,8 @@ public enum ResourceIdentityType {
     /** Enum value UserAssigned. */
     USER_ASSIGNED("UserAssigned"),
 
-    /** Enum value SystemAssigned, UserAssigned. */
-    SYSTEM_ASSIGNED_USER_ASSIGNED("SystemAssigned, UserAssigned"),
+    /** Enum value SystemAssigned,UserAssigned. */
+    SYSTEM_ASSIGNED_USER_ASSIGNED("SystemAssigned,UserAssigned"),
 
     /** Enum value None. */
     NONE("None");
