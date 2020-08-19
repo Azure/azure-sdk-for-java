@@ -809,6 +809,11 @@
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
 
+  <Match>
+    <Class name="com.azure.cosmos.implementation.BaseAuthorizationTokenProvider"/>
+    <Method name="reInitializeIfPossible"/>
+    <Bug pattern="ES_COMPARING_STRINGS_WITH_EQ"/>
+  </Match>
 
   <Match>
     <Class name="com.azure.cosmos.implementation.encryption.SecurityUtility"/>
