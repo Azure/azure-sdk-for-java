@@ -57,6 +57,15 @@ public class LeaseClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippets for {@link ShareLeaseClient#renewLease()}
+     */
+    public void renewLease() {
+        // BEGIN: com.azure.storage.file.share.specialized.ShareLeaseClient.renewLease
+        System.out.printf("Renewed lease ID is %s%n", client.renewLease());
+        // END: com.azure.storage.file.share.specialized.ShareLeaseClient.renewLease
+    }
+
+    /**
      * Code snippets for {@link ShareLeaseClient#acquireLeaseWithResponse(Duration, Context)}
      */
     public void acquireLeaseWithResponseCodeSnippets() {
@@ -119,5 +128,16 @@ public class LeaseClientJavaDocCodeSnippets {
             client.changeLeaseWithResponse("proposedId", timeout, new Context(key, value))
                 .getValue());
         // END: com.azure.storage.file.share.specialized.ShareLeaseClient.changeLeaseWithResponse#String-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link ShareLeaseClient#renewLeaseWithResponse(Duration, Context)}
+     */
+    public void renewLeaseWithResponseCodeSnippets() {
+        // BEGIN: com.azure.storage.file.share.specialized.ShareLeaseClient.renewLeaseWithResponse#Duration-Context
+        System.out.printf("Renewed lease ID is %s%n",
+            client.releaseLeaseWithResponse( timeout, new Context(key, value))
+                .getValue());
+        // END: com.azure.storage.file.share.specialized.ShareLeaseClient.renewLeaseWithResponse#Duration-Context
     }
 }

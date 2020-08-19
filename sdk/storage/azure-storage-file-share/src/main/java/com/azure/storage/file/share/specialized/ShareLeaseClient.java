@@ -40,6 +40,7 @@ public final class ShareLeaseClient {
     }
 
     /**
+     * @return URL of the lease client.
      * @deprecated Please use {@link #getResourceUrl()}
      */
     @Deprecated
@@ -240,7 +241,7 @@ public final class ShareLeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseClient.renewLeaseWithResponse}
+     * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseClient.renewLeaseWithResponse#Duration-Context}
      *
      * @return A response containing the renewed lease ID.
      */

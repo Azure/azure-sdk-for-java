@@ -65,6 +65,7 @@ public final class ShareLeaseAsyncClient {
     }
 
     /**
+     * @return URL of the lease client.
      * @deprecated Please use {@link #getResourceUrl()}
      */
     @Deprecated
