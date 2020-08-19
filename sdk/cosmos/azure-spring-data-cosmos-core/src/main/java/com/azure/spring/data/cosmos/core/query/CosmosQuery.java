@@ -4,7 +4,6 @@ package com.azure.spring.data.cosmos.core.query;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.query.parser.PartTree;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 
