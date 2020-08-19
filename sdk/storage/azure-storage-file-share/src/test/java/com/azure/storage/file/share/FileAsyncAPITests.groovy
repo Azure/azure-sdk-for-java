@@ -7,18 +7,16 @@ import com.azure.core.exception.HttpResponseException
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.util.FluxUtil
 import com.azure.core.util.polling.PollerFlux
-import com.azure.core.util.polling.SyncPoller
 import com.azure.storage.common.StorageSharedKeyCredential
-
-import com.azure.storage.file.share.models.PermissionCopyModeType
-import com.azure.storage.file.share.models.ShareRequestConditions
 import com.azure.storage.common.implementation.Constants
-import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.models.NtfsFileAttributes
+import com.azure.storage.file.share.models.PermissionCopyModeType
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileCopyInfo
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.ShareFileRange
+import com.azure.storage.file.share.models.ShareRequestConditions
+import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.sas.ShareFileSasPermission
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues
 import reactor.core.publisher.Flux
@@ -737,7 +735,7 @@ class FileAsyncAPITests extends APISpec {
 
         when:
         PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, null,
-            Duration.ofSeconds(1))
+            getPollingDuration(1000))
         def copyInfoVerifier = StepVerifier.create(poller)
 
         then:
@@ -762,7 +760,7 @@ class FileAsyncAPITests extends APISpec {
         when:
         PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, smbProperties,
             setFilePermission ? filePermission : null, permissionType, ignoreReadOnly,
-            setArchiveAttribute, null, null, null)
+            setArchiveAttribute, null, getPollingDuration(1000), null)
         def copyInfoVerifier = StepVerifier.create(poller)
 
         then:
@@ -788,7 +786,7 @@ class FileAsyncAPITests extends APISpec {
 
         when:
         PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, null,
-            Duration.ofSeconds(1))
+            getPollingDuration(1000))
         def copyInfoVerifier = StepVerifier.create(poller)
 
         then:
@@ -808,7 +806,7 @@ class FileAsyncAPITests extends APISpec {
 
         when:
         PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, null, null, null,
-            false, false, null, Duration.ofSeconds(1), new ShareRequestConditions().setLeaseId(leaseId))
+            false, false, null, getPollingDuration(1000), new ShareRequestConditions().setLeaseId(leaseId))
         def copyInfoVerifier = StepVerifier.create(poller)
 
         then:
@@ -828,7 +826,7 @@ class FileAsyncAPITests extends APISpec {
 
         when:
         PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, null, null, null,
-            false, false, null, Duration.ofSeconds(1), new ShareRequestConditions().setLeaseId(getRandomUUID()))
+            false, false, null, getPollingDuration(1000), new ShareRequestConditions().setLeaseId(getRandomUUID()))
         def copyInfoVerifier = StepVerifier.create(poller)
 
         then:

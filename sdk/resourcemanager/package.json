@@ -1,0 +1,52 @@
+{
+  "name": "azure-sdk-for-java-codegen",
+  "version": "0.0.1",
+  "description": "Tools for Azure SDK for Java build processes",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Azure/azure-sdk-for-java.git"
+  },
+  "keywords": [
+    "azure"
+  ],
+  "author": "Microsoft Corporation",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Azure/azure-sdk-for-java/issues"
+  },
+  "homepage": "https://github.com/Azure/azure-sdk-for-java#readme",
+  "scripts": {
+    "credcheck": "node credcheck.js",
+    "credcheck_appservice": "node credcheck.js --path=./azure-resourcemanager-appservice/src/test/resources/session-records/",
+    "credcheck_authorization": "node credcheck.js --path=./azure-resourcemanager-authorization/src/test/resources/session-records/",
+    "credcheck_compute": "node credcheck.js --path=./azure-resourcemanager-compute/src/test/resources/session-records/",
+    "credcheck_containerregistry": "node credcheck.js --path=./azure-resourcemanager-containerregistry/src/test/resources/session-records/",
+    "credcheck_containerservice": "node credcheck.js --path=./azure-resourcemanager-containerservice/src/test/resources/session-records/",
+    "credcheck_cosmos": "node credcheck.js --path=./azure-resourcemanager-cosmos/src/test/resources/session-records/",
+    "credcheck_dns": "node credcheck.js --path=./azure-resourcemanager-dns/src/test/resources/session-records/",
+    "credcheck_keyvault": "node credcheck.js --path=./azure-resourcemanager-keyvault/src/test/resources/session-records/",
+    "credcheck_msi": "node credcheck.js --path=./azure-resourcemanager-managedserviceidentity/src/test/resources/session-records/",
+    "credcheck_monitor": "node credcheck.js --path=./azure-resourcemanager-monitor/src/test/resources/session-records/",
+    "credcheck_network": "node credcheck.js --path=./azure-resourcemanager-network/src/test/resources/session-records/",
+    "credcheck_resources": "node credcheck.js --path=./azure-resourcemanager-resources/src/test/resources/session-records/",
+    "credcheck_sql": "node credcheck.js --path=./azure-resourcemanager-sql/src/test/resources/session-records/",
+    "credcheck_storage": "node credcheck.js --path=./azure-resourcemanager-storage/src/test/resources/session-records/",
+    "credcheck_azure": "node credcheck.js --path=./azure-resourcemanager/src/test/resources/session-records/",
+    "credcheck_samples": "node credcheck.js --path=./azure-resourcemanager-samples/src/test/resources/session-records/",
+    "credcheck_all": "run-s credcheck_appservice credcheck_authorization credcheck_compute credcheck_containerregistry credcheck_containerservice credcheck_cosmos credcheck_dns credcheck_keyvault credcheck_msi credcheck_monitor credcheck_network credcheck_resources credcheck_sql credcheck_storage credcheck_azure credcheck_samples",
+    "servcheck": "node servcheck.js"
+  },
+  "devDependencies": {
+    "colors": "1.1.2",
+    "execa": "^4.0.0",
+    "gulp": "^4.0.2",
+    "gulp-exec": "4.0.0",
+    "gulp-gh-pages": "^0.5.4",
+    "gulp-if": "^3.0.0",
+    "gulp-shell": "^0.8.0",
+    "p-all": "^1.0.0",
+    "yargs": "3.31.0",
+    "npm-run-all": "4.1.5",
+    "pom-parser": "1.2.0"
+  }
+}

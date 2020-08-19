@@ -18,9 +18,11 @@ import java.util.ArrayList;
 public final class BlobListDetails {
     private boolean retrieveCopy;
     private boolean retrieveMetadata;
+    private boolean retrieveTags;
     private boolean retrieveSnapshots;
     private boolean retrieveUncommittedBlobs;
     private boolean retrieveDeletedBlobs;
+    private boolean retrieveVersions;
 
     /**
      * Constructs an unpopulated {@link BlobListDetails}.
@@ -69,6 +71,26 @@ public final class BlobListDetails {
     }
 
     /**
+     * Whether blob tags should be returned.
+     *
+     * @return a flag indicating if tags will be returned in the listing
+     */
+    public boolean getRetrieveTags() {
+        return retrieveTags;
+    }
+
+    /**
+     * Whether blob tags should be returned.
+     *
+     * @param retrieveTags Flag indicating whether tags should be returned
+     * @return the updated BlobListDetails object
+     */
+    public BlobListDetails setRetrieveTags(boolean retrieveTags) {
+        this.retrieveTags = retrieveTags;
+        return this;
+    }
+
+    /**
      * Whether snapshots should be returned. Snapshots are listed from oldest to newest.
      *
      * @return a flag indicating if snapshots will be returned in the listing
@@ -85,6 +107,26 @@ public final class BlobListDetails {
      */
     public BlobListDetails setRetrieveSnapshots(boolean retrieveSnapshots) {
         this.retrieveSnapshots = retrieveSnapshots;
+        return this;
+    }
+
+    /**
+     * Whether versions should be returned. Versions are listed from oldest to newest.
+     *
+     * @return a flag indicating if versions will be returned in the listing
+     */
+    public boolean getRetrieveVersions() {
+        return retrieveVersions;
+    }
+
+    /**
+     * Whether versions should be returned. Versions are listed from oldest to newest.
+     *
+     * @param retrieveVersions Flag indicating whether versions should be returned
+     * @return the updated BlobListDetails object
+     */
+    public BlobListDetails setRetrieveVersions(boolean retrieveVersions) {
+        this.retrieveVersions = retrieveVersions;
         return this;
     }
 
@@ -144,11 +186,17 @@ public final class BlobListDetails {
         if (this.retrieveMetadata) {
             details.add(ListBlobsIncludeItem.METADATA);
         }
+        if (this.retrieveTags) {
+            details.add(ListBlobsIncludeItem.TAGS);
+        }
         if (this.retrieveSnapshots) {
             details.add(ListBlobsIncludeItem.SNAPSHOTS);
         }
         if (this.retrieveUncommittedBlobs) {
             details.add(ListBlobsIncludeItem.UNCOMMITTEDBLOBS);
+        }
+        if (this.retrieveVersions) {
+            details.add(ListBlobsIncludeItem.VERSIONS);
         }
         return details;
     }

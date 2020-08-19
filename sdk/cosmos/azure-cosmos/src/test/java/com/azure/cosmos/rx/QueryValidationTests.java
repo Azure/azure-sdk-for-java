@@ -6,11 +6,23 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
+import com.azure.cosmos.models.CosmosDatabaseProperties;
+import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.CosmosStoredProcedureProperties;
+import com.azure.cosmos.models.CosmosTriggerProperties;
+import com.azure.cosmos.models.CosmosUserDefinedFunctionProperties;
+import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.PermissionMode;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.cosmos.models.TriggerOperation;
+import com.azure.cosmos.models.TriggerType;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -110,6 +122,89 @@ public class QueryValidationTests extends TestSuiteBase {
             documentsInserted);
     }
 
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void queryOptionNullValidation() {
+        String query = "Select top 1 * from c";
+
+        //Database null query option check
+        FeedResponse<CosmosDatabaseProperties> databases = client.queryDatabases(query, null).byPage(1).blockFirst();
+        assertThat(databases.getResults().size()).isEqualTo(1);
+        databases = client.queryDatabases(new SqlQuerySpec(query), null).byPage(1).blockFirst();
+        assertThat(databases.getResults().size()).isEqualTo(1);
+
+        //Container null query check
+        FeedResponse<CosmosContainerProperties> containers =
+            createdDatabase.readAllContainers(null).byPage(1).blockFirst();
+        assertThat(containers.getResults().size()).isGreaterThanOrEqualTo(1);
+        containers = createdDatabase.queryContainers(query, null).byPage(1).blockFirst();
+        assertThat(containers.getResults().size()).isEqualTo(1);
+        containers = createdDatabase.queryContainers(new SqlQuerySpec(query), null).byPage(1).blockFirst();
+        assertThat(containers.getResults().size()).isEqualTo(1);
+
+        //User null query check
+        CosmosUserProperties userProperties = new CosmosUserProperties();
+        userProperties.setId(UUID.randomUUID().toString());
+        createdDatabase.createUser(userProperties).block();
+        FeedResponse<CosmosUserProperties> users = createdDatabase.queryUsers(query, null).byPage(1).blockFirst();
+        assertThat(users.getResults().size()).isEqualTo(1);
+        users = createdDatabase.queryUsers(new SqlQuerySpec(query), null).byPage(1).blockFirst();
+        assertThat(users.getResults().size()).isEqualTo(1);
+
+        //Permission null query check
+        CosmosPermissionProperties cosmosPermissionProperties = new CosmosPermissionProperties();
+        cosmosPermissionProperties.setContainerName(createdContainer.getId());
+        cosmosPermissionProperties.setPermissionMode(PermissionMode.READ);
+        cosmosPermissionProperties.setId(UUID.randomUUID().toString());
+        createdDatabase.getUser(userProperties.getId()).createPermission(cosmosPermissionProperties, null).block();
+
+        FeedResponse<CosmosPermissionProperties> permissions =
+            createdDatabase.getUser(userProperties.getId()).queryPermissions(query, null).byPage(1).blockFirst();
+        assertThat(permissions.getResults().size()).isEqualTo(1);
+
+        //Item null query check
+        FeedResponse<TestObject> items =
+            createdContainer.queryItems(query, null, TestObject.class).byPage(1).blockFirst();
+        assertThat(items.getResults().size()).isEqualTo(1);
+        items = createdContainer.queryItems(new SqlQuerySpec(query), null, TestObject.class).byPage(1).blockFirst();
+        assertThat(items.getResults().size()).isEqualTo(1);
+
+        createdContainer.getScripts().createStoredProcedure(getCosmosStoredProcedureProperties()).block();
+        createdContainer.getScripts().createTrigger(getCosmosTriggerProperties()).block();
+        createdContainer.getScripts().createUserDefinedFunction(getCosmosUserDefinedFunctionProperties()).block();
+
+        //Sproc null query check
+        FeedResponse<CosmosStoredProcedureProperties> sprocs =
+            createdContainer.getScripts().queryStoredProcedures(query, null).byPage(1).blockFirst();
+        assertThat(sprocs.getResults().size()).isEqualTo(1);
+        sprocs =
+            createdContainer.getScripts().queryStoredProcedures(new SqlQuerySpec(query), null).byPage(1).blockFirst();
+        assertThat(sprocs.getResults().size()).isEqualTo(1);
+
+        //Trigger null query check
+        FeedResponse<CosmosTriggerProperties> triggers =
+            createdContainer.getScripts().queryTriggers(query, null).byPage(1).blockFirst();
+        assertThat(triggers.getResults().size()).isEqualTo(1);
+        triggers = createdContainer.getScripts().queryTriggers(new SqlQuerySpec(query), null).byPage(1).blockFirst();
+        assertThat(triggers.getResults().size()).isEqualTo(1);
+
+        //Udf null query check
+        FeedResponse<CosmosUserDefinedFunctionProperties> udfs =
+            createdContainer.getScripts().queryUserDefinedFunctions(query, null).byPage(1).blockFirst();
+        assertThat(udfs.getResults().size()).isEqualTo(1);
+        udfs =
+            createdContainer.getScripts().queryUserDefinedFunctions(new SqlQuerySpec(query), null).byPage(1).blockFirst();
+        assertThat(udfs.getResults().size()).isEqualTo(1);
+
+        //Conflict null query check
+        try {
+            createdContainer.queryConflicts(query, null).byPage(1).blockFirst();
+        } catch (CosmosException exception) {
+            // It should give bad request exception for not having partition key but not a null pointer.
+            assertThat(exception.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.BADREQUEST);
+        }
+        createdContainer.readAllConflicts(null).byPage(1).blockFirst();
+    }
+
     private <T> List<T> queryWithContinuationTokens(String query, int pageSize, CosmosAsyncContainer container, Class<T> klass) {
         logger.info("querying: " + query);
         String requestContinuation = null;
@@ -183,6 +278,26 @@ public class QueryValidationTests extends TestSuiteBase {
 
         assertThat(docIds2).containsExactlyInAnyOrderElementsOf(expectedResourceIds);
         assertThat(docIds1).containsExactlyElementsOf(docIds2);
+    }
+
+    private static CosmosUserDefinedFunctionProperties getCosmosUserDefinedFunctionProperties() {
+        CosmosUserDefinedFunctionProperties udf =
+            new CosmosUserDefinedFunctionProperties(UUID.randomUUID().toString(), "function() {var x = 10;}");
+        return udf;
+    }
+
+    private static CosmosTriggerProperties getCosmosTriggerProperties() {
+        CosmosTriggerProperties trigger = new CosmosTriggerProperties(UUID.randomUUID().toString(), "function() {var " +
+            "x = 10;}");
+        trigger.setTriggerOperation(TriggerOperation.CREATE);
+        trigger.setTriggerType(TriggerType.PRE);
+        return trigger;
+    }
+
+    private static CosmosStoredProcedureProperties getCosmosStoredProcedureProperties() {
+        CosmosStoredProcedureProperties storedProcedureDef =
+            new CosmosStoredProcedureProperties(UUID.randomUUID().toString(), "function() {var x = 10;}");
+        return storedProcedureDef;
     }
 
     static class TestObject {

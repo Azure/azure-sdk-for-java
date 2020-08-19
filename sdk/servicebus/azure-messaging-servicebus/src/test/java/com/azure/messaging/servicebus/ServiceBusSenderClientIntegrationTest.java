@@ -44,7 +44,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
             return;
         }
         try {
-            receiver.receive()
+            receiver.receiveMessages()
                 .take(messagesPending.get())
                 .map(message -> {
                     logger.info("Message received: {}", message.getMessage().getSequenceNumber());
@@ -79,7 +79,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId);
 
         // Assert & Act
-        sender.send(message);
+        sender.sendMessage(message);
 
         messagesPending.incrementAndGet();
     }
@@ -103,7 +103,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
             Assertions.assertTrue(batch.tryAdd(message));
         }
 
-        sender.send(batch);
+        sender.sendMessages(batch);
 
         for (int i = 0; i < messages.size(); i++) {
             messagesPending.incrementAndGet();
@@ -122,7 +122,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString(), CONTENTS_BYTES);
 
         // Assert & Act
-        sender.send(messages);
+        sender.sendMessages(messages);
 
         messages.forEach(serviceBusMessage -> messagesPending.incrementAndGet());
     }

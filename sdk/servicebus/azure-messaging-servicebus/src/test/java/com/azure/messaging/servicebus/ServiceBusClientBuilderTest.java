@@ -31,6 +31,8 @@ class ServiceBusClientBuilderTest {
     private static final String DEFAULT_DOMAIN_NAME = "servicebus.windows.net/";
     private static final String ENDPOINT_FORMAT = "sb://%s.%s";
     private static final String QUEUE_NAME = "test-queue-name";
+    private static final String VIA_QUEUE_NAME = "test-via-queue-name";
+    private static final String TOPIC_NAME = "test-topic-name";
     private static final String SHARED_ACCESS_KEY_NAME = "dummySasKeyName";
     private static final String SHARED_ACCESS_KEY = "dummySasKey";
     private static final String ENDPOINT = getUri(ENDPOINT_FORMAT, NAMESPACE_NAME, DEFAULT_DOMAIN_NAME).toString();
@@ -43,6 +45,35 @@ class ServiceBusClientBuilderTest {
     private static final String ENTITY_PATH_CONNECTION_STRING = String.format("Endpoint=%s;SharedAccessKeyName=%s;SharedAccessKey=%s;EntityPath=%s",
         ENDPOINT, SHARED_ACCESS_KEY_NAME, SHARED_ACCESS_KEY, QUEUE_NAME);
     private static final Proxy PROXY_ADDRESS = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(PROXY_HOST, Integer.parseInt(PROXY_PORT)));
+
+    @Test
+    void viaQueueNameWithTopicNotAllowed() {
+        // Arrange
+        ServiceBusSenderClientBuilder builder = new ServiceBusClientBuilder()
+            .connectionString(NAMESPACE_CONNECTION_STRING)
+            .sender()
+            .topicName(TOPIC_NAME)
+            .viaQueueName(VIA_QUEUE_NAME);
+
+        // Act & Assert
+        assertThrows(IllegalStateException.class, () -> builder.buildAsyncClient());
+    }
+
+    @Test
+    void queueClientWithViaQueueName() {
+        // Arrange
+        final ServiceBusSenderClientBuilder builder = new ServiceBusClientBuilder()
+            .connectionString(NAMESPACE_CONNECTION_STRING)
+            .sender()
+            .queueName(QUEUE_NAME)
+            .viaQueueName(VIA_QUEUE_NAME);
+
+        // Act
+        final ServiceBusSenderAsyncClient client = builder.buildAsyncClient();
+
+        // Assert
+        assertNotNull(client);
+    }
 
     @Test
     void missingConnectionString() {

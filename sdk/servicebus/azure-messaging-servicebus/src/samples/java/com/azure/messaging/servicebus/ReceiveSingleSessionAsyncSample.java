@@ -40,7 +40,7 @@ public class ReceiveSingleSessionAsyncSample {
             .subscriptionName("<<subscription-name>>")
             .buildAsyncClient();
 
-        Disposable subscription = receiver.receive()
+        Disposable subscription = receiver.receiveMessages()
             .flatMap(context -> {
                 if (context.hasError()) {
                     System.out.printf("An error occurred in session %s. Error: %s%n",
@@ -51,7 +51,7 @@ public class ReceiveSingleSessionAsyncSample {
                 System.out.println("Processing message from session: " + context.getSessionId());
 
                 // Process message
-                return receiver.complete(context.getMessage());
+                return receiver.complete(context.getMessage().getLockToken(), context.getSessionId());
             }).subscribe(aVoid -> {
             }, error -> System.err.println("Error occurred: " + error));
 

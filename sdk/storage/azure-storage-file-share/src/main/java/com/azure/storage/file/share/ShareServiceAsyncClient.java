@@ -199,6 +199,10 @@ public final class ShareServiceAsyncClient {
         List<ListSharesIncludeType> include = new ArrayList<>();
 
         if (options != null) {
+            if (options.isIncludeDeleted()) {
+                include.add(ListSharesIncludeType.DELETED);
+            }
+
             if (options.isIncludeMetadata()) {
                 include.add(ListSharesIncludeType.METADATA);
             }
@@ -533,5 +537,75 @@ public final class ShareServiceAsyncClient {
     public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues) {
         return new AccountSasImplUtil(accountSasSignatureValues)
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()));
+    }
+
+    /**
+     * Restores a previously deleted share.
+     * <p>
+     * If the share associated with provided <code>deletedShareName</code>
+     * already exists, this call will result in a 409 (conflict).
+     * </p>
+     * <p>
+     * This API is only functional if Share Soft Delete is enabled
+     * for the storage account associated with the share.
+     * For more information, see the
+     * <a href="TBD">Azure Docs</a>.
+     * </p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareServiceAsyncClient.undeleteShare#String-String}
+     *
+     * @param deletedShareName The name of the previously deleted share.
+     * @param deletedShareVersion The version of the previously deleted share.
+     * @return A {@link Mono} containing a {@link ShareAsyncClient} used
+     * to interact with the restored share.
+     */
+    // TODO (kasobol-msft) add link to REST API docs
+    public Mono<ShareAsyncClient> undeleteShare(
+        String deletedShareName, String deletedShareVersion) {
+        return this.undeleteShareWithResponse(deletedShareName, deletedShareVersion).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Restores a previously deleted share.
+     * <p>
+     * If the share associated with provided <code>deletedShareName</code>
+     * already exists, this call will result in a 409 (conflict).
+     * </p>
+     * <p>
+     * This API is only functional if Share Soft Delete is enabled
+     * for the storage account associated with the share.
+     * For more information, see the
+     * <a href="TBD">Azure Docs</a>.
+     * </p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareServiceAsyncClient.undeleteShareWithResponse#String-String}
+     *
+     * @param deletedShareName The name of the previously deleted share.
+     * @param deletedShareVersion The version of the previously deleted share.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
+     * ShareAsyncClient} used to interact with the restored share.
+     */
+    // TODO (kasobol-msft) add link to REST API docs
+    public Mono<Response<ShareAsyncClient>> undeleteShareWithResponse(
+        String deletedShareName, String deletedShareVersion) {
+        try {
+            return withContext(context ->
+                undeleteShareWithResponse(
+                    deletedShareName, deletedShareVersion, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<ShareAsyncClient>> undeleteShareWithResponse(
+        String deletedShareName, String deletedShareVersion, Context context) {
+        return this.azureFileStorageClient.shares().restoreWithRestResponseAsync(
+            deletedShareName, null, null, deletedShareName, deletedShareVersion,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+        .map(response -> new SimpleResponse<>(response, getShareAsyncClient(deletedShareName)));
     }
 }

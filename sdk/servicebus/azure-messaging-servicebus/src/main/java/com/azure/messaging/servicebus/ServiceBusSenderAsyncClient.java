@@ -14,6 +14,7 @@ import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
@@ -87,13 +88,14 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     private final Runnable onClientClose;
     private final String entityName;
     private final ServiceBusConnectionProcessor connectionProcessor;
+    private final String viaEntityName;
 
     /**
      * Creates a new instance of this {@link ServiceBusSenderAsyncClient} that sends messages to a Service Bus entity.
      */
     ServiceBusSenderAsyncClient(String entityName, MessagingEntityType entityType,
-        ServiceBusConnectionProcessor connectionProcessor, AmqpRetryOptions retryOptions,
-        TracerProvider tracerProvider, MessageSerializer messageSerializer, Runnable onClientClose) {
+        ServiceBusConnectionProcessor connectionProcessor, AmqpRetryOptions retryOptions, TracerProvider tracerProvider,
+        MessageSerializer messageSerializer, Runnable onClientClose, String viaEntityName) {
         // Caching the created link so we don't invoke another link creation.
         this.messageSerializer = Objects.requireNonNull(messageSerializer,
             "'messageSerializer' cannot be null.");
@@ -104,7 +106,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         this.tracerProvider = tracerProvider;
         this.retryPolicy = getRetryPolicy(retryOptions);
         this.entityType = entityType;
-
+        this.viaEntityName = viaEntityName;
         this.onClientClose = onClientClose;
     }
 
@@ -135,7 +137,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      *
      * @throws NullPointerException if {@code message} is {@code null}.
      */
-    public Mono<Void> send(ServiceBusMessage message) {
+    public Mono<Void> sendMessage(ServiceBusMessage message) {
         if (Objects.isNull(message)) {
             return monoError(logger, new NullPointerException("'message' cannot be null."));
         }
@@ -152,7 +154,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      *
      * @throws NullPointerException if {@code message} is {@code null}.
      */
-    public Mono<Void> send(ServiceBusMessage message, ServiceBusTransactionContext transactionContext) {
+    public Mono<Void> sendMessage(ServiceBusMessage message, ServiceBusTransactionContext transactionContext) {
         if (Objects.isNull(transactionContext)) {
             return monoError(logger, new NullPointerException("'transactionContext' cannot be null."));
         }
@@ -177,7 +179,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * {@code transactionContext.transactionID} is {@code null}.
      * @throws AmqpException if {@code messages} is larger than the maximum allowed size of a single batch.
      */
-    public Mono<Void> send(Iterable<ServiceBusMessage> messages, ServiceBusTransactionContext transactionContext) {
+    public Mono<Void> sendMessages(Iterable<ServiceBusMessage> messages,
+        ServiceBusTransactionContext transactionContext) {
         if (Objects.isNull(transactionContext)) {
             return monoError(logger, new NullPointerException("'transactionContext' cannot be null."));
         }
@@ -200,7 +203,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * @throws NullPointerException if {@code messages} is {@code null}.
      * @throws AmqpException if {@code messages} is larger than the maximum allowed size of a single batch.
      */
-    public Mono<Void> send(Iterable<ServiceBusMessage> messages) {
+    public Mono<Void> sendMessages(Iterable<ServiceBusMessage> messages) {
         return sendIterable(messages, null);
     }
 
@@ -213,7 +216,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      *
      * @throws NullPointerException if {@code batch} is {@code null}.
      */
-    public Mono<Void> send(ServiceBusMessageBatch batch) {
+    public Mono<Void> sendMessages(ServiceBusMessageBatch batch) {
         return sendInternal(batch, null);
     }
 
@@ -228,7 +231,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * @throws NullPointerException if {@code batch}, {@code transactionContext} or
      * {@code transactionContext.transactionID} is {@code null}.
      */
-    public Mono<Void> send(ServiceBusMessageBatch batch, ServiceBusTransactionContext transactionContext) {
+    public Mono<Void> sendMessages(ServiceBusMessageBatch batch, ServiceBusTransactionContext transactionContext) {
         if (Objects.isNull(transactionContext)) {
             return monoError(logger, new NullPointerException("'transactionContext' cannot be null."));
         }
@@ -344,7 +347,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
     /**
      * Starts a new transaction on Service Bus. The {@link ServiceBusTransactionContext} should be passed along with
-     * {@link ServiceBusReceivedMessage} or {@link MessageLockToken} to all operations that needs to be in
+     * {@link ServiceBusReceivedMessage} or {@code lockToken } to all operations that needs to be in
      * this transaction.
      *
      * @return a new {@link ServiceBusTransactionContext}.
@@ -551,7 +554,14 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
     private Mono<AmqpSendLink> getSendLink() {
         return connectionProcessor
-            .flatMap(connection -> connection.createSendLink(entityName, entityName, retryOptions))
+            .flatMap(connection -> {
+                if (!CoreUtils.isNullOrEmpty(viaEntityName)) {
+                    return connection.createSendLink("VIA-".concat(viaEntityName), viaEntityName, retryOptions,
+                        entityName);
+                } else {
+                    return connection.createSendLink(entityName, entityName, retryOptions, null);
+                }
+            })
             .doOnNext(next -> linkName.compareAndSet(null, next.getLinkName()));
     }
 

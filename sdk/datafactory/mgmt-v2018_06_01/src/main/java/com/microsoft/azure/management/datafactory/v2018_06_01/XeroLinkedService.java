@@ -22,9 +22,16 @@ import com.microsoft.azure.management.datafactory.v2018_06_01.implementation.Lin
 @JsonFlatten
 public class XeroLinkedService extends LinkedServiceInner {
     /**
+     * Properties used to connect to Xero. It is mutually exclusive with any
+     * other properties in the linked service. Type: object.
+     */
+    @JsonProperty(value = "typeProperties.connectionProperties")
+    private Object connectionProperties;
+
+    /**
      * The endpoint of the Xero server. (i.e. api.xero.com).
      */
-    @JsonProperty(value = "typeProperties.host", required = true)
+    @JsonProperty(value = "typeProperties.host")
     private Object host;
 
     /**
@@ -71,6 +78,26 @@ public class XeroLinkedService extends LinkedServiceInner {
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
+
+    /**
+     * Get properties used to connect to Xero. It is mutually exclusive with any other properties in the linked service. Type: object.
+     *
+     * @return the connectionProperties value
+     */
+    public Object connectionProperties() {
+        return this.connectionProperties;
+    }
+
+    /**
+     * Set properties used to connect to Xero. It is mutually exclusive with any other properties in the linked service. Type: object.
+     *
+     * @param connectionProperties the connectionProperties value to set
+     * @return the XeroLinkedService object itself.
+     */
+    public XeroLinkedService withConnectionProperties(Object connectionProperties) {
+        this.connectionProperties = connectionProperties;
+        return this;
+    }
 
     /**
      * Get the endpoint of the Xero server. (i.e. api.xero.com).

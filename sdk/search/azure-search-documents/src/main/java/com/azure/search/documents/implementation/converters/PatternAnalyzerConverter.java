@@ -32,14 +32,13 @@ public final class PatternAnalyzerConverter {
         patternAnalyzer.setPattern(pattern);
 
         if (obj.getFlags() != null) {
-            List<RegexFlags> regexFlags =
-                Arrays.stream(obj.getFlags().toString().split("\\|")).map(RegexFlags::fromString).collect(Collectors.toList());
-            patternAnalyzer.setFlags(regexFlags);
+            patternAnalyzer.setFlags(Arrays.stream(obj.getFlags().toString().split("\\|"))
+                .map(RegexFlags::fromString)
+                .collect(Collectors.toList()));
         }
 
         if (obj.getStopwords() != null) {
-            List<String> stopwords = new ArrayList<>(obj.getStopwords());
-            patternAnalyzer.setStopwords(stopwords);
+            patternAnalyzer.setStopwords(obj.getStopwords());
         }
         return patternAnalyzer;
     }

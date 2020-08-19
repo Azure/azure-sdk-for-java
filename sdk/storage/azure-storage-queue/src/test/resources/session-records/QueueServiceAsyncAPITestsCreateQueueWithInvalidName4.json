@@ -1,23 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.queue.core.windows.net/ab",
+    "Uri" : "https://REDACTED.queue.core.windows.net/ab",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "ea2a346c-44a4-45da-a342-0aeb82f11f50"
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "513ca804-73ea-4a33-91a3-f648d0e08d4e"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "x-ms-version" : "2019-12-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "OutOfRangeInput",
       "retry-after" : "0",
       "Content-Length" : "256",
       "StatusCode" : "400",
-      "x-ms-request-id" : "d2a36277-9003-0014-6a71-e0da54000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeInput</Code><Message>The specified resource name length is not within the permissible limits.\nRequestId:d2a36277-9003-0014-6a71-e0da54000000\nTime:2020-02-11T00:26:22.2727535Z</Message></Error>",
-      "Date" : "Tue, 11 Feb 2020 00:26:21 GMT",
-      "x-ms-client-request-id" : "ea2a346c-44a4-45da-a342-0aeb82f11f50",
+      "x-ms-request-id" : "45ceef73-7003-0041-1c04-3a1544000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeInput</Code><Message>The specified resource name length is not within the permissible limits.\nRequestId:45ceef73-7003-0041-1c04-3a1544000000\nTime:2020-06-04T00:06:55.6549099Z</Message></Error>",
+      "Date" : "Thu, 04 Jun 2020 00:06:54 GMT",
+      "x-ms-client-request-id" : "513ca804-73ea-4a33-91a3-f648d0e08d4e",
       "Content-Type" : "application/xml"
     },
     "Exception" : null

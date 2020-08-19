@@ -1,45 +1,45 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.queue.core.windows.net/queueaysncapitestspeektoomanymessage344375ab87cd49",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queueaysncapitestspeektoomanymessage965632b29f8608",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "693a9671-bdc9-4116-b703-429dbf1ada69"
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "aabd42e6-c43d-429a-bdac-17fd1f0b06f3"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "x-ms-version" : "2019-12-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "d25b8363-f003-0012-6f71-e0e9eb000000",
-      "Date" : "Tue, 11 Feb 2020 00:24:59 GMT",
-      "x-ms-client-request-id" : "693a9671-bdc9-4116-b703-429dbf1ada69"
+      "x-ms-request-id" : "37a3a258-3003-009b-5003-3a8ca5000000",
+      "Date" : "Thu, 04 Jun 2020 00:05:24 GMT",
+      "x-ms-client-request-id" : "aabd42e6-c43d-429a-bdac-17fd1f0b06f3"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://gapradev.queue.core.windows.net/queueaysncapitestspeektoomanymessage344375ab87cd49/messages?numofmessages=33&peekonly=true",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queueaysncapitestspeektoomanymessage965632b29f8608/messages?numofmessages=33&peekonly=true",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "e9adc81c-77ea-4e19-b7c8-0953fb1697d7"
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "9de27c02-af40-4e0f-b26d-04cdffdc1471"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "x-ms-version" : "2019-12-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "OutOfRangeQueryParameterValue",
       "retry-after" : "0",
       "Content-Length" : "456",
       "StatusCode" : "400",
-      "x-ms-request-id" : "d25b8366-f003-0012-7171-e0e9eb000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeQueryParameterValue</Code><Message>One of the query parameters specified in the request URI is outside the permissible range.\nRequestId:d25b8366-f003-0012-7171-e0e9eb000000\nTime:2020-02-11T00:24:59.8594695Z</Message><QueryParameterName>numofmessages</QueryParameterName><QueryParameterValue>33</QueryParameterValue><MinimumAllowed>1</MinimumAllowed><MaximumAllowed>32</MaximumAllowed></Error>",
-      "Date" : "Tue, 11 Feb 2020 00:24:59 GMT",
-      "x-ms-client-request-id" : "e9adc81c-77ea-4e19-b7c8-0953fb1697d7",
+      "x-ms-request-id" : "37a3a262-3003-009b-5503-3a8ca5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeQueryParameterValue</Code><Message>One of the query parameters specified in the request URI is outside the permissible range.\nRequestId:37a3a262-3003-009b-5503-3a8ca5000000\nTime:2020-06-04T00:05:25.2653614Z</Message><QueryParameterName>numofmessages</QueryParameterName><QueryParameterValue>33</QueryParameterValue><MinimumAllowed>1</MinimumAllowed><MaximumAllowed>32</MaximumAllowed></Error>",
+      "Date" : "Thu, 04 Jun 2020 00:05:24 GMT",
+      "x-ms-client-request-id" : "9de27c02-af40-4e0f-b26d-04cdffdc1471",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueaysncapitestspeektoomanymessage344375ab87cd49" ]
+  "variables" : [ "queueaysncapitestspeektoomanymessage965632b29f8608" ]
 }

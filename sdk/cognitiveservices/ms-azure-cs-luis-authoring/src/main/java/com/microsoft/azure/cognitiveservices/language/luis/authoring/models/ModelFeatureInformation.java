@@ -28,6 +28,12 @@ public class ModelFeatureInformation {
     private String featureName;
 
     /**
+     * The isRequired property.
+     */
+    @JsonProperty(value = "isRequired")
+    private Boolean isRequired;
+
+    /**
      * Get the modelName value.
      *
      * @return the modelName value
@@ -64,6 +70,26 @@ public class ModelFeatureInformation {
      */
     public ModelFeatureInformation withFeatureName(String featureName) {
         this.featureName = featureName;
+        return this;
+    }
+
+    /**
+     * Get the isRequired value.
+     *
+     * @return the isRequired value
+     */
+    public Boolean isRequired() {
+        return this.isRequired;
+    }
+
+    /**
+     * Set the isRequired value.
+     *
+     * @param isRequired the isRequired value to set
+     * @return the ModelFeatureInformation object itself.
+     */
+    public ModelFeatureInformation withIsRequired(Boolean isRequired) {
+        this.isRequired = isRequired;
         return this;
     }
 

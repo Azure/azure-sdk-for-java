@@ -323,7 +323,8 @@ class ServiceBusMessageSerializer implements MessageSerializer {
                 brokeredMessage.setDeadLetterReason(String.valueOf(propertiesValue.get(DEAD_LETTER_REASON)));
             }
             if (propertiesValue.containsKey(DEAD_LETTER_DESCRIPTION)) {
-                brokeredMessage.setDeadLetterDescription(String.valueOf(propertiesValue.get(DEAD_LETTER_DESCRIPTION)));
+                brokeredMessage.setDeadLetterErrorDescription(String.valueOf(
+                    propertiesValue.get(DEAD_LETTER_DESCRIPTION)));
             }
         }
 
@@ -385,6 +386,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
                             brokeredMessage.setDeadLetterSource((String) value);
                             break;
                         case ENQUEUED_SEQUENCE_NUMBER:
+                            brokeredMessage.setEnqueuedSequenceNumber((long) value);
                             break;
                         default:
                             logger.info("Unrecognised key: {}, value: {}", key, value);

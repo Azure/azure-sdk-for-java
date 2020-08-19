@@ -9,7 +9,7 @@ import java.util.Map;
  * Specifies the options associated with query methods (enumeration operations)
  * in the Azure Cosmos DB database service.
  */
-public final class CosmosQueryRequestOptions {
+public class CosmosQueryRequestOptions {
     private String sessionToken;
     private String partitionKeyRangeId;
     private Boolean scanInQueryEnabled;
@@ -200,7 +200,7 @@ public final class CosmosQueryRequestOptions {
      * @param limitInKb continuation token size limit.
      * @return the CosmosQueryRequestOptions.
      */
-    public CosmosQueryRequestOptions getResponseContinuationTokenLimitInKb(int limitInKb) {
+    public CosmosQueryRequestOptions setResponseContinuationTokenLimitInKb(int limitInKb) {
         this.responseContinuationTokenLimitInKb = limitInKb;
         return this;
     }
@@ -214,7 +214,7 @@ public final class CosmosQueryRequestOptions {
      *
      * @return return set ResponseContinuationTokenLimitInKb, or 0 if not set
      */
-    public int setResponseContinuationTokenLimitInKb() {
+    public int getResponseContinuationTokenLimitInKb() {
         return responseContinuationTokenLimitInKb;
     }
 

@@ -12,10 +12,11 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
 import com.azure.search.documents.implementation.SearchIndexClientImplBuilder;
-import com.azure.search.documents.implementation.SerializationUtil;
 import com.azure.search.documents.implementation.converters.AutocompleteModeConverter;
 import com.azure.search.documents.implementation.converters.FacetResultConverter;
 import com.azure.search.documents.implementation.converters.IndexBatchBaseConverter;
@@ -53,11 +54,11 @@ import com.azure.search.documents.util.SearchPagedFlux;
 import com.azure.search.documents.util.SearchPagedResponse;
 import com.azure.search.documents.util.SuggestPagedFlux;
 import com.azure.search.documents.util.SuggestPagedResponse;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -67,9 +68,14 @@ import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.serializer.TypeReference.createInstance;
+import static com.azure.search.documents.implementation.util.Utility.initializeSerializerAdapter;
 
 /**
- * Cognitive Search Asynchronous Client to query an index and upload, merge, or delete documents
+ * This class provides a client that contains the operations for querying an index and uploading, merging, or deleting
+ * documents in an Azure Cognitive Search service.
+ *
+ * @see SearchClientBuilder
  */
 @ServiceClient(builder = SearchClientBuilder.class, isAsync = true)
 public final class SearchAsyncClient {
@@ -108,29 +114,26 @@ public final class SearchAsyncClient {
      */
     private final HttpPipeline httpPipeline;
 
-    private static final ObjectMapper MAPPER;
+    private final JsonSerializer serializer;
 
-    static {
-        MAPPER = new JacksonAdapter().serializer();
-        SerializationUtil.configureMapper(MAPPER);
-        MAPPER.setSerializationInclusion(JsonInclude.Include.ALWAYS);
-    }
+    private static final SerializerAdapter ADAPTER = initializeSerializerAdapter();
 
     /**
      * Package private constructor to be used by {@link SearchClientBuilder}
      */
     SearchAsyncClient(String endpoint, String indexName, SearchServiceVersion serviceVersion,
-        HttpPipeline httpPipeline) {
-
+        HttpPipeline httpPipeline, JsonSerializer serializer) {
         this.endpoint = endpoint;
         this.indexName = indexName;
         this.serviceVersion = serviceVersion;
         this.httpPipeline = httpPipeline;
+        this.serializer = serializer;
 
         restClient = new SearchIndexClientImplBuilder()
             .endpoint(endpoint)
             .indexName(indexName)
             .pipeline(httpPipeline)
+            .serializerAdapter(ADAPTER)
             .buildClient();
     }
 
@@ -153,7 +156,22 @@ public final class SearchAsyncClient {
     }
 
     /**
+     * Gets the endpoint for the Azure Cognitive Search service.
+     *
+     * @return the endpoint value.
+     */
+    public String getEndpoint() {
+        return this.endpoint;
+    }
+
+    /**
      * Uploads a collection of documents to the target index.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Upload dynamic SearchDocument. </p>
+     *
+     * {@codesnippet com.azure.search.documents.SearchAsyncClient.uploadDocuments#Iterable}
      *
      * @param documents collection of documents to upload to the target Index.
      * @return The result of the document indexing actions.
@@ -172,6 +190,12 @@ public final class SearchAsyncClient {
 
     /**
      * Uploads a collection of documents to the target index.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Upload dynamic SearchDocument. </p>
+     *
+     * {@codesnippet com.azure.search.documents.SearchAsyncClient.uploadDocumentsWithResponse#Iterable-IndexDocumentsOptions}
      *
      * @param documents collection of documents to upload to the target Index.
      * @param options Options that allow specifying document indexing behavior.
@@ -192,8 +216,7 @@ public final class SearchAsyncClient {
 
     Mono<Response<IndexDocumentsResult>> uploadDocumentsWithResponse(Iterable<?> documents,
         IndexDocumentsOptions options, Context context) {
-        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.UPLOAD), options,
-            context);
+        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.UPLOAD), options, context);
     }
 
     /**
@@ -205,6 +228,12 @@ public final class SearchAsyncClient {
      * stored in the index, even if this was not your intent. For this reason, it is strongly recommended that you
      * always declare primitive-typed properties with their class equivalents (for example, an integer property should
      * be of type {@code Integer} instead of {@code int}).
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Merge dynamic SearchDocument. </p>
+     *
+     * {@codesnippet com.azure.search.documents.SearchAsyncClient.mergeDocuments#Iterable}
      *
      * @param documents collection of documents to be merged
      * @return document index result
@@ -231,6 +260,12 @@ public final class SearchAsyncClient {
      * always declare primitive-typed properties with their class equivalents (for example, an integer property should
      * be of type {@code Integer} instead of {@code int}).
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Merge dynamic SearchDocument. </p>
+     *
+     * {@codesnippet com.azure.search.documents.SearchAsyncClient.mergeDocumentsWithResponse#Iterable-IndexDocumentsOptions}
+     *
      * @param documents collection of documents to be merged
      * @param options Options that allow specifying document indexing behavior.
      * @return response containing the document index result.
@@ -250,8 +285,7 @@ public final class SearchAsyncClient {
 
     Mono<Response<IndexDocumentsResult>> mergeDocumentsWithResponse(Iterable<?> documents,
         IndexDocumentsOptions options, Context context) {
-        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.MERGE), options,
-            context);
+        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.MERGE), options, context);
     }
 
     /**
@@ -264,6 +298,12 @@ public final class SearchAsyncClient {
      * stored in the index, even if this was not your intent. For this reason, it is strongly recommended that you
      * always declare primitive-typed properties with their class equivalents (for example, an integer property should
      * be of type {@code Integer} instead of {@code int}).
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Merge or upload dynamic SearchDocument. </p>
+     *
+     * {@codesnippet com.azure.search.documents.SearchAsyncClient.mergeOrUploadDocuments#Iterable}
      *
      * @param documents collection of documents to be merged, if exists, otherwise uploaded
      * @return document index result
@@ -291,6 +331,12 @@ public final class SearchAsyncClient {
      * always declare primitive-typed properties with their class equivalents (for example, an integer property should
      * be of type {@code Integer} instead of {@code int}).
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Merge or upload dynamic SearchDocument. </p>
+     *
+     * {@codesnippet com.azure.search.documents.SearchAsyncClient.mergeOrUploadDocumentsWithResponse#Iterable-IndexDocumentsOptions}
+     *
      * @param documents collection of documents to be merged, if exists, otherwise uploaded
      * @param options Options that allow specifying document indexing behavior.
      * @return document index result
@@ -317,6 +363,12 @@ public final class SearchAsyncClient {
     /**
      * Deletes a collection of documents from the target index.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Delete dynamic SearchDocument. </p>
+     *
+     * {@codesnippet com.azure.search.documents.SearchAsyncClient.deleteDocuments#Iterable}
+     *
      * @param documents collection of documents to delete from the target Index. Fields other than the key are ignored.
      * @return document index result.
      * @throws IndexBatchException If some of the indexing actions fail but other actions succeed and modify the state
@@ -334,6 +386,12 @@ public final class SearchAsyncClient {
 
     /**
      * Deletes a collection of documents from the target index.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Delete dynamic SearchDocument. </p>
+     *
+     * {@codesnippet com.azure.search.documents.SearchAsyncClient.deleteDocumentsWithResponse#Iterable-IndexDocumentsOptions}
      *
      * @param documents collection of documents to delete from the target Index. Fields other than the key are ignored.
      * @param options Options that allow specifying document indexing behavior.
@@ -354,21 +412,160 @@ public final class SearchAsyncClient {
 
     Mono<Response<IndexDocumentsResult>> deleteDocumentsWithResponse(Iterable<?> documents,
         IndexDocumentsOptions options, Context context) {
-        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.DELETE), options,
-            context);
+        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.DELETE), options, context);
     }
 
     /**
-     * Gets the endpoint for the Azure Cognitive Search service.
+     * Sends a batch of upload, merge, and/or delete actions to the search index.
      *
-     * @return the endpoint value.
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Index batch operation on dynamic SearchDocument. </p>
+     *
+     * {@codesnippet com.azure.search.documents.SearchAsyncClient.indexDocuments#IndexDocumentsBatch}
+     *
+     * @param batch The batch of index actions
+     * @return Response containing the status of operations for all actions in the batch.
+     * @throws IndexBatchException If some of the indexing actions fail but other actions succeed and modify the state
+     * of the index. This can happen when the Search Service is under heavy indexing load. It is important to explicitly
+     * catch this exception and check the return value {@link IndexBatchException#getIndexingResults()}. The indexing
+     * result reports the status of each indexing action in the batch, making it possible to determine the state of the
+     * index after a partial failure.
+     * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
+     * delete documents</a>
      */
-    public String getEndpoint() {
-        return this.endpoint;
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<IndexDocumentsResult> indexDocuments(IndexDocumentsBatch<?> batch) {
+        return indexDocumentsWithResponse(batch, null).map(Response::getValue);
+    }
+
+    /**
+     * Sends a batch of upload, merge, and/or delete actions to the search index.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Index batch operation on dynamic SearchDocument. </p>
+     *
+     * {@codesnippet com.azure.search.documents.SearchAsyncClient.indexDocumentsWithResponse#IndexDocumentsBatch-IndexDocumentsOptions}
+     *
+     * @param batch The batch of index actions
+     * @param options Options that allow specifying document indexing behavior.
+     * @return Response containing the status of operations for all actions in the batch
+     * @throws IndexBatchException If some of the indexing actions fail but other actions succeed and modify the state
+     * of the index. This can happen when the Search Service is under heavy indexing load. It is important to explicitly
+     * catch this exception and check the return value {@link IndexBatchException#getIndexingResults()}. The indexing
+     * result reports the status of each indexing action in the batch, making it possible to determine the state of the
+     * index after a partial failure.
+     * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
+     * delete documents</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponse(IndexDocumentsBatch<?> batch,
+        IndexDocumentsOptions options) {
+        return withContext(context -> indexDocumentsWithResponse(batch, options, context));
+    }
+
+    Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponse(IndexDocumentsBatch<?> batch,
+        IndexDocumentsOptions options, Context context) {
+        try {
+            IndexDocumentsOptions documentsOptions = (options == null) ? new IndexDocumentsOptions() : options;
+            return restClient.getDocuments()
+                .indexWithResponseAsync(IndexBatchBaseConverter.map(batch, serializer), null, context)
+                .onErrorMap(MappingUtils::exceptionMapper)
+                .flatMap(response -> (response.getStatusCode() == MULTI_STATUS_CODE
+                    && documentsOptions.throwOnAnyError())
+                    ? Mono.error(new IndexBatchException(IndexDocumentsResultConverter.map(response.getValue())))
+                    : Mono.just(response).map(MappingUtils::mappingIndexDocumentResultResponse));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Retrieves a document from the Azure Cognitive Search index.
+     * <p>
+     * View <a href="https://docs.microsoft.com/rest/api/searchservice/Naming-rules">naming rules</a> for guidelines on
+     * constructing valid document keys.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get dynamic SearchDocument. </p>
+     *
+     * {@codesnippet com.azure.search.documents.SearchAsyncClient.getDocuments#String-Class}
+     *
+     * @param key The key of the document to retrieve.
+     * @param modelClass The model class converts to.
+     * @param <T> Convert document to the generic type.
+     * @return the document object
+     * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Lookup-Document">Lookup document</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public <T> Mono<T> getDocument(String key, Class<T> modelClass) {
+        return getDocumentWithResponse(key, modelClass, null).map(Response::getValue);
+    }
+
+    /**
+     * Retrieves a document from the Azure Cognitive Search index.
+     * <p>
+     * View <a href="https://docs.microsoft.com/rest/api/searchservice/Naming-rules">naming rules</a> for guidelines on
+     * constructing valid document keys.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get dynamic SearchDocument. </p>
+     *
+     * {@codesnippet com.azure.search.documents.SearchAsyncClient.getDocumentWithResponse#String-Class-List}
+     *
+     * @param <T> Convert document to the generic type.
+     * @param key The key of the document to retrieve.
+     * @param modelClass The model class converts to.
+     * @param selectedFields List of field names to retrieve for the document; Any field not retrieved will have null or
+     * default as its corresponding property value in the returned object.
+     * @return a response containing the document object
+     * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Lookup-Document">Lookup document</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public <T> Mono<Response<T>> getDocumentWithResponse(String key, Class<T> modelClass, List<String> selectedFields) {
+        return withContext(context -> getDocumentWithResponse(key, modelClass, selectedFields, context));
+    }
+
+    @SuppressWarnings("unchecked")
+    <T> Mono<Response<T>> getDocumentWithResponse(String key, Class<T> modelClass, List<String> selectedFields,
+        Context context) {
+        try {
+            return restClient.getDocuments()
+                .getWithResponseAsync(key, selectedFields, null, context)
+                .onErrorMap(DocumentResponseConversions::exceptionMapper)
+                .map(res -> {
+                    if (serializer == null) {
+                        try {
+                            String serializedJson = ADAPTER.serialize(res.getValue(), SerializerEncoding.JSON);
+                            T document = ADAPTER.deserialize(serializedJson, modelClass, SerializerEncoding.JSON);
+                            return new SimpleResponse<>(res, document);
+                        } catch (IOException ex) {
+                            throw logger.logExceptionAsError(
+                                new RuntimeException("Something wrong with the serialization."));
+                        }
+                    }
+                    ByteArrayOutputStream sourceStream = new ByteArrayOutputStream();
+                    serializer.serialize(sourceStream, res.getValue());
+                    T doc = serializer.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()),
+                        createInstance(modelClass));
+                    return new SimpleResponse<>(res, doc);
+                }).map(Function.identity());
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
      * Queries the number of documents in the search index.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get document count. </p>
+     *
+     * {@codesnippet com.azure.search.documents.SearchAsyncClient.getDocumentCount}
      *
      * @return the number of documents.
      */
@@ -379,6 +576,12 @@ public final class SearchAsyncClient {
 
     /**
      * Queries the number of documents in the search index.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get document count. </p>
+     *
+     * {@codesnippet com.azure.search.documents.SearchAsyncClient.getDocumentCountWithResponse}
      *
      * @return response containing the number of documents.
      */
@@ -403,7 +606,13 @@ public final class SearchAsyncClient {
      * <p>
      * If {@code searchText} is set to {@code null} or {@code "*"} all documents will be matched, see
      * <a href="https://docs.microsoft.com/rest/api/searchservice/Simple-query-syntax-in-Azure-Search">simple query
-     * syntax in Azure Search</a> for more information about search query syntax.
+     * syntax in Azure Cognitive Search</a> for more information about search query syntax.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Search text from documents in service. </p>
+     *
+     * {@codesnippet com.azure.search.documents.SearchAsyncClient.search#String}
      *
      * @param searchText A full-text search query expression.
      * @return A {@link SearchPagedFlux} that iterates over {@link SearchResult} objects and provides access to the
@@ -411,8 +620,9 @@ public final class SearchAsyncClient {
      * information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Search-Documents">Search documents</a>
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public SearchPagedFlux search(String searchText) {
-        return this.search(searchText, null, null);
+        return this.search(searchText, null);
     }
 
     /**
@@ -420,7 +630,13 @@ public final class SearchAsyncClient {
      * <p>
      * If {@code searchText} is set to {@code null} or {@code "*"} all documents will be matched, see
      * <a href="https://docs.microsoft.com/rest/api/searchservice/Simple-query-syntax-in-Azure-Search">simple query
-     * syntax in Azure Search</a> for more information about search query syntax.
+     * syntax in Azure Cognitive Search</a> for more information about search query syntax.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Search text from documents in service with option. </p>
+     *
+     * {@codesnippet com.azure.search.documents.SearchAsyncClient.search#String-SearchOptions}
      *
      * @param searchText A full-text search query expression.
      * @param searchOptions Parameters to further refine the search query
@@ -429,6 +645,7 @@ public final class SearchAsyncClient {
      * information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Search-Documents">Search documents</a>
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public SearchPagedFlux search(String searchText, SearchOptions searchOptions) {
         SearchRequest request = createSearchRequest(searchText, searchOptions);
         // The firstPageResponse shared among all fucntional calls below.
@@ -449,16 +666,16 @@ public final class SearchAsyncClient {
         return new SearchPagedFlux(() -> func.apply(null), func);
     }
 
-    private Mono<SearchPagedResponse> search(SearchRequest request,
-        String continuationToken, SearchFirstPageResponseWrapper firstPageResponseWrapper, Context context) {
+    private Mono<SearchPagedResponse> search(SearchRequest request, String continuationToken,
+        SearchFirstPageResponseWrapper firstPageResponseWrapper, Context context) {
         if (continuationToken == null && firstPageResponseWrapper.getFirstPageResponse() != null) {
             return Mono.just(firstPageResponseWrapper.getFirstPageResponse());
         }
-        SearchRequest requestToUse = (continuationToken == null) ? request
+        SearchRequest requestToUse = (continuationToken == null)
+            ? request
             : SearchContinuationToken.deserializeToken(serviceVersion.getVersion(), continuationToken);
 
-        return restClient.getDocuments().searchPostWithResponseAsync(requestToUse,
-            null, context)
+        return restClient.getDocuments().searchPostWithResponseAsync(requestToUse, null, context)
             .onErrorMap(MappingUtils::exceptionMapper)
             .map(response -> {
                 SearchDocumentsResult result = response.getValue();
@@ -474,9 +691,9 @@ public final class SearchAsyncClient {
             });
     }
 
-    private static List<SearchResult> getSearchResults(SearchDocumentsResult result) {
+    private List<SearchResult> getSearchResults(SearchDocumentsResult result) {
         return result.getResults().stream()
-            .map(SearchResultConverter::map)
+            .map(searchResult -> SearchResultConverter.map(searchResult, serializer))
             .collect(Collectors.toList());
     }
 
@@ -492,75 +709,20 @@ public final class SearchAsyncClient {
 
         Map<String, List<FacetResult>> facets = new HashMap<>();
 
-        result.getFacets().forEach((key, values) -> {
-            facets.put(key, values.stream().map(FacetResultConverter::map).collect(Collectors.toList()));
-        });
+        result.getFacets().forEach((key, values) ->
+            facets.put(key, values.stream().map(FacetResultConverter::map).collect(Collectors.toList())));
 
         return facets;
     }
 
     /**
-     * Retrieves a document from the Azure Cognitive Search index.
-     * <p>
-     * View <a href="https://docs.microsoft.com/rest/api/searchservice/Naming-rules">naming rules</a> for guidelines on
-     * constructing valid document keys.
-     *
-     * @param key The key of the document to retrieve.
-     * @param modelClass The model class converts to.
-     * @param <T> Convert document to the generic type.
-     * @return the document object
-     * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Lookup-Document">Lookup document</a>
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<T> getDocument(String key, Class<T> modelClass) {
-        return getDocumentWithResponse(key, modelClass, null).map(Response::getValue);
-    }
-
-    /**
-     * Retrieves a document from the Azure Cognitive Search index.
-     * <p>
-     * View <a href="https://docs.microsoft.com/rest/api/searchservice/Naming-rules">naming rules</a> for guidelines on
-     * constructing valid document keys.
-     *
-     * @param <T> Convert document to the generic type.
-     * @param key The key of the document to retrieve.
-     * @param modelClass The model class converts to.
-     * @param selectedFields List of field names to retrieve for the document; Any field not retrieved will have null or
-     * default as its corresponding property value in the returned object.
-     * @return a response containing the document object
-     * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Lookup-Document">Lookup document</a>
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<Response<T>> getDocumentWithResponse(String key, Class<T> modelClass,
-        List<String> selectedFields) {
-        return withContext(context -> getDocumentWithResponse(key, modelClass,
-            selectedFields, context));
-    }
-
-    @SuppressWarnings("unchecked")
-    <T> Mono<Response<T>> getDocumentWithResponse(String key, Class<T> modelClass,
-        List<String> selectedFields, Context context) {
-        try {
-            return restClient.getDocuments()
-                .getWithResponseAsync(key, selectedFields, null, context)
-                .onErrorMap(DocumentResponseConversions::exceptionMapper)
-                .map(res -> {
-                    if (SearchDocument.class == modelClass) {
-                        TypeReference<Map<String, Object>> typeReference = new TypeReference<Map<String, Object>>() { };
-                        SearchDocument doc = new SearchDocument(MAPPER.convertValue(res.getValue(), typeReference));
-                        return new SimpleResponse<T>(res, (T) doc);
-                    }
-                    T document = MAPPER.convertValue(res.getValue(), modelClass);
-                    return new SimpleResponse<>(res, document);
-                })
-                .map(Function.identity());
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
      * Suggests documents in the index that match the given partial query.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Suggest text from documents in service. </p>
+     *
+     * {@codesnippet com.azure.search.documents.SearchAsyncClient.suggest#String-String}
      *
      * @param searchText The search text on which to base suggestions
      * @param suggesterName The name of the suggester as specified in the suggesters collection that's part of the index
@@ -569,12 +731,19 @@ public final class SearchAsyncClient {
      * {@link SuggestPagedResponse} object for each page containing HTTP response and coverage information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Suggestions">Suggestions</a>
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public SuggestPagedFlux suggest(String searchText, String suggesterName) {
         return suggest(searchText, suggesterName, null);
     }
 
     /**
      * Suggests documents in the index that match the given partial query.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Suggest text from documents in service with option. </p>
+     *
+     * {@codesnippet com.azure.search.documents.SearchAsyncClient.suggest#String-String-SuggestOptions}
      *
      * @param searchText The search text on which to base suggestions
      * @param suggesterName The name of the suggester as specified in the suggesters collection that's part of the index
@@ -584,6 +753,7 @@ public final class SearchAsyncClient {
      * {@link SuggestPagedResponse} object for each page containing HTTP response and coverage information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Suggestions">Suggestions</a>
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public SuggestPagedFlux suggest(String searchText, String suggesterName, SuggestOptions suggestOptions) {
         SuggestRequest suggestRequest = createSuggestRequest(searchText, suggesterName,
             SuggestOptionsHandler.ensureSuggestOptions(suggestOptions));
@@ -599,8 +769,7 @@ public final class SearchAsyncClient {
     }
 
     private Mono<SuggestPagedResponse> suggest(SuggestRequest suggestRequest, Context context) {
-        return restClient.getDocuments().suggestPostWithResponseAsync(suggestRequest,
-            null, context)
+        return restClient.getDocuments().suggestPostWithResponseAsync(suggestRequest, null, context)
             .onErrorMap(MappingUtils::exceptionMapper)
             .map(response -> {
                 SuggestDocumentsResult result = response.getValue();
@@ -617,74 +786,31 @@ public final class SearchAsyncClient {
     }
 
     /**
-     * Sends a batch of upload, merge, and/or delete actions to the search index.
-     *
-     * @param batch The batch of index actions
-     * @return Response containing the status of operations for all actions in the batch.
-     * @throws IndexBatchException If some of the indexing actions fail but other actions succeed and modify the state
-     * of the index. This can happen when the Search Service is under heavy indexing load. It is important to explicitly
-     * catch this exception and check the return value {@link IndexBatchException#getIndexingResults()}. The indexing
-     * result reports the status of each indexing action in the batch, making it possible to determine the state of the
-     * index after a partial failure.
-     * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
-     * delete documents</a>
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<IndexDocumentsResult> indexDocuments(IndexDocumentsBatch<?> batch) {
-        return indexDocumentsWithResponse(batch, null).map(Response::getValue);
-    }
-
-    /**
-     * Sends a batch of upload, merge, and/or delete actions to the search index.
-     *
-     * @param batch The batch of index actions
-     * @param options Options that allow specifying document indexing behavior.
-     * @return Response containing the status of operations for all actions in the batch
-     * @throws IndexBatchException If some of the indexing actions fail but other actions succeed and modify the state
-     * of the index. This can happen when the Search Service is under heavy indexing load. It is important to explicitly
-     * catch this exception and check the return value {@link IndexBatchException#getIndexingResults()}. The indexing
-     * result reports the status of each indexing action in the batch, making it possible to determine the state of the
-     * index after a partial failure.
-     * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
-     * delete documents</a>
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponse(IndexDocumentsBatch<?> batch,
-        IndexDocumentsOptions options) {
-        return withContext(context -> indexDocumentsWithResponse(batch, options, context));
-    }
-
-    Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponse(IndexDocumentsBatch<?> batch,
-        IndexDocumentsOptions options, Context context) {
-        try {
-            IndexDocumentsOptions documentsOptions = (options == null)
-                ? new IndexDocumentsOptions() : options;
-            return restClient.getDocuments()
-                .indexWithResponseAsync(IndexBatchBaseConverter.map(batch), null,
-                    context)
-                .onErrorMap(MappingUtils::exceptionMapper)
-                .flatMap(response -> (response.getStatusCode() == MULTI_STATUS_CODE
-                    && documentsOptions.throwOnAnyError())
-                    ? Mono.error(new IndexBatchException(IndexDocumentsResultConverter.map(response.getValue())))
-                    : Mono.just(response).map(MappingUtils::mappingIndexDocumentResultResponse));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
      * Autocompletes incomplete query terms based on input text and matching terms in the index.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Autocomplete text from documents in service. </p>
+     *
+     * {@codesnippet com.azure.search.documents.SearchAsyncClient.autocomplete#String-String}
      *
      * @param searchText search text
      * @param suggesterName suggester name
      * @return auto complete result.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public AutocompletePagedFlux autocomplete(String searchText, String suggesterName) {
-        return autocomplete(searchText, suggesterName, null, null);
+        return autocomplete(searchText, suggesterName, null);
     }
 
     /**
      * Autocompletes incomplete query terms based on input text and matching terms in the index.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Autocomplete text from documents in service with option. </p>
+     *
+     * {@codesnippet com.azure.search.documents.SearchAsyncClient.autocomplete#String-String-AutocompleteOptions}
      *
      * @param searchText search text
      * @param suggesterName suggester name
@@ -706,8 +832,7 @@ public final class SearchAsyncClient {
     }
 
     private Mono<AutocompletePagedResponse> autocomplete(AutocompleteRequest request, Context context) {
-        return restClient.getDocuments().autocompletePostWithResponseAsync(request,
-            null, context)
+        return restClient.getDocuments().autocompletePostWithResponseAsync(request, null, context)
             .onErrorMap(MappingUtils::exceptionMapper)
             .map(MappingUtils::mappingAutocompleteResponse);
     }
@@ -831,10 +956,12 @@ public final class SearchAsyncClient {
     }
 
     private static <T> IndexDocumentsBatch<T> buildIndexBatch(Iterable<T> documents, IndexActionType actionType) {
-        List<IndexAction<T>> actions = new ArrayList<IndexAction<T>>();
+        List<IndexAction<T>> actions = new ArrayList<>();
         documents.forEach(d -> actions.add(new IndexAction<T>()
             .setActionType(actionType)
             .setDocument(d)));
-        return new IndexDocumentsBatch<T>(actions);
+
+        return new IndexDocumentsBatch<T>().addActions(actions);
     }
+
 }
