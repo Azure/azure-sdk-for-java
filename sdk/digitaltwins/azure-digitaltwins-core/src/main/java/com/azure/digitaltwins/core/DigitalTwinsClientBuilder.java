@@ -33,7 +33,7 @@ public final class DigitalTwinsClientBuilder {
     // This is the name of the properties file in this repo that contains the default properties
     private static final String DIGITAL_TWINS_PROPERTIES = "azure-digital-twins.properties";
 
-    // These are the keys to the above properties file that define the sdk's name and version for use in the user agent string
+    // These are the keys to the above properties file that define the client library's name and version for use in the user agent string
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
