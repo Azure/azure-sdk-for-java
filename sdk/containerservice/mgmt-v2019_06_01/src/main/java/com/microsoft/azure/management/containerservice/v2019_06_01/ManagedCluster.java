@@ -199,7 +199,7 @@ public interface ManagedCluster extends HasInner<ManagedClusterInner>, Resource,
         interface WithEnablePodSecurityPolicy {
             /**
              * Specifies enablePodSecurityPolicy.
-             * @param enablePodSecurityPolicy (PREVIEW) Whether to enable Kubernetes Pod security policy
+             * @param enablePodSecurityPolicy (DEPRECATING) Whether to enable Kubernetes pod security policy (preview). This feature is set for removal on October 15th, 2020. Learn more at aka.ms/aks/azpodpolicy
              * @return the next definition stage
              */
             WithCreate withEnablePodSecurityPolicy(Boolean enablePodSecurityPolicy);
@@ -385,7 +385,7 @@ public interface ManagedCluster extends HasInner<ManagedClusterInner>, Resource,
         interface WithEnablePodSecurityPolicy {
             /**
              * Specifies enablePodSecurityPolicy.
-             * @param enablePodSecurityPolicy (PREVIEW) Whether to enable Kubernetes Pod security policy
+             * @param enablePodSecurityPolicy (DEPRECATING) Whether to enable Kubernetes pod security policy (preview). This feature is set for removal on October 15th, 2020. Learn more at aka.ms/aks/azpodpolicy
              * @return the next update stage
              */
             Update withEnablePodSecurityPolicy(Boolean enablePodSecurityPolicy);
