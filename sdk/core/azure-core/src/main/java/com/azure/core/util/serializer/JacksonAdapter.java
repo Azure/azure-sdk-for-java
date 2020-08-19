@@ -9,6 +9,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.serializer.MalformedValueException;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -174,7 +175,7 @@ public class JacksonAdapter implements SerializerAdapter {
     @Override
     @SuppressWarnings("unchecked")
     public <U> U deserialize(String value, Type type, SerializerEncoding encoding) throws IOException {
-        if (value == null) {
+        if (CoreUtils.isNullOrEmpty(value)) {
             return null;
         }
 
