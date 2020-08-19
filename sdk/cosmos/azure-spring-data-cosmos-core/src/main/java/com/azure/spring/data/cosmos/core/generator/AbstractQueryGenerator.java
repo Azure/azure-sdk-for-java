@@ -246,13 +246,17 @@ public abstract class AbstractQueryGenerator {
     protected SqlQuerySpec generateCosmosQuery(@NonNull CosmosQuery query,
                                                @NonNull String queryHead) {
         final Pair<String, List<Pair<String, Object>>> queryBody = generateQueryBody(query);
-        final String queryString = String.join(" ", queryHead, queryBody.getValue0(), generateQueryTail(query));
+        String queryString = String.join(" ", queryHead, queryBody.getValue0(), generateQueryTail(query));
         final List<Pair<String, Object>> parameters = queryBody.getValue1();
 
         List<SqlParameter> sqlParameters = parameters.stream()
                                                      .map(p -> new SqlParameter("@" + p.getValue0(),
                                                          toCosmosDbValue(p.getValue1())))
                                                      .collect(Collectors.toList());
+
+		if (query.getTree() != null && query.getTree().isLimiting()){
+            queryString = new StringBuilder(queryString).append("OFFSET 0 LIMIT ").append(query.getTree().getMaxResults()).toString();
+        }
 
         return new SqlQuerySpec(queryString, sqlParameters);
     }

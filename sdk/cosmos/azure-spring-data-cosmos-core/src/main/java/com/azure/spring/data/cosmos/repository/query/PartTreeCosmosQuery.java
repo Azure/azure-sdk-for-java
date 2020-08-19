@@ -5,7 +5,6 @@ package com.azure.spring.data.cosmos.repository.query;
 import com.azure.spring.data.cosmos.core.CosmosOperations;
 import com.azure.spring.data.cosmos.core.mapping.CosmosPersistentProperty;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
-import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.data.mapping.context.MappingContext;
 import org.springframework.data.repository.query.ResultProcessor;
 import org.springframework.data.repository.query.parser.Part;
@@ -40,9 +39,7 @@ public class PartTreeCosmosQuery extends AbstractCosmosQuery {
 
         final CosmosQuery query = creator.createQuery();
 
-        if (tree.isLimiting()) {
-            throw new NotImplementedException("Limiting is not supported.");
-        }
+        query.setTree(tree);
 
         return query;
     }

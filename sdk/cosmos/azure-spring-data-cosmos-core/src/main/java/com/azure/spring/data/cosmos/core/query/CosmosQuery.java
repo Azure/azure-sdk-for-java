@@ -4,6 +4,7 @@ package com.azure.spring.data.cosmos.core.query;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.parser.PartTree;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 
@@ -20,6 +21,8 @@ public class CosmosQuery {
     private Sort sort = Sort.unsorted();
 
     private Pageable pageable = Pageable.unpaged();
+    
+    private PartTree tree;
 
     /**
      * Initialization
@@ -57,7 +60,26 @@ public class CosmosQuery {
         return pageable;
     }
 
-    /**
+	/**
+	 * To get PartTree object
+	 * 
+	 * @return
+	 */
+	public PartTree getTree() {
+		return tree;
+	}
+	
+	/**
+	 * To set PartTree
+	 * 
+	 * @param tree
+	 */
+	public void setTree(PartTree tree) {
+		if (this.tree == null)
+			this.tree = tree;
+	}
+
+	/**
      * With Sort
      *
      * @param sort Sort
