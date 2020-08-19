@@ -277,7 +277,7 @@ public final class RestProxy implements InvocationHandler {
 
             if (isJson) {
                 ByteArrayOutputStream stream = new AccessibleByteArrayOutputStream();
-                serializer.serialize(bodyContentObject, SerializerEncoding.JSON, stream)
+                serializer.serialize(bodyContentObject, SerializerEncoding.JSON, stream);
                 request.setBody(stream.toByteArray());
             } else if (FluxUtil.isFluxByteBuffer(methodParser.getBodyJavaType())) {
                 // Content-Length or Transfer-Encoding: chunked must be provided by a user-specified header when a
