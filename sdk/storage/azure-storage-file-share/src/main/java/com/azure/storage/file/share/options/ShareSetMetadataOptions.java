@@ -5,6 +5,7 @@ package com.azure.storage.file.share.options;
 
 import com.azure.core.annotation.Fluent;
 
+import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -20,7 +21,7 @@ public class ShareSetMetadataOptions {
      * @return Metadata to set on the share, if null is passed the metadata for the share is cleared.
      */
     public Map<String, String> getMetadata() {
-        return metadata == null ? null : Map.copyOf(metadata);
+        return metadata == null ? null : Collections.unmodifiableMap(metadata);
     }
 
     /**
@@ -35,7 +36,7 @@ public class ShareSetMetadataOptions {
      * @return The updated options.
      */
     public ShareSetMetadataOptions setMetadata(Map<String, String> metadata) {
-        this.metadata = metadata == null ? null : Map.copyOf(metadata);
+        this.metadata = metadata == null ? null : Collections.unmodifiableMap(metadata);
         return this;
     }
 
