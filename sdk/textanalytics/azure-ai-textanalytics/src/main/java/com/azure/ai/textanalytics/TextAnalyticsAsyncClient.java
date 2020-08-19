@@ -254,7 +254,8 @@ public final class TextAnalyticsAsyncClient {
      *
      * For a list of supported entity types, check: <a href="https://aka.ms/taner">this</a>.
      * For a list of enabled languages, check: <a href="https://aka.ms/talangs">this</a>.
-     * This method will use the default language that is set using
+     *
+     * This method will use the default language that can be set by using method
      * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
      * the language.
      *
@@ -500,7 +501,7 @@ public final class TextAnalyticsAsyncClient {
      * Returns a list of recognized entities with links to a well-known knowledge base for the provided document. See
      * <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.
      *
-     * This method will use the default language that is set using
+     * This method will use the default language that can be set by using method
      * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
      * the language.
      *
@@ -620,7 +621,7 @@ public final class TextAnalyticsAsyncClient {
     /**
      * Returns a list of strings denoting the key phrases in the document.
      *
-     * This method will use the default language that is set using
+     * This method will use the default language that can be set by using method
      * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
      * the language.
      *
@@ -739,7 +740,7 @@ public final class TextAnalyticsAsyncClient {
      * Returns a sentiment prediction, as well as confidence scores for each sentiment label (Positive, Negative, and
      * Neutral) for the document and each sentence within it.
      *
-     * This method will use the default language that is set using
+     * This method will use the default language that can be set by using method
      * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
      * the language.
      *
