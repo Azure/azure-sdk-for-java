@@ -173,12 +173,12 @@ public class BatchAsyncContainerExecutor implements AutoCloseable {
 
         if (collection != null) {
             PartitionKeyDefinition definition = collection.getPartitionKey();
+            PartitionKeyInternal partitionKeyInternal = getPartitionKeyInternal(operation, definition);
+            operation.setPartitionKeyJson(partitionKeyInternal.toJson());
+
             pkRangeId = this.docClientWrapper.getPartitionKeyRangeCache()
                 .tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(null), collection.getResourceId(), null, null)
                 .map((Utils.ValueHolder<CollectionRoutingMap> routingMap) -> {
-
-                    PartitionKeyInternal partitionKeyInternal = getPartitionKeyInternal(operation, definition);
-                    operation.setPartitionKeyJson(partitionKeyInternal.toJson());
 
                     return routingMap.v.getRangeByEffectivePartitionKey(
                         getEffectivePartitionKeyString(

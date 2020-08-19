@@ -34,7 +34,7 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
          this.runCrudAsync(super.jsonContainer);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT * 100)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void batchGatewayCrud() throws Exception {
         this.runCrudAsync(super.gatewayJsonContainer);
     }
@@ -398,8 +398,8 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
     private void verifyBatchProcessed(TransactionalBatchResponse batchResponse, int numberOfOperations, HttpResponseStatus expectedStatusCode) {
         assertNotNull(batchResponse);
         assertEquals(
-            expectedStatusCode,
             batchResponse.getResponseStatus(),
+            expectedStatusCode,
             "Batch server response had StatusCode {0} instead of {1} expected and had ErrorMessage {2}");
 
         assertEquals(numberOfOperations, batchResponse.size());

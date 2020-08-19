@@ -3,8 +3,9 @@
 
 package com.azure.cosmos.batch;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.azure.cosmos.implementation.JsonSerializable;
+import com.azure.cosmos.implementation.Utils;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import java.util.List;
 
@@ -22,26 +23,25 @@ public class BatchResponsePayloadWriter {
         return writeOperationResult().toString();
     }
 
-    private JSONArray writeOperationResult() {
-        JSONArray arr = new JSONArray();
+    private ArrayNode writeOperationResult() {
+        ArrayNode arrayNode =  Utils.getSimpleObjectMapper().createArrayNode();
 
         for(TransactionalBatchOperationResult<?> result : results) {
-            JSONObject operationJson = writeResult(result);
+            JsonSerializable operationJsonSerializable = writeResult(result);
 
-            arr.put(operationJson);
+            arrayNode.add(operationJsonSerializable.getPropertyBag());
         }
-
-        return arr;
+        return arrayNode;
     }
 
-    private JSONObject writeResult(TransactionalBatchOperationResult<?> result) {
+    private JsonSerializable writeResult(TransactionalBatchOperationResult<?> result) {
 
-        JSONObject obj = new JSONObject();
-        obj.accumulate(FIELD_STATUS_CODE, result.getStatus().code());
-        obj.accumulate(FIELD_SUBSTATUS_CODE, result.getSubStatusCode());
-        obj.accumulate(FIELD_ETAG, result.getETag());
-        obj.accumulate(FIELD_RESOURCE_BODY, result.getResourceObject());
+        JsonSerializable jsonSerializable = new JsonSerializable();
+        jsonSerializable.set(FIELD_STATUS_CODE, result.getStatus().code());
+        jsonSerializable.set(FIELD_SUBSTATUS_CODE, result.getSubStatusCode());
+        jsonSerializable.set(FIELD_ETAG, result.getETag());
+        jsonSerializable.set(FIELD_RESOURCE_BODY, result.getResourceObject());
 
-        return obj;
+        return jsonSerializable;
     }
 }

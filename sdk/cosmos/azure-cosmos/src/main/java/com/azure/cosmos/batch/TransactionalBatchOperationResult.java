@@ -5,12 +5,13 @@ package com.azure.cosmos.batch;
 
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.json.JSONObject;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class TransactionalBatchOperationResult<TResource> {
     private CosmosDiagnostics cosmosDiagnostics;
 
     private TResource resource;
-    private JSONObject resourceObject;
+    private ObjectNode resourceObject;
 
     /**
      * Gets the completion status of the operation.
@@ -95,19 +96,42 @@ public class TransactionalBatchOperationResult<TResource> {
   /**
    * Read batch operation result result.
    *
-   * @param jsonResult the value
+   *  TODO(rakkuma): Similarly hybrid row result needs to be parsed.
+   *
+   * @param objectNode having response for a single operation.
    *
    * @return the result
    */
-  public static TransactionalBatchOperationResult<?> readBatchOperationJsonResult(JSONObject jsonResult) {
+  public static TransactionalBatchOperationResult<?> readBatchOperationJsonResult(ObjectNode objectNode) {
         TransactionalBatchOperationResult<?> transactionalBatchOperationResult = new TransactionalBatchOperationResult<>();
 
-        transactionalBatchOperationResult.setResponseStatus(HttpResponseStatus.valueOf(jsonResult.getInt(FIELD_STATUS_CODE)));
-        transactionalBatchOperationResult.setSubStatusCode(jsonResult.optInt(FIELD_SUBSTATUS_CODE));
-        transactionalBatchOperationResult.setRequestCharge(jsonResult.optDouble(FIELD_REQUEST_CHARGE));
-        transactionalBatchOperationResult.setRetryAfter(Duration.ofMillis(jsonResult.optInt(FIELD_RETRY_AFTER_MILLISECONDS)));
-        transactionalBatchOperationResult.setETag(jsonResult.optString(FIELD_ETAG));
-        transactionalBatchOperationResult.setResourceObject(jsonResult.optJSONObject(FIELD_RESOURCE_BODY));
+        JsonSerializable jsonSerializable = new JsonSerializable(objectNode);
+        transactionalBatchOperationResult.setResponseStatus(HttpResponseStatus.valueOf(jsonSerializable.getInt(FIELD_STATUS_CODE)));
+
+        Integer subStatusCode = jsonSerializable.getInt(FIELD_SUBSTATUS_CODE);
+        if(subStatusCode != null) {
+            transactionalBatchOperationResult.setSubStatusCode(subStatusCode);
+        }
+
+        Double requestCharge = jsonSerializable.getDouble(FIELD_REQUEST_CHARGE);
+        if(requestCharge != null) {
+            transactionalBatchOperationResult.setRequestCharge(requestCharge);
+        }
+
+        Integer retryAfterMilliseconds = jsonSerializable.getInt(FIELD_RETRY_AFTER_MILLISECONDS);
+        if(retryAfterMilliseconds != null) {
+            transactionalBatchOperationResult.setRetryAfter(Duration.ofMillis(retryAfterMilliseconds));
+        }
+
+        String etag = jsonSerializable.getString(FIELD_ETAG);
+        if(etag != null) {
+            transactionalBatchOperationResult.setETag(etag);
+        }
+
+        ObjectNode resourceBody = jsonSerializable.getObject(FIELD_RESOURCE_BODY);
+        if(resourceBody != null) {
+            transactionalBatchOperationResult.setResourceObject(resourceBody);
+        }
 
         return transactionalBatchOperationResult;
     }
@@ -310,11 +334,11 @@ public class TransactionalBatchOperationResult<TResource> {
         return this;
     }
 
-    public JSONObject getResourceObject() {
+    public ObjectNode getResourceObject() {
         return resourceObject;
     }
 
-    public void setResourceObject(JSONObject resourceObject) {
+    public void setResourceObject(ObjectNode resourceObject) {
         this.resourceObject = resourceObject;
     }
 }

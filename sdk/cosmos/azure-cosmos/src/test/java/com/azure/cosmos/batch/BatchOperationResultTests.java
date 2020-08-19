@@ -5,8 +5,8 @@ package com.azure.cosmos.batch;
 
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
+import com.azure.cosmos.implementation.Utils;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.json.JSONObject;
 import org.testng.annotations.Test;
 
 import java.nio.charset.StandardCharsets;
@@ -24,7 +24,7 @@ public class BatchOperationResultTests {
         result.setSubStatusCode(HttpConstants.SubStatusCodes.NAME_CACHE_IS_STALE);
         result.setETag("TestETag");
         result.setRequestCharge(1.4);
-        result.setResourceObject(new JSONObject());
+        result.setResourceObject(Utils.getSimpleObjectMapper().createObjectNode());
         result.setRetryAfter(Duration.ofMillis(1234));
 
         return result;

@@ -13,7 +13,7 @@ Licensed under the MIT License.
 
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos</artifactId>
-  <version>4.4.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+  <version>4.4.0-beta.2</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
   <name>Microsoft Azure SDK for SQL API of Azure Cosmos DB Service</name>
   <description>This Package contains Microsoft Azure Cosmos SDK (with Reactive Extension Reactor support) for Azure Cosmos DB SQL API</description>
   <packaging>jar</packaging>
@@ -235,12 +235,6 @@ Licensed under the MIT License.
       <scope>test</scope>
     </dependency>
 
-    <dependency>
-      <groupId>org.json</groupId>
-      <artifactId>json</artifactId>
-      <version>20140107</version>
-    </dependency>
-
   </dependencies>
 
   <build>
@@ -288,7 +282,6 @@ Licensed under the MIT License.
                 <include>io.micrometer:micrometer-core:[1.5.3]</include> <!-- {x-include-update;io.micrometer:micrometer-core;external_dependency} -->
                 <include>io.netty:netty-codec-http:[4.1.51.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http;external_dependency} -->
                 <include>io.netty:netty-codec-http2:[4.1.51.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http2;external_dependency} -->
-                <include>org.json:json:[20140107]</include> <!-- {x-include-update;org.json:json;external_dependency} -->
                 <include>io.netty:netty-handler:[4.1.51.Final]</include> <!-- {x-include-update;io.netty:netty-handler;external_dependency} -->
                 <include>io.netty:netty-handler-proxy:[4.1.51.Final]</include> <!-- {x-include-update;io.netty:netty-handler-proxy;external_dependency} -->
                 <include>io.netty:netty-transport-native-epoll:[4.1.51.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-epoll;external_dependency} -->

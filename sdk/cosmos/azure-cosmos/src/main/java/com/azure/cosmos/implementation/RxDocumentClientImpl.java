@@ -70,6 +70,8 @@ import static com.azure.cosmos.BridgeInternal.getAltLink;
 import static com.azure.cosmos.BridgeInternal.toFeedResponsePage;
 import static com.azure.cosmos.BridgeInternal.toResourceResponse;
 import static com.azure.cosmos.BridgeInternal.toStoredProcedureResponse;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.models.ModelBridgeInternal.serializeJsonToByteBuffer;
 import static com.azure.cosmos.models.ModelBridgeInternal.toDatabaseAccount;
 
@@ -1157,13 +1159,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                                    RequestOptions options,
                                                                    boolean disableAutomaticIdGeneration) {
 
-        if (StringUtils.isEmpty(documentCollectionLink)) {
-            throw new IllegalArgumentException("documentCollectionLink");
-        }
-
-        if (serverBatchRequest == null) {
-            throw new IllegalArgumentException("serverBatchRequest");
-        }
+        checkArgument(StringUtils.isNotEmpty(documentCollectionLink), "expected non empty documentCollectionLink");
+        checkNotNull(serverBatchRequest, "expected non null serverBatchRequest");
 
         Instant serializationStartTimeUTC = Instant.now();
         ByteBuffer content = ByteBuffer.wrap(serverBatchRequest.transferRequestBody().getBytes(StandardCharsets.UTF_8));

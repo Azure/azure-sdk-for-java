@@ -3,14 +3,10 @@
 
 package com.azure.cosmos.batch;
 
-import com.azure.cosmos.implementation.OperationType;
-import com.azure.cosmos.implementation.RequestOptions;
-import com.azure.cosmos.implementation.Strings;
-import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.*;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.models.PartitionKey;
-import org.json.JSONObject;
 
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -55,33 +51,37 @@ public final class ItemBatchOperation<TResource> implements AutoCloseable {
         this.requestOptions = requestOptions;
     }
 
-    public static JSONObject writeOperation(ItemBatchOperation<?> operation) {
-        JSONObject obj = new JSONObject();
-        obj.accumulate(FIELD_OPERATION_TYPE, BatchExecUtils.getStringOperationType(operation.getOperationType()));
+    // TODO(rakkuma): Similarly for hybrid row, operation needs to be written in Hybrid row.
+    public static JsonSerializable writeOperation(ItemBatchOperation<?> operation) {
+        JsonSerializable jsonSerializable = new JsonSerializable();
+
+        jsonSerializable.set(FIELD_OPERATION_TYPE, BatchExecUtils.getStringOperationType(operation.getOperationType()));
 
         if (operation.getPartitionKey() != null && StringUtils.isNotEmpty(operation.getPartitionKey().toString())) {
-            obj.accumulate(FIELD_PARTITION_KEY, operation.getPartitionKeyJson());
+            jsonSerializable.set(FIELD_PARTITION_KEY, operation.getPartitionKeyJson());
         }
 
-        obj.accumulate(FIELD_ID, operation.getId());
+        if (StringUtils.isNotEmpty(operation.getId())) {
+            jsonSerializable.set(FIELD_ID, operation.getId());
+        }
 
-        if (!Strings.isNullOrEmpty(operation.getMaterialisedResource())) {
-            obj.accumulate(FIELD_RESOURCE_BODY, new JSONObject(operation.getMaterialisedResource()));
+        if (operation.getResource() != null) {
+            jsonSerializable.set(FIELD_RESOURCE_BODY, operation.getResource());
         }
 
         if (operation.getRequestOptions() != null) {
             RequestOptions requestOptions = operation.getRequestOptions();
 
             if (StringUtils.isNotEmpty(requestOptions.getIfMatchETag())) {
-                obj.accumulate(FIELD_IF_MATCH, requestOptions.getIfMatchETag());
+                jsonSerializable.set(FIELD_IF_MATCH, requestOptions.getIfMatchETag());
             }
 
             if (StringUtils.isNotEmpty(requestOptions.getIfNoneMatchETag())) {
-                obj.accumulate(FIELD_IF_NONE_MATCH, requestOptions.getIfNoneMatchETag());
+                jsonSerializable.set(FIELD_IF_NONE_MATCH, requestOptions.getIfNoneMatchETag());
             }
         }
 
-        return obj;
+        return jsonSerializable;
     }
 
     /**
@@ -144,7 +144,7 @@ public final class ItemBatchOperation<TResource> implements AutoCloseable {
 
     /**
      * Materializes the operation's resource into a String asynchronously.
-
+     *
      * @return a {@link CompletableFuture future} that will complete when the resource is materialized or an error
      * occurs.
      */

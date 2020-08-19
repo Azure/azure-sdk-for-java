@@ -6,13 +6,14 @@ package com.azure.cosmos.batch;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -192,15 +193,21 @@ public class TransactionalBatchResponse implements AutoCloseable, List<Transacti
 
         if (responseContent.charAt(0) != HYBRID_V1) {
             // Read from a json response body. To enable hybrid row just complete the else part
-            JSONArray responseJsonArray = new JSONArray(documentServiceResponse.getResponseBodyAsString());
+            ObjectMapper mapper = Utils.getSimpleObjectMapper();
 
-            for (int i = 0, size = responseJsonArray.length(); i < size; i++) {
-                JSONObject objectInArray = responseJsonArray.getJSONObject(i);
-
-                TransactionalBatchOperationResult<?> batchOperationResult = TransactionalBatchOperationResult.readBatchOperationJsonResult(objectInArray);
-                results.add(batchOperationResult);
+            try{
+                ObjectNode [] objectNodes = mapper.readValue(documentServiceResponse.getResponseBodyAsString(), ObjectNode[].class);
+                for (ObjectNode objectInArray : objectNodes) {
+                    TransactionalBatchOperationResult<?> batchOperationResult = TransactionalBatchOperationResult.readBatchOperationJsonResult(objectInArray);
+                    results.add(batchOperationResult);
+                }
+            } catch (IOException ex) {
+                System.out.println("Exception in parsing response {}" + ex);
             }
+
         } else {
+            // TODO(rakkuma): Implement hybrid row response parsing logic here. Parse the response hybrid row buffer
+            //  into array list of TransactionalBatchOperationResult. Remaining part is taken care from the caller function.
             logger.error("Hybrid row is not implemented right now");
             return null;
         }
@@ -266,7 +273,7 @@ public class TransactionalBatchResponse implements AutoCloseable, List<Transacti
         T resource = null;
 
         if (result.getResourceObject() != null) {
-            resource = Utils.getSimpleObjectMapper().readValue(result.getResourceObject().toString(), type);
+            resource = new JsonSerializable(result.getResourceObject()).toObject(type);
         }
 
         return new TransactionalBatchOperationResult<T>(result, resource);

@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.batch;
 
+import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Utils;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
@@ -75,14 +76,13 @@ public class PartitionKeyRangeBatchResponse extends TransactionalBatchResponse {
         checkArgument(0 <= index && index < this.size(), "expected index in range [0, %s), not %s",
             this.size(),
             index);
-
         checkNotNull(type, "expected non-null type");
 
         TransactionalBatchOperationResult<?> result = this.resultsByOperationIndex[index];
 
         T resource = null;
         if (result.getResourceObject() != null) {
-            resource = Utils.getSimpleObjectMapper().readValue(result.getResourceObject().toString(), type);
+            resource = new JsonSerializable(result.getResourceObject()).toObject(type);
         }
 
         return new TransactionalBatchOperationResult<T>(result, resource);

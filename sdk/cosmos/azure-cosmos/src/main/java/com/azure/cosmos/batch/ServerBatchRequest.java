@@ -3,13 +3,11 @@
 
 package com.azure.cosmos.batch;
 
+import com.azure.cosmos.implementation.JsonSerializable;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
-import io.netty.buffer.ByteBufInputStream;
-import io.netty.buffer.ByteBufOutputStream;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 
-import java.io.InputStream;
 import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -55,6 +53,8 @@ public abstract class ServerBatchRequest {
 
     /**
      * Adds as many operations as possible from the given list of operations.
+     * TODO(rakkuma): Similarly for hybrid row, request needs to be parsed to create a request body in any form.
+     *
      * <p>
      * Operations are added in order while ensuring the request body never exceeds {@link #maxBodyLength}.
      *
@@ -72,24 +72,25 @@ public abstract class ServerBatchRequest {
 
         int totalSerializedLength = 0;
         int totalOperationCount = 0;
-        JSONArray arr = new JSONArray();
+
+        ArrayNode arrayNode =  Utils.getSimpleObjectMapper().createArrayNode();
 
         for(ItemBatchOperation<?> operation : operations) {
 
             operation.materializeResource();
-            JSONObject operationJson = ItemBatchOperation.writeOperation(operation);
+            JsonSerializable operationJsonSerializable = ItemBatchOperation.writeOperation(operation);
 
-            if (totalSerializedLength + operationJson.toString().length() > this.maxBodyLength || totalOperationCount + 1 > this.maxOperationCount) {
+            if (totalSerializedLength + operationJsonSerializable.toString().length() > this.maxBodyLength || totalOperationCount + 1 > this.maxOperationCount) {
                 break;
             }
 
-            totalSerializedLength += operationJson.toString().length();
+            totalSerializedLength += operationJsonSerializable.toString().length();
             totalOperationCount++;
 
-            arr.put(operationJson);
+            arrayNode.add(operationJsonSerializable.getPropertyBag());
         }
 
-        this.requestBody = arr.toString();
+        this.requestBody = arrayNode.toString();
         this.operations = operations.subList(0, totalOperationCount);
         List<ItemBatchOperation<?>> pendingOperations = operations.subList(totalOperationCount, operations.size());
         return pendingOperations;

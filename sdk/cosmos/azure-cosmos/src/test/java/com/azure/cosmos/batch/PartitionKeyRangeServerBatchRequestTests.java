@@ -3,10 +3,12 @@
 
 package com.azure.cosmos.batch;
 
+import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import org.testng.annotations.Test;
 
+import javax.rmi.CORBA.Util;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -144,12 +146,14 @@ public class PartitionKeyRangeServerBatchRequestTests {
         Random random = new Random();
         random.nextBytes(body);
         for (int i = 0; i < operationCount; i++) {
+            JsonSerializable jsonSerializable = new JsonSerializable();
+            jsonSerializable.set("abc", StringUtils.repeat("x", docSizeInBytes - 11));
+
             ItemBatchOperation<?> operation = new ItemBatchOperation.Builder<Object>(OperationType.Create,0)
                 .partitionKey(null)
                 .id("")
+                .resource(jsonSerializable)
                 .build();
-
-            operation.setMaterialisedResource("{\"" + StringUtils.repeat("x", docSizeInBytes - 11) + "\": \"ahd\""+ "}");
 
             operations.add(operation);
         }
