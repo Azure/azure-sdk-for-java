@@ -20,7 +20,7 @@ public class ShareSetMetadataOptions {
      * @return Metadata to set on the share, if null is passed the metadata for the share is cleared.
      */
     public Map<String, String> getMetadata() {
-        return Map.copyOf(metadata);
+        return metadata == null ? null : Map.copyOf(metadata);
     }
 
     /**
@@ -35,7 +35,7 @@ public class ShareSetMetadataOptions {
      * @return The updated options.
      */
     public ShareSetMetadataOptions setMetadata(Map<String, String> metadata) {
-        this.metadata = Map.copyOf(metadata);
+        this.metadata = metadata == null ? null : Map.copyOf(metadata);
         return this;
     }
 

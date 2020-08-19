@@ -471,7 +471,7 @@ public class ShareAsyncClient {
      *
      * <p>Retrieve the share properties</p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.getPropertiesWithResponse}
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.getPropertiesWithResponse#ShareGetPropertiesOptions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
@@ -553,7 +553,7 @@ public class ShareAsyncClient {
      *
      * <p>Set the quota to 1024 GB</p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.setQuotaWithResponse#int}
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.setQuotaWithResponse#ShareSetQuotaOptions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
@@ -646,13 +646,7 @@ public class ShareAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Set the metadata to "share:updatedMetadata"</p>
-     *
-     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.setMetadata#map}
-     *
-     * <p>Clear the metadata of the share</p>
-     *
-     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.clearMetadata#map}
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.setMetadata#ShareSetMetadataOptions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-share-metadata">Azure Docs</a>.</p>

@@ -23,7 +23,7 @@ public class ShareSetAccessPolicyOptions {
      * @return Access policies to set on the share.
      */
     public List<ShareSignedIdentifier> getPermissions() {
-        return Collections.unmodifiableList(permissions);
+        return permissions == null ? null : Collections.unmodifiableList(permissions);
     }
 
     /**
@@ -38,7 +38,7 @@ public class ShareSetAccessPolicyOptions {
      * @return The updated options.
      */
     public ShareSetAccessPolicyOptions setPermissions(List<ShareSignedIdentifier> permissions) {
-        this.permissions = Collections.unmodifiableList(permissions);
+        this.permissions = permissions == null ? null : Collections.unmodifiableList(permissions);
         return this;
     }
 

@@ -304,7 +304,7 @@ public class ShareClient {
      *
      * <p>Delete the share</p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareClient.deleteWithResponse#duration-context}
+     * {@codesnippet com.azure.storage.file.share.ShareClient.deleteWithResponse#ShareDeleteOptions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
@@ -373,7 +373,7 @@ public class ShareClient {
      *
      * <p>Retrieve the share properties</p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareClient.getPropertiesWithResponse#duration-context}
+     * {@codesnippet com.azure.storage.file.share.ShareClient.getPropertiesWithResponse#ShareGetPropertiesOptions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
@@ -442,7 +442,7 @@ public class ShareClient {
      *
      * <p>Set the quota to 1024 GB</p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareClient.setQuotaWithResponse#int-duration-context}
+     * {@codesnippet com.azure.storage.file.share.ShareClient.setQuotaWithResponse#ShareSetQuotaOptions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
@@ -522,7 +522,7 @@ public class ShareClient {
      *
      * <p>Set the metadata to "share:updatedMetadata"</p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareClient.setMetadataWithResponse#map-duration-context}
+     * {@codesnippet com.azure.storage.file.share.ShareClient.setMetadataWithResponse#ShareSetMetadataOptions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-share-metadata">Azure Docs</a>.</p>
@@ -635,7 +635,7 @@ public class ShareClient {
      *
      * <p>Set a read only stored access policy</p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareClient.setAccessPolicyWithResponse#list-duration-context}
+     * {@codesnippet com.azure.storage.file.share.ShareClient.setAccessPolicyWithResponse#ShareSetAccessPolicyOptions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-share-acl">Azure Docs</a>.</p>
@@ -703,7 +703,7 @@ public class ShareClient {
      *
      * <p>Retrieve the storage statistics</p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareClient.getStatisticsWithResponse#duration-context}
+     * {@codesnippet com.azure.storage.file.share.ShareClient.getStatisticsWithResponse#ShareGetStatisticsOptions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-stats">Azure Docs</a>.</p>
