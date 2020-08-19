@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.core;
 
 import com.azure.core.http.HttpHeader;
@@ -10,6 +13,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Headers
+ */
 public class Headers implements Iterable<Header> {
     private final Map<String, Header> headers = new ConcurrentHashMap<>();
 

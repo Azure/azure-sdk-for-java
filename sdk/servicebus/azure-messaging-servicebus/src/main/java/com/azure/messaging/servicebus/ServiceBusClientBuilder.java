@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.Headers;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
@@ -97,14 +98,19 @@ public final class ServiceBusClientBuilder {
     /**
      * Sets the application-id which will be used in user-agent while creating connection with Azure Service Bus.
      *
-     * @param applicationId application-id to used in .
+     * @param headers application-id to used in .
      *
      * @return The updated {@link ServiceBusClientBuilder} object.
      */
-    public ServiceBusClientBuilder applicationId(String applicationId) {
-        this.applicationId = applicationId;
+
+    public ServiceBusClientBuilder headers(Headers headers) {
         return this;
     }
+
+    public ServiceBusClientBuilder header(String name, String value) {
+        return this;
+    }
+
 
     /**
      * Sets the connection string for a Service Bus namespace or a specific Service Bus resource.
