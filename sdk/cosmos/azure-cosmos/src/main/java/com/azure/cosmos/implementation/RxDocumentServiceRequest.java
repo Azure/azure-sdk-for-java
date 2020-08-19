@@ -140,13 +140,11 @@ public class RxDocumentServiceRequest implements Cloneable {
      * Creates a AbstractDocumentServiceRequest
      *
      * @param operationType     the operation type.
-     * @param resourceIdOrFullName        the request id or full name.
      * @param resourceType      the resource type.
      * @param path              the path.
      * @param headers           the headers
      */
     private RxDocumentServiceRequest(OperationType operationType,
-            String resourceIdOrFullName,
             ResourceType resourceType,
             String path,
             Map<String, String> headers) {
@@ -157,12 +155,13 @@ public class RxDocumentServiceRequest implements Cloneable {
         this.headers = headers != null ? headers : new HashMap<>();
         this.activityId = Utils.randomUUID();
         this.isFeed = false;
-        PathInfo pathInfo = new PathInfo(false, null, null, false);
+
         if (StringUtils.isNotEmpty(path)) {
+            PathInfo pathInfo = new PathInfo(false, null, null, false);
             if (PathsHelper.tryParsePathSegments(path, pathInfo, null)) {
                 this.isNameBased = pathInfo.isNameBased;
                 this.isFeed = pathInfo.isFeed;
-                resourceIdOrFullName = pathInfo.resourceIdOrFullName;
+                String resourceIdOrFullName = pathInfo.resourceIdOrFullName;
                 if (!this.isNameBased) {
                 if (resourceType == ResourceType.Media) {
                     this.resourceId = getAttachmentIdFromMediaId(resourceIdOrFullName);
@@ -192,7 +191,7 @@ public class RxDocumentServiceRequest implements Cloneable {
             }
         } else {
             this.isNameBased = false;
-            this.resourceAddress = resourceIdOrFullName;
+            this.resourceAddress = path;
         }
 
         if (StringUtils.isNotEmpty(this.headers.get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID))) {
@@ -210,14 +209,12 @@ public class RxDocumentServiceRequest implements Cloneable {
      * @param headers           the request headers.
      */
     private RxDocumentServiceRequest(OperationType operationType,
-                                     String resourceId,
                                      ResourceType resourceType,
                                      ByteBuffer byteBuffer,
                                      String path,
                                      Map<String, String> headers,
                                      AuthorizationTokenType authorizationTokenType) {
         this(operationType,
-            resourceId,
             resourceType,
             path,
             headers);
@@ -235,13 +232,12 @@ public class RxDocumentServiceRequest implements Cloneable {
      * @param headers           the request headers.
      */
     private RxDocumentServiceRequest(OperationType operationType,
-            String resourceId,
             ResourceType resourceType,
             byte[] content,
             String path,
             Map<String, String> headers,
             AuthorizationTokenType authorizationTokenType) {
-        this(operationType, resourceId, resourceType, wrapByteBuffer(content), path, headers, authorizationTokenType);
+        this(operationType, resourceType, wrapByteBuffer(content), path, headers, authorizationTokenType);
     }
 
     /**
@@ -258,7 +254,7 @@ public class RxDocumentServiceRequest implements Cloneable {
                                      ByteBuffer byteBuffer,
                                      Map<String, String> headers,
                                      AuthorizationTokenType authorizationTokenType) {
-        this(operationType, extractIdFromUri(path), resourceType, byteBuffer, path, headers, authorizationTokenType);
+        this(operationType, resourceType, byteBuffer, path, headers, authorizationTokenType);
     }
 
     /**
@@ -275,7 +271,7 @@ public class RxDocumentServiceRequest implements Cloneable {
             byte[] byteContent,
             Map<String, String> headers,
             AuthorizationTokenType authorizationTokenType) {
-        this(operationType, extractIdFromUri(path), resourceType, byteContent, path, headers, authorizationTokenType);
+        this(operationType, resourceType, byteContent, path, headers, authorizationTokenType);
     }
 
     /**
@@ -290,7 +286,7 @@ public class RxDocumentServiceRequest implements Cloneable {
             String path,
             Map<String, String> headers,
             AuthorizationTokenType authorizationTokenType) {
-        this(operationType, extractIdFromUri(path), resourceType, (byte[]) null, path, headers, authorizationTokenType);
+        this(operationType, resourceType, (byte[]) null, path, headers, authorizationTokenType);
     }
 
     public void setContentBytes(byte[] contentBytes) {
@@ -649,7 +645,7 @@ public class RxDocumentServiceRequest implements Cloneable {
      */
     public static RxDocumentServiceRequest create(OperationType operation,
                                                   ResourceType resourceType) {
-        return new RxDocumentServiceRequest(operation, null, resourceType, null, null);
+        return new RxDocumentServiceRequest(operation, resourceType, null, null);
     }
 
     public static RxDocumentServiceRequest createFromName(
@@ -712,60 +708,6 @@ public class RxDocumentServiceRequest implements Cloneable {
                 true,
                 authorizationTokenType
         );
-    }
-
-    // The path will be in the form of
-    // [/]{resourceType/resourceId}+[/] or
-    // [/]{resourceTyp]/resourceI]}+/resourceType[/]
-    //
-    // Expected output in both cases are [resourceId]
-    private static String extractIdFromUri(String path) {
-        if (path.length() == 0) {
-            return path;
-        }
-
-        int lastIndex = 0;
-        int length = path.length();
-
-        if (path.charAt(0) == '/') {
-            lastIndex = 1;
-        }
-
-        // Exclude last separator '/'
-        if (path.charAt(length -1) == '/') {
-            length = length -1;
-        }
-
-        int lastBeforeIndex = lastIndex;
-        boolean endsWithResourceType = true;
-        for (int iterationIndex = 1; iterationIndex < length ; iterationIndex++) {
-            if (path.charAt(iterationIndex) == '/') {
-                lastBeforeIndex = lastIndex;
-                // Next position guaranteed to exist as last '/' was excluded
-                lastIndex = iterationIndex + 1;
-                endsWithResourceType = !endsWithResourceType;
-            }
-
-            // Unexpected sequence of path separators
-            if (lastBeforeIndex + 1 == lastIndex) {
-                throw new IllegalArgumentException(path);
-            }
-        }
-
-        // At-least one separator is expected as per addressing
-        // Either a code-bug or InvalidException
-        if (lastBeforeIndex == lastIndex) {
-            throw new IllegalArgumentException(path);
-        }
-
-        // Substring excludes the endIndex
-        if (endsWithResourceType) {
-            // request in form [resourceType]/[resourceId]/[resourceType]
-            return path.substring(lastBeforeIndex, lastIndex);
-        } else {
-            // request in form [resourceType]/[resourceId]
-            return path.substring(lastIndex, length);
-        }
     }
 
     static String getAttachmentIdFromMediaId(String mediaId) {
