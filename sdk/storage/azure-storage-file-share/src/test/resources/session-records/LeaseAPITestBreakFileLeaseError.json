@@ -1,0 +1,76 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/leaseapitestbreakfileleaseerror923546e25fc4b5e4f?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5fd6f1c7-2cbe-4eb9-b4a9-d690b6f1160a"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-02-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D843D8F0763043",
+      "Last-Modified" : "Wed, 19 Aug 2020 00:43:49 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "adeda132-601a-006f-69c1-75d031000000",
+      "Date" : "Wed, 19 Aug 2020 00:43:49 GMT",
+      "x-ms-client-request-id" : "5fd6f1c7-2cbe-4eb9-b4a9-d690b6f1160a"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/leaseapitestbreakfileleaseerror923546e25fc4b5e4f/leaseapitestbreakfileleaseerror538954cb3db0ed6c2",
+    "Headers" : {
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "223a5091-3e3d-4d70-b8ac-623d3f045ee4"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-02-10",
+      "x-ms-file-permission-key" : "4010187179898695473*11459378189709739967",
+      "x-ms-file-id" : "13835128424026341376",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-file-creation-time" : "2020-08-19T00:43:49.9947040Z",
+      "Last-Modified" : "Wed, 19 Aug 2020 00:43:49 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Wed, 19 Aug 2020 00:43:49 GMT",
+      "ETag" : "0x8D843D8F0819820",
+      "x-ms-file-attributes" : "Archive",
+      "x-ms-file-change-time" : "2020-08-19T00:43:49.9947040Z",
+      "x-ms-file-parent-id" : "0",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "adeda134-601a-006f-6ac1-75d031000000",
+      "x-ms-client-request-id" : "223a5091-3e3d-4d70-b8ac-623d3f045ee4",
+      "x-ms-file-last-write-time" : "2020-08-19T00:43:49.9947040Z"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/leaseapitestbreakfileleaseerror923546e25fc4b5e4f/leaseapitestbreakfileleaseerror538954cb3db0ed6c2?comp=lease",
+    "Headers" : {
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d65c59c5-603d-401b-8796-8f1363b71cf2"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-02-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "LeaseNotPresentWithLeaseOperation",
+      "retry-after" : "0",
+      "Content-Length" : "242",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "adeda135-601a-006f-6bc1-75d031000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>LeaseNotPresentWithLeaseOperation</Code><Message>There is currently no lease on the file.\nRequestId:adeda135-601a-006f-6bc1-75d031000000\nTime:2020-08-19T00:43:50.1371102Z</Message></Error>",
+      "Date" : "Wed, 19 Aug 2020 00:43:49 GMT",
+      "x-ms-client-request-id" : "d65c59c5-603d-401b-8796-8f1363b71cf2",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "leaseapitestbreakfileleaseerror923546e25fc4b5e4f", "leaseapitestbreakfileleaseerror538954cb3db0ed6c2" ]
+}

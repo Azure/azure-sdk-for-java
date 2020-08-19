@@ -66,7 +66,8 @@ public final class ShareLeaseClientBuilder {
      */
     public ShareLeaseAsyncClient buildAsyncClient() {
         ShareServiceVersion version = (serviceVersion == null) ? ShareServiceVersion.getLatest() : serviceVersion;
-        return new ShareLeaseAsyncClient(pipeline, url, getLeaseId(), isShareFile, accountName, version.getVersion());
+        return new ShareLeaseAsyncClient(pipeline, url, getLeaseId(), isShareFile, accountName, version.getVersion(),
+            shareSnapshot);
     }
 
     /**
@@ -84,6 +85,7 @@ public final class ShareLeaseClientBuilder {
         this.isShareFile = true;
         this.accountName = fileClient.getAccountName();
         this.serviceVersion = fileClient.getServiceVersion();
+        this.shareSnapshot = null;
         return this;
     }
 
@@ -102,6 +104,7 @@ public final class ShareLeaseClientBuilder {
         this.isShareFile = true;
         this.accountName = fileAsyncClient.getAccountName();
         this.serviceVersion = fileAsyncClient.getServiceVersion();
+        this.shareSnapshot = null;
         return this;
     }
 

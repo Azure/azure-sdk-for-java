@@ -1201,7 +1201,7 @@ public class ShareAsyncClient {
 
     private Response<ShareProperties> mapGetPropertiesResponse(SharesGetPropertiesResponse response) {
         ShareGetPropertiesHeaders headers = response.getDeserializedHeaders();
-        ShareProperties shareProperties = new ShareProperties().setQuota(headers.getQuota())
+        ShareProperties shareProperties = new ShareProperties()
             .setETag(headers.getETag())
             .setLastModified(headers.getLastModified())
             .setMetadata(headers.getMetadata())
@@ -1209,7 +1209,10 @@ public class ShareAsyncClient {
             .setNextAllowedQuotaDowngradeTime(headers.getNextAllowedQuotaDowngradeTime())
             .setProvisionedEgressMBps(headers.getProvisionedEgressMBps())
             .setProvisionedIngressMBps(headers.getProvisionedIngressMBps())
-            .setProvisionedIops(headers.getProvisionedIops());
+            .setProvisionedIops(headers.getProvisionedIops())
+            .setLeaseDuration(headers.getLeaseDuration())
+            .setLeaseState(headers.getLeaseState())
+            .setLeaseStatus(headers.getLeaseStatus());
 
         return new SimpleResponse<>(response, shareProperties);
     }

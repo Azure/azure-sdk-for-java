@@ -1,0 +1,76 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/leaseapitestreleaseshareleaseerror847734fa37411b3?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2b00215a-7faf-4d00-bee8-2c64b9f09aef"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-02-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D843D8FEE65D7C",
+      "Last-Modified" : "Wed, 19 Aug 2020 00:44:14 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "adeda223-601a-006f-19c1-75d031000000",
+      "Date" : "Wed, 19 Aug 2020 00:44:13 GMT",
+      "x-ms-client-request-id" : "2b00215a-7faf-4d00-bee8-2c64b9f09aef"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/leaseapitestreleaseshareleaseerror847734fa37411b3/leaseapitestreleaseshareleaseerror69009cc1a3d41bd",
+    "Headers" : {
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "937473fb-39d2-4849-a025-2b9633568504"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-02-10",
+      "x-ms-file-permission-key" : "4010187179898695473*11459378189709739967",
+      "x-ms-file-id" : "13835128424026341376",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-file-creation-time" : "2020-08-19T00:44:14.2169770Z",
+      "Last-Modified" : "Wed, 19 Aug 2020 00:44:14 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Wed, 19 Aug 2020 00:44:13 GMT",
+      "ETag" : "0x8D843D8FEF19EAA",
+      "x-ms-file-attributes" : "Archive",
+      "x-ms-file-change-time" : "2020-08-19T00:44:14.2169770Z",
+      "x-ms-file-parent-id" : "0",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "adeda225-601a-006f-1ac1-75d031000000",
+      "x-ms-client-request-id" : "937473fb-39d2-4849-a025-2b9633568504",
+      "x-ms-file-last-write-time" : "2020-08-19T00:44:14.2169770Z"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/jtsleaseapitestreleaseshareleaseerror00772103c8af5a9b?comp=lease&restype=share",
+    "Headers" : {
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d3ab2209-2204-4bf5-9bb1-33e883d0a184"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-02-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "InvalidHeaderValue",
+      "retry-after" : "0",
+      "Content-Length" : "321",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "adeda226-601a-006f-1bc1-75d031000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:adeda226-601a-006f-1bc1-75d031000000\nTime:2020-08-19T00:44:14.2813167Z</Message><HeaderName>x-ms-lease-id</HeaderName><HeaderValue>id</HeaderValue></Error>",
+      "Date" : "Wed, 19 Aug 2020 00:44:13 GMT",
+      "x-ms-client-request-id" : "d3ab2209-2204-4bf5-9bb1-33e883d0a184",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "leaseapitestreleaseshareleaseerror847734fa37411b3", "leaseapitestreleaseshareleaseerror69009cc1a3d41bd", "jtsleaseapitestreleaseshareleaseerror00772103c8af5a9b" ]
+}
