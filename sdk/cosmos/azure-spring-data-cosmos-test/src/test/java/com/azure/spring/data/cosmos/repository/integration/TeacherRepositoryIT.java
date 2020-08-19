@@ -17,12 +17,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertNotNull;
+
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
@@ -34,8 +35,6 @@ public class TeacherRepositoryIT {
     public static final String LAST_NAME_0 = "Chen";
 
     private static final Teacher TEACHER_0 = new Teacher(ID_0, FIRST_NAME_0, LAST_NAME_0);
-
-    private static final List<Teacher> PEOPLE = Arrays.asList(TEACHER_0);
 
     private static final CosmosEntityInformation<Teacher, String> entityInformation =
         new CosmosEntityInformation<>(Teacher.class);
@@ -55,7 +54,7 @@ public class TeacherRepositoryIT {
             staticTemplate = template;
             template.createContainerIfNotExists(entityInformation);
         }
-        this.repository.saveAll(PEOPLE);
+        this.repository.save(TEACHER_0);
         isSetupDone = true;
     }
 
