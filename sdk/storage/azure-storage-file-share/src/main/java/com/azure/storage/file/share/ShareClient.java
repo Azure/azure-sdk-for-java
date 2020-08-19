@@ -114,6 +114,17 @@ public class ShareClient {
         return new ShareFileClient(client.getFileClient(filePath));
     }
 
+
+    /**
+     * Creates a new {@link ShareAsyncClient} linked to the {@code snapshot} of this share resource.
+     *
+     * @param snapshot the identifier for a specific snapshot of this share
+     * @return a {@link ShareClient} used to interact with the specific snapshot.
+     */
+    public ShareClient getSnapshotClient(String snapshot) {
+        return new ShareClient(client.getSnapshotClient(snapshot));
+    }
+
     /**
      * Determines if the share this client represents exists in the cloud.
      *

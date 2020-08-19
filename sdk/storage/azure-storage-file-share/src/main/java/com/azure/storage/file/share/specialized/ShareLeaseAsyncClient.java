@@ -51,10 +51,9 @@ public final class ShareLeaseAsyncClient {
     private final String leaseId;
     private final AzureFileStorageImpl client;
     private final String accountName;
-    private final String shareSnapshot;
 
     ShareLeaseAsyncClient(HttpPipeline pipeline, String url, String leaseId, boolean isShareFile, String accountName,
-        String serviceVersion, String shareSnapshot) {
+        String serviceVersion) {
         this.isShareFile = isShareFile;
         this.leaseId = leaseId;
         this.client = new AzureFileStorageBuilder()
@@ -63,7 +62,6 @@ public final class ShareLeaseAsyncClient {
             .version(serviceVersion)
             .build();
         this.accountName = accountName;
-        this.shareSnapshot = shareSnapshot;
     }
 
     /**
@@ -159,7 +157,7 @@ public final class ShareLeaseAsyncClient {
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         } else {
             return this.client.shares().acquireLeaseWithRestResponseAsync(null, null,
-                options.getDuration(), this.leaseId, this.shareSnapshot,
+                options.getDuration(), this.leaseId, null,
                 null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         }
@@ -209,7 +207,7 @@ public final class ShareLeaseAsyncClient {
                 .map(response -> new SimpleResponse<>(response, null));
         } else {
             return this.client.shares().releaseLeaseWithRestResponseAsync(null, this.leaseId, null,
-                this.shareSnapshot, null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                null, null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .map(response -> new SimpleResponse<>(response, null));
         }
     }
@@ -279,7 +277,7 @@ public final class ShareLeaseAsyncClient {
                 .map(rb -> new SimpleResponse<>(rb, null));
         } else {
             return this.client.shares().breakLeaseWithRestResponseAsync(null, null, breakPeriod,
-                null, null, this.shareSnapshot,
+                null, null, null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .map(rb -> new SimpleResponse<>(rb, null));
         }
@@ -330,7 +328,7 @@ public final class ShareLeaseAsyncClient {
                 null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         } else {
-            return this.client.shares().changeLeaseWithRestResponseAsync(null, this.leaseId, null, proposedId, this.shareSnapshot,
+            return this.client.shares().changeLeaseWithRestResponseAsync(null, this.leaseId, null, proposedId, null,
                 null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         }
@@ -378,7 +376,7 @@ public final class ShareLeaseAsyncClient {
             throw logger.logExceptionAsError(new IllegalArgumentException("Cannot renew a lease on a share file."));
         } else {
             return this.client.shares().renewLeaseWithRestResponseAsync(null, this.leaseId, null,
-                this.shareSnapshot, null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                null, null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         }
     }

@@ -20,7 +20,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.share.implementation.models.SharePermission;
 import com.azure.storage.file.share.implementation.models.SharesAcquireLeaseResponse;
 import com.azure.storage.file.share.implementation.models.SharesBreakLeaseResponse;
@@ -40,6 +39,7 @@ import com.azure.storage.file.share.implementation.models.SharesSetAccessPolicyR
 import com.azure.storage.file.share.implementation.models.SharesSetMetadataResponse;
 import com.azure.storage.file.share.implementation.models.SharesSetQuotaResponse;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import java.util.List;
 import java.util.Map;

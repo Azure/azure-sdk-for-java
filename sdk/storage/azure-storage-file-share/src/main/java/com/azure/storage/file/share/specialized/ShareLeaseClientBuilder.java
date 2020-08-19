@@ -48,7 +48,6 @@ public final class ShareLeaseClientBuilder {
     private boolean isShareFile;
     private String accountName;
     private ShareServiceVersion serviceVersion;
-    private String shareSnapshot;
 
     /**
      * Creates a {@link ShareLeaseClient} based on the configurations set in the builder.
@@ -66,8 +65,7 @@ public final class ShareLeaseClientBuilder {
      */
     public ShareLeaseAsyncClient buildAsyncClient() {
         ShareServiceVersion version = (serviceVersion == null) ? ShareServiceVersion.getLatest() : serviceVersion;
-        return new ShareLeaseAsyncClient(pipeline, url, getLeaseId(), isShareFile, accountName, version.getVersion(),
-            shareSnapshot);
+        return new ShareLeaseAsyncClient(pipeline, url, getLeaseId(), isShareFile, accountName, version.getVersion());
     }
 
     /**
@@ -85,7 +83,6 @@ public final class ShareLeaseClientBuilder {
         this.isShareFile = true;
         this.accountName = fileClient.getAccountName();
         this.serviceVersion = fileClient.getServiceVersion();
-        this.shareSnapshot = null;
         return this;
     }
 
@@ -104,7 +101,6 @@ public final class ShareLeaseClientBuilder {
         this.isShareFile = true;
         this.accountName = fileAsyncClient.getAccountName();
         this.serviceVersion = fileAsyncClient.getServiceVersion();
-        this.shareSnapshot = null;
         return this;
     }
 
@@ -123,7 +119,6 @@ public final class ShareLeaseClientBuilder {
         this.isShareFile = false;
         this.accountName = shareClient.getAccountName();
         this.serviceVersion = shareClient.getServiceVersion();
-        this.shareSnapshot = shareClient.getSnapshotId();
         return this;
     }
 
@@ -142,7 +137,6 @@ public final class ShareLeaseClientBuilder {
         this.isShareFile = false;
         this.accountName = shareAsyncClient.getAccountName();
         this.serviceVersion = shareAsyncClient.getServiceVersion();
-        this.shareSnapshot = shareAsyncClient.getSnapshotId();
         return this;
     }
 

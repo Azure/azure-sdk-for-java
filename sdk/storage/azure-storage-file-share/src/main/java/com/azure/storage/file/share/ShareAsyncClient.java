@@ -20,7 +20,6 @@ import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.ShareCreateSnapshotHeaders;
-import com.azure.storage.file.share.implementation.models.ShareDeleteHeaders;
 import com.azure.storage.file.share.implementation.models.ShareGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.SharePermission;
 import com.azure.storage.file.share.implementation.models.SharesCreateSnapshotResponse;
@@ -111,7 +110,7 @@ public class ShareAsyncClient {
     public String getShareUrl() {
         StringBuilder shareUrlString = new StringBuilder(azureFileStorageClient.getUrl()).append("/").append(shareName);
         if (snapshot != null) {
-            shareUrlString.append("?snapshot=").append(snapshot);
+            shareUrlString.append("?sharesnapshot=").append(snapshot);
         }
         return shareUrlString.toString();
     }
@@ -163,6 +162,16 @@ public class ShareAsyncClient {
     public ShareFileAsyncClient getFileClient(String filePath) {
         return new ShareFileAsyncClient(azureFileStorageClient, shareName, filePath, snapshot, accountName,
             serviceVersion);
+    }
+
+    /**
+     * Creates a new {@link ShareAsyncClient} linked to the {@code snapshot} of this share resource.
+     *
+     * @param snapshot the identifier for a specific snapshot of this share
+     * @return a {@link ShareAsyncClient} used to interact with the specific snapshot.
+     */
+    public ShareAsyncClient getSnapshotClient(String snapshot) {
+        return new ShareAsyncClient(azureFileStorageClient, getShareName(), snapshot, getAccountName(), getServiceVersion());
     }
 
     /**
@@ -400,8 +409,8 @@ public class ShareAsyncClient {
         options = options == null ? new ShareDeleteOptions() : options;
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.shares()
-            .deleteWithRestResponseAsync(shareName, snapshot, null, null, options.getLeaseId(),
-                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            .deleteWithRestResponseAsync(shareName, snapshot, null, options.getDeleteSnapshotsOptions(),
+                options.getLeaseId(), context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
 

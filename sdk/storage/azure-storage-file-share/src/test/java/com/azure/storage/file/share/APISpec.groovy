@@ -19,10 +19,12 @@ import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RetryPolicyType
+import com.azure.storage.file.share.models.DeleteSnapshotsOptionType
 import com.azure.storage.file.share.models.LeaseStateType
 import com.azure.storage.file.share.models.ListSharesOptions
 import com.azure.storage.file.share.options.ShareAcquireLeaseOptions
 import com.azure.storage.file.share.options.ShareBreakLeaseOptions
+import com.azure.storage.file.share.options.ShareDeleteOptions
 import com.azure.storage.file.share.specialized.ShareLeaseAsyncClient
 import com.azure.storage.file.share.specialized.ShareLeaseClient
 import com.azure.storage.file.share.specialized.ShareLeaseClientBuilder
@@ -127,7 +129,7 @@ class APISpec extends Specification {
                     createLeaseClient(shareClient).breakLeaseWithResponse(new ShareBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(0)), null, null)
                 }
 
-                shareClient.delete()
+                shareClient.deleteWithResponse(new ShareDeleteOptions().setDeleteSnapshotsOptions(DeleteSnapshotsOptionType.INCLUDE), null, null)
             }
         }
     }
@@ -284,6 +286,10 @@ class APISpec extends Specification {
     }
 
     def shareBuilderHelper(final InterceptorManager interceptorManager, final String shareName) {
+        return shareBuilderHelper(interceptorManager, shareName, null)
+    }
+
+    def shareBuilderHelper(final InterceptorManager interceptorManager, final String shareName, final String snapshot) {
         ShareClientBuilder builder = new ShareClientBuilder()
         if (testMode != TestMode.PLAYBACK) {
             if (testMode == TestMode.RECORD) {
@@ -291,11 +297,13 @@ class APISpec extends Specification {
             }
             return builder.connectionString(connectionString)
                 .shareName(shareName)
+                .snapshot(snapshot)
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .httpClient(getHttpClient())
         } else {
             return builder
                 .connectionString(connectionString)
+                .snapshot(snapshot)
                 .shareName(shareName)
                 .httpClient(interceptorManager.getPlaybackClient())
         }
