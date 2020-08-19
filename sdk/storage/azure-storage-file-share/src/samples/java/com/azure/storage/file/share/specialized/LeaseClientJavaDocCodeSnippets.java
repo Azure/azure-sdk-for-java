@@ -5,6 +5,8 @@ package com.azure.storage.file.share.specialized;
 
 import com.azure.core.util.Context;
 import com.azure.storage.file.share.ShareFileClientBuilder;
+import com.azure.storage.file.share.options.ShareAcquireLeaseOptions;
+import com.azure.storage.file.share.options.ShareBreakLeaseOptions;
 
 import java.time.Duration;
 
@@ -66,6 +68,17 @@ public class LeaseClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippets for {@link ShareLeaseClient#acquireLeaseWithResponse(ShareAcquireLeaseOptions, Duration, Context)}
+     */
+    public void acquireLeaseWithResponseCodeSnippets2() {
+        // BEGIN: com.azure.storage.file.share.specialized.ShareLeaseClient.acquireLeaseWithResponse#ShareAcquireLeaseOptions-Duration-Context
+        System.out.printf("Lease ID is %s%n", client
+            .acquireLeaseWithResponse(new ShareAcquireLeaseOptions().setDuration(10), timeout, new Context(key, value))
+            .getValue());
+        // END: com.azure.storage.file.share.specialized.ShareLeaseClient.acquireLeaseWithResponse#ShareAcquireLeaseOptions-Duration-Context
+    }
+
+    /**
      * Code snippets for {@link ShareLeaseClient#releaseLeaseWithResponse(Duration, Context)}
      */
     public void releaseLeaseWithResponseCodeSnippets() {
@@ -84,6 +97,17 @@ public class LeaseClientJavaDocCodeSnippets {
         client.breakLeaseWithResponse(timeout, new Context(key, value));
         System.out.println("The lease has been successfully broken");
         // END: com.azure.storage.file.share.specialized.ShareLeaseClient.breakLeaseWithResponse#Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link ShareLeaseClient#breakLeaseWithResponse(ShareBreakLeaseOptions, Duration, Context)}
+     */
+    public void breakLeaseWithResponseCodeSnippets2() {
+        // BEGIN: com.azure.storage.file.share.specialized.ShareLeaseClient.breakLeaseWithResponse#ShareBreakLeaseOptions-Duration-Context
+        client.breakLeaseWithResponse(new ShareBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(25)),
+            timeout, new Context(key, value));
+        System.out.println("The lease has been successfully broken");
+        // END: com.azure.storage.file.share.specialized.ShareLeaseClient.breakLeaseWithResponse#ShareBreakLeaseOptions-Duration-Context
     }
 
     /**

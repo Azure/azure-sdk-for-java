@@ -176,7 +176,7 @@ public final class ShareLeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseClient.breakLeaseWithResponse#Duration-Context}
+     * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseClient.breakLeaseWithResponse#ShareBreakLeaseOptions-Duration-Context}
      *
      * @param options {@link ShareBreakLeaseOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.

@@ -4,6 +4,10 @@
 package com.azure.storage.file.share.specialized;
 
 import com.azure.storage.file.share.ShareFileClientBuilder;
+import com.azure.storage.file.share.options.ShareAcquireLeaseOptions;
+import com.azure.storage.file.share.options.ShareBreakLeaseOptions;
+
+import java.time.Duration;
 
 
 public class LeaseAsyncClientJavaDocCodeSnippets {
@@ -59,6 +63,16 @@ public class LeaseAsyncClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippets for {@link ShareLeaseAsyncClient#acquireLeaseWithResponse()}
+     */
+    public void acquireLeaseWithResponseCodeSnippets2() {
+        // BEGIN: com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.acquireLeaseWithResponse#ShareAcquireLeaseOptions
+        client.acquireLeaseWithResponse(new ShareAcquireLeaseOptions().setDuration(10)).subscribe(response ->
+            System.out.printf("Lease ID is %s%n", response.getValue()));
+        // END: com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.acquireLeaseWithResponse#ShareAcquireLeaseOptions
+    }
+
+    /**
      * Code snippets for {@link ShareLeaseAsyncClient#releaseLeaseWithResponse()}
      */
     public void releaseLeaseWithResponseCodeSnippets() {
@@ -76,6 +90,16 @@ public class LeaseAsyncClientJavaDocCodeSnippets {
         client.breakLeaseWithResponse().subscribe(response ->
             System.out.println("The lease has been successfully broken"));
         // END: com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.breakLeaseWithResponse
+    }
+
+    /**
+     * Code snippets for {@link ShareLeaseAsyncClient#breakLeaseWithResponse(ShareBreakLeaseOptions)}
+     */
+    public void breakLeaseWithResponseCodeSnippets2() {
+        // BEGIN: com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.breakLeaseWithResponse#ShareBreakLeaseOptions
+        client.breakLeaseWithResponse(new ShareBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(25)))
+            .subscribe(response -> System.out.println("The lease has been successfully broken"));
+        // END: com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.breakLeaseWithResponse#ShareBreakLeaseOptions
     }
 
     /**
