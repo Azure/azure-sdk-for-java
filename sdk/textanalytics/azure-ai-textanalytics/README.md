@@ -274,8 +274,8 @@ API versions v3.1-preview.1 and above.
 ```java
 String document = "My SSN is 859-98-0987";
 textAnalyticsClient.recognizePiiEntities(document).forEach(entity -> System.out.printf(
-    "Recognized Personally Identifiable Information entity: %s, entity category: %s, entity subcategory: %s, offset: %s, length: %s, confidence score: %f.%n",
-    entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getOffset(), entity.getLength(), entity.getConfidenceScore()));
+    "Recognized Personally Identifiable Information entity: %s, entity category: %s, entity subcategory: %s,"
+        + " confidence score: %f.%n",
 ```
 
 Please refer to the service documentation for [supported PII entity types][pii_entity_recognition].
