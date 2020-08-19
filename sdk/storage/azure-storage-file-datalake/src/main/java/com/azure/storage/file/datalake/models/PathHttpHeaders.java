@@ -9,8 +9,7 @@ import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for a set of operations, such as: Paths_create,
- * Paths_update, Paths_flushData, Paths_appendData.
+ * Additional parameters for a set of operations.
  */
 @Fluent
 public final class PathHttpHeaders {

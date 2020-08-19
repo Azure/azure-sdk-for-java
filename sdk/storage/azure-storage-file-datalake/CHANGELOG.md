@@ -1,7 +1,8 @@
 # Release History
 
 ## 12.3.0-beta.1 (Unreleased)
-
+- Added support for 2020-02-10 service version.
+- Added support for setting, modifying, and removing ACLs recursively.
 
 ## 12.2.0 (2020-08-13)
 - Fixed bug where Query Input Stream would throw when a ByteBuffer of length 0 was encountered.
