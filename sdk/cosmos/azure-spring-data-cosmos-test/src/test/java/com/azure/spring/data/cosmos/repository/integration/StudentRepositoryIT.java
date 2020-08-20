@@ -55,7 +55,8 @@ public class StudentRepositoryIT {
     private static final Student STUDENT_3 = new Student(ID_3, FIRST_NAME_3, LAST_NAME_3);
     private static final Student STUDENT_4 = new Student(ID_4, FIRST_NAME_4, LAST_NAME_4);
     private static final Student STUDENT_5 = new Student(ID_5, FIRST_NAME_4, FIRST_NAME_4);
-	private static final List<Student> PEOPLE = Arrays.asList(STUDENT_0, STUDENT_1, STUDENT_2, STUDENT_3, STUDENT_4, STUDENT_5);
+    private static final List<Student> PEOPLE =
+        Arrays.asList(STUDENT_0, STUDENT_1, STUDENT_2, STUDENT_3, STUDENT_4, STUDENT_5);
 
     private static final CosmosEntityInformation<Student, String> entityInformation =
         new CosmosEntityInformation<>(Student.class);
@@ -226,21 +227,21 @@ public class StudentRepositoryIT {
                 LAST_NAME_0.toLowerCase().substring(0, 2), FIRST_NAME_1.toLowerCase().substring(0, 3)));
         assertPeopleEquals(people, Arrays.asList(STUDENT_0, STUDENT_1));
     }
-    
+
     @Test
     public void testLimitingQuery() {
-    	List<Student> people = TestUtils.toList(repository.findFirstByFirstName(FIRST_NAME_4));
-    	assertPeopleEquals(people, Arrays.asList(STUDENT_4));
-    	people = TestUtils.toList(repository.findFirst1ByFirstName(FIRST_NAME_4));
-    	assertPeopleEquals(people, Arrays.asList(STUDENT_4));
-    	people = TestUtils.toList(repository.findFirst2ByFirstName(FIRST_NAME_4));
-		assertPeopleEquals(people, Arrays.asList(STUDENT_4, STUDENT_5));
-		
-		people = TestUtils.toList(repository.findTopByFirstName(FIRST_NAME_4));
-    	assertPeopleEquals(people, Arrays.asList(STUDENT_4));
-    	people = TestUtils.toList(repository.findTop1ByFirstName(FIRST_NAME_4));
-    	assertPeopleEquals(people, Arrays.asList(STUDENT_4));
-    	people = TestUtils.toList(repository.findTop2ByFirstName(FIRST_NAME_4));
-		assertPeopleEquals(people, Arrays.asList(STUDENT_4, STUDENT_5));
+        List<Student> people = TestUtils.toList(repository.findFirstByFirstName(FIRST_NAME_4));
+        assertPeopleEquals(people, Arrays.asList(STUDENT_4));
+        people = TestUtils.toList(repository.findFirst1ByFirstName(FIRST_NAME_4));
+        assertPeopleEquals(people, Arrays.asList(STUDENT_4));
+        people = TestUtils.toList(repository.findFirst2ByFirstName(FIRST_NAME_4));
+        assertPeopleEquals(people, Arrays.asList(STUDENT_4, STUDENT_5));
+
+        people = TestUtils.toList(repository.findTopByFirstName(FIRST_NAME_4));
+        assertPeopleEquals(people, Arrays.asList(STUDENT_4));
+        people = TestUtils.toList(repository.findTop1ByFirstName(FIRST_NAME_4));
+        assertPeopleEquals(people, Arrays.asList(STUDENT_4));
+        people = TestUtils.toList(repository.findTop2ByFirstName(FIRST_NAME_4));
+        assertPeopleEquals(people, Arrays.asList(STUDENT_4, STUDENT_5));
     }
 }
