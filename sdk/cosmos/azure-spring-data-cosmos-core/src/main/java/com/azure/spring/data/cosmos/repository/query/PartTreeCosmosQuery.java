@@ -41,11 +41,10 @@ public class PartTreeCosmosQuery extends AbstractCosmosQuery {
         final CosmosQuery query = creator.createQuery();
 
         if (tree.isLimiting()) {
-            int limit = 0;
-            if (tree.getMaxResults() != null) {
-                limit = tree.getMaxResults();
+            Integer limit = tree.getMaxResults();
+            if (limit != null) {
+                query.setLimit(limit);
             }
-            query.setLimit(limit);
         }
 
         return query;
