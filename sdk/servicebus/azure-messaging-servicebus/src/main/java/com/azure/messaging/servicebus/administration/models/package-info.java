@@ -4,8 +4,8 @@
 
 /**
  * Package containing classes models for
- * {@link com.azure.messaging.servicebus.administration.ServiceBusManagementClient}
- * and {@link com.azure.messaging.servicebus.administration.ServiceBusManagementAsyncClient} used for managing Queues,
+ * {@link com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient}
+ * and {@link com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient} used for managing Queues,
  * Topics, and Subscriptions.
  */
 package com.azure.messaging.servicebus.administration.models;

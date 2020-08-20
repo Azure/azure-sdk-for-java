@@ -62,9 +62,9 @@ import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.when;
 
 /**
- * Unit tests for {@link ServiceBusManagementAsyncClient}.
+ * Unit tests for {@link ServiceBusAdministrationAsyncClient}.
  */
-class ServiceBusManagementAsyncClientTest {
+class ServiceBusAdministrationAsyncClientTest {
     @Mock
     private ServiceBusManagementClientImpl serviceClient;
     @Mock
@@ -82,9 +82,9 @@ class ServiceBusManagementAsyncClientTest {
     private final HttpHeaders httpHeaders = new HttpHeaders().put("foo", "baz");
     private final HttpRequest httpRequest;
 
-    private ServiceBusManagementAsyncClient client;
+    private ServiceBusAdministrationAsyncClient client;
 
-    ServiceBusManagementAsyncClientTest() {
+    ServiceBusAdministrationAsyncClientTest() {
         try {
             httpRequest = new HttpRequest(HttpMethod.TRACE, new URL("https://something.com"));
         } catch (MalformedURLException e) {
@@ -119,7 +119,7 @@ class ServiceBusManagementAsyncClientTest {
 
         when(serviceClient.getEntities()).thenReturn(entitys);
 
-        client = new ServiceBusManagementAsyncClient(serviceClient, serializer);
+        client = new ServiceBusAdministrationAsyncClient(serviceClient, serializer);
     }
 
     @AfterEach

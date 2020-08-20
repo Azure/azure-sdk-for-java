@@ -35,11 +35,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * Unit tests for {@link ServiceBusManagementClient}.
+ * Unit tests for {@link ServiceBusAdministrationClient}.
  */
-class ServiceBusManagementClientTest {
+class ServiceBusAdministrationClientTest {
     @Mock
-    private ServiceBusManagementAsyncClient asyncClient;
+    private ServiceBusAdministrationAsyncClient asyncClient;
     @Mock
     private Response<QueueProperties> queueDescriptionResponse;
     @Mock
@@ -53,12 +53,12 @@ class ServiceBusManagementClientTest {
 
     private final Context context = new Context("foo", "bar").addData("baz", "boo");
     private final String queueName = "some-queue";
-    private ServiceBusManagementClient client;
+    private ServiceBusAdministrationClient client;
 
     @BeforeEach
     void beforeEach() {
         MockitoAnnotations.initMocks(this);
-        client = new ServiceBusManagementClient(asyncClient);
+        client = new ServiceBusAdministrationClient(asyncClient);
     }
 
     @AfterEach

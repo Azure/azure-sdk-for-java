@@ -4,8 +4,8 @@
 package com.azure.messaging.servicebus.administration.models;
 
 
-import com.azure.messaging.servicebus.administration.ServiceBusManagementAsyncClient;
-import com.azure.messaging.servicebus.administration.ServiceBusManagementClient;
+import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient;
+import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
 
 import java.time.Duration;
 import java.util.Objects;
@@ -19,8 +19,8 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 /**
  * Represents the set of options that can be specified for the creation of a queue.
  *
- * @see ServiceBusManagementAsyncClient#createTopic(String, CreateTopicOptions)
- * @see ServiceBusManagementClient#createTopic(String, CreateTopicOptions)
+ * @see ServiceBusAdministrationAsyncClient#createTopic(String, CreateTopicOptions)
+ * @see ServiceBusAdministrationClient#createTopic(String, CreateTopicOptions)
  */
 public class CreateTopicOptions {
     private Duration autoDeleteOnIdle;

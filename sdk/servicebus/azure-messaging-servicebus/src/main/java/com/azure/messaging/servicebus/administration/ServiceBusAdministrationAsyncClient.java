@@ -83,10 +83,10 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 /**
  * An <b>asynchronous</b> client for managing a Service Bus namespace.
  *
- * @see ServiceBusManagementClient ServiceBusManagementClient for a synchronous client.
+ * @see ServiceBusAdministrationClient ServiceBusManagementClient for a synchronous client.
  */
-@ServiceClient(builder = ServiceBusManagementClientBuilder.class, isAsync = true)
-public final class ServiceBusManagementAsyncClient {
+@ServiceClient(builder = ServiceBusAdministrationClientBuilder.class, isAsync = true)
+public final class ServiceBusAdministrationAsyncClient {
     // See https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers
     // for more information on Azure resource provider namespaces.
     private static final String SERVICE_BUS_TRACING_NAMESPACE_VALUE = "Microsoft.ServiceBus";
@@ -100,7 +100,7 @@ public final class ServiceBusManagementAsyncClient {
 
     private final ServiceBusManagementClientImpl managementClient;
     private final EntitiesImpl entityClient;
-    private final ClientLogger logger = new ClientLogger(ServiceBusManagementAsyncClient.class);
+    private final ClientLogger logger = new ClientLogger(ServiceBusAdministrationAsyncClient.class);
     private final ServiceBusManagementSerializer serializer;
 
     /**
@@ -109,7 +109,7 @@ public final class ServiceBusManagementAsyncClient {
      * @param managementClient Client to make management calls.
      * @param serializer Serializer to deserialize ATOM XML responses.
      */
-    ServiceBusManagementAsyncClient(ServiceBusManagementClientImpl managementClient,
+    ServiceBusAdministrationAsyncClient(ServiceBusManagementClientImpl managementClient,
         ServiceBusManagementSerializer serializer) {
         this.managementClient = Objects.requireNonNull(managementClient, "'managementClient' cannot be null.");
         this.entityClient = managementClient.getEntities();
@@ -1127,7 +1127,7 @@ public final class ServiceBusManagementAsyncClient {
 
         try {
             return entityClient.putWithResponseAsync(queueName, createEntity, null, withTracing)
-                .onErrorMap(ServiceBusManagementAsyncClient::mapException)
+                .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .map(this::deserializeQueue);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -1172,7 +1172,7 @@ public final class ServiceBusManagementAsyncClient {
         try {
             return managementClient.getSubscriptions().putWithResponseAsync(topicName, subscriptionName, createEntity,
                 null, withTracing)
-                .onErrorMap(ServiceBusManagementAsyncClient::mapException)
+                .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .map(response -> deserializeSubscription(topicName, response));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -1212,7 +1212,7 @@ public final class ServiceBusManagementAsyncClient {
 
         try {
             return entityClient.putWithResponseAsync(topicName, createEntity, null, withTracing)
-                .onErrorMap(ServiceBusManagementAsyncClient::mapException)
+                .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .map(this::deserializeTopic);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -1240,7 +1240,7 @@ public final class ServiceBusManagementAsyncClient {
 
         try {
             return entityClient.deleteWithResponseAsync(queueName, withTracing)
-                .onErrorMap(ServiceBusManagementAsyncClient::mapException)
+                .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .map(response -> {
                     return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                         response.getHeaders(), null);
@@ -1277,7 +1277,7 @@ public final class ServiceBusManagementAsyncClient {
         try {
             return managementClient.getSubscriptions().deleteWithResponseAsync(topicName, subscriptionName,
                 withTracing)
-                .onErrorMap(ServiceBusManagementAsyncClient::mapException)
+                .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), null));
         } catch (RuntimeException ex) {
@@ -1306,7 +1306,7 @@ public final class ServiceBusManagementAsyncClient {
 
         try {
             return entityClient.deleteWithResponseAsync(topicName, withTracing)
-                .onErrorMap(ServiceBusManagementAsyncClient::mapException)
+                .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), null));
         } catch (RuntimeException ex) {
@@ -1361,7 +1361,7 @@ public final class ServiceBusManagementAsyncClient {
 
         try {
             return entityClient.getWithResponseAsync(queueName, true, withTracing)
-                .onErrorMap(ServiceBusManagementAsyncClient::mapException)
+                .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .handle((response, sink) -> {
                     final Response<QueueProperties> deserialize = deserializeQueue(response);
 
@@ -1409,7 +1409,7 @@ public final class ServiceBusManagementAsyncClient {
         try {
             return managementClient.getSubscriptions().getWithResponseAsync(topicName, subscriptionName, true,
                 withTracing)
-                .onErrorMap(ServiceBusManagementAsyncClient::mapException)
+                .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .handle((response, sink) -> {
                     final Response<SubscriptionProperties> deserialize = deserializeSubscription(topicName, response);
 
@@ -1476,7 +1476,7 @@ public final class ServiceBusManagementAsyncClient {
 
         try {
             return entityClient.getWithResponseAsync(topicName, true, withTracing)
-                .onErrorMap(ServiceBusManagementAsyncClient::mapException)
+                .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .handle((response, sink) -> {
                     final Response<TopicProperties> deserialize = deserializeTopic(response);
 
@@ -1644,7 +1644,7 @@ public final class ServiceBusManagementAsyncClient {
         try {
             // If-Match == "*" to unconditionally update. This is in line with the existing client library behaviour.
             return entityClient.putWithResponseAsync(queue.getName(), createEntity, "*", withTracing)
-                .onErrorMap(ServiceBusManagementAsyncClient::mapException)
+                .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .map(response -> deserializeQueue(response));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -1682,7 +1682,7 @@ public final class ServiceBusManagementAsyncClient {
             // If-Match == "*" to unconditionally update. This is in line with the existing client library behaviour.
             return managementClient.getSubscriptions().putWithResponseAsync(topicName, subscriptionName, createEntity,
                 "*", withTracing)
-                .onErrorMap(ServiceBusManagementAsyncClient::mapException)
+                .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .map(response -> deserializeSubscription(topicName, response));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -1716,7 +1716,7 @@ public final class ServiceBusManagementAsyncClient {
         try {
             // If-Match == "*" to unconditionally update. This is in line with the existing client library behaviour.
             return entityClient.putWithResponseAsync(topic.getName(), createEntity, "*", withTracing)
-                .onErrorMap(ServiceBusManagementAsyncClient::mapException)
+                .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .map(response -> deserializeTopic(response));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -1886,7 +1886,7 @@ public final class ServiceBusManagementAsyncClient {
      */
     private Mono<PagedResponse<QueueProperties>> listQueues(int skip, Context context) {
         return managementClient.listEntitiesWithResponseAsync(QUEUES_ENTITY_TYPE, skip, NUMBER_OF_ELEMENTS, context)
-            .onErrorMap(ServiceBusManagementAsyncClient::mapException)
+            .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
             .flatMap(response -> {
                 final Response<QueueDescriptionFeed> feedResponse = deserialize(response, QueueDescriptionFeed.class);
                 final QueueDescriptionFeed feed = feedResponse.getValue();
@@ -1928,7 +1928,7 @@ public final class ServiceBusManagementAsyncClient {
     private Mono<PagedResponse<SubscriptionProperties>> listSubscriptions(String topicName, int skip,
         Context context) {
         return managementClient.listSubscriptionsWithResponseAsync(topicName, skip, NUMBER_OF_ELEMENTS, context)
-            .onErrorMap(ServiceBusManagementAsyncClient::mapException)
+            .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
             .flatMap(response -> {
                 final Response<SubscriptionDescriptionFeed> feedResponse = deserialize(response,
                     SubscriptionDescriptionFeed.class);
@@ -1972,7 +1972,7 @@ public final class ServiceBusManagementAsyncClient {
      */
     private Mono<PagedResponse<TopicProperties>> listTopics(int skip, Context context) {
         return managementClient.listEntitiesWithResponseAsync(TOPICS_ENTITY_TYPE, skip, NUMBER_OF_ELEMENTS, context)
-            .onErrorMap(ServiceBusManagementAsyncClient::mapException)
+            .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
             .flatMap(response -> {
                 final Response<TopicDescriptionFeed> feedResponse = deserialize(response, TopicDescriptionFeed.class);
                 final TopicDescriptionFeed feed = feedResponse.getValue();

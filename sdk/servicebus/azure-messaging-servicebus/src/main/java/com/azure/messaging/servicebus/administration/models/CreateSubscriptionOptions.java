@@ -4,8 +4,8 @@
 package com.azure.messaging.servicebus.administration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.messaging.servicebus.administration.ServiceBusManagementAsyncClient;
-import com.azure.messaging.servicebus.administration.ServiceBusManagementClient;
+import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient;
+import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
 
 import java.time.Duration;
 import java.util.Objects;
@@ -16,8 +16,8 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 /**
  * Options to set when creating a subscription.
  *
- * @see ServiceBusManagementAsyncClient#createTopic(String, CreateTopicOptions)
- * @see ServiceBusManagementClient#createTopic(String, CreateTopicOptions)
+ * @see ServiceBusAdministrationAsyncClient#createTopic(String, CreateTopicOptions)
+ * @see ServiceBusAdministrationClient#createTopic(String, CreateTopicOptions)
  */
 @Fluent
 public class CreateSubscriptionOptions {

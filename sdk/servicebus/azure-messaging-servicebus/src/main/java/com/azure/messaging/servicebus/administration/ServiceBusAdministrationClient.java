@@ -33,18 +33,18 @@ import java.util.function.Function;
 /**
  * A <b>synchronous</b> client for managing a Service Bus namespace.
  *
- * @see ServiceBusManagementAsyncClient ServiceBusManagementAsyncClient for an asynchronous client.
+ * @see ServiceBusAdministrationAsyncClient ServiceBusManagementAsyncClient for an asynchronous client.
  */
-@ServiceClient(builder = ServiceBusManagementClientBuilder.class)
-public final class ServiceBusManagementClient {
-    private final ServiceBusManagementAsyncClient asyncClient;
+@ServiceClient(builder = ServiceBusAdministrationClientBuilder.class)
+public final class ServiceBusAdministrationClient {
+    private final ServiceBusAdministrationAsyncClient asyncClient;
 
     /**
      * Creates a new instance with the given client.
      *
      * @param asyncClient Asynchronous client to perform management calls through.
      */
-    ServiceBusManagementClient(ServiceBusManagementAsyncClient asyncClient) {
+    ServiceBusAdministrationClient(ServiceBusAdministrationAsyncClient asyncClient) {
         this.asyncClient = Objects.requireNonNull(asyncClient, "'asyncClient' cannot be null.");
     }
 

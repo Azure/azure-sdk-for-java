@@ -45,8 +45,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * Integration tests for {@link ServiceBusManagementClientImpl}.
  */
-class ServiceBusManagementClientImplIntegrationTests extends TestBase {
-    private final ClientLogger logger = new ClientLogger(ServiceBusManagementClientImplIntegrationTests.class);
+class ServiceBusAdministrationClientImplIntegrationTests extends TestBase {
+    private final ClientLogger logger = new ClientLogger(ServiceBusAdministrationClientImplIntegrationTests.class);
     private final ServiceBusManagementSerializer serializer = new ServiceBusManagementSerializer();
     private final Duration timeout = Duration.ofSeconds(30);
 
