@@ -22,8 +22,8 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.EntitiesImpl;
 import com.azure.messaging.servicebus.implementation.EntityHelper;
-import com.azure.messaging.servicebus.implementation.EntitysImpl;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementClientImpl;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementSerializer;
 import com.azure.messaging.servicebus.implementation.models.CreateQueueBody;
@@ -99,7 +99,7 @@ public final class ServiceBusManagementAsyncClient {
     private static final int NUMBER_OF_ELEMENTS = 100;
 
     private final ServiceBusManagementClientImpl managementClient;
-    private final EntitysImpl entityClient;
+    private final EntitiesImpl entityClient;
     private final ClientLogger logger = new ClientLogger(ServiceBusManagementAsyncClient.class);
     private final ServiceBusManagementSerializer serializer;
 
@@ -112,7 +112,7 @@ public final class ServiceBusManagementAsyncClient {
     ServiceBusManagementAsyncClient(ServiceBusManagementClientImpl managementClient,
         ServiceBusManagementSerializer serializer) {
         this.managementClient = Objects.requireNonNull(managementClient, "'managementClient' cannot be null.");
-        this.entityClient = managementClient.getEntitys();
+        this.entityClient = managementClient.getEntities();
         this.serializer = serializer;
     }
 
@@ -134,48 +134,52 @@ public final class ServiceBusManagementAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueueProperties> createQueue(String queueName) {
         try {
-            return createQueue(new CreateQueueOptions(queueName));
+            return createQueue(queueName, new CreateQueueOptions());
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
     }
 
     /**
-     * Creates a queue with the {@link CreateQueueOptions}.
+     * Creates a queue with the {@link CreateQueueOptions} and given queue name.
      *
-     * @param queueOptions Information about the queue to create.
+     * @param queueName Name of the queue to create.
+     * @param queueOptions Options about the queue to create.
      *
      * @return A Mono that completes with information about the created queue.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
      *     occurred processing the request.
-     * @throws NullPointerException if {@code queue} is null.
+     * @throws IllegalArgumentException if {@code queueName} is an empty string.
+     * @throws NullPointerException if {@code queueName} or {@code queueOptions} is null.
      * @throws ResourceExistsException if a queue exists with the same {@link QueueProperties#getName() queueName}.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<QueueProperties> createQueue(CreateQueueOptions queueOptions) {
-        return createQueueWithResponse(queueOptions).map(Response::getValue);
+    public Mono<QueueProperties> createQueue(String queueName, CreateQueueOptions queueOptions) {
+        return createQueueWithResponse(queueName, queueOptions).map(Response::getValue);
     }
 
     /**
      * Creates a queue and returns the created queue in addition to the HTTP response.
      *
-     * @param queue The queue to create.
+     * @param queueName Name of the queue to create.
+     * @param queueOptions Options about the queue to create.
      *
      * @return A Mono that returns the created queue in addition to the HTTP response.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
      *     occurred processing the request.
-     * @throws NullPointerException if {@code queue} is null.
+     * @throws IllegalArgumentException if {@code queueName} is an empty string.
+     * @throws NullPointerException if {@code queueName} or {@code queueOptions} is null.
      * @throws ResourceExistsException if a queue exists with the same {@link QueueProperties#getName() queueName}.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<QueueProperties>> createQueueWithResponse(CreateQueueOptions queue) {
-        return withContext(context -> createQueueWithResponse(queue, context));
+    public Mono<Response<QueueProperties>> createQueueWithResponse(String queueName, CreateQueueOptions queueOptions) {
+        return withContext(context -> createQueueWithResponse(queueName, queueOptions, context));
     }
 
     /**
@@ -189,15 +193,15 @@ public final class ServiceBusManagementAsyncClient {
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
      *     processing the request.
-     * @throws NullPointerException if {@code topicName} or {@code subscriptionName} are are empty strings.
-     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are are null.
+     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are are empty strings.
+     * @throws NullPointerException if {@code topicName} or {@code subscriptionName} are are null.
      * @throws ResourceExistsException if a subscription exists with the same topic and subscription name.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SubscriptionProperties> createSubscription(String topicName, String subscriptionName) {
         try {
-            return createSubscription(new CreateSubscriptionOptions(topicName, subscriptionName));
+            return createSubscription(topicName, subscriptionName, new CreateSubscriptionOptions());
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
@@ -206,40 +210,50 @@ public final class ServiceBusManagementAsyncClient {
     /**
      * Creates a subscription with the {@link SubscriptionProperties}.
      *
-     * @param subscription Information about the subscription to create.
+     * @param topicName Name of the topic associated with subscription.
+     * @param subscriptionName Name of the subscription.
+     * @param subscriptionOptions Information about the subscription to create.
      *
      * @return A Mono that completes with information about the created subscription.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
      *     processing the request.
-     * @throws NullPointerException if {@code subscription} is null.
+     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are are empty strings.
+     * @throws NullPointerException if {@code topicName}, {@code subscriptionName}, or {@code subscriptionOptions}
+     *     are are null.
      * @throws ResourceExistsException if a subscription exists with the same topic and subscription name.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SubscriptionProperties> createSubscription(CreateSubscriptionOptions subscription) {
-        return createSubscriptionWithResponse(subscription).map(Response::getValue);
+    public Mono<SubscriptionProperties> createSubscription(String topicName, String subscriptionName,
+        CreateSubscriptionOptions subscriptionOptions) {
+        return createSubscriptionWithResponse(topicName, subscriptionName, subscriptionOptions).map(Response::getValue);
     }
 
     /**
      * Creates a queue and returns the created queue in addition to the HTTP response.
      *
-     * @param subscription Information about the subscription to create.
+     * @param topicName Name of the topic associated with subscription.
+     * @param subscriptionName Name of the subscription.
+     * @param subscriptionOptions Information about the subscription to create.
      *
      * @return A Mono that returns the created queue in addition to the HTTP response.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
      *     processing the request.
-     * @throws NullPointerException if {@code subscription} is null.
+     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are are empty strings.
+     * @throws NullPointerException if {@code topicName}, {@code subscriptionName}, or {@code subscriptionOptions}
+     *     are are null.
      * @throws ResourceExistsException if a subscription exists with the same topic and subscription name.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SubscriptionProperties>> createSubscriptionWithResponse(
-        CreateSubscriptionOptions subscription) {
-        return withContext(context -> createSubscriptionWithResponse(subscription, context));
+    public Mono<Response<SubscriptionProperties>> createSubscriptionWithResponse(String topicName,
+        String subscriptionName, CreateSubscriptionOptions subscriptionOptions) {
+        return withContext(context -> createSubscriptionWithResponse(topicName, subscriptionName, subscriptionOptions,
+            context));
     }
 
     /**
@@ -260,7 +274,7 @@ public final class ServiceBusManagementAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TopicProperties> createTopic(String topicName) {
         try {
-            return createTopic(new CreateTopicOptions(topicName));
+            return createTopic(topicName, new CreateTopicOptions());
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
@@ -269,29 +283,29 @@ public final class ServiceBusManagementAsyncClient {
     /**
      * Creates a topic with the {@link CreateTopicOptions}.
      *
-     * @param topicOptions Information about the topic to create.
+     * @param topicName Name of the topic to create.
+     * @param topicOptions The options used to create the topic.
      *
      * @return A Mono that completes with information about the created topic.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the topic quota is exceeded, or an error
      *     occurred processing the request.
-     * @throws IllegalArgumentException if {@link CreateTopicOptions#getName() topic.getName()} is null or an empty
-     *     string.
-     * @throws NullPointerException if {@code topicOptions} is null.
-     * @throws ResourceExistsException if a topic exists with the same {@link CreateTopicOptions#getName()
-     *     topicName}.
+     * @throws IllegalArgumentException if {@code topicName} is an empty string.
+     * @throws NullPointerException if {@code topicName} or {@code topicOptions} is null.
+     * @throws ResourceExistsException if a topic exists with the same {@code topicName}.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TopicProperties> createTopic(CreateTopicOptions topicOptions) {
-        return createTopicWithResponse(topicOptions).map(Response::getValue);
+    public Mono<TopicProperties> createTopic(String topicName, CreateTopicOptions topicOptions) {
+        return createTopicWithResponse(topicName, topicOptions).map(Response::getValue);
     }
 
     /**
      * Creates a topic and returns the created topic in addition to the HTTP response.
      *
-     * @param topic The topic to create.
+     * @param topicName Name of the topic to create.
+     * @param topicOptions The options used to create the topic.
      *
      * @return A Mono that returns the created topic in addition to the HTTP response.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
@@ -300,14 +314,13 @@ public final class ServiceBusManagementAsyncClient {
      *     occurred processing the request.
      * @throws IllegalArgumentException if {@link TopicProperties#getName() topic.getName()} is null or an empty
      *     string.
-     * @throws NullPointerException if {@code topic} is null.
-     * @throws ResourceExistsException if a topic exists with the same {@link TopicProperties#getName()
-     *     topicName}.
+     * @throws NullPointerException if {@code topicName} or {@code topicOptions} is null.
+     * @throws ResourceExistsException if a topic exists with the same {@code topicName}.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TopicProperties>> createTopicWithResponse(CreateTopicOptions topic) {
-        return withContext(context -> createTopicWithResponse(topic, context));
+    public Mono<Response<TopicProperties>> createTopicWithResponse(String topicName, CreateTopicOptions topicOptions) {
+        return withContext(context -> createTopicWithResponse(topicName, topicOptions, context));
     }
 
     /**
@@ -928,8 +941,8 @@ public final class ServiceBusManagementAsyncClient {
     }
 
     /**
-     * Updates a subscription with the given {@link SubscriptionProperties}. The {@link SubscriptionProperties} must
-     * be fully populated as all of the properties are replaced. If a property is not set the service default value is
+     * Updates a subscription with the given {@link SubscriptionProperties}. The {@link SubscriptionProperties} must be
+     * fully populated as all of the properties are replaced. If a property is not set the service default value is
      * used.
      *
      * The suggested flow is:
@@ -966,8 +979,8 @@ public final class ServiceBusManagementAsyncClient {
     }
 
     /**
-     * Updates a subscription with the given {@link SubscriptionProperties}. The {@link SubscriptionProperties} must
-     * be fully populated as all of the properties are replaced. If a property is not set the service default value is
+     * Updates a subscription with the given {@link SubscriptionProperties}. The {@link SubscriptionProperties} must be
+     * fully populated as all of the properties are replaced. If a property is not set the service default value is
      * used.
      *
      * The suggested flow is:
@@ -1089,9 +1102,16 @@ public final class ServiceBusManagementAsyncClient {
      *
      * @return A Mono that completes with the created {@link QueueProperties}.
      */
-    Mono<Response<QueueProperties>> createQueueWithResponse(CreateQueueOptions createQueueOptions, Context context) {
+    Mono<Response<QueueProperties>> createQueueWithResponse(String queueName, CreateQueueOptions createQueueOptions,
+        Context context) {
+        if (queueName == null) {
+            return monoError(logger, new NullPointerException("'queueName' cannot be null."));
+        } else if (queueName.isEmpty()) {
+            return monoError(logger, new IllegalArgumentException("'queueName' cannot be empty."));
+        }
+
         if (createQueueOptions == null) {
-            return monoError(logger, new NullPointerException("'createQueueOptions' cannot be null"));
+            return monoError(logger, new NullPointerException("'createQueueOptions' cannot be null."));
         } else if (context == null) {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
         }
@@ -1106,7 +1126,7 @@ public final class ServiceBusManagementAsyncClient {
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
 
         try {
-            return entityClient.putWithResponseAsync(createQueueOptions.getName(), createEntity, null, withTracing)
+            return entityClient.putWithResponseAsync(queueName, createEntity, null, withTracing)
                 .onErrorMap(ServiceBusManagementAsyncClient::mapException)
                 .map(this::deserializeQueue);
         } catch (RuntimeException ex) {
@@ -1122,8 +1142,21 @@ public final class ServiceBusManagementAsyncClient {
      *
      * @return A Mono that completes with the created {@link SubscriptionProperties}.
      */
-    Mono<Response<SubscriptionProperties>> createSubscriptionWithResponse(CreateSubscriptionOptions options,
+    Mono<Response<SubscriptionProperties>> createSubscriptionWithResponse(String topicName, String subscriptionName,
+        CreateSubscriptionOptions options,
         Context context) {
+        if (topicName == null) {
+            return monoError(logger, new NullPointerException("'topicName' cannot be null."));
+        } else if (topicName.isEmpty()) {
+            return monoError(logger, new IllegalArgumentException("'topicName' cannot be empty."));
+        }
+
+        if (subscriptionName == null) {
+            return monoError(logger, new NullPointerException("'subscriptionName' cannot be null."));
+        } else if (subscriptionName.isEmpty()) {
+            return monoError(logger, new IllegalArgumentException("'subscriptionName' cannot be empty."));
+        }
+
         if (options == null) {
             return monoError(logger, new NullPointerException("'subscription' cannot be null."));
         }
@@ -1137,10 +1170,10 @@ public final class ServiceBusManagementAsyncClient {
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
 
         try {
-            return managementClient.getSubscriptions().putWithResponseAsync(options.getTopicName(),
-                options.getSubscriptionName(), createEntity, null, withTracing)
+            return managementClient.getSubscriptions().putWithResponseAsync(topicName, subscriptionName, createEntity,
+                null, withTracing)
                 .onErrorMap(ServiceBusManagementAsyncClient::mapException)
-                .map(response -> deserializeSubscription(options.getTopicName(), response));
+                .map(response -> deserializeSubscription(topicName, response));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1154,7 +1187,14 @@ public final class ServiceBusManagementAsyncClient {
      *
      * @return A Mono that completes with the created {@link TopicProperties}.
      */
-    Mono<Response<TopicProperties>> createTopicWithResponse(CreateTopicOptions topicOptions, Context context) {
+    Mono<Response<TopicProperties>> createTopicWithResponse(String topicName, CreateTopicOptions topicOptions,
+        Context context) {
+        if (topicName == null) {
+            return monoError(logger, new NullPointerException("'topicName' cannot be null."));
+        } else if (topicName.isEmpty()) {
+            return monoError(logger, new IllegalArgumentException("'topicName' cannot be empty."));
+        }
+
         if (topicOptions == null) {
             return monoError(logger, new NullPointerException("'topicOptions' cannot be null"));
         } else if (context == null) {
@@ -1171,7 +1211,7 @@ public final class ServiceBusManagementAsyncClient {
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
 
         try {
-            return entityClient.putWithResponseAsync(topicOptions.getName(), createEntity, null, withTracing)
+            return entityClient.putWithResponseAsync(topicName, createEntity, null, withTracing)
                 .onErrorMap(ServiceBusManagementAsyncClient::mapException)
                 .map(this::deserializeTopic);
         } catch (RuntimeException ex) {

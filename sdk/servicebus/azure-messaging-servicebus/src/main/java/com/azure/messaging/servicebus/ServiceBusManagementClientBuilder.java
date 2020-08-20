@@ -92,7 +92,7 @@ public class ServiceBusManagementClientBuilder {
         final HttpPipeline httpPipeline = createPipeline();
         final ServiceBusManagementClientImpl client = new ServiceBusManagementClientImplBuilder()
             .pipeline(httpPipeline)
-            .serializer(serializer)
+            .serializerAdapter(serializer)
             .endpoint(endpoint)
             .apiVersion(apiVersion.getVersion())
             .buildClient();

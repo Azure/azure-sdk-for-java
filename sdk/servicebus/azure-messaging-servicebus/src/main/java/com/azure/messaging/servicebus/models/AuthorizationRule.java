@@ -20,13 +20,13 @@ import java.util.List;
 @Fluent
 public final class AuthorizationRule {
     /*
-     * The type property.
+     * The authorization type.
      */
     @JacksonXmlProperty(localName = "type", isAttribute = true)
     private String type;
 
     /*
-     * The ClaimType property.
+     * The claim type.
      */
     @JacksonXmlProperty(
             localName = "ClaimType",
@@ -34,7 +34,7 @@ public final class AuthorizationRule {
     private String claimType;
 
     /*
-     * The ClaimValue property.
+     * The claim value.
      */
     @JacksonXmlProperty(
             localName = "ClaimValue",
@@ -43,10 +43,10 @@ public final class AuthorizationRule {
 
     private static final class RightsWrapper {
         @JacksonXmlProperty(localName = "AccessRights")
-        private final List<String> items;
+        private final List<AccessRights> items;
 
         @JsonCreator
-        private RightsWrapper(@JacksonXmlProperty(localName = "AccessRights") List<String> items) {
+        private RightsWrapper(@JacksonXmlProperty(localName = "AccessRights") List<AccessRights> items) {
             this.items = items;
         }
     }
@@ -100,7 +100,7 @@ public final class AuthorizationRule {
     private String secondaryKey;
 
     /**
-     * Get the type property: The type property.
+     * Get the type property: The authorization type.
      *
      * @return the type value.
      */
@@ -109,7 +109,7 @@ public final class AuthorizationRule {
     }
 
     /**
-     * Set the type property: The type property.
+     * Set the type property: The authorization type.
      *
      * @param type the type value to set.
      * @return the AuthorizationRule object itself.
@@ -120,7 +120,7 @@ public final class AuthorizationRule {
     }
 
     /**
-     * Get the claimType property: The ClaimType property.
+     * Get the claimType property: The claim type.
      *
      * @return the claimType value.
      */
@@ -129,7 +129,7 @@ public final class AuthorizationRule {
     }
 
     /**
-     * Set the claimType property: The ClaimType property.
+     * Set the claimType property: The claim type.
      *
      * @param claimType the claimType value to set.
      * @return the AuthorizationRule object itself.
@@ -140,7 +140,7 @@ public final class AuthorizationRule {
     }
 
     /**
-     * Get the claimValue property: The ClaimValue property.
+     * Get the claimValue property: The claim value.
      *
      * @return the claimValue value.
      */
@@ -149,7 +149,7 @@ public final class AuthorizationRule {
     }
 
     /**
-     * Set the claimValue property: The ClaimValue property.
+     * Set the claimValue property: The claim value.
      *
      * @param claimValue the claimValue value to set.
      * @return the AuthorizationRule object itself.
@@ -164,9 +164,9 @@ public final class AuthorizationRule {
      *
      * @return the rights value.
      */
-    public List<String> getRights() {
+    public List<AccessRights> getRights() {
         if (this.rights == null) {
-            this.rights = new RightsWrapper(new ArrayList<String>());
+            this.rights = new RightsWrapper(new ArrayList<AccessRights>());
         }
         return this.rights.items;
     }
@@ -177,7 +177,7 @@ public final class AuthorizationRule {
      * @param rights the rights value to set.
      * @return the AuthorizationRule object itself.
      */
-    public AuthorizationRule setRights(List<String> rights) {
+    public AuthorizationRule setRights(List<AccessRights> rights) {
         this.rights = new RightsWrapper(rights);
         return this;
     }
