@@ -12,7 +12,7 @@
 
   <artifactId>eventhubs-multibinders-sample</artifactId>
   <groupId>com.microsoft.azure</groupId>
-  <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:eventhubs-multibinders-sample;current} -->
+  <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:eventhubs-multibinders-sample;dependency} -->
   <name>Azure Spring Cloud Event Hub Multiple Binders Sample</name>
 
   <dependencyManagement>
@@ -35,7 +35,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>spring-cloud-azure-eventhubs-stream-binder</artifactId>
-      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-eventhubs-stream-binder;current} -->
+      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-eventhubs-stream-binder;dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
