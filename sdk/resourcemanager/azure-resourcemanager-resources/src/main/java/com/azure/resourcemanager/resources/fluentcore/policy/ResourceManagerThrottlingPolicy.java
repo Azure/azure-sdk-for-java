@@ -20,7 +20,7 @@ public class ResourceManagerThrottlingPolicy implements HttpPipelinePolicy {
 
     /**
      * Creates the resource manager throttling policy
-     * @param callback consume the ResourceManagerThrottlingInfo for every request
+     * @param callback consume the ResourceManagerThrottlingInfo for every request, it is not a thread-safe method
      */
     public ResourceManagerThrottlingPolicy(Consumer<? super ResourceManagerThrottlingInfo> callback) {
         this.callback = callback;

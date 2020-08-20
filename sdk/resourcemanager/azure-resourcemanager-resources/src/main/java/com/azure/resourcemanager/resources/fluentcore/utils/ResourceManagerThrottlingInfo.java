@@ -11,9 +11,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
- * The class to collect all throttling info from response header
+ * The class to collect all throttling info from response header.
+ * Some service has different rate limit but not visible in response header, like network/storage.
  */
 public class ResourceManagerThrottlingInfo {
     // refer https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/request-limits-and-throttling
@@ -47,6 +50,11 @@ public class ResourceManagerThrottlingInfo {
             }
         }
         resourceRateLimit = headers.getValue(RESOURCE_RATE_LIMIT_HEADERS);
+        Matcher matcher = Pattern.compile("\\w+\\.\\w+;([^/])/(\\d+)").matcher(resourceRateLimit);
+        while (matcher.find()) {
+            commonRateLimits.put(
+                String.format("%s-%s", RESOURCE_RATE_LIMIT_HEADERS, matcher.group(1)), matcher.group(2));
+        }
     }
 
     /**
@@ -83,7 +91,7 @@ public class ResourceManagerThrottlingInfo {
 
     /**
      * refer https://docs.microsoft.com/en-us/azure/virtual-machines/troubleshooting/troubleshooting-throttling-errors
-     * @return a specific rate limit from compute
+     * @return a specific rate limit header value without parsed from compute
      */
     public String getResourceRateLimit() {
         return resourceRateLimit;
