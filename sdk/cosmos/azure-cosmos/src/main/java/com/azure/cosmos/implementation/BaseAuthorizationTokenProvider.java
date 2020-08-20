@@ -21,18 +21,17 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * This class is used internally by both client (for generating the auth header with master/system key) and by the GATEWAY when
- * verifying the auth header in the Azure Cosmos DB database service.
+ * This class is used internally by client (for generating the auth header with master/system key)
+ * to generate the master-key auth header for communication with Azure Cosmos DB database service.
  */
 public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvider {
 
     private static final String AUTH_PREFIX = "type=master&ver=1.0&sig=";
     private final AzureKeyCredential credential;
-    private volatile Mac macInstance;
-    private final Lock macInstanceLock = new ReentrantLock();
+    private volatile String currentCredentialKey;
+    private volatile MacPool macPool;
 
-    //  stores current master key's hashcode for performance reasons.
-    private volatile int masterKeyHashCode;
+    private final Lock macInstanceLock = new ReentrantLock();
 
     public BaseAuthorizationTokenProvider(AzureKeyCredential credential) {
         this.credential = credential;
@@ -149,13 +148,18 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
 
         body.append('\n');
 
-        Mac mac = getMacInstance();
+        MacPool.ReUsableMac macInstance = getReUseableMacInstance();
 
-        byte[] digest = mac.doFinal(body.toString().getBytes(StandardCharsets.UTF_8));
+        try {
 
-        String auth = Utils.encodeBase64String(digest);
-
-        return AUTH_PREFIX + auth;
+            byte[] digest = macInstance.get().doFinal(body.toString().getBytes(StandardCharsets.UTF_8));
+            String auth = Utils.encodeBase64String(digest);
+            return AUTH_PREFIX + auth;
+        }
+        finally {
+            // doFinal already resets for re-use
+            macInstance.close();
+        }
     }
 
     /**
@@ -199,14 +203,10 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
         return resourceToken;
     }
 
-    private Mac getMacInstance() {
+    private MacPool.ReUsableMac getReUseableMacInstance() {
         reInitializeIfPossible();
 
-        try {
-            return (Mac)this.macInstance.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new IllegalStateException(e);
-        }
+        return macPool.take();
     }
 
     /*
@@ -219,24 +219,23 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
      * NOTE: Calling it CTOR ensured that default is initialized.
      */
     private void reInitializeIfPossible() {
-        int masterKeyLatestHashCode = this.credential.getKey().hashCode();
-
-        //  Master key has changed, or this is the first time we are getting mac instance
-        if (masterKeyLatestHashCode != this.masterKeyHashCode) {
+        // Java == operator is reference equals not content
+        // leveraging reference comparison avoid hash computation
+        if (this.currentCredentialKey != this.credential.getKey()) {
             // Try to acquire the lock, the one who got lock will try to refresh the macInstance
             boolean lockAcquired = this.macInstanceLock.tryLock();
             if (lockAcquired) {
                 try {
-                    if (masterKeyLatestHashCode != this.masterKeyHashCode) {
+                    if (this.currentCredentialKey != this.credential.getKey()) {
                         byte[] masterKeyBytes = this.credential.getKey().getBytes(StandardCharsets.UTF_8);
                         byte[] masterKeyDecodedBytes = Utils.Base64Decoder.decode(masterKeyBytes);
                         SecretKey signingKey = new SecretKeySpec(masterKeyDecodedBytes, "HMACSHA256");
                         try {
                             Mac macInstance = Mac.getInstance("HMACSHA256");
                             macInstance.init(signingKey);
-                            //  Update the master key hash code
-                            this.masterKeyHashCode = masterKeyLatestHashCode;
-                            this.macInstance = macInstance;
+
+                            this.currentCredentialKey = this.credential.getKey();
+                            this.macPool = new MacPool(macInstance);
                         } catch (NoSuchAlgorithmException | InvalidKeyException e) {
                             throw new IllegalStateException(e);
                         }
