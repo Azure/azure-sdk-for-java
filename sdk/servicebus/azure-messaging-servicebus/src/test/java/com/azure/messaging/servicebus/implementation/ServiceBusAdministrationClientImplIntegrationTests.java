@@ -18,13 +18,13 @@ import com.azure.core.test.TestBase;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.TestUtils;
+import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.implementation.models.CreateQueueBody;
 import com.azure.messaging.servicebus.implementation.models.CreateQueueBodyContent;
 import com.azure.messaging.servicebus.implementation.models.QueueDescription;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntry;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionFeed;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionResponse;
-import com.azure.messaging.servicebus.models.CreateQueueOptions;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -45,8 +45,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * Integration tests for {@link ServiceBusManagementClientImpl}.
  */
-class ServiceBusManagementClientImplIntegrationTests extends TestBase {
-    private final ClientLogger logger = new ClientLogger(ServiceBusManagementClientImplIntegrationTests.class);
+class ServiceBusAdministrationClientImplIntegrationTests extends TestBase {
+    private final ClientLogger logger = new ClientLogger(ServiceBusAdministrationClientImplIntegrationTests.class);
     private final ServiceBusManagementSerializer serializer = new ServiceBusManagementSerializer();
     private final Duration timeout = Duration.ofSeconds(30);
 

@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.servicebus.models;
+package com.azure.messaging.servicebus.administration.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.messaging.servicebus.ServiceBusManagementAsyncClient;
-import com.azure.messaging.servicebus.ServiceBusManagementClient;
+
+import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient;
+import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
 
 import java.time.Duration;
 import java.util.Objects;
@@ -13,36 +13,32 @@ import java.util.Objects;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DEFAULT_DUPLICATE_DETECTION_DURATION;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DEFAULT_LOCK_DURATION;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DEFAULT_MAX_DELIVERY_COUNT;
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DEFAULT_QUEUE_SIZE;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DEFAULT_TOPIC_SIZE;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.MAX_DURATION;
 
 /**
  * Represents the set of options that can be specified for the creation of a queue.
  *
- * @see ServiceBusManagementAsyncClient#createQueue(String, CreateQueueOptions)
- * @see ServiceBusManagementClient#createQueue(String, CreateQueueOptions)
+ * @see ServiceBusAdministrationAsyncClient#createTopic(String, CreateTopicOptions)
+ * @see ServiceBusAdministrationClient#createTopic(String, CreateTopicOptions)
  */
-@Fluent
-public class CreateQueueOptions {
+public class CreateTopicOptions {
     private Duration autoDeleteOnIdle;
     private Duration defaultMessageTimeToLive;
-    private boolean deadLetteringOnMessageExpiration;
     private Duration duplicateDetectionHistoryTimeWindow;
     private boolean enableBatchedOperations;
     private boolean enablePartitioning;
-    private String forwardTo;
-    private String forwardDeadLetteredMessagesTo;
     private Duration lockDuration;
     private int maxDeliveryCount;
     private long maxSizeInMegabytes;
     private boolean requiresDuplicateDetection;
     private boolean requiresSession;
-    private String userMetadata;
     private EntityStatus status;
+    private boolean supportOrdering;
+    private String userMetadata;
 
     /**
-     * Creates an instance with the name of the queue. Default values for the queue are populated. The properties
-     * populated with defaults are:
+     * Creates an instance. Default values for the topic are populated. The properties populated with defaults are:
      *
      * <ul>
      *     <li>{@link #setAutoDeleteOnIdle(Duration)} is max duration value.</li>
@@ -53,15 +49,15 @@ public class CreateQueueOptions {
      *     <li>{@link #setEnableBatchedOperations(boolean)} is true.</li>
      *     <li>{@link #setLockDuration(Duration)} is 1 minute.</li>
      *     <li>{@link #setMaxDeliveryCount(int)} is 10.</li>
-     *     <li>{@link #setMaxSizeInMegabytes(int)} is 1024MB.</li>
+     *     <li>{@link #setMaxSizeInMegabytes(long)} is 1024MB.</li>
      *     <li>{@link #setRequiresSession(boolean)} is false.</li>
      *     <li>{@link #setStatus(EntityStatus)} is {@link EntityStatus#ACTIVE}.</li>
      * </ul>
      *
-     * @throws NullPointerException if {@code queueName} is a null.
-     * @throws IllegalArgumentException if {@code queueName} is an empty string.
+     * @throws NullPointerException if {@code topicName} is a null.
+     * @throws IllegalArgumentException if {@code topicName} is an empty string.
      */
-    public CreateQueueOptions() {
+    public CreateTopicOptions() {
         this.autoDeleteOnIdle = MAX_DURATION;
         this.defaultMessageTimeToLive = MAX_DURATION;
         this.duplicateDetectionHistoryTimeWindow = DEFAULT_DUPLICATE_DETECTION_DURATION;
@@ -69,41 +65,31 @@ public class CreateQueueOptions {
         this.enablePartitioning = false;
         this.lockDuration = DEFAULT_LOCK_DURATION;
         this.maxDeliveryCount = DEFAULT_MAX_DELIVERY_COUNT;
-        this.maxSizeInMegabytes = DEFAULT_QUEUE_SIZE;
+        this.maxSizeInMegabytes = DEFAULT_TOPIC_SIZE;
         this.requiresDuplicateDetection = false;
         this.requiresSession = false;
-        this.deadLetteringOnMessageExpiration = false;
         this.status = EntityStatus.ACTIVE;
     }
 
     /**
-     * Initializes a new instance based on the specified {@link QueueProperties} instance. This is useful for creating a
-     * new queue based on the properties of an existing queue.
+     * Initializes a new instance based on the specified {@link CreateTopicOptions} instance. This is useful for
+     * creating a new topic based on the properties of an existing topicOptions.
      *
-     * @param queue Existing queue to create options with.
+     * @param topic Existing topicOptions to create options with.
      */
-    public CreateQueueOptions(QueueProperties queue) {
-        Objects.requireNonNull(queue, "'queue' cannot be null.");
+    public CreateTopicOptions(TopicProperties topic) {
+        Objects.requireNonNull(topic, "'topic' cannot be null.");
 
-        this.autoDeleteOnIdle = queue.getAutoDeleteOnIdle();
-        this.defaultMessageTimeToLive = queue.getDefaultMessageTimeToLive();
-
-        this.deadLetteringOnMessageExpiration = queue.isDeadLetteringOnMessageExpiration();
-        this.duplicateDetectionHistoryTimeWindow = queue.getDuplicateDetectionHistoryTimeWindow() != null
-            ? queue.getDuplicateDetectionHistoryTimeWindow()
-            : DEFAULT_DUPLICATE_DETECTION_DURATION;
-        this.enableBatchedOperations = queue.enableBatchedOperations();
-        this.enablePartitioning = queue.enablePartitioning();
-        this.forwardTo = queue.getForwardTo();
-        this.forwardDeadLetteredMessagesTo = queue.getForwardDeadLetteredMessagesTo();
-        this.lockDuration = queue.getLockDuration();
-
-        this.maxDeliveryCount = queue.getMaxDeliveryCount();
-        this.maxSizeInMegabytes = queue.getMaxSizeInMegabytes();
-        this.requiresDuplicateDetection = queue.requiresDuplicateDetection();
-        this.requiresSession = queue.requiresSession();
-        this.status = queue.getStatus();
-        this.userMetadata = queue.getUserMetadata();
+        this.autoDeleteOnIdle = topic.getAutoDeleteOnIdle();
+        this.defaultMessageTimeToLive = topic.getDefaultMessageTimeToLive();
+        this.duplicateDetectionHistoryTimeWindow = topic.getDuplicateDetectionHistoryTimeWindow();
+        this.enableBatchedOperations = topic.enableBatchedOperations();
+        this.enablePartitioning = topic.enablePartitioning();
+        this.maxSizeInMegabytes = topic.getMaxSizeInMegabytes();
+        this.requiresDuplicateDetection = topic.requiresDuplicateDetection();
+        this.supportOrdering = topic.supportOrdering();
+        this.status = topic.getStatus();
+        this.userMetadata = topic.getUserMetadata();
     }
 
     /**
@@ -122,9 +108,9 @@ public class CreateQueueOptions {
      *
      * @param autoDeleteOnIdle the autoDeleteOnIdle value to set.
      *
-     * @return the CreateQueueOptions object itself.
+     * @return the CreateTopicOptions object itself.
      */
-    public CreateQueueOptions setAutoDeleteOnIdle(Duration autoDeleteOnIdle) {
+    public CreateTopicOptions setAutoDeleteOnIdle(Duration autoDeleteOnIdle) {
         this.autoDeleteOnIdle = autoDeleteOnIdle;
         return this;
     }
@@ -147,33 +133,10 @@ public class CreateQueueOptions {
      *
      * @param defaultMessageTimeToLive the defaultMessageTimeToLive value to set.
      *
-     * @return the CreateQueueOptions object itself.
+     * @return the CreateTopicOptions object itself.
      */
-    public CreateQueueOptions setDefaultMessageTimeToLive(Duration defaultMessageTimeToLive) {
+    public CreateTopicOptions setDefaultMessageTimeToLive(Duration defaultMessageTimeToLive) {
         this.defaultMessageTimeToLive = defaultMessageTimeToLive;
-        return this;
-    }
-
-    /**
-     * Get the deadLetteringOnMessageExpiration property: A value that indicates whether this queue has dead letter
-     * support when a message expires.
-     *
-     * @return the deadLetteringOnMessageExpiration value.
-     */
-    public boolean deadLetteringOnMessageExpiration() {
-        return this.deadLetteringOnMessageExpiration;
-    }
-
-    /**
-     * Set the deadLetteringOnMessageExpiration property: A value that indicates whether this queue has dead letter
-     * support when a message expires.
-     *
-     * @param deadLetteringOnMessageExpiration the deadLetteringOnMessageExpiration value to set.
-     *
-     * @return the CreateQueueOptions object itself.
-     */
-    public CreateQueueOptions setDeadLetteringOnMessageExpiration(boolean deadLetteringOnMessageExpiration) {
-        this.deadLetteringOnMessageExpiration = deadLetteringOnMessageExpiration;
         return this;
     }
 
@@ -193,9 +156,9 @@ public class CreateQueueOptions {
      *
      * @param duplicateDetectionHistoryTimeWindow the duplicateDetectionHistoryTimeWindow value to set.
      *
-     * @return the CreateQueueOptions object itself.
+     * @return the CreateTopicOptions object itself.
      */
-    public CreateQueueOptions setDuplicateDetectionHistoryTimeWindow(Duration duplicateDetectionHistoryTimeWindow) {
+    public CreateTopicOptions setDuplicateDetectionHistoryTimeWindow(Duration duplicateDetectionHistoryTimeWindow) {
         this.duplicateDetectionHistoryTimeWindow = duplicateDetectionHistoryTimeWindow;
         return this;
     }
@@ -206,7 +169,7 @@ public class CreateQueueOptions {
      *
      * @return the enableBatchedOperations value.
      */
-    public boolean enableBatchedOperations() {
+    public Boolean enableBatchedOperations() {
         return this.enableBatchedOperations;
     }
 
@@ -216,9 +179,9 @@ public class CreateQueueOptions {
      *
      * @param enableBatchedOperations the enableBatchedOperations value to set.
      *
-     * @return the CreateQueueOptions object itself.
+     * @return the CreateTopicOptions object itself.
      */
-    public CreateQueueOptions setEnableBatchedOperations(boolean enableBatchedOperations) {
+    public CreateTopicOptions setEnableBatchedOperations(boolean enableBatchedOperations) {
         this.enableBatchedOperations = enableBatchedOperations;
         return this;
     }
@@ -229,7 +192,7 @@ public class CreateQueueOptions {
      *
      * @return the enablePartitioning value.
      */
-    public boolean enablePartitioning() {
+    public Boolean enablePartitioning() {
         return this.enablePartitioning;
     }
 
@@ -239,56 +202,54 @@ public class CreateQueueOptions {
      *
      * @param enablePartitioning the enablePartitioning value to set.
      *
-     * @return the CreateQueueOptions object itself.
+     * @return the CreateTopicOptions object itself.
      */
-    public CreateQueueOptions setEnablePartitioning(boolean enablePartitioning) {
+    public CreateTopicOptions setEnablePartitioning(boolean enablePartitioning) {
         this.enablePartitioning = enablePartitioning;
         return this;
     }
 
     /**
-     * Get the forwardTo property: The name of the recipient entity to which all the messages sent to the queue are
-     * forwarded to.
+     * Get the status property: Status of a Service Bus resource.
      *
-     * @return the forwardTo value.
+     * @return the status value.
      */
-    public String getForwardTo() {
-        return this.forwardTo;
+    public EntityStatus getStatus() {
+        return this.status;
     }
 
     /**
-     * Set the forwardTo property: The name of the recipient entity to which all the messages sent to the queue are
-     * forwarded to.
+     * Set the status property: Status of a Service Bus resource.
      *
-     * @param forwardTo the forwardTo value to set.
+     * @param status the status value to set.
      *
-     * @return the CreateQueueOptions object itself.
+     * @return the CreateTopicOptions object itself.
      */
-    public CreateQueueOptions setForwardTo(String forwardTo) {
-        this.forwardTo = forwardTo;
+    public CreateTopicOptions setStatus(EntityStatus status) {
+        this.status = status;
         return this;
     }
 
     /**
-     * Get the forwardDeadLetteredMessagesTo property: The name of the recipient entity to which all the dead-lettered
-     * messages of this queue are forwarded to.
+     * Defines whether ordering needs to be maintained. If true, messages sent to topic will be forwarded to the
+     * subscription in order.
      *
-     * @return the forwardDeadLetteredMessagesTo value.
+     * @return true if ordering should be maintained; false otherwise.
      */
-    public String getForwardDeadLetteredMessagesTo() {
-        return this.forwardDeadLetteredMessagesTo;
+    public boolean isSupportOrdering() {
+        return supportOrdering;
     }
 
     /**
-     * Set the forwardDeadLetteredMessagesTo property: The name of the recipient entity to which all the dead-lettered
-     * messages of this queue are forwarded to.
+     * Defines whether ordering needs to be maintained. If true, messages sent to topic will be forwarded to the
+     * subscription in order.
      *
-     * @param forwardDeadLetteredMessagesTo the forwardDeadLetteredMessagesTo value to set.
+     * @param supportOrdering true if ordering should be maintained; false otherwise.
      *
-     * @return the CreateQueueOptions object itself.
+     * @return the CreateTopicOptions object itself.
      */
-    public CreateQueueOptions setForwardDeadLetteredMessagesTo(String forwardDeadLetteredMessagesTo) {
-        this.forwardDeadLetteredMessagesTo = forwardDeadLetteredMessagesTo;
+    public CreateTopicOptions setSupportOrdering(boolean supportOrdering) {
+        this.supportOrdering = supportOrdering;
         return this;
     }
 
@@ -310,9 +271,9 @@ public class CreateQueueOptions {
      *
      * @param lockDuration the lockDuration value to set.
      *
-     * @return the CreateQueueOptions object itself.
+     * @return the CreateTopicOptions object itself.
      */
-    public CreateQueueOptions setLockDuration(Duration lockDuration) {
+    public CreateTopicOptions setLockDuration(Duration lockDuration) {
         this.lockDuration = lockDuration;
         return this;
     }
@@ -333,9 +294,9 @@ public class CreateQueueOptions {
      *
      * @param maxDeliveryCount the maxDeliveryCount value to set.
      *
-     * @return the CreateQueueOptions object itself.
+     * @return the CreateTopicOptions object itself.
      */
-    public CreateQueueOptions setMaxDeliveryCount(int maxDeliveryCount) {
+    public CreateTopicOptions setMaxDeliveryCount(int maxDeliveryCount) {
         this.maxDeliveryCount = maxDeliveryCount;
         return this;
     }
@@ -356,9 +317,9 @@ public class CreateQueueOptions {
      *
      * @param maxSizeInMegabytes the maxSizeInMegabytes value to set.
      *
-     * @return the CreateQueueOptions object itself.
+     * @return the CreateTopicOptions object itself.
      */
-    public CreateQueueOptions setMaxSizeInMegabytes(int maxSizeInMegabytes) {
+    public CreateTopicOptions setMaxSizeInMegabytes(long maxSizeInMegabytes) {
         this.maxSizeInMegabytes = maxSizeInMegabytes;
         return this;
     }
@@ -368,7 +329,7 @@ public class CreateQueueOptions {
      *
      * @return the requiresDuplicateDetection value.
      */
-    public boolean requiresDuplicateDetection() {
+    public Boolean requiresDuplicateDetection() {
         return this.requiresDuplicateDetection;
     }
 
@@ -377,9 +338,9 @@ public class CreateQueueOptions {
      *
      * @param requiresDuplicateDetection the requiresDuplicateDetection value to set.
      *
-     * @return the CreateQueueOptions object itself.
+     * @return the CreateTopicOptions object itself.
      */
-    public CreateQueueOptions setRequiresDuplicateDetection(boolean requiresDuplicateDetection) {
+    public CreateTopicOptions setRequiresDuplicateDetection(boolean requiresDuplicateDetection) {
         this.requiresDuplicateDetection = requiresDuplicateDetection;
         return this;
     }
@@ -389,7 +350,7 @@ public class CreateQueueOptions {
      *
      * @return the requiresSession value.
      */
-    public boolean requiresSession() {
+    public Boolean requiresSession() {
         return this.requiresSession;
     }
 
@@ -398,30 +359,10 @@ public class CreateQueueOptions {
      *
      * @param requiresSession the requiresSession value to set.
      *
-     * @return the CreateQueueOptions object itself.
+     * @return the CreateTopicOptions object itself.
      */
-    public CreateQueueOptions setRequiresSession(boolean requiresSession) {
+    public CreateTopicOptions setRequiresSession(boolean requiresSession) {
         this.requiresSession = requiresSession;
-        return this;
-    }
-
-    /**
-     * Get the status property: Status of a Service Bus resource.
-     *
-     * @return the status value.
-     */
-    public EntityStatus getStatus() {
-        return this.status;
-    }
-
-    /**
-     * Set the status property: Status of a Service Bus resource.
-     *
-     * @param status the status value to set.
-     * @return the CreateQueueOptions object itself.
-     */
-    public CreateQueueOptions setStatus(EntityStatus status) {
-        this.status = status;
         return this;
     }
 
@@ -441,9 +382,9 @@ public class CreateQueueOptions {
      *
      * @param userMetadata the userMetadata value to set.
      *
-     * @return the CreateQueueOptions object itself.
+     * @return the CreateTopicOptions object itself.
      */
-    public CreateQueueOptions setUserMetadata(String userMetadata) {
+    public CreateTopicOptions setUserMetadata(String userMetadata) {
         this.userMetadata = userMetadata;
         return this;
     }
