@@ -576,7 +576,8 @@ public class ShareAsyncClient {
     Mono<Response<ShareInfo>> setQuotaWithResponse(ShareSetQuotaOptions options, Context context) {
         StorageImplUtils.assertNotNull("options", options);
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.shares().setQuotaWithRestResponseAsync(shareName, null, options.getQuotaInGb(), options.getLeaseId(),
+        return azureFileStorageClient.shares().setQuotaWithRestResponseAsync(shareName, null,
+            options.getQuotaInGb(), options.getLeaseId(),
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::mapToShareInfoResponse);
     }
