@@ -979,7 +979,8 @@ public class AzureTests extends TestBase {
 
     @Test
     public void testVirtualMachineSyncPoller() throws Exception {
-        new TestVirtualMachineSyncPoller(azure.networks().manager()).runTest(azure.virtualMachines(), azure.resourceGroups());
+        new TestVirtualMachineSyncPoller(azure.networks().manager())
+            .runTest(azure.virtualMachines(), azure.resourceGroups());
     }
 
     /**
@@ -1065,25 +1066,33 @@ public class AzureTests extends TestBase {
     //        new TestTrafficManager(azure.publicIPAddresses())
     //                .runTest(azure.trafficManagerProfiles(), azure.resourceGroups());
     //    }
-    //
-    //    @Test
-    //    public void testRedis() throws Exception {
-    //        new TestRedis()
-    //                .runTest(azure.redisCaches(), azure.resourceGroups());
-    //    }
-    //
+
+    @Test
+    public void testRedis() throws Exception {
+        new TestRedis().runTest(azure.redisCaches(), azure.resourceGroups());
+    }
+
     //    @Test
     //    public void testCdnManager() throws Exception {
     //        new TestCdn()
     //                .runTest(azure.cdnProfiles(), azure.resourceGroups());
     //    }
 
-    //    @Test
-    //    public void testDnsZones() throws Exception {
-    //        addTextReplacementRule("https://management.azure.com:443/", playbackUri + "/");
-    //        new TestDns()
-    //                .runTest(azure.dnsZones(), azure.resourceGroups());
-    //    }
+    @Test
+    public void testDnsZones() throws Exception {
+        if (isPlaybackMode()) {
+            return; // TODO: fix playback random fail
+        }
+        new TestDns().runTest(azure.dnsZones(), azure.resourceGroups());
+    }
+
+    @Test
+    public void testPrivateDnsZones() throws Exception {
+        if (isPlaybackMode()) {
+            return; // TODO: fix playback random fail
+        }
+        new TestPrivateDns().runTest(azure.privateDnsZones(), azure.resourceGroups());
+    }
 
     @Test
     public void testSqlServer() throws Exception {

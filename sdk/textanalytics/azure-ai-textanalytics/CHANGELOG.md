@@ -6,6 +6,8 @@
   
 **New features**
 - Text analytics SDK update the service to version `v3.1-preview.1` from `v3.0`.
+- Added support for Personally Identifiable Information(PII) entity recognition feature.
+  To use this feature, you need to make sure you are using the service's v3.1-preview.1 API.
 - Added support for the Opinion Mining feature. To use this feature, you need to make sure you are using the 
 service's v3.1-preview.1 and above API. To get this support pass `includeOpinionMining` as `true` in 
 `AnalyzeSentimentOptions` when calling the sentiment analysis endpoints.

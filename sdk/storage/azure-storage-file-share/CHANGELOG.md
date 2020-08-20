@@ -1,7 +1,10 @@
 # Release History
 
-## 12.6.0-beta.2 (Unreleased)
+## 12.7.0-beta.1 (Unreleased)
+- Fixed a bug that would cause auth failures when building a client by passing an endpoint which had a sas token with protocol set to https,http
 
+## 12.6.0 (2020-08-13)
+- GA release for 2019-12-12 service version
 
 ## 12.6.0-beta.1 (2019-07-07)
 - Added support for the 2019-12-12 service version.
@@ -146,4 +149,3 @@ demonstrate the new API.
     - `azure-storage-file` contains a `FileServiceClient`,  `FileServiceAsyncClient`, `ShareClient`, `ShareAsyncClient`, `DirectoryClient`, `DirectoryAsyncClient`, `FileClient` and `FileAsyncClient` for storage file operations.
 - Client instances are scoped to storage file service.
 - Reactive streams support using [Project Reactor](https://projectreactor.io/).
-

@@ -10,8 +10,11 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.data.tables.implementation.models.TableEntityQueryResponse;
 import com.fasterxml.jackson.databind.JsonNode;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -40,17 +43,23 @@ public class TablesJacksonSerializer extends JacksonAdapter {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public <U> U deserialize(String value, Type type, SerializerEncoding serializerEncoding) throws IOException {
+        return deserialize(new ByteArrayInputStream(value.getBytes(StandardCharsets.UTF_8)), type, serializerEncoding);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <U> U deserialize(InputStream inputStream, Type type, SerializerEncoding serializerEncoding)
+        throws IOException {
         if (type != TableEntityQueryResponse.class) {
-            return super.deserialize(value, type, serializerEncoding);
+            return super.deserialize(inputStream, type, serializerEncoding);
         }
 
         // Force to deserialize as a Map by using Object.class
         String odataMetadata = null;
         List<Map<String, Object>> values = new ArrayList<>();
 
-        final JsonNode node = super.serializer().readTree(value);
+        final JsonNode node = super.serializer().readTree(inputStream);
         final Map<String, Object> rootObject = new HashMap<>();
         for (Iterator<Map.Entry<String, JsonNode>> it = node.fields(); it.hasNext();) {
             final Map.Entry<String, JsonNode> entry = it.next();

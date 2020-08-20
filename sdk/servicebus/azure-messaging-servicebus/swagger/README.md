@@ -37,7 +37,7 @@ sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
-custom-types: AccessRights,AuthorizationRule,EntityAvailabilityStatus,EntityStatus,MessageCountDetails,NamespaceProperties,NamespaceType,QueueDescription,MessagingSku,SubscriptionDescription,TopicDescription
+custom-types: AccessRights,AuthorizationRule,EntityAvailabilityStatus,EntityStatus,MessageCountDetails,NamespaceProperties,MessagingSku
 custom-types-subpackage: models
 context-client-method-parameter: true
 enable-xml: true

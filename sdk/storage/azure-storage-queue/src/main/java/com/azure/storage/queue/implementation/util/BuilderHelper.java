@@ -20,7 +20,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -114,7 +114,7 @@ public final class BuilderHelper {
 
             // Attempt to get the SAS token from the URL passed
             String sasToken = new CommonSasQueryParameters(
-                StorageImplUtils.parseQueryStringSplitValues(url.getQuery()), false).encode();
+                SasImplUtils.parseQueryString(url.getQuery()), false).encode();
             if (!CoreUtils.isNullOrEmpty(sasToken)) {
                 parts.setSasToken(sasToken);
             }
@@ -243,6 +243,7 @@ public final class BuilderHelper {
                 "Using a(n) " + objectName + " requires https"));
         }
     }
+
 
     public static class QueueUrlParts {
         private String scheme;

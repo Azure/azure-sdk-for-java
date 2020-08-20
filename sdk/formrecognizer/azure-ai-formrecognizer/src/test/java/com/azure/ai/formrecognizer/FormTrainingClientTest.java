@@ -3,20 +3,20 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
-import com.azure.ai.formrecognizer.models.FormRecognizerErrorInformation;
 import com.azure.ai.formrecognizer.models.FormContentType;
+import com.azure.ai.formrecognizer.models.FormRecognizerErrorInformation;
 import com.azure.ai.formrecognizer.models.FormRecognizerException;
 import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
+import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.training.FormTrainingClient;
 import com.azure.ai.formrecognizer.training.models.AccountProperties;
-import com.azure.ai.formrecognizer.training.models.TrainingFileFilter;
-import com.azure.ai.formrecognizer.training.models.TrainingOptions;
 import com.azure.ai.formrecognizer.training.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.training.models.CustomFormModel;
 import com.azure.ai.formrecognizer.training.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.training.models.CustomFormModelStatus;
+import com.azure.ai.formrecognizer.training.models.TrainingFileFilter;
+import com.azure.ai.formrecognizer.training.models.TrainingOptions;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
@@ -28,8 +28,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.List;
 
+import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.EXPECTED_MODEL_ID_NOT_FOUND_ERROR_CODE;
 import static com.azure.ai.formrecognizer.FormTrainingAsyncClientTest.EXPECTED_COPY_REQUEST_INVALID_TARGET_RESOURCE_REGION;
-import static com.azure.ai.formrecognizer.TestUtils.BLANK_FORM_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID_ERROR;
@@ -55,10 +55,13 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
     public void getFormRecognizerClientAndValidate(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         FormRecognizerClient formRecognizerClient = getFormTrainingClient(httpClient, serviceVersion)
             .getFormRecognizerClient();
-        blankPdfDataRunner(data -> {
+        blankPdfDataRunner((data, dataLength) -> {
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                formRecognizerClient.beginRecognizeReceipts(data, BLANK_FORM_FILE_LENGTH, new RecognizeReceiptsOptions()
-                    .setContentType(FormContentType.APPLICATION_PDF).setPollInterval(durationTestMode), Context.NONE);
+                formRecognizerClient.beginRecognizeReceipts(data, dataLength,
+                    new RecognizeReceiptsOptions()
+                        .setContentType(FormContentType.APPLICATION_PDF)
+                        .setPollInterval(durationTestMode),
+                    Context.NONE);
             syncPoller.waitForCompletion();
             validateBlankPdfResultData(syncPoller.getFinalResult());
         });
@@ -82,7 +85,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         client = getFormTrainingClient(httpClient, serviceVersion);
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
             getCustomModelInvalidModelIdRunner(invalidId -> client.getCustomModel(invalidId)));
-        assertTrue(exception.getMessage().equals(INVALID_MODEL_ID_ERROR));
+        assertEquals(INVALID_MODEL_ID_ERROR, exception.getMessage());
     }
 
     /**
@@ -164,7 +167,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         client = getFormTrainingClient(httpClient, serviceVersion);
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
             client.deleteModel(INVALID_MODEL_ID));
-        assertTrue(exception.getMessage().equals(INVALID_MODEL_ID_ERROR));
+        assertEquals(INVALID_MODEL_ID_ERROR, exception.getMessage());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -177,13 +180,33 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
             syncPoller.waitForCompletion();
             CustomFormModel createdModel = syncPoller.getFinalResult();
 
-            Response<Void> deleteModelWithResponse = client.deleteModelWithResponse(createdModel.getModelId(),
+            final Response<Void> deleteModelWithResponse = client.deleteModelWithResponse(createdModel.getModelId(),
                 Context.NONE);
             assertEquals(deleteModelWithResponse.getStatusCode(), HttpResponseStatus.NO_CONTENT.code());
-
-            HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
+            final HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
                 client.getCustomModelWithResponse(createdModel.getModelId(), Context.NONE));
-            assertEquals(exception.getResponse().getStatusCode(), HttpResponseStatus.NOT_FOUND.code());
+            final FormRecognizerErrorInformation errorInformation = (FormRecognizerErrorInformation) exception.getValue();
+            assertEquals(EXPECTED_MODEL_ID_NOT_FOUND_ERROR_CODE, errorInformation.getErrorCode());
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void deleteModelValidModelIdWithResponseWithoutTrainingLabels(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormTrainingClient(httpClient, serviceVersion);
+        beginTrainingUnlabeledRunner((trainingDataSASUrl, notUseTrainingLabels) -> {
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller = client.beginTraining(trainingDataSASUrl,
+                notUseTrainingLabels, new TrainingOptions().setPollInterval(durationTestMode), Context.NONE);
+            syncPoller.waitForCompletion();
+            CustomFormModel createdModel = syncPoller.getFinalResult();
+
+            final Response<Void> deleteModelWithResponse = client.deleteModelWithResponse(createdModel.getModelId(),
+                Context.NONE);
+            assertEquals(deleteModelWithResponse.getStatusCode(), HttpResponseStatus.NO_CONTENT.code());
+            final HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
+                client.getCustomModelWithResponse(createdModel.getModelId(), Context.NONE));
+            final FormRecognizerErrorInformation errorInformation = (FormRecognizerErrorInformation) exception.getValue();
+            assertEquals(EXPECTED_MODEL_ID_NOT_FOUND_ERROR_CODE, errorInformation.getErrorCode());
         });
     }
 
@@ -243,7 +266,8 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
                 CopyAuthorization target =
                     client.getCopyAuthorization(resourceId, resourceRegion);
                 SyncPoller<FormRecognizerOperationResult,
-                    CustomFormModelInfo> copyPoller = client.beginCopyModel(actualModel.getModelId(), target);
+                    CustomFormModelInfo> copyPoller = client.beginCopyModel(actualModel.getModelId(), target,
+                    durationTestMode, Context.NONE);
                 CustomFormModelInfo copyModel = copyPoller.getFinalResult();
                 assertEquals(target.getModelId(), copyModel.getModelId());
                 assertNotNull(actualModel.getTrainingStartedOn());
@@ -294,7 +318,8 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
             beginCopyIncorrectRegionRunner((resourceId, resourceRegion) -> {
                 final CopyAuthorization target = client.getCopyAuthorization(resourceId, resourceRegion);
                 FormRecognizerException formRecognizerException = assertThrows(FormRecognizerException.class,
-                    () -> client.beginCopyModel(actualModel.getModelId(), target).getFinalResult());
+                    () -> client.beginCopyModel(actualModel.getModelId(), target, durationTestMode, Context.NONE)
+                        .getFinalResult());
                 FormRecognizerErrorInformation errorInformation = formRecognizerException.getErrorInformation().get(0);
                 // TODO: Service bug https://github.com/Azure/azure-sdk-for-java/issues/12046
                 // assertEquals(RESOURCE_RESOLVER_ERROR, errorInformation.getCode());
@@ -323,7 +348,9 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         client = getFormTrainingClient(httpClient, serviceVersion);
         beginTrainingInvalidModelStatusRunner((invalidTrainingFilesUrl, useTrainingLabels) -> {
             FormRecognizerException formRecognizerException = assertThrows(FormRecognizerException.class,
-                () -> client.beginTraining(invalidTrainingFilesUrl, useTrainingLabels).getFinalResult());
+                () -> client.beginTraining(invalidTrainingFilesUrl, useTrainingLabels,
+                    new TrainingOptions().setPollInterval(durationTestMode), Context.NONE)
+                    .getFinalResult());
             FormRecognizerErrorInformation errorInformation = formRecognizerException.getErrorInformation().get(0);
             assertEquals(EXPECTED_INVALID_MODEL_STATUS_ERROR_CODE, errorInformation.getErrorCode());
             assertEquals(EXPECTED_INVALID_MODEL_ERROR, errorInformation.getMessage());
