@@ -4,6 +4,8 @@
 
 package com.azure.messaging.eventgrid;
 
+import com.azure.core.util.serializer.ObjectSerializer;
+import com.azure.core.util.serializer.TypeReference;
 import com.azure.messaging.eventgrid.models.ContosoItemReceivedEventData;
 import com.azure.messaging.eventgrid.models.ContosoItemSentEventData;
 import com.azure.messaging.eventgrid.models.DroneShippingInfo;
@@ -17,8 +19,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.time.OffsetDateTime;
 import java.util.Base64;
 import java.util.List;
@@ -206,6 +211,55 @@ public class DeserializationTests {
         assertTrue(additionalProperties.containsKey("foo"));
         assertEquals("bar", additionalProperties.get("foo"));
 
+    }
+
+    @Test
+    public void consumeCloudEventXmlData() throws IOException {
+        String jsonData = getTestPayloadFromFile("CloudEventXmlData.json");
+
+        List<CloudEvent> events = CloudEvent.parse(jsonData);
+
+        assertNotNull(events);
+        assertEquals(1, events.size());
+
+        assertEquals(events.get(0).getSpecVersion(), "1.0");
+
+        assertEquals(events.get(0).getExtensionAttributes().get("comexampleothervalue"), 5);
+
+        String xmlData = events.get(0).getData(String.class, new ObjectSerializer() { // simple testing deserializer
+            @Override
+            public <T> T deserialize(InputStream stream, TypeReference<T> typeReference) {
+                String expected = "<much wow=\"xml\"/>";
+
+                byte[] bytes = new byte[17];
+                try {
+                    assertEquals(stream.read(bytes), 17);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                String data = new String(bytes);
+                // just validate that the xml file was given correctly
+                assertEquals(expected, data);
+                return null;
+            }
+
+            @Override
+            public <T> Mono<T> deserializeAsync(InputStream stream, TypeReference<T> typeReference) {
+                return null;
+            }
+
+            @Override
+            public void serialize(OutputStream stream, Object value) {
+            }
+
+            @Override
+            public Mono<Void> serializeAsync(OutputStream stream, Object value) {
+                return null;
+            }
+        });
+
+        assertNull(xmlData);
     }
 
     @Test
