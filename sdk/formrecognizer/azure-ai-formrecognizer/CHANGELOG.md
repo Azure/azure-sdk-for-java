@@ -1,6 +1,8 @@
 # Release History
 
-## 3.0.0-beta.2 (Unreleased)
+## 3.0.0 (2020-08-20)
+First stable release of the azure-ai-formrecognizer client library supporting Azure Form Recognizer service API version v2.0.
+
 ### Breaking Changes
 - Renamed `BoundingBox` model to `FieldBoundingBox`
 
