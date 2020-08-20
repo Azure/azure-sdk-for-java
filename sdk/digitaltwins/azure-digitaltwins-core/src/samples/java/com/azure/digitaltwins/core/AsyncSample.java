@@ -10,6 +10,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
@@ -39,17 +40,41 @@ public class AsyncSample
                     .setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildAsyncClient();
 
+        // Create the source and target twins
+        final Semaphore createTwinsSemaphore = new Semaphore(0);
+
+        // Create source digital twin
+        Mono<String> sourceTwin = client.createDigitalTwin(sourceDigitalTwinId, sourceDigitalTwin);
+        sourceTwin.subscribe(
+            result -> System.out.println("Created source twin: " + result),
+            throwable -> System.err.println("Failed to create source twin on digital twin with Id " + sourceDigitalTwinId + " due to error message " + throwable.getMessage()),
+            // Once the createRelationship operation has completed asynchronously, release the corresponding semaphore so that
+            // the thread that is subscribed to this method call can complete successfully.
+            createTwinsSemaphore::release); // This is an method reference call, which is the same as the following lambda expression: () -> createSemaphore.release()
+
+        // Create target digital twin
+        Mono<String> targetTwin = client.createDigitalTwin(targetDigitalTwinId, targetDigitalTwin);
+        targetTwin.subscribe(
+            result -> System.out.println("Created target twin: " + result),
+            throwable -> System.err.println("Failed to create target twin on digital twin with Id " + targetDigitalTwinId + " due to error message " + throwable.getMessage()),
+            // Once the createRelationship operation has completed asynchronously, release the corresponding semaphore so that
+            // the thread that is subscribed to this method call can complete successfully.
+            createTwinsSemaphore::release); // This is an method reference call, which is the same as the following lambda expression: () -> createSemaphore.release()
+
+        boolean created = createTwinsSemaphore.tryAcquire(2, 5, TimeUnit.SECONDS);
+        System.out.println("Source and target twins created: " + created);
+
         // Create relationship on a digital twin
 
         // Initialize a semaphore with no permits available. A permit must be released before this semaphore can be grabbed by a thread.
         final Semaphore createSemaphore = new Semaphore(0);
 
-        Mono<String> createdRelationship = client.createRelationship(digitalTwinId, relationshipId, relationship);
+        Mono<String> createdRelationship = client.createRelationship(sourceDigitalTwinId, relationshipId, relationship);
 
         // Once the async thread completes, the relationship created on the digital twin will be printed, or an error will be printed.
         createdRelationship.subscribe(
             result -> System.out.println("Created relationship: " + result),
-            throwable -> System.err.println("Failed to create relationship " + relationshipId + "on digital twin with Id " + digitalTwinId + " due to error message " + throwable.getMessage()),
+            throwable -> System.err.println("Failed to create relationship " + relationshipId + "on digital twin with Id " + sourceDigitalTwin + " due to error message " + throwable.getMessage()),
             // Once the createRelationship operation has completed asynchronously, release the corresponding semaphore so that
             // the thread that is subscribed to this method call can complete successfully.
             createSemaphore::release); // This is an method reference call, which is the same as the following lambda expression: () -> createSemaphore.release()
@@ -58,57 +83,59 @@ public class AsyncSample
         boolean createSuccessful = createSemaphore.tryAcquire(5, TimeUnit.SECONDS);
 
         if (createSuccessful) {
-            System.out.println("Operations completed successfully.");
+            System.out.println("Create operations completed successfully.");
         } else {
-            System.out.println("Could not finish the operations within the specified time.");
+            System.out.println("Could not finish the create operations within the specified time.");
         }
 
-        // List all relationships on a digital twin
+        if (createSuccessful) {
+            // List all relationships on a digital twin
 
-        // Initialize a semaphore with no permits available. A permit must be released before this semaphore can be grabbed by a thread.
-        final Semaphore listSemaphore = new Semaphore(0);
+            // Initialize a semaphore with no permits available. A permit must be released before this semaphore can be grabbed by a thread.
+            final Semaphore listSemaphore = new Semaphore(0);
 
-        PagedFlux<Object> relationships = client.listRelationships(digitalTwinId, relationshipId);
+            PagedFlux<Object> relationships = client.listRelationships(sourceDigitalTwinId, relationshipId);
 
-        // Subscribe to process one relationship at a time
-        relationships
-            .subscribe(
-                item -> System.out.println("Relationship retrieved: " + item),
-                throwable -> System.out.println("Error occurred while retrieving relationship: " + throwable),
-                () -> {
-                    System.out.println("Completed processing, all relationships have been retrieved.");
-                    // Once the createRelationship operation has completed asynchronously, release the corresponding semaphore so that
-                    // the thread that is subscribed to this API call can complete successfully.
-                    listSemaphore.release();
-                });
+            // Subscribe to process one relationship at a time
+            relationships
+                .subscribe(
+                    item -> System.out.println("Relationship retrieved: " + item),
+                    throwable -> System.err.println("Error occurred while retrieving relationship: " + throwable),
+                    () -> {
+                        System.out.println("Completed processing, all relationships have been retrieved.");
+                        // Once the createRelationship operation has completed asynchronously, release the corresponding semaphore so that
+                        // the thread that is subscribed to this API call can complete successfully.
+                        listSemaphore.release();
+                    });
 
-        // Subscribe to process one page at a time from the beginning
-        relationships
-            // You can also subscribe to pages by specifying the preferred page size or the associated continuation token to start the processing from.
-            .byPage()
-            .subscribe(
-                page -> {
-                    System.out.println("Response headers status code is " + page.getStatusCode());
-                    page.getValue().forEach(item -> System.out.println("Relationship retrieved: " + item));
-                },
-                throwable -> System.out.println("Error occurred while retrieving relationship: " + throwable),
-                () -> {
-                    System.out.println("Completed processing, all relationships have been retrieved.");
-                    // Once the createRelationship operation has completed asynchronously, release the corresponding semaphore so that
-                    // the thread that is subscribed to this API call can complete successfully.
-                    listSemaphore.release();
-                }
-            );
+            // Subscribe to process one page at a time from the beginning
+            relationships
+                // You can also subscribe to pages by specifying the preferred page size or the associated continuation token to start the processing from.
+                .byPage()
+                .subscribe(
+                    page -> {
+                        System.out.println("Response headers status code is " + page.getStatusCode());
+                        page.getValue().forEach(item -> System.out.println("Relationship retrieved: " + item));
+                    },
+                    throwable -> System.err.println("Error occurred while retrieving relationship: " + throwable),
+                    () -> {
+                        System.out.println("Completed processing, all relationships have been retrieved.");
+                        // Once the createRelationship operation has completed asynchronously, release the corresponding semaphore so that
+                        // the thread that is subscribed to this API call can complete successfully.
+                        listSemaphore.release();
+                    }
+                );
 
-        // Wait for a maximum of 5secs to acquire both the semaphores.
-        boolean listSuccessful = listSemaphore.tryAcquire(2,5, TimeUnit.SECONDS);
+            // Wait for a maximum of 5secs to acquire both the semaphores.
+            boolean listSuccessful = listSemaphore.tryAcquire(2,5, TimeUnit.SECONDS);
 
-        if (listSuccessful) {
-            System.out.println("Operations completed successfully.");
-        } else {
-            System.out.println("Could not finish the operations within the specified time.");
+            if (listSuccessful) {
+                System.out.println("List operations completed successfully.");
+            } else {
+                System.out.println("Could not finish the list operations within the specified time.");
+            }
+
+            System.out.println("Done, exiting.");
         }
-
-        System.out.println("Done, exiting.");
     }
 }

@@ -12,6 +12,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
 
@@ -32,9 +34,13 @@ public class DigitalTwinsAsyncClient {
     private final ClientLogger logger = new ClientLogger(DigitalTwinsAsyncClient.class);
     private final DigitalTwinsServiceVersion serviceVersion;
     private final AzureDigitalTwinsAPI protocolLayer;
+    private final ObjectMapper mapper = new ObjectMapper();
 
     DigitalTwinsAsyncClient(HttpPipeline pipeline, DigitalTwinsServiceVersion serviceVersion, String host) {
-        this.protocolLayer = new AzureDigitalTwinsAPIBuilder().host(host).pipeline(pipeline).buildClient();
+        this.protocolLayer = new AzureDigitalTwinsAPIBuilder()
+            .host(host)
+            .pipeline(pipeline)
+            .buildClient();
         this.serviceVersion = serviceVersion;
     }
 
@@ -61,6 +67,33 @@ public class DigitalTwinsAsyncClient {
 
     //TODO the java track 2 guidelines say that this type of API should return Response<Object>, but the generated code doesn't expose this. Need to talk to autorest
     // team if this is intentional or not. DigitalTwinsGetByIdResponse type is basically Response<Object> since it has all the http request/response details.
+    /**
+     * Creates a digital twin.
+     *
+     * @param digitalTwinId The Id of the digital twin.
+     * @param digitalTwin The application/json digital twin to create.
+     * @return The application/json digital twin created.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<String> createDigitalTwin(String digitalTwinId, String digitalTwin) {
+//        Object payload = mapper.readValue(digitalTwin, Object.class);
+        Object payload = (Object) digitalTwin;
+        try {
+            return protocolLayer
+                .getDigitalTwins()
+                .addWithResponseAsync(digitalTwinId, payload)
+                // Mono.flatMap: Transform the item emitted by this Mono asynchronously, returning the value emitted by another Mono (possibly changing the value type).
+                // The PL gives us a Mono<DigitalTwinsAddResponse>, so we use Mono.flatMap to transform the items emitted
+                // from Mono<DigitalTwinsAddResponse> to Mono<String>, asynchronously.
+                .flatMap(
+                    // Mono.just(item) creates a new Mono that emits the specified item.
+                    // response.getValue gives us the deserialized Http response body (Object).
+                    response -> Mono.just(response.getValue().toString()));
+        } catch (RuntimeException ex) {
+            // TODO: Ensure that exceptions are handled in a reactive way
+            return FluxUtil.monoError(logger, ex);
+        }
+    }
 
     /**
      * Creates a relationship on a digital twin.
