@@ -75,7 +75,7 @@ public class ResourceManagerThrottlingInfo {
         for (Map.Entry<String, String> limits : commonRateLimits.entrySet()) {
             try {
                 int limit = Integer.parseInt(limits.getValue());
-                if (result.isEmpty() || result.get() > limit) {
+                if (!result.isPresent() || result.get() > limit) {
                     result = Optional.of(limit);
                 }
             } catch (NumberFormatException e) { }
