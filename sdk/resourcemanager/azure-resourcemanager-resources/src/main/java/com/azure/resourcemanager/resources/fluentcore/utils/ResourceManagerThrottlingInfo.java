@@ -32,7 +32,8 @@ public class ResourceManagerThrottlingInfo {
     );
 
     // refer https://docs.microsoft.com/en-us/azure/virtual-machines/troubleshooting/troubleshooting-throttling-errors
-    private static final String RESOURCE_RATE_LIMIT_HEADERS = "x-ms-ratelimit-remaining-resource";
+    private static final String RESOURCE_RATE_LIMIT_HEADER = "x-ms-ratelimit-remaining-resource";
+    private static final String RESOURCE_RATE_LIMIT_HEADER_PATTERN = "\\w+\\.\\w+/([^;]+);(\\d+)";
 
     private Map<String, String> commonRateLimits;
     private String resourceRateLimit;
@@ -49,11 +50,11 @@ public class ResourceManagerThrottlingInfo {
                 commonRateLimits.put(header, value);
             }
         }
-        resourceRateLimit = headers.getValue(RESOURCE_RATE_LIMIT_HEADERS);
-        Matcher matcher = Pattern.compile("\\w+\\.\\w+/([^;]+);(\\d+)").matcher(resourceRateLimit);
+        resourceRateLimit = headers.getValue(RESOURCE_RATE_LIMIT_HEADER);
+        Matcher matcher = Pattern.compile(RESOURCE_RATE_LIMIT_HEADER_PATTERN).matcher(resourceRateLimit);
         while (matcher.find()) {
             commonRateLimits.put(
-                String.format("%s-%s", RESOURCE_RATE_LIMIT_HEADERS, matcher.group(1)), matcher.group(2));
+                String.format("%s-%s", RESOURCE_RATE_LIMIT_HEADER, matcher.group(1)), matcher.group(2));
         }
     }
 
@@ -91,7 +92,7 @@ public class ResourceManagerThrottlingInfo {
 
     /**
      * refer https://docs.microsoft.com/en-us/azure/virtual-machines/troubleshooting/troubleshooting-throttling-errors
-     * @return a specific rate limit header value without parsed from compute
+     * @return a specific rate limit header value from compute
      */
     public String getResourceRateLimit() {
         return resourceRateLimit;

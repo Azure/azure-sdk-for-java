@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.resources;
 
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -12,13 +11,11 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerThrottlingInfo;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.temporal.ChronoUnit;
-import java.util.Map;
 
 public class ResourceUtilsTests {
     @Test
@@ -68,22 +65,5 @@ public class ResourceUtilsTests {
         Assertions.assertEquals("https://vault.azure.net/.default", Utils.getDefaultScopeFromUrl("https://random.vault.azure.net/random", AzureEnvironment.AZURE));
         Assertions.assertEquals("https://api.applicationinsights.io/.default", Utils.getDefaultScopeFromUrl("https://api.applicationinsights.io/random", AzureEnvironment.AZURE));
         Assertions.assertEquals("https://api.loganalytics.io/.default", Utils.getDefaultScopeFromUrl("https://api.loganalytics.io/random", AzureEnvironment.AZURE));
-    }
-
-    @Test
-    public void canCalculateThrottlingInfo() {
-        String resourceHeaderValue = "Microsoft.Compute/PutVM3Min;237,Microsoft.Compute/PutVM30Min;1197";
-        HttpHeaders headers = new HttpHeaders()
-            .put("x-ms-ratelimit-remaining-subscription-writes", "1193")
-            .put("x-ms-ratelimit-remaining-resource", resourceHeaderValue);
-
-        ResourceManagerThrottlingInfo info = ResourceManagerThrottlingInfo.fromHeaders(headers);
-        Assertions.assertEquals(resourceHeaderValue, info.getResourceRateLimit());
-        Assertions.assertEquals(237, info.getRateLimit().orElse(0));
-
-        Map<String, String> rateLimits = info.getRateLimits();
-        Assertions.assertEquals("1193", rateLimits.get("x-ms-ratelimit-remaining-subscription-writes"));
-        Assertions.assertEquals("237", rateLimits.get("x-ms-ratelimit-remaining-resource-PutVM3Min"));
-        Assertions.assertEquals("1197", rateLimits.get("x-ms-ratelimit-remaining-resource-PutVM30Min"));
     }
 }
