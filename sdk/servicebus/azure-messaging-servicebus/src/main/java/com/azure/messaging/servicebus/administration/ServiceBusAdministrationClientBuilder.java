@@ -38,8 +38,9 @@ import java.util.Objects;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of {@link
- * ServiceBusAdministrationClient} and {@link ServiceBusAdministrationAsyncClient}. Call {@link #buildClient() buildClient} and
- * {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired client.
+ * ServiceBusAdministrationClient} and {@link ServiceBusAdministrationAsyncClient}. Call
+ * {@link #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct an
+ * instance of the desired client.
  *
  * @see ServiceBusAdministrationClient
  * @see ServiceBusAdministrationAsyncClient
@@ -106,8 +107,8 @@ public class ServiceBusAdministrationClientBuilder {
      * buildAsyncClient} is invoked, a new instance of the client is created.
      *
      * <p>If {@link #pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
-     * {@link #endpoint(String) endpoint} are used to create the {@link ServiceBusAdministrationClient client}. All other
-     * builder settings are ignored.</p>
+     * {@link #endpoint(String) endpoint} are used to create the {@link ServiceBusAdministrationClient client}. All
+     * other builder settings are ignored.</p>
      *
      * @return A {@link ServiceBusAdministrationClient} with the options set in the builder.
      * @throws NullPointerException if {@code endpoint} has not been set. This is automatically set when {@link
@@ -209,7 +210,8 @@ public class ServiceBusAdministrationClientBuilder {
      *
      * @return The updated {@link ServiceBusAdministrationClientBuilder} object.
      */
-    public ServiceBusAdministrationClientBuilder credential(String fullyQualifiedNamespace, TokenCredential credential) {
+    public ServiceBusAdministrationClientBuilder credential(String fullyQualifiedNamespace,
+        TokenCredential credential) {
         this.endpoint = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
