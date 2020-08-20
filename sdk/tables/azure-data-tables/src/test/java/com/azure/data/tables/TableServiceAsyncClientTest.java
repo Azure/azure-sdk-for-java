@@ -60,10 +60,6 @@ public class TableServiceAsyncClientTest extends TestBase {
 
         //Act & Assert
         StepVerifier.create(serviceClient.createTable(tableName))
-            .assertNext(response -> {
-                Assertions.assertEquals(tableName, response.getName());
-
-            })
             .expectComplete()
             .verify();
     }
@@ -72,7 +68,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     void createTableWithResponseAsync() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
-        int expectedStatusCode = 201;
+        int expectedStatusCode = 204;
 
         //Act & Assert
         StepVerifier.create(serviceClient.createTableWithResponse(tableName))

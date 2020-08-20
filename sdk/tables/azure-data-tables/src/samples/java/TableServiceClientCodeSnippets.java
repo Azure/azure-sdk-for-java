@@ -26,7 +26,7 @@ public class TableServiceClientCodeSnippets {
             .connectionString("connectionString")
             .buildClient();
         try {
-            TableItem officeSuppliesTable = tableServiceClient.createTable("OfficeSupplies");
+            tableServiceClient.createTable("OfficeSupplies");
         } catch (TableStorageException e) {
             if (e.getErrorCode() == TableErrorCode.TABLE_ALREADY_EXISTS) {
                 System.err.println("Create Table Unsuccessful. Table already exists.");
@@ -86,7 +86,7 @@ public class TableServiceClientCodeSnippets {
         TableEntity entity = new TableEntity("markers", "crayolaMarkers");
 
         try {
-            entity = tableClient.createEntity(entity);
+            tableClient.createEntity(entity);
         } catch (TableStorageException e) {
             if (e.getErrorCode() == TableErrorCode.ENTITY_ALREADY_EXISTS) {
                 System.err.println("Create Entity Unsuccessful. Entity already exists.");

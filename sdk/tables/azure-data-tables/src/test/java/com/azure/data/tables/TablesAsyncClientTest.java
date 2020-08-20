@@ -66,11 +66,6 @@ public class TablesAsyncClientTest extends TestBase {
 
         // Act & Assert
         StepVerifier.create(tableClient.createEntity(tableEntity))
-            .assertNext(response -> {
-                assertEquals(response.getPartitionKey(), partitionKeyValue);
-                assertEquals(response.getRowKey(), rowKeyValue);
-                assertNotNull(response.getETag());
-            })
             .expectComplete()
             .verify();
     }
@@ -81,14 +76,11 @@ public class TablesAsyncClientTest extends TestBase {
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
         final TableEntity entity = new TableEntity(partitionKeyValue, rowKeyValue);
-        final int expectedStatusCode = 201;
+        final int expectedStatusCode = 204;
 
         // Act & Assert
         StepVerifier.create(tableClient.createEntityWithResponse(entity))
             .assertNext(response -> {
-                assertEquals(response.getValue().getPartitionKey(), partitionKeyValue);
-                assertEquals(response.getValue().getRowKey(), rowKeyValue);
-                assertNotNull(response.getValue().getETag());
                 assertEquals(expectedStatusCode, response.getStatusCode());
             })
             .expectComplete()
@@ -102,7 +94,8 @@ public class TablesAsyncClientTest extends TestBase {
         final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
         final TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue);
 
-        final TableEntity createdEntity = tableClient.createEntity(tableEntity).block(TIMEOUT);
+        tableClient.createEntity(tableEntity).block(TIMEOUT);
+        final TableEntity createdEntity = tableClient.getEntity(partitionKeyValue, rowKeyValue).block(TIMEOUT);
         assertNotNull(createdEntity, "'createdEntity' should not be null.");
         assertNotNull(createdEntity.getETag(), "'eTag' should not be null.");
 
@@ -120,7 +113,8 @@ public class TablesAsyncClientTest extends TestBase {
         final TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue);
         final int expectedStatusCode = 204;
 
-        final TableEntity createdEntity = tableClient.createEntity(tableEntity).block(TIMEOUT);
+        tableClient.createEntity(tableEntity).block(TIMEOUT);
+        final TableEntity createdEntity = tableClient.getEntity(partitionKeyValue, rowKeyValue).block(TIMEOUT);
         assertNotNull(createdEntity, "'createdEntity' should not be null.");
         assertNotNull(createdEntity.getETag(), "'eTag' should not be null.");
 
@@ -141,7 +135,8 @@ public class TablesAsyncClientTest extends TestBase {
         final TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue);
         final int expectedStatusCode = 204;
 
-        final TableEntity createdEntity = tableClient.createEntity(tableEntity).block(TIMEOUT);
+        tableClient.createEntity(tableEntity).block(TIMEOUT);
+        final TableEntity createdEntity = tableClient.getEntity(partitionKeyValue, rowKeyValue).block(TIMEOUT);
         assertNotNull(createdEntity, "'createdEntity' should not be null.");
         assertNotNull(createdEntity.getETag(), "'eTag' should not be null.");
 
@@ -161,13 +156,10 @@ public class TablesAsyncClientTest extends TestBase {
         final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
         final TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue);
         final int expectedStatusCode = 200;
-
-        final TableEntity createdEntity = tableClient.createEntity(tableEntity).block(TIMEOUT);
-        assertNotNull(createdEntity, "'createdEntity' should not be null.");
-        assertNotNull(createdEntity.getETag(), "'eTag' should not be null.");
+        tableClient.createEntity(tableEntity).block(TIMEOUT);
 
         // Act & Assert
-        StepVerifier.create(tableClient.getEntityWithResponse(createdEntity.getPartitionKey(), createdEntity.getRowKey()))
+        StepVerifier.create(tableClient.getEntityWithResponse(partitionKeyValue, rowKeyValue))
             .assertNext(response -> {
                 final TableEntity entity = response.getValue();
                 assertEquals(expectedStatusCode, response.getStatusCode());
@@ -176,8 +168,7 @@ public class TablesAsyncClientTest extends TestBase {
                 assertEquals(tableEntity.getPartitionKey(), entity.getPartitionKey());
                 assertEquals(tableEntity.getRowKey(), entity.getRowKey());
 
-                assertEquals(createdEntity.getETag(), entity.getETag());
-
+                assertNotNull(entity.getETag());
                 assertNotNull(entity.getProperties());
             })
             .expectComplete()
@@ -209,7 +200,8 @@ public class TablesAsyncClientTest extends TestBase {
         final TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue)
             .addProperty(oldPropertyKey, "valueA");
 
-        final TableEntity createdEntity = tableClient.createEntity(tableEntity).block(TIMEOUT);
+        tableClient.createEntity(tableEntity).block(TIMEOUT);
+        final TableEntity createdEntity = tableClient.getEntity(partitionKeyValue, rowKeyValue).block(TIMEOUT);
         assertNotNull(createdEntity, "'createdEntity' should not be null.");
         assertNotNull(createdEntity.getETag(), "'eTag' should not be null.");
 

@@ -69,12 +69,9 @@ public class TableClient {
      * rowKey and partitionKey
      *
      * @param tableEntity the entity to add
-     * @return the created TableEntity
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TableEntity createEntity(TableEntity tableEntity) {
-        return client.createEntity(tableEntity).block();
-    }
+    public void createEntity(TableEntity tableEntity) { client.createEntity(tableEntity).block(); }
 
     /**
      * insert a TableEntity with the given properties and return that TableEntity. Property map must include
@@ -82,11 +79,10 @@ public class TableClient {
      *
      * @param tableEntity the entity to add
      * @param timeout max time for query to execute before erroring out
-     * @return the created TableEntity
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TableEntity createEntity(TableEntity tableEntity, Duration timeout) {
-        return createEntityWithResponse(tableEntity, timeout, null).getValue();
+    public void createEntity(TableEntity tableEntity, Duration timeout) {
+        createEntityWithResponse(tableEntity, timeout, null).getValue();
     }
 
     /**
@@ -96,10 +92,9 @@ public class TableClient {
      * @param tableEntity the entity to add
      * @param timeout max time for query to execute before erroring out
      * @param context the context of the query
-     * @return the created TableEntity in a response
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TableEntity> createEntityWithResponse(TableEntity tableEntity, Duration timeout, Context context) {
+    public Response<Void> createEntityWithResponse(TableEntity tableEntity, Duration timeout, Context context) {
         return client.createEntityWithResponse(tableEntity, context).block(timeout);
     }
 

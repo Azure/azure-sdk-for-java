@@ -136,7 +136,7 @@ public class TableAsyncClient {
      * @return the created TableEntity
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TableEntity> createEntity(TableEntity entity) {
+    public Mono<Void> createEntity(TableEntity entity) {
         return createEntityWithResponse(entity).flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
@@ -149,18 +149,16 @@ public class TableAsyncClient {
      * @return a mono of the response with the TableEntity
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TableEntity>> createEntityWithResponse(TableEntity entity) {
+    public Mono<Response<Void>> createEntityWithResponse(TableEntity entity) {
         return withContext(context -> createEntityWithResponse(entity, context));
     }
 
-    Mono<Response<TableEntity>> createEntityWithResponse(TableEntity entity, Context context) {
+    Mono<Response<Void>> createEntityWithResponse(TableEntity entity, Context context) {
         return tableImplementation.insertEntityWithResponseAsync(tableName, null, null,
-            ResponseFormat.RETURN_CONTENT, entity.getProperties(),
+            ResponseFormat.RETURN_NO_CONTENT, entity.getProperties(),
             null, context).map(response -> {
-
-                final TableEntity createdEntity = deserializeEntity(logger, response.getValue());
                 return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                createdEntity);
+                null);
             });
     }
 

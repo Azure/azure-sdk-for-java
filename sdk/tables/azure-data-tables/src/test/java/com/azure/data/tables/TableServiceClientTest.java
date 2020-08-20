@@ -40,10 +40,7 @@ public class TableServiceClientTest extends TestBase {
         String tableName = testResourceNamer.randomName("test", 20);
 
         // Act
-        TableItem table = serviceClient.createTable(tableName);
-
-        // Assert
-        assertEquals(tableName, table.getName());
+        serviceClient.createTable(tableName);
     }
 
     @Test

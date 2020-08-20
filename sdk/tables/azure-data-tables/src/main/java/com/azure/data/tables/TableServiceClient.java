@@ -37,11 +37,10 @@ public class TableServiceClient {
      * creates the table with the given name.  If a table with the same name already exists, the operation fails.
      *
      * @param tableName the name of the table to create
-     * @return AzureTable of the created table
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TableItem createTable(String tableName) {
-        return client.createTable(tableName).block();
+    public void createTable(String tableName) {
+        client.createTable(tableName).block();
     }
 
     /**
@@ -49,10 +48,10 @@ public class TableServiceClient {
      *
      * @param tableName the name of the table to create
      * @param context the context of the query
-     * @return response with azureTable of the created table
+     * @return response
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TableItem> createTableWithResponse(String tableName, Context context) {
+    public Response<Void> createTableWithResponse(String tableName, Context context) {
         return client.createTableWithResponse(tableName, context).block();
     }
 

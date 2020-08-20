@@ -74,10 +74,10 @@ public class TableServiceAsyncClient {
      * creates the table with the given name.  If a table with the same name already exists, the operation fails.
      *
      * @param tableName the name of the table to create
-     * @return the azure table object for the created table
+     * @return mono void
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TableItem> createTable(String tableName) {
+    public Mono<Void> createTable(String tableName) {
         return createTableWithResponse(tableName).flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
@@ -85,25 +85,24 @@ public class TableServiceAsyncClient {
      * creates the table with the given name.  If a table with the same name already exists, the operation fails.
      *
      * @param tableName the name of the table to create
-     * @return a response wth the azure table object for the created table
+     * @return a response
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TableItem>> createTableWithResponse(String tableName) {
+    public Mono<Response<Void>> createTableWithResponse(String tableName) {
         return withContext(context -> createTableWithResponse(tableName, context));
     }
 
-    Mono<Response<TableItem>> createTableWithResponse(String tableName, Context context) {
+    Mono<Response<Void>> createTableWithResponse(String tableName, Context context) {
         context = context == null ? Context.NONE : context;
         final TableProperties properties = new TableProperties().setTableName(tableName);
 
         try {
             return implementation.getTables().createWithResponseAsync(properties,
                 null,
-                ResponseFormat.RETURN_CONTENT, null, context)
+                ResponseFormat.RETURN_NO_CONTENT, null, context)
                 .map(response -> {
-                    final TableItem table = new TableItem(response.getValue().getTableName());
                     return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), table);
+                        response.getHeaders(), null);
                 });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
