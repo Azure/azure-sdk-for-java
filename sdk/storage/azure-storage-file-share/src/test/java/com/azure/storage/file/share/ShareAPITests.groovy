@@ -854,6 +854,20 @@ class ShareAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.INVALID_HEADER_VALUE)
     }
 
+    def "getSnapshot"() {
+        setup:
+        primaryShareClient.create()
+        def snapshotId = primaryShareClient.createSnapshot().getSnapshot()
+
+        when:
+        def snapClient = primaryShareClient.getSnapshotClient(snapshotId)
+
+        then:
+        snapClient.getSnapshotId() == snapshotId
+        snapClient.getShareUrl().contains("sharesnapshot=")
+        primaryShareClient.getSnapshotId() == null
+    }
+
     def "Get snapshot id"() {
         given:
         def snapshot = OffsetDateTime.of(LocalDateTime.of(2000, 1, 1,
