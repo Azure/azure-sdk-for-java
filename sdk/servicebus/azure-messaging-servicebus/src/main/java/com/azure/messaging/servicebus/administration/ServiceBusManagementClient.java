@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.servicebus;
+package com.azure.messaging.servicebus.administration;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -14,16 +14,16 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.messaging.servicebus.models.CreateQueueOptions;
-import com.azure.messaging.servicebus.models.CreateSubscriptionOptions;
-import com.azure.messaging.servicebus.models.CreateTopicOptions;
-import com.azure.messaging.servicebus.models.NamespaceProperties;
-import com.azure.messaging.servicebus.models.QueueProperties;
-import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
-import com.azure.messaging.servicebus.models.SubscriptionProperties;
-import com.azure.messaging.servicebus.models.SubscriptionRuntimeInfo;
-import com.azure.messaging.servicebus.models.TopicProperties;
-import com.azure.messaging.servicebus.models.TopicRuntimeInfo;
+import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
+import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
+import com.azure.messaging.servicebus.administration.models.CreateTopicOptions;
+import com.azure.messaging.servicebus.administration.models.NamespaceProperties;
+import com.azure.messaging.servicebus.administration.models.QueueProperties;
+import com.azure.messaging.servicebus.administration.models.QueueRuntimeInfo;
+import com.azure.messaging.servicebus.administration.models.SubscriptionProperties;
+import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeInfo;
+import com.azure.messaging.servicebus.administration.models.TopicProperties;
+import com.azure.messaging.servicebus.administration.models.TopicRuntimeInfo;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;

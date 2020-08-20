@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.servicebus.models;
+package com.azure.messaging.servicebus.administration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.messaging.servicebus.ServiceBusManagementAsyncClient;
-import com.azure.messaging.servicebus.ServiceBusManagementClient;
+import com.azure.messaging.servicebus.administration.ServiceBusManagementAsyncClient;
+import com.azure.messaging.servicebus.administration.ServiceBusManagementClient;
 
 import java.time.Duration;
 import java.util.Objects;

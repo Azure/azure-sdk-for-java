@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.servicebus;
+package com.azure.messaging.servicebus.administration;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -22,6 +22,16 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
+import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
+import com.azure.messaging.servicebus.administration.models.CreateTopicOptions;
+import com.azure.messaging.servicebus.administration.models.NamespaceProperties;
+import com.azure.messaging.servicebus.administration.models.QueueProperties;
+import com.azure.messaging.servicebus.administration.models.QueueRuntimeInfo;
+import com.azure.messaging.servicebus.administration.models.SubscriptionProperties;
+import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeInfo;
+import com.azure.messaging.servicebus.administration.models.TopicProperties;
+import com.azure.messaging.servicebus.administration.models.TopicRuntimeInfo;
 import com.azure.messaging.servicebus.implementation.EntitiesImpl;
 import com.azure.messaging.servicebus.implementation.EntityHelper;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementClientImpl;
@@ -45,16 +55,6 @@ import com.azure.messaging.servicebus.implementation.models.SubscriptionDescript
 import com.azure.messaging.servicebus.implementation.models.TopicDescription;
 import com.azure.messaging.servicebus.implementation.models.TopicDescriptionEntry;
 import com.azure.messaging.servicebus.implementation.models.TopicDescriptionFeed;
-import com.azure.messaging.servicebus.models.CreateQueueOptions;
-import com.azure.messaging.servicebus.models.CreateSubscriptionOptions;
-import com.azure.messaging.servicebus.models.CreateTopicOptions;
-import com.azure.messaging.servicebus.models.NamespaceProperties;
-import com.azure.messaging.servicebus.models.QueueProperties;
-import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
-import com.azure.messaging.servicebus.models.SubscriptionProperties;
-import com.azure.messaging.servicebus.models.SubscriptionRuntimeInfo;
-import com.azure.messaging.servicebus.models.TopicProperties;
-import com.azure.messaging.servicebus.models.TopicRuntimeInfo;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

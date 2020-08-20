@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.servicebus.models;
+package com.azure.messaging.servicebus.administration.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.messaging.servicebus.implementation.models.MessageCountDetails;
@@ -10,13 +10,13 @@ import java.time.OffsetDateTime;
 import java.util.Objects;
 
 /**
- * Runtime information about the queue.
+ * Runtime information about a subscription.
  */
 @Immutable
-public class QueueRuntimeInfo {
-    private final String name;
+public class SubscriptionRuntimeInfo {
+    private final String subscriptionName;
+    private final String topicName;
     private final long messageCount;
-    private final long sizeInBytes;
     private final OffsetDateTime accessedAt;
     private final OffsetDateTime createdAt;
     private final OffsetDateTime updatedAt;
@@ -26,23 +26,24 @@ public class QueueRuntimeInfo {
     private final int transferDeadLetterMessageCount;
     private final int transferMessageCount;
 
-    /**
-     * Creates a new instance with runtime properties extracted from the given QueueDescription.
-     *
-     * @param queueProperties Queue description to extract runtime information from.
-     *
-     * @throws NullPointerException if {@code queueDescription} is null.
-     */
-    public QueueRuntimeInfo(QueueProperties queueProperties) {
-        Objects.requireNonNull(queueProperties, "'queueProperties' cannot be null.");
-        this.name = queueProperties.getName();
-        this.messageCount = queueProperties.getMessageCount();
-        this.sizeInBytes = queueProperties.getSizeInBytes();
-        this.accessedAt = queueProperties.getAccessedAt();
-        this.createdAt = queueProperties.getCreatedAt();
-        this.updatedAt = queueProperties.getUpdatedAt();
 
-        final MessageCountDetails details = queueProperties.getMessageCountDetails();
+    /**
+     * Creates a new instance with runtime properties extracted from the given SubscriptionDescription.
+     *
+     * @param subscriptionProperties Subscription description to extract runtime information from.
+     *
+     * @throws NullPointerException if {@code subscriptionDescription} is null.
+     */
+    public SubscriptionRuntimeInfo(SubscriptionProperties subscriptionProperties) {
+        Objects.requireNonNull(subscriptionProperties, "'subscriptionProperties' cannot be null.");
+        this.subscriptionName = subscriptionProperties.getSubscriptionName();
+        this.topicName = subscriptionProperties.getTopicName();
+        this.messageCount = subscriptionProperties.getMessageCount();
+        this.accessedAt = subscriptionProperties.getAccessedAt();
+        this.createdAt = subscriptionProperties.getCreatedAt();
+        this.updatedAt = subscriptionProperties.getUpdatedAt();
+
+        final MessageCountDetails details = subscriptionProperties.getMessageCountDetails();
         this.activeMessageCount = details != null ? details.getActiveMessageCount() : 0;
         this.deadLetterMessageCount = details != null ? details.getDeadLetterMessageCount() : 0;
         this.scheduledMessageCount = details != null ? details.getScheduledMessageCount() : 0;
@@ -51,9 +52,9 @@ public class QueueRuntimeInfo {
     }
 
     /**
-     * Gets the last time a message was sent, or the last time there was a receive request to this queue.
+     * Gets the last time the subscription was accessed.
      *
-     * @return The last time a message was sent, or the last time there was a receive request to this queue.
+     * @return The last time the subscription was accessed.
      */
     public OffsetDateTime getAccessedAt() {
         return accessedAt;
@@ -69,9 +70,9 @@ public class QueueRuntimeInfo {
     }
 
     /**
-     * Gets the exact time the queue was created.
+     * Gets the exact time the subscription was created.
      *
-     * @return The exact time the queue was created.
+     * @return The exact time the subscription was created.
      */
     public OffsetDateTime getCreatedAt() {
         return createdAt;
@@ -87,21 +88,12 @@ public class QueueRuntimeInfo {
     }
 
     /**
-     * Gets the number of messages in the queue.
+     * Gets the number of messages in the subscription.
      *
-     * @return The number of messages in the queue.
+     * @return The number of messages in the subscription.
      */
     public long getTotalMessageCount() {
         return messageCount;
-    }
-
-    /**
-     * Gets the name of the queue.
-     *
-     * @return The name of the queue.
-     */
-    public String getName() {
-        return name;
     }
 
     /**
@@ -111,15 +103,6 @@ public class QueueRuntimeInfo {
      */
     public int getScheduledMessageCount() {
         return this.scheduledMessageCount;
-    }
-
-    /**
-     * Gets the size of the queue, in bytes.
-     *
-     * @return The size of the queue, in bytes.
-     */
-    public long getSizeInBytes() {
-        return sizeInBytes;
     }
 
     /**
@@ -141,9 +124,27 @@ public class QueueRuntimeInfo {
     }
 
     /**
-     * Gets the exact time a message was updated in the queue.
+     * Gets the name of the subscription.
      *
-     * @return The exact time a message was updated in the queue.
+     * @return The name of the subscription.
+     */
+    public String getSubscriptionName() {
+        return subscriptionName;
+    }
+
+    /**
+     * Gets the name of the topic this subscription is associated with.
+     *
+     * @return The name of the topic this subscription is associated with.
+     */
+    public String getTopicName() {
+        return topicName;
+    }
+
+    /**
+     * Gets the exact time the subscription was updated.
+     *
+     * @return The exact time the subscription was updated.
      */
     public OffsetDateTime getUpdatedAt() {
         return updatedAt;
