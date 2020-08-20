@@ -15,7 +15,7 @@ This repository is for Spring Boot Starters of Azure services. It helps Spring B
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-spring-boot-starter</artifactId>
-    <version>2.3.3</version>
+    <version>2.3.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

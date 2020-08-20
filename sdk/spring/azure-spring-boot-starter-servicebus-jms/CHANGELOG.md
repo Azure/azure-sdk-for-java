@@ -1,5 +1,9 @@
 # Release History
 
+## 2.3.4 (2020-08-20)
+_Key Bug Fixes_
+- Replace underpinning JMS library for Service Bus of Service Bus JMS Starter to Apache Qpid to support all tiers of Service Bus.
+
 ## 2.3.3 (2020-08-07)
 
 _Improved_ 
