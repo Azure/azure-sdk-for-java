@@ -50,7 +50,7 @@ public class ResourceManagerThrottlingInfo {
             }
         }
         resourceRateLimit = headers.getValue(RESOURCE_RATE_LIMIT_HEADERS);
-        Matcher matcher = Pattern.compile("\\w+\\.\\w+;([^/])/(\\d+)").matcher(resourceRateLimit);
+        Matcher matcher = Pattern.compile("\\w+\\.\\w+/([^;]+);(\\d+)").matcher(resourceRateLimit);
         while (matcher.find()) {
             commonRateLimits.put(
                 String.format("%s-%s", RESOURCE_RATE_LIMIT_HEADERS, matcher.group(1)), matcher.group(2));
