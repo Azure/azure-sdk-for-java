@@ -7,35 +7,35 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link RecognizeEntitiesResult} model.
+ * The {@link RecognizePiiEntitiesResult} model.
  */
 @Immutable
-public final class RecognizeEntitiesResult extends TextAnalyticsResult {
-    private final CategorizedEntityCollection entities;
+public final class RecognizePiiEntitiesResult extends TextAnalyticsResult {
+    private final PiiEntityCollection entities;
 
     /**
-     * Creates a {@link RecognizeEntitiesResult} model that describes recognized entities result.
+     * Creates a {@link RecognizePiiEntitiesResult} model that describes recognized PII entities result.
      *
      * @param id Unique, non-empty document identifier.
      * @param textDocumentStatistics The text document statistics.
      * @param error The document error.
-     * @param entities A {@link CategorizedEntityCollection} contains entities and warnings.
+     * @param entities A {@link PiiEntityCollection} contains entities and warnings.
      */
-    public RecognizeEntitiesResult(String id, TextDocumentStatistics textDocumentStatistics,
-                                   TextAnalyticsError error, CategorizedEntityCollection entities) {
+    public RecognizePiiEntitiesResult(String id, TextDocumentStatistics textDocumentStatistics,
+        TextAnalyticsError error, PiiEntityCollection entities) {
         super(id, textDocumentStatistics, error);
         this.entities = entities;
     }
 
     /**
-     * Get an {@link IterableStream} of {@link CategorizedEntity}.
+     * Get an {@link IterableStream} of {@link PiiEntity}.
      *
-     * @return An {@link IterableStream} of {@link CategorizedEntity}.
+     * @return An {@link IterableStream} of {@link PiiEntity}.
      *
      * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
      * was accessed.
      */
-    public CategorizedEntityCollection getEntities() {
+    public PiiEntityCollection getEntities() {
         throwExceptionIfError();
         return entities;
     }
