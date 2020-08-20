@@ -14,6 +14,7 @@ import com.azure.storage.common.implementation.Constants
 import com.azure.storage.file.datalake.models.AccessTier
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions
 import com.azure.storage.file.datalake.models.DataLakeStorageException
+import com.azure.storage.file.datalake.models.FileExpirationOffset
 import com.azure.storage.file.datalake.models.FileQueryDelimitedSerialization
 import com.azure.storage.file.datalake.models.FileQueryError
 import com.azure.storage.file.datalake.models.FileQueryJsonSerialization
@@ -28,6 +29,7 @@ import com.azure.storage.file.datalake.models.PathHttpHeaders
 import com.azure.storage.file.datalake.models.PathPermissions
 import com.azure.storage.file.datalake.models.RolePermissions
 import com.azure.storage.file.datalake.options.FileQueryOptions
+import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions
 import spock.lang.Ignore
 import reactor.core.Exceptions
 import reactor.core.publisher.Flux
@@ -44,6 +46,7 @@ import java.nio.file.OpenOption
 import java.nio.file.StandardOpenOption
 import java.security.MessageDigest
 import java.time.Duration
+import java.time.OffsetDateTime
 import java.util.function.Consumer
 
 class FileAPITest extends APISpec {
@@ -3362,6 +3365,53 @@ class FileAPITest extends APISpec {
         null     | null       | garbageEtag | null         | null
         null     | null       | null        | receivedEtag | null
         null     | null       | null        | null         | garbageLeaseID
+    }
+
+    @Unroll
+    def "Schedule deletion"() {
+        given:
+        def fileClient = fsc.getFileClient(generatePathName())
+        fileClient.create()
+
+        when:
+        fileClient.scheduleDeletionWithResponse(fileScheduleDeletionOptions, null, null)
+        def expiryTimeProperty = fileClient.getProperties().getExpiresOn()
+
+        then:
+        (expiryTimeProperty != null) == hasExpiry
+
+        where:
+        fileScheduleDeletionOptions                                                             | hasExpiry
+        new FileScheduleDeletionOptions(Duration.ofDays(1), FileExpirationOffset.CREATION_TIME) | true
+        new FileScheduleDeletionOptions(Duration.ofDays(1), FileExpirationOffset.NOW)           | true
+        new FileScheduleDeletionOptions()                                                       | false
+        null                                                                                    | false
+    }
+
+    def "Schedule deletion time"() {
+        given:
+        def fileScheduleDeletionOptions = new FileScheduleDeletionOptions(getUTCNow().plusDays(1))
+        def fileClient = fsc.getFileClient(generatePathName())
+        fileClient.create()
+
+        when:
+        fileClient.scheduleDeletionWithResponse(fileScheduleDeletionOptions, null, null)
+        def expiryTimeProperty = fileClient.getProperties().getExpiresOn()
+
+        then:
+        expiryTimeProperty
+    }
+
+    def "Schedule deletion error"() {
+        given:
+        def fileScheduleDeletionOptions = new FileScheduleDeletionOptions(getUTCNow().plusDays(1))
+        def fileClient = fsc.getFileClient(generatePathName())
+
+        when:
+        fileClient.scheduleDeletionWithResponse(fileScheduleDeletionOptions, null, null)
+
+        then:
+        thrown(DataLakeStorageException)
     }
 
     class MockProgressReceiver implements Consumer<FileQueryProgress> {
