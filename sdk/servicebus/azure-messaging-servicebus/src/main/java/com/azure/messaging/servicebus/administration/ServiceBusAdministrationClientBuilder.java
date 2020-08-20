@@ -45,7 +45,8 @@ import java.util.Objects;
  * @see ServiceBusAdministrationClient
  * @see ServiceBusAdministrationAsyncClient
  */
-@ServiceClientBuilder(serviceClients = {ServiceBusAdministrationClient.class, ServiceBusAdministrationAsyncClient.class})
+@ServiceClientBuilder(serviceClients = {ServiceBusAdministrationClient.class,
+    ServiceBusAdministrationAsyncClient.class})
 public class ServiceBusAdministrationClientBuilder {
     private final ClientLogger logger = new ClientLogger(ServiceBusAdministrationClientBuilder.class);
     private final ServiceBusManagementSerializer serializer = new ServiceBusManagementSerializer();
@@ -258,8 +259,8 @@ public class ServiceBusAdministrationClientBuilder {
      * Sets the HTTP pipeline to use for the service client.
      *
      * If {@code pipeline} is set, all other settings are ignored, aside from {@link
-     * ServiceBusAdministrationClientBuilder#endpoint(String) endpoint} to build {@link ServiceBusAdministrationClient} or
-     * {@link ServiceBusAdministrationAsyncClient}.
+     * ServiceBusAdministrationClientBuilder#endpoint(String) endpoint} to build {@link ServiceBusAdministrationClient}
+     * or {@link ServiceBusAdministrationAsyncClient}.
      *
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
      *
