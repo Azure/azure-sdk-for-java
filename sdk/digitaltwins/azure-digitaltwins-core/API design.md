@@ -327,7 +327,7 @@ These APIs are invoked via DigitalTwinsAsyncClient.
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be updated.
      * @param relationshipUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin's relationship.
-     * @param options The optional settings for this request (ifMatch param).
+     * @param options The optional settings for this request.
      * @return An empty response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -339,7 +339,7 @@ These APIs are invoked via DigitalTwinsAsyncClient.
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be updated.
      * @param relationshipUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin's relationship.
-     * @param options The optional settings for this request (ifMatch param).
+     * @param options The optional settings for this request.
      * @return A REST response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -350,7 +350,7 @@ These APIs are invoked via DigitalTwinsAsyncClient.
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to delete.
-     * @param options The optional settings for this request (ifMatch param).
+     * @param options The optional settings for this request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteRelationship(String digitalTwinId, String relationshipId, RequestOptions options) { }
@@ -360,7 +360,7 @@ These APIs are invoked via DigitalTwinsAsyncClient.
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to delete.
-     * @param options The optional settings for this request (ifMatch param).
+     * @param options The optional settings for this request.
      * @return A REST response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -419,10 +419,11 @@ These APIs are invoked via DigitalTwinsClient.
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be created.
      * @param relationship The application/json relationship to be created.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A REST response containing the application/json relationship created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<String> createRelationshipWithResponse(String digitalTwinId, String relationshipId, String relationship) { }
+    public Response<String> createRelationshipWithResponse(String digitalTwinId, String relationshipId, String relationship, Context context) { }
 
     /**
      * Gets a relationship on a digital twin.
@@ -439,10 +440,11 @@ These APIs are invoked via DigitalTwinsClient.
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to retrieve.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A REST response containing the application/json relationship corresponding to the provided relationshipId.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<String> getRelationshipWithResponse(String digitalTwinId, String relationshipId) { }
+    public Response<String> getRelationshipWithResponse(String digitalTwinId, String relationshipId, Context context) { }
     
     /**
      * Updates the properties of a relationship on a digital twin.
@@ -450,7 +452,7 @@ These APIs are invoked via DigitalTwinsClient.
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be updated.
      * @param relationshipUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin's relationship.
-     * @param options The optional settings for this request (ifMatch param).
+     * @param options The optional settings for this request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void updateRelationship(String digitalTwinId, String relationshipId, String relationshipUpdateOperations, RequestOptions options) { }
@@ -461,18 +463,19 @@ These APIs are invoked via DigitalTwinsClient.
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be updated.
      * @param relationshipUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin's relationship.
-     * @param options The optional settings for this request (ifMatch param).
+     * @param options The optional settings for this request.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A REST response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response updateRelationshipWithResponse(String digitalTwinId, String relationshipId, String relationshipUpdateOperations, RequestOptions options) { }
+    public Response updateRelationshipWithResponse(String digitalTwinId, String relationshipId, String relationshipUpdateOperations, RequestOptions options, Context context) { }
 
     /**
      * Deletes a relationship on a digital twin.
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to delete.
-     * @param options The optional settings for this request (ifMatch param).
+     * @param options The optional settings for this request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteRelationship(String digitalTwinId, String relationshipId, RequestOptions options) { }
@@ -482,11 +485,12 @@ These APIs are invoked via DigitalTwinsClient.
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to delete.
-     * @param options The optional settings for this request (ifMatch param).
+     * @param options The optional settings for this request.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A REST response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response deleteRelationshipWithResponse(String digitalTwinId, String relationshipId, RequestOptions options) { }
+    public Response deleteRelationshipWithResponse(String digitalTwinId, String relationshipId, RequestOptions options, Context context) { }
 
     /**
      * Gets all the relationships on a digital twin by iterating through a collection.
@@ -502,19 +506,21 @@ These APIs are invoked via DigitalTwinsClient.
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipName The name of a relationship to filter to.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link PagedIterable} of application/json relationships belonging to the specified digital twin and the http response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> listRelationships(String digitalTwinId, String relationshipName) { }
+    public PagedIterable<String> listRelationships(String digitalTwinId, String relationshipName, Context context) { }
 
     /**
      * Gets all the relationships referencing a digital twin as a target by iterating through a collection.
      *
      * @param digitalTwinId The Id of the target digital twin.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link PagedIterable} of application/json relationships directed towards the specified digital twin and the http response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<IncomingRelationship> listIncomingRelationships(String digitalTwinId) { }
+    public PagedIterable<IncomingRelationship> listIncomingRelationships(String digitalTwinId, Context context) { }
 
 ```
 </details>
