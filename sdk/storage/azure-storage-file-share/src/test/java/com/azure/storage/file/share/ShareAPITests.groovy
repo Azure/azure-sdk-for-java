@@ -11,6 +11,7 @@ import com.azure.storage.file.share.models.NtfsFileAttributes
 import com.azure.storage.file.share.models.ShareAccessPolicy
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
+import com.azure.storage.file.share.models.ShareRequestConditions
 import com.azure.storage.file.share.models.ShareSignedIdentifier
 import com.azure.storage.file.share.models.ShareSnapshotInfo
 import com.azure.storage.file.share.models.ShareStorageException
@@ -236,7 +237,7 @@ class ShareAPITests extends APISpec {
         def leaseID = setupShareLeaseCondition(primaryShareClient, receivedLeaseID)
 
         expect:
-        FileTestHelper.assertResponseStatusCode(primaryShareClient.deleteWithResponse(new ShareDeleteOptions().setLeaseId(leaseID),null, null), 202)
+        FileTestHelper.assertResponseStatusCode(primaryShareClient.deleteWithResponse(new ShareDeleteOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null), 202)
     }
 
     def "Delete share lease error"() {
@@ -245,7 +246,7 @@ class ShareAPITests extends APISpec {
         def leaseID = setupShareLeaseCondition(primaryShareClient, garbageLeaseID)
 
         when:
-        primaryShareClient.deleteWithResponse(new ShareDeleteOptions().setLeaseId(leaseID), null, null)
+        primaryShareClient.deleteWithResponse(new ShareDeleteOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null)
 
         then:
         thrown(ShareStorageException)
@@ -279,7 +280,7 @@ class ShareAPITests extends APISpec {
         def leaseID = setupShareLeaseCondition(primaryShareClient, receivedLeaseID)
 
         expect:
-        FileTestHelper.assertResponseStatusCode(primaryShareClient.getPropertiesWithResponse(new ShareGetPropertiesOptions().setLeaseId(leaseID),null, null), 200)
+        FileTestHelper.assertResponseStatusCode(primaryShareClient.getPropertiesWithResponse(new ShareGetPropertiesOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)),null, null), 200)
     }
 
     def "Get properties lease error"() {
@@ -288,7 +289,7 @@ class ShareAPITests extends APISpec {
         def leaseID = setupShareLeaseCondition(primaryShareClient, garbageLeaseID)
 
         when:
-        primaryShareClient.getPropertiesWithResponse(new ShareGetPropertiesOptions().setLeaseId(leaseID), null, null)
+        primaryShareClient.getPropertiesWithResponse(new ShareGetPropertiesOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null)
 
         then:
         thrown(ShareStorageException)
@@ -381,7 +382,7 @@ class ShareAPITests extends APISpec {
         def leaseID = setupShareLeaseCondition(primaryShareClient, receivedLeaseID)
 
         expect:
-        primaryShareClient.setAccessPolicyWithResponse(new ShareSetAccessPolicyOptions().setLeaseId(leaseID), null, null).getStatusCode() == 200
+        primaryShareClient.setAccessPolicyWithResponse(new ShareSetAccessPolicyOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null).getStatusCode() == 200
     }
 
     def "Set access policy lease error"() {
@@ -390,7 +391,7 @@ class ShareAPITests extends APISpec {
         def leaseID = setupShareLeaseCondition(primaryShareClient, garbageLeaseID)
 
         when:
-        primaryShareClient.setAccessPolicyWithResponse(new ShareSetAccessPolicyOptions().setLeaseId(leaseID), null, null)
+        primaryShareClient.setAccessPolicyWithResponse(new ShareSetAccessPolicyOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null)
 
         then:
         thrown(ShareStorageException)
@@ -434,7 +435,7 @@ class ShareAPITests extends APISpec {
         def leaseID = setupShareLeaseCondition(primaryShareClient, receivedLeaseID)
 
         when:
-        def response = primaryShareClient.getAccessPolicy(new ShareGetAccessPolicyOptions().setLeaseId(leaseID))
+        def response = primaryShareClient.getAccessPolicy(new ShareGetAccessPolicyOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)))
 
         then:
         !response.iterator().hasNext()
@@ -446,7 +447,7 @@ class ShareAPITests extends APISpec {
         def leaseID = setupShareLeaseCondition(primaryShareClient, garbageLeaseID)
 
         when:
-        primaryShareClient.getAccessPolicy(new ShareGetAccessPolicyOptions().setLeaseId(leaseID)).iterator().hasNext()
+        primaryShareClient.getAccessPolicy(new ShareGetAccessPolicyOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID))).iterator().hasNext()
 
         then:
         thrown(ShareStorageException)
@@ -483,7 +484,7 @@ class ShareAPITests extends APISpec {
 
         when:
         def setQuotaResponse = primaryShareClient.setQuotaWithResponse(
-            new ShareSetQuotaOptions(2).setLeaseId(leaseID), null, null)
+            new ShareSetQuotaOptions(2).setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null)
 
         then:
         FileTestHelper.assertResponseStatusCode(setQuotaResponse, 200)
@@ -496,7 +497,7 @@ class ShareAPITests extends APISpec {
 
         when:
         def setQuotaResponse = primaryShareClient.setQuotaWithResponse(
-            new ShareSetQuotaOptions(2).setLeaseId(leaseID), null, null)
+            new ShareSetQuotaOptions(2).setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null)
 
         then:
         thrown(ShareStorageException)
@@ -532,7 +533,7 @@ class ShareAPITests extends APISpec {
         def leaseID = setupShareLeaseCondition(primaryShareClient, receivedLeaseID)
 
         when:
-        def resp = primaryShareClient.setMetadataWithResponse(new ShareSetMetadataOptions().setLeaseId(leaseID), null, null)
+        def resp = primaryShareClient.setMetadataWithResponse(new ShareSetMetadataOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null)
 
         then:
         FileTestHelper.assertResponseStatusCode(resp, 200)
@@ -545,7 +546,7 @@ class ShareAPITests extends APISpec {
 
         when:
         primaryShareClient.setMetadataWithResponse(
-            new ShareSetMetadataOptions().setLeaseId(leaseID), null, null)
+            new ShareSetMetadataOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null)
 
         then:
         thrown(ShareStorageException)
@@ -588,7 +589,7 @@ class ShareAPITests extends APISpec {
         def leaseID = setupShareLeaseCondition(primaryShareClient, receivedLeaseID)
 
         when:
-        def resp = primaryShareClient.getStatisticsWithResponse(new ShareGetStatisticsOptions().setLeaseId(leaseID), null, null)
+        def resp = primaryShareClient.getStatisticsWithResponse(new ShareGetStatisticsOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null)
 
         then:
         FileTestHelper.assertResponseStatusCode(resp, 200)
@@ -600,7 +601,7 @@ class ShareAPITests extends APISpec {
         def leaseID = setupShareLeaseCondition(primaryShareClient, garbageLeaseID)
 
         when:
-        def resp = primaryShareClient.getStatisticsWithResponse(new ShareGetStatisticsOptions().setLeaseId(leaseID), null, null)
+        def resp = primaryShareClient.getStatisticsWithResponse(new ShareGetStatisticsOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null)
 
         then:
         thrown(ShareStorageException)

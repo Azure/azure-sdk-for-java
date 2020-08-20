@@ -409,10 +409,13 @@ public class ShareAsyncClient {
 
     Mono<Response<Void>> deleteWithResponse(ShareDeleteOptions options, Context context) {
         options = options == null ? new ShareDeleteOptions() : options;
+        ShareRequestConditions requestConditions = options.getRequestConditions() == null
+            ? new ShareRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.shares()
             .deleteWithRestResponseAsync(shareName, snapshot, null, options.getDeleteSnapshotsOptions(),
-                options.getLeaseId(), context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                requestConditions.getLeaseId(),
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -493,9 +496,11 @@ public class ShareAsyncClient {
 
     Mono<Response<ShareProperties>> getPropertiesWithResponse(ShareGetPropertiesOptions options, Context context) {
         options = options == null ? new ShareGetPropertiesOptions() : options;
+        ShareRequestConditions requestConditions = options.getRequestConditions() == null
+            ? new ShareRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.shares()
-            .getPropertiesWithRestResponseAsync(shareName, snapshot, null, options.getLeaseId(),
+            .getPropertiesWithRestResponseAsync(shareName, snapshot, null, requestConditions.getLeaseId(),
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::mapGetPropertiesResponse);
     }
@@ -575,9 +580,11 @@ public class ShareAsyncClient {
 
     Mono<Response<ShareInfo>> setQuotaWithResponse(ShareSetQuotaOptions options, Context context) {
         StorageImplUtils.assertNotNull("options", options);
+        ShareRequestConditions requestConditions = options.getRequestConditions() == null
+            ? new ShareRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.shares().setQuotaWithRestResponseAsync(shareName, null,
-            options.getQuotaInGb(), options.getLeaseId(),
+            options.getQuotaInGb(), requestConditions.getLeaseId(),
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::mapToShareInfoResponse);
     }
@@ -670,9 +677,11 @@ public class ShareAsyncClient {
 
     Mono<Response<ShareInfo>> setMetadataWithResponse(ShareSetMetadataOptions options, Context context) {
         options = options == null ? new ShareSetMetadataOptions() : options;
+        ShareRequestConditions requestConditions = options.getRequestConditions() == null
+            ? new ShareRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.shares().setMetadataWithRestResponseAsync(shareName, null,
-            options.getMetadata(), options.getLeaseId(),
+            options.getMetadata(), requestConditions.getLeaseId(),
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::mapToShareInfoResponse);
     }
@@ -718,10 +727,13 @@ public class ShareAsyncClient {
      */
     public PagedFlux<ShareSignedIdentifier> getAccessPolicy(ShareGetAccessPolicyOptions options) {
         ShareGetAccessPolicyOptions finalOptions = options == null ? new ShareGetAccessPolicyOptions() : options;
+        ShareRequestConditions requestConditions = finalOptions.getRequestConditions() == null
+            ? new ShareRequestConditions() : finalOptions.getRequestConditions();
         try {
             Function<String, Mono<PagedResponse<ShareSignedIdentifier>>> retriever =
                 marker -> this.azureFileStorageClient.shares()
-                    .getAccessPolicyWithRestResponseAsync(shareName, null, finalOptions.getLeaseId(), Context.NONE)
+                    .getAccessPolicyWithRestResponseAsync(shareName, null, requestConditions.getLeaseId(),
+                        Context.NONE)
                     .map(response -> new PagedResponseBase<>(response.getRequest(),
                         response.getStatusCode(),
                         response.getHeaders(),
@@ -815,6 +827,8 @@ public class ShareAsyncClient {
 
     Mono<Response<ShareInfo>> setAccessPolicyWithResponse(ShareSetAccessPolicyOptions options, Context context) {
         options = options == null ? new ShareSetAccessPolicyOptions() : options;
+        ShareRequestConditions requestConditions = options.getRequestConditions() == null
+            ? new ShareRequestConditions() : options.getRequestConditions();
         List<ShareSignedIdentifier> permissions = options.getPermissions();
         /*
         We truncate to seconds because the service only supports nanoseconds or seconds, but doing an
@@ -837,7 +851,7 @@ public class ShareAsyncClient {
         context = context == null ? Context.NONE : context;
 
         return azureFileStorageClient.shares()
-            .setAccessPolicyWithRestResponseAsync(shareName, permissions, null, options.getLeaseId(),
+            .setAccessPolicyWithRestResponseAsync(shareName, permissions, null, requestConditions.getLeaseId(),
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::mapToShareInfoResponse);
     }
@@ -913,9 +927,11 @@ public class ShareAsyncClient {
 
     Mono<Response<ShareStatistics>> getStatisticsWithResponse(ShareGetStatisticsOptions options, Context context) {
         options = options == null ? new ShareGetStatisticsOptions() : options;
+        ShareRequestConditions requestConditions = options.getRequestConditions() == null
+            ? new ShareRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.shares().getStatisticsWithRestResponseAsync(shareName, null,
-            options.getLeaseId(), context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            requestConditions.getLeaseId(), context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::mapGetStatisticsResponse);
     }
 

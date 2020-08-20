@@ -380,7 +380,8 @@ public class ShareAsyncJavaDocCodeSamples {
     public void deleteWithResponse2() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareAsyncClient.deleteWithResponse#ShareDeleteOptions
-        shareAsyncClient.deleteWithResponse(new ShareDeleteOptions().setLeaseId(leaseId)).subscribe(
+        shareAsyncClient.deleteWithResponse(new ShareDeleteOptions()
+            .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseId))).subscribe(
             response -> System.out.println("Deleting the shareAsyncClient completed with status code: "
                 + response.getStatusCode()),
             error -> System.err.println(error.toString()),
@@ -422,7 +423,8 @@ public class ShareAsyncJavaDocCodeSamples {
     public void getPropertiesWithResponse2() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareAsyncClient.getPropertiesWithResponse#ShareGetPropertiesOptions
-        shareAsyncClient.getPropertiesWithResponse(new ShareGetPropertiesOptions().setLeaseId(leaseId))
+        shareAsyncClient.getPropertiesWithResponse(new ShareGetPropertiesOptions()
+            .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseId)))
             .subscribe(properties -> {
                 System.out.printf("Share quota: %d, Metadata: %s", properties.getValue().getQuota(),
                     properties.getValue().getMetadata());
@@ -462,7 +464,8 @@ public class ShareAsyncJavaDocCodeSamples {
     public void setQuotaWithResponse2() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareAsyncClient.setQuotaWithResponse#ShareSetQuotaOptions
-        shareAsyncClient.setQuotaWithResponse(new ShareSetQuotaOptions(1024).setLeaseId(leaseId))
+        shareAsyncClient.setQuotaWithResponse(new ShareSetQuotaOptions(1024)
+            .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseId)))
             .subscribe(response ->
                 System.out.printf("Setting the share quota completed with status code %d", response.getStatusCode())
             );
@@ -501,7 +504,8 @@ public class ShareAsyncJavaDocCodeSamples {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareAsyncClient.setMetadataWithResponse#ShareSetMetadataOptions
         shareAsyncClient.setMetadataWithResponse(new ShareSetMetadataOptions()
-            .setMetadata(Collections.singletonMap("share", "updatedMetadata")).setLeaseId(leaseId))
+            .setMetadata(Collections.singletonMap("share", "updatedMetadata"))
+            .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseId)))
             .subscribe(response ->
                 System.out.printf("Setting the share metadata completed with status code %d", response.getStatusCode())
             );
@@ -539,7 +543,8 @@ public class ShareAsyncJavaDocCodeSamples {
     public void getAccessPolicyAsync2() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareAsyncClient.getAccessPolicy#ShareGetAccessPolicyOptions
-        shareAsyncClient.getAccessPolicy(new ShareGetAccessPolicyOptions().setLeaseId(leaseId))
+        shareAsyncClient.getAccessPolicy(new ShareGetAccessPolicyOptions()
+            .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseId)))
             .subscribe(result -> System.out.printf("Access policy %s allows these permissions: %s", result.getId(),
                 result.getAccessPolicy().getPermissions())
             );
@@ -591,7 +596,8 @@ public class ShareAsyncJavaDocCodeSamples {
 
         ShareSignedIdentifier permission = new ShareSignedIdentifier().setId("mypolicy").setAccessPolicy(accessPolicy);
         shareAsyncClient.setAccessPolicyWithResponse(new ShareSetAccessPolicyOptions()
-            .setPermissions(Collections.singletonList(permission)).setLeaseId(leaseId))
+            .setPermissions(Collections.singletonList(permission))
+            .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseId)))
             .subscribe(response -> System.out.printf("Setting access policies completed completed with status code %d",
                 response.getStatusCode()));
         // END: com.azure.storage.file.share.ShareAsyncClient.setAccessPolicyWithResponse#ShareSetAccessPolicyOptions
@@ -669,7 +675,8 @@ public class ShareAsyncJavaDocCodeSamples {
     public void getStatisticsWithResponse2() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareAsyncClient.getStatisticsWithResponse#ShareGetStatisticsOptions
-        shareAsyncClient.getStatisticsWithResponse(new ShareGetStatisticsOptions().setLeaseId(leaseId))
+        shareAsyncClient.getStatisticsWithResponse(new ShareGetStatisticsOptions()
+            .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseId)))
             .subscribe(response -> System.out.printf("The share is using %d GB",
             response.getValue().getShareUsageInGB()));
         // END: com.azure.storage.file.share.ShareAsyncClient.getStatisticsWithResponse#ShareGetStatisticsOptions

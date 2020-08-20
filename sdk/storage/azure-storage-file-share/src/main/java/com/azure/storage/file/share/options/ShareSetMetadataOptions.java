@@ -4,6 +4,7 @@
 package com.azure.storage.file.share.options;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.storage.file.share.models.ShareRequestConditions;
 
 import java.util.Collections;
 import java.util.Map;
@@ -15,20 +16,13 @@ import java.util.Map;
 public class ShareSetMetadataOptions {
 
     private Map<String, String> metadata;
-    private String leaseId;
+    private ShareRequestConditions requestConditions;
 
     /**
      * @return Metadata to set on the share, if null is passed the metadata for the share is cleared.
      */
     public Map<String, String> getMetadata() {
         return metadata == null ? null : Collections.unmodifiableMap(metadata);
-    }
-
-    /**
-     * @return The lease id that the share must match.
-     */
-    public String getLeaseId() {
-        return leaseId;
     }
 
     /**
@@ -41,11 +35,18 @@ public class ShareSetMetadataOptions {
     }
 
     /**
-     * @param leaseId The lease id that the share must match.
+     * @return {@link ShareRequestConditions}.
+     */
+    public ShareRequestConditions getRequestConditions() {
+        return requestConditions;
+    }
+
+    /**
+     * @param requestConditions {@link ShareRequestConditions}.
      * @return The updated options.
      */
-    public ShareSetMetadataOptions setLeaseId(String leaseId) {
-        this.leaseId = leaseId;
+    public ShareSetMetadataOptions setRequestConditions(ShareRequestConditions requestConditions) {
+        this.requestConditions = requestConditions;
         return this;
     }
 }

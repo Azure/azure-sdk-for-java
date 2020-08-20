@@ -4,6 +4,7 @@
 package com.azure.storage.file.share.options;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.storage.file.share.models.ShareRequestConditions;
 
 /**
  * Extended options that may be passed when setting quota on a share.
@@ -12,7 +13,7 @@ import com.azure.core.annotation.Fluent;
 public class ShareSetQuotaOptions {
 
     private final int quotaInGb;
-    private String leaseId;
+    private ShareRequestConditions requestConditions;
 
     /**
      * @param quotaInGb Size in GB to limit the share's growth. The quota in GB must be between 1 and 5120.
@@ -29,18 +30,18 @@ public class ShareSetQuotaOptions {
     }
 
     /**
-     * @return The lease id that the share must match.
+     * @return {@link ShareRequestConditions}.
      */
-    public String getLeaseId() {
-        return leaseId;
+    public ShareRequestConditions getRequestConditions() {
+        return requestConditions;
     }
 
     /**
-     * @param leaseId The lease id that the share must match.
+     * @param requestConditions {@link ShareRequestConditions}.
      * @return The updated options.
      */
-    public ShareSetQuotaOptions setLeaseId(String leaseId) {
-        this.leaseId = leaseId;
+    public ShareSetQuotaOptions setRequestConditions(ShareRequestConditions requestConditions) {
+        this.requestConditions = requestConditions;
         return this;
     }
 }

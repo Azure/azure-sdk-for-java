@@ -4,6 +4,7 @@
 package com.azure.storage.file.share.options;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
 
 import java.util.Collections;
@@ -16,20 +17,13 @@ import java.util.List;
 public class ShareSetAccessPolicyOptions {
 
     private List<ShareSignedIdentifier> permissions;
-    private String leaseId;
+    private ShareRequestConditions requestConditions;
 
     /**
      * @return Access policies to set on the share.
      */
     public List<ShareSignedIdentifier> getPermissions() {
         return permissions == null ? null : Collections.unmodifiableList(permissions);
-    }
-
-    /**
-     * @return The lease id that the share must match.
-     */
-    public String getLeaseId() {
-        return leaseId;
     }
 
     /**
@@ -42,11 +36,18 @@ public class ShareSetAccessPolicyOptions {
     }
 
     /**
-     * @param leaseId The lease id that the share must match.
+     * @return {@link ShareRequestConditions}.
+     */
+    public ShareRequestConditions getRequestConditions() {
+        return requestConditions;
+    }
+
+    /**
+     * @param requestConditions {@link ShareRequestConditions}.
      * @return The updated options.
      */
-    public ShareSetAccessPolicyOptions setLeaseId(String leaseId) {
-        this.leaseId = leaseId;
+    public ShareSetAccessPolicyOptions setRequestConditions(ShareRequestConditions requestConditions) {
+        this.requestConditions = requestConditions;
         return this;
     }
 }

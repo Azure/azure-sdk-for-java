@@ -4,6 +4,7 @@
 package com.azure.storage.file.share.options;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.storage.file.share.models.ShareRequestConditions;
 
 /**
  * Extended options that may be passed when getting access policy from a share.
@@ -11,21 +12,21 @@ import com.azure.core.annotation.Fluent;
 @Fluent
 public class ShareGetAccessPolicyOptions {
 
-    private String leaseId;
+    private ShareRequestConditions requestConditions;
 
     /**
-     * @return The lease id that the share must match.
+     * @return {@link ShareRequestConditions}.
      */
-    public String getLeaseId() {
-        return leaseId;
+    public ShareRequestConditions getRequestConditions() {
+        return requestConditions;
     }
 
     /**
-     * @param leaseId The lease id that the share must match.
+     * @param requestConditions {@link ShareRequestConditions}.
      * @return The updated options.
      */
-    public ShareGetAccessPolicyOptions setLeaseId(String leaseId) {
-        this.leaseId = leaseId;
+    public ShareGetAccessPolicyOptions setRequestConditions(ShareRequestConditions requestConditions) {
+        this.requestConditions = requestConditions;
         return this;
     }
 }
