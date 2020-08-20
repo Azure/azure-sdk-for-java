@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.appservice.implementation;
 
+import com.azure.resourcemanager.appservice.fluent.inner.SitePatchResourceInner;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.appservice.models.FunctionDeploymentSlot;
 import com.azure.resourcemanager.appservice.fluent.inner.SiteConfigResourceInner;
@@ -71,5 +72,11 @@ class FunctionDeploymentSlotImpl
     @Override
     Mono<SiteInner> submitSite(final SiteInner site) {
         return submitSiteWithoutSiteConfig(site);
+    }
+
+    @Override
+    Mono<SiteInner> submitSite(final SitePatchResourceInner siteUpdate) {
+        // PATCH does not work for function app slot
+        return submitSiteWithoutSiteConfig(this.inner());
     }
 }

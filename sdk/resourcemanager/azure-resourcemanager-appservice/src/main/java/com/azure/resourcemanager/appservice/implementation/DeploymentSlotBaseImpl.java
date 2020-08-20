@@ -168,55 +168,61 @@ abstract class DeploymentSlotBaseImpl<
     }
 
     Mono<Indexable> submitAppSettings() {
-        return Mono
-            .just(configurationSource)
-            .flatMap(
-                webAppBase -> {
-                    if (!isInCreateMode()) {
-                        return DeploymentSlotBaseImpl.super.submitAppSettings();
-                    }
-                    return webAppBase
-                        .getAppSettingsAsync()
-                        .flatMap(
-                            stringAppSettingMap -> {
-                                for (AppSetting appSetting : stringAppSettingMap.values()) {
-                                    if (appSetting.sticky()) {
-                                        withStickyAppSetting(appSetting.key(), appSetting.value());
-                                    } else {
-                                        withAppSetting(appSetting.key(), appSetting.value());
+        if (configurationSource == null) {
+            return DeploymentSlotBaseImpl.super.submitAppSettings();
+        } else {
+            return Mono
+                .just(configurationSource)
+                .flatMap(
+                    webAppBase -> {
+                        if (!isInCreateMode()) {
+                            return DeploymentSlotBaseImpl.super.submitAppSettings();
+                        }
+                        return webAppBase
+                            .getAppSettingsAsync()
+                            .flatMap(
+                                stringAppSettingMap -> {
+                                    for (AppSetting appSetting : stringAppSettingMap.values()) {
+                                        if (appSetting.sticky()) {
+                                            withStickyAppSetting(appSetting.key(), appSetting.value());
+                                        } else {
+                                            withAppSetting(appSetting.key(), appSetting.value());
+                                        }
                                     }
-                                }
-                                return DeploymentSlotBaseImpl.super.submitAppSettings();
-                            });
-                })
-            .switchIfEmpty(DeploymentSlotBaseImpl.super.submitAppSettings());
+                                    return DeploymentSlotBaseImpl.super.submitAppSettings();
+                                });
+                    });
+        }
     }
 
     Mono<Indexable> submitConnectionStrings() {
-        return Mono
-            .just(configurationSource)
-            .flatMap(
-                webAppBase -> {
-                    if (!isInCreateMode()) {
-                        return DeploymentSlotBaseImpl.super.submitConnectionStrings();
-                    }
-                    return webAppBase
-                        .getConnectionStringsAsync()
-                        .flatMap(
-                            stringConnectionStringMap -> {
-                                for (ConnectionString connectionString : stringConnectionStringMap.values()) {
-                                    if (connectionString.sticky()) {
-                                        withStickyConnectionString(
-                                            connectionString.name(), connectionString.value(), connectionString.type());
-                                    } else {
-                                        withConnectionString(
-                                            connectionString.name(), connectionString.value(), connectionString.type());
+        if (configurationSource == null) {
+            return DeploymentSlotBaseImpl.super.submitConnectionStrings();
+        } else {
+            return Mono
+                .just(configurationSource)
+                .flatMap(
+                    webAppBase -> {
+                        if (!isInCreateMode()) {
+                            return DeploymentSlotBaseImpl.super.submitConnectionStrings();
+                        }
+                        return webAppBase
+                            .getConnectionStringsAsync()
+                            .flatMap(
+                                stringConnectionStringMap -> {
+                                    for (ConnectionString connectionString : stringConnectionStringMap.values()) {
+                                        if (connectionString.sticky()) {
+                                            withStickyConnectionString(
+                                                connectionString.name(), connectionString.value(), connectionString.type());
+                                        } else {
+                                            withConnectionString(
+                                                connectionString.name(), connectionString.value(), connectionString.type());
+                                        }
                                     }
-                                }
-                                return DeploymentSlotBaseImpl.super.submitConnectionStrings();
-                            });
-                })
-            .switchIfEmpty(DeploymentSlotBaseImpl.super.submitConnectionStrings());
+                                    return DeploymentSlotBaseImpl.super.submitConnectionStrings();
+                                });
+                    });
+        }
     }
 
     public ParentImplT parent() {

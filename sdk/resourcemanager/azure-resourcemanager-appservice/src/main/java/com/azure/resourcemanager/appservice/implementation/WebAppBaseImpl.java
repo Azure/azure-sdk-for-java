@@ -900,6 +900,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
                     return siteInner;
                 });
     }
+
     Mono<SiteInner> submitSite(final SitePatchResourceInner siteUpdate) {
         // Construct web app observable
         return updateInner(siteUpdate)
