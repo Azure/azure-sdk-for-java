@@ -84,7 +84,7 @@ com.microsoft.azure:azure-keyvault-secrets-spring-boot-starter;2.3.3;2.3.3
 com.microsoft.azure:azure-servicebus-jms-spring-boot-starter;2.3.3;2.3.4
 com.microsoft.azure:azure-spring-boot-metrics-starter;2.3.3;2.3.3
 com.microsoft.azure:azure-spring-boot-starter;2.3.3;2.3.4
-com.microsoft.azure:azure-spring-boot;2.3.3;2.3.4
+com.microsoft.azure:azure-spring-boot;2.3.4;2.4.0-beta.1
 com.microsoft.azure:spring-cloud-azure-appconfiguration-config-web;1.2.8-beta.1;1.2.8-beta.1
 com.microsoft.azure:spring-cloud-azure-appconfiguration-config;1.2.8-beta.1;1.2.8-beta.1
 com.microsoft.azure:spring-cloud-azure-context;1.2.8-beta.1;1.2.8-beta.1
