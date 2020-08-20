@@ -7,6 +7,8 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.models.QueryType;
+import com.azure.search.documents.models.SearchMode;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 

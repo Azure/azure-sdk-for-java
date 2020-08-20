@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.search.documents.indexes.models.StemmerTokenFilterLanguage;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -42,11 +43,4 @@ public class StemmerTokenFilter extends TokenFilter {
     public StemmerTokenFilterLanguage getLanguage() {
         return this.language;
     }
-
-    /**
-     * Set the language property: The language to use.
-     *
-     * @param language the language value to set.
-     * @return the StemmerTokenFilter object itself.
-     */
 }

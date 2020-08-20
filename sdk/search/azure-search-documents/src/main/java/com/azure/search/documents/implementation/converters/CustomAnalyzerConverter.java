@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.indexes.models.CharFilterName;
 import com.azure.search.documents.indexes.models.CustomAnalyzer;
 import com.azure.search.documents.indexes.models.LexicalTokenizerName;
 import com.azure.search.documents.indexes.models.TokenFilterName;
@@ -29,9 +28,7 @@ public final class CustomAnalyzerConverter {
         CustomAnalyzer customAnalyzer = new CustomAnalyzer(obj.getName(), tokenizer);
 
         if (obj.getCharFilters() != null) {
-            List<CharFilterName> charFilters =
-                obj.getCharFilters().stream().map(CharFilterNameConverter::map).collect(Collectors.toList());
-            customAnalyzer.setCharFilters(charFilters);
+            customAnalyzer.setCharFilters(obj.getCharFilters());
         }
 
         if (obj.getTokenFilters() != null) {
@@ -60,9 +57,7 @@ public final class CustomAnalyzerConverter {
             new com.azure.search.documents.indexes.implementation.models.CustomAnalyzer(obj.getName(), tokenizer);
 
         if (obj.getCharFilters() != null) {
-            List<com.azure.search.documents.indexes.implementation.models.CharFilterName> charFilters =
-                obj.getCharFilters().stream().map(CharFilterNameConverter::map).collect(Collectors.toList());
-            customAnalyzer.setCharFilters(charFilters);
+            customAnalyzer.setCharFilters(obj.getCharFilters());
         }
 
         if (obj.getTokenFilters() != null) {

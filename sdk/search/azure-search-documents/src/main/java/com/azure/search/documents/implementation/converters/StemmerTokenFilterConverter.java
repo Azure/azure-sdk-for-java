@@ -4,7 +4,6 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.StemmerTokenFilter;
-import com.azure.search.documents.indexes.models.StemmerTokenFilterLanguage;
 
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.StemmerTokenFilter} and
@@ -20,9 +19,7 @@ public final class StemmerTokenFilterConverter {
             return null;
         }
 
-        StemmerTokenFilterLanguage language = obj.getLanguage() == null ? null
-        : StemmerTokenFilterLanguageConverter.map(obj.getLanguage());
-        return new StemmerTokenFilter(obj.getName(), language);
+        return new StemmerTokenFilter(obj.getName(), obj.getLanguage());
     }
 
     /**
@@ -35,11 +32,8 @@ public final class StemmerTokenFilterConverter {
             return null;
         }
 
-        com.azure.search.documents.indexes.implementation.models.StemmerTokenFilterLanguage language =
-            obj.getLanguage() == null ? null
-            : StemmerTokenFilterLanguageConverter.map(obj.getLanguage());
-
-        return new com.azure.search.documents.indexes.implementation.models.StemmerTokenFilter(obj.getName(), language);
+        return new com.azure.search.documents.indexes.implementation.models.StemmerTokenFilter(obj.getName(),
+            obj.getLanguage());
     }
 
     private StemmerTokenFilterConverter() {

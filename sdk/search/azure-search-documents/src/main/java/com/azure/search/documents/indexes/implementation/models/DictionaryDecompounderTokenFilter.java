@@ -73,12 +73,6 @@ public class DictionaryDecompounderTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the wordList property: The list of words to match against.
-     *
-     * @param wordList the wordList value to set.
-     * @return the DictionaryDecompounderTokenFilter object itself.
-     */
-    /**
      * Get the minWordSize property: The minimum word size. Only words longer than this get processed. Default is 5.
      * Maximum is 300.
      *

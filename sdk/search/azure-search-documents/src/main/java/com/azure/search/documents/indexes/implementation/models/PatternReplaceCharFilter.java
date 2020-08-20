@@ -52,12 +52,6 @@ public class PatternReplaceCharFilter extends CharFilter {
     }
 
     /**
-     * Set the pattern property: A regular expression pattern.
-     *
-     * @param pattern the pattern value to set.
-     * @return the PatternReplaceCharFilter object itself.
-     */
-    /**
      * Get the replacement property: The replacement text.
      *
      * @return the replacement value.
@@ -65,11 +59,4 @@ public class PatternReplaceCharFilter extends CharFilter {
     public String getReplacement() {
         return this.replacement;
     }
-
-    /**
-     * Set the replacement property: The replacement text.
-     *
-     * @param replacement the replacement value to set.
-     * @return the PatternReplaceCharFilter object itself.
-     */
 }

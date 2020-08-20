@@ -60,7 +60,7 @@ public final class IndexesImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "SearchServiceClientI")
-    private interface IndexesService {
+    public interface IndexesService {
         @Post("/indexes")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(SearchErrorException.class)

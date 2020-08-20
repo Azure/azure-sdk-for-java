@@ -40,11 +40,4 @@ public class HighWaterMarkChangeDetectionPolicy extends DataChangeDetectionPolic
     public String getHighWaterMarkColumnName() {
         return this.highWaterMarkColumnName;
     }
-
-    /**
-     * Set the highWaterMarkColumnName property: The name of the high water mark column.
-     *
-     * @param highWaterMarkColumnName the highWaterMarkColumnName value to set.
-     * @return the HighWaterMarkChangeDetectionPolicy object itself.
-     */
 }

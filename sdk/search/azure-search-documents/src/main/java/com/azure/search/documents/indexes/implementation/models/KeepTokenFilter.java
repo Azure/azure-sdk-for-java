@@ -52,12 +52,6 @@ public class KeepTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the keepWords property: The list of words to keep.
-     *
-     * @param keepWords the keepWords value to set.
-     * @return the KeepTokenFilter object itself.
-     */
-    /**
      * Get the lowerCaseKeepWords property: A value indicating whether to lower case all words first. Default is false.
      *
      * @return the lowerCaseKeepWords value.

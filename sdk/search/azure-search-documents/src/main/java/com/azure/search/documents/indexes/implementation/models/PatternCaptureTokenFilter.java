@@ -52,12 +52,6 @@ public class PatternCaptureTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the patterns property: A list of patterns to match against each token.
-     *
-     * @param patterns the patterns value to set.
-     * @return the PatternCaptureTokenFilter object itself.
-     */
-    /**
      * Get the preserveOriginal property: A value indicating whether to return the original token even if one of the
      * patterns matches. Default is true.
      *

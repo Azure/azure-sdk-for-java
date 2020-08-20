@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.indexes.models.FreshnessScoringParameters;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -41,11 +42,4 @@ public final class FreshnessScoringFunction extends ScoringFunction {
     public FreshnessScoringParameters getParameters() {
         return this.parameters;
     }
-
-    /**
-     * Set the parameters property: Parameter values for the freshness scoring function.
-     *
-     * @param parameters the parameters value to set.
-     * @return the FreshnessScoringFunction object itself.
-     */
 }

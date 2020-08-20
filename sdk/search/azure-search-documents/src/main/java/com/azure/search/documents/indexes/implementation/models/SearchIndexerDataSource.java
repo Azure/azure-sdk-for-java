@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.indexes.models.SearchIndexerDataContainer;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SearchIndexerDataSource model. */

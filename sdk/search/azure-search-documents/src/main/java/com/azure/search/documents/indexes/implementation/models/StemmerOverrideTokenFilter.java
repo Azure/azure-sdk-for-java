@@ -45,12 +45,4 @@ public class StemmerOverrideTokenFilter extends TokenFilter {
     public List<String> getRules() {
         return this.rules;
     }
-
-    /**
-     * Set the rules property: A list of stemming rules in the following format: "word =&gt; stem", for example: "ran
-     * =&gt; run".
-     *
-     * @param rules the rules value to set.
-     * @return the StemmerOverrideTokenFilter object itself.
-     */
 }

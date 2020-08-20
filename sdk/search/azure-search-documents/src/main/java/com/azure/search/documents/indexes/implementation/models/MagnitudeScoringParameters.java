@@ -51,12 +51,6 @@ public final class MagnitudeScoringParameters {
     }
 
     /**
-     * Set the boostingRangeStart property: The field value at which boosting starts.
-     *
-     * @param boostingRangeStart the boostingRangeStart value to set.
-     * @return the MagnitudeScoringParameters object itself.
-     */
-    /**
      * Get the boostingRangeEnd property: The field value at which boosting ends.
      *
      * @return the boostingRangeEnd value.
@@ -65,12 +59,6 @@ public final class MagnitudeScoringParameters {
         return this.boostingRangeEnd;
     }
 
-    /**
-     * Set the boostingRangeEnd property: The field value at which boosting ends.
-     *
-     * @param boostingRangeEnd the boostingRangeEnd value to set.
-     * @return the MagnitudeScoringParameters object itself.
-     */
     /**
      * Get the shouldBoostBeyondRangeByConstant property: A value indicating whether to apply a constant boost for field
      * values beyond the range end value; default is false.

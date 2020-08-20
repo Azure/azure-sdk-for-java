@@ -56,7 +56,7 @@ public final class DataSourcesImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "SearchServiceClientD")
-    private interface DataSourcesService {
+    public interface DataSourcesService {
         @Put("/datasources('{dataSourceName}')")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(SearchErrorException.class)

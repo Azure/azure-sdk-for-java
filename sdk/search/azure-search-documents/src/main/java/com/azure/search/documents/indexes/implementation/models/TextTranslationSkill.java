@@ -8,6 +8,8 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.TextTranslationSkillLanguage;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -64,13 +66,6 @@ public class TextTranslationSkill extends SearchIndexerSkill {
         return this.defaultToLanguageCode;
     }
 
-    /**
-     * Set the defaultToLanguageCode property: The language code to translate documents into for documents that don't
-     * specify the to language explicitly.
-     *
-     * @param defaultToLanguageCode the defaultToLanguageCode value to set.
-     * @return the TextTranslationSkill object itself.
-     */
     /**
      * Get the defaultFromLanguageCode property: The language code to translate documents from for documents that don't
      * specify the from language explicitly.

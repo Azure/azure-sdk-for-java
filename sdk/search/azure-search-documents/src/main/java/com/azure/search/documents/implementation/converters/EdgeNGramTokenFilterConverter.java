@@ -31,8 +31,7 @@ public final class EdgeNGramTokenFilterConverter {
         edgeNGramTokenFilter.setMaxGram(maxGram);
 
         if (obj.getSide() != null) {
-            EdgeNGramTokenFilterSide side = EdgeNGramTokenFilterSideConverter.map(obj.getSide());
-            edgeNGramTokenFilter.setSide(side);
+            edgeNGramTokenFilter.setSide(obj.getSide());
         }
 
         Integer minGram = obj.getMinGram();
@@ -55,8 +54,7 @@ public final class EdgeNGramTokenFilterConverter {
         edgeNGramTokenFilter.setMaxGram(maxGram);
 
         if (obj.getSide() != null) {
-            EdgeNGramTokenFilterSide side = EdgeNGramTokenFilterSideConverter.map(obj.getSide());
-            edgeNGramTokenFilter.setSide(side);
+            edgeNGramTokenFilter.setSide(obj.getSide());
         }
 
         Integer minGram = obj.getMinGram();
@@ -75,8 +73,7 @@ public final class EdgeNGramTokenFilterConverter {
         }
 
         String identifier = PrivateFieldAccessHelper.get(obj, ODATA_FIELD_NAME, String.class);
-        com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenFilterSide side = obj.getSide() == null ?
-            null : EdgeNGramTokenFilterSideConverter.map(obj.getSide());
+        EdgeNGramTokenFilterSide side = obj.getSide() == null ? null : obj.getSide();
 
         if (V1_ODATA_TYPE.equals(identifier)) {
             return new com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenFilter(obj.getName())

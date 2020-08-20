@@ -41,11 +41,4 @@ public final class MagnitudeScoringFunction extends ScoringFunction {
     public MagnitudeScoringParameters getParameters() {
         return this.parameters;
     }
-
-    /**
-     * Set the parameters property: Parameter values for the magnitude scoring function.
-     *
-     * @param parameters the parameters value to set.
-     * @return the MagnitudeScoringFunction object itself.
-     */
 }

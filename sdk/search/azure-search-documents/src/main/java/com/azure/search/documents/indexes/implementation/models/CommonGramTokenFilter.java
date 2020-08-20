@@ -61,12 +61,6 @@ public class CommonGramTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the commonWords property: The set of common words.
-     *
-     * @param commonWords the commonWords value to set.
-     * @return the CommonGramTokenFilter object itself.
-     */
-    /**
      * Get the ignoreCase property: A value indicating whether common words matching will be case insensitive. Default
      * is false.
      *

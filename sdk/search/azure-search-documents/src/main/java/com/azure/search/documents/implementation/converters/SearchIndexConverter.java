@@ -4,15 +4,14 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.CharFilter;
-import com.azure.search.documents.indexes.models.CorsOptions;
 import com.azure.search.documents.indexes.models.LexicalAnalyzer;
 import com.azure.search.documents.indexes.models.LexicalTokenizer;
 import com.azure.search.documents.indexes.models.ScoringProfile;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchResourceEncryptionKey;
-import com.azure.search.documents.indexes.models.SimilarityAlgorithm;
 import com.azure.search.documents.indexes.models.SearchSuggester;
+import com.azure.search.documents.indexes.models.SimilarityAlgorithm;
 import com.azure.search.documents.indexes.models.TokenFilter;
 
 import java.util.List;
@@ -80,8 +79,7 @@ public final class SearchIndexConverter {
         }
 
         if (obj.getCorsOptions() != null) {
-            CorsOptions corsOptions = CorsOptionsConverter.map(obj.getCorsOptions());
-            searchIndex.setCorsOptions(corsOptions);
+            searchIndex.setCorsOptions(obj.getCorsOptions());
         }
 
         String eTag = obj.getETag();
@@ -157,9 +155,7 @@ public final class SearchIndexConverter {
         }
 
         if (obj.getCorsOptions() != null) {
-            com.azure.search.documents.indexes.implementation.models.CorsOptions corsOptions =
-                CorsOptionsConverter.map(obj.getCorsOptions());
-            searchIndex.setCorsOptions(corsOptions);
+            searchIndex.setCorsOptions(obj.getCorsOptions());
         }
 
         String eTag = obj.getETag();

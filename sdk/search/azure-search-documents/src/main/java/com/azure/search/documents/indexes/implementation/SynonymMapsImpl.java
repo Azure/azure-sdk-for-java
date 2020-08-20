@@ -56,7 +56,7 @@ public final class SynonymMapsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "SearchServiceClientS")
-    private interface SynonymMapsService {
+    public interface SynonymMapsService {
         @Put("/synonymmaps('{synonymMapName}')")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(SearchErrorException.class)

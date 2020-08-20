@@ -45,12 +45,4 @@ public class MappingCharFilter extends CharFilter {
     public List<String> getMappings() {
         return this.mappings;
     }
-
-    /**
-     * Set the mappings property: A list of mappings of the following format: "a=&gt;b" (all occurrences of the
-     * character "a" will be replaced with character "b").
-     *
-     * @param mappings the mappings value to set.
-     * @return the MappingCharFilter object itself.
-     */
 }

@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.indexes.models.ResourceCounter;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -76,12 +77,6 @@ public final class ServiceCounters {
     }
 
     /**
-     * Set the documentCounter property: Total number of documents across all indexes in the service.
-     *
-     * @param documentCounter the documentCounter value to set.
-     * @return the ServiceCounters object itself.
-     */
-    /**
      * Get the indexCounter property: Total number of indexes.
      *
      * @return the indexCounter value.
@@ -90,12 +85,6 @@ public final class ServiceCounters {
         return this.indexCounter;
     }
 
-    /**
-     * Set the indexCounter property: Total number of indexes.
-     *
-     * @param indexCounter the indexCounter value to set.
-     * @return the ServiceCounters object itself.
-     */
     /**
      * Get the indexerCounter property: Total number of indexers.
      *
@@ -106,12 +95,6 @@ public final class ServiceCounters {
     }
 
     /**
-     * Set the indexerCounter property: Total number of indexers.
-     *
-     * @param indexerCounter the indexerCounter value to set.
-     * @return the ServiceCounters object itself.
-     */
-    /**
      * Get the dataSourceCounter property: Total number of data sources.
      *
      * @return the dataSourceCounter value.
@@ -120,12 +103,6 @@ public final class ServiceCounters {
         return this.dataSourceCounter;
     }
 
-    /**
-     * Set the dataSourceCounter property: Total number of data sources.
-     *
-     * @param dataSourceCounter the dataSourceCounter value to set.
-     * @return the ServiceCounters object itself.
-     */
     /**
      * Get the storageSizeCounter property: Total size of used storage in bytes.
      *
@@ -136,12 +113,6 @@ public final class ServiceCounters {
     }
 
     /**
-     * Set the storageSizeCounter property: Total size of used storage in bytes.
-     *
-     * @param storageSizeCounter the storageSizeCounter value to set.
-     * @return the ServiceCounters object itself.
-     */
-    /**
      * Get the synonymMapCounter property: Total number of synonym maps.
      *
      * @return the synonymMapCounter value.
@@ -149,11 +120,4 @@ public final class ServiceCounters {
     public ResourceCounter getSynonymMapCounter() {
         return this.synonymMapCounter;
     }
-
-    /**
-     * Set the synonymMapCounter property: Total number of synonym maps.
-     *
-     * @param synonymMapCounter the synonymMapCounter value to set.
-     * @return the ServiceCounters object itself.
-     */
 }

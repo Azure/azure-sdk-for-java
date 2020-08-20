@@ -34,11 +34,4 @@ public final class IndexBatch {
     public List<IndexAction> getActions() {
         return this.actions;
     }
-
-    /**
-     * Set the actions property: The actions in the batch.
-     *
-     * @param actions the actions value to set.
-     * @return the IndexBatch object itself.
-     */
 }

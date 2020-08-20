@@ -266,13 +266,6 @@ public final class SuggestRequest {
     }
 
     /**
-     * Set the searchText property: The search text to use to suggest documents. Must be at least 1 character, and no
-     * more than 100 characters.
-     *
-     * @param searchText the searchText value to set.
-     * @return the SuggestRequest object itself.
-     */
-    /**
      * Get the searchFields property: The comma-separated list of field names to search for the specified search text.
      * Target fields must be included in the specified suggester.
      *
@@ -326,13 +319,6 @@ public final class SuggestRequest {
         return this.suggesterName;
     }
 
-    /**
-     * Set the suggesterName property: The name of the suggester as specified in the suggesters collection that's part
-     * of the index definition.
-     *
-     * @param suggesterName the suggesterName value to set.
-     * @return the SuggestRequest object itself.
-     */
     /**
      * Get the top property: The number of suggestions to retrieve. This must be a value between 1 and 100. The default
      * is 5.

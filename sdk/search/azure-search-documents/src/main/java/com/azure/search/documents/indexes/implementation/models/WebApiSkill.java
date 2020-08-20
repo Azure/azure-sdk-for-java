@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -77,12 +78,6 @@ public class WebApiSkill extends SearchIndexerSkill {
         return this.uri;
     }
 
-    /**
-     * Set the uri property: The url for the Web API.
-     *
-     * @param uri the uri value to set.
-     * @return the WebApiSkill object itself.
-     */
     /**
      * Get the httpHeaders property: The headers required to make the http request.
      *

@@ -7,6 +7,8 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.indexes.models.ScoringFunctionAggregation;
+import com.azure.search.documents.indexes.models.TextWeights;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -56,12 +58,6 @@ public final class ScoringProfile {
         return this.name;
     }
 
-    /**
-     * Set the name property: The name of the scoring profile.
-     *
-     * @param name the name value to set.
-     * @return the ScoringProfile object itself.
-     */
     /**
      * Get the textWeights property: Parameters that boost scoring based on text matches in certain index fields.
      *

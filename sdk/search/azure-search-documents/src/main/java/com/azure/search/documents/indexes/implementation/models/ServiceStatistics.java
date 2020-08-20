@@ -44,12 +44,6 @@ public final class ServiceStatistics {
     }
 
     /**
-     * Set the counters property: Service level resource counters.
-     *
-     * @param counters the counters value to set.
-     * @return the ServiceStatistics object itself.
-     */
-    /**
      * Get the limits property: Service level general limits.
      *
      * @return the limits value.
@@ -57,11 +51,4 @@ public final class ServiceStatistics {
     public ServiceLimits getLimits() {
         return this.limits;
     }
-
-    /**
-     * Set the limits property: Service level general limits.
-     *
-     * @param limits the limits value to set.
-     * @return the ServiceStatistics object itself.
-     */
 }

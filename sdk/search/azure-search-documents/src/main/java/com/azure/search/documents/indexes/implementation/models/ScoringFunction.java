@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.indexes.models.ScoringFunctionInterpolation;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -67,12 +68,6 @@ public class ScoringFunction {
     }
 
     /**
-     * Set the fieldName property: The name of the field used as input to the scoring function.
-     *
-     * @param fieldName the fieldName value to set.
-     * @return the ScoringFunction object itself.
-     */
-    /**
      * Get the boost property: A multiplier for the raw score. Must be a positive number not equal to 1.0.
      *
      * @return the boost value.
@@ -81,12 +76,6 @@ public class ScoringFunction {
         return this.boost;
     }
 
-    /**
-     * Set the boost property: A multiplier for the raw score. Must be a positive number not equal to 1.0.
-     *
-     * @param boost the boost value to set.
-     * @return the ScoringFunction object itself.
-     */
     /**
      * Get the interpolation property: A value indicating how boosting will be interpolated across document scores;
      * defaults to "Linear".

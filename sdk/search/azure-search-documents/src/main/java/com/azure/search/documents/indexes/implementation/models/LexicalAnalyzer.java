@@ -53,12 +53,4 @@ public class LexicalAnalyzer {
     public String getName() {
         return this.name;
     }
-
-    /**
-     * Set the name property: The name of the analyzer. It must only contain letters, digits, spaces, dashes or
-     * underscores, can only start and end with alphanumeric characters, and is limited to 128 characters.
-     *
-     * @param name the name value to set.
-     * @return the LexicalAnalyzer object itself.
-     */
 }

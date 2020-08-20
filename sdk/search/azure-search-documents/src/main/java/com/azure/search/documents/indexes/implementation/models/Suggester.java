@@ -55,12 +55,6 @@ public final class Suggester {
     }
 
     /**
-     * Set the name property: The name of the suggester.
-     *
-     * @param name the name value to set.
-     * @return the Suggester object itself.
-     */
-    /**
      * Get the searchMode property: A value indicating the capabilities of the suggester.
      *
      * @return the searchMode value.
@@ -70,12 +64,6 @@ public final class Suggester {
     }
 
     /**
-     * Set the searchMode property: A value indicating the capabilities of the suggester.
-     *
-     * @param searchMode the searchMode value to set.
-     * @return the Suggester object itself.
-     */
-    /**
      * Get the sourceFields property: The list of field names to which the suggester applies. Each field must be
      * searchable.
      *
@@ -84,12 +72,4 @@ public final class Suggester {
     public List<String> getSourceFields() {
         return this.sourceFields;
     }
-
-    /**
-     * Set the sourceFields property: The list of field names to which the suggester applies. Each field must be
-     * searchable.
-     *
-     * @param sourceFields the sourceFields value to set.
-     * @return the Suggester object itself.
-     */
 }

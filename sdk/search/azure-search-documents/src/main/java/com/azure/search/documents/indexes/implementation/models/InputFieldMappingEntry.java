@@ -54,12 +54,6 @@ public final class InputFieldMappingEntry {
     }
 
     /**
-     * Set the name property: The name of the input.
-     *
-     * @param name the name value to set.
-     * @return the InputFieldMappingEntry object itself.
-     */
-    /**
      * Get the source property: The source of the input.
      *
      * @return the source value.

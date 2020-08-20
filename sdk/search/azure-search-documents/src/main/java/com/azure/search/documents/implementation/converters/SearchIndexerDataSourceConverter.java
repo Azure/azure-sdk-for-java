@@ -7,7 +7,6 @@ import com.azure.search.documents.indexes.implementation.models.DataSourceCreden
 import com.azure.search.documents.indexes.implementation.models.SearchIndexerDataSource;
 import com.azure.search.documents.indexes.models.DataChangeDetectionPolicy;
 import com.azure.search.documents.indexes.models.DataDeletionDetectionPolicy;
-import com.azure.search.documents.indexes.models.SearchIndexerDataContainer;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceType;
 
@@ -31,10 +30,8 @@ public final class SearchIndexerDataSourceConverter {
         : SearchIndexerDataSourceTypeConverter.map(obj.getType());
         String connectionString = obj.getCredentials() == null ? null
             : obj.getCredentials().getConnectionString();
-        SearchIndexerDataContainer container = obj.getContainer() == null ? null
-            : SearchIndexerDataContainerConverter.map(obj.getContainer());
         SearchIndexerDataSourceConnection searchIndexerDataSourceConnection = new SearchIndexerDataSourceConnection(
-            obj.getName(), type, connectionString, container);
+            obj.getName(), type, connectionString, obj.getContainer());
 
 
         if (obj.getDataChangeDetectionPolicy() != null) {
@@ -71,16 +68,13 @@ public final class SearchIndexerDataSourceConverter {
             obj.getType() == null ? null
                 : SearchIndexerDataSourceTypeConverter.map(obj.getType());
 
-        com.azure.search.documents.indexes.implementation.models.SearchIndexerDataContainer container =
-            obj.getContainer() == null ? null
-                : SearchIndexerDataContainerConverter.map(obj.getContainer());
         DataSourceCredentials credentials = new DataSourceCredentials();
         credentials.setConnectionString(obj.getConnectionString());
         SearchIndexerDataSource searchIndexerDataSource = new SearchIndexerDataSource()
             .setName(obj.getName())
             .setType(type)
             .setCredentials(credentials)
-            .setContainer(container);
+            .setContainer(obj.getContainer());
 
         if (obj.getDataChangeDetectionPolicy() != null) {
             com.azure.search.documents.indexes.implementation.models.DataChangeDetectionPolicy

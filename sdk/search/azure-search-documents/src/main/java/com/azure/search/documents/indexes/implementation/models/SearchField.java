@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -180,13 +181,6 @@ public final class SearchField {
     }
 
     /**
-     * Set the name property: The name of the field, which must be unique within the fields collection of the index or
-     * parent field.
-     *
-     * @param name the name value to set.
-     * @return the SearchField object itself.
-     */
-    /**
      * Get the type property: The data type of the field.
      *
      * @return the type value.
@@ -195,12 +189,6 @@ public final class SearchField {
         return this.type;
     }
 
-    /**
-     * Set the type property: The data type of the field.
-     *
-     * @param type the type value to set.
-     * @return the SearchField object itself.
-     */
     /**
      * Get the key property: A value indicating whether the field uniquely identifies documents in the index. Exactly
      * one top-level field in each index must be chosen as the key field and it must be of type Edm.String. Key fields

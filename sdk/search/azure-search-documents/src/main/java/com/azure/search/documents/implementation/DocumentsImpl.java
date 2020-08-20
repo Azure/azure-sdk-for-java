@@ -24,22 +24,22 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.search.documents.implementation.models.AutocompleteMode;
 import com.azure.search.documents.implementation.models.AutocompleteOptions;
 import com.azure.search.documents.implementation.models.AutocompleteRequest;
-import com.azure.search.documents.implementation.models.AutocompleteResult;
 import com.azure.search.documents.implementation.models.IndexBatch;
 import com.azure.search.documents.implementation.models.IndexDocumentsResult;
-import com.azure.search.documents.implementation.models.QueryType;
 import com.azure.search.documents.implementation.models.RequestOptions;
 import com.azure.search.documents.implementation.models.SearchDocumentsResult;
 import com.azure.search.documents.implementation.models.SearchErrorException;
-import com.azure.search.documents.implementation.models.SearchMode;
 import com.azure.search.documents.implementation.models.SearchOptions;
 import com.azure.search.documents.implementation.models.SearchRequest;
 import com.azure.search.documents.implementation.models.SuggestDocumentsResult;
 import com.azure.search.documents.implementation.models.SuggestOptions;
 import com.azure.search.documents.implementation.models.SuggestRequest;
+import com.azure.search.documents.models.AutocompleteMode;
+import com.azure.search.documents.models.AutocompleteResult;
+import com.azure.search.documents.models.QueryType;
+import com.azure.search.documents.models.SearchMode;
 import java.util.List;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
@@ -69,7 +69,7 @@ public final class DocumentsImpl {
      */
     @Host("{endpoint}/indexes('{indexName}')")
     @ServiceInterface(name = "SearchIndexClientDoc")
-    private interface DocumentsService {
+    public interface DocumentsService {
         @Get("/docs/$count")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(SearchErrorException.class)

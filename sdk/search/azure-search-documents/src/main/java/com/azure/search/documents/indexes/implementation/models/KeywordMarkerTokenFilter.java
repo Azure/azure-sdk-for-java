@@ -52,12 +52,6 @@ public class KeywordMarkerTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the keywords property: A list of words to mark as keywords.
-     *
-     * @param keywords the keywords value to set.
-     * @return the KeywordMarkerTokenFilter object itself.
-     */
-    /**
      * Get the ignoreCase property: A value indicating whether to ignore case. If true, all words are converted to lower
      * case first. Default is false.
      *

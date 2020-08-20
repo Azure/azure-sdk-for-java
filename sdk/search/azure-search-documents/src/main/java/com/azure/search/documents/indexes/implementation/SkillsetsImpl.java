@@ -28,8 +28,9 @@ import com.azure.search.documents.indexes.implementation.models.ListSkillsetsRes
 import com.azure.search.documents.indexes.implementation.models.RequestOptions;
 import com.azure.search.documents.indexes.implementation.models.SearchErrorException;
 import com.azure.search.documents.indexes.implementation.models.SearchIndexerSkillset;
-import java.util.UUID;
 import reactor.core.publisher.Mono;
+
+import java.util.UUID;
 
 /** An instance of this class provides access to all the operations defined in Skillsets. */
 public final class SkillsetsImpl {
@@ -56,7 +57,7 @@ public final class SkillsetsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "SearchServiceClientS")
-    private interface SkillsetsService {
+    public interface SkillsetsService {
         @Put("/skillsets('{skillsetName}')")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(SearchErrorException.class)

@@ -28,7 +28,7 @@ import com.azure.search.documents.indexes.implementation.models.ListIndexersResu
 import com.azure.search.documents.indexes.implementation.models.RequestOptions;
 import com.azure.search.documents.indexes.implementation.models.SearchErrorException;
 import com.azure.search.documents.indexes.implementation.models.SearchIndexer;
-import com.azure.search.documents.indexes.implementation.models.SearchIndexerStatus;
+import com.azure.search.documents.indexes.models.SearchIndexerStatus;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
@@ -56,7 +56,7 @@ public final class IndexersImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "SearchServiceClientI")
-    private interface IndexersService {
+    public interface IndexersService {
         @Post("/indexers('{indexerName}')/search.reset")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(SearchErrorException.class)

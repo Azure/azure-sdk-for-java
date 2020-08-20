@@ -190,7 +190,7 @@ public final class SearchServiceClientImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "SearchServiceClient")
-    private interface SearchServiceClientService {
+    public interface SearchServiceClientService {
         @Get("/servicestats")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(SearchErrorException.class)

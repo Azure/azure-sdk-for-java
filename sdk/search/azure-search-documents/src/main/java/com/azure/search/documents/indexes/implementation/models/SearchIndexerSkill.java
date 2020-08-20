@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -166,13 +167,6 @@ public class SearchIndexerSkill {
     }
 
     /**
-     * Set the inputs property: Inputs of the skills could be a column in the source data set, or the output of an
-     * upstream skill.
-     *
-     * @param inputs the inputs value to set.
-     * @return the SearchIndexerSkill object itself.
-     */
-    /**
      * Get the outputs property: The output of a skill is either a field in a search index, or a value that can be
      * consumed as an input by another skill.
      *
@@ -181,12 +175,4 @@ public class SearchIndexerSkill {
     public List<OutputFieldMappingEntry> getOutputs() {
         return this.outputs;
     }
-
-    /**
-     * Set the outputs property: The output of a skill is either a field in a search index, or a value that can be
-     * consumed as an input by another skill.
-     *
-     * @param outputs the outputs value to set.
-     * @return the SearchIndexerSkill object itself.
-     */
 }
