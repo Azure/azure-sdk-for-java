@@ -382,9 +382,8 @@ public class ShareAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.share.ShareAsyncClient.deleteWithResponse#ShareDeleteOptions
         shareAsyncClient.deleteWithResponse(new ShareDeleteOptions()
             .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseId))).subscribe(
-            response -> System.out.println("Deleting the shareAsyncClient completed with status code: "
-                + response.getStatusCode()),
-            error -> System.err.println(error.toString()),
+                response -> System.out.println("Deleting the shareAsyncClient completed with status code: "
+                    + response.getStatusCode()), error -> System.err.println(error.toString()),
             () -> System.out.println("Complete deleting the share.")
         );
         // END: com.azure.storage.file.share.ShareAsyncClient.deleteWithResponse#ShareDeleteOptions
