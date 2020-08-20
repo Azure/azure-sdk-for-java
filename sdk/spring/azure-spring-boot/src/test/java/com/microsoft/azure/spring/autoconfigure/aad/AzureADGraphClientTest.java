@@ -41,7 +41,7 @@ public class AzureADGraphClientTest {
     public void testConvertGroupToGrantedAuthorities() {
 
         final List<UserGroup> userGroups = Collections.singletonList(
-            new UserGroup("testId", "Test_Group"));
+            new UserGroup("testId", "Group", "Test_Group"));
 
         final Set<GrantedAuthority> authorities = adGraphClient.convertGroupsToGrantedAuthorities(userGroups);
         assertThat(authorities).hasSize(1).extracting(GrantedAuthority::getAuthority)
@@ -51,8 +51,8 @@ public class AzureADGraphClientTest {
     @Test
     public void testConvertGroupToGrantedAuthoritiesUsingAllowedGroups() {
         final List<UserGroup> userGroups = Arrays
-            .asList(new UserGroup("testId", "Test_Group"),
-                new UserGroup("testId", "Another_Group"));
+            .asList(new UserGroup("testId", "Group", "Test_Group"),
+                new UserGroup("testId", "Group", "Another_Group"));
         aadAuthProps.getUserGroup().getAllowedGroups().add("Another_Group");
         final Set<GrantedAuthority> authorities = adGraphClient.convertGroupsToGrantedAuthorities(userGroups);
         assertThat(authorities).hasSize(2).extracting(GrantedAuthority::getAuthority)

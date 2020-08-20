@@ -196,6 +196,12 @@
       <version>2.11.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
     </dependency>
 
+    <dependency>
+      <groupId>com.fasterxml.jackson.datatype</groupId>
+      <artifactId>jackson-datatype-jdk8</artifactId>
+      <version>2.11.2</version>  <!-- {x-version-update;com.fasterxml.jackson.datatype:jackson-datatype-jdk8;external_dependency} -->
+    </dependency>
+
     <!-- Added this dependency to include necessary annotations used by reactor core.
         Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
         which is used in @Nullable annotation in reactor core classes -->
@@ -263,6 +269,7 @@
             <bannedDependencies>
               <includes>
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.11.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+                <include>com.fasterxml.jackson.datatype:jackson-datatype-jdk8:[2.11.2]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jdk8;external_dependency} -->
                 <include>net.minidev:json-smart:[2.3]</include> <!-- {x-include-update;net.minidev:json-smart;external_dependency} -->
                 <include>com.microsoft.azure:msal4j:[1.6.1]</include> <!-- {x-include-update;com.microsoft.azure:msal4j;external_dependency} -->
                 <include>com.microsoft.azure:spring-data-cosmosdb:[2.3.0]</include> <!-- {x-include-update;com.microsoft.azure:spring-data-cosmosdb;external_dependency} -->

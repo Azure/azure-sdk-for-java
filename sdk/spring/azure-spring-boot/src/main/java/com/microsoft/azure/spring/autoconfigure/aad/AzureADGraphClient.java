@@ -3,8 +3,8 @@
 
 package com.microsoft.azure.spring.autoconfigure.aad;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -40,7 +41,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 /**
  * Microsoft Graph client encapsulation.
@@ -77,7 +77,7 @@ public class AzureADGraphClient {
         this.aadMicrosoftGraphApiBool = endpointEnv.contains(V2_VERSION_ENV_FLAG);
     }
 
-    private String getUserMembershipsV1(String accessToken) throws IOException {
+    private String getUserMemberships(String accessToken, Optional<String> odataNextLink) throws IOException {
         final URL url = new URL(serviceEndpoints.getAadMembershipRestUri());
         final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         // Set the appropriate header fields in the request header.
@@ -121,22 +121,21 @@ public class AzureADGraphClient {
     }
 
     private List<UserGroup> loadUserGroups(String graphApiToken) throws IOException {
-        final String responseInJson = getUserMembershipsV1(graphApiToken);
+        String responseInJson = getUserMemberships(graphApiToken, Optional.empty());
         final List<UserGroup> lUserGroups = new ArrayList<>();
         final ObjectMapper objectMapper = JacksonObjectMapperFactory.getInstance();
-        final JsonNode rootNode = objectMapper.readValue(responseInJson, JsonNode.class);
-        final JsonNode valuesNode = rootNode.get("value");
+        objectMapper.registerModule(new Jdk8Module());
+        UserGroups groupsFromJson = objectMapper.readValue(responseInJson, UserGroups.class);
 
-        if (valuesNode != null) {
-            lUserGroups
-                .addAll(StreamSupport.stream(valuesNode.spliterator(), false).filter(this::isMatchingUserGroupKey)
-                    .map(node -> {
-                        final String objectID = node.
-                            get(aadAuthenticationProperties.getUserGroup().getObjectIDKey()).asText();
-                        final String displayName = node.get("displayName").asText();
-                        return new UserGroup(objectID, displayName);
-                    }).collect(Collectors.toList()));
-
+        if (groupsFromJson.getValue() != null) {
+            lUserGroups.addAll(groupsFromJson.getValue().stream().filter(this::isMatchingUserGroupKey)
+                .collect(Collectors.toList()));
+        }
+        while (groupsFromJson.getOdataNextLink().isPresent()) {
+            responseInJson = getUserMemberships(graphApiToken, groupsFromJson.getOdataNextLink());
+            groupsFromJson = objectMapper.readValue(responseInJson, UserGroups.class);
+            lUserGroups.addAll(groupsFromJson.getValue().stream().filter(this::isMatchingUserGroupKey)
+                .collect(Collectors.toList()));
         }
 
         return lUserGroups;
@@ -149,9 +148,8 @@ public class AzureADGraphClient {
      *             {@link AADAuthenticationProperties.UserGroupProperties}
      * @return true if the json node contains the correct key, and expected value to identify a user group.
      */
-    private boolean isMatchingUserGroupKey(final JsonNode node) {
-        return node.get(aadAuthenticationProperties.getUserGroup().getKey()).asText()
-            .equals(aadAuthenticationProperties.getUserGroup().getValue());
+    private boolean isMatchingUserGroupKey(final UserGroup group) {
+        return group.getObjectType().equals(aadAuthenticationProperties.getUserGroup().getValue());
     }
 
     public Set<GrantedAuthority> getGrantedAuthorities(String graphApiToken) throws IOException {
