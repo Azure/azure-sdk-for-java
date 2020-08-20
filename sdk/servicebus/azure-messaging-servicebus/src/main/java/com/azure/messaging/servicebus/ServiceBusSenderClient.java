@@ -5,7 +5,7 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.annotation.ServiceClient;
-import com.azure.messaging.servicebus.administration.models.CreateBatchOptions;
+import com.azure.messaging.servicebus.models.CreateBatchOptions;
 
 import java.time.Duration;
 import java.time.Instant;

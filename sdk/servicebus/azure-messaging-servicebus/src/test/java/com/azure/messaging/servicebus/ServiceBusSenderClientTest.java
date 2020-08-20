@@ -3,7 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.messaging.servicebus.administration.models.CreateBatchOptions;
+import com.azure.messaging.servicebus.models.CreateBatchOptions;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.servicebus.administration.models;
+package com.azure.messaging.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.messaging.servicebus.ServiceBusMessageBatch;

@@ -3,7 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.messaging.servicebus.administration.models.CreateBatchOptions;
+import com.azure.messaging.servicebus.models.CreateBatchOptions;
 
 import java.util.Arrays;
 import java.util.List;
