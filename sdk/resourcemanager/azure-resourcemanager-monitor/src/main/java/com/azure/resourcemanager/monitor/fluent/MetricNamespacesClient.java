@@ -126,6 +126,7 @@ public final class MetricNamespacesClient {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         final String apiVersion = "2017-12-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), resourceUri, apiVersion, startTime, context)
             .map(

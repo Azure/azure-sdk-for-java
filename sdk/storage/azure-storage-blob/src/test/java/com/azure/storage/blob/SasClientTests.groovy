@@ -17,6 +17,7 @@ import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import com.azure.storage.common.implementation.AccountSasImplUtil
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.implementation.SasImplUtils
 import com.azure.storage.common.implementation.StorageImplUtils
 import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
@@ -735,7 +736,7 @@ class SasClientTests extends APISpec {
         when:
         String token = implUtil.generateSas(primaryCredential)
 
-        def queryParams = new CommonSasQueryParameters(BlobUrlParts.parseQueryString(token), true)
+        def queryParams = new CommonSasQueryParameters(SasImplUtils.parseQueryString(token), true)
 
         then:
         queryParams.getSignature() == primaryCredential.computeHmac256(expectedStringToSign)

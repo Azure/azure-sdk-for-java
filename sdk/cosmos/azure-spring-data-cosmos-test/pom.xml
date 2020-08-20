@@ -15,8 +15,8 @@
   <version>3.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos-test;current} -->
   <packaging>jar</packaging>
   <name>Spring Data Test for Azure Cosmos DB SQL API</name>
-  <description>Spring Data 2.3 for Azure Cosmos DB SQL API</description>
-  <url>https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-2-3-cosmos</url>
+  <description>Spring Data Test for Azure Cosmos DB SQL API</description>
+  <url>https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos-test</url>
 
   <properties>
     <azure.test.resourcegroup>azure-spring-data-cosmos-test</azure.test.resourcegroup>
@@ -28,14 +28,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.springframework.data</groupId>
-      <artifactId>spring-data-commons</artifactId>
-      <version>2.3.0.RELEASE</version> <!-- {x-version-update;org.springframework.data:spring-data-commons;external_dependency} -->
-    </dependency>
-    <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-spring-data-cosmos-core</artifactId>
-      <version>3.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos-core;current} -->
+      <artifactId>azure-spring-data-2-3-cosmos</artifactId>
+      <version>3.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-spring-data-2-3-cosmos;current} -->
     </dependency>
 
     <!-- Test -->
@@ -60,7 +55,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>2.3.2.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>2.3.3.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -72,7 +67,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.3.8.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.3.9.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -93,11 +88,29 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.data:spring-data-commons:[2.3.0.RELEASE]</include> <!-- {x-include-update;org.springframework.data:spring-data-commons;external_dependency} -->
+                <include>org.springframework.data:spring-data-commons:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.data:spring-data-commons;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>2.22.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+        <configuration>
+          <systemPropertiesFile>src/test/resources/application.properties</systemPropertiesFile>
+          <skipITs>${skip.integration.tests}</skipITs>
+        </configuration>
+        <executions>
+          <execution>
+            <id>integration-test</id>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

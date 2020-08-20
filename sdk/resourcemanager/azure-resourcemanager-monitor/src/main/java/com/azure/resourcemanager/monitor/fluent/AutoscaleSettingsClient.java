@@ -246,6 +246,7 @@ public final class AutoscaleSettingsClient
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-04-01";
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), context)
@@ -291,7 +292,7 @@ public final class AutoscaleSettingsClient
         String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -422,6 +423,7 @@ public final class AutoscaleSettingsClient
             parameters.validate();
         }
         final String apiVersion = "2015-04-01";
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -607,6 +609,7 @@ public final class AutoscaleSettingsClient
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-04-01";
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -762,6 +765,7 @@ public final class AutoscaleSettingsClient
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-04-01";
+        context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
@@ -956,6 +960,7 @@ public final class AutoscaleSettingsClient
             autoscaleSettingResource.validate();
         }
         final String apiVersion = "2015-04-01";
+        context = this.client.mergeContext(context);
         return service
             .update(
                 this.client.getEndpoint(),
@@ -1121,6 +1126,7 @@ public final class AutoscaleSettingsClient
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-04-01";
+        context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context)
             .map(
@@ -1159,7 +1165,7 @@ public final class AutoscaleSettingsClient
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AutoscaleSettingResourceInner> listAsync(Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1232,6 +1238,7 @@ public final class AutoscaleSettingsClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroupNext(nextLink, context)
             .map(
@@ -1289,6 +1296,7 @@ public final class AutoscaleSettingsClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listBySubscriptionNext(nextLink, context)
             .map(

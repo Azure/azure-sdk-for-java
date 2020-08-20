@@ -348,6 +348,7 @@ public final class DeploymentsClient {
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -575,6 +576,7 @@ public final class DeploymentsClient {
         }
         DeploymentResourceInner deploymentResource = new DeploymentResourceInner();
         deploymentResource.withProperties(properties);
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -613,8 +615,12 @@ public final class DeploymentsClient {
             createOrUpdateWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName, properties);
         return this
             .client
-            .<DeploymentResourceInner, DeploymentResourceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DeploymentResourceInner.class, DeploymentResourceInner.class);
+            .<DeploymentResourceInner, DeploymentResourceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                DeploymentResourceInner.class,
+                DeploymentResourceInner.class,
+                Context.NONE);
     }
 
     /**
@@ -640,13 +646,18 @@ public final class DeploymentsClient {
         String deploymentName,
         DeploymentResourceProperties properties,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(
                 resourceGroupName, serviceName, appName, deploymentName, properties, context);
         return this
             .client
-            .<DeploymentResourceInner, DeploymentResourceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DeploymentResourceInner.class, DeploymentResourceInner.class);
+            .<DeploymentResourceInner, DeploymentResourceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                DeploymentResourceInner.class,
+                DeploymentResourceInner.class,
+                context);
     }
 
     /**
@@ -905,6 +916,7 @@ public final class DeploymentsClient {
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -1114,6 +1126,7 @@ public final class DeploymentsClient {
         }
         DeploymentResourceInner deploymentResource = new DeploymentResourceInner();
         deploymentResource.withProperties(properties);
+        context = this.client.mergeContext(context);
         return service
             .update(
                 this.client.getEndpoint(),
@@ -1152,8 +1165,12 @@ public final class DeploymentsClient {
             updateWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName, properties);
         return this
             .client
-            .<DeploymentResourceInner, DeploymentResourceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DeploymentResourceInner.class, DeploymentResourceInner.class);
+            .<DeploymentResourceInner, DeploymentResourceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                DeploymentResourceInner.class,
+                DeploymentResourceInner.class,
+                Context.NONE);
     }
 
     /**
@@ -1179,12 +1196,17 @@ public final class DeploymentsClient {
         String deploymentName,
         DeploymentResourceProperties properties,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName, properties, context);
         return this
             .client
-            .<DeploymentResourceInner, DeploymentResourceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DeploymentResourceInner.class, DeploymentResourceInner.class);
+            .<DeploymentResourceInner, DeploymentResourceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                DeploymentResourceInner.class,
+                DeploymentResourceInner.class,
+                context);
     }
 
     /**
@@ -1448,6 +1470,7 @@ public final class DeploymentsClient {
         }
         String versionConverted =
             JacksonAdapter.createDefaultSerializerAdapter().serializeList(version, CollectionFormat.CSV);
+        context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
@@ -1509,7 +1532,7 @@ public final class DeploymentsClient {
         String resourceGroupName, String serviceName, String appName, List<String> version, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, serviceName, appName, version, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1530,7 +1553,7 @@ public final class DeploymentsClient {
         final Context context = null;
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, serviceName, appName, version),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1688,6 +1711,7 @@ public final class DeploymentsClient {
         }
         String versionConverted =
             JacksonAdapter.createDefaultSerializerAdapter().serializeList(version, CollectionFormat.CSV);
+        context = this.client.mergeContext(context);
         return service
             .listClusterAllDeployments(
                 this.client.getEndpoint(),
@@ -1746,7 +1770,7 @@ public final class DeploymentsClient {
         String resourceGroupName, String serviceName, List<String> version, Context context) {
         return new PagedFlux<>(
             () -> listClusterAllDeploymentsSinglePageAsync(resourceGroupName, serviceName, version, context),
-            nextLink -> listClusterAllDeploymentsNextSinglePageAsync(nextLink));
+            nextLink -> listClusterAllDeploymentsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1767,7 +1791,7 @@ public final class DeploymentsClient {
         final Context context = null;
         return new PagedFlux<>(
             () -> listClusterAllDeploymentsSinglePageAsync(resourceGroupName, serviceName, version),
-            nextLink -> listClusterAllDeploymentsNextSinglePageAsync(nextLink));
+            nextLink -> listClusterAllDeploymentsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1925,6 +1949,7 @@ public final class DeploymentsClient {
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .start(
                 this.client.getEndpoint(),
@@ -1955,7 +1980,9 @@ public final class DeploymentsClient {
         String resourceGroupName, String serviceName, String appName, String deploymentName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             startWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1975,9 +2002,12 @@ public final class DeploymentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginStartAsync(
         String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             startWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -2196,6 +2226,7 @@ public final class DeploymentsClient {
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .stop(
                 this.client.getEndpoint(),
@@ -2226,7 +2257,9 @@ public final class DeploymentsClient {
         String resourceGroupName, String serviceName, String appName, String deploymentName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             stopWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -2246,9 +2279,12 @@ public final class DeploymentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginStopAsync(
         String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             stopWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -2467,6 +2503,7 @@ public final class DeploymentsClient {
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .restart(
                 this.client.getEndpoint(),
@@ -2497,7 +2534,9 @@ public final class DeploymentsClient {
         String resourceGroupName, String serviceName, String appName, String deploymentName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             restartWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -2517,9 +2556,12 @@ public final class DeploymentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginRestartAsync(
         String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             restartWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -2739,6 +2781,7 @@ public final class DeploymentsClient {
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getLogFileUrl(
                 this.client.getEndpoint(),
@@ -2888,6 +2931,7 @@ public final class DeploymentsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(
@@ -2945,6 +2989,7 @@ public final class DeploymentsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listClusterAllDeploymentsNext(nextLink, context)
             .map(

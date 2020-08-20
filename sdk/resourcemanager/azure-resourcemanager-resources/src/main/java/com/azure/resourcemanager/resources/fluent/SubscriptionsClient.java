@@ -150,6 +150,7 @@ public final class SubscriptionsClient {
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listLocations(this.client.getEndpoint(), subscriptionId, this.client.getApiVersion(), context)
             .map(
@@ -267,6 +268,7 @@ public final class SubscriptionsClient {
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), subscriptionId, this.client.getApiVersion(), context);
     }
 
@@ -390,6 +392,7 @@ public final class SubscriptionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), this.client.getApiVersion(), context)
             .map(
@@ -426,7 +429,8 @@ public final class SubscriptionsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SubscriptionInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -498,6 +502,7 @@ public final class SubscriptionsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(

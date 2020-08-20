@@ -67,7 +67,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
         // Arrange
         final ServiceBusManagementAsyncClient client = createClient(httpClient);
         final String queueName = testResourceNamer.randomName("test", 10);
-        final CreateQueueOptions expected = new CreateQueueOptions(queueName)
+        final CreateQueueOptions expected = new CreateQueueOptions()
             .setMaxSizeInMegabytes(500)
             .setMaxDeliveryCount(7)
             .setLockDuration(Duration.ofSeconds(45))
@@ -77,10 +77,9 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
             .setUserMetadata("some-metadata-for-testing");
 
         // Act & Assert
-        StepVerifier.create(client.createQueue(expected))
+        StepVerifier.create(client.createQueue(queueName, expected))
             .assertNext(actual -> {
-                assertEquals(queueName, expected.getName());
-                assertEquals(expected.getName(), actual.getName());
+                assertEquals(queueName, actual.getName());
 
                 assertEquals(expected.getLockDuration(), actual.getLockDuration());
                 assertEquals(expected.getMaxDeliveryCount(), actual.getMaxDeliveryCount());
@@ -107,11 +106,11 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
         final String queueName = interceptorManager.isPlaybackMode()
             ? "queue-5"
             : getEntityName(TestUtils.getQueueBaseName(), 5);
-        final CreateQueueOptions queueProperties = new CreateQueueOptions(queueName);
+        final CreateQueueOptions options = new CreateQueueOptions();
         final ServiceBusManagementAsyncClient client = createClient(httpClient);
 
         // Act & Assert
-        StepVerifier.create(client.createQueue(queueProperties))
+        StepVerifier.create(client.createQueue(queueName, options))
             .expectError(ResourceExistsException.class)
             .verify();
     }
@@ -125,16 +124,16 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
             ? "topic-0"
             : getEntityName(getTopicBaseName(), 0);
         final String subscriptionName = testResourceNamer.randomName("sub", 10);
-        final CreateSubscriptionOptions expected = new CreateSubscriptionOptions(topicName, subscriptionName)
+        final CreateSubscriptionOptions expected = new CreateSubscriptionOptions()
             .setMaxDeliveryCount(7)
             .setLockDuration(Duration.ofSeconds(45))
             .setUserMetadata("some-metadata-for-testing-subscriptions");
 
         // Act & Assert
-        StepVerifier.create(client.createSubscription(expected))
+        StepVerifier.create(client.createSubscription(topicName, subscriptionName, expected))
             .assertNext(actual -> {
-                assertEquals(topicName, expected.getTopicName());
-                assertEquals(subscriptionName, expected.getSubscriptionName());
+                assertEquals(topicName, actual.getTopicName());
+                assertEquals(subscriptionName, actual.getSubscriptionName());
 
                 assertEquals(expected.getLockDuration(), actual.getLockDuration());
                 assertEquals(expected.getMaxDeliveryCount(), actual.getMaxDeliveryCount());
@@ -170,22 +169,21 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
         // Arrange
         final ServiceBusManagementAsyncClient client = createClient(httpClient);
         final String topicName = testResourceNamer.randomName("test", 10);
-        final CreateTopicOptions expected = new CreateTopicOptions(topicName)
+        final CreateTopicOptions expected = new CreateTopicOptions()
             .setMaxSizeInMegabytes(2048L)
             .setRequiresDuplicateDetection(true)
             .setDuplicateDetectionHistoryTimeWindow(Duration.ofMinutes(2))
             .setUserMetadata("some-metadata-for-testing-topic");
 
         // Act & Assert
-        StepVerifier.create(client.createTopicWithResponse(expected))
+        StepVerifier.create(client.createTopicWithResponse(topicName, expected))
             .assertNext(response -> {
                 assertEquals(201, response.getStatusCode());
 
                 // Assert values on a topic.
                 final TopicProperties actual = response.getValue();
 
-                assertEquals(topicName, expected.getName());
-                assertEquals(expected.getName(), actual.getName());
+                assertEquals(topicName, actual.getName());
 
                 assertEquals(expected.getMaxSizeInMegabytes(), actual.getMaxSizeInMegabytes());
                 assertEquals(expected.getUserMetadata(), actual.getUserMetadata());

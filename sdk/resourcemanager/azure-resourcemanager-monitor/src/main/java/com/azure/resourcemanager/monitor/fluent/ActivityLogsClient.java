@@ -190,6 +190,7 @@ public final class ActivityLogsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-04-01";
+        context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), apiVersion, filter, select, this.client.getSubscriptionId(), context)
             .map(
@@ -265,7 +266,7 @@ public final class ActivityLogsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<EventDataInner> listAsync(String filter, String select, Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, select, context), nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(filter, select, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -294,7 +295,7 @@ public final class ActivityLogsClient {
         final String select = null;
         final Context context = null;
         return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, select), nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(filter, select), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -431,6 +432,7 @@ public final class ActivityLogsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(

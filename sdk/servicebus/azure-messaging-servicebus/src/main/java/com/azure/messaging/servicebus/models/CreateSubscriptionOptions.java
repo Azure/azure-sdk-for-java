@@ -4,7 +4,6 @@
 package com.azure.messaging.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusManagementAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusManagementClient;
 
@@ -17,14 +16,11 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 /**
  * Options to set when creating a subscription.
  *
- * @see ServiceBusManagementAsyncClient#createTopic(CreateTopicOptions)
- * @see ServiceBusManagementClient#createTopic(CreateTopicOptions)
+ * @see ServiceBusManagementAsyncClient#createTopic(String, CreateTopicOptions)
+ * @see ServiceBusManagementClient#createTopic(String, CreateTopicOptions)
  */
 @Fluent
 public class CreateSubscriptionOptions {
-    private final String topicName;
-    private final String subscriptionName;
-
     private Duration autoDeleteOnIdle;
     private Duration defaultMessageTimeToLive;
     private boolean deadLetteringOnMessageExpiration;
@@ -39,8 +35,8 @@ public class CreateSubscriptionOptions {
     private String userMetadata;
 
     /**
-     * Creates an instance with the name of the subscription and its associated topic. Default values for the
-     * subscription are populated. The properties populated with defaults are:
+     * Creates an instance. Default values for the subscription are populated. The properties populated with defaults
+     * are:
      *
      * <ul>
      *     <li>{@link #setAutoDeleteOnIdle(Duration)} is max duration value.</li>
@@ -54,28 +50,10 @@ public class CreateSubscriptionOptions {
      *     <li>{@link #setStatus(EntityStatus)} is {@link EntityStatus#ACTIVE}.</li>
      * </ul>
      *
-     * @param topicName Name of the topic associated with this subscription.
-     * @param subscriptionName Name of the subscription.
-     *
      * @throws NullPointerException if {@code topicName} or {@code subscriptionName} are null.
      * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are empty strings.
      */
-    public CreateSubscriptionOptions(String topicName, String subscriptionName) {
-        final ClientLogger logger = new ClientLogger(CreateSubscriptionOptions.class);
-        if (topicName == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'topicName' cannot be null."));
-        } else if (topicName.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'topicName' cannot be an empty string."));
-        } else if (subscriptionName == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'subscriptionName' cannot be null."));
-        } else if (subscriptionName.isEmpty()) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("'subscriptionName' cannot be an empty string."));
-        }
-
-        this.topicName = topicName;
-        this.subscriptionName = subscriptionName;
-
+    public CreateSubscriptionOptions() {
         // Defaults copied from .NET's implementation.
         this.autoDeleteOnIdle = MAX_DURATION;
         this.deadLetteringOnMessageExpiration = false;
@@ -96,11 +74,7 @@ public class CreateSubscriptionOptions {
      */
     public CreateSubscriptionOptions(SubscriptionProperties subscription) {
         Objects.requireNonNull(subscription, "'subscription' cannot be null.");
-        Objects.requireNonNull(subscription.getTopicName(), "Topic name cannot be null.");
-        Objects.requireNonNull(subscription.getSubscriptionName(), "Subscription name cannot be null.");
 
-        this.topicName = subscription.getTopicName();
-        this.subscriptionName = subscription.getSubscriptionName();
         this.autoDeleteOnIdle = subscription.getAutoDeleteOnIdle();
         this.deadLetteringOnMessageExpiration = subscription.deadLetteringOnMessageExpiration();
         this.deadLetteringOnFilterEvaluationExceptions = subscription.enableDeadLetteringOnFilterEvaluationExceptions();
@@ -116,25 +90,7 @@ public class CreateSubscriptionOptions {
     }
 
     /**
-     * Gets the name of the topic under which subscription exists.
-     *
-     * @return The name of the topic under which subscription exists.
-     */
-    public String getTopicName() {
-        return topicName;
-    }
-
-    /**
-     * Gets the name of the subscription.
-     *
-     * @return The name of the subscription.
-     */
-    public String getSubscriptionName() {
-        return subscriptionName;
-    }
-
-    /**
-     * Get the lockDuration property: ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the
+     * Get the lockDuration property: ISO 8601 time-span duration of a peek-lock; that is, the amount of time that the
      * message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1
      * minute.
      *
@@ -145,7 +101,7 @@ public class CreateSubscriptionOptions {
     }
 
     /**
-     * Set the lockDuration property: ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the
+     * Set the lockDuration property: ISO 8601 time-span duration of a peek-lock; that is, the amount of time that the
      * message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1
      * minute.
      *

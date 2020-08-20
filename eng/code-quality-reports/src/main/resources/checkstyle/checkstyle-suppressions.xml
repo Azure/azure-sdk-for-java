@@ -273,6 +273,7 @@
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ThrowFromClientLoggerCheck|GoodLoggingCheck)" files="com.azure.ai.formrecognizer.training.models.CopyAuthorization" />
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.formrecognizer.training.CustomModelTransforms.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.formrecognizer.implementation.Utility.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.search.documents.implementation.util.FieldBuilder.java" />
 
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.ai.formrecognizer.models.FieldValue" />
 
@@ -510,9 +511,6 @@
   <!-- Checkstyle suppressions for azure-spring-integration-servicebus package -->
   <suppress checks="MethodName" files="com.microsoft.azure.spring.integration.servicebus.ServiceBusClientConfig.java"/>
 
-  <!-- Checkstyle suppressions for azure-spring-cloud-keyvault-config package -->
-  <suppress checks="ConstantName" files="com.microsoft.azure.spring.cloud.keyvault.config.auth.CertificateUtils"/>
-
   <!-- These suppressions were added due to limitations in our custom Checkstyle rules and should be addressed in the future. -->
   <!-- API naming is too restrictive -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.search.documents.indexes.SearchIndexerAsyncClient.java"
@@ -528,4 +526,7 @@
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.messaging.servicebus.models.QueueProperties.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.messaging.servicebus.models.SubscriptionProperties.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.messaging.servicebus.models.TopicProperties.java"/>
+
+  <!-- Suppress DigitalTwins for now -->
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-digitaltwins-core[/\\]src[/\\]"/>
 </suppressions>

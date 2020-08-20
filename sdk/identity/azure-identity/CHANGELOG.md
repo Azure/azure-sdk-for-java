@@ -1,6 +1,11 @@
 # Release History
 
-## 1.1.0-beta.8 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
+
+
+## 1.1.0 (2020-08-10)
+- Upgraded core dependency to 1.7.0
+- Removed the default value of 0 for port in `InteractiveBrowserCredential`.
 
 ### Breaking Changes
 - Removing Application Authentication APIs for GA release. These will be reintroduced in 1.2.0-beta.1.

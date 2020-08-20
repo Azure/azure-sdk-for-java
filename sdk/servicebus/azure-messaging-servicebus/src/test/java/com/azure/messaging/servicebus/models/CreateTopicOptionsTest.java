@@ -26,14 +26,8 @@ public class CreateTopicOptionsTest {
      */
     @Test
     void constructor() {
-        // Arrange
-        final String queueName = "a-topic";
-
         // Act
-        final CreateTopicOptions actual = new CreateTopicOptions(queueName);
-
-        // Arrange
-        assertEquals(queueName, actual.getName());
+        final CreateTopicOptions actual = new CreateTopicOptions();
 
         // Assert
         assertEquals(MAX_DURATION, actual.getAutoDeleteOnIdle());
@@ -53,7 +47,6 @@ public class CreateTopicOptionsTest {
     @Test
     void constructorWithOptions() {
         // Arrange
-        final String topicName = "some-topic";
         final TopicDescription description = new TopicDescription()
             .setAutoDeleteOnIdle(Duration.ofSeconds(15))
             .setDefaultMessageTimeToLive(Duration.ofSeconds(50))
@@ -66,13 +59,11 @@ public class CreateTopicOptionsTest {
             .setStatus(EntityStatus.DELETING);
 
         final TopicProperties expected = EntityHelper.toModel(description);
-        EntityHelper.setTopicName(expected, topicName);
 
         // Act
         final CreateTopicOptions actual = new CreateTopicOptions(expected);
 
         // Assert
-        assertEquals(expected.getName(), actual.getName());
         assertEquals(expected.getAutoDeleteOnIdle(), actual.getAutoDeleteOnIdle());
         assertEquals(expected.getDefaultMessageTimeToLive(), actual.getDefaultMessageTimeToLive());
         assertEquals(expected.getDuplicateDetectionHistoryTimeWindow(),

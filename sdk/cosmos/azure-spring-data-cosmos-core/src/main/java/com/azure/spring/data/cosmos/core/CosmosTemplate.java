@@ -41,6 +41,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.parser.Part;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
+import org.springframework.util.ReflectionUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -49,6 +50,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.azure.spring.data.cosmos.common.CosmosUtils.createPartitionKey;
@@ -167,14 +169,16 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
         Assert.notNull(objectToSave, "objectToSave should not be null");
 
+        @SuppressWarnings("unchecked") final Class<T> domainType = (Class<T>) objectToSave.getClass();
+
+        generateIdIfNullAndAutoGenerationEnabled(objectToSave, domainType);
+
         final JsonNode originalItem = prepareToPersistAndConvertToItemProperties(objectToSave);
 
         LOGGER.debug("execute createItem in database {} container {}", this.databaseName,
             containerName);
 
         final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-
-        @SuppressWarnings("unchecked") final Class<T> domainType = (Class<T>) objectToSave.getClass();
 
         final CosmosItemResponse<JsonNode> response = cosmosAsyncClient
             .getDatabase(this.databaseName)
@@ -190,6 +194,14 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
         assert response != null;
         return toDomainObject(domainType, response.getItem());
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> void generateIdIfNullAndAutoGenerationEnabled(T originalItem, Class<?> type) {
+        CosmosEntityInformation<?, ?> entityInfo = CosmosEntityInformation.getInstance(type);
+        if (entityInfo.shouldGenerateId() && ReflectionUtils.getField(entityInfo.getIdField(), originalItem) == null) {
+            ReflectionUtils.setField(entityInfo.getIdField(), originalItem, UUID.randomUUID().toString());
+        }
     }
 
     /**
@@ -373,7 +385,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .publishOn(Schedulers.parallel())
             .flatMap(cosmosItemFeedResponse -> {
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
-                    null, cosmosItemFeedResponse);
+                    cosmosItemFeedResponse.getCosmosDiagnostics(), cosmosItemFeedResponse);
                 return Flux.fromIterable(cosmosItemFeedResponse.getResults());
             })
             .map(jsonNode -> toDomainObject(domainType, jsonNode))
@@ -716,7 +728,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .onErrorResume(throwable ->
                 CosmosExceptionUtils.exceptionHandler("Failed to get count value", throwable))
             .doOnNext(response -> CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
-                null, response))
+                response.getCosmosDiagnostics(), response))
             .next()
             .map(r -> r.getResults().get(0).asLong())
             .block();

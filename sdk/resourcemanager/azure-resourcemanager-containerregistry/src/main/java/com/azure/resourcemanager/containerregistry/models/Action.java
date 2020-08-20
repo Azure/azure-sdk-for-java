@@ -4,41 +4,28 @@
 
 package com.azure.resourcemanager.containerregistry.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for Action. */
-public enum Action {
-    /** Enum value Allow. */
-    ALLOW("Allow");
-
-    /** The actual serialized value for a Action instance. */
-    private final String value;
-
-    Action(String value) {
-        this.value = value;
-    }
+public final class Action extends ExpandableStringEnum<Action> {
+    /** Static value Allow for Action. */
+    public static final Action ALLOW = fromString("Allow");
 
     /**
-     * Parses a serialized value to a Action instance.
+     * Creates or finds a Action from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed Action object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding Action.
      */
     @JsonCreator
-    public static Action fromString(String value) {
-        Action[] items = Action.values();
-        for (Action item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static Action fromString(String name) {
+        return fromString(name, Action.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known Action values. */
+    public static Collection<Action> values() {
+        return values(Action.class);
     }
 }

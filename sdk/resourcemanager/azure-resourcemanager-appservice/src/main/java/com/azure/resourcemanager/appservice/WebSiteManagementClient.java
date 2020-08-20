@@ -8,6 +8,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.appservice.fluent.AppServiceCertificateOrdersClient;
 import com.azure.resourcemanager.appservice.fluent.AppServiceEnvironmentsClient;
 import com.azure.resourcemanager.appservice.fluent.AppServicePlansClient;
@@ -25,6 +26,7 @@ import com.azure.resourcemanager.appservice.fluent.StaticSitesClient;
 import com.azure.resourcemanager.appservice.fluent.TopLevelDomainsClient;
 import com.azure.resourcemanager.appservice.fluent.WebAppsClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
+import java.time.Duration;
 
 /** Initializes a new instance of the WebSiteManagementClient type. */
 @ServiceClient(builder = WebSiteManagementClientBuilder.class)
@@ -77,6 +79,30 @@ public final class WebSiteManagementClient extends AzureServiceClient {
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
+    }
+
+    /** The serializer to serialize an object into a string. */
+    private final SerializerAdapter serializerAdapter;
+
+    /**
+     * Gets The serializer to serialize an object into a string.
+     *
+     * @return the serializerAdapter value.
+     */
+    public SerializerAdapter getSerializerAdapter() {
+        return this.serializerAdapter;
+    }
+
+    /** The default poll interval for long-running operation. */
+    private final Duration defaultPollInterval;
+
+    /**
+     * Gets The default poll interval for long-running operation.
+     *
+     * @return the defaultPollInterval value.
+     */
+    public Duration getDefaultPollInterval() {
+        return this.defaultPollInterval;
     }
 
     /** The AppServiceCertificateOrdersClient object to access its operations. */
@@ -275,12 +301,21 @@ public final class WebSiteManagementClient extends AzureServiceClient {
      * Initializes an instance of WebSiteManagementClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
      */
     WebSiteManagementClient(
-        HttpPipeline httpPipeline, AzureEnvironment environment, String subscriptionId, String endpoint) {
-        super(httpPipeline, environment);
+        HttpPipeline httpPipeline,
+        SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval,
+        AzureEnvironment environment,
+        String subscriptionId,
+        String endpoint) {
+        super(httpPipeline, serializerAdapter, environment);
         this.httpPipeline = httpPipeline;
+        this.serializerAdapter = serializerAdapter;
+        this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
         this.apiVersion = "2019-08-01";

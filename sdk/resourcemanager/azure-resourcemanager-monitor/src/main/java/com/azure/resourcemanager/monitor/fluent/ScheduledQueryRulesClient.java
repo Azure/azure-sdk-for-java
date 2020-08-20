@@ -247,6 +247,7 @@ public final class ScheduledQueryRulesClient
             parameters.validate();
         }
         final String apiVersion = "2018-04-16";
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -425,6 +426,7 @@ public final class ScheduledQueryRulesClient
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-04-16";
+        context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
@@ -608,6 +610,7 @@ public final class ScheduledQueryRulesClient
             parameters.validate();
         }
         final String apiVersion = "2018-04-16";
+        context = this.client.mergeContext(context);
         return service
             .update(
                 this.client.getEndpoint(),
@@ -784,6 +787,7 @@ public final class ScheduledQueryRulesClient
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-04-16";
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -918,6 +922,7 @@ public final class ScheduledQueryRulesClient
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-04-16";
+        context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), apiVersion, filter, this.client.getSubscriptionId(), context)
             .map(
@@ -1097,6 +1102,7 @@ public final class ScheduledQueryRulesClient
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-04-16";
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(),
