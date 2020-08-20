@@ -171,7 +171,8 @@ public class ShareAsyncClient {
      * @return a {@link ShareAsyncClient} used to interact with the specific snapshot.
      */
     public ShareAsyncClient getSnapshotClient(String snapshot) {
-        return new ShareAsyncClient(azureFileStorageClient, getShareName(), snapshot, getAccountName(), getServiceVersion());
+        return new ShareAsyncClient(azureFileStorageClient, getShareName(), snapshot, getAccountName(),
+            getServiceVersion());
     }
 
     /**
@@ -394,6 +395,7 @@ public class ShareAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
      *
+     * @param options {@link ShareDeleteOptions}
      * @return A response that only contains headers and response status code
      * @throws ShareStorageException If the share doesn't exist
      */
@@ -476,6 +478,7 @@ public class ShareAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
      *
+     * @param options {@link ShareGetPropertiesOptions}
      * @return A response containing the {@link ShareProperties properties of the share} with headers and response
      * status code
      * @throws ShareStorageException If the share doesn't exist
@@ -708,6 +711,7 @@ public class ShareAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-acl">Azure Docs</a>.</p>
      *
+     * @param options {@link ShareGetAccessPolicyOptions}
      * @return The stored access policies specified on the queue.
      * @throws ShareStorageException If the share doesn't exist
      */
@@ -894,6 +898,7 @@ public class ShareAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-stats">Azure Docs</a>.</p>
      *
+     * @param options {@link ShareGetStatisticsOptions}
      * @return A response containing the storage {@link ShareStatistics statistics of the share} with headers and
      * response status code
      */

@@ -309,6 +309,7 @@ public class ShareClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
      *
+     * @param options {@link ShareDeleteOptions}
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -378,6 +379,7 @@ public class ShareClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
      *
+     * @param options {@link ShareGetPropertiesOptions}
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -572,6 +574,7 @@ public class ShareClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-acl">Azure Docs</a>.</p>
      *
+     * @param options {@link ShareGetAccessPolicyOptions}
      * @return The stored access policies specified on the queue.
      * @throws ShareStorageException If the share doesn't exist
      */
@@ -715,7 +718,8 @@ public class ShareClient {
      * @return A response containing the {@link ShareStatistics statistics of the share}
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<ShareStatistics> getStatisticsWithResponse(ShareGetStatisticsOptions options, Duration timeout, Context context) {
+    public Response<ShareStatistics> getStatisticsWithResponse(ShareGetStatisticsOptions options, Duration timeout,
+        Context context) {
         Mono<Response<ShareStatistics>> response = client.getStatisticsWithResponse(options, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }

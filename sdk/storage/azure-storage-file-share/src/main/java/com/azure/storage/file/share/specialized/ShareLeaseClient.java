@@ -111,7 +111,8 @@ public final class ShareLeaseClient {
      * @return The lease ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<String> acquireLeaseWithResponse(ShareAcquireLeaseOptions options, Duration timeout, Context context) {
+    public Response<String> acquireLeaseWithResponse(ShareAcquireLeaseOptions options, Duration timeout,
+        Context context) {
         return StorageImplUtils.blockWithOptionalTimeout(this.client.acquireLeaseWithResponse(options, context),
             timeout);
     }
@@ -243,6 +244,8 @@ public final class ShareLeaseClient {
      *
      * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseClient.renewLeaseWithResponse#Duration-Context}
      *
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the renewed lease ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

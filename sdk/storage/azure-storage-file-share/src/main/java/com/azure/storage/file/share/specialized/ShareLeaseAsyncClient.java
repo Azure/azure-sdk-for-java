@@ -7,7 +7,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.FluxUtil;
@@ -21,7 +20,6 @@ import com.azure.storage.file.share.options.ShareBreakLeaseOptions;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
-import java.time.Duration;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -136,6 +134,7 @@ public final class ShareLeaseAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.acquireLeaseWithResponse#ShareAcquireLeaseOptions}
      *
+     * @param options {@link ShareAcquireLeaseOptions}
      * @return A reactive response containing the lease ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -256,6 +255,7 @@ public final class ShareLeaseAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.breakLeaseWithResponse#ShareBreakLeaseOptions}
      *
+     * @param options {@link ShareBreakLeaseOptions}
      * @return A reactive response signalling completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

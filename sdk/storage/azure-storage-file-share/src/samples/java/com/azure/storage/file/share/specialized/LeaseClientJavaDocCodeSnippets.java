@@ -136,7 +136,7 @@ public class LeaseClientJavaDocCodeSnippets {
     public void renewLeaseWithResponseCodeSnippets() {
         // BEGIN: com.azure.storage.file.share.specialized.ShareLeaseClient.renewLeaseWithResponse#Duration-Context
         System.out.printf("Renewed lease ID is %s%n",
-            client.releaseLeaseWithResponse( timeout, new Context(key, value))
+            client.releaseLeaseWithResponse(timeout, new Context(key, value))
                 .getValue());
         // END: com.azure.storage.file.share.specialized.ShareLeaseClient.renewLeaseWithResponse#Duration-Context
     }

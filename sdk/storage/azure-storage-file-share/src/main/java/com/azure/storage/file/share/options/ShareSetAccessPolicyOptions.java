@@ -4,7 +4,6 @@
 package com.azure.storage.file.share.options;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
 
 import java.util.Collections;
