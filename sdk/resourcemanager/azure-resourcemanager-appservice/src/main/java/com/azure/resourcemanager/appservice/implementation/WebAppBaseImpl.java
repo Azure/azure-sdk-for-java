@@ -888,6 +888,10 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
 
     Mono<SiteInner> submitSite(final SiteInner site) {
         site.withSiteConfig(new SiteConfigInner());
+        return submitSiteWithoutSiteConfig(site);
+    }
+
+    Mono<SiteInner> submitSiteWithoutSiteConfig(final SiteInner site) {
         // Construct web app observable
         return createOrUpdateInner(site)
             .map(
@@ -896,7 +900,6 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
                     return siteInner;
                 });
     }
-
     Mono<SiteInner> submitSite(final SitePatchResourceInner siteUpdate) {
         // Construct web app observable
         return updateInner(siteUpdate)

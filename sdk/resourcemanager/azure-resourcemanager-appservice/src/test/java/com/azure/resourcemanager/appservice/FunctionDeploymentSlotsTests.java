@@ -22,6 +22,7 @@ import java.util.Map;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 public class FunctionDeploymentSlotsTests extends AppServiceTest {
     private String rgName1 = "";
@@ -41,7 +42,7 @@ public class FunctionDeploymentSlotsTests extends AppServiceTest {
         super.initializeClients(httpPipeline, profile);
     }
 
-    @Disabled("Contains connection string in request payload")
+    @Test
     public void canCRUDFunctionSwapSlots() throws Exception {
         // Create with consumption
         FunctionApp functionApp1 =

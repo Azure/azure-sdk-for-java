@@ -67,4 +67,9 @@ class FunctionDeploymentSlotImpl
             return Mono.error(e);
         }
     }
+
+    @Override
+    Mono<SiteInner> submitSite(final SiteInner site) {
+        return submitSiteWithoutSiteConfig(site);
+    }
 }
