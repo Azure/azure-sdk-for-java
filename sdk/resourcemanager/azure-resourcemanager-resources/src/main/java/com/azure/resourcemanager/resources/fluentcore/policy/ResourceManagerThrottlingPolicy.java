@@ -10,25 +10,30 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerThrottlingInfo;
 import reactor.core.publisher.Mono;
 
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 /**
  * A Http Pipeline Policy for automatic send throttling rate limit info to a call back function
  */
 public class ResourceManagerThrottlingPolicy implements HttpPipelinePolicy {
-    private final Consumer<? super ResourceManagerThrottlingInfo> callback;
+    private final BiConsumer<? super HttpResponse, ? super ResourceManagerThrottlingInfo> callback;
 
     /**
      * Creates the resource manager throttling policy
      * @param callback consume the ResourceManagerThrottlingInfo for every request, it is not a thread-safe method
      */
-    public ResourceManagerThrottlingPolicy(Consumer<? super ResourceManagerThrottlingInfo> callback) {
+    public ResourceManagerThrottlingPolicy(
+        BiConsumer<? super HttpResponse, ? super ResourceManagerThrottlingInfo> callback) {
         this.callback = callback;
     }
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         return next.clone().process()
-            .doOnNext(response -> callback.accept(ResourceManagerThrottlingInfo.fromHeaders(response.getHeaders())));
+            .flatMap(response -> {
+                HttpResponse bufferedResponse = response.buffer();
+                callback.accept(bufferedResponse, ResourceManagerThrottlingInfo.fromHeaders(response.getHeaders()));
+                return Mono.just(bufferedResponse);
+            });
     }
 }
