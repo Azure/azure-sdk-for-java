@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.ClientOptions;
 import com.azure.core.Headers;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
@@ -73,7 +74,7 @@ public final class ServiceBusClientBuilder {
     private final MessageSerializer messageSerializer = new ServiceBusMessageSerializer();
     private final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
-    private String applicationId;
+    private ClientOptions clientOptions;
     private Configuration configuration;
     private ServiceBusConnectionProcessor sharedConnection;
     private String connectionStringEntityName;
@@ -96,21 +97,17 @@ public final class ServiceBusClientBuilder {
     }
 
     /**
-     * Sets the application-id which will be used in user-agent while creating connection with Azure Service Bus.
+     * Sets various options on the client. For example application-id which will be used in user-agent while creating
+     * connection with Azure Service Bus.
      *
-     * @param headers application-id to used in .
+     * @param clientOptions to be set on the client.
      *
      * @return The updated {@link ServiceBusClientBuilder} object.
      */
-
-    public ServiceBusClientBuilder headers(Headers headers) {
+    public ServiceBusClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
         return this;
     }
-
-    public ServiceBusClientBuilder header(String name, String value) {
-        return this;
-    }
-
 
     /**
      * Sets the connection string for a Service Bus namespace or a specific Service Bus resource.
@@ -315,6 +312,7 @@ public final class ServiceBusClientBuilder {
                 final Flux<ServiceBusAmqpConnection> connectionFlux = Mono.fromCallable(() -> {
                     final String connectionId = StringUtil.getRandomString("MF");
 
+                    final String applicationId = clientOptions != null ? clientOptions.getApplicationId() : null;
                     return (ServiceBusAmqpConnection) new ServiceBusReactorAmqpConnection(applicationId, connectionId,
                         connectionOptions, provider, handlerProvider, tokenManagerProvider, serializer, product,
                         clientVersion);

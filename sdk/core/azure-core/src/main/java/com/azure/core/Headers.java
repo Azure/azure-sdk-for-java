@@ -3,8 +3,6 @@
 
 package com.azure.core;
 
-import com.azure.core.http.HttpHeader;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
@@ -14,19 +12,19 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Headers
+ * {@link Iterable} map representation for {@link Header}.
  */
 public class Headers implements Iterable<Header> {
     private final Map<String, Header> headers = new ConcurrentHashMap<>();
 
     /**
-     * Create an empty HttpHeaders instance.
+     * Create an empty Headers instance.
      */
     public Headers() {
     }
 
     /**
-     * Create a HttpHeaders instance with the provided initial headers.
+     * Create a Headers instance with the provided initial headers.
      *
      * @param headers the map of initial headers
      */
@@ -37,14 +35,14 @@ public class Headers implements Iterable<Header> {
     }
 
     /**
-     * Create a HttpHeaders instance with the provided initial headers.
+     * Create a Headers instance with the provided initial headers.
      *
      * @param headers the collection of initial headers
      */
-    public Headers(Iterable<HttpHeader> headers) {
+    public Headers(Iterable<Header> headers) {
         this();
 
-        for (final HttpHeader header : headers) {
+        for (final Header header : headers) {
             this.put(header.getName(), header.getValue());
         }
     }
@@ -59,7 +57,7 @@ public class Headers implements Iterable<Header> {
     }
 
     /**
-     * Sets a {@link HttpHeader header} with the given name and value.
+     * Sets a {@link Header header} with the given name and value.
      *
      * <p>If header with same name already exists then the value will be overwritten.</p>
      *
@@ -68,12 +66,12 @@ public class Headers implements Iterable<Header> {
      * @return The updated HttpHeaders object
      */
     public Headers put(String name, String value) {
-        headers.put(formatKey(name), new HttpHeader(name, value));
+        headers.put(formatKey(name), new Header(name, value));
         return this;
     }
 
     /**
-     * Gets the {@link HttpHeader header} for the provided header name. {@code Null} is returned if the header isn't
+     * Gets the {@link Header header} for the provided header name. {@code Null} is returned if the header isn't
      * found.
      *
      * @param name the name of the header to find.
@@ -84,7 +82,7 @@ public class Headers implements Iterable<Header> {
     }
 
     /**
-     * Removes the {@link HttpHeader header} with the provided header name. {@code Null} is returned if the header
+     * Removes the {@link Header header} with the provided header name. {@code Null} is returned if the header
      * isn't found.
      *
      * @param name the name of the header to remove.
