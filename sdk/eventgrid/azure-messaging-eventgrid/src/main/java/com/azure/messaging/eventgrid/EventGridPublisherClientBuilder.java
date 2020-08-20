@@ -30,7 +30,7 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = {EventGridPublisherClient.class, EventGridPublisherAsyncClient.class})
 @Fluent
-public class EventGridPublisherClientBuilder {
+public final class EventGridPublisherClientBuilder {
 
     private static final String AEG_SAS_KEY = "aeg-sas-key";
 

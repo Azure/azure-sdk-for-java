@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-public class SystemEventMappings {
+public final class SystemEventMappings {
     // Keep this sorted by the name of the service publishing the events.
 
     // AppConfiguration events.

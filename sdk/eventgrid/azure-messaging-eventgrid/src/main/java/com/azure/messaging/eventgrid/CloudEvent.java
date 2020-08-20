@@ -18,7 +18,6 @@ import reactor.core.publisher.Flux;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.*;
@@ -29,7 +28,7 @@ import java.util.*;
  * @see EventGridPublisherClient
  **/
 @Fluent
-public class CloudEvent {
+public final class CloudEvent {
 
     private static final String SPEC_VERSION = "1.0";
 
