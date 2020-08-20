@@ -213,10 +213,12 @@ abstract class DeploymentSlotBaseImpl<
                                     for (ConnectionString connectionString : stringConnectionStringMap.values()) {
                                         if (connectionString.sticky()) {
                                             withStickyConnectionString(
-                                                connectionString.name(), connectionString.value(), connectionString.type());
+                                                connectionString.name(), connectionString.value(),
+                                                connectionString.type());
                                         } else {
                                             withConnectionString(
-                                                connectionString.name(), connectionString.value(), connectionString.type());
+                                                connectionString.name(), connectionString.value(),
+                                                connectionString.type());
                                         }
                                     }
                                     return DeploymentSlotBaseImpl.super.submitConnectionStrings();

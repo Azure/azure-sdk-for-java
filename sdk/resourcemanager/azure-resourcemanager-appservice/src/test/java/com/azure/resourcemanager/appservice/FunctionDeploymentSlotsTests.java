@@ -88,7 +88,7 @@ public class FunctionDeploymentSlotsTests extends AppServiceTest {
             functionApp1.deploymentSlots().define(slotName2).withConfigurationFromParent().create();
         Assertions.assertNotNull(slot2);
         Assertions.assertEquals(PythonVersion.PYTHON_27, slot2.pythonVersion());
-        Map<String, AppSetting> appSettingMap = appSettingMap = slot2.getAppSettings();
+        Map<String, AppSetting> appSettingMap = slot2.getAppSettings();
         Assertions.assertEquals("appvalue", appSettingMap.get("appkey").value());
         Assertions.assertEquals(false, appSettingMap.get("appkey").sticky());
         Assertions.assertEquals("stickyvalue", appSettingMap.get("stickykey").value());
