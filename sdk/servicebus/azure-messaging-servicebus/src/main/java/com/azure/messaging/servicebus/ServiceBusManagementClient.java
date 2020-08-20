@@ -71,6 +71,7 @@ public final class ServiceBusManagementClient {
     /**
      * Creates a queue with the {@link CreateQueueOptions}.
      *
+     * @param queueName Name of the queue to create.
      * @param queueOptions Information about the queue to create.
      *
      * @return The created queue.
@@ -84,14 +85,15 @@ public final class ServiceBusManagementClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public QueueProperties createQueue(CreateQueueOptions queueOptions) {
-        return asyncClient.createQueue(queueOptions).block();
+    public QueueProperties createQueue(String queueName, CreateQueueOptions queueOptions) {
+        return asyncClient.createQueue(queueName, queueOptions).block();
     }
 
     /**
      * Creates a queue and returns the created queue in addition to the HTTP response.
      *
-     * @param queueOptions The queue to create.
+     * @param queueName Name of the queue to create.
+     * @param queueOptions Information about the queue to create.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return The created queue in addition to the HTTP response.
@@ -105,8 +107,10 @@ public final class ServiceBusManagementClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<QueueProperties> createQueueWithResponse(CreateQueueOptions queueOptions, Context context) {
-        return asyncClient.createQueueWithResponse(queueOptions, context != null ? context : Context.NONE).block();
+    public Response<QueueProperties> createQueueWithResponse(String queueName, CreateQueueOptions queueOptions,
+        Context context) {
+        return asyncClient.createQueueWithResponse(queueName, queueOptions, context != null ? context : Context.NONE)
+            .block();
     }
 
     /**
@@ -133,26 +137,33 @@ public final class ServiceBusManagementClient {
     /**
      * Creates a subscription with the {@link SubscriptionProperties}.
      *
-     * @param subscription Information about the subscription to create.
+     * @param topicName Name of the topic associated with subscription.
+     * @param subscriptionName Name of the subscription.
+     * @param subscriptionOptions Information about the subscription to create.
      *
      * @return Information about the created subscription.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
      *     processing the request.
-     * @throws NullPointerException if {@code subscription} is null.
+     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are are empty strings.
+     * @throws NullPointerException if {@code topicName}, {@code subscriptionName}, or {@code subscriptionOptions}
+     *     are are null.
      * @throws ResourceExistsException if a subscription exists with the same topic and subscription name.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SubscriptionProperties createSubscription(CreateSubscriptionOptions subscription) {
-        return asyncClient.createSubscription(subscription).block();
+    public SubscriptionProperties createSubscription(String topicName, String subscriptionName,
+        CreateSubscriptionOptions subscriptionOptions) {
+        return asyncClient.createSubscription(topicName, subscriptionName, subscriptionOptions).block();
     }
 
     /**
      * Creates a queue and returns the created queue in addition to the HTTP response.
      *
-     * @param subscription Information about the subscription to create.
+     * @param topicName Name of the topic associated with subscription.
+     * @param subscriptionName Name of the subscription.
+     * @param subscriptionOptions Information about the subscription to create.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return The created queue in addition to the HTTP response.
@@ -165,10 +176,10 @@ public final class ServiceBusManagementClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SubscriptionProperties> createSubscriptionWithResponse(CreateSubscriptionOptions subscription,
-        Context context) {
-        return asyncClient.createSubscriptionWithResponse(subscription, context != null ? context : Context.NONE)
-            .block();
+    public Response<SubscriptionProperties> createSubscriptionWithResponse(String topicName, String subscriptionName,
+        CreateSubscriptionOptions subscriptionOptions, Context context) {
+        return asyncClient.createSubscriptionWithResponse(topicName, subscriptionName, subscriptionOptions,
+            context != null ? context : Context.NONE).block();
     }
 
     /**
@@ -192,8 +203,9 @@ public final class ServiceBusManagementClient {
     }
 
     /**
-     * Creates a topic with the {@link TopicProperties}.
+     * Creates a topic with the {@link CreateTopicOptions}.
      *
+     * @param topicName Name of the topic to create.
      * @param topicOptions Information about the topic to create.
      *
      * @return Information about the created topic.
@@ -201,20 +213,21 @@ public final class ServiceBusManagementClient {
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the topicOptions quota is exceeded, or an
      *     error occurred processing the request.
-     * @throws NullPointerException if {@code topicOptions} is null.
-     * @throws ResourceExistsException if a topic exists with the same {@link CreateTopicOptions#getName()
-     *     topicName}.
+     * @throws IllegalArgumentException if {@code topicName} is an empty string.
+     * @throws NullPointerException if {@code topicName} or {@code topicOptions} is null.
+     * @throws ResourceExistsException if a topic exists with the same {@code topicName}.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TopicProperties createTopic(CreateTopicOptions topicOptions) {
-        return asyncClient.createTopic(topicOptions).block();
+    public TopicProperties createTopic(String topicName, CreateTopicOptions topicOptions) {
+        return asyncClient.createTopic(topicName, topicOptions).block();
     }
 
     /**
      * Creates a topic and returns the created topic in addition to the HTTP response.
      *
-     * @param topicOptions The topic to create.
+     * @param topicName Name of the topic to create.
+     * @param topicOptions Information about the topic to create.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return The created topic in addition to the HTTP response.
@@ -222,16 +235,16 @@ public final class ServiceBusManagementClient {
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the topic quota is exceeded, or an error
      *     occurred processing the request.
-     * @throws IllegalArgumentException if {@link CreateTopicOptions#getName() topicOptions.getName()} is null or an
-     *     empty string.
-     * @throws NullPointerException if {@code topic} is null.
-     * @throws ResourceExistsException if a topic exists with the same {@link CreateTopicOptions#getName() topic
-     *     name}.
+     * @throws IllegalArgumentException if {@code topicName} is an empty string.
+     * @throws NullPointerException if {@code topicName} or {@code topicOptions} is null.
+     * @throws ResourceExistsException if a topic exists with the same {@code topicName}.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TopicProperties> createTopicWithResponse(CreateTopicOptions topicOptions, Context context) {
-        return asyncClient.createTopicWithResponse(topicOptions, context != null ? context : Context.NONE).block();
+    public Response<TopicProperties> createTopicWithResponse(String topicName, CreateTopicOptions topicOptions,
+        Context context) {
+        return asyncClient.createTopicWithResponse(topicName, topicOptions, context != null ? context : Context.NONE)
+            .block();
     }
 
     /**

@@ -11,50 +11,30 @@ package com.microsoft.azure.management.hybridcompute.v2019_12_12.implementation;
 import com.microsoft.azure.arm.resources.models.implementation.GroupableResourceCoreImpl;
 import com.microsoft.azure.management.hybridcompute.v2019_12_12.Machine;
 import rx.Observable;
-import com.microsoft.azure.management.hybridcompute.v2019_12_12.MachineUpdate;
-import com.microsoft.azure.management.hybridcompute.v2019_12_12.LocationData;
-import com.microsoft.azure.management.hybridcompute.v2019_12_12.MachinePropertiesOsProfile;
-import com.microsoft.azure.management.hybridcompute.v2019_12_12.StatusTypes;
-import org.joda.time.DateTime;
 import java.util.List;
 import com.microsoft.azure.management.hybridcompute.v2019_12_12.ErrorDetail;
 import com.microsoft.azure.management.hybridcompute.v2019_12_12.MachineExtensionInstanceView;
 import com.microsoft.azure.management.hybridcompute.v2019_12_12.MachineIdentity;
-import rx.functions.Func1;
+import org.joda.time.DateTime;
+import com.microsoft.azure.management.hybridcompute.v2019_12_12.LocationData;
+import com.microsoft.azure.management.hybridcompute.v2019_12_12.MachinePropertiesOsProfile;
+import com.microsoft.azure.management.hybridcompute.v2019_12_12.StatusTypes;
 
-class MachineImpl extends GroupableResourceCoreImpl<Machine, MachineInner, MachineImpl, HybridComputeManager> implements Machine, Machine.Definition, Machine.Update {
-    private MachineUpdate updateParameter;
+class MachineImpl extends GroupableResourceCoreImpl<Machine, MachineInner, MachineImpl, HybridComputeManager> implements Machine {
     MachineImpl(String name, MachineInner inner, HybridComputeManager manager) {
         super(name, inner, manager);
-        this.updateParameter = new MachineUpdate();
     }
 
     @Override
     public Observable<Machine> createResourceAsync() {
         MachinesInner client = this.manager().inner().machines();
-        return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
-            .map(new Func1<MachineInner, MachineInner>() {
-               @Override
-               public MachineInner call(MachineInner resource) {
-                   resetCreateUpdateParameters();
-                   return resource;
-               }
-            })
-            .map(innerToFluentMap(this));
+        return null; // NOP createResourceAsync implementation as create is not supported
     }
 
     @Override
     public Observable<Machine> updateResourceAsync() {
         MachinesInner client = this.manager().inner().machines();
-        return client.updateAsync(this.resourceGroupName(), this.name(), this.updateParameter)
-            .map(new Func1<MachineInner, MachineInner>() {
-               @Override
-               public MachineInner call(MachineInner resource) {
-                   resetCreateUpdateParameters();
-                   return resource;
-               }
-            })
-            .map(innerToFluentMap(this));
+        return null; // NOP updateResourceAsync implementation as update is not supported
     }
 
     @Override
@@ -63,14 +43,7 @@ class MachineImpl extends GroupableResourceCoreImpl<Machine, MachineInner, Machi
         return client.getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
-    @Override
-    public boolean isInCreateMode() {
-        return this.inner().id() == null;
-    }
 
-    private void resetCreateUpdateParameters() {
-        this.updateParameter = new MachineUpdate();
-    }
 
     @Override
     public String agentVersion() {
@@ -145,46 +118,6 @@ class MachineImpl extends GroupableResourceCoreImpl<Machine, MachineInner, Machi
     @Override
     public String vmId() {
         return this.inner().vmId();
-    }
-
-    @Override
-    public MachineImpl withClientPublicKey(String clientPublicKey) {
-        this.inner().withClientPublicKey(clientPublicKey);
-        return this;
-    }
-
-    @Override
-    public MachineImpl withExtensions(List<MachineExtensionInstanceView> extensions) {
-        this.inner().withExtensions(extensions);
-        return this;
-    }
-
-    @Override
-    public MachineImpl withIdentity(MachineIdentity identity) {
-        this.inner().withIdentity(identity);
-        return this;
-    }
-
-    @Override
-    public MachineImpl withOsProfile(MachinePropertiesOsProfile osProfile) {
-        this.inner().withOsProfile(osProfile);
-        return this;
-    }
-
-    @Override
-    public MachineImpl withVmId(String vmId) {
-        this.inner().withVmId(vmId);
-        return this;
-    }
-
-    @Override
-    public MachineImpl withLocationData(LocationData locationData) {
-        if (isInCreateMode()) {
-            this.inner().withLocationData(locationData);
-        } else {
-            this.updateParameter.withLocationData(locationData);
-        }
-        return this;
     }
 
 }

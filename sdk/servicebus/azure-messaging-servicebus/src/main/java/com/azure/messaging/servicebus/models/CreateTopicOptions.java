@@ -4,7 +4,8 @@
 package com.azure.messaging.servicebus.models;
 
 
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.ServiceBusManagementAsyncClient;
+import com.azure.messaging.servicebus.ServiceBusManagementClient;
 
 import java.time.Duration;
 import java.util.Objects;
@@ -17,10 +18,11 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 
 /**
  * Represents the set of options that can be specified for the creation of a queue.
+ *
+ * @see ServiceBusManagementAsyncClient#createTopic(String, CreateTopicOptions)
+ * @see ServiceBusManagementClient#createTopic(String, CreateTopicOptions)
  */
 public class CreateTopicOptions {
-    private final String name;
-
     private Duration autoDeleteOnIdle;
     private Duration defaultMessageTimeToLive;
     private Duration duplicateDetectionHistoryTimeWindow;
@@ -36,8 +38,7 @@ public class CreateTopicOptions {
     private String userMetadata;
 
     /**
-     * Creates an instance with the name of the topic. Default values for the topic are populated. The properties
-     * populated with defaults are:
+     * Creates an instance. Default values for the topic are populated. The properties populated with defaults are:
      *
      * <ul>
      *     <li>{@link #setAutoDeleteOnIdle(Duration)} is max duration value.</li>
@@ -53,20 +54,10 @@ public class CreateTopicOptions {
      *     <li>{@link #setStatus(EntityStatus)} is {@link EntityStatus#ACTIVE}.</li>
      * </ul>
      *
-     * @param topicName Name of the queue.
-     *
      * @throws NullPointerException if {@code topicName} is a null.
      * @throws IllegalArgumentException if {@code topicName} is an empty string.
      */
-    public CreateTopicOptions(String topicName) {
-        Objects.requireNonNull(topicName, "'topicName' cannot be null.");
-
-        if (topicName.isEmpty()) {
-            ClientLogger logger = new ClientLogger(CreateTopicOptions.class);
-            throw logger.logThrowableAsError(new IllegalArgumentException("Topic name cannot be empty."));
-        }
-
-        this.name = topicName;
+    public CreateTopicOptions() {
         this.autoDeleteOnIdle = MAX_DURATION;
         this.defaultMessageTimeToLive = MAX_DURATION;
         this.duplicateDetectionHistoryTimeWindow = DEFAULT_DUPLICATE_DETECTION_DURATION;
@@ -84,37 +75,21 @@ public class CreateTopicOptions {
      * Initializes a new instance based on the specified {@link CreateTopicOptions} instance. This is useful for
      * creating a new topic based on the properties of an existing topicOptions.
      *
-     * @param topicOptions Existing topicOptions to create options with.
+     * @param topic Existing topicOptions to create options with.
      */
-    public CreateTopicOptions(TopicProperties topicOptions) {
-        Objects.requireNonNull(topicOptions, "'topicOptions' cannot be null.");
-        Objects.requireNonNull(topicOptions.getName(), "Topic name cannot be null");
+    public CreateTopicOptions(TopicProperties topic) {
+        Objects.requireNonNull(topic, "'topic' cannot be null.");
 
-        if (topicOptions.getName().isEmpty()) {
-            final ClientLogger logger = new ClientLogger(CreateTopicOptions.class);
-            throw logger.logExceptionAsError(new IllegalArgumentException("Topic name cannot be empty."));
-        }
-
-        this.name = topicOptions.getName();
-        this.autoDeleteOnIdle = topicOptions.getAutoDeleteOnIdle();
-        this.defaultMessageTimeToLive = topicOptions.getDefaultMessageTimeToLive();
-        this.duplicateDetectionHistoryTimeWindow = topicOptions.getDuplicateDetectionHistoryTimeWindow();
-        this.enableBatchedOperations = topicOptions.enableBatchedOperations();
-        this.enablePartitioning = topicOptions.enablePartitioning();
-        this.maxSizeInMegabytes = topicOptions.getMaxSizeInMegabytes();
-        this.requiresDuplicateDetection = topicOptions.requiresDuplicateDetection();
-        this.supportOrdering = topicOptions.supportOrdering();
-        this.status = topicOptions.getStatus();
-        this.userMetadata = topicOptions.getUserMetadata();
-    }
-
-    /**
-     * Gets the name of the queue.
-     *
-     * @return The name of the queue.
-     */
-    public String getName() {
-        return name;
+        this.autoDeleteOnIdle = topic.getAutoDeleteOnIdle();
+        this.defaultMessageTimeToLive = topic.getDefaultMessageTimeToLive();
+        this.duplicateDetectionHistoryTimeWindow = topic.getDuplicateDetectionHistoryTimeWindow();
+        this.enableBatchedOperations = topic.enableBatchedOperations();
+        this.enablePartitioning = topic.enablePartitioning();
+        this.maxSizeInMegabytes = topic.getMaxSizeInMegabytes();
+        this.requiresDuplicateDetection = topic.requiresDuplicateDetection();
+        this.supportOrdering = topic.supportOrdering();
+        this.status = topic.getStatus();
+        this.userMetadata = topic.getUserMetadata();
     }
 
     /**
@@ -270,6 +245,7 @@ public class CreateTopicOptions {
      * subscription in order.
      *
      * @param supportOrdering true if ordering should be maintained; false otherwise.
+     *
      * @return the CreateTopicOptions object itself.
      */
     public CreateTopicOptions setSupportOrdering(boolean supportOrdering) {

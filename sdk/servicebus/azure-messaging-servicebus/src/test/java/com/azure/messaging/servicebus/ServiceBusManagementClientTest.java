@@ -69,20 +69,21 @@ class ServiceBusManagementClientTest {
     @Test
     void createQueue() {
         // Arrange
-        final CreateQueueOptions description = new CreateQueueOptions(queueName)
+        final CreateQueueOptions description = new CreateQueueOptions()
             .setMaxDeliveryCount(10)
             .setAutoDeleteOnIdle(Duration.ofSeconds(10));
 
-        final CreateQueueOptions options = new CreateQueueOptions("queue-name-2")
+        final String expectedName = "queue-name-2";
+        final CreateQueueOptions options = new CreateQueueOptions()
             .setMaxDeliveryCount(4)
             .setAutoDeleteOnIdle(Duration.ofSeconds(30));
         final QueueDescription queueDescription = EntityHelper.getQueueDescription(options);
         final QueueProperties result = EntityHelper.toModel(queueDescription);
 
-        when(asyncClient.createQueue(description)).thenReturn(Mono.just(result));
+        when(asyncClient.createQueue(queueName, description)).thenReturn(Mono.just(result));
 
         // Act
-        final QueueProperties actual = client.createQueue(description);
+        final QueueProperties actual = client.createQueue(queueName, description);
 
         // Assert
         assertEquals(result, actual);
@@ -95,10 +96,11 @@ class ServiceBusManagementClientTest {
         final QueueProperties result = mock(QueueProperties.class);
 
         when(queueDescriptionResponse.getValue()).thenReturn(result);
-        when(asyncClient.createQueueWithResponse(description, context)).thenReturn(Mono.just(queueDescriptionResponse));
+        when(asyncClient.createQueueWithResponse(queueName, description, context))
+            .thenReturn(Mono.just(queueDescriptionResponse));
 
         // Act
-        final Response<QueueProperties> actual = client.createQueueWithResponse(description, context);
+        final Response<QueueProperties> actual = client.createQueueWithResponse(queueName, description, context);
 
         // Assert
         assertEquals(queueDescriptionResponse, actual);
@@ -252,7 +254,7 @@ class ServiceBusManagementClientTest {
     void updateQueue() {
         // Arrange
 
-        final CreateQueueOptions options = new CreateQueueOptions(queueName)
+        final CreateQueueOptions options = new CreateQueueOptions()
             .setMaxDeliveryCount(4)
             .setAutoDeleteOnIdle(Duration.ofSeconds(30));
         final QueueDescription queueDescription = EntityHelper.getQueueDescription(options);

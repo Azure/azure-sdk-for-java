@@ -3,18 +3,18 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.RecognizeContentOptions;
-import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
-import com.azure.ai.formrecognizer.models.FormRecognizerErrorInformation;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormPage;
+import com.azure.ai.formrecognizer.models.FormRecognizerErrorInformation;
 import com.azure.ai.formrecognizer.models.FormRecognizerException;
 import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
+import com.azure.ai.formrecognizer.models.RecognizeContentOptions;
 import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
+import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.training.FormTrainingClient;
-import com.azure.ai.formrecognizer.training.models.TrainingOptions;
 import com.azure.ai.formrecognizer.training.models.CustomFormModel;
+import com.azure.ai.formrecognizer.training.models.TrainingOptions;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.Context;
@@ -23,7 +23,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static com.azure.ai.formrecognizer.TestUtils.CUSTOM_FORM_FILE_LENGTH;
@@ -39,6 +38,7 @@ import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_LOCAL_URL;
 import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_PNG_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.getContentDetectionFileData;
+import static com.azure.ai.formrecognizer.TestUtils.validateExceptionSource;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -215,9 +215,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             HttpResponseException errorResponseException = assertThrows(HttpResponseException.class,
                 () -> client.beginRecognizeReceiptsFromUrl(sourceUrl, new RecognizeReceiptsOptions()
                     .setPollInterval(durationTestMode), Context.NONE));
-            assertEquals(ENCODED_EMPTY_SPACE,
-                new String(errorResponseException.getResponse().getRequest().getBody().blockFirst().array(),
-                    StandardCharsets.UTF_8));
+
+            validateExceptionSource(errorResponseException);
         });
     }
 
@@ -405,9 +404,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             HttpResponseException errorResponseException = assertThrows(HttpResponseException.class,
                 () -> client.beginRecognizeContentFromUrl(sourceUrl, new RecognizeContentOptions()
                     .setPollInterval(durationTestMode), Context.NONE));
-            assertEquals(ENCODED_EMPTY_SPACE,
-                new String(errorResponseException.getResponse().getRequest().getBody().blockFirst().array(),
-                    StandardCharsets.UTF_8));
+
+            validateExceptionSource(errorResponseException);
         });
     }
 
@@ -621,10 +619,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                             new RecognizeCustomFormsOptions().setPollInterval(durationTestMode),
                         Context.NONE).getFinalResult());
                 FormRecognizerErrorInformation errorInformation = formRecognizerException.getErrorInformation().get(0);
-                // TODO: Service bug https://github.com/Azure/azure-sdk-for-java/issues/12046
-                // assertEquals(EXPECTED_INVALID_URL_ERROR_CODE, errorInformation.getCode());
-                // assertEquals(OCR_EXTRACTION_INVALID_URL_ERROR, errorInformation.getMessage());
-                // assertEquals(EXPECTED_INVALID_ANALYZE_EXCEPTION_MESSAGE, formRecognizerException.getMessage());
+                assertEquals(EXPECTED_URL_BADLY_FORMATTED_ERROR_CODE, errorInformation.getErrorCode());
             });
         });
     }
@@ -982,9 +977,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             HttpResponseException errorResponseException = assertThrows(HttpResponseException.class,
                 () -> client.beginRecognizeCustomFormsFromUrl(NON_EXIST_MODEL_ID, sourceUrl, new RecognizeCustomFormsOptions()
                     .setPollInterval(durationTestMode), Context.NONE));
-            assertEquals(ENCODED_EMPTY_SPACE,
-                new String(errorResponseException.getResponse().getRequest().getBody().blockFirst().array(),
-                    StandardCharsets.UTF_8));
+
+            validateExceptionSource(errorResponseException);
         });
     }
 

@@ -3,18 +3,18 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.models.FormContentType;
+import com.azure.ai.formrecognizer.models.FormPage;
+import com.azure.ai.formrecognizer.models.FormRecognizerErrorInformation;
+import com.azure.ai.formrecognizer.models.FormRecognizerException;
+import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.models.RecognizeContentOptions;
 import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
 import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
-import com.azure.ai.formrecognizer.models.FormRecognizerErrorInformation;
-import com.azure.ai.formrecognizer.models.FormContentType;
-import com.azure.ai.formrecognizer.models.FormPage;
-import com.azure.ai.formrecognizer.models.FormRecognizerException;
-import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.training.FormTrainingAsyncClient;
-import com.azure.ai.formrecognizer.training.models.TrainingOptions;
 import com.azure.ai.formrecognizer.training.models.CustomFormModel;
+import com.azure.ai.formrecognizer.training.models.TrainingOptions;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.polling.SyncPoller;
@@ -24,7 +24,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.List;
 
@@ -44,6 +43,7 @@ import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_LOCAL_URL;
 import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_PNG_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.getReplayableBufferData;
+import static com.azure.ai.formrecognizer.TestUtils.validateExceptionSource;
 import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -236,9 +236,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             HttpResponseException errorResponseException = assertThrows(HttpResponseException.class,
                 () -> client.beginRecognizeReceiptsFromUrl(sourceUrl, new RecognizeReceiptsOptions()
                     .setPollInterval(durationTestMode)).getSyncPoller().getFinalResult());
-            assertEquals(ENCODED_EMPTY_SPACE,
-                new String(errorResponseException.getResponse().getRequest().getBody().blockFirst().array(),
-                    StandardCharsets.UTF_8));
+            validateExceptionSource(errorResponseException);
             FormRecognizerErrorInformation errorInformation = (FormRecognizerErrorInformation) errorResponseException.getValue();
             assertEquals(FAILED_TO_DOWNLOAD_IMAGE_CODE, errorInformation.getErrorCode());
             assertEquals(FAILED_TO_DOWNLOAD_IMAGE_ERROR_MESSAGE, errorInformation.getMessage());
@@ -438,9 +436,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             HttpResponseException errorResponseException = assertThrows(HttpResponseException.class,
                 () -> client.beginRecognizeContentFromUrl(sourceUrl, new RecognizeContentOptions()
                     .setPollInterval(durationTestMode)).getSyncPoller().getFinalResult());
-            assertEquals(ENCODED_EMPTY_SPACE,
-                new String(errorResponseException.getResponse().getRequest().getBody().blockFirst().array(),
-                    StandardCharsets.UTF_8));
+            validateExceptionSource(errorResponseException);
             FormRecognizerErrorInformation errorInformation = (FormRecognizerErrorInformation) errorResponseException.getValue();
             assertEquals(FAILED_TO_DOWNLOAD_IMAGE_CODE, errorInformation.getErrorCode());
             assertEquals(FAILED_TO_DOWNLOAD_IMAGE_ERROR_MESSAGE, errorInformation.getMessage());
@@ -675,10 +671,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                             .setPollInterval(durationTestMode))
                         .getSyncPoller().getFinalResult());
                 FormRecognizerErrorInformation errorInformation = formRecognizerException.getErrorInformation().get(0);
-                // TODO: Service bug https://github.com/Azure/azure-sdk-for-java/issues/12046
-                // assertEquals(EXPECTED_INVALID_URL_ERROR_CODE, errorInformation.getCode());
-                // assertEquals(OCR_EXTRACTION_INVALID_URL_ERROR, errorInformation.getMessage());
-                // assertEquals(EXPECTED_INVALID_ANALYZE_EXCEPTION_MESSAGE, formRecognizerException.getMessage());
+                assertEquals(EXPECTED_URL_BADLY_FORMATTED_ERROR_CODE, errorInformation.getErrorCode());
             }));
     }
 
@@ -1077,9 +1070,8 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             HttpResponseException errorResponseException = assertThrows(HttpResponseException.class,
                 () -> client.beginRecognizeCustomFormsFromUrl(NON_EXIST_MODEL_ID, sourceUrl, new RecognizeCustomFormsOptions()
                     .setPollInterval(durationTestMode)).getSyncPoller().getFinalResult());
-            assertEquals(ENCODED_EMPTY_SPACE,
-                new String(errorResponseException.getResponse().getRequest().getBody().blockFirst().array(),
-                    StandardCharsets.UTF_8));
+
+            validateExceptionSource(errorResponseException);
         });
     }
 
