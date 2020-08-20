@@ -35,8 +35,8 @@ public class ResourceManagerThrottlingInfo {
     private static final String RESOURCE_RATE_LIMIT_HEADER = "x-ms-ratelimit-remaining-resource";
     private static final String RESOURCE_RATE_LIMIT_HEADER_PATTERN = "\\w+\\.\\w+/([^;]+);(\\d+)";
 
-    private Map<String, String> commonRateLimits;
-    private String resourceRateLimit;
+    private final Map<String, String> commonRateLimits;
+    private final String resourceRateLimit;
 
     /**
      * Creates the throttling info class from response headers
@@ -61,6 +61,7 @@ public class ResourceManagerThrottlingInfo {
     /**
      * Creates the throttling info class from response headers
      * @param headers the response headers
+     * @return the ResourceManagerThrottlingInfo class
      */
     public static ResourceManagerThrottlingInfo fromHeaders(HttpHeaders headers) {
         return new ResourceManagerThrottlingInfo(headers);
