@@ -17,7 +17,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Performance test.
@@ -82,11 +82,12 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
                     completeMessagesList.add(receiver.completeAsync(message.getLockToken()));
                 }
 
-                CompletableFuture.allOf(completeMessagesList.toArray(new CompletableFuture<?>[0]))
-                    .thenApply(v -> completeMessagesList.stream()
-                        .map(CompletableFuture::join)
-                        .collect(Collectors.toList())
-                    );
+                try {
+                    final int size =  completeMessagesList.size();
+                    CompletableFuture.allOf(completeMessagesList.toArray(new CompletableFuture<?>[size])).get();
+                } catch (InterruptedException | ExecutionException e) {
+                    throw logger.logExceptionAsWarning(new RuntimeException(e));
+                }
             }));
     }
 

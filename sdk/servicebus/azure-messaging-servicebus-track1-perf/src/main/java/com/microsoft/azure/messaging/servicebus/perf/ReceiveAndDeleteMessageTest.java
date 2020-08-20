@@ -68,7 +68,7 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
             if (messages.size() <= 0) {
                 throw logger.logExceptionAsWarning(new RuntimeException("Error. Should have received some messages."));
             }
-        } catch  (Exception e) {
+        } catch (Exception e) {
             throw logger.logExceptionAsWarning(new RuntimeException(e));
         }
     }
@@ -78,7 +78,7 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
         return Mono.fromFuture(receiver.receiveBatchAsync(options.getMessagesToReceive()))
             .handle((messages, synchronousSink) -> {
                 int count = messages.size();
-                logger.verbose(" Async received  size of received :" + count);
+                logger.verbose(" Async received  size of received : {}", count);
 
                 if (count <= 0) {
                     synchronousSink.error(new RuntimeException("Error. Should have received some messages."));
