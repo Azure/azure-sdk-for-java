@@ -11,7 +11,7 @@ import com.azure.ai.formrecognizer.implementation.models.PageResult;
 import com.azure.ai.formrecognizer.implementation.models.ReadResult;
 import com.azure.ai.formrecognizer.implementation.models.TextLine;
 import com.azure.ai.formrecognizer.implementation.models.TextWord;
-import com.azure.ai.formrecognizer.models.BoundingBox;
+import com.azure.ai.formrecognizer.models.FieldBoundingBox;
 import com.azure.ai.formrecognizer.models.FieldData;
 import com.azure.ai.formrecognizer.models.FieldValueType;
 import com.azure.ai.formrecognizer.models.FormElement;
@@ -456,13 +456,13 @@ final class Transforms {
 
     /**
      * Helper method to convert the service level modeled eight numbers representing the four points to SDK level
-     * {@link BoundingBox}.
+     * {@link FieldBoundingBox}.
      *
      * @param serviceBoundingBox A list of eight numbers representing the four points of a box.
      *
-     * @return A {@link BoundingBox}.
+     * @return A {@link FieldBoundingBox}.
      */
-    private static BoundingBox toBoundingBox(List<Float> serviceBoundingBox) {
+    private static FieldBoundingBox toBoundingBox(List<Float> serviceBoundingBox) {
         if (CoreUtils.isNullOrEmpty(serviceBoundingBox) || (serviceBoundingBox.size() % 2) != 0) {
             return null;
         }
@@ -470,6 +470,6 @@ final class Transforms {
         for (int i = 0; i < serviceBoundingBox.size(); i++) {
             pointList.add(new Point(serviceBoundingBox.get(i), serviceBoundingBox.get(++i)));
         }
-        return new BoundingBox(pointList);
+        return new FieldBoundingBox(pointList);
     }
 }

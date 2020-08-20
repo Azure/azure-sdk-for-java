@@ -71,7 +71,7 @@ public final class FormTableCell extends FormElement {
      * @param fieldElements a list of references to the elements constituting this table cell.
      */
     public FormTableCell(final int rowIndex, final int columnIndex, final int rowSpan,
-        final int columnSpan, final String text, final BoundingBox boundingBox,
+        final int columnSpan, final String text, final FieldBoundingBox boundingBox,
         final float confidence, final boolean isHeader, final boolean isFooter, final int pageNumber,
         final List<FormElement> fieldElements) {
         super(text, boundingBox, pageNumber);
@@ -106,7 +106,7 @@ public final class FormTableCell extends FormElement {
      * {@inheritDoc}
      */
     @Override
-    public BoundingBox getBoundingBox() {
+    public FieldBoundingBox getBoundingBox() {
         return super.getBoundingBox();
     }
 
