@@ -342,11 +342,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             Arrays.asList(documentInput, documentInput, documentInput, documentInput, documentInput, documentInput));
     }
 
-//    void recognizePiiEntitiesWithDomainRunner(BiConsumer<List<String>, TextAnalyticsRequestOptions> testRunner) {
-//        testRunner.accept(Arrays.asList(PII_ENTITY_INPUTS.get(0)),
-//            new TextAnalyticsRequestOptions().setIncludeStatistics(true).setDomain("phi"));
-//    }
-
     // Linked Entity runner
     void recognizeLinkedEntitiesForSingleTextInputRunner(Consumer<String> testRunner) {
         testRunner.accept(LINKED_ENTITY_INPUTS.get(0));
