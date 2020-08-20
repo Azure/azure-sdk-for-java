@@ -489,7 +489,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                         System.out.printf("\tAspect sentiment: %s, aspect text: %s%n",
                             aspectSentiment.getSentiment(), aspectSentiment.getText());
                         for (OpinionSentiment opinionSentiment : minedOpinions.getOpinions()) {
-                            System.out.printf("\t\t'%s' sentiment because of \"%s\". Is the aspect negated: %s.%n",
+                            System.out.printf("\t\t'%s' sentiment because of \"%s\". Is the opinion negated: %s.%n",
                                 opinionSentiment.getSentiment(), opinionSentiment.getText(),
                                 opinionSentiment.isNegated());
                         }
@@ -509,26 +509,27 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             "The restaurant had amazing gnocchi."
         );
 
-        textAnalyticsAsyncClient.analyzeSentimentBatch(documents, "en", new TextAnalyticsRequestOptions()).subscribe(
-            response -> {
-                // Batch statistics
-                TextDocumentBatchStatistics batchStatistics = response.getStatistics();
-                System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
-                    batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
+        textAnalyticsAsyncClient.analyzeSentimentBatch(documents, "en",
+            new TextAnalyticsRequestOptions().setIncludeStatistics(true)).subscribe(
+                response -> {
+                    // Batch statistics
+                    TextDocumentBatchStatistics batchStatistics = response.getStatistics();
+                    System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
+                        batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-                response.forEach(analyzeSentimentResult -> {
-                    System.out.printf("Document ID: %s%n", analyzeSentimentResult.getId());
-                    DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
-                    System.out.printf("Recognized document sentiment: %s.%n", documentSentiment.getSentiment());
-                    documentSentiment.getSentences().forEach(sentenceSentiment ->
-                        System.out.printf("Recognized sentence sentiment: %s, positive score: %.2f, "
-                                + "neutral score: %.2f, negative score: %.2f.%n",
-                            sentenceSentiment.getSentiment(),
-                            sentenceSentiment.getConfidenceScores().getPositive(),
-                            sentenceSentiment.getConfidenceScores().getNeutral(),
-                            sentenceSentiment.getConfidenceScores().getNegative()));
+                    response.forEach(analyzeSentimentResult -> {
+                        System.out.printf("Document ID: %s%n", analyzeSentimentResult.getId());
+                        DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
+                        System.out.printf("Recognized document sentiment: %s.%n", documentSentiment.getSentiment());
+                        documentSentiment.getSentences().forEach(sentenceSentiment ->
+                            System.out.printf("Recognized sentence sentiment: %s, positive score: %.2f, "
+                                    + "neutral score: %.2f, negative score: %.2f.%n",
+                                sentenceSentiment.getSentiment(),
+                                sentenceSentiment.getConfidenceScores().getPositive(),
+                                sentenceSentiment.getConfidenceScores().getNeutral(),
+                                sentenceSentiment.getConfidenceScores().getNegative()));
+                    });
                 });
-            });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentBatch#Iterable-String-TextAnalyticsRequestOptions
     }
 
@@ -562,7 +563,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                                 aspectSentiment.getSentiment(), aspectSentiment.getText());
                             for (OpinionSentiment opinionSentiment : minedOpinions.getOpinions()) {
                                 System.out.printf(
-                                    "\t\t\t'%s' opinion sentiment because of \"%s\". Is the aspect negated: %s.%n",
+                                    "\t\t\t'%s' opinion sentiment because of \"%s\". Is the opinion negated: %s.%n",
                                     opinionSentiment.getSentiment(), opinionSentiment.getText(),
                                     opinionSentiment.isNegated());
                             }
@@ -648,7 +649,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                                 aspectSentiment.getSentiment(), aspectSentiment.getText());
                             for (OpinionSentiment opinionSentiment : minedOpinions.getOpinions()) {
                                 System.out.printf(
-                                    "\t\t\t'%s' opinion sentiment because of \"%s\". Is the aspect negated: %s.%n",
+                                    "\t\t\t'%s' opinion sentiment because of \"%s\". Is the opinion negated: %s.%n",
                                     opinionSentiment.getSentiment(), opinionSentiment.getText(),
                                     opinionSentiment.isNegated());
                             }

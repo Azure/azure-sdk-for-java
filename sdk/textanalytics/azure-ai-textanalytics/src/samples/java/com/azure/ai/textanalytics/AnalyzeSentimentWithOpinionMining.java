@@ -47,7 +47,7 @@ public class AnalyzeSentimentWithOpinionMining {
                 System.out.printf("\t\tAspect sentiment: %s, aspect text: %s%n", aspectSentiment.getSentiment(),
                     aspectSentiment.getText());
                 for (OpinionSentiment opinionSentiment : minedOpinions.getOpinions()) {
-                    System.out.printf("\t\t\t'%s' opinion sentiment because of \"%s\". Is the aspect negated: %s.%n",
+                    System.out.printf("\t\t\t'%s' opinion sentiment because of \"%s\". Is the opinion negated: %s.%n",
                         opinionSentiment.getSentiment(), opinionSentiment.getText(), opinionSentiment.isNegated());
                 }
             });

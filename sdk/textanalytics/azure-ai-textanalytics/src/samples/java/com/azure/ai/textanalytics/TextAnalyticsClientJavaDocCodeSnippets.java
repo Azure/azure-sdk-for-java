@@ -508,7 +508,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                 System.out.printf("\tAspect sentiment: %s, aspect text: %s%n", aspectSentiment.getSentiment(),
                     aspectSentiment.getText());
                 for (OpinionSentiment opinionSentiment : minedOpinions.getOpinions()) {
-                    System.out.printf("\t\t'%s' sentiment because of \"%s\". Is the aspect negated: %s.%n",
+                    System.out.printf("\t\t'%s' sentiment because of \"%s\". Is the opinion negated: %s.%n",
                         opinionSentiment.getSentiment(), opinionSentiment.getText(), opinionSentiment.isNegated());
                 }
             });
@@ -527,8 +527,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         );
 
         // Analyzing batch sentiments
-        AnalyzeSentimentResultCollection resultCollection =
-            textAnalyticsClient.analyzeSentimentBatch(documents, "en", new TextAnalyticsRequestOptions());
+        AnalyzeSentimentResultCollection resultCollection = textAnalyticsClient.analyzeSentimentBatch(
+            documents, "en", new TextAnalyticsRequestOptions().setIncludeStatistics(true));
 
         // Batch statistics
         TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics();
@@ -583,7 +583,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                     System.out.printf("\tAspect sentiment: %s, aspect text: %s%n", aspectSentiment.getSentiment(),
                         aspectSentiment.getText());
                     for (OpinionSentiment opinionSentiment : minedOpinions.getOpinions()) {
-                        System.out.printf("\t\t'%s' sentiment because of \"%s\". Is the aspect negated: %s.%n",
+                        System.out.printf("\t\t'%s' sentiment because of \"%s\". Is the opinion negated: %s.%n",
                             opinionSentiment.getSentiment(), opinionSentiment.getText(), opinionSentiment.isNegated());
                     }
                 });
@@ -682,7 +682,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                     System.out.printf("\tAspect sentiment: %s, aspect text: %s%n", aspectSentiment.getSentiment(),
                         aspectSentiment.getText());
                     for (OpinionSentiment opinionSentiment : minedOpinions.getOpinions()) {
-                        System.out.printf("\t\t'%s' sentiment because of \"%s\". Is the aspect negated: %s.%n",
+                        System.out.printf("\t\t'%s' sentiment because of \"%s\". Is the opinion negated: %s.%n",
                             opinionSentiment.getSentiment(), opinionSentiment.getText(), opinionSentiment.isNegated());
                     }
                 });
