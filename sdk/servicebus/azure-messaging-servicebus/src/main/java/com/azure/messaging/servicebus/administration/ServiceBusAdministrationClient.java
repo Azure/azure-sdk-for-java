@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.servicebus;
+package com.azure.messaging.servicebus.administration;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -14,16 +14,16 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.messaging.servicebus.models.CreateQueueOptions;
-import com.azure.messaging.servicebus.models.CreateSubscriptionOptions;
-import com.azure.messaging.servicebus.models.CreateTopicOptions;
-import com.azure.messaging.servicebus.models.NamespaceProperties;
-import com.azure.messaging.servicebus.models.QueueProperties;
-import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
-import com.azure.messaging.servicebus.models.SubscriptionProperties;
-import com.azure.messaging.servicebus.models.SubscriptionRuntimeInfo;
-import com.azure.messaging.servicebus.models.TopicProperties;
-import com.azure.messaging.servicebus.models.TopicRuntimeInfo;
+import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
+import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
+import com.azure.messaging.servicebus.administration.models.CreateTopicOptions;
+import com.azure.messaging.servicebus.administration.models.NamespaceProperties;
+import com.azure.messaging.servicebus.administration.models.QueueProperties;
+import com.azure.messaging.servicebus.administration.models.QueueRuntimeInfo;
+import com.azure.messaging.servicebus.administration.models.SubscriptionProperties;
+import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeInfo;
+import com.azure.messaging.servicebus.administration.models.TopicProperties;
+import com.azure.messaging.servicebus.administration.models.TopicRuntimeInfo;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -33,18 +33,18 @@ import java.util.function.Function;
 /**
  * A <b>synchronous</b> client for managing a Service Bus namespace.
  *
- * @see ServiceBusManagementAsyncClient ServiceBusManagementAsyncClient for an asynchronous client.
+ * @see ServiceBusAdministrationAsyncClient ServiceBusManagementAsyncClient for an asynchronous client.
  */
-@ServiceClient(builder = ServiceBusManagementClientBuilder.class)
-public final class ServiceBusManagementClient {
-    private final ServiceBusManagementAsyncClient asyncClient;
+@ServiceClient(builder = ServiceBusAdministrationClientBuilder.class)
+public final class ServiceBusAdministrationClient {
+    private final ServiceBusAdministrationAsyncClient asyncClient;
 
     /**
      * Creates a new instance with the given client.
      *
      * @param asyncClient Asynchronous client to perform management calls through.
      */
-    ServiceBusManagementClient(ServiceBusManagementAsyncClient asyncClient) {
+    ServiceBusAdministrationClient(ServiceBusAdministrationAsyncClient asyncClient) {
         this.asyncClient = Objects.requireNonNull(asyncClient, "'asyncClient' cannot be null.");
     }
 

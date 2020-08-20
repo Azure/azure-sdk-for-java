@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.servicebus;
+package com.azure.messaging.servicebus.administration;
 
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -21,6 +21,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.ServiceBusServiceVersion;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementClientImpl;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementClientImplBuilder;
@@ -37,15 +38,17 @@ import java.util.Objects;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of {@link
- * ServiceBusManagementClient} and {@link ServiceBusManagementAsyncClient}. Call {@link #buildClient() buildClient} and
- * {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired client.
+ * ServiceBusAdministrationClient} and {@link ServiceBusAdministrationAsyncClient}. Call
+ * {@link #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct an
+ * instance of the desired client.
  *
- * @see ServiceBusManagementClient
- * @see ServiceBusManagementAsyncClient
+ * @see ServiceBusAdministrationClient
+ * @see ServiceBusAdministrationAsyncClient
  */
-@ServiceClientBuilder(serviceClients = {ServiceBusManagementClient.class, ServiceBusManagementAsyncClient.class})
-public class ServiceBusManagementClientBuilder {
-    private final ClientLogger logger = new ClientLogger(ServiceBusManagementClientBuilder.class);
+@ServiceClientBuilder(serviceClients = {ServiceBusAdministrationClient.class,
+    ServiceBusAdministrationAsyncClient.class})
+public class ServiceBusAdministrationClientBuilder {
+    private final ClientLogger logger = new ClientLogger(ServiceBusAdministrationClientBuilder.class);
     private final ServiceBusManagementSerializer serializer = new ServiceBusManagementSerializer();
     private final List<HttpPipelinePolicy> userPolicies = new ArrayList<>();
     private final Map<String, String> properties =
@@ -65,23 +68,23 @@ public class ServiceBusManagementClientBuilder {
     /**
      * Constructs a builder with the default parameters.
      */
-    public ServiceBusManagementClientBuilder() {
+    public ServiceBusAdministrationClientBuilder() {
     }
 
     /**
-     * Creates a {@link ServiceBusManagementAsyncClient} based on options set in the builder. Every time {@code
+     * Creates a {@link ServiceBusAdministrationAsyncClient} based on options set in the builder. Every time {@code
      * buildAsyncClient} is invoked, a new instance of the client is created.
      *
      * <p>If {@link #pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
-     * {@link #endpoint(String) endpoint} are used to create the {@link ServiceBusManagementAsyncClient client}. All
+     * {@link #endpoint(String) endpoint} are used to create the {@link ServiceBusAdministrationAsyncClient client}. All
      * other builder settings are ignored.</p>
      *
-     * @return A {@link ServiceBusManagementAsyncClient} with the options set in the builder.
+     * @return A {@link ServiceBusAdministrationAsyncClient} with the options set in the builder.
      * @throws NullPointerException if {@code endpoint} has not been set. This is automatically set when {@link
      *     #connectionString(String) connectionString} is set. Or, explicitly through {@link #endpoint(String)}.
      * @throws IllegalStateException If {@link #connectionString(String) connectionString} has not been set.
      */
-    public ServiceBusManagementAsyncClient buildAsyncClient() {
+    public ServiceBusAdministrationAsyncClient buildAsyncClient() {
         if (endpoint == null) {
             throw logger.logExceptionAsError(new NullPointerException("'endpoint' cannot be null."));
         }
@@ -97,25 +100,25 @@ public class ServiceBusManagementClientBuilder {
             .apiVersion(apiVersion.getVersion())
             .buildClient();
 
-        return new ServiceBusManagementAsyncClient(client, serializer);
+        return new ServiceBusAdministrationAsyncClient(client, serializer);
     }
 
     /**
-     * Creates a {@link ServiceBusManagementClient} based on options set in the builder. Every time {@code
+     * Creates a {@link ServiceBusAdministrationClient} based on options set in the builder. Every time {@code
      * buildAsyncClient} is invoked, a new instance of the client is created.
      *
      * <p>If {@link #pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
-     * {@link #endpoint(String) endpoint} are used to create the {@link ServiceBusManagementClient client}. All other
-     * builder settings are ignored.</p>
+     * {@link #endpoint(String) endpoint} are used to create the {@link ServiceBusAdministrationClient client}. All
+     * other builder settings are ignored.</p>
      *
-     * @return A {@link ServiceBusManagementClient} with the options set in the builder.
+     * @return A {@link ServiceBusAdministrationClient} with the options set in the builder.
      * @throws NullPointerException if {@code endpoint} has not been set. This is automatically set when {@link
      *     #connectionString(String) connectionString} is set. Or it can be set explicitly through {@link
      *     #endpoint(String)}.
      * @throws IllegalStateException If {@link #connectionString(String) connectionString} has not been set.
      */
-    public ServiceBusManagementClient buildClient() {
-        return new ServiceBusManagementClient(buildAsyncClient());
+    public ServiceBusAdministrationClient buildClient() {
+        return new ServiceBusAdministrationClient(buildAsyncClient());
     }
 
     /**
@@ -123,10 +126,10 @@ public class ServiceBusManagementClientBuilder {
      *
      * @param policy The retry policy for service requests.
      *
-     * @return The updated {@link ServiceBusManagementClientBuilder} object.
+     * @return The updated {@link ServiceBusAdministrationClientBuilder} object.
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
-    public ServiceBusManagementClientBuilder addPolicy(HttpPipelinePolicy policy) {
+    public ServiceBusAdministrationClientBuilder addPolicy(HttpPipelinePolicy policy) {
         Objects.requireNonNull(policy);
         userPolicies.add(policy);
         return this;
@@ -137,11 +140,11 @@ public class ServiceBusManagementClientBuilder {
      *
      * @param endpoint The URL of the Service Bus namespace.
      *
-     * @return The updated {@link ServiceBusManagementClientBuilder} object.
+     * @return The updated {@link ServiceBusAdministrationClientBuilder} object.
      * @throws NullPointerException if {@code endpoint} is null.
      * @throws IllegalArgumentException if {@code endpoint} cannot be parsed into a valid URL.
      */
-    public ServiceBusManagementClientBuilder endpoint(String endpoint) {
+    public ServiceBusAdministrationClientBuilder endpoint(String endpoint) {
         final URL url;
         try {
             url = new URL(Objects.requireNonNull(endpoint, "'endpoint' cannot be null."));
@@ -161,9 +164,9 @@ public class ServiceBusManagementClientBuilder {
      *
      * @param configuration The configuration store used to
      *
-     * @return The updated {@link ServiceBusManagementClientBuilder} object.
+     * @return The updated {@link ServiceBusAdministrationClientBuilder} object.
      */
-    public ServiceBusManagementClientBuilder configuration(Configuration configuration) {
+    public ServiceBusAdministrationClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -173,12 +176,12 @@ public class ServiceBusManagementClientBuilder {
      *
      * @param connectionString Connection string for a Service Bus namespace or a specific Service Bus resource.
      *
-     * @return The updated {@link ServiceBusManagementClientBuilder} object.
+     * @return The updated {@link ServiceBusAdministrationClientBuilder} object.
      * @throws NullPointerException If {@code connectionString} is {@code null}.
      * @throws IllegalArgumentException If {@code connectionString} is an entity specific connection string, and not
      *     a {@code connectionString} for the Service Bus namespace.
      */
-    public ServiceBusManagementClientBuilder connectionString(String connectionString) {
+    public ServiceBusAdministrationClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
 
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
@@ -206,9 +209,10 @@ public class ServiceBusManagementClientBuilder {
      * @param fullyQualifiedNamespace for the Service Bus.
      * @param credential {@link TokenCredential} to be used for authentication.
      *
-     * @return The updated {@link ServiceBusManagementClientBuilder} object.
+     * @return The updated {@link ServiceBusAdministrationClientBuilder} object.
      */
-    public ServiceBusManagementClientBuilder credential(String fullyQualifiedNamespace, TokenCredential credential) {
+    public ServiceBusAdministrationClientBuilder credential(String fullyQualifiedNamespace,
+        TokenCredential credential) {
         this.endpoint = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
@@ -226,9 +230,9 @@ public class ServiceBusManagementClientBuilder {
      *
      * @param client The HTTP client to use for requests.
      *
-     * @return The updated {@link ServiceBusManagementClientBuilder} object.
+     * @return The updated {@link ServiceBusAdministrationClientBuilder} object.
      */
-    public ServiceBusManagementClientBuilder httpClient(HttpClient client) {
+    public ServiceBusAdministrationClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
             logger.info("HttpClient is being set to 'null' when it was previously configured.");
         }
@@ -244,9 +248,9 @@ public class ServiceBusManagementClientBuilder {
      *
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      *
-     * @return The updated {@link ServiceBusManagementClientBuilder} object.
+     * @return The updated {@link ServiceBusAdministrationClientBuilder} object.
      */
-    public ServiceBusManagementClientBuilder httpLogOptions(HttpLogOptions logOptions) {
+    public ServiceBusAdministrationClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         httpLogOptions = logOptions;
         return this;
     }
@@ -255,14 +259,14 @@ public class ServiceBusManagementClientBuilder {
      * Sets the HTTP pipeline to use for the service client.
      *
      * If {@code pipeline} is set, all other settings are ignored, aside from {@link
-     * ServiceBusManagementClientBuilder#endpoint(String) endpoint} to build {@link ServiceBusManagementClient} or
-     * {@link ServiceBusManagementAsyncClient}.
+     * ServiceBusAdministrationClientBuilder#endpoint(String) endpoint} to build {@link ServiceBusAdministrationClient}
+     * or {@link ServiceBusAdministrationAsyncClient}.
      *
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
      *
-     * @return The updated {@link ServiceBusManagementClientBuilder} object.
+     * @return The updated {@link ServiceBusAdministrationClientBuilder} object.
      */
-    public ServiceBusManagementClientBuilder pipeline(HttpPipeline pipeline) {
+    public ServiceBusAdministrationClientBuilder pipeline(HttpPipeline pipeline) {
         if (this.pipeline != null && pipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
@@ -275,13 +279,13 @@ public class ServiceBusManagementClientBuilder {
      * Sets the {@link HttpPipelinePolicy} that is used when each request is sent.
      *
      * The default retry policy will be used if not provided {@link #buildAsyncClient()}
-     * to build {@link ServiceBusManagementClient} or {@link ServiceBusManagementAsyncClient}.
+     * to build {@link ServiceBusAdministrationClient} or {@link ServiceBusAdministrationAsyncClient}.
      *
      * @param retryPolicy user's retry policy applied to each request.
      *
-     * @return The updated {@link ServiceBusManagementClientBuilder} object.
+     * @return The updated {@link ServiceBusAdministrationClientBuilder} object.
      */
-    public ServiceBusManagementClientBuilder retryPolicy(HttpPipelinePolicy retryPolicy) {
+    public ServiceBusAdministrationClientBuilder retryPolicy(HttpPipelinePolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
@@ -291,9 +295,9 @@ public class ServiceBusManagementClientBuilder {
      * is used when none is specified.
      *
      * @param serviceVersion Service version to use.
-     * @return The updated {@link ServiceBusManagementClientBuilder} object.
+     * @return The updated {@link ServiceBusAdministrationClientBuilder} object.
      */
-    public ServiceBusManagementClientBuilder serviceVersion(ServiceBusServiceVersion serviceVersion) {
+    public ServiceBusAdministrationClientBuilder serviceVersion(ServiceBusServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
     }

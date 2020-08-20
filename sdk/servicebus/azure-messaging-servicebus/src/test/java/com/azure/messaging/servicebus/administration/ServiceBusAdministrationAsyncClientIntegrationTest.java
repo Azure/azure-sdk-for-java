@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.servicebus;
+package com.azure.messaging.servicebus.administration;
 
 import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.exception.ResourceNotFoundException;
@@ -11,14 +11,15 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
-import com.azure.messaging.servicebus.models.CreateQueueOptions;
-import com.azure.messaging.servicebus.models.CreateSubscriptionOptions;
-import com.azure.messaging.servicebus.models.CreateTopicOptions;
-import com.azure.messaging.servicebus.models.NamespaceType;
-import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
-import com.azure.messaging.servicebus.models.SubscriptionRuntimeInfo;
-import com.azure.messaging.servicebus.models.TopicProperties;
-import com.azure.messaging.servicebus.models.TopicRuntimeInfo;
+import com.azure.messaging.servicebus.TestUtils;
+import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
+import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
+import com.azure.messaging.servicebus.administration.models.CreateTopicOptions;
+import com.azure.messaging.servicebus.administration.models.NamespaceType;
+import com.azure.messaging.servicebus.administration.models.QueueRuntimeInfo;
+import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeInfo;
+import com.azure.messaging.servicebus.administration.models.TopicProperties;
+import com.azure.messaging.servicebus.administration.models.TopicRuntimeInfo;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
@@ -41,10 +42,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Tests {@link ServiceBusManagementAsyncClient}.
+ * Tests {@link ServiceBusAdministrationAsyncClient}.
  */
 @Tag("integration")
-class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
+class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
     private static final Duration TIMEOUT = Duration.ofSeconds(20);
 
     @BeforeAll
@@ -65,7 +66,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
     @MethodSource("createHttpClients")
     void createQueue(HttpClient httpClient) {
         // Arrange
-        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
         final String queueName = testResourceNamer.randomName("test", 10);
         final CreateQueueOptions expected = new CreateQueueOptions()
             .setMaxSizeInMegabytes(500)
@@ -107,7 +108,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
             ? "queue-5"
             : getEntityName(TestUtils.getQueueBaseName(), 5);
         final CreateQueueOptions options = new CreateQueueOptions();
-        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
 
         // Act & Assert
         StepVerifier.create(client.createQueue(queueName, options))
@@ -119,7 +120,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
     @MethodSource("createHttpClients")
     void createSubscription(HttpClient httpClient) {
         // Arrange
-        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
         final String topicName = interceptorManager.isPlaybackMode()
             ? "topic-0"
             : getEntityName(getTopicBaseName(), 0);
@@ -155,7 +156,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription-session"
             : getSessionSubscriptionBaseName();
-        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
 
         // Act & Assert
         StepVerifier.create(client.createSubscription(topicName, subscriptionName))
@@ -167,7 +168,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
     @MethodSource("createHttpClients")
     void createTopicWithResponse(HttpClient httpClient) {
         // Arrange
-        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
         final String topicName = testResourceNamer.randomName("test", 10);
         final CreateTopicOptions expected = new CreateTopicOptions()
             .setMaxSizeInMegabytes(2048L)
@@ -203,7 +204,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
     @MethodSource("createHttpClients")
     void deleteQueue(HttpClient httpClient) {
         // Arrange
-        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
         final String queueName = testResourceNamer.randomName("sub", 10);
 
         client.createQueue(queueName).block(TIMEOUT);
@@ -217,7 +218,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
     @MethodSource("createHttpClients")
     void deleteSubscription(HttpClient httpClient) {
         // Arrange
-        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
         final String topicName = testResourceNamer.randomName("topic", 10);
         final String subscriptionName = testResourceNamer.randomName("sub", 7);
 
@@ -233,7 +234,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
     @MethodSource("createHttpClients")
     void deleteTopic(HttpClient httpClient) {
         // Arrange
-        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
         final String topicName = testResourceNamer.randomName("topic", 10);
 
         client.createTopic(topicName).block(TIMEOUT);
@@ -247,7 +248,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
     @MethodSource("createHttpClients")
     void getQueue(HttpClient httpClient) {
         // Arrange
-        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
         final String queueName = interceptorManager.isPlaybackMode()
             ? "queue-5"
             : getEntityName(TestUtils.getQueueBaseName(), 5);
@@ -274,7 +275,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
     @MethodSource("createHttpClients")
     void getNamespace(HttpClient httpClient) {
         // Arrange
-        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
         final String expectedName;
         if (interceptorManager.isPlaybackMode()) {
             expectedName = "ShivangiServiceBus";
@@ -296,7 +297,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
     @MethodSource("createHttpClients")
     void getQueueDoesNotExist(HttpClient httpClient) {
         // Arrange
-        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
         final String queueName = testResourceNamer.randomName("exist", 10);
 
         // Act & Assert
@@ -309,7 +310,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
     @MethodSource("createHttpClients")
     void getQueueExists(HttpClient httpClient) {
         // Arrange
-        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
         final String queueName = interceptorManager.isPlaybackMode()
             ? "queue-2"
             : getEntityName(TestUtils.getQueueBaseName(), 2);
@@ -324,7 +325,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
     @MethodSource("createHttpClients")
     void getQueueExistsFalse(HttpClient httpClient) {
         // Arrange
-        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
         final String queueName = testResourceNamer.randomName("exist", 10);
 
         // Act & Assert
@@ -337,7 +338,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
     @MethodSource("createHttpClients")
     void getQueueRuntimeInfo(HttpClient httpClient) {
         // Arrange
-        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
         final String queueName = interceptorManager.isPlaybackMode()
             ? "queue-2"
             : getEntityName(TestUtils.getQueueBaseName(), 2);
@@ -359,7 +360,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
     @MethodSource("createHttpClients")
     void getSubscription(HttpClient httpClient) {
         // Arrange
-        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
         final String topicName = interceptorManager.isPlaybackMode() ? "topic-1" : getEntityName(getTopicBaseName(), 1);
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription-session"
@@ -387,7 +388,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
     @MethodSource("createHttpClients")
     void getSubscriptionDoesNotExist(HttpClient httpClient) {
         // Arrange
-        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
         final String topicName = interceptorManager.isPlaybackMode() ? "topic-1" : getEntityName(getTopicBaseName(), 1);
         final String subscriptionName = "subscription-session-not-exist";
 
@@ -401,7 +402,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
     @MethodSource("createHttpClients")
     void getSubscriptionExists(HttpClient httpClient) {
         // Arrange
-        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
         final String topicName = interceptorManager.isPlaybackMode()
             ? "topic-1"
             : getEntityName(getTopicBaseName(), 1);
@@ -419,7 +420,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
     @MethodSource("createHttpClients")
     void getSubscriptionExistsFalse(HttpClient httpClient) {
         // Arrange
-        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
         final String topicName = interceptorManager.isPlaybackMode() ? "topic-1" : getEntityName(getTopicBaseName(), 1);
         final String subscriptionName = "subscription-session-not-exist";
 
@@ -433,7 +434,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
     @MethodSource("createHttpClients")
     void getSubscriptionRuntimeInfo(HttpClient httpClient) {
         // Arrange
-        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
         final String topicName = interceptorManager.isPlaybackMode() ? "topic-1" : getEntityName(getTopicBaseName(), 1);
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription-session"
@@ -464,7 +465,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
     @MethodSource("createHttpClients")
     void getTopic(HttpClient httpClient) {
         // Arrange
-        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
         final String topicName = interceptorManager.isPlaybackMode()
             ? "topic-1"
             : getEntityName(getTopicBaseName(), 1);
@@ -493,7 +494,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
     @MethodSource("createHttpClients")
     void getTopicDoesNotExist(HttpClient httpClient) {
         // Arrange
-        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
         final String topicName = testResourceNamer.randomName("exists", 10);
 
         // Act & Assert
@@ -516,7 +517,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
     @MethodSource("createHttpClients")
     void getTopicExists(HttpClient httpClient) {
         // Arrange
-        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
         final String topicName = interceptorManager.isPlaybackMode()
             ? "topic-1"
             : getEntityName(getTopicBaseName(), 1);
@@ -531,7 +532,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
     @MethodSource("createHttpClients")
     void getTopicExistsFalse(HttpClient httpClient) {
         // Arrange
-        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
         final String topicName = testResourceNamer.randomName("exists", 10);
 
         // Act & Assert
@@ -544,7 +545,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
     @MethodSource("createHttpClients")
     void getTopicRuntimeInfo(HttpClient httpClient) {
         // Arrange
-        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
         final String topicName = interceptorManager.isPlaybackMode()
             ? "topic-1"
             : getEntityName(getTopicBaseName(), 1);
@@ -573,7 +574,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
     @MethodSource("createHttpClients")
     void listQueues(HttpClient httpClient) {
         // Arrange
-        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
 
         // Act & Assert
         StepVerifier.create(client.listQueues())
@@ -592,7 +593,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
     @MethodSource("createHttpClients")
     void listSubscriptions(HttpClient httpClient) {
         // Arrange
-        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
         final String topicName = interceptorManager.isPlaybackMode()
             ? "topic-1"
             : getEntityName(getTopicBaseName(), 1);
@@ -612,7 +613,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
     @MethodSource("createHttpClients")
     void listTopics(HttpClient httpClient) {
         // Arrange
-        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
 
         // Act & Assert
         StepVerifier.create(client.listTopics())
@@ -626,11 +627,11 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
             .verify();
     }
 
-    private ServiceBusManagementAsyncClient createClient(HttpClient httpClient) {
+    private ServiceBusAdministrationAsyncClient createClient(HttpClient httpClient) {
         final String connectionString = interceptorManager.isPlaybackMode()
             ? "Endpoint=sb://foo.servicebus.windows.net;SharedAccessKeyName=dummyKey;SharedAccessKey=dummyAccessKey"
             : TestUtils.getConnectionString();
-        final ServiceBusManagementClientBuilder builder = new ServiceBusManagementClientBuilder()
+        final ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder()
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .connectionString(connectionString);
 

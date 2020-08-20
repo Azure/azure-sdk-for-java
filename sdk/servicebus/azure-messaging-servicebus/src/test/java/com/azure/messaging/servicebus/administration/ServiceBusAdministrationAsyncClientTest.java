@@ -1,13 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.servicebus;
+package com.azure.messaging.servicebus.administration;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
+import com.azure.messaging.servicebus.administration.models.QueueProperties;
+import com.azure.messaging.servicebus.administration.models.QueueRuntimeInfo;
 import com.azure.messaging.servicebus.implementation.EntitiesImpl;
 import com.azure.messaging.servicebus.implementation.EntityHelper;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementClientImpl;
@@ -20,9 +23,6 @@ import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntr
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntryContent;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionFeed;
 import com.azure.messaging.servicebus.implementation.models.ResponseLink;
-import com.azure.messaging.servicebus.models.CreateQueueOptions;
-import com.azure.messaging.servicebus.models.QueueProperties;
-import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -62,9 +62,9 @@ import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.when;
 
 /**
- * Unit tests for {@link ServiceBusManagementAsyncClient}.
+ * Unit tests for {@link ServiceBusAdministrationAsyncClient}.
  */
-class ServiceBusManagementAsyncClientTest {
+class ServiceBusAdministrationAsyncClientTest {
     @Mock
     private ServiceBusManagementClientImpl serviceClient;
     @Mock
@@ -82,9 +82,9 @@ class ServiceBusManagementAsyncClientTest {
     private final HttpHeaders httpHeaders = new HttpHeaders().put("foo", "baz");
     private final HttpRequest httpRequest;
 
-    private ServiceBusManagementAsyncClient client;
+    private ServiceBusAdministrationAsyncClient client;
 
-    ServiceBusManagementAsyncClientTest() {
+    ServiceBusAdministrationAsyncClientTest() {
         try {
             httpRequest = new HttpRequest(HttpMethod.TRACE, new URL("https://something.com"));
         } catch (MalformedURLException e) {
@@ -119,7 +119,7 @@ class ServiceBusManagementAsyncClientTest {
 
         when(serviceClient.getEntities()).thenReturn(entitys);
 
-        client = new ServiceBusManagementAsyncClient(serviceClient, serializer);
+        client = new ServiceBusAdministrationAsyncClient(serviceClient, serializer);
     }
 
     @AfterEach

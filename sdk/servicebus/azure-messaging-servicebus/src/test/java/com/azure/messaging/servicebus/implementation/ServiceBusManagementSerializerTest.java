@@ -3,6 +3,15 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
+import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
+import com.azure.messaging.servicebus.administration.models.EntityStatus;
+import com.azure.messaging.servicebus.administration.models.MessagingSku;
+import com.azure.messaging.servicebus.administration.models.NamespaceProperties;
+import com.azure.messaging.servicebus.administration.models.NamespaceType;
+import com.azure.messaging.servicebus.administration.models.QueueProperties;
+import com.azure.messaging.servicebus.administration.models.QueueRuntimeInfo;
+import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeInfo;
 import com.azure.messaging.servicebus.implementation.models.MessageCountDetails;
 import com.azure.messaging.servicebus.implementation.models.NamespacePropertiesEntry;
 import com.azure.messaging.servicebus.implementation.models.QueueDescription;
@@ -15,15 +24,6 @@ import com.azure.messaging.servicebus.implementation.models.SubscriptionDescript
 import com.azure.messaging.servicebus.implementation.models.SubscriptionDescriptionEntry;
 import com.azure.messaging.servicebus.implementation.models.SubscriptionDescriptionEntryContent;
 import com.azure.messaging.servicebus.implementation.models.SubscriptionDescriptionFeed;
-import com.azure.messaging.servicebus.models.CreateQueueOptions;
-import com.azure.messaging.servicebus.models.CreateSubscriptionOptions;
-import com.azure.messaging.servicebus.models.EntityStatus;
-import com.azure.messaging.servicebus.models.MessagingSku;
-import com.azure.messaging.servicebus.models.NamespaceProperties;
-import com.azure.messaging.servicebus.models.NamespaceType;
-import com.azure.messaging.servicebus.models.QueueProperties;
-import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
-import com.azure.messaging.servicebus.models.SubscriptionRuntimeInfo;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
