@@ -149,12 +149,10 @@
     </dependency>
 
     <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-servicebus-jms</artifactId>
-      <version>0.0.4</version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus-jms;external_dependency} -->
-      <optional>true</optional>
+      <groupId>org.apache.qpid</groupId>
+      <artifactId>qpid-jms-client</artifactId>
+      <version>0.53.0</version><!-- {x-version-update;org.apache.qpid:qpid-jms-client;external_dependency} -->
     </dependency>
-
     <!-- Azure libraries-->
     <dependency>
       <groupId>com.microsoft.azure</groupId>
@@ -265,7 +263,6 @@
               <includes>
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.10.1]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                 <include>net.minidev:json-smart:[2.3]</include> <!-- {x-include-update;net.minidev:json-smart;external_dependency} -->
-                <include>com.microsoft.azure:azure-servicebus-jms:[0.0.4]</include> <!-- {x-include-update;com.microsoft.azure:azure-servicebus-jms;external_dependency} -->
                 <include>com.microsoft.azure:msal4j:[1.6.1]</include> <!-- {x-include-update;com.microsoft.azure:msal4j;external_dependency} -->
                 <include>com.microsoft.azure:spring-data-cosmosdb:[2.3.0]</include> <!-- {x-include-update;com.microsoft.azure:spring-data-cosmosdb;external_dependency} -->
                 <include>com.microsoft.spring.data.gremlin:spring-data-gremlin:[2.3.0]</include> <!-- {x-include-update;com.microsoft.spring.data.gremlin:spring-data-gremlin;external_dependency} -->
@@ -290,6 +287,7 @@
                 <include>org.springframework.security:spring-security-oauth2-client:[5.3.2.RELEASE]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-client;external_dependency} -->
                 <include>org.springframework.security:spring-security-oauth2-jose:[5.3.2.RELEASE]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
                 <include>org.springframework.security:spring-security-web:[5.3.2.RELEASE]</include> <!-- {x-include-update;org.springframework.security:spring-security-web;external_dependency} -->
+                <include>org.apache.qpid:qpid-jms-client:[0.53.0]</include> <!-- {x-include-update;org.apache.qpid:qpid-jms-client;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
