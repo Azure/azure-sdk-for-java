@@ -10,7 +10,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <artifactId>azure-messaging-eventgrid</artifactId>
-  <version>2.0.0-beta.1</version> <!-- {x-version-update;:azure-messaging-eventgrid;current} -->
+  <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventgrid;current} -->
   <packaging>jar</packaging>
   <name>Microsoft Azure SDK for eventgrid</name>
   <description>This package contains Microsoft Azure EventGrid SDK.</description>
@@ -69,7 +69,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-serializer-json-jackson</artifactId>
-      <version>1.0.0-beta.3</version> <!-- {x-version-update;unreleased_com.azure:azure-core-serializer-json-jackson;dependency} -->
+      <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
     </dependency>
 
     <!-- test -->
