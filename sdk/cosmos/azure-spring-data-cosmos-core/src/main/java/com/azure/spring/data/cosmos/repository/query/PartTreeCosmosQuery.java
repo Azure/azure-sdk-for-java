@@ -45,7 +45,7 @@ public class PartTreeCosmosQuery extends AbstractCosmosQuery {
             if (tree.getMaxResults() != null) {
                 limit = tree.getMaxResults();
             }
-            query.setLimit(tree.getMaxResults());
+            query.setLimit(limit);
         }
 
         return query;
