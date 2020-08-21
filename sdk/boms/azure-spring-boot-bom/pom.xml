@@ -38,7 +38,7 @@
     <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <azure.spring.boot.integration.version>${project.version}</azure.spring.boot.integration.version>
-    <jms.hotfix.version>2.3.4</jms.hotfix.version>
+    <azure.spring.boot.jms.integration.version>2.3.4</azure.spring.boot.jms.integration.version>
   </properties>
 
   <issueManagement>
@@ -95,7 +95,7 @@
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-servicebus-jms-spring-boot-starter</artifactId>
-        <version>${jms.hotfix.version}</version>
+        <version>${azure.spring.boot.jms.integration.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
