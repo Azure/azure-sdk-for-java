@@ -15,7 +15,7 @@ import com.azure.ai.formrecognizer.implementation.models.PageResult;
 import com.azure.ai.formrecognizer.implementation.models.ReadResult;
 import com.azure.ai.formrecognizer.implementation.models.TextLine;
 import com.azure.ai.formrecognizer.implementation.models.TextWord;
-import com.azure.ai.formrecognizer.models.BoundingBox;
+import com.azure.ai.formrecognizer.models.FieldBoundingBox;
 import com.azure.ai.formrecognizer.models.FormElement;
 import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.FormLine;
@@ -40,6 +40,9 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -53,63 +56,52 @@ import java.util.regex.Pattern;
 
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_ENDPOINT;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL;
-import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.deserializeRawResponse;
-import static com.azure.ai.formrecognizer.TestUtils.BLANK_FORM_FILE_LENGTH;
-import static com.azure.ai.formrecognizer.TestUtils.BLANK_PDF;
-import static com.azure.ai.formrecognizer.TestUtils.CUSTOM_FORM_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.DEFAULT_DURATION;
 import static com.azure.ai.formrecognizer.TestUtils.FAKE_ENCODED_EMPTY_SPACE_URL;
-import static com.azure.ai.formrecognizer.TestUtils.FORM_1_JPG_FILE_LENGTH;
-import static com.azure.ai.formrecognizer.TestUtils.FORM_JPG;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
-import static com.azure.ai.formrecognizer.TestUtils.INVOICE_1_PDF;
-import static com.azure.ai.formrecognizer.TestUtils.LAYOUT_FILE_LENGTH;
-import static com.azure.ai.formrecognizer.TestUtils.MULTIPAGE_INVOICE_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.ONE_NANO_DURATION;
-import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.TEST_DATA_PNG;
-import static com.azure.ai.formrecognizer.TestUtils.getFileData;
+import static com.azure.ai.formrecognizer.TestUtils.URL_TEST_FILE_FORMAT;
 import static com.azure.ai.formrecognizer.TestUtils.getSerializerAdapter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class FormRecognizerClientTestBase extends TestBase {
-    private static final String RECEIPT_CONTOSO_JPG = "contoso-allinone.jpg";
-    private static final String RECEIPT_CONTOSO_PNG = "contoso-receipt.png";
-    private static final String INVOICE_PDF = "Invoice_6.pdf";
-    private static final String MULTIPAGE_INVOICE_PDF = "multipage_invoice1.pdf";
+
     private static final Pattern NON_DIGIT_PATTERN = Pattern.compile("[^0-9]+");
-    private static final String EXPECTED_MULTIPAGE_ADDRESS_VALUE = "123 Hobbit Lane 567 Main St. Redmond, WA Redmond, WA";
+    private static final String EXPECTED_MULTIPAGE_ADDRESS_VALUE = "123 Hobbit Lane 567 Main St. Redmond, WA Redmond,"
+        + " WA";
     private static final String EXPECTED_MULTIPAGE_PHONE_NUMBER_VALUE = "+15555555555";
     private static final String ITEMIZED_RECEIPT_VALUE = "Itemized";
-    private static final String IS_PLAYBACK_MODE = "isPlaybackMode";
-
-    static final String OCR_EXTRACTION_INVALID_URL_ERROR = "OCR extraction error: [Wrong response code: "
-        + "InvalidImageURL. Message: Image URL is badly formatted..]";
-    static final String EXPECTED_INVALID_URL_ERROR_CODE = "3014";
-    static final String EXPECTED_INVALID_ANALYZE_EXCEPTION_MESSAGE =
-        "Analyze operation failed, " + "errorCode: [" + EXPECTED_INVALID_URL_ERROR_CODE + "], "
-            + "message: " + OCR_EXTRACTION_INVALID_URL_ERROR;
+    static final String RECEIPT_CONTOSO_JPG = "contoso-allinone.jpg";
+    static final String RECEIPT_CONTOSO_PNG = "contoso-receipt.png";
+    static final String INVOICE_6_PDF = "Invoice_6.pdf";
+    static final String MULTIPAGE_INVOICE_PDF = "multipage_invoice1.pdf";
+    static final String EXPECTED_MODEL_ID_NOT_FOUND_ERROR_CODE = "1022";
+    static final String EXPECTED_URL_BADLY_FORMATTED_ERROR_CODE = "2001";
     static final String INVALID_ENDPOINT = "https://notreal.azure.com";
     static final String EXPECTED_BAD_ARGUMENT_CODE = "BadArgument";
     static final String EXPECTED_BAD_ARGUMENT_ERROR_MESSAGE = "Bad or unrecognizable request JSON or binary file.";
     static final String EXPECTED_HTTPS_EXCEPTION_MESSAGE =
         "Max retries 3 times exceeded. Error Details: Key credentials require HTTPS to prevent leaking the key.";
     static final String EXPECTED_INVALID_IMAGE_CODE = "InvalidImage";
-    static final String EXPECTED_INVALID_IMAGE_ERROR_MESSAGE = "The input data is not a valid image or password protected.";
+    static final String EXPECTED_INVALID_IMAGE_ERROR_MESSAGE = "The input data is not a valid image or password "
+        + "protected.";
     static final String EXPECTED_INVALID_MODEL_ID_ERROR_CODE = "1001";
     static final String EXPECTED_INVALID_MODEL_ID_ERROR_MESSAGE =
         "Specified model not found or not ready, Model Id: 00000000-0000-0000-0000-000000000000";
     static final String EXPECTED_INVALID_UUID_EXCEPTION_MESSAGE = "Invalid UUID string: ";
     static final String EXPECTED_MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE = "'modelId' is required and cannot be null.";
-    static final String EXPECTED_UNABLE_TO_READ_FILE = "Analyze operation failed, errorCode: [2005], message: Unable to read file.";
+    static final String EXPECTED_UNABLE_TO_READ_FILE = "Analyze operation failed, errorCode: [2005], message: Unable "
+        + "to read file.";
+    static final String LOCAL_FILE_PATH = "src/test/resources/sample_files/Test/";
 
     static final String ENCODED_EMPTY_SPACE = "{\"source\":\"https://fakeuri.com/blank%20space\"}";
-
     Duration durationTestMode;
 
     /**
@@ -149,7 +141,6 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion)
             .addPolicy(interceptorManager.getRecordPolicy());
-
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new AzureKeyCredential(INVALID_KEY));
         } else {
@@ -260,10 +251,10 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         }
     }
 
-    private static void validateBoundingBoxData(List<Float> expectedBoundingBox, BoundingBox actualBoundingBox) {
-        if (actualBoundingBox != null && actualBoundingBox.getPoints() != null) {
+    private static void validateBoundingBoxData(List<Float> expectedBoundingBox, FieldBoundingBox actualFieldBoundingBox) {
+        if (actualFieldBoundingBox != null && actualFieldBoundingBox.getPoints() != null) {
             int i = 0;
-            for (Point point : actualBoundingBox.getPoints()) {
+            for (Point point : actualFieldBoundingBox.getPoints()) {
                 assertEquals(expectedBoundingBox.get(i), point.getX());
                 assertEquals(expectedBoundingBox.get(++i), point.getY());
                 i++;
@@ -286,7 +277,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             switch (expectedFieldValue.getType()) {
                 case NUMBER:
                     if (expectedFieldValue.getValueNumber() != null) {
-                        assertEquals((double) expectedFieldValue.getValueNumber(), actualFormField.getValue().asDouble());
+                        assertEquals(expectedFieldValue.getValueNumber(), actualFormField.getValue().asFloat());
                     }
                     break;
                 case DATE:
@@ -297,7 +288,9 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
                         DateTimeFormatter.ofPattern("HH:mm:ss")), actualFormField.getValue().asTime());
                     break;
                 case STRING:
-                    assertEquals(expectedFieldValue.getValueString(), actualFormField.getValue().asString());
+                    if (actualFormField.getName() != "ReceiptType") {
+                        assertEquals(expectedFieldValue.getValueString(), actualFormField.getValue().asString());
+                    }
                     break;
                 case INTEGER:
                     assertEquals(expectedFieldValue.getValueInteger(), actualFormField.getValue().asLong());
@@ -308,7 +301,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
                 case OBJECT:
                     expectedFieldValue.getValueObject().forEach((key, formField) -> {
                         FormField actualFormFieldValue = actualFormField.getValue().asMap().get(key);
-                        validateFieldValueTransforms(formField, actualFormFieldValue, readResults, includeFieldElements);
+                        validateFieldValueTransforms(formField, actualFormFieldValue, readResults,
+                            includeFieldElements);
                     });
                     break;
                 case ARRAY:
@@ -316,7 +310,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
                     for (int i = 0; i < expectedFieldValue.getValueArray().size(); i++) {
                         FieldValue expectedReceiptItem = expectedFieldValue.getValueArray().get(i);
                         FormField actualReceiptItem = actualFormField.getValue().asList().get(i);
-                        validateFieldValueTransforms(expectedReceiptItem, actualReceiptItem, readResults, includeFieldElements);
+                        validateFieldValueTransforms(expectedReceiptItem, actualReceiptItem, readResults,
+                            includeFieldElements);
                     }
                     break;
                 default:
@@ -344,7 +339,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeReceiptDataIncludeFieldElements(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+    abstract void recognizeReceiptDataIncludeFieldElements(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
 
     @Test
     abstract void recognizeReceiptDataWithPngFile(HttpClient httpClient,
@@ -477,7 +473,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     // Custom form - URL - unlabeled data
 
     @Test
-    abstract void recognizeCustomFormUrlUnlabeledData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+    abstract void recognizeCustomFormUrlUnlabeledData(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
 
     @Test
     abstract void recognizeCustomFormUrlUnlabeledDataIncludeFieldElements(HttpClient httpClient,
@@ -531,15 +528,16 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             actualRecognizedReceiptFields.get("MerchantAddress"), readResults, includeFieldElements);
         validateFieldValueTransforms(expectedReceiptFields.get("Total"), actualRecognizedReceiptFields.get("Total"),
             readResults, includeFieldElements);
-        validateFieldValueTransforms(expectedReceiptFields.get("Subtotal"), actualRecognizedReceiptFields.get("Subtotal"),
+        validateFieldValueTransforms(expectedReceiptFields.get("Subtotal"),
+            actualRecognizedReceiptFields.get("Subtotal"), readResults, includeFieldElements);
+        validateFieldValueTransforms(expectedReceiptFields.get("Tax"), actualRecognizedReceiptFields.get("Tax"),
             readResults, includeFieldElements);
-        validateFieldValueTransforms(expectedReceiptFields.get("Tax"), actualRecognizedReceiptFields.get("Tax"), readResults,
-            includeFieldElements);
         validateFieldValueTransforms(expectedReceiptFields.get("TransactionDate"),
             actualRecognizedReceiptFields.get("TransactionDate"), readResults, includeFieldElements);
         validateFieldValueTransforms(expectedReceiptFields.get("TransactionTime"),
             actualRecognizedReceiptFields.get("TransactionTime"), readResults, includeFieldElements);
-        validateFieldValueTransforms(expectedReceiptFields.get("Items"), actualRecognizedReceiptFields.get("Items"), readResults, includeFieldElements);
+        validateFieldValueTransforms(expectedReceiptFields.get("Items"), actualRecognizedReceiptFields.get("Items"),
+            readResults, includeFieldElements);
     }
 
     void validateContentResultData(List<FormPage> actualFormPageList, boolean includeFieldElements) {
@@ -601,107 +599,33 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         }
     }
 
-    void receiptSourceUrlRunner(Consumer<String> testRunner) {
-        testRunner.accept(getStorageTestingFileUrl(RECEIPT_CONTOSO_JPG));
-    }
-
-    void receiptSourceUrlRunnerFieldElements(BiConsumer<String, Boolean> testRunner) {
-        testRunner.accept(getStorageTestingFileUrl(RECEIPT_CONTOSO_JPG), true);
-    }
-
-    void receiptPngSourceUrlRunnerFieldElements(BiConsumer<String, Boolean> testRunner) {
-        testRunner.accept(getStorageTestingFileUrl(RECEIPT_CONTOSO_PNG), true);
-    }
-
-    void receiptDataRunner(BiConsumer<InputStream, Long> testRunner) {
-        if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream(IS_PLAYBACK_MODE.getBytes(StandardCharsets.UTF_8)), RECEIPT_FILE_LENGTH);
-        } else {
-            testRunner.accept(getFileData(getStorageTestingFileUrl(RECEIPT_CONTOSO_JPG)), RECEIPT_FILE_LENGTH);
-        }
-    }
-
-    void receiptDataRunnerFieldElements(BiConsumer<InputStream, Boolean> testRunner) {
-        if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream(IS_PLAYBACK_MODE.getBytes(StandardCharsets.UTF_8)), true);
-        } else {
-            testRunner.accept(getFileData(getStorageTestingFileUrl(RECEIPT_CONTOSO_JPG)), true);
-        }
-    }
-
-    void receiptPngDataRunnerFieldElements(BiConsumer<InputStream, Boolean> testRunner) {
-        if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream(IS_PLAYBACK_MODE.getBytes(StandardCharsets.UTF_8)), true);
-        } else {
-            testRunner.accept(getFileData(getStorageTestingFileUrl(RECEIPT_CONTOSO_PNG)), true);
-        }
-    }
-
     void invalidSourceUrlRunner(Consumer<String> testRunner) {
         testRunner.accept(TestUtils.INVALID_RECEIPT_URL);
-    }
-
-    void contentFromDataRunner(BiConsumer<InputStream, Long> testRunner) {
-        if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream(IS_PLAYBACK_MODE.getBytes(StandardCharsets.UTF_8)), LAYOUT_FILE_LENGTH);
-        } else {
-            testRunner.accept(getFileData(getStorageTestingFileUrl(FORM_JPG)), LAYOUT_FILE_LENGTH);
-        }
-    }
-
-    void multipageFromDataRunner(BiConsumer<InputStream, Long> testRunner) {
-        if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream(IS_PLAYBACK_MODE.getBytes(StandardCharsets.UTF_8)), MULTIPAGE_INVOICE_FILE_LENGTH);
-        } else {
-            testRunner.accept(
-                getFileData(getStorageTestingFileUrl(MULTIPAGE_INVOICE_PDF)), MULTIPAGE_INVOICE_FILE_LENGTH);
-        }
-    }
-
-    void multipageFromUrlRunner(Consumer<String> testRunner) {
-        testRunner.accept(getStorageTestingFileUrl(MULTIPAGE_INVOICE_PDF));
-    }
-
-    void contentFromUrlRunner(Consumer<String> testRunner) {
-        testRunner.accept(getStorageTestingFileUrl(FORM_JPG));
-    }
-
-    void pdfContentFromUrlRunner(Consumer<String> testRunner) {
-        testRunner.accept(getStorageTestingFileUrl(INVOICE_1_PDF));
     }
 
     void encodedBlankSpaceSourceUrlRunner(Consumer<String> testRunner) {
         testRunner.accept(FAKE_ENCODED_EMPTY_SPACE_URL);
     }
 
-    void customFormDataRunner(BiConsumer<InputStream, Long> testRunner) {
-        if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream(TEST_DATA_PNG.getBytes(StandardCharsets.UTF_8)),
-                CUSTOM_FORM_FILE_LENGTH);
-        } else {
-            testRunner.accept(getFileData(getStorageTestingFileUrl(INVOICE_PDF)), CUSTOM_FORM_FILE_LENGTH);
-        }
+    void urlRunner(Consumer<String> testRunner, String fileName) {
+        testRunner.accept(URL_TEST_FILE_FORMAT + fileName);
     }
 
-    void customFormJpgDataRunner(BiConsumer<InputStream, Long> testRunner) {
-        if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream(TEST_DATA_PNG.getBytes(StandardCharsets.UTF_8)),
-                FORM_1_JPG_FILE_LENGTH);
-        } else {
-            testRunner.accept(getFileData(getStorageTestingFileUrl(FORM_JPG)), FORM_1_JPG_FILE_LENGTH);
-        }
+    void urlPdfUnlabeledRunner(Consumer<String> testRunner) {
+        testRunner.accept(getStorageTestingFileUrl(MULTIPAGE_INVOICE_PDF));
     }
 
-    void urlRunner(Consumer<String> testRunner, String formData) {
-        testRunner.accept(getStorageTestingFileUrl(formData));
-    }
+    void dataRunner(BiConsumer<InputStream, Long> testRunner, String fileName) {
+        final long fileLength = new File(LOCAL_FILE_PATH + fileName).length();
 
-    void blankPdfDataRunner(BiConsumer<InputStream, Long> testRunner) {
         if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream(TEST_DATA_PNG.getBytes(StandardCharsets.UTF_8)),
-                BLANK_FORM_FILE_LENGTH);
+            testRunner.accept(new ByteArrayInputStream(TEST_DATA_PNG.getBytes(StandardCharsets.UTF_8)), fileLength);
         } else {
-            testRunner.accept(getFileData(getStorageTestingFileUrl(BLANK_PDF)), BLANK_FORM_FILE_LENGTH);
+            try {
+                testRunner.accept(new FileInputStream(LOCAL_FILE_PATH + fileName), fileLength);
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException("Local file not found.", e);
+            }
         }
     }
 
@@ -723,7 +647,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
     private void validateUnLabeledResult(RecognizedForm actualForm, boolean includeFieldElements,
         List<ReadResult> readResults, PageResult expectedPage) {
-        validatePageRangeData(expectedPage.getPage(), actualForm.getFormPageRange());
+        validatePageRangeData(expectedPage.getPage(), actualForm.getPageRange());
         int i = 0;
         for (Map.Entry<String, FormField> entry : actualForm.getFields().entrySet()) {
             FormField actualFormField = entry.getValue();
@@ -747,8 +671,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     private void validateLabeledData(RecognizedForm actualForm, boolean includeFieldElements,
         List<ReadResult> readResults, DocumentResult documentResult) {
 
-        assertEquals(documentResult.getPageRange().get(0), actualForm.getFormPageRange().getFirstPageNumber());
-        assertEquals(documentResult.getPageRange().get(1), actualForm.getFormPageRange().getLastPageNumber());
+        assertEquals(documentResult.getPageRange().get(0), actualForm.getPageRange().getFirstPageNumber());
+        assertEquals(documentResult.getPageRange().get(1), actualForm.getPageRange().getLastPageNumber());
         assertEquals(documentResult.getFields().keySet(), actualForm.getFields().keySet());
         documentResult.getFields().forEach((label, expectedFieldValue) -> {
             final FormField actualFormField = actualForm.getFields().get(label);
@@ -767,14 +691,14 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     static void validateMultiPageDataLabeled(List<RecognizedForm> actualRecognizedFormsList) {
         actualRecognizedFormsList.forEach(recognizedForm -> {
             assertEquals("custom:form", recognizedForm.getFormType());
-            assertEquals(1, recognizedForm.getFormPageRange().getFirstPageNumber());
-            assertEquals(3, recognizedForm.getFormPageRange().getLastPageNumber());
+            assertEquals(1, recognizedForm.getPageRange().getFirstPageNumber());
+            assertEquals(3, recognizedForm.getPageRange().getLastPageNumber());
             assertEquals(3, recognizedForm.getPages().size());
             recognizedForm.getFields().forEach((label, formField) -> {
                 assertNotNull(formField.getName());
                 assertNotNull(formField.getValue());
                 assertNotNull(formField.getValueData().getText());
-                assertNotNull(formField.getLabelData().getText());
+                assertNull(formField.getLabelData());
             });
         });
     }
@@ -799,8 +723,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         RecognizedForm receiptPage2 = recognizedReceipts.get(1);
         RecognizedForm receiptPage3 = recognizedReceipts.get(2);
 
-        assertEquals(1, receiptPage1.getFormPageRange().getFirstPageNumber());
-        assertEquals(1, receiptPage1.getFormPageRange().getLastPageNumber());
+        assertEquals(1, receiptPage1.getPageRange().getFirstPageNumber());
+        assertEquals(1, receiptPage1.getPageRange().getLastPageNumber());
         Map<String, FormField> receiptPage1Fields = receiptPage1.getFields();
         assertEquals(EXPECTED_MULTIPAGE_ADDRESS_VALUE, receiptPage1Fields.get("MerchantAddress")
             .getValue().asString());
@@ -808,7 +732,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             .getValue().asString());
         assertEquals(EXPECTED_MULTIPAGE_PHONE_NUMBER_VALUE, receiptPage1Fields.get("MerchantPhoneNumber")
             .getValue().asPhoneNumber());
-        assertNotNull(receiptPage1Fields.get("Total").getValue().asDouble());
+        assertNotNull(receiptPage1Fields.get("Total").getValue().asFloat());
         assertNotNull(receiptPage1.getPages());
         assertEquals(ITEMIZED_RECEIPT_VALUE, receiptPage1Fields.get("ReceiptType").getValue().asString());
 
@@ -818,19 +742,19 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         assertEquals(1, receipt2Pages.size());
         assertEquals(0, receipt2Pages.stream().findFirst().get().getTables().size());
         assertEquals(0, receipt2Pages.stream().findFirst().get().getLines().size());
-        assertEquals(2, receiptPage2.getFormPageRange().getFirstPageNumber());
-        assertEquals(2, receiptPage2.getFormPageRange().getLastPageNumber());
+        assertEquals(2, receiptPage2.getPageRange().getFirstPageNumber());
+        assertEquals(2, receiptPage2.getPageRange().getLastPageNumber());
 
-        assertEquals(3, receiptPage3.getFormPageRange().getFirstPageNumber());
-        assertEquals(3, receiptPage3.getFormPageRange().getLastPageNumber());
+        assertEquals(3, receiptPage3.getPageRange().getFirstPageNumber());
+        assertEquals(3, receiptPage3.getPageRange().getLastPageNumber());
         Map<String, FormField> receiptPage3Fields = receiptPage3.getFields();
         assertEquals(EXPECTED_MULTIPAGE_ADDRESS_VALUE, receiptPage3Fields.get("MerchantAddress").getValue().asString());
         assertEquals("Frodo Baggins", receiptPage3Fields.get("MerchantName").getValue().asString());
         assertEquals(EXPECTED_MULTIPAGE_PHONE_NUMBER_VALUE, receiptPage3Fields.get("MerchantPhoneNumber").getValue().asPhoneNumber());
-        assertNotNull(receiptPage3Fields.get("Total").getValue().asDouble());
+        assertNotNull(receiptPage3Fields.get("Total").getValue().asFloat());
         // why isn't tip returned by service?
         // total value 1000 returned by service but should be 4300, service bug
-        assertEquals(3000.0f, receiptPage3Fields.get("Subtotal").getValue().asDouble());
+        assertEquals(3000.0f, receiptPage3Fields.get("Subtotal").getValue().asFloat());
         assertEquals(ITEMIZED_RECEIPT_VALUE, receiptPage3Fields.get("ReceiptType").getValue().asString());
     }
 
@@ -875,7 +799,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             return "https://isPlaybackmode?SASToken";
         } else {
-            return Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL);
+            return Configuration.getGlobalConfiguration().get("FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL");
         }
     }
 

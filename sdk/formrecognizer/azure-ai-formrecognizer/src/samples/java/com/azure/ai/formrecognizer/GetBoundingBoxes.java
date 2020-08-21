@@ -6,8 +6,8 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormTable;
 import com.azure.ai.formrecognizer.models.FormWord;
-import com.azure.ai.formrecognizer.models.OperationResult;
-import com.azure.ai.formrecognizer.models.RecognizeOptions;
+import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
+import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Context;
@@ -35,8 +35,8 @@ public class GetBoundingBoxes {
 
         String modelId = "{model_Id}";
         String formUrl = "{form_url}";
-        SyncPoller<OperationResult, List<RecognizedForm>> recognizeFormPoller =
-            client.beginRecognizeCustomFormsFromUrl(modelId, formUrl, new RecognizeOptions()
+        SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> recognizeFormPoller =
+            client.beginRecognizeCustomFormsFromUrl(modelId, formUrl, new RecognizeCustomFormsOptions()
                 .setFieldElementsIncluded(true), Context.NONE);
 
         List<RecognizedForm> recognizedForms = recognizeFormPoller.getFinalResult();
@@ -56,7 +56,7 @@ public class GetBoundingBoxes {
             final List<FormPage> pages = recognizedForm.getPages();
             for (int i1 = 0; i1 < pages.size(); i1++) {
                 final FormPage formPage = pages.get(i1);
-                System.out.printf("------- Recognizing info on page %s of Form -------%n", i1);
+                System.out.printf("------- Recognizing info on page %s of Form ------- %n", i1);
                 System.out.printf("Has width: %f, angle: %.2f, height: %f %n", formPage.getWidth(),
                     formPage.getTextAngle(), formPage.getHeight());
                 // Table information

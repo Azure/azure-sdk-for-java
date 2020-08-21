@@ -5,16 +5,15 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.implementation.models.FormFieldsReport;
 import com.azure.ai.formrecognizer.implementation.models.Model;
+import com.azure.ai.formrecognizer.models.FormRecognizerError;
+import com.azure.ai.formrecognizer.models.RecognizedForm;
+import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.ai.formrecognizer.training.models.AccountProperties;
 import com.azure.ai.formrecognizer.training.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.training.models.CustomFormModel;
 import com.azure.ai.formrecognizer.training.models.CustomFormModelField;
 import com.azure.ai.formrecognizer.training.models.CustomFormSubmodel;
-import com.azure.ai.formrecognizer.models.ErrorInformation;
-import com.azure.ai.formrecognizer.models.FormRecognizerError;
-import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.training.models.TrainingDocumentInfo;
-import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -29,14 +28,17 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 import static com.azure.ai.formrecognizer.FormRecognizerClientBuilder.DEFAULT_DURATION;
 import static com.azure.ai.formrecognizer.TestUtils.BLANK_PDF;
@@ -44,7 +46,6 @@ import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_RECEIPT_URL;
 import static com.azure.ai.formrecognizer.TestUtils.ONE_NANO_DURATION;
 import static com.azure.ai.formrecognizer.TestUtils.TEST_DATA_PNG;
-import static com.azure.ai.formrecognizer.TestUtils.getFileData;
 import static com.azure.ai.formrecognizer.TestUtils.getSerializerAdapter;
 import static com.azure.ai.formrecognizer.implementation.models.ModelStatus.READY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -54,10 +55,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public abstract class FormTrainingClientTestBase extends TestBase {
     private static final String RESOURCE_ID = "FORM_RECOGNIZER_TARGET_RESOURCE_ID";
     private static final String RESOURCE_REGION = "FORM_RECOGNIZER_TARGET_RESOURCE_REGION";
+    private static final String LOCAL_FILE_PATH = "src/test/resources/sample_files/Test/";
 
     static final String AZURE_FORM_RECOGNIZER_API_KEY = "AZURE_FORM_RECOGNIZER_API_KEY";
     static final String AZURE_FORM_RECOGNIZER_ENDPOINT = "AZURE_FORM_RECOGNIZER_ENDPOINT";
-    static final String COPY_OPERATION_FAILED_STATUS_MESSAGE = "Copy operation returned with a failed status";
     static final String EXPECTED_INVALID_MODEL_ERROR = "Unable to list blobs on the Azure blob storage account.";
     static final String EXPECTED_INVALID_MODEL_STATUS_MESSAGE = "Invalid model created with model Id ";
     static final String EXPECTED_INVALID_MODEL_STATUS_ERROR_CODE = "2012";
@@ -65,8 +66,6 @@ public abstract class FormTrainingClientTestBase extends TestBase {
             + "message: " + EXPECTED_INVALID_MODEL_ERROR;
     static final String FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL =
         "FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL";
-    static final String FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL =
-        "FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL";
     static final String FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL =
         "FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL";
     static final String NO_VALID_BLOB_FOUND = "No valid blobs found in the specified Azure blob container."
@@ -88,7 +87,7 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         }
     }
 
-    void validateCopyAuthorizationResult(String expectedResourceId, String expectedResourceRegion,
+    static void validateCopyAuthorizationResult(String expectedResourceId, String expectedResourceRegion,
         CopyAuthorization actualResult) {
         assertNotNull(actualResult.getModelId());
         assertNotNull(actualResult.getAccessToken());
@@ -129,12 +128,12 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         }
     }
 
-    private static void validateErrorData(List<ErrorInformation> expectedErrors,
+    private static void validateErrorData(List<com.azure.ai.formrecognizer.implementation.models.ErrorInformation> expectedErrors,
         List<FormRecognizerError> actualErrors) {
         if (expectedErrors != null && actualErrors != null) {
             assertEquals(expectedErrors.size(), actualErrors.size());
             for (int i = 0; i < actualErrors.size(); i++) {
-                ErrorInformation expectedError = expectedErrors.get(i);
+                com.azure.ai.formrecognizer.implementation.models.ErrorInformation expectedError = expectedErrors.get(i);
                 FormRecognizerError actualError = actualErrors.get(i);
                 assertEquals(expectedError.getCode(), actualError.getErrorCode());
                 assertEquals(expectedError.getMessage(), actualError.getMessage());
@@ -171,7 +170,7 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         validateTrainingDocumentsData(modelRawResponse.getTrainResult().getTrainingDocuments(),
             actualCustomModel.getTrainingDocuments());
         final List<CustomFormSubmodel> subModelList =
-            actualCustomModel.getSubmodels().stream().collect(Collectors.toList());
+            new ArrayList<>(actualCustomModel.getSubmodels());
         if (isLabeled) {
             final List<FormFieldsReport> fields = modelRawResponse.getTrainResult().getFields();
             for (final FormFieldsReport expectedField : fields) {
@@ -294,11 +293,11 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     }
 
     void beginTrainingLabeledRunner(BiConsumer<String, Boolean> testRunner) {
-        testRunner.accept(getTrainingSasUri(), true);
+        testRunner.accept(getTrainingFilesContainerUrl(), true);
     }
 
     void beginTrainingUnlabeledRunner(BiConsumer<String, Boolean> testRunner) {
-        testRunner.accept(getTrainingSasUri(), false);
+        testRunner.accept(getTrainingFilesContainerUrl(), false);
     }
 
     void beginCopyRunner(BiConsumer<String, String> testRunner) {
@@ -310,7 +309,7 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     }
 
     void beginCopyIncorrectRegionRunner(BiConsumer<String, String> testRunner) {
-        testRunner.accept(getTargetResourceId(), "westus2");
+        testRunner.accept(getTargetResourceId(), "eastus");
     }
 
     void beginTrainingInvalidModelStatusRunner(BiConsumer<String, Boolean> testRunner) {
@@ -318,7 +317,7 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     }
 
     void beginTrainingMultipageRunner(Consumer<String> testRunner) {
-        testRunner.accept(getMultipageTrainingSasUri());
+        testRunner.accept(getMultipageTrainingFilesUrl());
     }
 
     /**
@@ -354,15 +353,21 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         assertTrue(actualReceipt.getFields().isEmpty());
     }
 
-    void blankPdfDataRunner(Consumer<InputStream> testRunner) {
+    void blankPdfDataRunner(BiConsumer<InputStream, Long> testRunner) {
+        final long fileLength = new File(LOCAL_FILE_PATH + BLANK_PDF).length();
+
         if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream(TEST_DATA_PNG.getBytes(StandardCharsets.UTF_8)));
+            testRunner.accept(new ByteArrayInputStream(TEST_DATA_PNG.getBytes(StandardCharsets.UTF_8)), fileLength);
         } else {
-            testRunner.accept(getFileData(getStorageTestingFileUrl(BLANK_PDF)));
+            try {
+                testRunner.accept(new FileInputStream(LOCAL_FILE_PATH + BLANK_PDF), fileLength);
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException("Local file not found.", e);
+            }
         }
     }
 
-    private String getTrainingSasUri() {
+    private String getTrainingFilesContainerUrl() {
         return interceptorManager.isPlaybackMode()
             ? "https://isPlaybackmode"
             : Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL);
@@ -373,36 +378,9 @@ public abstract class FormTrainingClientTestBase extends TestBase {
      *
      * @return the training data set Url
      */
-    private String getMultipageTrainingSasUri() {
+    private String getMultipageTrainingFilesUrl() {
         return interceptorManager.isPlaybackMode()
             ? "https://isPlaybackmode"
             : Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL);
-    }
-
-    /**
-     * Prepare the file url from the testing data set SAS Url value.
-     *
-     * @return the testing data specific file Url
-     */
-    private String getStorageTestingFileUrl(String fileName) {
-        if (interceptorManager.isPlaybackMode()) {
-            return "https://isPlaybackmode";
-        } else {
-            final String[] urlParts = getTestingSasUri().split("\\?");
-            return urlParts[0] + "/" + fileName + "?" + urlParts[1];
-        }
-    }
-
-    /**
-     * Get the testing data set SAS Url value based on the test running mode.
-     *
-     * @return the testing data set Url
-     */
-    private String getTestingSasUri() {
-        if (interceptorManager.isPlaybackMode()) {
-            return "https://isPlaybackmode?SASToken";
-        } else {
-            return Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL);
-        }
     }
 }

@@ -32,8 +32,12 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.data.auditing.IsNewAwareAuditingHandler;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
+import org.springframework.util.ReflectionUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
+
+import java.util.UUID;
 
 import static com.azure.spring.data.cosmos.common.CosmosUtils.createPartitionKey;
 
@@ -134,6 +138,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
 
         return cosmosAsyncClient
             .createDatabaseIfNotExists(this.databaseName)
+            .publishOn(Schedulers.parallel())
             .onErrorResume(throwable ->
                 CosmosExceptionUtils.exceptionHandler("Failed to create database", throwable))
             .flatMap(cosmosDatabaseResponse -> {
@@ -215,6 +220,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
             .getContainer(containerName)
             .queryItems("SELECT * FROM r", cosmosQueryRequestOptions, JsonNode.class)
             .byPage()
+            .publishOn(Schedulers.parallel())
             .flatMap(cosmosItemFeedResponse -> {
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                     cosmosItemFeedResponse.getCosmosDiagnostics(), cosmosItemFeedResponse);
@@ -260,6 +266,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                                 .getContainer(containerName)
                                 .queryItems(query, options, JsonNode.class)
                                 .byPage()
+                                .publishOn(Schedulers.parallel())
                                 .flatMap(cosmosItemFeedResponse -> {
                                     CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                                         cosmosItemFeedResponse.getCosmosDiagnostics(),
@@ -292,6 +299,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         return cosmosAsyncClient.getDatabase(this.databaseName)
                                 .getContainer(containerName)
                                 .readItem(idToFind, partitionKey, JsonNode.class)
+                                .publishOn(Schedulers.parallel())
                                 .flatMap(cosmosItemResponse -> {
                                     CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                                         cosmosItemResponse.getDiagnostics(), null);
@@ -327,11 +335,13 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         Assert.notNull(objectToSave, "objectToSave should not be null");
 
         final Class<T> domainType = (Class<T>) objectToSave.getClass();
+        generateIdIfNullAndAutoGenerationEnabled(objectToSave, domainType);
         final JsonNode originalItem =
             mappingCosmosConverter.writeJsonNode(objectToSave);
         return cosmosAsyncClient.getDatabase(this.databaseName)
                                 .getContainer(getContainerName(objectToSave.getClass()))
                                 .createItem(originalItem, new CosmosItemRequestOptions())
+                                .publishOn(Schedulers.parallel())
                                 .onErrorResume(throwable ->
                                     CosmosExceptionUtils.exceptionHandler("Failed to insert item", throwable))
                                 .flatMap(cosmosItemResponse -> {
@@ -357,6 +367,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         Assert.notNull(objectToSave, "objectToSave should not be null");
 
         final Class<T> domainType = (Class<T>) objectToSave.getClass();
+        generateIdIfNullAndAutoGenerationEnabled(objectToSave, domainType);
         final JsonNode originalItem = prepareToPersistAndConvertToItemProperties(objectToSave);
         final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         if (partitionKey == null) {
@@ -365,6 +376,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         return cosmosAsyncClient.getDatabase(this.databaseName)
                                 .getContainer(containerName)
                                 .createItem(originalItem, partitionKey, options)
+                                .publishOn(Schedulers.parallel())
                                 .onErrorResume(throwable ->
                                     CosmosExceptionUtils.exceptionHandler("Failed to insert item", throwable))
                                 .flatMap(cosmosItemResponse -> {
@@ -373,6 +385,14 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                                     return Mono.just(toDomainObject(domainType,
                                         cosmosItemResponse.getItem()));
                                 });
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> void generateIdIfNullAndAutoGenerationEnabled(T originalItem, Class<?> type) {
+        CosmosEntityInformation<?, ?> entityInfo = CosmosEntityInformation.getInstance(type);
+        if (entityInfo.shouldGenerateId() && ReflectionUtils.getField(entityInfo.getIdField(), originalItem) == null) {
+            ReflectionUtils.setField(entityInfo.getIdField(), originalItem, UUID.randomUUID().toString());
+        }
     }
 
     /**
@@ -404,6 +424,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         return cosmosAsyncClient.getDatabase(this.databaseName)
                                 .getContainer(containerName)
                                 .upsertItem(originalItem, options)
+                                .publishOn(Schedulers.parallel())
                                 .flatMap(cosmosItemResponse -> {
                                     CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                                         cosmosItemResponse.getDiagnostics(), null);
@@ -438,6 +459,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         return cosmosAsyncClient.getDatabase(this.databaseName)
                                 .getContainer(containerName)
                                 .deleteItem(idToDelete, partitionKey, cosmosItemRequestOptions)
+                                .publishOn(Schedulers.parallel())
                                 .doOnNext(cosmosItemResponse ->
                                     CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                                         cosmosItemResponse.getDiagnostics(), null))
@@ -447,8 +469,8 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     }
 
     /**
-     * Delete the DocumentQuery, need to query by id at first, then delete the item from the result.
-     * This method respects the version of the entity whereas deleteById does not
+     * Delete the DocumentQuery, need to query by id at first, then delete the item from the result. This method
+     * respects the version of the entity whereas deleteById does not
      *
      * @param containerName Container name of database
      * @param entity the entity to delete
@@ -576,7 +598,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
 
         return executeQuery(querySpec, containerName, options)
             .doOnNext(feedResponse -> CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
-                null, feedResponse))
+                feedResponse.getCosmosDiagnostics(), feedResponse))
             .onErrorResume(throwable ->
                 CosmosExceptionUtils.exceptionHandler("Failed to get count value", throwable))
             .next()
@@ -644,9 +666,10 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
             .getContainer(containerName)
             .queryItems(sqlQuerySpec, cosmosQueryRequestOptions, JsonNode.class)
             .byPage()
+            .publishOn(Schedulers.parallel())
             .flatMap(cosmosItemFeedResponse -> {
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
-                    null, cosmosItemFeedResponse);
+                    cosmosItemFeedResponse.getCosmosDiagnostics(), cosmosItemFeedResponse);
                 return Flux.fromIterable(cosmosItemFeedResponse.getResults());
             })
             .onErrorResume(throwable ->
@@ -664,6 +687,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         return cosmosAsyncClient.getDatabase(this.databaseName)
                                 .getContainer(containerName)
                                 .deleteItem(jsonNode.get("id").asText(), partitionKey)
+                                .publishOn(Schedulers.parallel())
                                 .map(cosmosItemResponse -> {
                                     CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                                         cosmosItemResponse.getDiagnostics(), null);

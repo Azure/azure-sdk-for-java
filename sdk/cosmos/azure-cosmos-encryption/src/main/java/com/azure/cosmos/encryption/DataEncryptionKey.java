@@ -4,6 +4,7 @@
 package com.azure.cosmos.encryption;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.encryption.AeadAes256CbcHmac256AlgorithmProvider;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -57,17 +58,7 @@ public interface DataEncryptionKey {
 
         byte[] rawKey = new byte[32];
 
-        try {
-            DataEncryptionKey.class.getClassLoader()
-                                   .loadClass("com.azure.cosmos.implementation.encryption"
-                                       + ".AeadAes256CbcHmac256AlgorithmProvider")
-                                   .getDeclaredMethod("generateRandomBytes", byte[].class)
-                                   .invoke(null, rawKey);
-
-        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | ClassNotFoundException e) {
-            throw new IllegalStateException("azure-cosmos-encryption is not in the classpath");
-        }
-
+        AeadAes256CbcHmac256AlgorithmProvider.generateRandomBytes(rawKey);
         return rawKey;
     }
 
@@ -91,17 +82,6 @@ public interface DataEncryptionKey {
                 encryptionAlgorithm));
         }
 
-        try {
-            return (DataEncryptionKey) DataEncryptionKey.class.getClassLoader()
-                                                              .loadClass("com.azure.cosmos.implementation.encryption"
-                                                                  + ".AeadAes256CbcHmac256AlgorithmProvider")
-                                                              .getDeclaredMethod("createAlgorithm", byte[].class,
-                                                                  EncryptionType.class, byte.class)
-                                                              .invoke(null, rawKey, EncryptionType.RANDOMIZED, /**
-                                                               algorithmVersion **/(byte) 1);
-
-        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | ClassNotFoundException e) {
-            throw new IllegalStateException("azure-cosmos-encryption is not in the classpath");
-        }
+        return AeadAes256CbcHmac256AlgorithmProvider.createAlgorithm(rawKey, EncryptionType.RANDOMIZED, /**version*/ (byte) 1);
     }
 }

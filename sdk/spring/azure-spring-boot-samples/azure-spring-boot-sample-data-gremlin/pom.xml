@@ -7,7 +7,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.3.0.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-parent;external_dependency} -->
+    <version>2.3.3.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-parent;external_dependency} -->
   </parent>
 
   <groupId>com.azure</groupId>
@@ -23,7 +23,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-data-gremlin-spring-boot-starter</artifactId>
-      <version>2.3.3-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-data-gremlin-spring-boot-starter;current} -->
+      <version>2.4.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-data-gremlin-spring-boot-starter;current} -->
     </dependency>
   </dependencies>
 

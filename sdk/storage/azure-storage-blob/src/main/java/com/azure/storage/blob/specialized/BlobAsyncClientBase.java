@@ -36,6 +36,7 @@ import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.ArchiveStatus;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
+import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.models.BlobCopyInfo;
@@ -442,7 +443,8 @@ public class BlobAsyncClientBase {
         RehydratePriority priority, RequestConditions sourceModifiedRequestConditions,
         BlobRequestConditions destRequestConditions, Duration pollInterval) {
         return this.beginCopy(new BlobBeginCopyOptions(sourceUrl).setMetadata(metadata).setTier(tier)
-            .setRehydratePriority(priority).setSourceRequestConditions(sourceModifiedRequestConditions)
+            .setRehydratePriority(priority).setSourceRequestConditions(
+                ModelHelper.populateBlobSourceRequestConditions(sourceModifiedRequestConditions))
             .setDestinationRequestConditions(destRequestConditions).setPollInterval(pollInterval));
     }
 
@@ -469,8 +471,9 @@ public class BlobAsyncClientBase {
         StorageImplUtils.assertNotNull("options", options);
         final Duration interval = options.getPollInterval() != null
             ? options.getPollInterval() : Duration.ofSeconds(1);
-        final RequestConditions sourceModifiedCondition = options.getSourceRequestConditions() == null
-            ? new RequestConditions()
+        final BlobBeginCopySourceRequestConditions sourceModifiedCondition =
+            options.getSourceRequestConditions() == null
+            ? new BlobBeginCopySourceRequestConditions()
             : options.getSourceRequestConditions();
         final BlobRequestConditions destinationRequestConditions =
             options.getDestinationRequestConditions() == null
@@ -514,7 +517,8 @@ public class BlobAsyncClientBase {
 
     private Mono<BlobCopyInfo> onStart(String sourceUrl, Map<String, String> metadata, Map<String, String> tags,
         AccessTier tier, RehydratePriority priority, Boolean sealBlob,
-        RequestConditions sourceModifiedRequestConditions, BlobRequestConditions destinationRequestConditions) {
+        BlobBeginCopySourceRequestConditions sourceModifiedRequestConditions,
+        BlobRequestConditions destinationRequestConditions) {
         URL url;
         try {
             url = new URL(sourceUrl);
@@ -526,10 +530,11 @@ public class BlobAsyncClientBase {
             context -> azureBlobStorage.blobs().startCopyFromURLWithRestResponseAsync(null, null, url, null, metadata,
                 tier, priority, sourceModifiedRequestConditions.getIfModifiedSince(),
                 sourceModifiedRequestConditions.getIfUnmodifiedSince(), sourceModifiedRequestConditions.getIfMatch(),
-                sourceModifiedRequestConditions.getIfNoneMatch(), destinationRequestConditions.getIfModifiedSince(),
-                destinationRequestConditions.getIfUnmodifiedSince(), destinationRequestConditions.getIfMatch(),
-                destinationRequestConditions.getIfNoneMatch(), destinationRequestConditions.getTagsConditions(),
-                destinationRequestConditions.getLeaseId(), null, tagsToString(tags), sealBlob, context))
+                sourceModifiedRequestConditions.getIfNoneMatch(), sourceModifiedRequestConditions.getTagsConditions(),
+                destinationRequestConditions.getIfModifiedSince(), destinationRequestConditions.getIfUnmodifiedSince(),
+                destinationRequestConditions.getIfMatch(), destinationRequestConditions.getIfNoneMatch(),
+                destinationRequestConditions.getTagsConditions(), destinationRequestConditions.getLeaseId(), null,
+                tagsToString(tags), sealBlob, context))
             .map(response -> {
                 final BlobStartCopyFromURLHeaders headers = response.getDeserializedHeaders();
 
@@ -1004,7 +1009,7 @@ public class BlobAsyncClientBase {
                 rangeGetContentMd5, context);
 
         return ChunkedDownloadUtils.downloadFirstChunk(finalRange, finalParallelTransferOptions, requestConditions,
-            downloadFunc)
+            downloadFunc, true)
             .flatMap(setupTuple3 -> {
                 long newCount = setupTuple3.getT1();
                 BlobRequestConditions finalConditions = setupTuple3.getT2();
@@ -1771,7 +1776,8 @@ public class BlobAsyncClientBase {
         return this.azureBlobStorage.blobs().queryWithRestResponseAsync(null, null, qr,
             getSnapshotId(), null, requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), null, getCustomerProvidedKey(), context)
+            requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
+            getCustomerProvidedKey(), context)
             .map(response -> new BlobQueryAsyncResponse(response.getRequest(), response.getStatusCode(),
                 response.getHeaders(),
                 /* Parse the avro reactive stream. */

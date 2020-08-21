@@ -5,8 +5,10 @@ package com.azure.core.serializer.json.gson;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.util.serializer.MemberNameConverter;
 import com.azure.core.util.serializer.TypeReference;
 import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -16,14 +18,17 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UncheckedIOException;
 import java.io.Writer;
+import java.lang.reflect.Field;
+import java.lang.reflect.Member;
+import java.lang.reflect.Modifier;
 import java.nio.charset.StandardCharsets;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * GSON based implementation of the {@link JsonSerializer} interface.
+ * GSON based implementation of the {@link JsonSerializer} and {@link MemberNameConverter} interfaces.
  */
-public final class GsonJsonSerializer implements JsonSerializer {
+public final class GsonJsonSerializer implements JsonSerializer, MemberNameConverter {
     private final ClientLogger logger = new ClientLogger(GsonJsonSerializer.class);
 
     private final Gson gson;
@@ -62,5 +67,20 @@ public final class GsonJsonSerializer implements JsonSerializer {
     @Override
     public Mono<Void> serializeAsync(OutputStream stream, Object value) {
         return Mono.fromRunnable(() -> serialize(stream, value));
+    }
+
+    @Override
+    public String convertMemberName(Member member) {
+        if (Modifier.isTransient(member.getModifiers())) {
+            return null;
+        }
+        if (member instanceof Field) {
+            Field f = (Field) member;
+            if (f.isAnnotationPresent(SerializedName.class)) {
+                return f.getDeclaredAnnotation(SerializedName.class).value();
+            }
+            return member.getName();
+        }
+        return null;
     }
 }

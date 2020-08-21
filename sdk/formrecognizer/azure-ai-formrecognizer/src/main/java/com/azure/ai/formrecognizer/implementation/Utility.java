@@ -5,7 +5,7 @@ package com.azure.ai.formrecognizer.implementation;
 
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
 import com.azure.ai.formrecognizer.implementation.models.ErrorResponseException;
-import com.azure.ai.formrecognizer.models.ErrorInformation;
+import com.azure.ai.formrecognizer.models.FormRecognizerErrorInformation;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -202,7 +202,7 @@ public final class Utility {
         if (throwable instanceof ErrorResponseException) {
             ErrorResponseException errorResponseException = (ErrorResponseException) throwable;
             return new HttpResponseException(errorResponseException.getMessage(), errorResponseException.getResponse(),
-                new ErrorInformation().setCode(errorResponseException.getValue().getError().getCode()).setMessage(
+                new FormRecognizerErrorInformation(errorResponseException.getValue().getError().getCode(),
                     errorResponseException.getValue().getError().getMessage()));
         }
         return throwable;

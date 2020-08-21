@@ -5,7 +5,7 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.FieldValueType;
 import com.azure.ai.formrecognizer.models.FormField;
-import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
@@ -46,7 +46,7 @@ public class RecognizeReceipts {
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 
-        SyncPoller<OperationResult, List<RecognizedForm>> analyzeReceiptPoller =
+        SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> analyzeReceiptPoller =
             client.beginRecognizeReceipts(targetStream, sourceFile.length());
 
         List<RecognizedForm> receiptPageResults = analyzeReceiptPoller.getFinalResult();
@@ -108,22 +108,22 @@ public class RecognizeReceipts {
                                 }
                             }
                             if ("Quantity".equals(key)) {
-                                if (FieldValueType.DOUBLE == formField.getValue().getValueType()) {
-                                    Double quantity = formField.getValue().asDouble();
+                                if (FieldValueType.FLOAT == formField.getValue().getValueType()) {
+                                    Float quantity = formField.getValue().asFloat();
                                     System.out.printf("Quantity: %f, confidence: %.2f%n",
                                         quantity, formField.getConfidence());
                                 }
                             }
                             if ("Price".equals(key)) {
-                                if (FieldValueType.DOUBLE == formField.getValue().getValueType()) {
-                                    Double price = formField.getValue().asDouble();
+                                if (FieldValueType.FLOAT == formField.getValue().getValueType()) {
+                                    Float price = formField.getValue().asFloat();
                                     System.out.printf("Price: %f, confidence: %.2f%n",
                                         price, formField.getConfidence());
                                 }
                             }
                             if ("TotalPrice".equals(key)) {
-                                if (FieldValueType.DOUBLE == formField.getValue().getValueType()) {
-                                    Double totalPrice = formField.getValue().asDouble();
+                                if (FieldValueType.FLOAT == formField.getValue().getValueType()) {
+                                    Float totalPrice = formField.getValue().asFloat();
                                     System.out.printf("Total Price: %f, confidence: %.2f%n",
                                         totalPrice, formField.getConfidence());
                                 }

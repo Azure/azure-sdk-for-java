@@ -13,7 +13,7 @@
 
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-active-directory-b2c-spring-boot-starter</artifactId>
-  <version>2.3.3-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-active-directory-b2c-spring-boot-starter;current} -->
+  <version>2.4.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-active-directory-b2c-spring-boot-starter;current} -->
 
   <name>Azure AD B2C Spring Security Integration Spring Boot Starter</name>
   <description>Spring Boot Starter for Azure AD B2C and Spring Security Integration</description>
@@ -22,26 +22,26 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter</artifactId>
-      <version>2.3.0.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
+      <version>2.3.3.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-validation</artifactId>
-      <version>2.3.0.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-validation;external_dependency} -->
+      <version>2.3.3.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-validation;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-spring-boot</artifactId>
-      <version>2.3.3-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-boot;current} -->
+      <version>2.4.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-boot;current} -->
     </dependency>
 
     <!-- Below poms will be replaced to azure-spring-boot-starter pom when no milestone tag. -->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
-      <version>5.2.6.RELEASE</version> <!-- {x-version-update;org.springframework:spring-web;external_dependency} -->
+      <version>5.2.8.RELEASE</version> <!-- {x-version-update;org.springframework:spring-web;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -54,37 +54,37 @@
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-core</artifactId>
-      <version>5.3.2.RELEASE</version> <!-- {x-version-update;org.springframework.security:spring-security-core;external_dependency} -->
+      <version>5.3.4.RELEASE</version> <!-- {x-version-update;org.springframework.security:spring-security-core;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-web</artifactId>
-      <version>5.3.2.RELEASE</version> <!-- {x-version-update;org.springframework.security:spring-security-web;external_dependency} -->
+      <version>5.3.4.RELEASE</version> <!-- {x-version-update;org.springframework.security:spring-security-web;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-config</artifactId>
-      <version>5.3.2.RELEASE</version> <!-- {x-version-update;org.springframework.security:spring-security-config;external_dependency} -->
+      <version>5.3.4.RELEASE</version> <!-- {x-version-update;org.springframework.security:spring-security-config;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-oauth2-core</artifactId>
-      <version>5.3.2.RELEASE</version> <!-- {x-version-update;org.springframework.security:spring-security-oauth2-core;external_dependency} -->
+      <version>5.3.4.RELEASE</version> <!-- {x-version-update;org.springframework.security:spring-security-oauth2-core;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-oauth2-client</artifactId>
-      <version>5.3.2.RELEASE</version> <!-- {x-version-update;org.springframework.security:spring-security-oauth2-client;external_dependency} -->
+      <version>5.3.4.RELEASE</version> <!-- {x-version-update;org.springframework.security:spring-security-oauth2-client;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-oauth2-jose</artifactId>
-      <version>5.3.2.RELEASE</version> <!-- {x-version-update;org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
+      <version>5.3.4.RELEASE</version> <!-- {x-version-update;org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
     </dependency>
   </dependencies>
 
@@ -98,17 +98,17 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:azure-spring-boot:[2.3.3-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:azure-spring-boot;current} -->
+                <include>com.microsoft.azure:azure-spring-boot:[2.4.0-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:azure-spring-boot;current} -->
                 <include>javax.validation:validation-api:[2.0.1.Final]</include> <!-- {x-include-update;javax.validation:validation-api;external_dependency} -->
-                <include>org.springframework:spring-web:[5.2.6.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-starter:[2.3.0.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-starter-validation:[2.3.0.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-validation;external_dependency} -->
-                <include>org.springframework.security:spring-security-config:[5.3.2.RELEASE]</include> <!-- {x-include-update;org.springframework.security:spring-security-config;external_dependency} -->
-                <include>org.springframework.security:spring-security-core:[5.3.2.RELEASE]</include> <!-- {x-include-update;org.springframework.security:spring-security-core;external_dependency} -->
-                <include>org.springframework.security:spring-security-oauth2-client:[5.3.2.RELEASE]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-client;external_dependency} -->
-                <include>org.springframework.security:spring-security-oauth2-core:[5.3.2.RELEASE]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-core;external_dependency} -->
-                <include>org.springframework.security:spring-security-oauth2-jose:[5.3.2.RELEASE]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
-                <include>org.springframework.security:spring-security-web:[5.3.2.RELEASE]</include> <!-- {x-include-update;org.springframework.security:spring-security-web;external_dependency} -->
+                <include>org.springframework:spring-web:[5.2.8.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-validation:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-validation;external_dependency} -->
+                <include>org.springframework.security:spring-security-config:[5.3.4.RELEASE]</include> <!-- {x-include-update;org.springframework.security:spring-security-config;external_dependency} -->
+                <include>org.springframework.security:spring-security-core:[5.3.4.RELEASE]</include> <!-- {x-include-update;org.springframework.security:spring-security-core;external_dependency} -->
+                <include>org.springframework.security:spring-security-oauth2-client:[5.3.4.RELEASE]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-client;external_dependency} -->
+                <include>org.springframework.security:spring-security-oauth2-core:[5.3.4.RELEASE]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-core;external_dependency} -->
+                <include>org.springframework.security:spring-security-oauth2-jose:[5.3.4.RELEASE]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
+                <include>org.springframework.security:spring-security-web:[5.3.4.RELEASE]</include> <!-- {x-include-update;org.springframework.security:spring-security-web;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

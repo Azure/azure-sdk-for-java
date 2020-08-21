@@ -15,7 +15,7 @@
     <module>azure-spring-data-2-2-cosmos</module>
     <module>azure-spring-data-2-3-cosmos</module>
     <module>azure-spring-data-cosmos-core</module>
-    <module>azure-spring-data-test</module>
+    <module>azure-spring-data-cosmos-test</module>
   </modules>
 
 </project>

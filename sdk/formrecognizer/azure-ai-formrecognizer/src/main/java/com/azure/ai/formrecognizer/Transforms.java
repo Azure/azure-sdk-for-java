@@ -11,7 +11,7 @@ import com.azure.ai.formrecognizer.implementation.models.PageResult;
 import com.azure.ai.formrecognizer.implementation.models.ReadResult;
 import com.azure.ai.formrecognizer.implementation.models.TextLine;
 import com.azure.ai.formrecognizer.implementation.models.TextWord;
-import com.azure.ai.formrecognizer.models.BoundingBox;
+import com.azure.ai.formrecognizer.models.FieldBoundingBox;
 import com.azure.ai.formrecognizer.models.FieldData;
 import com.azure.ai.formrecognizer.models.FieldValueType;
 import com.azure.ai.formrecognizer.models.FormElement;
@@ -49,7 +49,6 @@ final class Transforms {
     // Pattern match to find all non-digits in the provided string.
     private static final Pattern NON_DIGIT_PATTERN = Pattern.compile("[^0-9]+");
     private static final float DEFAULT_CONFIDENCE_VALUE = 1.0f;
-    private static final int DEFAULT_PAGE_NUMBER = 1;
     private static final int DEFAULT_TABLE_SPAN = 1;
 
     private Transforms() {
@@ -82,8 +81,7 @@ final class Transforms {
                     formPageRange = new FormPageRange(1, 1);
                 }
 
-                Map<String, FormField> extractedFieldMap = getUnlabeledFieldMap(documentResultItem, readResults,
-                    includeFieldElements);
+                Map<String, FormField> extractedFieldMap = getLabeledFieldMap(documentResultItem, readResults);
                 extractedFormList.add(new RecognizedForm(
                     extractedFieldMap,
                     documentResultItem.getDocType(),
@@ -99,7 +97,7 @@ final class Transforms {
                 if (clusterId != null) {
                     formType.append(clusterId);
                 }
-                Map<String, FormField> extractedFieldMap = getLabeledFieldMap(includeFieldElements, readResults,
+                Map<String, FormField> extractedFieldMap = getUnlabeledFieldMap(includeFieldElements, readResults,
                     pageResultItem, pageNumber);
 
                 extractedFormList.add(new RecognizedForm(
@@ -156,7 +154,7 @@ final class Transforms {
      *
      * @return The list of per page {@code FormTable}.
      */
-    static List<FormTable> getPageTables(PageResult pageResultItem, List<ReadResult> readResults, Integer pageNumber) {
+    static List<FormTable> getPageTables(PageResult pageResultItem, List<ReadResult> readResults, int pageNumber) {
         return pageResultItem.getTables().stream()
             .map(dataTable ->
                 new FormTable(dataTable.getRows(), dataTable.getColumns(),
@@ -164,19 +162,15 @@ final class Transforms {
                         .stream()
                         .map(dataTableCell -> new FormTableCell(
                             dataTableCell.getRowIndex(), dataTableCell.getColumnIndex(),
-                            getOrDefault(dataTableCell.getRowSpan(), DEFAULT_TABLE_SPAN),
-                            getOrDefault(dataTableCell.getColumnSpan(), DEFAULT_TABLE_SPAN),
+                            dataTableCell.getRowSpan() == null ? DEFAULT_TABLE_SPAN : dataTableCell.getRowSpan(),
+                            dataTableCell.getColumnSpan() == null ? DEFAULT_TABLE_SPAN : dataTableCell.getColumnSpan(),
                             dataTableCell.getText(), toBoundingBox(dataTableCell.getBoundingBox()),
                             dataTableCell.getConfidence(),
                             dataTableCell.isHeader() == null ? false : dataTableCell.isHeader(),
                             dataTableCell.isFooter() == null ? false : dataTableCell.isFooter(),
-                            pageNumber, setReferenceElements(dataTableCell.getElements(), readResults, pageNumber)))
+                            pageNumber, setReferenceElements(dataTableCell.getElements(), readResults)))
                         .collect(Collectors.toList()), pageNumber))
             .collect(Collectors.toList());
-    }
-
-    private static int getOrDefault(Integer value, int defaultValue) {
-        return value == null ? defaultValue : value;
     }
 
     /**
@@ -201,83 +195,68 @@ final class Transforms {
      *
      * @param documentResultItem The extracted document level information.
      * @param readResults The text extraction result returned by the service.
-     * @param includeFieldElements Boolean to indicate if to set reference elements data on fields.
-     *
      * @return The {@code RecognizedForm#getFields}.
      */
-    private static Map<String, FormField> getUnlabeledFieldMap(DocumentResult documentResultItem,
-        List<ReadResult> readResults, boolean includeFieldElements) {
-        Map<String, FormField> extractedFieldMap = new LinkedHashMap<>();
+    private static Map<String, FormField> getLabeledFieldMap(DocumentResult documentResultItem,
+        List<ReadResult> readResults) {
+        Map<String, FormField> recognizedFieldMap = new LinkedHashMap<>();
         // add receipt fields
         if (!CoreUtils.isNullOrEmpty(documentResultItem.getFields())) {
             documentResultItem.getFields().forEach((key, fieldValue) -> {
                 if (fieldValue != null) {
-                    int pageNumber = getOrDefault(fieldValue.getPage(), DEFAULT_PAGE_NUMBER);
-                    FieldData labelText = new FieldData(key, null, pageNumber, null);
-                    List<FormElement> formElementList = null;
-                    if (includeFieldElements) {
-                        formElementList = setReferenceElements(fieldValue.getElements(), readResults, pageNumber);
+                    List<FormElement> formElementList = setReferenceElements(fieldValue.getElements(), readResults);
+                    FieldData valueData;
+                    if ("ReceiptType".equals(key) || com.azure.ai.formrecognizer.implementation.models.FieldValueType.ARRAY == fieldValue.getType()) {
+                        valueData = null;
+                    } else {
+                        valueData = new FieldData(fieldValue.getText(), toBoundingBox(fieldValue.getBoundingBox()),
+                            fieldValue.getPage(), formElementList);
                     }
-                    FieldData valueText = new FieldData(fieldValue.getText(),
-                        toBoundingBox(fieldValue.getBoundingBox()),
-                        pageNumber, formElementList);
-                    extractedFieldMap.put(key, setFormField(labelText, key, fieldValue, valueText, pageNumber,
+                    recognizedFieldMap.put(key, setFormField(key, valueData, fieldValue,
                         readResults));
                 } else {
-                    FieldData labelText = new FieldData(key, null, DEFAULT_PAGE_NUMBER, null);
-                    extractedFieldMap.put(key, new FormField(key, labelText, null, null,
-                        DEFAULT_CONFIDENCE_VALUE
-                    ));
+                    recognizedFieldMap.put(key, new FormField(key, null, null, null,
+                        DEFAULT_CONFIDENCE_VALUE));
                 }
             });
         }
-        return extractedFieldMap;
+        return recognizedFieldMap;
     }
 
     /**
      * Helper method that converts the incoming service field value to one of the strongly typed SDK level
      * {@link FormField} with reference elements set when {@code includeFieldElements} is set to true.
      *
-     * @param labelText The label text of the field.
-     * @param key The name of the field.
+     * @param name The name of the field.
      * @param fieldValue The named field values returned by the service.
-     * @param valueText The value text of the field.
-     * @param pageNumber The 1-based page number.
+     * @param valueData The value text of the field.
      * @param readResults The text extraction result returned by the service.
      *
      * @return The strongly typed {@link FormField} for the field input.
      */
-    private static FormField setFormField(FieldData labelText, String key, FieldValue fieldValue,
-        FieldData valueText, Integer pageNumber, List<ReadResult> readResults) {
-        FormField value;
+    private static FormField setFormField(String name, FieldData valueData, FieldValue fieldValue,
+        List<ReadResult> readResults) {
+        com.azure.ai.formrecognizer.models.FieldValue value;
         switch (fieldValue.getType()) {
             case PHONE_NUMBER:
-                value = new FormField(key, labelText, valueText,
-                    new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValuePhoneNumber(),
-                        FieldValueType.PHONE_NUMBER),
-                    setDefaultConfidenceValue(fieldValue.getConfidence()));
+                value = new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValuePhoneNumber(),
+                    FieldValueType.PHONE_NUMBER);
                 break;
             case STRING:
-                value = new FormField(key, labelText, valueText,
-                    new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueString(),
-                        FieldValueType.STRING),
-                    setDefaultConfidenceValue(fieldValue.getConfidence()));
+                value = new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueString(),
+                    FieldValueType.STRING);
                 break;
             case TIME:
                 LocalTime fieldTime = fieldValue.getValueTime() == null ? null : LocalTime
                     .parse(fieldValue.getValueTime(), DateTimeFormatter.ofPattern("HH:mm:ss"));
-                value = new FormField(key, labelText, valueText,
-                    new com.azure.ai.formrecognizer.models.FieldValue(fieldTime, FieldValueType.TIME),
-                    setDefaultConfidenceValue(fieldValue.getConfidence()));
+                value = new com.azure.ai.formrecognizer.models.FieldValue(fieldTime, FieldValueType.TIME);
                 break;
             case DATE:
-                value = new FormField(key, labelText, valueText,
-                    new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueDate(), FieldValueType.DATE),
-                    setDefaultConfidenceValue(fieldValue.getConfidence()));
+                value = new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueDate(),
+                    FieldValueType.DATE);
                 break;
             case INTEGER:
                 com.azure.ai.formrecognizer.models.FieldValue longFieldValue;
-                // TODO (savaity): service bug
                 if (fieldValue.getValueInteger() == null) {
                     longFieldValue =
                         new com.azure.ai.formrecognizer.models.FieldValue(null, FieldValueType.LONG);
@@ -286,39 +265,25 @@ final class Transforms {
                         new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueInteger().longValue(),
                             FieldValueType.LONG);
                 }
-                value = new FormField(key, labelText, valueText, longFieldValue,
-                    setDefaultConfidenceValue(fieldValue.getConfidence()));
+                value = longFieldValue;
                 break;
             case NUMBER:
-                com.azure.ai.formrecognizer.models.FieldValue doubleFieldValue;
-                // TODO (savaity): service bug
-                if (fieldValue.getValueNumber() == null) {
-                    doubleFieldValue =
-                        new com.azure.ai.formrecognizer.models.FieldValue(null, FieldValueType.DOUBLE);
-                } else {
-                    doubleFieldValue =
-                        new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueNumber().doubleValue(),
-                            FieldValueType.DOUBLE);
-                }
-                value = new FormField(key, labelText, valueText, doubleFieldValue,
-                    setDefaultConfidenceValue(fieldValue.getConfidence()));
+                value = new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueNumber(),
+                    FieldValueType.FLOAT);
                 break;
             case ARRAY:
-                value = new FormField(key, null, null,
-                    new com.azure.ai.formrecognizer.models.FieldValue(
-                        toFieldValueArray(fieldValue.getValueArray(), readResults), FieldValueType.LIST),
-                    setDefaultConfidenceValue(fieldValue.getConfidence()));
+                value = new com.azure.ai.formrecognizer.models.FieldValue(
+                    toFieldValueArray(fieldValue.getValueArray(), readResults), FieldValueType.LIST);
                 break;
             case OBJECT:
-                value = new FormField(key, labelText, valueText,
-                    new com.azure.ai.formrecognizer.models.FieldValue(
-                        toFieldValueObject(fieldValue.getValueObject(), pageNumber, readResults), FieldValueType.MAP),
-                    setDefaultConfidenceValue(fieldValue.getConfidence()));
+                value = new com.azure.ai.formrecognizer.models.FieldValue(
+                    toFieldValueObject(fieldValue.getValueObject(), readResults), FieldValueType.MAP);
                 break;
             default:
                 throw LOGGER.logExceptionAsError(new RuntimeException("FieldValue Type not supported"));
         }
-        return value;
+        return new FormField(name, null, valueData, value,
+            setDefaultConfidenceValue(fieldValue.getConfidence()));
     }
 
     /**
@@ -342,15 +307,15 @@ final class Transforms {
      * @return The Map of {@link FormField}.
      */
     private static Map<String, FormField> toFieldValueObject(Map<String, FieldValue> valueObject,
-        Integer pageNumber, List<ReadResult> readResults) {
+        List<ReadResult> readResults) {
         Map<String, FormField> fieldValueObjectMap = new TreeMap<>();
         valueObject.forEach((key, fieldValue) ->
-            fieldValueObjectMap.put(key, setFormField(null, key, fieldValue,
-                new FieldData(fieldValue.getText(),
-                    toBoundingBox(fieldValue.getBoundingBox()),
-                    fieldValue.getPage(),
-                    setReferenceElements(fieldValue.getElements(), readResults, pageNumber)
-                ), fieldValue.getPage(), readResults)));
+            fieldValueObjectMap.put(key, setFormField(key, new FieldData(fieldValue.getText(),
+                toBoundingBox(fieldValue.getBoundingBox()),
+                fieldValue.getPage(),
+                setReferenceElements(fieldValue.getElements(), readResults)
+            ), fieldValue,
+                readResults)));
         return fieldValueObjectMap;
     }
 
@@ -366,7 +331,7 @@ final class Transforms {
      */
     private static List<FormField> toFieldValueArray(List<FieldValue> valueArray, List<ReadResult> readResults) {
         return valueArray.stream()
-            .map(fieldValue -> setFormField(null, null, fieldValue, null, fieldValue.getPage(), readResults))
+            .map(fieldValue -> setFormField(null, null, fieldValue, readResults))
             .collect(Collectors.toList());
     }
 
@@ -402,26 +367,26 @@ final class Transforms {
      *
      * @return The fields populated on {@link RecognizedForm#getFields() fields}.
      */
-    private static Map<String, FormField> getLabeledFieldMap(boolean includeFieldElements,
+    private static Map<String, FormField> getUnlabeledFieldMap(boolean includeFieldElements,
         List<ReadResult> readResults,
-        PageResult pageResultItem, Integer pageNumber) {
+        PageResult pageResultItem, int pageNumber) {
         Map<String, FormField> formFieldMap = new LinkedHashMap<>();
         List<KeyValuePair> keyValuePairs = pageResultItem.getKeyValuePairs();
         forEachWithIndex(keyValuePairs, ((index, keyValuePair) -> {
             List<FormElement> formKeyContentList = null;
             List<FormElement> formValueContentList = null;
             if (includeFieldElements) {
-                formKeyContentList = setReferenceElements(keyValuePair.getKey().getElements(), readResults, pageNumber);
-                formValueContentList = setReferenceElements(keyValuePair.getValue().getElements(), readResults,
-                    pageNumber);
+                formKeyContentList = setReferenceElements(keyValuePair.getKey().getElements(), readResults);
+                formValueContentList = setReferenceElements(keyValuePair.getValue().getElements(), readResults
+                );
             }
-            FieldData labelFieldData = new FieldData(keyValuePair.getKey().getText(),
+            FieldData labelData = new FieldData(keyValuePair.getKey().getText(),
                 toBoundingBox(keyValuePair.getKey().getBoundingBox()), pageNumber, formKeyContentList);
-            FieldData valueText = new FieldData(keyValuePair.getValue().getText(),
+            FieldData valueData = new FieldData(keyValuePair.getValue().getText(),
                 toBoundingBox(keyValuePair.getValue().getBoundingBox()), pageNumber, formValueContentList);
 
             String fieldName = "field-" + index;
-            FormField formField = new FormField(fieldName, labelFieldData, valueText,
+            FormField formField = new FormField(fieldName, labelData, valueData,
                 new com.azure.ai.formrecognizer.models.FieldValue(keyValuePair.getValue().getText(),
                     FieldValueType.STRING),
                 setDefaultConfidenceValue(keyValuePair.getConfidence())
@@ -438,7 +403,7 @@ final class Transforms {
      * @return The list if referenced elements.
      */
     private static List<FormElement> setReferenceElements(List<String> elements,
-        List<ReadResult> readResults, Integer pageNumber) {
+        List<ReadResult> readResults) {
         if (CoreUtils.isNullOrEmpty(elements)) {
             return new ArrayList<>();
         }
@@ -459,13 +424,12 @@ final class Transforms {
                 TextWord textWord =
                     readResults.get(readResultIndex).getLines().get(lineIndex).getWords().get(wordIndex);
                 FormWord wordElement = new FormWord(textWord.getText(), toBoundingBox(textWord.getBoundingBox()),
-                    getOrDefault(pageNumber, DEFAULT_PAGE_NUMBER),
-                    setDefaultConfidenceValue(textWord.getConfidence()));
+                    readResultIndex + 1, setDefaultConfidenceValue(textWord.getConfidence()));
                 formElementList.add(wordElement);
             } else {
                 TextLine textLine = readResults.get(readResultIndex).getLines().get(lineIndex);
                 FormLine lineElement = new FormLine(textLine.getText(), toBoundingBox(textLine.getBoundingBox()),
-                    pageNumber, toWords(textLine.getWords(), pageNumber));
+                    readResultIndex + 1, toWords(textLine.getWords(), readResultIndex + 1));
                 formElementList.add(lineElement);
             }
         });
@@ -480,7 +444,7 @@ final class Transforms {
      *
      * @return The list of {@code FormWord words}.
      */
-    private static List<FormWord> toWords(List<TextWord> words, Integer pageNumber) {
+    private static List<FormWord> toWords(List<TextWord> words, int pageNumber) {
         return words.stream()
             .map(textWord -> new FormWord(
                 textWord.getText(),
@@ -492,13 +456,13 @@ final class Transforms {
 
     /**
      * Helper method to convert the service level modeled eight numbers representing the four points to SDK level
-     * {@link BoundingBox}.
+     * {@link FieldBoundingBox}.
      *
      * @param serviceBoundingBox A list of eight numbers representing the four points of a box.
      *
-     * @return A {@link BoundingBox}.
+     * @return A {@link FieldBoundingBox}.
      */
-    private static BoundingBox toBoundingBox(List<Float> serviceBoundingBox) {
+    private static FieldBoundingBox toBoundingBox(List<Float> serviceBoundingBox) {
         if (CoreUtils.isNullOrEmpty(serviceBoundingBox) || (serviceBoundingBox.size() % 2) != 0) {
             return null;
         }
@@ -506,6 +470,6 @@ final class Transforms {
         for (int i = 0; i < serviceBoundingBox.size(); i++) {
             pointList.add(new Point(serviceBoundingBox.get(i), serviceBoundingBox.get(++i)));
         }
-        return new BoundingBox(pointList);
+        return new FieldBoundingBox(pointList);
     }
 }

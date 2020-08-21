@@ -5,9 +5,9 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.administration.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
-import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
@@ -248,12 +248,15 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void receiveTwoMessagesAndComplete(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSenderAndReceiver(entityType, 0, isSessionEnabled);
-        int maxMessages = 2;
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_RECEIVE_MORE_AND_COMPLETE, isSessionEnabled);
+        int maxMessages = 5;
+        int messagesToSend = 4;
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
 
+        sendMessage(message);
+        sendMessage(message);
         sendMessage(message);
         sendMessage(message);
 
@@ -262,6 +265,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         // Assert
         int receivedMessageCount = 0;
+        final long startTime = System.currentTimeMillis();
         for (ServiceBusReceivedMessageContext context : messages) {
             ServiceBusReceivedMessage receivedMessage = context.getMessage();
             assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
@@ -269,8 +273,9 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
             messagesPending.decrementAndGet();
             ++receivedMessageCount;
         }
-
-        assertEquals(maxMessages, receivedMessageCount);
+        final long endTime = System.currentTimeMillis();
+        assertEquals(messagesToSend, receivedMessageCount);
+        assertTrue(TIMEOUT.toMillis() > (endTime - startTime));
     }
 
     /**

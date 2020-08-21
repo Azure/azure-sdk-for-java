@@ -19,17 +19,17 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot</artifactId>
-      <version>2.3.0.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot;external_dependency} -->
+      <version>2.3.3.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>5.2.6.RELEASE</version> <!-- {x-version-update;org.springframework:spring-context;external_dependency} -->
+      <version>5.2.8.RELEASE</version> <!-- {x-version-update;org.springframework:spring-context;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
-      <version>2.3.0.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
+      <version>2.3.3.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
@@ -70,7 +70,7 @@
     <dependency>
       <groupId>com.jcraft</groupId>
       <artifactId>jsch</artifactId>
-      <version>0.1.53</version> <!-- {x-version-update;com.jcraft:jsch;external_dependency} -->
+      <version>0.1.54</version> <!-- {x-version-update;com.jcraft:jsch;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.github.cverges.expect4j</groupId>
@@ -81,7 +81,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-spring-boot-starter</artifactId>
-      <version>2.3.3-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-boot-starter;current} -->
+      <version>2.4.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-boot-starter;current} -->
     </dependency>
   </dependencies>
 
@@ -96,8 +96,8 @@
             <bannedDependencies>
               <includes>
                 <include>com.microsoft.azure:azure:[1.34.0]</include> <!-- {x-include-update;spring_com.microsoft.azure:azure;external_dependency} -->
-                <include>com.microsoft.azure:azure-spring-boot-starter:[2.3.3-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:azure-spring-boot-starter;current} -->
-                <include>com.jcraft:jsch:[0.1.53]</include> <!-- {x-include-update;com.jcraft:jsch;external_dependency} -->
+                <include>com.microsoft.azure:azure-spring-boot-starter:[2.4.0-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:azure-spring-boot-starter;current} -->
+                <include>com.jcraft:jsch:[0.1.54]</include> <!-- {x-include-update;com.jcraft:jsch;external_dependency} -->
                 <include>com.github.cverges.expect4j:expect4j:[1.6]</include> <!-- {x-include-update;com.github.cverges.expect4j:expect4j;external_dependency} -->
                 <include>org.apache.maven:maven-embedder:[3.6.2]</include> <!-- {x-include-update;org.apache.maven:maven-embedder;external_dependency} -->
                 <include>org.apache.maven:maven-compat:[3.6.2]</include> <!-- {x-include-update;org.apache.maven:maven-compat;external_dependency} -->
@@ -105,9 +105,9 @@
                 <include>org.apache.maven.wagon:wagon-provider-api:[3.3.4]</include> <!-- {x-include-update;org.apache.maven.wagon:wagon-provider-api;external_dependency} -->
                 <include>org.eclipse.aether:aether-connector-basic:[1.1.0]</include> <!-- {x-include-update;org.eclipse.aether:aether-connector-basic;external_dependency} -->
                 <include>org.eclipse.aether:aether-transport-wagon:[1.1.0]</include> <!-- {x-include-update;org.eclipse.aether:aether-transport-wagon;external_dependency} -->
-                <include>org.springframework.boot:spring-boot:[2.3.0.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-starter-web:[2.3.0.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
-                <include>org.springframework:spring-context:[5.2.6.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
+                <include>org.springframework.boot:spring-boot:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-web:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
+                <include>org.springframework:spring-context:[5.2.8.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

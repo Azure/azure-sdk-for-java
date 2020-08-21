@@ -1,6 +1,13 @@
 # Release History
 ## 5.1.0-beta.1 (Unreleased)
-
+- Added `offset` and `length` properties for `CategorizedEntity` and `LinkedEntityMatch`.
+  - `length` is the number of characters in the text of these models
+  - `offset` is the offset of the text from the start of the document
+  
+**New features**
+- Added support for Personally Identifiable Information(PII) entity recognition feature.
+  To use this feature, you need to make sure you are using the service's v3.1-preview.1 API.
+  
 ## 5.0.0 (2020-07-27)
 - Re-release of version `1.0.1` with updated version `5.0.0`.
 

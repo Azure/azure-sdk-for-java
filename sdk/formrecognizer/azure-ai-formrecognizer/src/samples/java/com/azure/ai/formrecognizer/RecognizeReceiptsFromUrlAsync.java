@@ -5,7 +5,7 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.FieldValueType;
 import com.azure.ai.formrecognizer.models.FormField;
-import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.PollerFlux;
@@ -38,7 +38,7 @@ public class RecognizeReceiptsFromUrlAsync {
 
         String receiptUrl = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer"
             + "/azure-ai-formrecognizer/src/samples/java/sample-forms/receipts/contoso-allinone.jpg";
-        PollerFlux<OperationResult, List<RecognizedForm>> recognizeReceiptPoller =
+        PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> recognizeReceiptPoller =
             client.beginRecognizeReceiptsFromUrl(receiptUrl);
 
         Mono<List<RecognizedForm>> receiptPageResults = recognizeReceiptPoller
@@ -112,22 +112,22 @@ public class RecognizeReceiptsFromUrlAsync {
                                     }
                                 }
                                 if ("Quantity".equals(key)) {
-                                    if (FieldValueType.DOUBLE == formField.getValue().getValueType()) {
-                                        Double quantity = formField.getValue().asDouble();
+                                    if (FieldValueType.FLOAT == formField.getValue().getValueType()) {
+                                        Float quantity = formField.getValue().asFloat();
                                         System.out.printf("Quantity: %f, confidence: %.2f%n",
                                             quantity, formField.getConfidence());
                                     }
                                 }
                                 if ("Price".equals(key)) {
-                                    if (FieldValueType.DOUBLE == formField.getValue().getValueType()) {
-                                        Double price = formField.getValue().asDouble();
+                                    if (FieldValueType.FLOAT == formField.getValue().getValueType()) {
+                                        Float price = formField.getValue().asFloat();
                                         System.out.printf("Price: %f, confidence: %.2f%n",
                                             price, formField.getConfidence());
                                     }
                                 }
                                 if ("TotalPrice".equals(key)) {
-                                    if (FieldValueType.DOUBLE == formField.getValue().getValueType()) {
-                                        Double totalPrice = formField.getValue().asDouble();
+                                    if (FieldValueType.FLOAT == formField.getValue().getValueType()) {
+                                        Float totalPrice = formField.getValue().asFloat();
                                         System.out.printf("Total Price: %f, confidence: %.2f%n",
                                             totalPrice, formField.getConfidence());
                                     }

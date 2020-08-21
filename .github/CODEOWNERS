@@ -6,7 +6,7 @@
 ###########
 
 # Catch all
-/sdk/                                               @joshfree @jonathangiles @srnagar @hemanttanwar @anuchandy
+/sdk/                                               @joshfree @jonathangiles @srnagar @hemanttanwar @anuchandy @conniey @jianghaolu @bsiegel
 
 # BOM
 # PRLabel: %Azure.Core
@@ -17,8 +17,8 @@
 # Service teams
 ####
 # PRLabel: %AzConfig
-/sdk/appconfiguration/                              @mssfang @alzimmermsft @conniey @sima-zhu
-/sdk/appconfiguration/spring-cloud-azure-*          @mrm9084 @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai
+/sdk/appconfiguration/                              @mssfang @alzimmermsft
+/sdk/appconfiguration/spring-cloud-azure-*/         @mrm9084 @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai
 
 # PRLabel: %Batch
 /sdk/batch/                                         @xingwu1 @bgklein @matthchr
@@ -30,14 +30,20 @@
 /sdk/core/azure-core-tracing-opentelemetry/         @samvaity @alzimmermsft
 
 # PRLabel: %Cosmos
-/sdk/cosmos/                                        @moderakh @kushagraThapar @David-Noble-at-work @kirankumarkolli @mbhaskar
-/sdk/cosmos/azure-spring-data-cosmos-core/               @kushagraThapar @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai
+/sdk/cosmos/                                        @moderakh @kushagraThapar @David-Noble-at-work @kirankumarkolli @mbhaskar @simplynaveen20 @xinlian12 @milismsft
+/sdk/cosmos/azure-spring-data-cosmos-core/          @kushagraThapar @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai @mbhaskar
+/sdk/cosmos/azure-spring-data-cosmos-test/          @kushagraThapar @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai @mbhaskar
+/sdk/cosmos/azure-spring-data-2-2-cosmos/           @kushagraThapar @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai @mbhaskar
+/sdk/cosmos/azure-spring-data-2-3-cosmos/           @kushagraThapar @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai @mbhaskar
+
+# PRLabel: %DigitalTwins
+/sdk/digitaltwins/                                  @drwill-ms @timtay-microsoft @abhipsaMisra @vinagesh @azabbasi @prmathur-microsoft @bikamani @barustum
 
 # PRLabel: %Event Hubs
-/sdk/eventhubs/                                     @conniey @srnagar @mssfang
+/sdk/eventhubs/                                     @conniey @srnagar @mssfang @yijunxiems
 
 # PRLabel: %Cognitive - Form Recognizer
-/sdk/formrecognizer/                                @samvaity @mssfang @sima-zhu
+/sdk/formrecognizer/                                @samvaity @mssfang
 
 # PRLabel: %Azure.Identity
 /sdk/identity/                                      @schaabs @g2vinay @jianghaolu
@@ -49,16 +55,16 @@
 /sdk/schemaregistry/                                @arerlend @sjkwak
 
 # PRLabel: %Search
-/sdk/search/                                        @alzimmermsft @sima-zhu @mssfang @samvaity @conniey
+/sdk/search/                                        @alzimmermsft @mssfang @samvaity @conniey
 
 # PRLabel: %Service Bus
-/sdk/servicebus/                                    @yvgopal @nemakam @hemanttanwar @conniey
+/sdk/servicebus/                                    @yvgopal @nemakam @hemanttanwar @conniey @yijunxiems
 
 # PRLabel: %Storage
-/sdk/storage/                                       @amishra-dev @rickle-msft @jaschrep-msft @gapra-msft @alzimmermsft @sima-zhu @kasobol-msft
+/sdk/storage/                                       @amishra-dev @rickle-msft @jaschrep-msft @gapra-msft @alzimmermsft @kasobol-msft
 
 # PRLabel: %Cognitive - Text Analytics
-/sdk/textanalytics/                                 @samvaity @mssfang @sima-zhu
+/sdk/textanalytics/                                 @samvaity @mssfang
 
 # PRLabel: %azure-spring
 /sdk/spring/                                        @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai  
@@ -69,7 +75,7 @@
 /common/smoke-tests/                                @joshfree @jonathangiles @alzimmermsft @g2vinay @conniey @srnagar
 
 # Management Plane
-/sdk/management/                                    @ChenTanyi @weidongxu-microsoft @yungezz @xccc-msft
+/sdk/resourcemanager/                               @ChenTanyi @weidongxu-microsoft @yungezz @xccc-msft
 /sdk/**/mgmt*/                                      @ChenTanyi @weidongxu-microsoft @yungezz @xccc-msft
 
 ###########

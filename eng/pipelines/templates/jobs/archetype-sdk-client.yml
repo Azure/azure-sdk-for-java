@@ -4,7 +4,7 @@ parameters:
   Artifacts: []
   AdditionalModules: []
   PreTestSteps: []
-  TestOptions: '$(DefaultOptions) -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Dparallel-test-playback'
+  TestOptions: '$(DefaultOptions) -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Dparallel-test-playback'
   TestGoals: verify
   TestMatrix:
     Linux - Java 8:
@@ -31,11 +31,10 @@ parameters:
       OSVmImage: 'windows-2019'
       JavaTestVersion: '1.11'
       RunTitle: 'Windows on Java 1.11'
-    Windows From Source - Java 8:
-      OSVmImage: 'windows-2019'
-      JavaTestVersion: '1.8'
-      RunTitle: 'From Source: Windows on Java 1.8'
-      PLSkipOptions: '!com.azure:jacoco-test-coverage'
+    Linux From Source - Java 11:
+      OSVmImage: 'ubuntu-18.04'
+      JavaTestVersion: '1.11'
+      RunTitle: 'From Source: Linux on Java 1.11'
       AdditionalOptions: '-amd'
       TestFromSource: true
 
@@ -81,7 +80,7 @@ jobs:
 
       - script: |
           python3 --version
-          python3 eng/versioning/update_versions.py --update-type library --build-type ${{parameters.SDKType}}
+          python3 eng/versioning/update_versions.py --update-type library --build-type ${{parameters.SDKType}} --sr
         condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
         displayName: Apply version settings to repository
 
@@ -161,7 +160,11 @@ jobs:
           pip install doc-warden==$(DocWardenVersion)
           ward scan -d $(Build.SourcesDirectory) -c $(Build.SourcesDirectory)/eng/.docsettings.yml
         displayName: 'Verify Readmes'
-      
+
+      - template: ../../../common/pipelines/templates/steps/verify-links.yml
+        parameters:
+          Directory: sdk/${{ parameters.ServiceDirectory }}
+
       - ${{ each artifact in parameters.Artifacts }}:
         - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
           parameters:
@@ -242,28 +245,33 @@ jobs:
           versionSpec: '3.6'
         condition: and(succeeded(), eq(variables['TestFromSource'],'true'))
 
-      - pwsh: |
-          python --version
-          python eng/versioning/set_versions.py --build-type client --pst
-          if ($LastExitCode -eq 5678) {
-            echo "##vso[task.setvariable variable=ShouldRunSourceTests]$true"
-            echo "Changes detected, return code from set_versions.py is $($LastExitCode)"
-            exit 0
-          } elseif ($LastExitCode -eq 0) {
-            echo "No changes detected, return code from set_versions.py is $($LastExitCode)"
-            exit 0
-          } else {
-            echo "Invalid return code from set_versions.py, return code is $($LastExitCode)"
-            exit 1
-          }
+      - task: PythonScript@0
         displayName: 'Set versions for source build'
+        inputs:
+          scriptPath: 'eng/versioning/set_versions.py'
+          arguments: '--build-type client --pst'
         condition: and(succeeded(), eq(variables['TestFromSource'],'true'))
 
-      - script: |
-          python --version
-          python eng/versioning/update_versions.py --update-type library --build-type client
-        condition: and(succeeded(), eq(variables['ShouldRunSourceTests'],'true'))
+      - task: PythonScript@0
         displayName: 'Update versions for source build'
+        inputs:
+          scriptPath: 'eng/versioning/update_versions.py'
+          arguments: '--update-type library --build-type client --sr'
+        condition: and(succeeded(), eq(variables['ShouldRunSourceTests'],'true'))
+
+      - task: PowerShell@2
+        # The root pom.xml contains both track 1, data, and track 2, client libraries.
+        # This task calls a powershell script that will go through all of the pom files
+        # in the repository looking, specifically, for ones whose parent is
+        # azure-client-sdk-parent and create a temporary pom file with just those libraries.
+        # Note: It excludes items within the /eng directory otherwise we'd be picking up
+        # jacoco and spotbugs which are unnecessary for the From Source run.
+        displayName: 'Generate Aggregate Pom for From Source Build'
+        inputs:
+          pwsh: true
+          workingDirectory: $(Agent.BuildDirectory)
+          filePath: eng/scripts/Generate-Client-Aggregate-Pom.ps1
+        condition: and(succeeded(), eq(variables['ShouldRunSourceTests'],'true'))
 
       - template: ../steps/generate-project-list.yml
         parameters:
@@ -281,9 +289,47 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: ${{ parameters.TestGoals }}
-        # we want to run this when TestFromSource isn't true (which covers normal running when it isn't set)
-        # OR when ShouldRunSourceTests is true
-        condition: and(succeeded(), or(ne(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
+        # we want to run this when TestFromSource isn't true
+        condition: and(succeeded(), ne(variables['TestFromSource'],'true'))
+
+      - task: Maven@3
+        displayName: 'Build for From Source run'
+        inputs:
+          mavenPomFile: ClientAggregatePom.xml
+          goals: 'install'
+          # Build and install every track 2, client, library. The purpose is to have all of
+          # the libraries installed on the machine so we can simply run tests with the -amd
+          # switch and we can remove the SNAFU of dependencies that bloated the ci.yml files'
+          # AdditionalModules because we ended up having to list every transitive azure client
+          # dependency. Note: The -T 1C says spin up a build thread per core. Since we're building
+          # all of the track 2, client, libraries (which is now over 100) this effectively cuts the
+          # the build time in half.
+          options: '$(DefaultOptions) -T 1C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true'
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaBuildVersion)
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+        condition: and(succeeded(), and(eq(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
+
+      - task: Maven@3
+        displayName: 'Run tests for From Source run'
+        inputs:
+          mavenPomFile: ClientAggregatePom.xml
+          # For the From Source runs we don't want the -am switch as we don't care about running tests for our dependencies
+          # but we do want the -amd switch because we want to run tests on things that depend on us.
+          options: ${{ parameters.TestOptions }} -pl $(PLSkipOptions)$(ProjectList) -amd
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaTestVersion)
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+          # The From Source runs only care about running tests for libraries within an SDK/area
+          # as well as libraries which depend on them and not the other stages in the Maven
+          # lifecycle that test or verify targets would execute. The libraries were already
+          # compiled and installed in the previous task, this tasks only runs tests.
+          goals: 'surefire:test'
+        condition: and(succeeded(), and(eq(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
 
       - task: PublishTestResults@2
         condition: and(always(), or(ne(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
