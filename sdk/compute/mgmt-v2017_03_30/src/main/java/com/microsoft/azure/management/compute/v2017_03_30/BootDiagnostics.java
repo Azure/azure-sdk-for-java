@@ -12,9 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Boot Diagnostics is a debugging feature which allows you to view Console
- * Output and Screenshot to diagnose VM status. &lt;br&gt;&lt;br&gt; For Linux
- * Virtual Machines, you can easily view the output of your console log.
- * &lt;br&gt;&lt;br&gt; For both Windows and Linux virtual machines, Azure also
+ * Output and Screenshot to diagnose VM status. &lt;br&gt;&lt;br&gt; You can
+ * easily view the output of your console log. &lt;br&gt;&lt;br&gt; Azure also
  * enables you to see a screenshot of the VM from the hypervisor.
  */
 public class BootDiagnostics {
@@ -32,7 +31,7 @@ public class BootDiagnostics {
     private String storageUri;
 
     /**
-     * Get the enabled value.
+     * Get whether boot diagnostics should be enabled on the Virtual Machine.
      *
      * @return the enabled value
      */
@@ -41,7 +40,7 @@ public class BootDiagnostics {
     }
 
     /**
-     * Set the enabled value.
+     * Set whether boot diagnostics should be enabled on the Virtual Machine.
      *
      * @param enabled the enabled value to set
      * @return the BootDiagnostics object itself.
@@ -52,7 +51,7 @@ public class BootDiagnostics {
     }
 
     /**
-     * Get the storageUri value.
+     * Get uri of the storage account to use for placing the console output and screenshot.
      *
      * @return the storageUri value
      */
@@ -61,7 +60,7 @@ public class BootDiagnostics {
     }
 
     /**
-     * Set the storageUri value.
+     * Set uri of the storage account to use for placing the console output and screenshot.
      *
      * @param storageUri the storageUri value to set
      * @return the BootDiagnostics object itself.
