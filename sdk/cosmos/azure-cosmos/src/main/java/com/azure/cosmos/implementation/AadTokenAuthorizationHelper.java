@@ -51,13 +51,13 @@ public class AadTokenAuthorizationHelper {
         return simpleTokenCache.getToken()
             .map(accessToken -> {
                 String authorization;
-                StringBuilder authorizationBuilder = new StringBuilder()
-                    .append(AAD_AUTH_SCHEMA_TYPE_SEGMENT).append("=").append(AAD_AUTH_SCHEMA_TYPE_VALUE)
-                    .append(AAD_AUTH_VERSION_SEGMENT).append("=").append(AAD_AUTH_VERSION_VALUE)
-                    .append(AAD_AUTH_SIGNATURE_SEGMENT).append("=").append(accessToken.getToken());
+                String authorizationPayload =
+                    AAD_AUTH_SCHEMA_TYPE_SEGMENT + "=" + AAD_AUTH_SCHEMA_TYPE_VALUE
+                    + AAD_AUTH_VERSION_SEGMENT + "=" + AAD_AUTH_VERSION_VALUE
+                    + AAD_AUTH_SIGNATURE_SEGMENT + "=" + accessToken.getToken();
 
                 try {
-                    authorization = URLEncoder.encode(authorizationBuilder.toString(), "UTF-8");
+                    authorization = URLEncoder.encode(authorizationPayload, "UTF-8");
                 } catch (UnsupportedEncodingException e) {
                     throw new IllegalStateException("Failed to encode authorization token.", e);
                 }
