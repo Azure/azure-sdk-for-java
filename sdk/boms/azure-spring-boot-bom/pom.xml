@@ -38,6 +38,7 @@
     <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <azure.spring.boot.integration.version>${project.version}</azure.spring.boot.integration.version>
+    <jms.hotfix.version>2.3.4</jms.hotfix.version>
   </properties>
 
   <issueManagement>
@@ -52,11 +53,7 @@
         <artifactId>spring-data-cosmosdb</artifactId>
         <version>2.3.0</version>
       </dependency>
-      <dependency>
-        <groupId>com.microsoft.spring.data.gremlin</groupId>
-        <artifactId>spring-data-gremlin</artifactId>
-        <version>2.2.3</version>
-      </dependency>
+
 
       <!-- Azure Dependencies Bom -->
       <dependency>
@@ -84,11 +81,7 @@
         <artifactId>azure-cosmosdb-spring-boot-starter</artifactId>
         <version>${azure.spring.boot.integration.version}</version>
       </dependency>
-      <dependency>
-        <groupId>com.microsoft.azure</groupId>
-        <artifactId>azure-data-gremlin-spring-boot-starter</artifactId>
-        <version>${azure.spring.boot.integration.version}</version>
-      </dependency>
+
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-keyvault-secrets-spring-boot-starter</artifactId>
@@ -102,7 +95,7 @@
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-servicebus-jms-spring-boot-starter</artifactId>
-        <version>${azure.spring.boot.integration.version}</version>
+        <version>${jms.hotfix.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
