@@ -5,7 +5,6 @@ package com.azure.search.documents.implementation.converters;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.indexes.models.SearchField;
-import com.azure.search.documents.indexes.models.SearchFieldDataType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +25,7 @@ public final class SearchFieldConverter {
             return null;
         }
 
-        SearchFieldDataType type = obj.getType() == null ? null : SearchFieldDataTypeConverter.map(obj.getType());
-        SearchField searchField = new SearchField(obj.getName(), type);
+        SearchField searchField = new SearchField(obj.getName(), obj.getType());
 
         Boolean filterable = obj.isFilterable();
         searchField.setFilterable(filterable);
@@ -80,10 +78,9 @@ public final class SearchFieldConverter {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.indexes.implementation.models.SearchFieldDataType type = obj.getType() == null ? null
-            : SearchFieldDataTypeConverter.map(obj.getType());
+
         com.azure.search.documents.indexes.implementation.models.SearchField searchField =
-            new com.azure.search.documents.indexes.implementation.models.SearchField(obj.getName(), type);
+            new com.azure.search.documents.indexes.implementation.models.SearchField(obj.getName(), obj.getType());
 
         Boolean filterable = obj.isFilterable();
         searchField.setFilterable(filterable);

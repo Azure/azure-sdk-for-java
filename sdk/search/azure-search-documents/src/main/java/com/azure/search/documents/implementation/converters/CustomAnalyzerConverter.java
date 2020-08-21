@@ -4,11 +4,6 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.CustomAnalyzer;
-import com.azure.search.documents.indexes.models.LexicalTokenizerName;
-import com.azure.search.documents.indexes.models.TokenFilterName;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.CustomAnalyzer} and
@@ -23,18 +18,14 @@ public final class CustomAnalyzerConverter {
             return null;
         }
 
-        LexicalTokenizerName tokenizer = obj.getTokenizer() == null ? null
-            : LexicalTokenizerNameConverter.map(obj.getTokenizer());
-        CustomAnalyzer customAnalyzer = new CustomAnalyzer(obj.getName(), tokenizer);
+        CustomAnalyzer customAnalyzer = new CustomAnalyzer(obj.getName(), obj.getTokenizer());
 
         if (obj.getCharFilters() != null) {
             customAnalyzer.setCharFilters(obj.getCharFilters());
         }
 
         if (obj.getTokenFilters() != null) {
-            List<TokenFilterName> tokenFilters =
-                obj.getTokenFilters().stream().map(TokenFilterNameConverter::map).collect(Collectors.toList());
-            customAnalyzer.setTokenFilters(tokenFilters);
+            customAnalyzer.setTokenFilters(obj.getTokenFilters());
         }
 
         return customAnalyzer;
@@ -49,21 +40,16 @@ public final class CustomAnalyzerConverter {
             return null;
         }
 
-        com.azure.search.documents.indexes.implementation.models.LexicalTokenizerName tokenizer =
-            obj.getTokenizer() == null ? null
-                : LexicalTokenizerNameConverter.map(obj.getTokenizer());
-
         com.azure.search.documents.indexes.implementation.models.CustomAnalyzer customAnalyzer =
-            new com.azure.search.documents.indexes.implementation.models.CustomAnalyzer(obj.getName(), tokenizer);
+            new com.azure.search.documents.indexes.implementation.models.CustomAnalyzer(obj.getName(),
+                obj.getTokenizer());
 
         if (obj.getCharFilters() != null) {
             customAnalyzer.setCharFilters(obj.getCharFilters());
         }
 
         if (obj.getTokenFilters() != null) {
-            List<com.azure.search.documents.indexes.implementation.models.TokenFilterName> tokenFilters =
-                obj.getTokenFilters().stream().map(TokenFilterNameConverter::map).collect(Collectors.toList());
-            customAnalyzer.setTokenFilters(tokenFilters);
+            customAnalyzer.setTokenFilters(obj.getTokenFilters());
         }
 
         return customAnalyzer;

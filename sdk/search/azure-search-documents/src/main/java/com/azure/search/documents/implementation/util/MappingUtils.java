@@ -15,7 +15,6 @@ import com.azure.search.documents.implementation.converters.SearchIndexConverter
 import com.azure.search.documents.implementation.converters.SearchIndexerConverter;
 import com.azure.search.documents.implementation.converters.SearchIndexerDataSourceConverter;
 import com.azure.search.documents.implementation.converters.SearchIndexerSkillsetConverter;
-import com.azure.search.documents.implementation.converters.ServiceStatisticsConverter;
 import com.azure.search.documents.implementation.converters.SynonymMapConverter;
 import com.azure.search.documents.implementation.models.IndexDocumentsResult;
 import com.azure.search.documents.indexes.implementation.models.AnalyzeResult;
@@ -30,7 +29,6 @@ import com.azure.search.documents.indexes.models.SearchIndexStatistics;
 import com.azure.search.documents.indexes.models.SearchIndexer;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
-import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import com.azure.search.documents.indexes.models.SynonymMap;
 
 import java.util.ArrayList;
@@ -156,12 +154,6 @@ public class MappingUtils {
         return new PagedResponseBase<HttpHeaders, String>(
             synonymMapsResponse.getRequest(), synonymMapsResponse.getStatusCode(), synonymMapsResponse.getHeaders(),
             synonymMapNames, null, null);
-    }
-
-    public static Response<SearchServiceStatistics> mappingExternalServiceStatistics(
-        Response<com.azure.search.documents.indexes.implementation.models.ServiceStatistics> statisticsResponse) {
-        return new SimpleResponse<>(statisticsResponse,
-            ServiceStatisticsConverter.map(statisticsResponse.getValue()));
     }
 
     public static PagedResponse<AnalyzedTokenInfo> mappingTokenInfo(

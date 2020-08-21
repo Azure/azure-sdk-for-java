@@ -105,6 +105,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
         getExpandableEnumValues(LexicalAnalyzerName.class);
     private static final List<LexicalTokenizerName> LEXICAL_TOKENIZER_NAMES =
         getExpandableEnumValues(LexicalTokenizerName.class);
+    private static final List<RegexFlags> REGEX_FLAGS = getExpandableEnumValues(RegexFlags.class);
 
     private SearchIndexClient searchIndexClient;
     private final List<String> indexesToCleanup = new ArrayList<>();
@@ -307,7 +308,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
             .setStopwords("stop1", "stop2")
             .setLowerCaseTerms(true)
             .setPattern(".*")
-            .setFlags(new ArrayList<>(RegexFlags.values())));
+            .setFlags(REGEX_FLAGS));
 
         SearchIndex createdIndex = searchIndexClient.createIndex(index);
         indexesToCleanup.add(index.getName());
@@ -418,7 +419,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
         SearchIndex index = createTestIndex(null)
             .setTokenizers(new PatternTokenizer(generateName())
                 .setPattern(".*")
-                .setFlags(new ArrayList<>(RegexFlags.values()))
+                .setFlags(REGEX_FLAGS)
                 .setGroup(0));
 
         SearchIndex createdIndex = searchIndexClient.createIndex(index);

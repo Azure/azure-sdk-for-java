@@ -169,13 +169,13 @@
       {
         "regex": true,
         "code": "java\\.annotation\\.added",
-        "new": "^method\\s.+?\\scom\\.azure\\.search\\.documents(\\.indexes)?\\.models\\.(FacetResult)::.+$",
+        "new": "^(method|parameter)\\s.+?\\scom\\.azure\\.search\\.documents(\\.indexes)?\\.models\\.(FacetResult|SearchServiceStatistics)::.+$",
         "justification": "Annotations better indicate which parameters are required when handling service requests and responses."
       },
       {
         "regex": true,
         "code": "java\\.annotation\\.attributeAdded",
-        "new": "^parameter\\s.+?\\scom\\.azure\\.search\\.documents(\\.indexes)?\\.models\\.(AnalyzedTokenInfo|CorsOptions|FieldMapping|IndexerExecutionResult|SearchIndexerStatus|TextWeights|AutocompleteResult)::<init>\\(.+\\)$",
+        "new": "^parameter\\s.+?\\scom\\.azure\\.search\\.documents(\\.indexes)?\\.models\\.(AnalyzedTokenInfo|CorsOptions|FieldMapping|IndexerExecutionResult|SearchIndexerStatus|SearchServiceCounters|TextWeights|AutocompleteResult)::<init>\\(.+\\)$",
         "justification": "Annotations attributes better indicate which parameters are required when handling service requests and responses."
       }
     ]

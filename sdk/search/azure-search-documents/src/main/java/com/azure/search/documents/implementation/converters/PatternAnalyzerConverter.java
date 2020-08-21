@@ -61,7 +61,7 @@ public final class PatternAnalyzerConverter {
 
         if (obj.getFlags() != null) {
             String flattenFlags = obj.getFlags().stream().map(RegexFlags::toString).collect(Collectors.joining("|"));
-            patternAnalyzer.setFlags(com.azure.search.documents.indexes.implementation.models.RegexFlags.fromString(flattenFlags));
+            patternAnalyzer.setFlags(RegexFlags.fromString(flattenFlags));
         }
 
         if (obj.getStopwords() != null) {

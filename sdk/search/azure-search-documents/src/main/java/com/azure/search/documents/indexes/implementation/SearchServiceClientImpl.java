@@ -28,7 +28,7 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.search.documents.indexes.implementation.models.RequestOptions;
 import com.azure.search.documents.indexes.implementation.models.SearchErrorException;
-import com.azure.search.documents.indexes.implementation.models.ServiceStatistics;
+import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
@@ -194,7 +194,7 @@ public final class SearchServiceClientImpl {
         @Get("/servicestats")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<Response<ServiceStatistics>> getServiceStatistics(
+        Mono<Response<SearchServiceStatistics>> getServiceStatistics(
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
                 @QueryParam("api-version") String apiVersion,
@@ -213,7 +213,7 @@ public final class SearchServiceClientImpl {
      * @return service level statistics for a search service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ServiceStatistics>> getServiceStatisticsWithResponseAsync(
+    public Mono<Response<SearchServiceStatistics>> getServiceStatisticsWithResponseAsync(
             RequestOptions requestOptions, Context context) {
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;

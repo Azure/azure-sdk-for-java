@@ -274,7 +274,7 @@ public final class LexicalAnalyzerName extends ExpandableStringEnum<LexicalAnaly
     public static final LexicalAnalyzerName STANDARD_LUCENE = fromString("standard.lucene");
 
     /** Static value standardasciifolding.lucene for LexicalAnalyzerName. */
-    public static final LexicalAnalyzerName STANDARDASCIIFOLDING_LUCENE = fromString("standardasciifolding.lucene");
+    public static final LexicalAnalyzerName STANDARD_ASCII_FOLDING_LUCENE = fromString("standardasciifolding.lucene");
 
     /** Static value keyword for LexicalAnalyzerName. */
     public static final LexicalAnalyzerName KEYWORD = fromString("keyword");

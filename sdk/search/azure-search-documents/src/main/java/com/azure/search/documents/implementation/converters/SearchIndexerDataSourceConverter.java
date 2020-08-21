@@ -8,7 +8,6 @@ import com.azure.search.documents.indexes.implementation.models.SearchIndexerDat
 import com.azure.search.documents.indexes.models.DataChangeDetectionPolicy;
 import com.azure.search.documents.indexes.models.DataDeletionDetectionPolicy;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
-import com.azure.search.documents.indexes.models.SearchIndexerDataSourceType;
 
 import java.util.Objects;
 
@@ -26,12 +25,10 @@ public final class SearchIndexerDataSourceConverter {
             return null;
         }
 
-        SearchIndexerDataSourceType type = obj.getType() == null ? null
-        : SearchIndexerDataSourceTypeConverter.map(obj.getType());
         String connectionString = obj.getCredentials() == null ? null
             : obj.getCredentials().getConnectionString();
         SearchIndexerDataSourceConnection searchIndexerDataSourceConnection = new SearchIndexerDataSourceConnection(
-            obj.getName(), type, connectionString, obj.getContainer());
+            obj.getName(), obj.getType(), connectionString, obj.getContainer());
 
 
         if (obj.getDataChangeDetectionPolicy() != null) {
@@ -64,15 +61,12 @@ public final class SearchIndexerDataSourceConverter {
             return null;
         }
         Objects.requireNonNull(obj.getName(), "The SearchIndexerDataSourceConnection name cannot be null");
-        com.azure.search.documents.indexes.implementation.models.SearchIndexerDataSourceType type =
-            obj.getType() == null ? null
-                : SearchIndexerDataSourceTypeConverter.map(obj.getType());
 
         DataSourceCredentials credentials = new DataSourceCredentials();
         credentials.setConnectionString(obj.getConnectionString());
         SearchIndexerDataSource searchIndexerDataSource = new SearchIndexerDataSource()
             .setName(obj.getName())
-            .setType(type)
+            .setType(obj.getType())
             .setCredentials(credentials)
             .setContainer(obj.getContainer());
 

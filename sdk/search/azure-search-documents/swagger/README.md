@@ -60,7 +60,7 @@ input-file:
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/6a024fe462c3a4b0b720183c1d8c6f96b261a386/specification/search/data-plane/Azure.Search/preview/2020-06-30/searchservice.json
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: AnalyzedTokenInfo,BlobIndexerDataToExtract,BlobIndexerImageAction,BlobIndexerPDFTextRotationAlgorithm,BlobIndexerParsingMode,CharFilterName,CjkBigramTokenFilterScripts,CorsOptions,DistanceScoringParameters,EdgeNGramTokenFilterSide,EntityCategory,EntityRecognitionSkillLanguage,FieldMapping,FieldMappingFunction,FreshnessScoringParameters,ImageAnalysisSkillLanguage,ImageDetail,IndexerExecutionEnvironment,IndexerExecutionResult,IndexerExecutionStatus,IndexerStatus,IndexingParametersConfiguration,IndexingSchedule,KeyPhraseExtractionSkillLanguage,LexicalAnalyzerName,MicrosoftStemmingTokenizerLanguage,MicrosoftTokenizerLanguage,OcrSkillLanguage,OutputFieldMappingEntry,PhoneticEncoder,ResourceCounter,ScoringFunctionAggregation,ScoringFunctionInterpolation,,SearchIndexerDataContainer,SearchIndexerError,SearchIndexerLimits,SearchIndexerStatus,SearchIndexerWarning,SentimentSkillLanguage,SnowballTokenFilterLanguage,SplitSkillLanguage,StemmerTokenFilterLanguage,StopwordsList,TagScoringParameters,TextSplitMode,TextTranslationSkillLanguage,TextWeights,TokenCharacterKind,VisualFeature
+custom-types: AnalyzedTokenInfo,BlobIndexerDataToExtract,BlobIndexerImageAction,BlobIndexerPDFTextRotationAlgorithm,BlobIndexerParsingMode,CharFilterName,CjkBigramTokenFilterScripts,CorsOptions,DistanceScoringParameters,EdgeNGramTokenFilterSide,EntityCategory,EntityRecognitionSkillLanguage,FieldMapping,FieldMappingFunction,FreshnessScoringParameters,ImageAnalysisSkillLanguage,ImageDetail,IndexerExecutionEnvironment,IndexerExecutionResult,IndexerExecutionStatus,IndexerStatus,IndexingParametersConfiguration,IndexingSchedule,KeyPhraseExtractionSkillLanguage,LexicalAnalyzerName,LexicalTokenizerName,MicrosoftStemmingTokenizerLanguage,MicrosoftTokenizerLanguage,OcrSkillLanguage,OutputFieldMappingEntry,PhoneticEncoder,RegexFlags,ResourceCounter,ScoringFunctionAggregation,ScoringFunctionInterpolation,SearchFieldDataType,SearchIndexerDataContainer,SearchIndexerDataSourceType,SearchIndexerError,SearchIndexerLimits,SearchIndexerStatus,SearchIndexerWarning,SearchServiceCounters,SearchServiceLimits,SearchServiceStatistics,SentimentSkillLanguage,SnowballTokenFilterLanguage,SplitSkillLanguage,StemmerTokenFilterLanguage,StopwordsList,TagScoringParameters,TextSplitMode,TextTranslationSkillLanguage,TextWeights,TokenCharacterKind,TokenFilterName,VisualFeature
 ```
 
 ### Tag: package-2020-06-searchindex
@@ -142,4 +142,15 @@ directive:
       delete $.SearchIndexerDataSource.required;
       delete $.SearchIndexerSkillset.required;
       delete $.SynonymMap.required;
+```
+
+### Renames
+``` yaml $(java)
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: >
+      $.ServiceCounters["x-ms-client-name"] = "SearchServiceCounters";
+      $.ServiceLimits["x-ms-client-name"] = "SearchServiceLimits";
+      $.ServiceStatistics["x-ms-client-name"] = "SearchServiceStatistics";
 ```
