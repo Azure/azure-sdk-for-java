@@ -32,4 +32,7 @@ public class AzureEnvironmentAutoConfiguration {
 
         return defaultEnvironmentProvider;
     }
+    
+    
+    
 }
