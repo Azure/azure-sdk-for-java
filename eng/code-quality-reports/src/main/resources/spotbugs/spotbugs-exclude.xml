@@ -732,6 +732,7 @@
       <Class name="com.azure.core.implementation.http.UrlBuilder"/>
       <Class name="com.azure.storage.blob.implementation.models.AppendBlobAppendBlockFromUrlHeaders"/>
       <Class name="com.azure.storage.file.share.implementation.models.FileGetPropertiesHeaders"/>
+      <Class name="com.azure.storage.file.datalake.implementation.models.PathAppendDataHeaders"/>
     </Or>
     <Bug pattern="NM_CONFUSING"/>
   </Match>
@@ -2103,7 +2104,7 @@
   <Match>
     <Package name="~com\.azure\.resourcemanager(\.[^.]+)*\.samples(\.[^.]+)*"/>
     <Bug pattern="REC_CATCH_EXCEPTION,
-                  RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE, 
+                  RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE,
                   RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
 
