@@ -168,14 +168,12 @@ public interface VirtualMachine
     /**
      * Run shell script in a virtual machine.
      *
-     * @param groupName the resource group name
-     * @param name the virtual machine name
      * @param scriptLines PowerShell script lines
      * @param scriptParameters script parameters
      * @return result of PowerShell script execution
      */
     RunCommandResult runPowerShellScript(
-        String groupName, String name, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters);
+        List<String> scriptLines, List<RunCommandInputParameter> scriptParameters);
 
     /**
      * Run shell script in the virtual machine asynchronously.

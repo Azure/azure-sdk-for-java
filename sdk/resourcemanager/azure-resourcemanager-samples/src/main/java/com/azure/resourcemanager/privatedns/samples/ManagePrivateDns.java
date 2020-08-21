@@ -157,7 +157,7 @@ public class ManagePrivateDns {
             System.out.println("Preparing third command: " + script3);
 
             System.out.println("Starting to run commands...");
-            RunCommandResult result = virtualMachine2.runPowerShellScript(null, null, Arrays.asList(script1, script2, script3), null);
+            RunCommandResult result = virtualMachine2.runPowerShellScript(Arrays.asList(script1, script2, script3), null);
             for (InstanceViewStatus status : result.value()) {
                 System.out.println(status.message());
             }

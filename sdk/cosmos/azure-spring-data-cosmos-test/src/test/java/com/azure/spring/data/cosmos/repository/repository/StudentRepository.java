@@ -82,5 +82,17 @@ public interface StudentRepository extends CosmosRepository<Student, String> {
      * @return Student Iterable
      */
     Iterable<Student> findByLastNameStartsWithOrFirstNameStartsWithAllIgnoreCase(String lastName, String firstName);
+    
+    Iterable<Student> findFirstByFirstName(String firstName);
+    
+    Iterable<Student> findFirst1ByFirstName(String firstName);
+    
+    Iterable<Student> findFirst2ByFirstName(String firstName);
+    
+    Iterable<Student> findTopByFirstName(String firstName);
+    
+    Iterable<Student> findTop1ByFirstName(String firstName);
+    
+    Iterable<Student> findTop2ByFirstName(String firstName);
 
 }

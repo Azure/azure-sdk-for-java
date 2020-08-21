@@ -22,7 +22,6 @@ import com.microsoft.azure.arm.utils.RXMapper;
 import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
-import com.microsoft.azure.management.hybridcompute.v2019_12_12.MachineReconnect;
 
 class MachinesImpl extends GroupableResourcesCoreImpl<Machine, MachineImpl, MachineInner, MachinesInner, HybridComputeManager>  implements Machines {
     protected MachinesImpl(HybridComputeManager manager) {
@@ -122,30 +121,13 @@ class MachinesImpl extends GroupableResourcesCoreImpl<Machine, MachineImpl, Mach
     }
 
     @Override
-    public MachineImpl define(String name) {
-        return wrapModel(name);
-    }
-
-    @Override
-    public Observable<Machine> reconnectAsync(String resourceGroupName, String name, MachineReconnect parameters) {
-        MachinesInner client = this.inner();
-        return client.reconnectAsync(resourceGroupName, name, parameters)
-        .map(new Func1<MachineInner, Machine>() {
-            @Override
-            public Machine call(MachineInner inner) {
-                return new MachineImpl(inner.name(), inner, manager());
-            }
-        });
-    }
-
-    @Override
     protected MachineImpl wrapModel(MachineInner inner) {
         return  new MachineImpl(inner.name(), inner, manager());
     }
 
     @Override
     protected MachineImpl wrapModel(String name) {
-        return new MachineImpl(name, new MachineInner(), this.manager());
+        return null; // Model is not creatable
     }
 
 }

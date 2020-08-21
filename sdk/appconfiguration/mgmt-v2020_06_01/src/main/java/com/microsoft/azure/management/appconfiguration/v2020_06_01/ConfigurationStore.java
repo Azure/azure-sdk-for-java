@@ -147,7 +147,7 @@ public interface ConfigurationStore extends HasInner<ConfigurationStoreInner>, R
     /**
      * The template for a ConfigurationStore update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<ConfigurationStore>, Resource.UpdateWithTags<Update>, UpdateStages.WithEncryption, UpdateStages.WithIdentity, UpdateStages.WithSku {
+    interface Update extends Appliable<ConfigurationStore>, Resource.UpdateWithTags<Update>, UpdateStages.WithEncryption, UpdateStages.WithIdentity, UpdateStages.WithPublicNetworkAccess, UpdateStages.WithSku {
     }
 
     /**
@@ -176,6 +176,18 @@ public interface ConfigurationStore extends HasInner<ConfigurationStoreInner>, R
              * @return the next update stage
              */
             Update withIdentity(ResourceIdentity identity);
+        }
+
+        /**
+         * The stage of the configurationstore update allowing to specify PublicNetworkAccess.
+         */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies publicNetworkAccess.
+             * @param publicNetworkAccess Control permission for data plane traffic coming from public networks while private endpoint is enabled. Possible values include: 'Enabled', 'Disabled'
+             * @return the next update stage
+             */
+            Update withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
         }
 
         /**
