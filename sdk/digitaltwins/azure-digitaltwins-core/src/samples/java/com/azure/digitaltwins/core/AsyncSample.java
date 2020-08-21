@@ -7,7 +7,6 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.digitaltwins.core.models.DigitalTwinsGetByIdResponse;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import reactor.core.publisher.Mono;
 

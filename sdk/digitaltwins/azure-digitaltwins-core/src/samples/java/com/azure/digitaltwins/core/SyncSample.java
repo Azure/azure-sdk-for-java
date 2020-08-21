@@ -4,7 +4,7 @@
 package com.azure.digitaltwins.core;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.identity.ClientSecretCredentialBuilder;
 
 public class SyncSample
