@@ -393,7 +393,7 @@ class VirtualMachineImpl
 
     @Override
     public RunCommandResult runPowerShellScript(
-        String groupName, String name, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters) {
+        List<String> scriptLines, List<RunCommandInputParameter> scriptParameters) {
         return this
             .manager()
             .virtualMachines()

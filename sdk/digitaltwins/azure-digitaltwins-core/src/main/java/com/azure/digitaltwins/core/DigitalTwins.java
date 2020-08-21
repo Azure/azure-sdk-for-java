@@ -55,7 +55,8 @@ public final class DigitalTwins {
      * @param client the instance of the service client containing this operation class.
      */
     DigitalTwins(AzureDigitalTwinsAPI client) {
-        this.service = RestProxy.create(DigitalTwinsService.class, client.getHttpPipeline());
+        this.service =
+                RestProxy.create(DigitalTwinsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 

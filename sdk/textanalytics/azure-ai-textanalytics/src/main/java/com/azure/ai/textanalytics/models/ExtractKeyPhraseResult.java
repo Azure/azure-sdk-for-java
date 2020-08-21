@@ -30,6 +30,9 @@ public final class ExtractKeyPhraseResult extends TextAnalyticsResult {
      * Get a {@link KeyPhrasesCollection} contains a list of key phrases and warnings.
      *
      * @return A {@link KeyPhrasesCollection} contains a list of key phrases and warnings.
+     *
+     * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
+     * was accessed.
      */
     public KeyPhrasesCollection getKeyPhrases() {
         throwExceptionIfError();
