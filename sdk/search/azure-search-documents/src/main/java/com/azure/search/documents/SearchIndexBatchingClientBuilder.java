@@ -19,14 +19,15 @@ import com.azure.search.documents.implementation.util.Utility;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of {@link
- * SearchIndexBatchingClient SearchIndexDocumentBatchingClients} and {@link SearchIndexBatchingAsyncClient
- * SearchIndexDocumentBatchingAsyncClients}. Call {@link #buildClient() buildClient} and {@link #buildAsyncClient()
+ * SearchIndexBatchingClient SearchIndexBatchingClients} and {@link SearchIndexBatchingAsyncClient
+ * SearchIndexBatchingAsyncClients}. Call {@link #buildClient() buildClient} and {@link #buildAsyncClient()
  * buildAsyncClient} respectively to construct an instance of the desired client.
  * <p>
  * The following must be provided to construct a client instance.
@@ -55,14 +56,15 @@ public final class SearchIndexBatchingClientBuilder {
     private String indexName;
     private RetryPolicy retryPolicy;
     private JsonSerializer jsonSerializer;
-    private Integer flushWindow;
+
+    private Boolean autoFlush;
+    private Duration flushWindow;
     private Integer batchSize;
-    private DocumentPersister documentPersister;
+    private IndexingHook indexingHook;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link SearchIndexBatchingClient
-     * SearchIndexDocumentBatchingClients} and {@link SearchIndexBatchingAsyncClient
-     * SearchIndexDocumentBatchingAsyncClients}.
+     * SearchIndexBatchingClients} and {@link SearchIndexBatchingAsyncClient SearchIndexBatchingAsyncClients}.
      */
     public SearchIndexBatchingClientBuilder() {
     }
@@ -75,7 +77,7 @@ public final class SearchIndexBatchingClientBuilder {
      * endpoint}, and {@link #indexName(String) indexName} are used to create the {@link SearchIndexBatchingClient
      * client}. All other builder settings are ignored.
      *
-     * @return A SearchIndexDocumentBatchingClient with the options set from the builder.
+     * @return A SearchIndexBatchingClient with the options set from the builder.
      * @throws NullPointerException If {@code indexName} or {@code endpoint} are {@code null}.
      */
     public SearchIndexBatchingClient buildClient() {
@@ -90,7 +92,7 @@ public final class SearchIndexBatchingClientBuilder {
      * endpoint}, and {@link #indexName(String) indexName} are used to create the {@link SearchIndexBatchingAsyncClient
      * client}. All other builder settings are ignored.
      *
-     * @return A SearchIndexDocumentBatchingAsyncClient with the options set from the builder.
+     * @return A SearchIndexBatchingAsyncClient with the options set from the builder.
      * @throws NullPointerException If {@code indexName} or {@code endpoint} are {@code null}.
      */
     public SearchIndexBatchingAsyncClient buildAsyncClient() {
@@ -112,7 +114,7 @@ public final class SearchIndexBatchingClientBuilder {
             searchAsyncClient = new SearchAsyncClient(endpoint, indexName, buildVersion, pipeline, jsonSerializer);
         }
 
-        return new SearchIndexBatchingAsyncClient(searchAsyncClient, flushWindow, batchSize, documentPersister);
+        return new SearchIndexBatchingAsyncClient(searchAsyncClient, autoFlush, flushWindow, batchSize, indexingHook);
     }
 
     /**
@@ -286,21 +288,32 @@ public final class SearchIndexBatchingClientBuilder {
     }
 
     /**
-     * The time in seconds that the a client will wait between documents being added to the batch before sending them to
-     * the index.
+     * Flag determining whether a batching client will automatically flush its document batch based on the
+     * configurations of {@link #flushWindow(Duration)} and {@link #batchSize(Integer)}.
      * <p>
-     * If {@code flushWindow} is zero the client won't automatically send the document batch to be indexed, by default
-     * {@code flushWindow} is zero.
+     * If {@code autoFlush} is {@code null} the client will be set to automatically flush.
      *
-     * @param flushWindow Time in seconds that will be waited between document being added to the batch before they will
-     * sent to the index.
+     * @param autoFlush Flag determining whether a batching client will automatically flush.
      * @return The updated SearchIndexDocumentBatchingClientBuilder object.
-     * @throws IllegalArgumentException If {@code flushWindow} is less than zero.
      */
-    public SearchIndexBatchingClientBuilder flushWindow(Integer flushWindow) {
-        if (flushWindow != null && flushWindow < 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'flushWindow' cannot be less than zero."));
-        }
+    public SearchIndexBatchingClientBuilder autoFlush(Boolean autoFlush) {
+        this.autoFlush = autoFlush;
+        return this;
+    }
+
+    /**
+     * Duration that the a client will wait between documents being added to the batch before sending them to the
+     * index.
+     * <p>
+     * If {@code flushWindow} is negative or zero and {@link #autoFlush(Boolean)} is enabled the client will flush when
+     * {@link #batchSize(Integer)} is met. If {@code flushWindow} is {@code null} a default value of 60 seconds is
+     * used.
+     *
+     * @param flushWindow Duration that will be waited between document being added to the batch before they will sent
+     * to the index.
+     * @return The updated SearchIndexDocumentBatchingClientBuilder object.
+     */
+    public SearchIndexBatchingClientBuilder flushWindow(Duration flushWindow) {
         this.flushWindow = flushWindow;
         return this;
     }
@@ -324,16 +337,14 @@ public final class SearchIndexBatchingClientBuilder {
     }
 
     /**
-     * An implementation of {@link DocumentPersister} that will be used to persist documents that are added to a batch
-     * before they are sent for indexing and will transfer them to either a success or failed store.
-     * <p>
-     * By default there is no document persisting.
+     * An {@link IndexingHook} that will be used to handle callback triggers when document indexing actions are added,
+     * succeed, fail, or are removed from a batching client's queue.
      *
-     * @param documentPersister An implementation of {@link DocumentPersister}.
+     * @param indexingHook An implementation of {@link IndexingHook}.
      * @return The updated SearchIndexDocumentBatchingClientBuilder object.
      */
-    public SearchIndexBatchingClientBuilder documentPersister(DocumentPersister documentPersister) {
-        this.documentPersister = documentPersister;
+    public SearchIndexBatchingClientBuilder indexingHook(IndexingHook indexingHook) {
+        this.indexingHook = indexingHook;
         return this;
     }
 }

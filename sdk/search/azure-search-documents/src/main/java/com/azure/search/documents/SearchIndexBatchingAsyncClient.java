@@ -15,6 +15,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.HttpURLConnection;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -31,50 +32,42 @@ import static com.azure.core.util.FluxUtil.withContext;
  */
 public class SearchIndexBatchingAsyncClient {
     private static final int DEFAULT_BATCH_SIZE = 1000;
+    private static final long DEFAULT_FLUSH_WINDOW = TimeUnit.SECONDS.toMillis(60);
 
     private final SearchAsyncClient client;
-    private final boolean isAutoFlushEnabled;
+    private final boolean autoFlush;
     private final long flushWindowMillis;
     private final int batchSize;
-    private final DocumentPersister documentPersister;
+    private final IndexingHook indexingHook;
     private final Timer autoFlushTimer;
 
     private final Object actionsMutex = 0;
     private List<IndexAction<?>> actions = new ArrayList<>();
 
-    private final Object successfulActionsMutex = 0;
-    private List<IndexAction<?>> successfulActions = new ArrayList<>();
-
-    private final Object failedActionsMutex = 0;
-    private List<IndexAction<?>> failedActions = new ArrayList<>();
-
     private TimerTask flushTask;
 
-    SearchIndexBatchingAsyncClient(SearchAsyncClient client, Integer flushWindow, Integer batchSize,
-        DocumentPersister documentPersister) {
+    SearchIndexBatchingAsyncClient(SearchAsyncClient client, Boolean autoFlush, Duration flushWindow,
+        Integer batchSize, IndexingHook indexingHook) {
         ClientLogger logger = new ClientLogger(SearchIndexBatchingAsyncClient.class);
-        if (flushWindow != null && flushWindow < 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'flushWindow' cannot be less than zero."));
-        }
 
         if (batchSize != null && batchSize < 1) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'batchSize' cannot be less than one."));
         }
 
         this.client = client;
+        this.autoFlush = autoFlush == null || autoFlush;
 
-        if (flushWindow != null) {
-            this.isAutoFlushEnabled = flushWindow > 0;
-            this.flushWindowMillis = TimeUnit.SECONDS.toMillis(flushWindow);
-        } else {
-            this.isAutoFlushEnabled = false;
+        if (flushWindow == null) {
+            this.flushWindowMillis = DEFAULT_FLUSH_WINDOW;
+        } else if (flushWindow.isZero() || flushWindow.isNegative()) {
             this.flushWindowMillis = 0;
+        } else {
+            this.flushWindowMillis = flushWindow.toMillis();
         }
 
         this.batchSize = (batchSize == null) ? DEFAULT_BATCH_SIZE : batchSize;
-        this.documentPersister = documentPersister;
-
-        this.autoFlushTimer = (this.isAutoFlushEnabled) ? new Timer(true) : null;
+        this.indexingHook = indexingHook;
+        this.autoFlushTimer = (this.autoFlush) ? new Timer(true) : null;
     }
 
     /**
@@ -84,38 +77,6 @@ public class SearchIndexBatchingAsyncClient {
      */
     public Collection<IndexAction<?>> getActions() {
         return actions;
-    }
-
-    /**
-     * Gets the {@link IndexAction IndexActions} that have been successfully indexed.
-     * <p>
-     * This returns the actions that have succeeded since the last time this method was called. Every time this is
-     * called the queue of succeeded actions is drained.
-     *
-     * @return The {@link IndexAction IndexActions} in the batch that have been successfully indexed.
-     */
-    public Collection<IndexAction<?>> getSucceededActions() {
-        synchronized (successfulActionsMutex) {
-            List<IndexAction<?>> actions = successfulActions;
-            successfulActions = new ArrayList<>();
-            return actions;
-        }
-    }
-
-    /**
-     * Gets the {@link IndexAction IndexActions} that have failed indexing and aren't able to be retried.
-     * <p>
-     * This returns the actions that have failed since the last time this method was called. Every time this is called
-     * the queue of failed actions is drained.
-     *
-     * @return The {@link IndexAction IndexActions} that have failed indexing and aren't able to be retried.
-     */
-    public Collection<IndexAction<?>> getFailedActions() {
-        synchronized (failedActionsMutex) {
-            List<IndexAction<?>> actions = failedActions;
-            failedActions = new ArrayList<>();
-            return actions;
-        }
     }
 
     /**
@@ -137,13 +98,7 @@ public class SearchIndexBatchingAsyncClient {
      * @return A reactive response indicating that the documents have been added to the batch.
      */
     public Mono<Void> addUploadActions(Collection<?> documents) {
-        Collection<IndexAction<?>> uploadActions = createDocumentActions(documents, IndexActionType.UPLOAD);
-        if (documentPersister != null) {
-            documentPersister.addQueuedActions(uploadActions);
-        }
-
-        actions.addAll(uploadActions);
-        return flushIfNeeded();
+        return addActions(createDocumentActions(documents, IndexActionType.UPLOAD));
     }
 
     /**
@@ -156,13 +111,7 @@ public class SearchIndexBatchingAsyncClient {
      * @return A reactive response indicating that the documents have been added to the batch.
      */
     public Mono<Void> addDeleteActions(Collection<?> documents) {
-        Collection<IndexAction<?>> uploadActions = createDocumentActions(documents, IndexActionType.DELETE);
-        if (documentPersister != null) {
-            documentPersister.addQueuedActions(uploadActions);
-        }
-
-        actions.addAll(uploadActions);
-        return flushIfNeeded();
+        return addActions(createDocumentActions(documents, IndexActionType.DELETE));
     }
 
     /**
@@ -175,13 +124,7 @@ public class SearchIndexBatchingAsyncClient {
      * @return A reactive response indicating that the documents have been added to the batch.
      */
     public Mono<Void> addMergeActions(Collection<?> documents) {
-        Collection<IndexAction<?>> uploadActions = createDocumentActions(documents, IndexActionType.MERGE);
-        if (documentPersister != null) {
-            documentPersister.addQueuedActions(uploadActions);
-        }
-
-        actions.addAll(uploadActions);
-        return flushIfNeeded();
+        return addActions(createDocumentActions(documents, IndexActionType.MERGE));
     }
 
     /**
@@ -194,13 +137,7 @@ public class SearchIndexBatchingAsyncClient {
      * @return A reactive response indicating that the documents have been added to the batch.
      */
     public Mono<Void> addMergeOrUploadActions(Collection<?> documents) {
-        Collection<IndexAction<?>> uploadActions = createDocumentActions(documents, IndexActionType.MERGE_OR_UPLOAD);
-        if (documentPersister != null) {
-            documentPersister.addQueuedActions(uploadActions);
-        }
-
-        actions.addAll(uploadActions);
-        return flushIfNeeded();
+        return addActions(createDocumentActions(documents, IndexActionType.MERGE_OR_UPLOAD));
     }
 
     /**
@@ -213,19 +150,15 @@ public class SearchIndexBatchingAsyncClient {
      * @return A reactive response indicating that the documents have been added to the batch.
      */
     public Mono<Void> addActions(Collection<IndexAction<?>> actions) {
-        this.actions.addAll(actions);
-        if (documentPersister != null) {
-            documentPersister.addQueuedActions(actions);
+        synchronized (actionsMutex) {
+            this.actions.addAll(actions);
+        }
+
+        if (indexingHook != null) {
+            actions.forEach(indexingHook::actionAdded);
         }
 
         return flushIfNeeded();
-    }
-
-    private Collection<IndexAction<?>> createDocumentActions(Collection<?> documents, IndexActionType actionType) {
-        return documents.stream().map(document -> new IndexAction<>()
-            .setActionType(actionType)
-            .setDocument(document))
-            .collect(Collectors.toList());
     }
 
     /**
@@ -301,24 +234,18 @@ public class SearchIndexBatchingAsyncClient {
             IndexingResult result = results.get(i);
             IndexAction<?> action = actions.get(offset + i);
 
-            if (result.getStatusCode() == 200 || result.getStatusCode() == 201) {
-                if (documentPersister != null) {
-                    documentPersister.removeQueuedAction(action);
-                    documentPersister.addSucceededAction(action);
+            if (isSuccess(result.getStatusCode())) {
+                if (indexingHook != null) {
+                    indexingHook.actionSuccess(action);
+                    indexingHook.actionRemoved(action);
                 }
-
-                successfulActions.add(action);
-            } else if (result.getStatusCode() == 409
-                || result.getStatusCode() == 422
-                || result.getStatusCode() == 503) {
+            } else if (isRetryable(result.getStatusCode())) {
                 this.actions.add(action);
             } else {
-                if (documentPersister != null) {
-                    documentPersister.removeQueuedAction(action);
-                    documentPersister.addFailedAction(action);
+                if (indexingHook != null) {
+                    indexingHook.actionError(action);
+                    indexingHook.actionRemoved(action);
                 }
-
-                failedActions.add(action);
             }
         }
     }
@@ -344,7 +271,7 @@ public class SearchIndexBatchingAsyncClient {
     }
 
     private Mono<Void> flushIfNeeded() {
-        if (!this.isAutoFlushEnabled) {
+        if (!this.autoFlush) {
             return Mono.empty();
         }
 
@@ -363,7 +290,7 @@ public class SearchIndexBatchingAsyncClient {
      * @return A reactive response indicating that the batch has been closed.
      */
     public Mono<Void> close() {
-        if (isAutoFlushEnabled) {
+        if (autoFlush) {
             flushTask.cancel();
             flushTask = null;
 
@@ -371,6 +298,22 @@ public class SearchIndexBatchingAsyncClient {
         }
 
         return flush(false);
+    }
+
+    private static Collection<IndexAction<?>> createDocumentActions(Collection<?> documents,
+        IndexActionType actionType) {
+        return documents.stream().map(document -> new IndexAction<>()
+            .setActionType(actionType)
+            .setDocument(document))
+            .collect(Collectors.toList());
+    }
+
+    private static boolean isSuccess(int statusCode) {
+        return statusCode == 200 || statusCode == 201;
+    }
+
+    private static boolean isRetryable(int statusCode) {
+        return statusCode == 409 || statusCode == 422 || statusCode == 503;
     }
 
     private static final class IndexBatchResponse {

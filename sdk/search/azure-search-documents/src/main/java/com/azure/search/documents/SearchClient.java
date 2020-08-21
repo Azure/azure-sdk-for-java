@@ -24,6 +24,7 @@ import com.azure.search.documents.util.SearchPagedResponse;
 import com.azure.search.documents.util.SuggestPagedIterable;
 import com.azure.search.documents.util.SuggestPagedResponse;
 
+import java.time.Duration;
 import java.util.List;
 
 /**
@@ -77,35 +78,36 @@ public final class SearchClient {
      * Creates a {@link SearchIndexBatchingClient} used to index documents for the Search index associated with this
      * {@link SearchClient}.
      * <p>
-     * The created client will use the default values for {@link SearchIndexBatchingClientBuilder#flushWindow(Integer)},
-     * {@link SearchIndexBatchingClientBuilder#batchSize(Integer)}, and {@link
-     * SearchIndexBatchingClientBuilder#documentPersister(DocumentPersister)}.
+     * This will use the default configuration values for {@link SearchIndexBatchingClient}, see {@link
+     * SearchIndexBatchingClientBuilder} for more information.
      *
      * @return A {@link SearchIndexBatchingClient} used to index documents for the Search index associated with this
      * {@link SearchClient}.
      */
     public SearchIndexBatchingClient getIndexDocumentBatchingClient() {
-        return getIndexDocumentBatchingClient(null, null, null);
+        return getIndexDocumentBatchingClient(null, null, null, null);
     }
 
     /**
      * Creates a {@link SearchIndexBatchingClient} used to index documents for the Search index associated with this
      * {@link SearchClient}.
      *
-     * @param flushWindow Time in seconds that will be waited between document being added to the batch before they will
-     * sent to the index. Use zero or {@code null} to disable automatic batch sending.
+     * @param autoFlush Flag determining whether the batching client will automatically flush its document batch. If
+     * {@code null} is passed this will be set to {@code true}.
+     * @param flushWindow Duration that the client will wait between documents being added to the batch before sending
+     * the batch to be indexed. If {@code flushWindow} is negative or zero the flush window will be disabled, if
+     * {@code flushWindow} is {@code null} a default of 60 seconds will be used.
      * @param batchSize The number of documents in a batch that will trigger it to be indexed. If automatic batch
-     * sending is disabled this value is ignored.
-     * @param documentPersister An implementation of {@link DocumentPersister} used to persist documents in a batch. If
-     * {@code null} documents won't be persisted.
+     * sending is disabled this value is ignored. If {@code batchSize} is {@code null} a default value of 1000 is used.
+     * @param indexingHook An implementation of {@link IndexingHook} used to handle document callback actions.
      * @return A {@link SearchIndexBatchingClient} used to index documents for the Search index associated with this
      * {@link SearchClient}.
-     * @throws IllegalArgumentException If {@code flushWindow} is less than zero or {@code batchSize} is less than one.
+     * @throws IllegalArgumentException If {@code batchSize} is less than one.
      */
-    public SearchIndexBatchingClient getIndexDocumentBatchingClient(Integer flushWindow, Integer batchSize,
-        DocumentPersister documentPersister) {
+    public SearchIndexBatchingClient getIndexDocumentBatchingClient(Boolean autoFlush, Duration flushWindow,
+        Integer batchSize, IndexingHook indexingHook) {
         return new SearchIndexBatchingClient(asyncClient
-            .getIndexDocumentBatchingAsyncClient(flushWindow, batchSize, documentPersister));
+            .getIndexDocumentBatchingAsyncClient(autoFlush, flushWindow, batchSize, indexingHook));
     }
 
     /**
