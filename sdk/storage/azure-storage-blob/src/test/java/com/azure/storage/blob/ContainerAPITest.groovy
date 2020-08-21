@@ -779,6 +779,16 @@ class ContainerAPITest extends APISpec {
         blobs.size() == 4 // Normal, copy, metadata, tags
     }
 
+    def "List blobs flat options last access time"() {
+        when:
+        def b = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        b.upload(defaultInputStream.get(), defaultData.remaining())
+        def blob = cc.listBlobs().iterator().next()
+
+        then:
+        blob.getProperties().getLastAccessedTime()
+    }
+
     def "List blobs flat options tags"() {
         setup:
         def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveTags(true))

@@ -4,6 +4,7 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.blob.implementation.util.ChunkedDownloadUtils;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRange;
@@ -106,15 +107,18 @@ public final class BlobInputStream extends StorageInputStream {
         if (hd == null) {
             return null;
         }
-        return new BlobProperties(null, hd.getLastModified(), hd.getETag(),
-            hd.getContentLength() == null ? 0 : hd.getContentLength(), hd.getContentType(), null,
-            hd.getContentEncoding(), hd.getContentDisposition(), hd.getContentLanguage(), hd.getCacheControl(),
-            hd.getBlobSequenceNumber(), hd.getBlobType(), hd.getLeaseStatus(), hd.getLeaseState(),
-            hd.getLeaseDuration(), hd.getCopyId(), hd.getCopyStatus(), hd.getCopySource(), hd.getCopyProgress(),
-            hd.getCopyCompletionTime(), hd.getCopyStatusDescription(), hd.isServerEncrypted(),
-            null, null, null, null, null, hd.getEncryptionKeySha256(), hd.getEncryptionScope(), null, hd.getMetadata(),
+        long blobSize = hd.getContentRange() == null ? hd.getContentLength()
+            : ChunkedDownloadUtils.extractTotalBlobLength(hd.getContentRange());
+        return new BlobProperties(null, hd.getLastModified(), hd.getETag(), blobSize,
+            hd.getContentType(), hd.getContentMd5(), hd.getContentEncoding(), hd.getContentDisposition(),
+            hd.getContentLanguage(), hd.getCacheControl(), hd.getBlobSequenceNumber(), hd.getBlobType(),
+            hd.getLeaseStatus(), hd.getLeaseState(), hd.getLeaseDuration(), hd.getCopyId(), hd.getCopyStatus(),
+            hd.getCopySource(), hd.getCopyProgress(), hd.getCopyCompletionTime(), hd.getCopyStatusDescription(),
+            hd.isServerEncrypted(), null, null, null, null, null,
+            hd.getEncryptionKeySha256(), hd.getEncryptionScope(), null, hd.getMetadata(),
             hd.getBlobCommittedBlockCount(), hd.getTagCount(), hd.getVersionId(), null,
-            hd.getObjectReplicationSourcePolicies(), hd.getObjectReplicationDestinationPolicyId());
+            hd.getObjectReplicationSourcePolicies(), hd.getObjectReplicationDestinationPolicyId(), null,
+            hd.isSealed(), null);
     }
 
     /**

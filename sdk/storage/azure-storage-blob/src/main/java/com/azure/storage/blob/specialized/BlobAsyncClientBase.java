@@ -1049,28 +1049,18 @@ public class BlobAsyncClientBase {
 
     private static Response<BlobProperties> buildBlobPropertiesResponse(BlobDownloadAsyncResponse response) {
         // blobSize determination - contentLength only returns blobSize if the download is not chunked.
-        long blobSize = getBlobLength(response.getDeserializedHeaders());
-        BlobProperties properties = new BlobProperties(null, response.getDeserializedHeaders().getLastModified(),
-            response.getDeserializedHeaders().getETag(), blobSize, response.getDeserializedHeaders().getContentType(),
-            null, response.getDeserializedHeaders().getContentEncoding(),
-            response.getDeserializedHeaders().getContentDisposition(),
-            response.getDeserializedHeaders().getContentLanguage(), response.getDeserializedHeaders().getCacheControl(),
-            response.getDeserializedHeaders().getBlobSequenceNumber(), response.getDeserializedHeaders().getBlobType(),
-            response.getDeserializedHeaders().getLeaseStatus(), response.getDeserializedHeaders().getLeaseState(),
-            response.getDeserializedHeaders().getLeaseDuration(), response.getDeserializedHeaders().getCopyId(),
-            response.getDeserializedHeaders().getCopyStatus(), response.getDeserializedHeaders().getCopySource(),
-            response.getDeserializedHeaders().getCopyProgress(),
-            response.getDeserializedHeaders().getCopyCompletionTime(),
-            response.getDeserializedHeaders().getCopyStatusDescription(),
-            response.getDeserializedHeaders().isServerEncrypted(), null, null, null, null, null,
-            response.getDeserializedHeaders().getEncryptionKeySha256(),
-            response.getDeserializedHeaders().getEncryptionScope(), null,
-            response.getDeserializedHeaders().getMetadata(),
-            response.getDeserializedHeaders().getBlobCommittedBlockCount(),
-            response.getDeserializedHeaders().getTagCount(),
-            response.getDeserializedHeaders().getVersionId(), null,
-            response.getDeserializedHeaders().getObjectReplicationSourcePolicies(),
-            response.getDeserializedHeaders().getObjectReplicationDestinationPolicyId());
+        BlobDownloadHeaders hd = response.getDeserializedHeaders();
+        long blobSize = getBlobLength(hd);
+        BlobProperties properties = new BlobProperties(null, hd.getLastModified(), hd.getETag(), blobSize,
+            hd.getContentType(), hd.getContentMd5(), hd.getContentEncoding(), hd.getContentDisposition(),
+            hd.getContentLanguage(), hd.getCacheControl(), hd.getBlobSequenceNumber(), hd.getBlobType(),
+            hd.getLeaseStatus(), hd.getLeaseState(), hd.getLeaseDuration(), hd.getCopyId(), hd.getCopyStatus(),
+            hd.getCopySource(), hd.getCopyProgress(), hd.getCopyCompletionTime(), hd.getCopyStatusDescription(),
+            hd.isServerEncrypted(), null, null, null, null, null,
+            hd.getEncryptionKeySha256(), hd.getEncryptionScope(), null, hd.getMetadata(),
+            hd.getBlobCommittedBlockCount(), hd.getTagCount(), hd.getVersionId(), null,
+            hd.getObjectReplicationSourcePolicies(), hd.getObjectReplicationDestinationPolicyId(), null,
+            hd.isSealed(), null);
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), properties);
     }
 
@@ -1210,8 +1200,11 @@ public class BlobAsyncClientBase {
                     hd.isIncrementalCopy(), hd.getDestinationSnapshot(), AccessTier.fromString(hd.getAccessTier()),
                     hd.isAccessTierInferred(), ArchiveStatus.fromString(hd.getArchiveStatus()),
                     hd.getEncryptionKeySha256(), hd.getEncryptionScope(), hd.getAccessTierChangeTime(),
-                    hd.getMetadata(), hd.getBlobCommittedBlockCount(), hd.getVersionId(), hd.isCurrentVersion(),
-                    hd.getTagCount(), hd.getObjectReplicationRules(), hd.getRehydratePriority(), hd.isSealed());
+                    hd.getMetadata(), hd.getBlobCommittedBlockCount(), hd.getTagCount(), hd.getVersionId(),
+                    hd.isCurrentVersion(),
+                    ModelHelper.getObjectReplicationSourcePolicies(hd.getObjectReplicationRules()),
+                    ModelHelper.getObjectReplicationDestinationPolicyId(hd.getObjectReplicationRules()),
+                    RehydratePriority.fromString(hd.getRehydratePriority()), hd.isSealed(), hd.getLastAccessed());
                 return new SimpleResponse<>(rb, properties);
             });
     }
