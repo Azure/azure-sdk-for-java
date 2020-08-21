@@ -44,10 +44,14 @@ class ServerSecurityAlertPoliciesImpl extends WrapperImpl<ServerSecurityAlertPol
     public Observable<ServerSecurityAlertPolicy> getAsync(String resourceGroupName, String serverName) {
         ServerSecurityAlertPoliciesInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName)
-        .map(new Func1<ServerSecurityAlertPolicyInner, ServerSecurityAlertPolicy>() {
+        .flatMap(new Func1<ServerSecurityAlertPolicyInner, Observable<ServerSecurityAlertPolicy>>() {
             @Override
-            public ServerSecurityAlertPolicy call(ServerSecurityAlertPolicyInner inner) {
-                return wrapModel(inner);
+            public Observable<ServerSecurityAlertPolicy> call(ServerSecurityAlertPolicyInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ServerSecurityAlertPolicy)wrapModel(inner));
+                }
             }
        });
     }
