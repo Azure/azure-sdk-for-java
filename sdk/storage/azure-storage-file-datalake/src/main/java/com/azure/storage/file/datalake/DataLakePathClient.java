@@ -28,6 +28,7 @@ import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathProperties;
+import com.azure.storage.file.datalake.models.RemovePathAccessControlItem;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.file.datalake.options.RemoveAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.SetAccessControlRecursiveOptions;
@@ -396,9 +397,10 @@ public class DataLakePathClient {
     public Response<AccessControlChangeResult> setAccessControlRecursiveWithResponse(
         SetAccessControlRecursiveOptions options, Duration timeout, Context context) {
         Mono<Response<AccessControlChangeResult>> response =
-            dataLakePathAsyncClient.setAccessControlRecursiveWithResponse(options.getAccessControlList(),
-                options.getProgressHandler(), PathSetAccessControlRecursiveMode.SET, options.getBatchSize(),
-                options.getMaxBatches(), options.isContinuingOnFailure(), options.getContinuationToken(), context);
+            dataLakePathAsyncClient.setAccessControlRecursiveWithResponse(
+                PathAccessControlEntry.serializeList(options.getAccessControlList()), options.getProgressHandler(),
+                PathSetAccessControlRecursiveMode.SET, options.getBatchSize(), options.getMaxBatches(),
+                options.isContinuingOnFailure(), options.getContinuationToken(), context);
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
@@ -437,9 +439,10 @@ public class DataLakePathClient {
     public Response<AccessControlChangeResult> updateAccessControlRecursiveWithResponse(
         UpdateAccessControlRecursiveOptions options, Duration timeout, Context context) {
         Mono<Response<AccessControlChangeResult>> response =
-            dataLakePathAsyncClient.setAccessControlRecursiveWithResponse(options.getAccessControlList(),
-                options.getProgressHandler(), PathSetAccessControlRecursiveMode.MODIFY, options.getBatchSize(),
-                options.getMaxBatches(), options.isContinuingOnFailure(), options.getContinuationToken(), context);
+            dataLakePathAsyncClient.setAccessControlRecursiveWithResponse(
+                PathAccessControlEntry.serializeList(options.getAccessControlList()), options.getProgressHandler(),
+                PathSetAccessControlRecursiveMode.MODIFY, options.getBatchSize(), options.getMaxBatches(),
+                options.isContinuingOnFailure(), options.getContinuationToken(), context);
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
@@ -457,8 +460,8 @@ public class DataLakePathClient {
      * @param accessControlList The POSIX access control list for the file or directory.
      * @return The result of the operation.
      */
-    public AccessControlChangeResult removeAccessControlRecursive(List<PathAccessControlEntry> accessControlList)
-    {
+    public AccessControlChangeResult removeAccessControlRecursive(
+        List<RemovePathAccessControlItem> accessControlList) {
         return removeAccessControlRecursiveWithResponse(new RemoveAccessControlRecursiveOptions(accessControlList),
             null, Context.NONE).getValue();
     }
@@ -479,9 +482,10 @@ public class DataLakePathClient {
     public Response<AccessControlChangeResult> removeAccessControlRecursiveWithResponse(
         RemoveAccessControlRecursiveOptions options, Duration timeout, Context context) {
         Mono<Response<AccessControlChangeResult>> response =
-            dataLakePathAsyncClient.setAccessControlRecursiveWithResponse(options.getAccessControlList(),
-                options.getProgressHandler(), PathSetAccessControlRecursiveMode.REMOVE, options.getBatchSize(),
-                options.getMaxBatches(), options.isContinuingOnFailure(), options.getContinuationToken(), context);
+            dataLakePathAsyncClient.setAccessControlRecursiveWithResponse(
+                RemovePathAccessControlItem.serializeList(options.getAccessControlList()), options.getProgressHandler(),
+                PathSetAccessControlRecursiveMode.REMOVE, options.getBatchSize(), options.getMaxBatches(),
+                options.isContinuingOnFailure(), options.getContinuationToken(), context);
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }

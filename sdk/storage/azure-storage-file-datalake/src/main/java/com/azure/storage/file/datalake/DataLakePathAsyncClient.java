@@ -43,6 +43,7 @@ import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathProperties;
+import com.azure.storage.file.datalake.models.RemovePathAccessControlItem;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.file.datalake.options.RemoveAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.SetAccessControlRecursiveOptions;
@@ -675,9 +676,10 @@ public class DataLakePathAsyncClient {
     public Mono<Response<AccessControlChangeResult>> setAccessControlRecursiveWithResponse(
         SetAccessControlRecursiveOptions options) {
         try {
-            return withContext(context -> setAccessControlRecursiveWithResponse(options.getAccessControlList(),
-                options.getProgressHandler(), PathSetAccessControlRecursiveMode.SET, options.getBatchSize(),
-                options.getMaxBatches(), options.isContinuingOnFailure(), options.getContinuationToken(), context));
+            return withContext(context -> setAccessControlRecursiveWithResponse(
+                PathAccessControlEntry.serializeList(options.getAccessControlList()), options.getProgressHandler(),
+                PathSetAccessControlRecursiveMode.SET, options.getBatchSize(), options.getMaxBatches(),
+                options.isContinuingOnFailure(), options.getContinuationToken(), context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -722,9 +724,10 @@ public class DataLakePathAsyncClient {
     public Mono<Response<AccessControlChangeResult>> updateAccessControlRecursiveWithResponse(
         UpdateAccessControlRecursiveOptions options) {
         try {
-            return withContext(context -> setAccessControlRecursiveWithResponse(options.getAccessControlList(),
-                options.getProgressHandler(), PathSetAccessControlRecursiveMode.MODIFY, options.getBatchSize(),
-                options.getMaxBatches(), options.isContinuingOnFailure(), options.getContinuationToken(), context));
+            return withContext(context -> setAccessControlRecursiveWithResponse(
+                PathAccessControlEntry.serializeList(options.getAccessControlList()), options.getProgressHandler(),
+                PathSetAccessControlRecursiveMode.MODIFY, options.getBatchSize(), options.getMaxBatches(),
+                options.isContinuingOnFailure(), options.getContinuationToken(), context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -743,8 +746,8 @@ public class DataLakePathAsyncClient {
      * @param accessControlList The POSIX access control list for the file or directory.
      * @return A reactive response containing the result of the operation.
      */
-    public Mono<AccessControlChangeResult> removeAccessControlRecursive(List<PathAccessControlEntry> accessControlList)
-    {
+    public Mono<AccessControlChangeResult> removeAccessControlRecursive(
+        List<RemovePathAccessControlItem> accessControlList) {
         try {
             return removeAccessControlRecursiveWithResponse(new RemoveAccessControlRecursiveOptions(accessControlList))
                 .flatMap(FluxUtil::toMono);
@@ -769,16 +772,17 @@ public class DataLakePathAsyncClient {
     public Mono<Response<AccessControlChangeResult>> removeAccessControlRecursiveWithResponse(
         RemoveAccessControlRecursiveOptions options) {
         try {
-            return withContext(context -> setAccessControlRecursiveWithResponse(options.getAccessControlList(),
-                options.getProgressHandler(), PathSetAccessControlRecursiveMode.REMOVE, options.getBatchSize(),
-                options.getMaxBatches(), options.isContinuingOnFailure(), options.getContinuationToken(), context));
+            return withContext(context -> setAccessControlRecursiveWithResponse(
+                RemovePathAccessControlItem.serializeList(options.getAccessControlList()), options.getProgressHandler(),
+                PathSetAccessControlRecursiveMode.REMOVE, options.getBatchSize(), options.getMaxBatches(),
+                options.isContinuingOnFailure(), options.getContinuationToken(), context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     Mono<Response<AccessControlChangeResult>> setAccessControlRecursiveWithResponse(
-        List<PathAccessControlEntry> accessControlList, Consumer<Response<AccessControlChanges>> progressHandler,
+        String accessControlList, Consumer<Response<AccessControlChanges>> progressHandler,
         PathSetAccessControlRecursiveMode mode, Integer batchSize, Integer maxBatches, Boolean continueOnFailure,
         String continuationToken, Context context) {
         // TODO: parameter validation?
@@ -788,14 +792,12 @@ public class DataLakePathAsyncClient {
         AtomicInteger failureCount = new AtomicInteger(0);
         AtomicInteger batchesCount = new AtomicInteger(0);
 
-        String listStr = PathAccessControlEntry.serializeList(accessControlList);
-
         return this.dataLakeStorage.paths().setAccessControlRecursiveWithRestResponseAsync(mode, null,
-            continuationToken, continueOnFailure, batchSize, listStr, null,
+            continuationToken, continueOnFailure, batchSize, accessControlList, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .flatMap(response -> setAccessControlRecursiveWithResponseHelper(response, maxBatches,
                 directoriesSuccessfulCount, filesSuccessfulCount, failureCount, batchesCount, progressHandler,
-                listStr, mode, batchSize, continueOnFailure, continuationToken,
+                accessControlList, mode, batchSize, continueOnFailure, continuationToken,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE)));
     }
 

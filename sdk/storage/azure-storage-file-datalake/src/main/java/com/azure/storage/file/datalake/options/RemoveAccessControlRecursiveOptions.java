@@ -6,6 +6,7 @@ package com.azure.storage.file.datalake.options;
 import com.azure.core.http.rest.Response;
 import com.azure.storage.file.datalake.models.AccessControlChanges;
 import com.azure.storage.file.datalake.models.PathAccessControlEntry;
+import com.azure.storage.file.datalake.models.RemovePathAccessControlItem;
 
 import java.util.Collections;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.function.Consumer;
  * Optional parameters for Remove Access Control Recursive.
  */
 public class RemoveAccessControlRecursiveOptions {
-    private final List<PathAccessControlEntry> accessControlList;
+    private final List<RemovePathAccessControlItem> accessControlList;
     private Integer batchSize;
     private Integer maxBatches;
     private Consumer<Response<AccessControlChanges>> progressHandler;
@@ -26,7 +27,7 @@ public class RemoveAccessControlRecursiveOptions {
      * Constructs a new options object.
      * @param accessControlList The POSIX access control list for the file or directory.
      */
-    public RemoveAccessControlRecursiveOptions(List<PathAccessControlEntry> accessControlList) {
+    public RemoveAccessControlRecursiveOptions(List<RemovePathAccessControlItem> accessControlList) {
         this.accessControlList = Collections.unmodifiableList(accessControlList);
     }
 
@@ -35,7 +36,7 @@ public class RemoveAccessControlRecursiveOptions {
      *
      * @return The POSIX access control list for the file or directory.
      */
-    public List<PathAccessControlEntry> getAccessControlList() {
+    public List<RemovePathAccessControlItem> getAccessControlList() {
         return accessControlList;
     }
 
