@@ -35,7 +35,7 @@ public class TableServiceClientTest extends TestBase {
     }
 
     @Test
-    void createTable() {
+    void serviceCreateTable() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
 
@@ -44,7 +44,7 @@ public class TableServiceClientTest extends TestBase {
     }
 
     @Test
-    void deleteTableAsync() {
+    void serviceDeleteTable() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
 
@@ -52,7 +52,7 @@ public class TableServiceClientTest extends TestBase {
     }
 
     @Test
-    void deleteTableWithResponseAsync() {
+    void serviceDeleteTableWithResponse() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         int expectedStatusCode = 204;

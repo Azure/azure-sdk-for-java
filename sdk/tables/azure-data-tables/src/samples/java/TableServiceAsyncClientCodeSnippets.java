@@ -90,9 +90,9 @@ public class TableServiceAsyncClientCodeSnippets {
         tableAsyncClient.getEntity(partitionKey, rowKey).flatMap(tableEntity -> {
             System.out.println("Table Entity: " + tableEntity);
 
-            //delete entity without an ifUnchanged param will default to always deleting
+            //delete entity without an eTag param will perform an unconditional delete
             //(using "*" as match condition in request)
-            return tableAsyncClient.deleteEntity(tableEntity);
+            return tableAsyncClient.deleteEntity(partitionKey, rowKey);
         }).subscribe(
             Void -> { },
             error -> System.err.println("There was an error deleting the Entity. Error: " + error),

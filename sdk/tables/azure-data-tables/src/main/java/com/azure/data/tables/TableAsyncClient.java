@@ -21,10 +21,7 @@ import com.azure.data.tables.implementation.AzureTableImplBuilder;
 import com.azure.data.tables.implementation.TableEntityHelper;
 import com.azure.data.tables.implementation.TableConstants;
 import com.azure.data.tables.implementation.TablesImpl;
-import com.azure.data.tables.implementation.models.OdataMetadataFormat;
-import com.azure.data.tables.implementation.models.QueryOptions;
-import com.azure.data.tables.implementation.models.ResponseFormat;
-import com.azure.data.tables.implementation.models.TableEntityQueryResponse;
+import com.azure.data.tables.implementation.models.*;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.UpdateMode;
@@ -125,6 +122,39 @@ public class TableAsyncClient {
      */
     public TablesServiceVersion getApiVersion() {
         return apiVersion;
+    }
+
+    /**
+     * creates new table with the name of this client
+     *
+     * @return void
+     */
+    public Mono<Void> create() {
+        return createWithResponse().flatMap(response -> Mono.justOrEmpty(response.getValue()));
+    }
+
+    /**
+     * creates a new table with the name of this client
+     *
+     * @return void
+     */
+    public Mono<Response<Void>> createWithResponse() {
+        return withContext(context -> createWithResponse(context));
+    }
+
+    /**
+     * creates a new table with the name of this client
+     *
+     * @param context the context of the query
+     *
+     * @return An HTTP response
+     */
+    Mono<Response<Void>> createWithResponse(Context context) {
+        return tableImplementation.createWithResponseAsync(new TableProperties().setTableName(tableName), null,
+            ResponseFormat.RETURN_NO_CONTENT, null, context).map(response -> {
+            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                null);
+        });
     }
 
     /**
@@ -326,51 +356,85 @@ public class TableAsyncClient {
     }
 
     /**
-     * deletes the given entity
-     *
-     * @param entity entity to delete
+     * deletes the table with the name of this client
      *
      * @return void
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteEntity(TableEntity entity) {
-        return deleteEntity(entity, false);
+    public Mono<Void> delete() {
+        return deleteWithResponse().flatMap(response -> Mono.justOrEmpty(response.getValue()));
+    }
+
+    /**
+     * deletes the table with the name of this client
+     *
+     * @return void
+     */
+    public Mono<Response<Void>> deleteWithResponse() {
+        return withContext(context -> deleteWithResponse(context));
+    }
+
+    /**
+     * deletes the table with the name of this client
+     *
+     * @param context the context of the query
+     *
+     * @return a table
+     */
+    Mono<Response<Void>> deleteWithResponse(Context context) {
+        return tableImplementation.deleteWithResponseAsync(tableName, null, context).map(response -> {
+            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                null);
+        });
     }
 
     /**
      * deletes the given entity
      *
-     * @param entity entity to delete
-     * @param ifUnchanged if the eTag of the entity must match the entity in the service or not
+     * @param partitionKey the partition key
+     * @param rowKey the row key
      *
      * @return void
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteEntity(TableEntity entity, boolean ifUnchanged) {
-        return deleteEntityWithResponse(entity, ifUnchanged).then();
+    public Mono<Void> deleteEntity(String partitionKey, String rowKey) {
+        return deleteEntity(partitionKey, rowKey, null);
     }
 
     /**
      * deletes the given entity
      *
-     * @param entity entity to delete
-     * @param ifUnchanged if the eTag of the entity must match the entity in the service or not
+     * @param partitionKey the partition key
+     * @param rowKey the row key
+     * @param eTag the eTag of the entity, the delete will only occur if this matches the entity in the service
+     *
+     * @return void
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteEntity(String partitionKey, String rowKey, String eTag) {
+        return deleteEntityWithResponse(partitionKey, rowKey, eTag).then();
+    }
+
+    /**
+     * deletes the given entity
+     *
+     * @param partitionKey the partition key
+     * @param rowKey the row key
+     * @param eTag the eTag of the entity, the delete will only occur if this matches the entity in the service
      *
      * @return a response
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteEntityWithResponse(TableEntity entity, boolean ifUnchanged) {
-        return withContext(context -> deleteEntityWithResponse(entity, ifUnchanged, null, context));
+    public Mono<Response<Void>> deleteEntityWithResponse(String partitionKey, String rowKey, String eTag) {
+        return withContext(context -> deleteEntityWithResponse(partitionKey, rowKey, eTag, null, context));
     }
 
-    Mono<Response<Void>> deleteEntityWithResponse(TableEntity entity, boolean ifUnchanged, Duration timeout,
+    Mono<Response<Void>> deleteEntityWithResponse(String partitionKey, String rowKey, String eTag, Duration timeout,
                                                   Context context) {
-        String matchParam = ifUnchanged ? entity.getETag() : "*";
+        String matchParam = eTag == null ? "*" : eTag;
         Integer timeoutInt = timeout == null ? null : (int) timeout.getSeconds();
         context = context == null ? Context.NONE : context;
-        return tableImplementation.deleteEntityWithResponseAsync(tableName, entity.getPartitionKey(),
-            entity.getRowKey(),
-            matchParam, timeoutInt, null, null, context).map(response -> {
+        return tableImplementation.deleteEntityWithResponseAsync(tableName, partitionKey, rowKey, matchParam,
+            timeoutInt, null, null, context).map(response -> {
                 return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                 null);
             });

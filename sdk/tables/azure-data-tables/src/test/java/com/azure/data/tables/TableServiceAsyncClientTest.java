@@ -65,7 +65,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void createTableWithResponseAsync() {
+    void serviceCreateTableWithResponseAsync() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         int expectedStatusCode = 204;
@@ -81,7 +81,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceDeleteAsync() {
+    void serviceDeleteTableAsync() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
         serviceClient.createTable(tableName).block(TIMEOUT);
@@ -110,7 +110,7 @@ public class TableServiceAsyncClientTest extends TestBase {
 
     @Disabled("TODO: Not working at the moment.")
     @Test
-    void listTableWithResponseWithParams() {
+    void serviceListTableWithResponseWithParamsAsync() {
         // Arrange
         ListTablesOptions options = new ListTablesOptions().setFilter("TableName eq SampleTable");
 

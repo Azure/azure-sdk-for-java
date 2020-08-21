@@ -5,7 +5,7 @@
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.8; Mac OS X; 10.15.6)",
-      "x-ms-client-request-id" : "f162e5ea-1abe-4458-9f25-059446f22280",
+      "x-ms-client-request-id" : "63bd9cda-1007-4dd3-b12b-05ed807449a5",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -14,23 +14,23 @@
       "X-Content-Type-Options" : "nosniff",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "Date" : "Fri, 21 Aug 2020 20:59:51 GMT",
+      "Date" : "Fri, 21 Aug 2020 21:00:49 GMT",
       "Cache-Control" : "no-cache",
-      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/Tables('test30997f829c')",
+      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/Tables('tablename37298d4b')",
       "Content-Length" : "0",
-      "x-ms-request-id" : "d6bbd80f-d002-0063-13fe-7757a7000000",
+      "x-ms-request-id" : "fdb1e029-d002-005c-6cfe-779f04000000",
       "Preference-Applied" : "return-no-content",
-      "x-ms-client-request-id" : "f162e5ea-1abe-4458-9f25-059446f22280",
-      "Location" : "https://brsiegelsample.table.core.windows.net/Tables('test30997f829c')"
+      "x-ms-client-request-id" : "63bd9cda-1007-4dd3-b12b-05ed807449a5",
+      "Location" : "https://brsiegelsample.table.core.windows.net/Tables('tablename37298d4b')"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.table.core.windows.net/Tables('test30997f829c')",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables('tablename37298d4b')",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.8; Mac OS X; 10.15.6)",
-      "x-ms-client-request-id" : "77e2e70e-b83e-45c6-a8e6-162e66f7b102"
+      "x-ms-client-request-id" : "e8567332-1ae4-498c-9dba-59a3399528b8"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -40,11 +40,11 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "d6bbd824-d002-0063-22fe-7757a7000000",
-      "Date" : "Fri, 21 Aug 2020 20:59:51 GMT",
-      "x-ms-client-request-id" : "77e2e70e-b83e-45c6-a8e6-162e66f7b102"
+      "x-ms-request-id" : "fdb1e033-d002-005c-72fe-779f04000000",
+      "Date" : "Fri, 21 Aug 2020 21:00:49 GMT",
+      "x-ms-client-request-id" : "e8567332-1ae4-498c-9dba-59a3399528b8"
     },
     "Exception" : null
   } ],
-  "variables" : [ "test30997f829c" ]
+  "variables" : [ "tablename37298d4b" ]
 }

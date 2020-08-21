@@ -65,6 +65,29 @@ public class TableClient {
     }
 
     /**
+     * creates new table with the name of this client
+     */
+    public void create() { client.create().block(); }
+
+    /**
+     * creates new table with the name of this client
+     *
+     * @param timeout Duration to wait for operation to complete.
+     */
+    public void create(Duration timeout) { client.create().block(timeout); }
+
+    /**
+     * creates a new table with the name of this client
+     *
+     * @param timeout Duration to wait for operation to complete.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     * @return The HTTP response.
+     */
+    public Response<Void> createWithResponse(Duration timeout, Context context) {
+        return client.createWithResponse(context).block(timeout);
+    }
+
+    /**
      * insert a TableEntity with the given properties and return that TableEntity. Property map must include
      * rowKey and partitionKey
      *
@@ -214,51 +237,78 @@ public class TableClient {
     }
 
     /**
-     * deletes the given entity
+     * deletes the table with the name of this client
+     */
+    public void delete() { client.delete().block(); }
+
+    /**
+     * deletes the table with the name of this client
      *
-     * @param entity entity to delete
+     * @param timeout Duration to wait for operation to complete.
+     */
+    public void delete(Duration timeout) { client.delete().block(timeout); }
+
+    /**
+     * deletes the table with the name of this client
+     *
+     * @param timeout Duration to wait for operation to complete.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     * @return The HTTP response.
+     */
+    public Response<Void> deleteWithResponse(Duration timeout, Context context) {
+        return client.deleteWithResponse(context).block(timeout);
+    }
+
+    /**
+     * deletes the entity with the given partition key and row key
+     *
+     * @param partitionKey the partition key
+     * @param rowKey the row key
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteEntity(TableEntity entity) {
-        client.deleteEntity(entity).block();
+    public void deleteEntity(String partitionKey, String rowKey) {
+        client.deleteEntity(partitionKey, rowKey).block();
+    }
+
+    /**
+     * deletes the entity with the given partition key and row key
+     *
+     * @param partitionKey the partition key
+     * @param rowKey the row key
+     * @param eTag the eTag of the entity, the delete will only occur if this matches the entity in the service
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteEntity(String partitionKey, String rowKey, String eTag) {
+        client.deleteEntity(partitionKey, rowKey, eTag).block();
     }
 
     /**
      * deletes the given entity
      *
-     * @param entity entity to delete
-     * @param ifUnchanged if the eTag of the entity must match the entity in the service or not
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteEntity(TableEntity entity, boolean ifUnchanged) {
-        client.deleteEntity(entity, ifUnchanged).block();
-    }
-
-    /**
-     * deletes the given entity
-     *
-     * @param entity entity to delete
-     * @param ifUnchanged if the eTag of the entity must match the entity in the service or not
+     * @param partitionKey the partition key
+     * @param rowKey the row key
+     * @param eTag the eTag of the entity, the delete will only occur if this matches the entity in the service
      * @param timeout max time for query to execute before erroring out
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteEntity(TableEntity entity, boolean ifUnchanged, Duration timeout) {
-        deleteEntityWithResponse(entity, ifUnchanged, timeout, null);
+    public void deleteEntity(String partitionKey, String rowKey, String eTag, Duration timeout) {
+        deleteEntityWithResponse(partitionKey, rowKey, eTag, timeout, null);
     }
 
     /**
      * deletes the given entity
      *
-     * @param entity entity to delete
-     * @param ifUnchanged if the eTag of the entity must match the entity in the service or not
+     * @param partitionKey the partition key
+     * @param rowKey the row key
+     * @param eTag the eTag of the entity, the delete will only occur if this matches the entity in the service
      * @param timeout max time for query to execute before erroring out
      * @param context the context of the query
      * @return a response
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteEntityWithResponse(TableEntity entity, boolean ifUnchanged, Duration timeout,
+    public Response<Void> deleteEntityWithResponse(String partitionKey, String rowKey, String eTag, Duration timeout,
                                                    Context context) {
-        return client.deleteEntityWithResponse(entity, ifUnchanged, timeout, context).block();
+        return client.deleteEntityWithResponse(partitionKey, rowKey, eTag, timeout, context).block();
     }
 
     /**
