@@ -1,4 +1,4 @@
-package com.azure.messaging;
+package com.azure.messaging.eventgrid;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

@@ -1,10 +1,7 @@
-package com.azure.messaging;
+package com.azure.messaging.eventgrid;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.messaging.eventgrid.CloudEvent;
-import com.azure.messaging.eventgrid.EventGridPublisherClient;
-import com.azure.messaging.eventgrid.EventGridPublisherClientBuilder;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
