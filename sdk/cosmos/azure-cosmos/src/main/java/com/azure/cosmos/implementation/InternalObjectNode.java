@@ -69,7 +69,7 @@ public class InternalObjectNode extends Resource {
      */
     public static InternalObjectNode fromObjectToInternalObjectNode(Object cosmosItem) {
         if (cosmosItem instanceof InternalObjectNode) {
-            return new InternalObjectNode(((InternalObjectNode) cosmosItem).toJson());
+            return (InternalObjectNode) cosmosItem;
         } else if (cosmosItem instanceof byte[]) {
             return new InternalObjectNode((byte[]) cosmosItem);
         } else {
