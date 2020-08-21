@@ -35,7 +35,7 @@ public class UpgradeOperationHistoryStatus {
     private DateTime endTime;
 
     /**
-     * Get the code value.
+     * Get code indicating the current status of the upgrade. Possible values include: 'RollingForward', 'Cancelled', 'Completed', 'Faulted'.
      *
      * @return the code value
      */
@@ -44,7 +44,7 @@ public class UpgradeOperationHistoryStatus {
     }
 
     /**
-     * Get the startTime value.
+     * Get start time of the upgrade.
      *
      * @return the startTime value
      */
@@ -53,7 +53,7 @@ public class UpgradeOperationHistoryStatus {
     }
 
     /**
-     * Get the endTime value.
+     * Get end time of the upgrade.
      *
      * @return the endTime value
      */

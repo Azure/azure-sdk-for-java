@@ -95,7 +95,7 @@ public interface VirtualMachineScaleSetVMs extends HasInner<VirtualMachineScaleS
     Observable<OperationStatusResponse> startAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
 
     /**
-     * Redeploys a virtual machine in a VM scale set.
+     * Shuts down the virtual machine in the virtual machine scale set, moves it to a new node, and powers it back on.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
