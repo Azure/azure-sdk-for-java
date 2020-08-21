@@ -9,21 +9,17 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.implementation.Database;
-import com.azure.cosmos.implementation.Document;
-import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.RandomStringUtils;
 import com.azure.cosmos.models.CosmosContainerResponse;
-import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.identity.ClientSecretCredentialBuilder;
-import com.azure.identity.UsernamePasswordCredentialBuilder;
+import com.azure.cosmos.util.CosmosPagedFlux;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,13 +29,11 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
@@ -57,29 +51,33 @@ public class AadAuthorizationTests extends TestSuiteBase {
     private final static String EMULATOR_KEY = "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==";
     private final static String HOST = "https://localhost:8081/";
 
-    private final static String PARTITION_KEY_PATH_1 = "/mypk";
+    private final static String PARTITION_KEY_PATH = "/mypk";
     private final String databaseId = "dbAad" + RandomStringUtils.randomAlphabetic(6);;
 
 
-    @Test(groups = { "emulator" }, timeOut = 200 * TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = 2 * TIMEOUT)
     public void createAadTokenCredential() throws InterruptedException {
         TokenCredential emulatorCredential = new AadSimpleEmulatorTokenCredential(EMULATOR_KEY);
 
         CosmosAsyncDatabase db = null;
-        CosmosAsyncClient cosmosAsyncClient;
 
-        cosmosAsyncClient = new CosmosClientBuilder()
+        CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
+            .endpoint(HOST)
+            .key(EMULATOR_KEY)
+            .credential(emulatorCredential)
+            .buildAsyncClient();
+
+        CosmosAsyncClient cosmosAadClient = new CosmosClientBuilder()
             .endpoint(HOST)
             .credential(emulatorCredential)
-            .gatewayMode()
             .buildAsyncClient();
 
         try {
             CosmosDatabaseResponse databaseResponse = cosmosAsyncClient.createDatabase(databaseId).block();
 
-            db = cosmosAsyncClient.getDatabase(databaseId).read()
+            db = cosmosAadClient.getDatabase(databaseId).read()
                 .map(dabaseResponse -> {
-                    CosmosAsyncDatabase database = cosmosAsyncClient.getDatabase(dabaseResponse.getProperties().getId());
+                    CosmosAsyncDatabase database = cosmosAadClient.getDatabase(dabaseResponse.getProperties().getId());
                     log.info("Found database {} with {}", database.getId(), dabaseResponse.getProperties().getETag());
                     return database;
                 }).block();
@@ -87,11 +85,11 @@ public class AadAuthorizationTests extends TestSuiteBase {
             // CREATE collection
             assert db != null;
             String containerName = UUID.randomUUID().toString();
-            CosmosContainerResponse containerResponse = db.createContainer(containerName, PARTITION_KEY_PATH_1).block();
+            CosmosContainerResponse containerResponse = cosmosAsyncClient.getDatabase(databaseId).createContainer(containerName, PARTITION_KEY_PATH).block();
 
             CosmosAsyncContainer container = db.getContainer(containerName).read()
                 .map(cosmosContainerResponse -> {
-                    CosmosAsyncContainer container1 = cosmosAsyncClient.getDatabase(databaseId).getContainer(cosmosContainerResponse.getProperties().getId());
+                    CosmosAsyncContainer container1 = cosmosAadClient.getDatabase(databaseId).getContainer(cosmosContainerResponse.getProperties().getId());
                     log.info("Found container {} with {}", container1.getId(), cosmosContainerResponse.getProperties().getETag());
                     return container1;
                 }).block();
@@ -100,19 +98,44 @@ public class AadAuthorizationTests extends TestSuiteBase {
             assert container != null;
             String itemName = UUID.randomUUID().toString();
             String partitionKeyValue = UUID.randomUUID().toString();
-            InternalObjectNode properties = getDocumentDefinition(itemName, PARTITION_KEY_PATH_1);
+            InternalObjectNode properties = getDocumentDefinition(itemName, partitionKeyValue);
 
             CosmosItemResponse<InternalObjectNode> cosmosItemResponse = container.createItem(properties, new CosmosItemRequestOptions()).block();
 
             CosmosItemRequestOptions options = new CosmosItemRequestOptions();
             InternalObjectNode item = container
-                .readItem(itemName, new PartitionKey(PARTITION_KEY_PATH_1), options, InternalObjectNode.class)
-                .map(CosmosItemResponse::getItem).block();
-
+                .readItem(itemName, new PartitionKey(partitionKeyValue), options, InternalObjectNode.class)
+                .map(CosmosItemResponse::getItem)
+                .map(jsonNode -> {
+                    log.info("Found item with content: " + jsonNode.toString());
+                    return jsonNode;
+                }).block();
             assert item != null;
+
+            // QUERY document
+            CosmosQueryRequestOptions requestOptions = new CosmosQueryRequestOptions();
+            CosmosPagedFlux<JsonNode> queryPagedFlux = container
+                .queryItems("SELECT * FROM c", requestOptions, JsonNode.class);
+            List<JsonNode> feedResponse = queryPagedFlux.byPage()
+                .flatMap(jsonNodeFeedResponse -> {
+                    return Flux.fromIterable(jsonNodeFeedResponse.getResults());
+                }).map(jsonNode -> {
+                    log.info("Found item with content: " + jsonNode.toString());
+                    return jsonNode;
+                })
+                .collectList()
+                .block();
+
+            // DELETE document
+            container.deleteItem(item.getId(), new PartitionKey(partitionKeyValue));
+
         } finally {
             if (db != null) {
-                safeDeleteDatabase(db);
+                cosmosAsyncClient.getDatabase(databaseId).delete().block();
+            }
+
+            if (cosmosAadClient != null) {
+                safeClose(cosmosAadClient);
             }
 
             if (cosmosAsyncClient != null) {
@@ -120,7 +143,7 @@ public class AadAuthorizationTests extends TestSuiteBase {
             }
         }
 
-        Thread.sleep(10000);
+        Thread.sleep(5000);
     }
 
     private InternalObjectNode getDocumentDefinition(String itemId, String partitionKeyValue) {
