@@ -41,8 +41,8 @@ public class ClientStore {
     private HashMap<String, ConfigurationAsyncClient> clients;
 
     public ClientStore(AppConfigurationProviderProperties appProperties, ConnectionPool pool,
-            AppConfigurationCredentialProvider tokenCredentialProvider,
-            ConfigurationClientBuilderSetup clientProvider) {
+        AppConfigurationCredentialProvider tokenCredentialProvider,
+        ConfigurationClientBuilderSetup clientProvider) {
         this.appProperties = appProperties;
         this.pool = pool;
         this.tokenCredentialProvider = tokenCredentialProvider;
@@ -55,42 +55,42 @@ public class ClientStore {
             return clients.get(store);
         }
         ExponentialBackoff retryPolicy = new ExponentialBackoff(appProperties.getMaxRetries(),
-                Duration.ofMillis(800), Duration.ofSeconds(8));
+            Duration.ofMillis(800), Duration.ofSeconds(8));
         ConfigurationClientBuilder builder = getBuilder()
-                .addPolicy(new BaseAppConfigurationPolicy())
-                .retryPolicy(new RetryPolicy(retryPolicy));
+            .addPolicy(new BaseAppConfigurationPolicy())
+            .retryPolicy(new RetryPolicy(retryPolicy));
 
         TokenCredential tokenCredential = null;
         Connection connection = pool.get(store);
 
         String endpoint = Optional.ofNullable(connection)
-                .map(Connection::getEndpoint)
-                .orElse(null);
+            .map(Connection::getEndpoint)
+            .orElse(null);
 
         if (tokenCredentialProvider != null) {
             tokenCredential = tokenCredentialProvider.getAppConfigCredential(endpoint);
         }
 
         String clientId = Optional.ofNullable(connection)
-                .map(Connection::getClientId)
-                .orElse(null);
+            .map(Connection::getClientId)
+            .orElse(null);
         boolean clientIdIsPresent = StringUtils.isNotEmpty(clientId);
         boolean tokenCredentialIsPresent = tokenCredential != null;
         boolean connectionStringIsPresent = Optional.ofNullable(connection)
-                .map(Connection::getConnectionString)
-                .filter(StringUtils::isNotEmpty)
-                .isPresent();
+            .map(Connection::getConnectionString)
+            .filter(StringUtils::isNotEmpty)
+            .isPresent();
         boolean endPointIsPresent = Optional.ofNullable(connection)
-                .map(Connection::getEndpoint)
-                .filter(StringUtils::isNotEmpty)
-                .isPresent();
+            .map(Connection::getEndpoint)
+            .filter(StringUtils::isNotEmpty)
+            .isPresent();
         if ((tokenCredentialIsPresent || clientIdIsPresent)
-                && connectionStringIsPresent) {
+            && connectionStringIsPresent) {
             throw new IllegalArgumentException(
-                    "More than 1 Conncetion method was set for connecting to App Configuration.");
+                "More than 1 Conncetion method was set for connecting to App Configuration.");
         } else if (tokenCredential != null && clientIdIsPresent) {
             throw new IllegalArgumentException(
-                    "More than 1 Conncetion method was set for connecting to App Configuration.");
+                "More than 1 Conncetion method was set for connecting to App Configuration.");
         }
 
         if (tokenCredential != null) {
@@ -101,17 +101,16 @@ public class ClientStore {
             // User Assigned Identity - Client ID through configuration file.
             LOGGER.debug("Connecting to " + endpoint + " using Client ID from configuration file.");
             ManagedIdentityCredentialBuilder micBuilder = new ManagedIdentityCredentialBuilder()
-                    .clientId(clientId);
+                .clientId(clientId);
             builder.credential(micBuilder.build());
         } else if (connectionStringIsPresent) {
             // Connection String
             LOGGER.debug("Connecting to " + endpoint + " using Connecting String.");
             builder.connectionString(connection.getConnectionString());
         } else if (endPointIsPresent) {
-            // System Assigned Identity. Needs to be checked last as all of the above
-            // should have a Endpoint.
+            // System Assigned Identity. Needs to be checked last as all of the above should have a Endpoint.
             LOGGER.debug("Connecting to " + endpoint
-                    + " using Azure System Assigned Identity or Azure User Assigned Identity.");
+                + " using Azure System Assigned Identity or Azure User Assigned Identity.");
             ManagedIdentityCredentialBuilder micBuilder = new ManagedIdentityCredentialBuilder();
             builder.credential(micBuilder.build());
         } else {
@@ -129,11 +128,10 @@ public class ClientStore {
     }
 
     /**
-     * Gets the latest Configuration Setting from the revisions given config store that
-     * match the Setting Selector criteria.
+     * Gets the latest Configuration Setting from the revisions given config store that match the Setting Selector
+     * criteria.
      *
-     * @param settingSelector Information on which setting to pull. i.e. number of
-     * results, key value...
+     * @param settingSelector Information on which setting to pull. i.e. number of results, key value...
      * @param storeName Name of the App Configuration store to query against.
      * @return List of Configuration Settings.
      */
@@ -143,11 +141,9 @@ public class ClientStore {
     }
 
     /**
-     * Gets a list of Configuration Settings from the given config store that match the
-     * Setting Selector criteria.
+     * Gets a list of Configuration Settings from the given config store that match the Setting Selector criteria.
      *
-     * @param settingSelector Information on which setting to pull. i.e. number of
-     * results, key value...
+     * @param settingSelector Information on which setting to pull. i.e. number of results, key value...
      * @param storeName Name of the App Configuration store to query against.
      * @return List of Configuration Settings.
      */

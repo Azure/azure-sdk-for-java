@@ -47,7 +47,7 @@ class JsonConfigurationParser {
     }
 
     static HashMap<String, Object> parseJsonSetting(ConfigurationSetting setting)
-            throws JsonMappingException, JsonProcessingException {
+        throws JsonMappingException, JsonProcessingException {
         HashMap<String, Object> settings = new HashMap<String, Object>();
         ObjectMapper jsonMapper = new ObjectMapper();
         JsonNode json = jsonMapper.readTree(setting.getValue());
