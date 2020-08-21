@@ -58,7 +58,6 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     /**
      * Creates a new AMQP connection that uses proton-j.
      *
-     * @param applicationId applicationId to be used in user agent while making connection.
      * @param connectionId Identifier for the connection.
      * @param connectionOptions A set of options used to create the AMQP connection.
      * @param reactorProvider Provides proton-j reactor instances.
@@ -66,11 +65,11 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      * @param tokenManagerProvider Provides a token manager for authorizing with CBS node.
      * @param messageSerializer Serializes and deserializes proton-j messages.
      */
-    public ServiceBusReactorAmqpConnection(String applicationId, String connectionId, ConnectionOptions connectionOptions,
+    public ServiceBusReactorAmqpConnection(String connectionId, ConnectionOptions connectionOptions,
         ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
         TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer, String product,
         String clientVersion) {
-        super(applicationId, connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider,
+        super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider,
             messageSerializer, product, clientVersion, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST);
 
         this.connectionId = connectionId;

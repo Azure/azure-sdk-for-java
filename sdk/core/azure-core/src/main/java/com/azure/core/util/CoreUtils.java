@@ -3,6 +3,8 @@
 
 package com.azure.core.util;
 
+import com.azure.core.ClientOptions;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Publisher;
@@ -248,5 +250,47 @@ public final class CoreUtils {
                 return new String(bytes, StandardCharsets.UTF_8);
             }
         }
+    }
+
+    /**
+     * Validate applicationId and return it based on following rule.
+     *
+     * 1.If {@code runtimeException} is not {@code null} and {@code  applicationId} has different value in
+     * {@link HttpLogOptions} and {@link ClientOptions}, It will log and throw this exception.
+     * 2. Prioritize {@code applicationId} set in ClientOptions over {@link HttpLogOptions}.
+     *
+     * @param logOptions provided {@link HttpLogOptions}.
+     * @param clientOptions provided {@link ClientOptions}.
+     * @param runtimeException if this function need to throw. The {@code null} value represent: It will not throw if
+     * {@code applicationId} is different in {@link HttpLogOptions} and {@link ClientOptions}.
+     * @return applicationId based on rule explained above.
+     *
+     * @throws RuntimeException If {@code runtimeException} is not {@code null} and {@code  applicationId} is different
+     * in {@link HttpLogOptions} and {@link ClientOptions}
+     */
+    public static String validateApplicationId(HttpLogOptions logOptions, ClientOptions clientOptions,
+        RuntimeException runtimeException) {
+
+        String applicationId;
+        String logApplicationId = null;
+        String clientApplicationId = null;
+
+        if (logOptions != null) {
+            logApplicationId = logOptions.getApplicationId();
+        }
+        if (clientOptions != null) {
+            clientApplicationId = clientOptions.getApplicationId();
+        }
+
+        // Check applicationId in both location , if present, should be same.
+        if (runtimeException != null && logApplicationId != null && clientApplicationId != null
+            && !clientApplicationId.equalsIgnoreCase(logApplicationId)) {
+            ClientLogger logger = new ClientLogger(CoreUtils.class);
+            throw logger.logExceptionAsError(runtimeException);
+        }
+        // We prioritize application id sent in ClientOptions.
+        applicationId = clientApplicationId != null ? clientApplicationId : logApplicationId;
+
+        return applicationId;
     }
 }

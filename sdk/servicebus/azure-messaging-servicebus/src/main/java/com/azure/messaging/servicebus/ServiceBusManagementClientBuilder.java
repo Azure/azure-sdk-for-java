@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.ClientOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
@@ -61,6 +62,7 @@ public class ServiceBusManagementClientBuilder {
     private HttpPipelinePolicy retryPolicy;
     private TokenCredential tokenCredential;
     private ServiceBusServiceVersion serviceVersion;
+    private ClientOptions clientOptions;
 
     /**
      * Constructs a builder with the default parameters.
@@ -79,7 +81,8 @@ public class ServiceBusManagementClientBuilder {
      * @return A {@link ServiceBusManagementAsyncClient} with the options set in the builder.
      * @throws NullPointerException if {@code endpoint} has not been set. This is automatically set when {@link
      *     #connectionString(String) connectionString} is set. Or, explicitly through {@link #endpoint(String)}.
-     * @throws IllegalStateException If {@link #connectionString(String) connectionString} has not been set.
+     * @throws IllegalStateException If {@link #connectionString(String) connectionString} has not been set or
+     * applicationId if set in both {@code httpLogOptions} and {@code clientOptions} and not same.
      */
     public ServiceBusManagementAsyncClient buildAsyncClient() {
         if (endpoint == null) {
@@ -252,6 +255,19 @@ public class ServiceBusManagementClientBuilder {
     }
 
     /**
+     * Sets various options on the client. For example application-id which will be used in user-agent while creating
+     * connection with Azure Service Bus.
+     *
+     * @param clientOptions to be set on the client.
+     *
+     * @return The updated {@link ServiceBusManagementClientBuilder} object.
+     */
+    public ServiceBusManagementClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
+        return this;
+    }
+
+    /**
      * Sets the HTTP pipeline to use for the service client.
      *
      * If {@code pipeline} is set, all other settings are ignored, aside from {@link
@@ -302,6 +318,7 @@ public class ServiceBusManagementClientBuilder {
      * Builds a new HTTP pipeline if none is set, or returns a user-provided one.
      *
      * @return A new HTTP pipeline or the user-defined one from {@link #pipeline(HttpPipeline)}.
+     * @throws IllegalStateException if applicationId is not same in httpLogOptions and clientOptions.
      */
     private HttpPipeline createPipeline() {
         if (pipeline != null) {
@@ -317,7 +334,10 @@ public class ServiceBusManagementClientBuilder {
         final String clientName = properties.getOrDefault("name", "UnknownName");
         final String clientVersion = properties.getOrDefault("version", "UnknownVersion");
 
-        httpPolicies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
+        final String applicationId = CoreUtils.validateApplicationId(httpLogOptions, clientOptions,
+            new IllegalStateException("applicationId should be same in httpLogOptions and clientOptions."));
+
+        httpPolicies.add(new UserAgentPolicy(applicationId, clientName, clientVersion,
             buildConfiguration));
         httpPolicies.add(new ServiceBusTokenCredentialHttpPolicy(tokenCredential));
         httpPolicies.add(new AddHeadersFromContextPolicy());
