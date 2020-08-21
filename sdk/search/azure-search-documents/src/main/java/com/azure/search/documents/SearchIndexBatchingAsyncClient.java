@@ -23,6 +23,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
@@ -33,6 +34,7 @@ import static com.azure.core.util.FluxUtil.withContext;
 public class SearchIndexBatchingAsyncClient {
     private static final int DEFAULT_BATCH_SIZE = 1000;
     private static final long DEFAULT_FLUSH_WINDOW = TimeUnit.SECONDS.toMillis(60);
+    private static final int RETRY_LIMIT = 10;
 
     private final SearchAsyncClient client;
     private final boolean autoFlush;
@@ -44,7 +46,7 @@ public class SearchIndexBatchingAsyncClient {
     private final Object actionsMutex = 0;
     private List<IndexAction<?>> actions = new ArrayList<>();
 
-    private TimerTask flushTask;
+    private final AtomicReference<TimerTask> flushTask = new AtomicReference<>();
 
     SearchIndexBatchingAsyncClient(SearchAsyncClient client, Boolean autoFlush, Duration flushWindow,
         Integer batchSize, IndexingHook indexingHook) {
@@ -98,7 +100,7 @@ public class SearchIndexBatchingAsyncClient {
      * @return A reactive response indicating that the documents have been added to the batch.
      */
     public Mono<Void> addUploadActions(Collection<?> documents) {
-        return addActions(createDocumentActions(documents, IndexActionType.UPLOAD));
+        return withContext(context -> createAndAddActions(documents, IndexActionType.UPLOAD, context));
     }
 
     /**
@@ -111,7 +113,7 @@ public class SearchIndexBatchingAsyncClient {
      * @return A reactive response indicating that the documents have been added to the batch.
      */
     public Mono<Void> addDeleteActions(Collection<?> documents) {
-        return addActions(createDocumentActions(documents, IndexActionType.DELETE));
+        return withContext(context -> createAndAddActions(documents, IndexActionType.DELETE, context));
     }
 
     /**
@@ -124,7 +126,7 @@ public class SearchIndexBatchingAsyncClient {
      * @return A reactive response indicating that the documents have been added to the batch.
      */
     public Mono<Void> addMergeActions(Collection<?> documents) {
-        return addActions(createDocumentActions(documents, IndexActionType.MERGE));
+        return withContext(context -> createAndAddActions(documents, IndexActionType.MERGE, context));
     }
 
     /**
@@ -137,7 +139,7 @@ public class SearchIndexBatchingAsyncClient {
      * @return A reactive response indicating that the documents have been added to the batch.
      */
     public Mono<Void> addMergeOrUploadActions(Collection<?> documents) {
-        return addActions(createDocumentActions(documents, IndexActionType.MERGE_OR_UPLOAD));
+        return withContext(context -> createAndAddActions(documents, IndexActionType.MERGE_OR_UPLOAD, context));
     }
 
     /**
@@ -150,6 +152,14 @@ public class SearchIndexBatchingAsyncClient {
      * @return A reactive response indicating that the documents have been added to the batch.
      */
     public Mono<Void> addActions(Collection<IndexAction<?>> actions) {
+        return withContext(context -> addActions(actions, context));
+    }
+
+    Mono<Void> createAndAddActions(Collection<?> documents, IndexActionType actionType, Context context) {
+        return addActions(createDocumentActions(documents, actionType), context);
+    }
+
+    Mono<Void> addActions(Collection<IndexAction<?>> actions, Context context) {
         synchronized (actionsMutex) {
             this.actions.addAll(actions);
         }
@@ -158,17 +168,19 @@ public class SearchIndexBatchingAsyncClient {
             actions.forEach(indexingHook::actionAdded);
         }
 
-        return flushIfNeeded();
+        return processIfNeeded(context);
     }
 
     /**
      * Sends the current batch of documents to be indexed.
      *
-     * @param throwOnAnyFailure Flag indicating if the batch should raise an error if any documents in the batch fail to
-     * index.
      * @return A reactive response that indicates if the flush operation has completed.
      */
-    public Mono<Void> flush(boolean throwOnAnyFailure) {
+    public Mono<Void> flush() {
+        return withContext(this::flush);
+    }
+
+    Mono<Void> flush(Context context) {
         List<IndexAction<?>> actions;
         synchronized (actionsMutex) {
             actions = this.actions;
@@ -180,7 +192,7 @@ public class SearchIndexBatchingAsyncClient {
             .collect(Collectors.toList());
 
         AtomicBoolean hasError = new AtomicBoolean(false);
-        return withContext(context -> flushInternal(convertedActions, 0, throwOnAnyFailure, context)
+        return flushInternal(convertedActions, 0, context)
             .map(response -> {
                 handleResponse(actions, response.getResults(), response.getOffset());
                 if (response.isError()) {
@@ -191,7 +203,7 @@ public class SearchIndexBatchingAsyncClient {
             })
             .thenEmpty(Mono.defer(() -> hasError.get()
                 ? Mono.error(new RuntimeException("Batching has encountered errors"))
-                : Mono.empty())));
+                : Mono.empty()));
     }
 
     /*
@@ -200,8 +212,8 @@ public class SearchIndexBatchingAsyncClient {
      */
     private Flux<IndexBatchResponse> flushInternal(
         List<com.azure.search.documents.implementation.models.IndexAction> actions, int actionsOffset,
-        boolean throwOnAnyError, Context context) {
-        return client.indexDocumentsWithResponse(actions, throwOnAnyError, context)
+        Context context) {
+        return client.indexDocumentsWithResponse(actions, true, context)
             .flatMapMany(response -> Flux
                 .just(new IndexBatchResponse(response.getValue().getResults(), actionsOffset, actions.size(), false)))
             .onErrorResume(IndexBatchException.class, exception -> Flux
@@ -220,8 +232,8 @@ public class SearchIndexBatchingAsyncClient {
 
                     int splitOffset = Math.round(actionCount / 2.0f);
                     return Flux.concat(
-                        flushInternal(actions.subList(0, splitOffset), 0, throwOnAnyError, context),
-                        flushInternal(actions.subList(splitOffset, actionCount), splitOffset, throwOnAnyError, context)
+                        flushInternal(actions.subList(0, splitOffset), 0, context),
+                        flushInternal(actions.subList(splitOffset, actionCount), splitOffset, context)
                     );
                 }
 
@@ -251,26 +263,24 @@ public class SearchIndexBatchingAsyncClient {
     }
 
     private void rescheduleFlushTask() {
-        /*
-         * If there is a current flush task cancel and nullify it. This will allow for the auto-flush timer to garbage
-         * collect it. If the task has already executed cancel won't do anything.
-         */
-        if (this.flushTask != null) {
-            this.flushTask.cancel();
-            this.flushTask = null;
-        }
 
-        this.flushTask = new TimerTask() {
+        TimerTask newTask = new TimerTask() {
             @Override
             public void run() {
-                flush(false);
+                flush();
             }
         };
 
-        this.autoFlushTimer.schedule(flushTask, flushWindowMillis);
+        // If the previous flush task exists cancel it. If it has already executed cancel does nothing.
+        TimerTask previousTask = this.flushTask.getAndSet(newTask);
+        if (previousTask != null) {
+            previousTask.cancel();
+        }
+
+        this.autoFlushTimer.schedule(newTask, flushWindowMillis);
     }
 
-    private Mono<Void> flushIfNeeded() {
+    private Mono<Void> processIfNeeded(Context context) {
         if (!this.autoFlush) {
             return Mono.empty();
         }
@@ -281,7 +291,7 @@ public class SearchIndexBatchingAsyncClient {
             return Mono.empty();
         }
 
-        return flush(false);
+        return flush(context);
     }
 
     /**
@@ -290,14 +300,20 @@ public class SearchIndexBatchingAsyncClient {
      * @return A reactive response indicating that the batch has been closed.
      */
     public Mono<Void> close() {
-        if (autoFlush) {
-            flushTask.cancel();
-            flushTask = null;
+        return withContext(this::close);
+    }
+
+    Mono<Void> close(Context context) {
+        if (this.autoFlush) {
+            TimerTask currentTask = flushTask.get();
+            if (currentTask != null) {
+                currentTask.cancel();
+            }
 
             autoFlushTimer.cancel();
         }
 
-        return flush(false);
+        return flush(context);
     }
 
     private static Collection<IndexAction<?>> createDocumentActions(Collection<?> documents,

@@ -3,14 +3,19 @@
 
 package com.azure.search.documents;
 
+import com.azure.core.util.Context;
 import com.azure.search.documents.models.IndexAction;
+import com.azure.search.documents.models.IndexActionType;
 
+import java.time.Duration;
 import java.util.Collection;
 
 /**
  *
  */
 public class SearchIndexBatchingClient {
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofDays(1);
+
     private final SearchIndexBatchingAsyncClient client;
 
     SearchIndexBatchingClient(SearchIndexBatchingAsyncClient client) {
@@ -24,26 +29,6 @@ public class SearchIndexBatchingClient {
      */
     public Collection<IndexAction<?>> getActions() {
         return client.getActions();
-    }
-
-    /**
-     * Gets the list of {@link IndexAction IndexActions} in the batch that have been successfully indexed.
-     *
-     * @return The list of {@link IndexAction IndexActions} in the batch that have been successfully indexed.
-     */
-    public Collection<IndexAction<?>> getSucceededActions() {
-        return client.getSucceededActions();
-    }
-
-    /**
-     * Gets the list of {@link IndexAction IndexActions} in the batch that have failed indexing and aren't able to be
-     * retried.
-     *
-     * @return The list of {@link IndexAction IndexActions} in the batch that have failed indexing and aren't able to be
-     * retried.
-     */
-    public Collection<IndexAction<?>> getFailedActions() {
-        return client.getFailedActions();
     }
 
     /**
@@ -64,7 +49,21 @@ public class SearchIndexBatchingClient {
      * @param documents Documents to be uploaded.
      */
     public void addUploadActions(Collection<?> documents) {
-        client.addUploadActions(documents).block();
+        addUploadActions(documents, DEFAULT_TIMEOUT, Context.NONE);
+    }
+
+    /**
+     * Adds upload document actions to the batch.
+     * <p>
+     * If the client is enabled for automatic batch sending, adding documents may trigger the batch to be sent for
+     * indexing.
+     *
+     * @param documents Documents to be uploaded.
+     * @param timeout Duration before the operation times out.
+     * @param context Additional context that is passed through the HTTP pipeline.
+     */
+    public void addUploadActions(Collection<?> documents, Duration timeout, Context context) {
+        client.createAndAddActions(documents, IndexActionType.UPLOAD, context).block(timeout);
     }
 
     /**
@@ -76,7 +75,21 @@ public class SearchIndexBatchingClient {
      * @param documents Documents to be deleted.
      */
     public void addDeleteActions(Collection<?> documents) {
-        client.addDeleteActions(documents).block();
+        addDeleteActions(documents, DEFAULT_TIMEOUT, Context.NONE);
+    }
+
+    /**
+     * Adds delete document actions to the batch.
+     * <p>
+     * If the client is enabled for automatic batch sending, adding documents may trigger the batch to be sent for
+     * indexing.
+     *
+     * @param documents Documents to be deleted.
+     * @param timeout Duration before the operation times out.
+     * @param context Additional context that is passed through the HTTP pipeline.
+     */
+    public void addDeleteActions(Collection<?> documents, Duration timeout, Context context) {
+        client.createAndAddActions(documents, IndexActionType.DELETE, context).block(timeout);
     }
 
     /**
@@ -88,7 +101,21 @@ public class SearchIndexBatchingClient {
      * @param documents Documents to be merged.
      */
     public void addMergeActions(Collection<?> documents) {
-        client.addMergeActions(documents).block();
+        addMergeActions(documents, DEFAULT_TIMEOUT, Context.NONE);
+    }
+
+    /**
+     * Adds merge document actions to the batch.
+     * <p>
+     * If the client is enabled for automatic batch sending, adding documents may trigger the batch to be sent for
+     * indexing.
+     *
+     * @param documents Documents to be merged.
+     * @param timeout Duration before the operation times out.
+     * @param context Additional context that is passed through the HTTP pipeline.
+     */
+    public void addMergeActions(Collection<?> documents, Duration timeout, Context context) {
+        client.createAndAddActions(documents, IndexActionType.MERGE, context).block(timeout);
     }
 
     /**
@@ -100,7 +127,21 @@ public class SearchIndexBatchingClient {
      * @param documents Documents to be merged or uploaded.
      */
     public void addMergeOrUploadActions(Collection<?> documents) {
-        client.addMergeOrUploadActions(documents).block();
+        addMergeOrUploadActions(documents, DEFAULT_TIMEOUT, Context.NONE);
+    }
+
+    /**
+     * Adds merge or upload document actions to the batch.
+     * <p>
+     * If the client is enabled for automatic batch sending, adding documents may trigger the batch to be sent for
+     * indexing.
+     *
+     * @param documents Documents to be merged or uploaded.
+     * @param timeout Duration before the operation times out.
+     * @param context Additional context that is passed through the HTTP pipeline.
+     */
+    public void addMergeOrUploadActions(Collection<?> documents, Duration timeout, Context context) {
+        client.createAndAddActions(documents, IndexActionType.MERGE_OR_UPLOAD, context).block(timeout);
     }
 
     /**
@@ -112,23 +153,54 @@ public class SearchIndexBatchingClient {
      * @param actions Index actions.
      */
     public void addActions(Collection<IndexAction<?>> actions) {
-        client.addActions(actions).block();
+        addActions(actions, DEFAULT_TIMEOUT, Context.NONE);
+    }
+
+    /**
+     * Adds document index actions to the batch.
+     * <p>
+     * If the client is enabled for automatic batch sending, adding documents may trigger the batch to be sent for
+     * indexing.
+     *
+     * @param actions Index actions.
+     * @param timeout Duration before the operation times out.
+     * @param context Additional context that is passed through the HTTP pipeline.
+     */
+    public void addActions(Collection<IndexAction<?>> actions, Duration timeout, Context context) {
+        client.addActions(actions, context).block(timeout);
+    }
+
+    /**
+     * Sends the current batch of documents to be indexed.
+     */
+    public void flush() {
+        flush(DEFAULT_TIMEOUT, Context.NONE);
     }
 
     /**
      * Sends the current batch of documents to be indexed.
      *
-     * @param throwOnAnyFailure Flag indicating if the batch should raise an error if any documents in the batch fail to
-     * index.
+     * @param timeout Duration before the operation times out.
+     * @param context Additional context that is passed through the HTTP pipeline.
      */
-    public void flush(boolean throwOnAnyFailure) {
-        client.flush(throwOnAnyFailure);
+    public void flush(Duration timeout, Context context) {
+        client.flush(context).block(timeout);
     }
 
     /**
      * Closes the batch, any documents remaining in the batch will be sent to the Search index for indexing.
      */
     public void close() {
-        client.close();
+        close(DEFAULT_TIMEOUT, Context.NONE);
+    }
+
+    /**
+     * Closes the batch, any documents remaining in the batch sill be sent to the Search index for indexing.
+     *
+     * @param timeout Duration before the operation times out.
+     * @param context Additional context that is passed through the HTTP pipeline.
+     */
+    public void close(Duration timeout, Context context) {
+        client.close(context).block(timeout);
     }
 }
