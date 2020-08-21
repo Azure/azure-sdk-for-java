@@ -566,11 +566,11 @@ public interface AsyncDocumentClient {
      * The {@link Mono} upon successful completion will contain a single resource response for the deleted document.
      * In case of failure the {@link Mono} will error.
      *
-     * @param document the document to delete (containing the document id).
+     * @param internalObjectNode the internalObjectNode to delete (containing the id).
      * @param options  the request options.
      * @return a {@link Mono} containing the single resource response for the deleted document or an error.
      */
-    Mono<ResourceResponse<Document>> deleteDocument(String documentLink, Document document, RequestOptions options);
+    Mono<ResourceResponse<Document>> deleteDocument(String documentLink, InternalObjectNode internalObjectNode, RequestOptions options);
 
     /**
      * Reads a document

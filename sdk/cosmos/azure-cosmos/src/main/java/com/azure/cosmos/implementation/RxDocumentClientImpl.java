@@ -1055,13 +1055,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             // For backward compatibility, if collection doesn't have partition key defined, we assume all documents
             // have empty value for it and user doesn't need to specify it explicitly.
             partitionKeyInternal = PartitionKeyInternal.getEmpty();
-        } else if (contentAsByteBuffer != null) {
+        } else if (contentAsByteBuffer != null || objectDoc != null) {
             InternalObjectNode internalObjectNode;
             if (objectDoc instanceof InternalObjectNode) {
                 internalObjectNode = (InternalObjectNode) objectDoc;
-            } else {
+            } else if (contentAsByteBuffer != null) {
                 contentAsByteBuffer.rewind();
                 internalObjectNode = new InternalObjectNode(contentAsByteBuffer);
+            } else {
+                //  This is a safety check, this should not happen ever.
+                //  If it does, it is a SDK bug
+                throw new IllegalStateException("ContentAsByteBuffer and objectDoc are null");
             }
 
             Instant serializationStartTime = Instant.now();
@@ -1428,13 +1432,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Mono<ResourceResponse<Document>> deleteDocument(String documentLink, Document document, RequestOptions options) {
+    public Mono<ResourceResponse<Document>> deleteDocument(String documentLink, InternalObjectNode internalObjectNode, RequestOptions options) {
         DocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
-        return ObservableHelper.inlineIfPossibleAsObs(() -> deleteDocumentInternal(documentLink, document, options, requestRetryPolicy),
+        return ObservableHelper.inlineIfPossibleAsObs(() -> deleteDocumentInternal(documentLink, internalObjectNode, options, requestRetryPolicy),
             requestRetryPolicy);
     }
 
-    private Mono<ResourceResponse<Document>> deleteDocumentInternal(String documentLink, Document document, RequestOptions options,
+    private Mono<ResourceResponse<Document>> deleteDocumentInternal(String documentLink, InternalObjectNode internalObjectNode, RequestOptions options,
                                                                     DocumentClientRetryPolicy retryPolicyInstance) {
         try {
             if (StringUtils.isEmpty(documentLink)) {
@@ -1444,33 +1448,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             logger.debug("Deleting a Document. documentLink: [{}]", documentLink);
             String path = Utils.joinPath(documentLink, null);
             Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.Document, OperationType.Delete);
-            RxDocumentServiceRequest request;
-            ByteBuffer content = null;
-            if (document != null) {
-                Instant serializationStartTimeUTC = Instant.now();
-                content = serializeJsonToByteBuffer(document);
-                Instant serializationEndTime = Instant.now();
-                SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
-                    serializationStartTimeUTC,
-                    serializationEndTime,
-                    SerializationDiagnosticsContext.SerializationType.ITEM_SERIALIZATION);
-                request = RxDocumentServiceRequest.create(OperationType.Delete,
-                    ResourceType.Document, path, requestHeaders, options, content);
-                SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosDiagnostics);
-                if (serializationDiagnosticsContext != null) {
-                    serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
-                }
-            } else {
-                request = RxDocumentServiceRequest.create(OperationType.Delete,
-                    ResourceType.Document, path, requestHeaders, options);
-            }
+            RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Delete,
+                ResourceType.Document, path, requestHeaders, options);
             if (retryPolicyInstance != null) {
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
             Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
 
-            Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, content, document, options, collectionObs);
+            Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, internalObjectNode, options, collectionObs);
 
             return requestObs.flatMap(req -> {
                 return this.delete(req, retryPolicyInstance)

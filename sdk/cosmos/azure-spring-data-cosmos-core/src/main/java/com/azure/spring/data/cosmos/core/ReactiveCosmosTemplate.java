@@ -4,10 +4,12 @@
 package com.azure.spring.data.cosmos.core;
 
 import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
@@ -317,8 +319,6 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      * @return Mono with the item or error
      */
     public <T> Mono<T> insert(T objectToSave, PartitionKey partitionKey) {
-        Assert.notNull(objectToSave, "domainType should not be null");
-
         return insert(getContainerName(objectToSave.getClass()), objectToSave, partitionKey);
     }
 
@@ -330,24 +330,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      * @return Mono with the item or error
      */
     public <T> Mono<T> insert(T objectToSave) {
-        Assert.notNull(objectToSave, "objectToSave should not be null");
-
-        final Class<T> domainType = (Class<T>) objectToSave.getClass();
-        generateIdIfNullAndAutoGenerationEnabled(objectToSave, domainType);
-        final JsonNode originalItem =
-            mappingCosmosConverter.writeJsonNode(objectToSave);
-        return cosmosAsyncClient.getDatabase(this.databaseName)
-                                .getContainer(getContainerName(objectToSave.getClass()))
-                                .createItem(originalItem, new CosmosItemRequestOptions())
-                                .publishOn(Schedulers.parallel())
-                                .onErrorResume(throwable ->
-                                    CosmosExceptionUtils.exceptionHandler("Failed to insert item", throwable))
-                                .flatMap(cosmosItemResponse -> {
-                                    CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
-                                        cosmosItemResponse.getDiagnostics(), null);
-                                    return Mono.just(toDomainObject(domainType,
-                                        cosmosItemResponse.getItem()));
-                                });
+        return insert(getContainerName(objectToSave.getClass()), objectToSave, null);
     }
 
     /**
@@ -368,21 +351,24 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         generateIdIfNullAndAutoGenerationEnabled(objectToSave, domainType);
         final JsonNode originalItem = prepareToPersistAndConvertToItemProperties(objectToSave);
         final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+        CosmosAsyncContainer cosmosAsyncContainer = cosmosAsyncClient.getDatabase(this.databaseName)
+                                                                     .getContainer(containerName);
+        Mono<CosmosItemResponse<JsonNode>> item;
         if (partitionKey == null) {
-            partitionKey = PartitionKey.NONE;
+            //  if the partition key is null, SDK will get the partitionKey from the object
+            item = cosmosAsyncContainer.createItem(originalItem, options);
+        } else {
+            item = cosmosAsyncContainer.createItem(originalItem, partitionKey, options);
         }
-        return cosmosAsyncClient.getDatabase(this.databaseName)
-                                .getContainer(containerName)
-                                .createItem(originalItem, partitionKey, options)
-                                .publishOn(Schedulers.parallel())
-                                .onErrorResume(throwable ->
-                                    CosmosExceptionUtils.exceptionHandler("Failed to insert item", throwable))
-                                .flatMap(cosmosItemResponse -> {
-                                    CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
-                                        cosmosItemResponse.getDiagnostics(), null);
-                                    return Mono.just(toDomainObject(domainType,
-                                        cosmosItemResponse.getItem()));
-                                });
+
+        return item.publishOn(Schedulers.parallel())
+                   .onErrorResume(throwable ->
+                       CosmosExceptionUtils.exceptionHandler("Failed to insert item", throwable))
+                   .flatMap(cosmosItemResponse -> {
+                       CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
+                           cosmosItemResponse.getDiagnostics(), null);
+                       return Mono.just(toDomainObject(domainType, cosmosItemResponse.getItem()));
+                   });
     }
 
     /**
@@ -395,25 +381,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      */
     @Override
     public <T> Mono<T> insert(String containerName, T objectToSave) {
-        Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
-        Assert.notNull(objectToSave, "objectToSave should not be null");
-
-        final Class<T> domainType = (Class<T>) objectToSave.getClass();
-        generateIdIfNullAndAutoGenerationEnabled(objectToSave, domainType);
-        final JsonNode originalItem = prepareToPersistAndConvertToItemProperties(objectToSave);
-        final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-        return cosmosAsyncClient.getDatabase(this.databaseName)
-                                .getContainer(containerName)
-                                .createItem(originalItem, options)
-                                .publishOn(Schedulers.parallel())
-                                .onErrorResume(throwable ->
-                                    CosmosExceptionUtils.exceptionHandler("Failed to insert item", throwable))
-                                .flatMap(cosmosItemResponse -> {
-                                    CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
-                                        cosmosItemResponse.getDiagnostics(), null);
-                                    return Mono.just(toDomainObject(domainType,
-                                        cosmosItemResponse.getItem()));
-                                });
+        return insert(getContainerName(objectToSave.getClass()), objectToSave, null);
     }
 
     @SuppressWarnings("unchecked")

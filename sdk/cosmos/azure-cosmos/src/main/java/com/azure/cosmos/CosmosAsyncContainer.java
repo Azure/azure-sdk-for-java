@@ -625,8 +625,8 @@ public class CosmosAsyncContainer {
             options = new CosmosItemRequestOptions();
         }
         RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(options);
-        Document doc = InternalObjectNode.fromObject(item);
-        return withContext(context -> deleteItemInternal(doc.getId(), doc, requestOptions, context));
+        InternalObjectNode internalObjectNode = InternalObjectNode.fromObjectToInternalObjectNode(item);
+        return withContext(context -> deleteItemInternal(internalObjectNode.getId(), internalObjectNode, requestOptions, context));
     }
 
     private String getItemLink(String itemId) {
@@ -759,12 +759,12 @@ public class CosmosAsyncContainer {
 
     private Mono<CosmosItemResponse<Object>> deleteItemInternal(
         String itemId,
-        Document document,
+        InternalObjectNode internalObjectNode,
         RequestOptions requestOptions,
         Context context) {
         Mono<CosmosItemResponse<Object>> responseMono = this.getDatabase()
             .getDocClientWrapper()
-            .deleteDocument(getItemLink(itemId), document, requestOptions)
+            .deleteDocument(getItemLink(itemId), internalObjectNode, requestOptions)
             .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponseWithObjectType(response))
             .single();
         return database.getClient().getTracerProvider().traceEnabledCosmosItemResponsePublisher(responseMono,

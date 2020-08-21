@@ -149,9 +149,20 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      * @return the inserted item
      */
     public <T> T insert(T objectToSave, PartitionKey partitionKey) {
-        Assert.notNull(objectToSave, "domainType should not be null");
-
         return insert(getContainerName(objectToSave.getClass()), objectToSave, partitionKey);
+    }
+
+    /**
+     * Inserts item into the given container
+     *
+     * @param containerName must not be {@literal null}
+     * @param objectToSave must not be {@literal null}
+     * @param <T> type class of domain type
+     * @return the inserted item
+     */
+    @Override
+    public <T> T insert(String containerName, T objectToSave) {
+        return insert(getContainerName(objectToSave.getClass()), objectToSave, null);
     }
 
     /**
@@ -178,50 +189,16 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
         final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
 
-        final CosmosItemResponse<JsonNode> response = cosmosAsyncClient
-            .getDatabase(this.databaseName)
-            .getContainer(containerName)
-            .createItem(originalItem, partitionKey, options)
-            .publishOn(Schedulers.parallel())
-            .doOnNext(cosmosItemResponse ->
-                CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
-                    cosmosItemResponse.getDiagnostics(), null))
-            .onErrorResume(throwable ->
-                CosmosExceptionUtils.exceptionHandler("Failed to insert item", throwable))
-            .block();
-
-        assert response != null;
-        return toDomainObject(domainType, response.getItem());
-    }
-
-    /**
-     * Inserts item into the given container
-     *
-     * @param containerName must not be {@literal null}
-     * @param objectToSave must not be {@literal null}
-     * @param <T> type class of domain type
-     * @return the inserted item
-     */
-    @Override
-    public <T> T insert(String containerName, T objectToSave) {
-        Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
-        Assert.notNull(objectToSave, "objectToSave should not be null");
-
-        @SuppressWarnings("unchecked") final Class<T> domainType = (Class<T>) objectToSave.getClass();
-
-        generateIdIfNullAndAutoGenerationEnabled(objectToSave, domainType);
-
-        final JsonNode originalItem = prepareToPersistAndConvertToItemProperties(objectToSave);
-
-        LOGGER.debug("execute createItem in database {} container {}", this.databaseName,
-            containerName);
-
-        final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-
-        final CosmosItemResponse<JsonNode> response = cosmosAsyncClient
-            .getDatabase(this.databaseName)
-            .getContainer(containerName)
-            .createItem(originalItem, options)
+        CosmosAsyncContainer cosmosAsyncContainer = cosmosAsyncClient.getDatabase(this.databaseName)
+                                                          .getContainer(containerName);
+        Mono<CosmosItemResponse<JsonNode>> item;
+        if (partitionKey == null) {
+            //  if the partition key is null, SDK will get the partitionKey from the object
+            item = cosmosAsyncContainer.createItem(originalItem, options);
+        } else {
+            item = cosmosAsyncContainer.createItem(originalItem, partitionKey, options);
+        }
+        final CosmosItemResponse<JsonNode> response = item
             .publishOn(Schedulers.parallel())
             .doOnNext(cosmosItemResponse ->
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
