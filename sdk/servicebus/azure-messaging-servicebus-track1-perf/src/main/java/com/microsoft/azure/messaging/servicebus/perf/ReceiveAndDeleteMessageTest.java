@@ -40,7 +40,7 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
     }
 
     private Mono<Void> sendMessage() {
-        return Mono.defer(() -> {
+        return Mono.fromCallable(() -> {
             int total = options.getParallel() * options.getMessagesToSend() * TOTAL_MESSAGE_MULTIPLIER;
 
             List<Message> messages = new ArrayList<>();
@@ -49,7 +49,8 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
                 message.setMessageId(UUID.randomUUID().toString());
                 messages.add(message);
             }
-            return Mono.fromFuture(sender.sendBatchAsync(messages));
+
+            return sender.sendBatchAsync(messages).get();
         });
     }
 

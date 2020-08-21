@@ -35,7 +35,7 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
     }
 
     private Mono<Void> sendMessage() {
-        return Mono.defer(() -> {
+        return Mono.fromCallable(() -> {
             int total = options.getParallel() * options.getMessagesToSend() * TOTAL_MESSAGE_MULTIPLIER;
             List<Message> messages = new ArrayList<>();
             for (int i = 0; i < total; ++i) {
@@ -43,7 +43,7 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
                 message.setMessageId(UUID.randomUUID().toString());
                 messages.add(message);
             }
-            return Mono.fromFuture(sender.sendBatchAsync(messages));
+            return sender.sendBatchAsync(messages).get();
         });
     }
 
