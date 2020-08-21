@@ -25,9 +25,9 @@ input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/
 #When generating from the local copy:
 #input-file: 2020-05-31-preview/digitaltwins.json
 
-output-folder: "../"
+output-folder: "./"
 license-header: MICROSOFT_MIT_SMALL
-use: '@autorest/java@4.0.1'
+use: '@autorest/java@4.0.2'
 java:
     add-context-parameter: true
     namespace: com.azure.digitaltwins.core

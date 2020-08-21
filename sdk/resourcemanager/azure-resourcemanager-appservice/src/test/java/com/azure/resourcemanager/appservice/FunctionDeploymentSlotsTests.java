@@ -11,20 +11,17 @@ import com.azure.resourcemanager.appservice.models.ConnectionString;
 import com.azure.resourcemanager.appservice.models.ConnectionStringType;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.appservice.models.FunctionDeploymentSlot;
-import com.azure.resourcemanager.appservice.models.JavaVersion;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.PythonVersion;
-import com.azure.resourcemanager.appservice.models.WebContainer;
 import com.azure.resourcemanager.resources.core.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import java.util.Map;
 
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 public class FunctionDeploymentSlotsTests extends AppServiceTest {
-    private String rgName1 = "";
     private String webappName1 = "";
     private String slotName1 = "";
     private String slotName2 = "";
@@ -33,7 +30,7 @@ public class FunctionDeploymentSlotsTests extends AppServiceTest {
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         webappName1 = generateRandomResourceName("java-funcapp-", 20);
-        rgName1 = generateRandomResourceName("javacsmrg", 20);
+        rgName = generateRandomResourceName("javacsmrg", 20);
         slotName1 = generateRandomResourceName("java-slot-", 20);
         slotName2 = generateRandomResourceName("java-slot-", 20);
         slotName3 = generateRandomResourceName("java-slot-", 20);
@@ -41,7 +38,7 @@ public class FunctionDeploymentSlotsTests extends AppServiceTest {
         super.initializeClients(httpPipeline, profile);
     }
 
-    @Disabled("Contains connection string in request payload")
+    @Test
     public void canCRUDFunctionSwapSlots() throws Exception {
         // Create with consumption
         FunctionApp functionApp1 =
@@ -49,14 +46,13 @@ public class FunctionDeploymentSlotsTests extends AppServiceTest {
                 .functionApps()
                 .define(webappName1)
                 .withRegion(Region.US_WEST)
-                .withNewResourceGroup(rgName1)
+                .withNewResourceGroup(rgName)
                 .withNewAppServicePlan(PricingTier.STANDARD_S1)
                 .withAppSetting("appkey", "appvalue")
                 .withStickyAppSetting("stickykey", "stickyvalue")
                 .withConnectionString("connectionName", "connectionValue", ConnectionStringType.CUSTOM)
                 .withStickyConnectionString("stickyName", "stickyValue", ConnectionStringType.CUSTOM)
-                .withJavaVersion(JavaVersion.JAVA_1_7_0_51)
-                .withWebContainer(WebContainer.TOMCAT_7_0_50)
+                .withPythonVersion(PythonVersion.PYTHON_27)
                 .create();
         Assertions.assertNotNull(functionApp1);
         Assertions.assertEquals(Region.US_WEST, functionApp1.region());
@@ -64,35 +60,40 @@ public class FunctionDeploymentSlotsTests extends AppServiceTest {
         Assertions.assertNotNull(plan1);
         Assertions.assertEquals(Region.US_WEST, plan1.region());
 
+        /*
+        IMPORTANT, function app cannot create slot with empty config.
+        "site.withSiteConfig(new SiteConfigInner())" sets the empty config.
+        However service will response with "Function App app settings are not expected to be empty. Please try again with WEBSITE_CONTENTAZUREFILECONNECTIONSTRING as a storage account connection string.: Function App app settings are not expected to be empty. Please try again with WEBSITE_CONTENTAZUREFILECONNECTIONSTRING as a storage account connection string.", if this is done to function app.
+         */
+
         // Create a deployment slot with empty config
         FunctionDeploymentSlot slot1 =
             functionApp1
                 .deploymentSlots()
                 .define(slotName1)
                 .withBrandNewConfiguration()
-                .withPythonVersion(PythonVersion.PYTHON_27)
+                .withPythonVersion(PythonVersion.PYTHON_34)
                 .create();
         Assertions.assertNotNull(slot1);
-        Assertions.assertNotEquals(JavaVersion.JAVA_1_7_0_51, slot1.javaVersion());
-        Assertions.assertEquals(PythonVersion.PYTHON_27, slot1.pythonVersion());
-        Map<String, AppSetting> appSettingMap = slot1.getAppSettings();
-        Assertions.assertFalse(appSettingMap.containsKey("appkey"));
-        Assertions.assertFalse(appSettingMap.containsKey("stickykey"));
-        Map<String, ConnectionString> connectionStringMap = slot1.getConnectionStrings();
-        Assertions.assertFalse(connectionStringMap.containsKey("connectionName"));
-        Assertions.assertFalse(connectionStringMap.containsKey("stickyName"));
+        Assertions.assertEquals(PythonVersion.PYTHON_34, slot1.pythonVersion());
+//        Map<String, AppSetting> appSettingMap = slot1.getAppSettings();
+//        Assertions.assertFalse(appSettingMap.containsKey("appkey"));
+//        Assertions.assertFalse(appSettingMap.containsKey("stickykey"));
+//        Map<String, ConnectionString> connectionStringMap = slot1.getConnectionStrings();
+//        Assertions.assertFalse(connectionStringMap.containsKey("connectionName"));
+//        Assertions.assertFalse(connectionStringMap.containsKey("stickyName"));
 
         // Create a deployment slot with web app's config
         FunctionDeploymentSlot slot2 =
             functionApp1.deploymentSlots().define(slotName2).withConfigurationFromParent().create();
         Assertions.assertNotNull(slot2);
-        Assertions.assertEquals(JavaVersion.JAVA_1_7_0_51, slot2.javaVersion());
-        appSettingMap = slot2.getAppSettings();
+        Assertions.assertEquals(PythonVersion.PYTHON_27, slot2.pythonVersion());
+        Map<String, AppSetting> appSettingMap = slot2.getAppSettings();
         Assertions.assertEquals("appvalue", appSettingMap.get("appkey").value());
         Assertions.assertEquals(false, appSettingMap.get("appkey").sticky());
         Assertions.assertEquals("stickyvalue", appSettingMap.get("stickykey").value());
         Assertions.assertEquals(true, appSettingMap.get("stickykey").sticky());
-        connectionStringMap = slot2.getConnectionStrings();
+        Map<String, ConnectionString> connectionStringMap = slot2.getConnectionStrings();
         Assertions.assertEquals("connectionValue", connectionStringMap.get("connectionName").value());
         Assertions.assertEquals(false, connectionStringMap.get("connectionName").sticky());
         Assertions.assertEquals("stickyValue", connectionStringMap.get("stickyName").value());
@@ -101,13 +102,11 @@ public class FunctionDeploymentSlotsTests extends AppServiceTest {
         // Update deployment slot
         slot2
             .update()
-            .withoutJava()
             .withPythonVersion(PythonVersion.PYTHON_34)
             .withAppSetting("slot2key", "slot2value")
             .withStickyAppSetting("sticky2key", "sticky2value")
             .apply();
         Assertions.assertNotNull(slot2);
-        Assertions.assertEquals(JavaVersion.OFF, slot2.javaVersion());
         Assertions.assertEquals(PythonVersion.PYTHON_34, slot2.pythonVersion());
         appSettingMap = slot2.getAppSettings();
         Assertions.assertEquals("slot2value", appSettingMap.get("slot2key").value());
@@ -116,10 +115,14 @@ public class FunctionDeploymentSlotsTests extends AppServiceTest {
         FunctionDeploymentSlot slot3 =
             functionApp1.deploymentSlots().define(slotName3).withConfigurationFromDeploymentSlot(slot2).create();
         Assertions.assertNotNull(slot3);
-        Assertions.assertEquals(JavaVersion.OFF, slot3.javaVersion());
         Assertions.assertEquals(PythonVersion.PYTHON_34, slot3.pythonVersion());
         appSettingMap = slot3.getAppSettings();
         Assertions.assertEquals("slot2value", appSettingMap.get("slot2key").value());
+
+        slot3
+            .update()
+            .withPythonVersion(PythonVersion.PYTHON_27)
+            .apply();
 
         // Get
         FunctionDeploymentSlot deploymentSlot = functionApp1.deploymentSlots().getByName(slotName3);
@@ -132,9 +135,8 @@ public class FunctionDeploymentSlotsTests extends AppServiceTest {
         // Swap
         slot3.swap(slot1.name());
         slot1 = functionApp1.deploymentSlots().getByName(slotName1);
-        Assertions.assertEquals(JavaVersion.OFF, slot1.javaVersion());
-        Assertions.assertEquals(PythonVersion.PYTHON_34, slot1.pythonVersion());
-        Assertions.assertEquals(PythonVersion.PYTHON_27, slot3.pythonVersion());
+        Assertions.assertEquals(PythonVersion.PYTHON_27, slot1.pythonVersion());
+        Assertions.assertEquals(PythonVersion.PYTHON_34, slot3.pythonVersion());
         Map<String, AppSetting> slot1AppSettings = slot1.getAppSettings();
         Map<String, AppSetting> slot3AppSettings = slot3.getAppSettings();
         Assertions.assertEquals("appvalue", slot1AppSettings.get("appkey").value());

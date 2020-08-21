@@ -4,15 +4,15 @@
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
+import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
+import com.azure.messaging.servicebus.administration.models.CreateTopicOptions;
+import com.azure.messaging.servicebus.administration.models.QueueProperties;
+import com.azure.messaging.servicebus.administration.models.SubscriptionProperties;
+import com.azure.messaging.servicebus.administration.models.TopicProperties;
 import com.azure.messaging.servicebus.implementation.models.QueueDescription;
 import com.azure.messaging.servicebus.implementation.models.SubscriptionDescription;
 import com.azure.messaging.servicebus.implementation.models.TopicDescription;
-import com.azure.messaging.servicebus.models.CreateQueueOptions;
-import com.azure.messaging.servicebus.models.CreateSubscriptionOptions;
-import com.azure.messaging.servicebus.models.CreateTopicOptions;
-import com.azure.messaging.servicebus.models.QueueProperties;
-import com.azure.messaging.servicebus.models.SubscriptionProperties;
-import com.azure.messaging.servicebus.models.TopicProperties;
 
 import java.util.Objects;
 

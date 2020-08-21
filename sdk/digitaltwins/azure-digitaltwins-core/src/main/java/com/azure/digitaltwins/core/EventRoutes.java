@@ -44,7 +44,8 @@ public final class EventRoutes {
      * @param client the instance of the service client containing this operation class.
      */
     EventRoutes(AzureDigitalTwinsAPI client) {
-        this.service = RestProxy.create(EventRoutesService.class, client.getHttpPipeline());
+        this.service =
+                RestProxy.create(EventRoutesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 

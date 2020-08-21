@@ -9,6 +9,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 
 /** Initializes a new instance of the AzureDigitalTwinsAPI type. */
 public final class AzureDigitalTwinsAPI {
@@ -48,6 +50,18 @@ public final class AzureDigitalTwinsAPI {
         return this.httpPipeline;
     }
 
+    /** The serializer to serialize an object into a string. */
+    private final SerializerAdapter serializerAdapter;
+
+    /**
+     * Gets The serializer to serialize an object into a string.
+     *
+     * @return the serializerAdapter value.
+     */
+    public SerializerAdapter getSerializerAdapter() {
+        return this.serializerAdapter;
+    }
+
     /** The DigitalTwinModels object to access its operations. */
     private final DigitalTwinModels digitalTwinModels;
 
@@ -60,16 +74,16 @@ public final class AzureDigitalTwinsAPI {
         return this.digitalTwinModels;
     }
 
-    /** The Querys object to access its operations. */
-    private final Querys querys;
+    /** The Queries object to access its operations. */
+    private final Queries queries;
 
     /**
-     * Gets the Querys object to access its operations.
+     * Gets the Queries object to access its operations.
      *
-     * @return the Querys object.
+     * @return the Queries object.
      */
-    public Querys getQuerys() {
-        return this.querys;
+    public Queries getQueries() {
+        return this.queries;
     }
 
     /** The DigitalTwins object to access its operations. */
@@ -102,6 +116,7 @@ public final class AzureDigitalTwinsAPI {
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
+                JacksonAdapter.createDefaultSerializerAdapter(),
                 host);
     }
 
@@ -111,11 +126,22 @@ public final class AzureDigitalTwinsAPI {
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
     AzureDigitalTwinsAPI(HttpPipeline httpPipeline, String host) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), host);
+    }
+
+    /**
+     * Initializes an instance of AzureDigitalTwinsAPI client.
+     *
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param serializerAdapter The serializer to serialize an object into a string.
+     */
+    AzureDigitalTwinsAPI(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String host) {
         this.httpPipeline = httpPipeline;
+        this.serializerAdapter = serializerAdapter;
         this.host = host;
         this.apiVersion = "2020-05-31-preview";
         this.digitalTwinModels = new DigitalTwinModels(this);
-        this.querys = new Querys(this);
+        this.queries = new Queries(this);
         this.digitalTwins = new DigitalTwins(this);
         this.eventRoutes = new EventRoutes(this);
     }

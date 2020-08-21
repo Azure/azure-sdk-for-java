@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.RequestChargeTracker;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceType;
@@ -30,6 +31,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 /**
@@ -198,6 +201,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
         private final RequestChargeTracker tracker;
         private DocumentProducer<T>.DocumentProducerFeedResponse previousPage;
         private final CosmosQueryRequestOptions cosmosQueryRequestOptions;
+        private ConcurrentMap<String, QueryMetrics> emptyPageQueryMetricsMap = new ConcurrentHashMap<>();
 
         public EmptyPagesFilterTransformer(RequestChargeTracker tracker, CosmosQueryRequestOptions options) {
 
@@ -258,10 +262,21 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                         && !ModelBridgeInternal.getEmptyPagesAllowedFromQueryRequestOptions(this.cosmosQueryRequestOptions)) {
                     // filter empty pages and accumulate charge
                     tracker.addCharge(documentProducerFeedResponse.pageResult.getRequestCharge());
+                    ConcurrentMap<String, QueryMetrics> currentQueryMetrics =
+                        BridgeInternal.queryMetricsFromFeedResponse(documentProducerFeedResponse.pageResult);
+                    QueryMetrics.mergeQueryMetricsMap(emptyPageQueryMetricsMap, currentQueryMetrics);
                     return false;
                 }
                 return true;
             }).map(documentProducerFeedResponse -> {
+                //Combining previous empty page query metrics with current non empty page query metrics
+                if (!emptyPageQueryMetricsMap.isEmpty()) {
+                    ConcurrentMap<String, QueryMetrics> currentQueryMetrics =
+                        BridgeInternal.queryMetricsFromFeedResponse(documentProducerFeedResponse.pageResult);
+                    QueryMetrics.mergeQueryMetricsMap(currentQueryMetrics, emptyPageQueryMetricsMap);
+                    emptyPageQueryMetricsMap.clear();
+                }
+
                 // Add the request charge
                 double charge = tracker.getAndResetCharge();
                 if (charge > 0) {
@@ -319,8 +334,8 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                 return documentProducerFeedResponse.pageResult;
             }).switchIfEmpty(Flux.defer(() -> {
                 // create an empty page if there is no result
-                return Flux.just(BridgeInternal.createFeedResponse(Utils.immutableListOf(),
-                        headerResponse(tracker.getAndResetCharge())));
+                return Flux.just(BridgeInternal.createFeedResponseWithQueryMetrics(Utils.immutableListOf(),
+                        headerResponse(tracker.getAndResetCharge()), emptyPageQueryMetricsMap, null));
             }));
         }
     }

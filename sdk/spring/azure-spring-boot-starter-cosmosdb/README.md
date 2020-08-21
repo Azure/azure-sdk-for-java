@@ -58,6 +58,26 @@ Property `azure.cosmosdb.cosmosKeyCredential` is also supported. CosmosKeyCreden
 rotate keys on the fly. You can switch keys using switchToSecondaryKey(). For more information on this, see the Sample 
 Application code.
 
+#### (Optional) Add Spring Boot Actuator
+If you choose to add Spring Boot Actuator for CosmosDB, add `management.health.azure-cosmos.enabled=true` to application.properties.
+```properties
+management.health.azure-cosmos.enabled=true
+```
+Include actuator dependencies.
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web</artifactId>
+</dependency>
+```
+
+Call `http://{hostname}:{port}/actuator/health/cosmos` to get the CosmosDB health info. **Please note**: it will calculate [RUs](https://docs.microsoft.com/en-us/azure/cosmos-db/request-units).
+
 ### Define an entity
 Define a simple entity as Document in Cosmos DB.
 <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/cosmosdb/User.java#L10-L65 -->

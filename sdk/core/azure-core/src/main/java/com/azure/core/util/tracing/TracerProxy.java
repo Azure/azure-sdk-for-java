@@ -91,4 +91,12 @@ public final class TracerProxy {
         }
         return tracer.setSpanName(spanName, context);
     }
+
+    /**
+     * Returns {@code true} if tracing is enabled.
+     * @return {@code true} if tracing is enabled.
+     */
+    public static boolean isEnabled() {
+        return tracer != null;
+    }
 }
