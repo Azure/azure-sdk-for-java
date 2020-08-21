@@ -28,8 +28,29 @@ public class SyncSample
             .endpoint(endpoint)
             .buildClient();
 
-        Response<Object> syncResponse = client.getDigitalTwin(digitalTwinId);
-        Object digitalTwin = syncResponse.getValue();
-        System.out.println(digitalTwin);
+        // Create relationship on a digital twin
+        String createdRelationship = client.createRelationship(digitalTwinId, relationshipId, relationship);
+        System.out.println("Created relationship: " + createdRelationship);
+
+        // List all relationships on a digital twin
+        PagedIterable<Object> relationships = client.listRelationships(digitalTwinId, relationshipId);
+
+        // Process using the Stream interface by iterating over each page
+        relationships
+            // You can also subscribe to pages by specifying the preferred page size or the associated continuation token to start the processing from.
+            .streamByPage()
+            .forEach(page -> {
+                System.out.println("Response headers status code is " + page.getStatusCode());
+                page.getValue().forEach(item -> System.out.println("Relationship retrieved: " + item));
+            });
+
+        // Process using the Iterable interface by iterating over each page
+        relationships
+            // You can also subscribe to pages by specifying the preferred page size or the associated continuation token to start the processing from.
+            .iterableByPage()
+            .forEach(page -> {
+                System.out.println("Response headers status code is " + page.getStatusCode());
+                page.getValue().forEach(item -> System.out.println("Relationship retrieved: " + item));
+            });
     }
 }

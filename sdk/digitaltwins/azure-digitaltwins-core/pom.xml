@@ -11,7 +11,6 @@
     <relativePath>../../parents/azure-client-sdk-parent</relativePath>
   </parent>
 
-    <groupId>com.azure</groupId>
     <artifactId>azure-digitaltwins-core</artifactId>
     <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-digitaltwins-core;current} -->
 
