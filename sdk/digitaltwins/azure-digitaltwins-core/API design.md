@@ -177,9 +177,9 @@ TODO:
 ## Relationships
 <details><summary><b>Terminology</b></summary>
 
-Relationships: A named set of outgoing edges/relationships part of a Digital Twin persisted state.
+Using relationships in DTDL models, digital twins can be connected into a relationship graph.
 
-Each Relationship: (aka a "Relationship Edge") an individual edge in the Digital Twin relationship graph, ie. a tuple containing:
+Relationship: (aka a "Relationship Edge") an individual edge in the Digital Twin relationship graph, ie. a tuple containing:
     
 	RelationshipId (Unique identifier of this edge within the context of the source Digital Twin)
 	SourceId (Id of the source Digital Twin) 
@@ -240,7 +240,7 @@ When getting a list of relationships (operations like "get all relationships for
 }
 ```
 
-When creating a relationship, the edge string does not follow the above format. The rest endpoint to create a relationship edge contains the sourceId, relationshipName, and the relationShipId, so the payload only needs to specify the targetId and any application properties, as seen below:
+When creating a relationship, the edge string does not follow the above format. The rest endpoint to create a relationship edge contains the sourceId, relationshipName, and the relationshipId, so the payload only needs to specify the targetId and any application properties, as seen below:
 ```json
 {
         "$targetId": "myTargetTwin",
@@ -256,17 +256,17 @@ When updating a relationship edge, the patch string follows the below format
     [
         {
             "op": "replace",
-            "path": "property1",
+            "path": "/property1",
             "value": 1
         },
         {
             "op": "add",
-            "path": "property2/subProperty1",
+            "path": "/myComponent/Property",
             "value": 1
         },
         {
             "op": "remove",
-            "path": "property3"
+            "path": "/property3"
         }
     ]
 }
