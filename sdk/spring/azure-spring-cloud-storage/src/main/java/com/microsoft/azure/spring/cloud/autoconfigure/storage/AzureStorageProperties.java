@@ -27,6 +27,8 @@ public class AzureStorageProperties {
      * Either accessKey or credentialFilePath should be provided
      */
     private String accessKey;
+    
+    private String resourceGroup;
 
     public String getAccount() {
         return account;
@@ -50,5 +52,13 @@ public class AzureStorageProperties {
 
     public void setSecureTransfer(boolean secureTransfer) {
         this.secureTransfer = secureTransfer;
+    }
+    
+    public String getResourceGroup() {
+        return resourceGroup;
+    }
+    
+    public void setResourceGroup(String resourceGroup) {
+        this.resourceGroup = resourceGroup;
     }
 }

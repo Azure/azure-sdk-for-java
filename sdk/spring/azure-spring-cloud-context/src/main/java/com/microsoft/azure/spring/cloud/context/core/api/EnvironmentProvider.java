@@ -3,6 +3,8 @@
 
 package com.microsoft.azure.spring.cloud.context.core.api;
 
+import java.util.Arrays;
+
 import com.microsoft.azure.AzureEnvironment;
 
 /**
@@ -13,4 +15,16 @@ import com.microsoft.azure.AzureEnvironment;
 public interface EnvironmentProvider {
 
     AzureEnvironment getEnvironment();
+
+    /**
+     * @return The Azure environment as defined by the
+     *         <code>com.azure.core.management</code> SDK.
+     */
+    default com.azure.core.management.AzureEnvironment getCoreEnvironment() {
+        return Arrays.stream(com.azure.core.management.AzureEnvironment.knownEnvironments())
+                .filter(coreEnvironment -> getEnvironment().managementEndpoint()
+                        .equals(coreEnvironment.getManagementEndpoint()))
+                .findAny().get();
+    }
+
 }
