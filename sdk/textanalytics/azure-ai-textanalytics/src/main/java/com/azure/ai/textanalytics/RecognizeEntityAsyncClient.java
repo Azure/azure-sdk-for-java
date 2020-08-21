@@ -4,6 +4,7 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
+import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
@@ -163,23 +164,10 @@ class RecognizeEntityAsyncClient {
                         }).collect(Collectors.toList())))
             )));
         // Document errors
-        entitiesResult.getErrors().forEach(documentError -> {
-            /*
-             *  TODO: Remove this after service update to throw exception.
-             *  Currently, service sets max limit of document size to 5, if the input documents size > 5, it will
-             *  have an id = "", empty id. In the future, they will remove this and throw HttpResponseException.
-             */
-            if (documentError.getId().isEmpty()) {
-                throw logger.logExceptionAsError(
-                    new HttpResponseException(documentError.getError().getInnererror().getMessage(),
-                    getEmptyErrorIdHttpResponse(new SimpleResponse<>(response, response.getValue())),
-                        documentError.getError().getInnererror().getCode()));
-            }
-
-            recognizeEntitiesResults.add(
-                new RecognizeEntitiesResult(documentError.getId(), null,
-                    toTextAnalyticsError(documentError.getError()), null));
-        });
+        for (DocumentError documentError : entitiesResult.getErrors()) {
+            recognizeEntitiesResults.add(new RecognizeEntitiesResult(documentError.getId(), null,
+                toTextAnalyticsError(documentError.getError()), null));
+        }
 
         return new SimpleResponse<>(response,
             new RecognizeEntitiesResultCollection(recognizeEntitiesResults, entitiesResult.getModelVersion(),

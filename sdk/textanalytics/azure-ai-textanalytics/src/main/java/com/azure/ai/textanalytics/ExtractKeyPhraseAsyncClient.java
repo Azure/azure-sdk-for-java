@@ -161,22 +161,8 @@ class ExtractKeyPhraseAsyncClient {
         }
         // Document errors
         for (DocumentError documentError : keyPhraseResult.getErrors()) {
-            /*
-             *  TODO: Remove this after service update to throw exception.
-             *  Currently, service sets max limit of document size to 5, if the input documents size > 5, it will
-             *  have an id = "", empty id. In the future, they will remove this and throw HttpResponseException.
-             */
-            if (documentError.getId().isEmpty()) {
-                throw logger.logExceptionAsError(
-                    new HttpResponseException(documentError.getError().getInnererror().getMessage(),
-                    getEmptyErrorIdHttpResponse(new SimpleResponse<>(response, response.getValue())),
-                        documentError.getError().getInnererror().getCode()));
-            }
-
-            final TextAnalyticsError error = toTextAnalyticsError(documentError.getError());
-            final String documentId = documentError.getId();
-            keyPhraseResultList.add(new ExtractKeyPhraseResult(
-                documentId, null, error, null));
+            keyPhraseResultList.add(new ExtractKeyPhraseResult(documentError.getId(), null,
+                toTextAnalyticsError(documentError.getError()), null));
         }
 
         return new SimpleResponse<>(response,
