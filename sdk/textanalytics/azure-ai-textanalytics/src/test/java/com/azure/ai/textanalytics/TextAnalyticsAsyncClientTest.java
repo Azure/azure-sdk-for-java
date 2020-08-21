@@ -7,7 +7,6 @@ import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
-import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.core.exception.HttpResponseException;
@@ -33,12 +32,13 @@ import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchKeyPhrases;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchLinkedEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchPiiEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchTextSentiment;
-import static com.azure.ai.textanalytics.TestUtils.getPiiEntitiesList1;
 import static com.azure.ai.textanalytics.TestUtils.getLinkedEntitiesList1;
+import static com.azure.ai.textanalytics.TestUtils.getPiiEntitiesList1;
 import static com.azure.ai.textanalytics.TestUtils.getUnknownDetectedLanguage;
 import static com.azure.ai.textanalytics.models.WarningCode.LONG_WORDS_IN_DOCUMENT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
@@ -199,6 +199,25 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
+     * Verifies that an invalid document exception is returned for input documents with an empty ID.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void detectLanguageEmptyIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        detectLanguageInputEmptyIdRunner(inputs ->
+            StepVerifier.create(client.detectLanguageBatchWithResponse(inputs, null))
+                .verifyErrorSatisfies(ex -> {
+                    HttpResponseException httpResponseException = (HttpResponseException) ex;
+                    assertEquals(400, httpResponseException.getResponse().getStatusCode());
+                    TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
+                    // TODO: TextAnalyticsError has null values for all properties,
+                    //       https://github.com/Azure/azure-sdk-for-java/issues/13960
+                    // assertEquals(INVALID_DOCUMENT, textAnalyticsError.getErrorCode());
+                }));
+    }
+
+    /**
      * Verify that with countryHint with empty string will not throw exception.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -270,19 +289,30 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeEntitiesEmptyIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        textAnalyticsInputEmptyIdRunner(inputs ->
+            StepVerifier.create(client.recognizeEntitiesBatchWithResponse(inputs, null))
+                .verifyErrorSatisfies(ex -> {
+                    HttpResponseException httpResponseException = (HttpResponseException) ex;
+                    assertEquals(400, httpResponseException.getResponse().getStatusCode());
+                    TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
+                    // TODO: TextAnalyticsError has null values for all properties,
+                    //       https://github.com/Azure/azure-sdk-for-java/issues/13960
+                    // assertEquals(INVALID_DOCUMENT, textAnalyticsError.getErrorCode());
+                }));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeEntitiesBatchInputSingleError(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         recognizeBatchCategorizedEntitySingleErrorRunner((inputs) ->
             StepVerifier.create(client.recognizeEntitiesBatchWithResponse(inputs, null))
-                .assertNext(resultCollection -> {
-                    resultCollection.getValue().forEach(result -> {
-                        assertTrue(result.isError());
-                        final TextAnalyticsError error = result.getError();
-                        TextAnalyticsErrorCode errorCode = error.getErrorCode();
-                        assertTrue(TextAnalyticsErrorCode.fromString("invalidDocument").equals(errorCode));
-                        assertTrue("Document text is empty.".equals(error.getMessage()));
-                    });
-                }).verifyComplete());
+                .assertNext(resultCollection -> resultCollection.getValue().forEach(recognizeEntitiesResult -> {
+                    Exception exception = assertThrows(TextAnalyticsException.class, recognizeEntitiesResult::getEntities);
+                    assertEquals(String.format(BATCH_ERROR_EXCEPTION_MESSAGE, "RecognizeEntitiesResult"), exception.getMessage());
+                })).verifyComplete());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -378,19 +408,30 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizePiiEntitiesEmptyIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        textAnalyticsInputEmptyIdRunner(inputs ->
+            StepVerifier.create(client.recognizePiiEntitiesBatchWithResponse(inputs, null))
+                .verifyErrorSatisfies(ex -> {
+                    HttpResponseException httpResponseException = (HttpResponseException) ex;
+                    assertEquals(400, httpResponseException.getResponse().getStatusCode());
+                    TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
+                    // TODO: TextAnalyticsError has null values for all properties,
+                    //       https://github.com/Azure/azure-sdk-for-java/issues/13960
+                    // assertEquals(INVALID_DOCUMENT, textAnalyticsError.getErrorCode());
+                }));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizePiiEntitiesBatchInputSingleError(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         recognizeBatchPiiEntitySingleErrorRunner((inputs) ->
             StepVerifier.create(client.recognizePiiEntitiesBatchWithResponse(inputs, null))
-                .assertNext(resultCollection -> {
-                    resultCollection.getValue().forEach(result -> {
-                        assertTrue(result.isError());
-                        final TextAnalyticsError error = result.getError();
-                        TextAnalyticsErrorCode errorCode = error.getErrorCode();
-                        assertTrue(TextAnalyticsErrorCode.fromString("invalidDocument").equals(errorCode));
-                        assertTrue("Document text is empty.".equals(error.getMessage()));
-                    });
-                }).verifyComplete());
+                .assertNext(resultCollection -> resultCollection.getValue().forEach(recognizePiiEntitiesResult -> {
+                    Exception exception = assertThrows(TextAnalyticsException.class, recognizePiiEntitiesResult::getEntities);
+                    assertEquals(String.format(BATCH_ERROR_EXCEPTION_MESSAGE, "RecognizePiiEntitiesResult"), exception.getMessage());
+                })).verifyComplete());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -472,6 +513,22 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         recognizeBatchLinkedEntityDuplicateIdRunner(inputs ->
             StepVerifier.create(client.recognizeLinkedEntitiesBatchWithResponse(inputs, null))
                 .verifyErrorSatisfies(ex -> assertEquals(HttpResponseException.class, ex.getClass())));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeLinkedEntitiesEmptyIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        textAnalyticsInputEmptyIdRunner(inputs ->
+            StepVerifier.create(client.recognizeLinkedEntitiesBatchWithResponse(inputs, null))
+                .verifyErrorSatisfies(ex -> {
+                    HttpResponseException httpResponseException = (HttpResponseException) ex;
+                    assertEquals(400, httpResponseException.getResponse().getStatusCode());
+                    TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
+                    // TODO: TextAnalyticsError has null values for all properties,
+                    //       https://github.com/Azure/azure-sdk-for-java/issues/13960
+                    // assertEquals(INVALID_DOCUMENT, textAnalyticsError.getErrorCode());
+                }));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -563,6 +620,22 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         extractBatchKeyPhrasesDuplicateIdRunner(inputs ->
             StepVerifier.create(client.extractKeyPhrasesBatchWithResponse(inputs, null))
                 .verifyErrorSatisfies(ex -> assertEquals(HttpResponseException.class, ex.getClass())));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void extractKeyPhrasesEmptyIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        textAnalyticsInputEmptyIdRunner(inputs ->
+            StepVerifier.create(client.extractKeyPhrasesBatchWithResponse(inputs, null))
+                .verifyErrorSatisfies(ex -> {
+                    HttpResponseException httpResponseException = (HttpResponseException) ex;
+                    assertEquals(400, httpResponseException.getResponse().getStatusCode());
+                    TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
+                    // TODO: TextAnalyticsError has null values for all properties,
+                    //       https://github.com/Azure/azure-sdk-for-java/issues/13960
+                    // assertEquals(INVALID_DOCUMENT, textAnalyticsError.getErrorCode());
+                }));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -711,6 +784,25 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         analyzeBatchSentimentDuplicateIdRunner(inputs ->
             StepVerifier.create(client.analyzeSentimentBatchWithResponse(inputs, null))
                 .verifyErrorSatisfies(ex -> assertEquals(HttpResponseException.class, ex.getClass())));
+    }
+
+    /**
+     * Verifies that an invalid document exception is returned for input documents with an empty ID.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeSentimentEmptyIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        textAnalyticsInputEmptyIdRunner(inputs ->
+            StepVerifier.create(client.analyzeSentimentBatchWithResponse(inputs, null))
+                .verifyErrorSatisfies(ex -> {
+                    HttpResponseException httpResponseException = (HttpResponseException) ex;
+                    assertEquals(400, httpResponseException.getResponse().getStatusCode());
+                    TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
+                    // TODO: TextAnalyticsError has null values for all properties,
+                    //       https://github.com/Azure/azure-sdk-for-java/issues/13960
+                    // assertEquals(INVALID_DOCUMENT, textAnalyticsError.getErrorCode());
+                }));
     }
 
     /**
