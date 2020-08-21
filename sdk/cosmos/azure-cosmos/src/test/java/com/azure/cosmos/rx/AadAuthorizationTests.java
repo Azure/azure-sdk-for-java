@@ -9,9 +9,9 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.apachecommons.lang.RandomStringUtils;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -19,6 +19,7 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.util.CosmosPagedFlux;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -43,7 +44,6 @@ public class AadAuthorizationTests extends TestSuiteBase {
     private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
 
     protected AadAuthorizationTests() {
-        super();
     }
 
     private static Properties properties = System.getProperties();
@@ -52,7 +52,7 @@ public class AadAuthorizationTests extends TestSuiteBase {
     private final static String HOST = "https://localhost:8081/";
 
     private final static String PARTITION_KEY_PATH = "/mypk";
-    private final String databaseId = "dbAad" + RandomStringUtils.randomAlphabetic(6);;
+    private final String databaseId = CosmosDatabaseForTest.generateId();
 
 
     @Test(groups = { "emulator" }, timeOut = 2 * TIMEOUT)
@@ -98,9 +98,9 @@ public class AadAuthorizationTests extends TestSuiteBase {
             assert container != null;
             String itemName = UUID.randomUUID().toString();
             String partitionKeyValue = UUID.randomUUID().toString();
-            InternalObjectNode properties = getDocumentDefinition(itemName, partitionKeyValue);
+            ItemSample itemSample = getDocumentDefinition(itemName, partitionKeyValue);
 
-            CosmosItemResponse<InternalObjectNode> cosmosItemResponse = container.createItem(properties, new CosmosItemRequestOptions()).block();
+            CosmosItemResponse<ItemSample> cosmosItemResponse = container.createItem(itemSample, new CosmosItemRequestOptions()).block();
 
             CosmosItemRequestOptions options = new CosmosItemRequestOptions();
             InternalObjectNode item = container
@@ -146,19 +146,17 @@ public class AadAuthorizationTests extends TestSuiteBase {
         Thread.sleep(5000);
     }
 
-    private InternalObjectNode getDocumentDefinition(String itemId, String partitionKeyValue) {
-        final InternalObjectNode properties = new InternalObjectNode(String.format("{ "
-                + "\"id\": \"%s\", "
-                + "\"mypk\": \"%s\", "
-                + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671440]]"
-                + "}"
-            , itemId, partitionKeyValue));
-        return properties;
+    private ItemSample getDocumentDefinition(String itemId, String partitionKeyValue) {
+        ItemSample itemSample = new ItemSample();
+        itemSample.id = itemId;
+        itemSample.mypk = partitionKeyValue;
+        itemSample.sgmts = "[[6519456, 1471916863], [2498434, 1455671440]]";
+
+        return itemSample;
     }
 
     @Factory(dataProvider = "clientBuilders")
     public AadAuthorizationTests(CosmosClientBuilder clientBuilder) {
-        super(clientBuilder);
     }
 
     @BeforeMethod(groups = { "emulator" }, timeOut = 2 * SETUP_TIMEOUT, alwaysRun = true)
@@ -175,14 +173,6 @@ public class AadAuthorizationTests extends TestSuiteBase {
 
     @AfterClass(groups = { "emulator" }, timeOut = 2 * SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-    }
-
-    static String getPropertyValueOrEnvironmentOrDefault(String propertyName, String defaultValue) {
-        String propertyValue = properties.getProperty(propertyName);
-        if (propertyValue == null || propertyValue.isEmpty()) {
-            propertyValue = System.getenv().get(propertyName);
-        }
-        return propertyValue == null || propertyValue.isEmpty() ? defaultValue : propertyValue;
     }
 
     class AadSimpleEmulatorTokenCredential implements TokenCredential {
@@ -213,6 +203,21 @@ public class AadAuthorizationTests extends TestSuiteBase {
                 currentTime.plusHours(2).toEpochSecond());
             String part2Encoded = Utils.encodeUrlBase64String(part2.getBytes());
             return part1Encoded + "." + part2Encoded + "." + this.emulatorKeyEncoded;
+        }
+    }
+
+    class ItemSample {
+        public String id;
+        public String mypk;
+        public String sgmts;
+
+        public String toString() {
+            try {
+                return OBJECT_MAPPER.writeValueAsString(this);
+            } catch (JsonProcessingException ex) {
+                ex.printStackTrace();
+                throw new RuntimeException("Unexpected object mapping exception");
+            }
         }
     }
 }

@@ -250,19 +250,8 @@ public final class CosmosAsyncClient implements Closeable {
      * @return the mono.
      */
     public Mono<CosmosDatabaseResponse> createDatabaseIfNotExists(String id, ThroughputProperties throughputProperties) {
-        return this.getDatabase(id).read().onErrorResume(exception -> {
-            final Throwable unwrappedException = Exceptions.unwrap(exception);
-            if (unwrappedException instanceof CosmosException) {
-                final CosmosException cosmosException = (CosmosException) unwrappedException;
-                if (cosmosException.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
-                    CosmosDatabaseRequestOptions options = new CosmosDatabaseRequestOptions();
-                    ModelBridgeInternal.setThroughputProperties(options, throughputProperties);
-                    return createDatabase(new CosmosDatabaseProperties(id),
-                        options);
-                }
-            }
-            return Mono.error(unwrappedException);
-        });
+        return withContext(context -> createDatabaseIfNotExistsInternal(getDatabase(id),
+            throughputProperties, context));
     }
 
     /**
