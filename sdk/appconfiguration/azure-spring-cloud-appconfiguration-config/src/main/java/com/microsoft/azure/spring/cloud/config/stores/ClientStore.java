@@ -2,9 +2,17 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.cloud.config.stores;
 
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.ExponentialBackoff;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
@@ -17,35 +25,10 @@ import com.microsoft.azure.spring.cloud.config.pipline.policies.BaseAppConfigura
 import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.microsoft.azure.spring.cloud.config.resource.Connection;
 import com.microsoft.azure.spring.cloud.config.resource.ConnectionPool;
-import java.time.Duration;
-import java.util.List;
-import java.util.Optional;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ClientStore {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ClientStore.class);
-
-    // TODO: Move all applicationId to one place after all module moved to this repo.
-    // There is 24 char limitation about the app id. So some abbreviation needs to be applied:
-    // az: for Azure
-    // sp: for Spring
-    // sc: for Spring Cloud
-    // sd: for Spring Data
-    // ss: for Spring Streams
-    // kv: for Key Vault
-    // sb: for Storage Blobs
-    // sf: for Storage Files
-    // eh: for Event Hub
-    // bus: for Service Bus
-    // cfg: for App Config
-    // cos: for Cosmos
-    // aad: for AAD
-    // b2c: for AAD B2C
-    private static final String AZURE_SPRING_CLOUD_APP_CONFIGURATION =
-        "az-sc-cfg/" + ClientStore.class.getPackage().getImplementationVersion();
 
     private AppConfigurationProviderProperties appProperties;
 
@@ -54,6 +37,8 @@ public class ClientStore {
     private AppConfigurationCredentialProvider tokenCredentialProvider;
 
     private ConfigurationClientBuilderSetup clientProvider;
+    
+    private HashMap<String, ConfigurationAsyncClient> clients;
 
     public ClientStore(AppConfigurationProviderProperties appProperties, ConnectionPool pool,
         AppConfigurationCredentialProvider tokenCredentialProvider,
@@ -62,9 +47,13 @@ public class ClientStore {
         this.pool = pool;
         this.tokenCredentialProvider = tokenCredentialProvider;
         this.clientProvider = clientProvider;
+        this.clients = new HashMap<String, ConfigurationAsyncClient>();
     }
 
-    private ConfigurationAsyncClient buildClient(String store) throws IllegalArgumentException {
+    private ConfigurationAsyncClient getClient(String store) throws IllegalArgumentException {
+        if (clients.containsKey(store)) {
+            return clients.get(store);
+        }
         ExponentialBackoff retryPolicy = new ExponentialBackoff(appProperties.getMaxRetries(),
             Duration.ofMillis(800), Duration.ofSeconds(8));
         ConfigurationClientBuilder builder = getBuilder()
@@ -136,8 +125,8 @@ public class ClientStore {
             clientProvider.setup(builder, endpoint);
         }
 
-        builder.httpLogOptions(new HttpLogOptions().setApplicationId(AZURE_SPRING_CLOUD_APP_CONFIGURATION));
-        return builder.buildAsyncClient();
+        clients.put(store, builder.buildAsyncClient());
+        return clients.get(store);
     }
 
     /**
@@ -149,7 +138,7 @@ public class ClientStore {
      * @return List of Configuration Settings.
      */
     public final ConfigurationSetting getRevison(SettingSelector settingSelector, String storeName) {
-        ConfigurationAsyncClient client = buildClient(storeName);
+        ConfigurationAsyncClient client = getClient(storeName);
         return client.listRevisions(settingSelector).blockFirst();
     }
 
@@ -161,7 +150,7 @@ public class ClientStore {
      * @return List of Configuration Settings.
      */
     public final List<ConfigurationSetting> listSettings(SettingSelector settingSelector, String storeName) {
-        ConfigurationAsyncClient client = buildClient(storeName);
+        ConfigurationAsyncClient client = getClient(storeName);
 
         return client.listConfigurationSettings(settingSelector).collectList().block();
     }
