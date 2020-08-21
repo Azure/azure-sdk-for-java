@@ -35,7 +35,7 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
 
     @Override
     public Mono<Void> globalCleanupAsync() {
-        return Mono.when(Mono.fromFuture(CompletableFuture.allOf(sender.closeAsync(), receiver.closeAsync())))
+        return Mono.fromFuture(CompletableFuture.allOf(sender.closeAsync(), receiver.closeAsync()))
             .then(super.globalCleanupAsync());
     }
 
