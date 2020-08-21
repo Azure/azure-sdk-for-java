@@ -30,7 +30,11 @@ public final class SuggestResult {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of SuggestResult class. */
+    /**
+     * Creates an instance of SuggestResult class.
+     *
+     * @param text the text value to set.
+     */
     @JsonCreator
     public SuggestResult(
             @JsonProperty(value = "@search.text", required = true, access = JsonProperty.Access.WRITE_ONLY)

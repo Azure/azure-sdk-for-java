@@ -25,7 +25,11 @@ public class HighWaterMarkChangeDetectionPolicy extends DataChangeDetectionPolic
     @JsonProperty(value = "highWaterMarkColumnName", required = true)
     private String highWaterMarkColumnName;
 
-    /** Creates an instance of HighWaterMarkChangeDetectionPolicy class. */
+    /**
+     * Creates an instance of HighWaterMarkChangeDetectionPolicy class.
+     *
+     * @param highWaterMarkColumnName the highWaterMarkColumnName value to set.
+     */
     @JsonCreator
     public HighWaterMarkChangeDetectionPolicy(
             @JsonProperty(value = "highWaterMarkColumnName", required = true) String highWaterMarkColumnName) {

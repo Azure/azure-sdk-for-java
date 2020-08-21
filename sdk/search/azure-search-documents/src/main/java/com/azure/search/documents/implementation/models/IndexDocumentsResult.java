@@ -21,7 +21,11 @@ public final class IndexDocumentsResult {
     @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private List<IndexingResult> results;
 
-    /** Creates an instance of IndexDocumentsResult class. */
+    /**
+     * Creates an instance of IndexDocumentsResult class.
+     *
+     * @param results the results value to set.
+     */
     @JsonCreator
     public IndexDocumentsResult(
             @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)

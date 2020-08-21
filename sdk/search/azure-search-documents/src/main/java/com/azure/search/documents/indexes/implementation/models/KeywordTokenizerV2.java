@@ -27,7 +27,11 @@ public class KeywordTokenizerV2 extends LexicalTokenizer {
     @JsonProperty(value = "maxTokenLength")
     private Integer maxTokenLength;
 
-    /** Creates an instance of KeywordTokenizerV2 class. */
+    /**
+     * Creates an instance of KeywordTokenizerV2 class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
     public KeywordTokenizerV2(@JsonProperty(value = "name", required = true) String name) {
         super(name);

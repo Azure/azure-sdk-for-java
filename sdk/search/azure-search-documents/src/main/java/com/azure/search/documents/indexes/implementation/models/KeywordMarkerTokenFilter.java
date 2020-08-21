@@ -33,7 +33,12 @@ public class KeywordMarkerTokenFilter extends TokenFilter {
     @JsonProperty(value = "ignoreCase")
     private Boolean ignoreCase;
 
-    /** Creates an instance of KeywordMarkerTokenFilter class. */
+    /**
+     * Creates an instance of KeywordMarkerTokenFilter class.
+     *
+     * @param name the name value to set.
+     * @param keywords the keywords value to set.
+     */
     @JsonCreator
     public KeywordMarkerTokenFilter(
             @JsonProperty(value = "name", required = true) String name,

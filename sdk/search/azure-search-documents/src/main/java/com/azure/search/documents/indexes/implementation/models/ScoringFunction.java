@@ -49,7 +49,12 @@ public class ScoringFunction {
     @JsonProperty(value = "interpolation")
     private ScoringFunctionInterpolation interpolation;
 
-    /** Creates an instance of ScoringFunction class. */
+    /**
+     * Creates an instance of ScoringFunction class.
+     *
+     * @param fieldName the fieldName value to set.
+     * @param boost the boost value to set.
+     */
     @JsonCreator
     public ScoringFunction(
             @JsonProperty(value = "fieldName", required = true) String fieldName,

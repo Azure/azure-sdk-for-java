@@ -48,7 +48,11 @@ public final class SearchIndexerWarning {
     @JsonProperty(value = "documentationLink", access = JsonProperty.Access.WRITE_ONLY)
     private String documentationLink;
 
-    /** Creates an instance of SearchIndexerWarning class. */
+    /**
+     * Creates an instance of SearchIndexerWarning class.
+     *
+     * @param message the message value to set.
+     */
     @JsonCreator
     public SearchIndexerWarning(
             @JsonProperty(value = "message", required = true, access = JsonProperty.Access.WRITE_ONLY) String message) {

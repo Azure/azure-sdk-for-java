@@ -33,7 +33,13 @@ public final class Suggester {
     @JsonProperty(value = "sourceFields", required = true)
     private List<String> sourceFields;
 
-    /** Creates an instance of Suggester class. */
+    /**
+     * Creates an instance of Suggester class.
+     *
+     * @param name the name value to set.
+     * @param searchMode the searchMode value to set.
+     * @param sourceFields the sourceFields value to set.
+     */
     @JsonCreator
     public Suggester(
             @JsonProperty(value = "name", required = true) String name,

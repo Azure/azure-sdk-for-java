@@ -45,7 +45,11 @@ public class PatternAnalyzer extends LexicalAnalyzer {
     @JsonProperty(value = "stopwords")
     private List<String> stopwords;
 
-    /** Creates an instance of PatternAnalyzer class. */
+    /**
+     * Creates an instance of PatternAnalyzer class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
     public PatternAnalyzer(@JsonProperty(value = "name", required = true) String name) {
         super(name);

@@ -20,7 +20,11 @@ public final class ListIndexersResult {
     @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private List<SearchIndexer> indexers;
 
-    /** Creates an instance of ListIndexersResult class. */
+    /**
+     * Creates an instance of ListIndexersResult class.
+     *
+     * @param indexers the indexers value to set.
+     */
     @JsonCreator
     public ListIndexersResult(
             @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)

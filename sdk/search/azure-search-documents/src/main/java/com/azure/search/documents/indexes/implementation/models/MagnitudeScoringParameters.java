@@ -32,7 +32,12 @@ public final class MagnitudeScoringParameters {
     @JsonProperty(value = "constantBoostBeyondRange")
     private Boolean shouldBoostBeyondRangeByConstant;
 
-    /** Creates an instance of MagnitudeScoringParameters class. */
+    /**
+     * Creates an instance of MagnitudeScoringParameters class.
+     *
+     * @param boostingRangeStart the boostingRangeStart value to set.
+     * @param boostingRangeEnd the boostingRangeEnd value to set.
+     */
     @JsonCreator
     public MagnitudeScoringParameters(
             @JsonProperty(value = "boostingRangeStart", required = true) double boostingRangeStart,

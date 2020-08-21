@@ -42,7 +42,12 @@ public class CommonGramTokenFilter extends TokenFilter {
     @JsonProperty(value = "queryMode")
     private Boolean useQueryMode;
 
-    /** Creates an instance of CommonGramTokenFilter class. */
+    /**
+     * Creates an instance of CommonGramTokenFilter class.
+     *
+     * @param name the name value to set.
+     * @param commonWords the commonWords value to set.
+     */
     @JsonCreator
     public CommonGramTokenFilter(
             @JsonProperty(value = "name", required = true) String name,

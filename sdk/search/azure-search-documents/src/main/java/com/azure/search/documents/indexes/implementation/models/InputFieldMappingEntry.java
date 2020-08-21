@@ -38,7 +38,11 @@ public final class InputFieldMappingEntry {
     @JsonProperty(value = "inputs")
     private List<InputFieldMappingEntry> inputs;
 
-    /** Creates an instance of InputFieldMappingEntry class. */
+    /**
+     * Creates an instance of InputFieldMappingEntry class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
     public InputFieldMappingEntry(@JsonProperty(value = "name", required = true) String name) {
         this.name = name;

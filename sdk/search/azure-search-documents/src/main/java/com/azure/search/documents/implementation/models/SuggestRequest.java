@@ -104,7 +104,12 @@ public final class SuggestRequest {
     @JsonProperty(value = "top")
     private Integer top;
 
-    /** Creates an instance of SuggestRequest class. */
+    /**
+     * Creates an instance of SuggestRequest class.
+     *
+     * @param searchText the searchText value to set.
+     * @param suggesterName the suggesterName value to set.
+     */
     @JsonCreator
     public SuggestRequest(
             @JsonProperty(value = "search", required = true) String searchText,

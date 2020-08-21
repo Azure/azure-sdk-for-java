@@ -52,7 +52,11 @@ public class LexicalTokenizer {
     @JsonProperty(value = "name", required = true)
     private String name;
 
-    /** Creates an instance of LexicalTokenizer class. */
+    /**
+     * Creates an instance of LexicalTokenizer class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
     public LexicalTokenizer(@JsonProperty(value = "name", required = true) String name) {
         this.name = name;

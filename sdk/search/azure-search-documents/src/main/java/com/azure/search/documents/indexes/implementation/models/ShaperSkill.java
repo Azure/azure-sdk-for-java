@@ -21,7 +21,12 @@ import java.util.List;
 @JsonFlatten
 @Immutable
 public class ShaperSkill extends SearchIndexerSkill {
-    /** Creates an instance of ShaperSkill class. */
+    /**
+     * Creates an instance of ShaperSkill class.
+     *
+     * @param inputs the inputs value to set.
+     * @param outputs the outputs value to set.
+     */
     @JsonCreator
     public ShaperSkill(
             @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,

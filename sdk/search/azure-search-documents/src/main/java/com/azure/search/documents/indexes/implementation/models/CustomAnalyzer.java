@@ -46,7 +46,12 @@ public class CustomAnalyzer extends LexicalAnalyzer {
     @JsonProperty(value = "charFilters")
     private List<CharFilterName> charFilters;
 
-    /** Creates an instance of CustomAnalyzer class. */
+    /**
+     * Creates an instance of CustomAnalyzer class.
+     *
+     * @param name the name value to set.
+     * @param tokenizer the tokenizer value to set.
+     */
     @JsonCreator
     public CustomAnalyzer(
             @JsonProperty(value = "name", required = true) String name,

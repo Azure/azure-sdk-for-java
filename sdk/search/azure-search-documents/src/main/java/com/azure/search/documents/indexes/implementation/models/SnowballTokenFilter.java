@@ -26,7 +26,12 @@ public class SnowballTokenFilter extends TokenFilter {
     @JsonProperty(value = "language", required = true)
     private SnowballTokenFilterLanguage language;
 
-    /** Creates an instance of SnowballTokenFilter class. */
+    /**
+     * Creates an instance of SnowballTokenFilter class.
+     *
+     * @param name the name value to set.
+     * @param language the language value to set.
+     */
     @JsonCreator
     public SnowballTokenFilter(
             @JsonProperty(value = "name", required = true) String name,

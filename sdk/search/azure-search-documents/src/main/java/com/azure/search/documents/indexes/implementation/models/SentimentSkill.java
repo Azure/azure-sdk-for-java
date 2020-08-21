@@ -28,7 +28,12 @@ public class SentimentSkill extends SearchIndexerSkill {
     @JsonProperty(value = "defaultLanguageCode")
     private SentimentSkillLanguage defaultLanguageCode;
 
-    /** Creates an instance of SentimentSkill class. */
+    /**
+     * Creates an instance of SentimentSkill class.
+     *
+     * @param inputs the inputs value to set.
+     * @param outputs the outputs value to set.
+     */
     @JsonCreator
     public SentimentSkill(
             @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,

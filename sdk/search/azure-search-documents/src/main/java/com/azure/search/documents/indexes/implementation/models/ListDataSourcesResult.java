@@ -20,7 +20,11 @@ public final class ListDataSourcesResult {
     @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private List<SearchIndexerDataSource> dataSources;
 
-    /** Creates an instance of ListDataSourcesResult class. */
+    /**
+     * Creates an instance of ListDataSourcesResult class.
+     *
+     * @param dataSources the dataSources value to set.
+     */
     @JsonCreator
     public ListDataSourcesResult(
             @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)

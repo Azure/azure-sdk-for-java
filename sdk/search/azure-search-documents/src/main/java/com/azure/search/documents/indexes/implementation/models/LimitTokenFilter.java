@@ -32,7 +32,11 @@ public class LimitTokenFilter extends TokenFilter {
     @JsonProperty(value = "consumeAllTokens")
     private Boolean consumeAllTokens;
 
-    /** Creates an instance of LimitTokenFilter class. */
+    /**
+     * Creates an instance of LimitTokenFilter class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
     public LimitTokenFilter(@JsonProperty(value = "name", required = true) String name) {
         super(name);

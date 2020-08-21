@@ -49,7 +49,11 @@ public class StopwordsTokenFilter extends TokenFilter {
     @JsonProperty(value = "removeTrailing")
     private Boolean removeTrailingStopWords;
 
-    /** Creates an instance of StopwordsTokenFilter class. */
+    /**
+     * Creates an instance of StopwordsTokenFilter class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
     public StopwordsTokenFilter(@JsonProperty(value = "name", required = true) String name) {
         super(name);

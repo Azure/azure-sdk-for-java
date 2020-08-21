@@ -27,7 +27,12 @@ public class StemmerOverrideTokenFilter extends TokenFilter {
     @JsonProperty(value = "rules", required = true)
     private List<String> rules;
 
-    /** Creates an instance of StemmerOverrideTokenFilter class. */
+    /**
+     * Creates an instance of StemmerOverrideTokenFilter class.
+     *
+     * @param name the name value to set.
+     * @param rules the rules value to set.
+     */
     @JsonCreator
     public StemmerOverrideTokenFilter(
             @JsonProperty(value = "name", required = true) String name,

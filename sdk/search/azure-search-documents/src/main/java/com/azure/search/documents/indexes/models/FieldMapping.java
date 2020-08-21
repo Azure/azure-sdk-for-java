@@ -32,7 +32,11 @@ public final class FieldMapping {
     @JsonProperty(value = "mappingFunction")
     private FieldMappingFunction mappingFunction;
 
-    /** Creates an instance of FieldMapping class. */
+    /**
+     * Creates an instance of FieldMapping class.
+     *
+     * @param sourceFieldName the sourceFieldName value to set.
+     */
     @JsonCreator
     public FieldMapping(@JsonProperty(value = "sourceFieldName", required = true) String sourceFieldName) {
         this.sourceFieldName = sourceFieldName;

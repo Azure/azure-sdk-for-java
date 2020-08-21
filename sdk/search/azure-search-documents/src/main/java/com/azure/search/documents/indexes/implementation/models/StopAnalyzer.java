@@ -26,7 +26,11 @@ public class StopAnalyzer extends LexicalAnalyzer {
     @JsonProperty(value = "stopwords")
     private List<String> stopwords;
 
-    /** Creates an instance of StopAnalyzer class. */
+    /**
+     * Creates an instance of StopAnalyzer class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
     public StopAnalyzer(@JsonProperty(value = "name", required = true) String name) {
         super(name);

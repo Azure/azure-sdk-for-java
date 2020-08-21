@@ -21,7 +21,12 @@ import java.util.List;
 @JsonFlatten
 @Immutable
 public class LanguageDetectionSkill extends SearchIndexerSkill {
-    /** Creates an instance of LanguageDetectionSkill class. */
+    /**
+     * Creates an instance of LanguageDetectionSkill class.
+     *
+     * @param inputs the inputs value to set.
+     * @param outputs the outputs value to set.
+     */
     @JsonCreator
     public LanguageDetectionSkill(
             @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,

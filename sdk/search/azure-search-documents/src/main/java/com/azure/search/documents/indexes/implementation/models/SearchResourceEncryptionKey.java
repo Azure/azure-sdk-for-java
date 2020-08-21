@@ -42,7 +42,13 @@ public final class SearchResourceEncryptionKey {
     @JsonProperty(value = "accessCredentials")
     private AzureActiveDirectoryApplicationCredentials accessCredentials;
 
-    /** Creates an instance of SearchResourceEncryptionKey class. */
+    /**
+     * Creates an instance of SearchResourceEncryptionKey class.
+     *
+     * @param keyName the keyName value to set.
+     * @param keyVersion the keyVersion value to set.
+     * @param vaultUri the vaultUri value to set.
+     */
     @JsonCreator
     public SearchResourceEncryptionKey(
             @JsonProperty(value = "keyVaultKeyName", required = true) String keyName,

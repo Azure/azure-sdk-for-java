@@ -40,7 +40,11 @@ public class EdgeNGramTokenizer extends LexicalTokenizer {
     @JsonProperty(value = "tokenChars")
     private List<TokenCharacterKind> tokenChars;
 
-    /** Creates an instance of EdgeNGramTokenizer class. */
+    /**
+     * Creates an instance of EdgeNGramTokenizer class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
     public EdgeNGramTokenizer(@JsonProperty(value = "name", required = true) String name) {
         super(name);

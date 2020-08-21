@@ -27,7 +27,11 @@ public class ClassicTokenizer extends LexicalTokenizer {
     @JsonProperty(value = "maxTokenLength")
     private Integer maxTokenLength;
 
-    /** Creates an instance of ClassicTokenizer class. */
+    /**
+     * Creates an instance of ClassicTokenizer class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
     public ClassicTokenizer(@JsonProperty(value = "name", required = true) String name) {
         super(name);

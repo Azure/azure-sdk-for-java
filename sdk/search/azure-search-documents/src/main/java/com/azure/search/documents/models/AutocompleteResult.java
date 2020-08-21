@@ -28,7 +28,11 @@ public final class AutocompleteResult {
     @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private List<AutocompleteItem> results;
 
-    /** Creates an instance of AutocompleteResult class. */
+    /**
+     * Creates an instance of AutocompleteResult class.
+     *
+     * @param results the results value to set.
+     */
     @JsonCreator
     public AutocompleteResult(
             @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)

@@ -33,7 +33,12 @@ public class KeepTokenFilter extends TokenFilter {
     @JsonProperty(value = "keepWordsCase")
     private Boolean lowerCaseKeepWords;
 
-    /** Creates an instance of KeepTokenFilter class. */
+    /**
+     * Creates an instance of KeepTokenFilter class.
+     *
+     * @param name the name value to set.
+     * @param keepWords the keepWords value to set.
+     */
     @JsonCreator
     public KeepTokenFilter(
             @JsonProperty(value = "name", required = true) String name,

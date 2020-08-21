@@ -20,7 +20,11 @@ public final class ListSynonymMapsResult {
     @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private List<SynonymMap> synonymMaps;
 
-    /** Creates an instance of ListSynonymMapsResult class. */
+    /**
+     * Creates an instance of ListSynonymMapsResult class.
+     *
+     * @param synonymMaps the synonymMaps value to set.
+     */
     @JsonCreator
     public ListSynonymMapsResult(
             @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)

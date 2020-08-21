@@ -26,7 +26,11 @@ public class AsciiFoldingTokenFilter extends TokenFilter {
     @JsonProperty(value = "preserveOriginal")
     private Boolean preserveOriginal;
 
-    /** Creates an instance of AsciiFoldingTokenFilter class. */
+    /**
+     * Creates an instance of AsciiFoldingTokenFilter class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
     public AsciiFoldingTokenFilter(@JsonProperty(value = "name", required = true) String name) {
         super(name);

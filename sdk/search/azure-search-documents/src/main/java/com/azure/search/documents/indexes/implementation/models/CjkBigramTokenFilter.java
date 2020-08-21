@@ -34,7 +34,11 @@ public class CjkBigramTokenFilter extends TokenFilter {
     @JsonProperty(value = "outputUnigrams")
     private Boolean outputUnigrams;
 
-    /** Creates an instance of CjkBigramTokenFilter class. */
+    /**
+     * Creates an instance of CjkBigramTokenFilter class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
     public CjkBigramTokenFilter(@JsonProperty(value = "name", required = true) String name) {
         super(name);

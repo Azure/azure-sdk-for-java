@@ -43,7 +43,13 @@ public final class IndexingResult {
     @JsonProperty(value = "statusCode", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private int statusCode;
 
-    /** Creates an instance of IndexingResult class. */
+    /**
+     * Creates an instance of IndexingResult class.
+     *
+     * @param key the key value to set.
+     * @param succeeded the succeeded value to set.
+     * @param statusCode the statusCode value to set.
+     */
     @JsonCreator
     public IndexingResult(
             @JsonProperty(value = "key", required = true, access = JsonProperty.Access.WRITE_ONLY) String key,

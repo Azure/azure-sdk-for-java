@@ -41,7 +41,12 @@ public class SplitSkill extends SearchIndexerSkill {
     @JsonProperty(value = "maximumPageLength")
     private Integer maximumPageLength;
 
-    /** Creates an instance of SplitSkill class. */
+    /**
+     * Creates an instance of SplitSkill class.
+     *
+     * @param inputs the inputs value to set.
+     * @param outputs the outputs value to set.
+     */
     @JsonCreator
     public SplitSkill(
             @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,

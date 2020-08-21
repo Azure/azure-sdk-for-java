@@ -27,7 +27,11 @@ public final class SuggestDocumentsResult {
     @JsonProperty(value = "@search.coverage", access = JsonProperty.Access.WRITE_ONLY)
     private Double coverage;
 
-    /** Creates an instance of SuggestDocumentsResult class. */
+    /**
+     * Creates an instance of SuggestDocumentsResult class.
+     *
+     * @param results the results value to set.
+     */
     @JsonCreator
     public SuggestDocumentsResult(
             @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)

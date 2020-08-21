@@ -42,7 +42,12 @@ public class ImageAnalysisSkill extends SearchIndexerSkill {
     @JsonProperty(value = "details")
     private List<ImageDetail> details;
 
-    /** Creates an instance of ImageAnalysisSkill class. */
+    /**
+     * Creates an instance of ImageAnalysisSkill class.
+     *
+     * @param inputs the inputs value to set.
+     * @param outputs the outputs value to set.
+     */
     @JsonCreator
     public ImageAnalysisSkill(
             @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,

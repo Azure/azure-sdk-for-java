@@ -33,7 +33,12 @@ public class PatternCaptureTokenFilter extends TokenFilter {
     @JsonProperty(value = "preserveOriginal")
     private Boolean preserveOriginal;
 
-    /** Creates an instance of PatternCaptureTokenFilter class. */
+    /**
+     * Creates an instance of PatternCaptureTokenFilter class.
+     *
+     * @param name the name value to set.
+     * @param patterns the patterns value to set.
+     */
     @JsonCreator
     public PatternCaptureTokenFilter(
             @JsonProperty(value = "name", required = true) String name,

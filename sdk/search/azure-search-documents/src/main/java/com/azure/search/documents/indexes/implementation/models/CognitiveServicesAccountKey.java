@@ -26,7 +26,11 @@ public class CognitiveServicesAccountKey extends CognitiveServicesAccount {
     @JsonProperty(value = "key", required = true)
     private String key;
 
-    /** Creates an instance of CognitiveServicesAccountKey class. */
+    /**
+     * Creates an instance of CognitiveServicesAccountKey class.
+     *
+     * @param key the key value to set.
+     */
     @JsonCreator
     public CognitiveServicesAccountKey(@JsonProperty(value = "key", required = true) String key) {
         this.key = key;

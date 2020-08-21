@@ -33,7 +33,11 @@ public final class SearchError {
     @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
     private List<SearchError> details;
 
-    /** Creates an instance of SearchError class. */
+    /**
+     * Creates an instance of SearchError class.
+     *
+     * @param message the message value to set.
+     */
     @JsonCreator
     public SearchError(
             @JsonProperty(value = "message", required = true, access = JsonProperty.Access.WRITE_ONLY) String message) {

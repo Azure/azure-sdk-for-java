@@ -26,7 +26,11 @@ public class LuceneStandardTokenizer extends LexicalTokenizer {
     @JsonProperty(value = "maxTokenLength")
     private Integer maxTokenLength;
 
-    /** Creates an instance of LuceneStandardTokenizer class. */
+    /**
+     * Creates an instance of LuceneStandardTokenizer class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
     public LuceneStandardTokenizer(@JsonProperty(value = "name", required = true) String name) {
         super(name);

@@ -20,7 +20,11 @@ public final class ListSkillsetsResult {
     @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private List<SearchIndexerSkillset> skillsets;
 
-    /** Creates an instance of ListSkillsetsResult class. */
+    /**
+     * Creates an instance of ListSkillsetsResult class.
+     *
+     * @param skillsets the skillsets value to set.
+     */
     @JsonCreator
     public ListSkillsetsResult(
             @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)

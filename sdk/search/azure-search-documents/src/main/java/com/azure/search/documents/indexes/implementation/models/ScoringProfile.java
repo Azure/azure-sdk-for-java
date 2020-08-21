@@ -43,7 +43,11 @@ public final class ScoringProfile {
     @JsonProperty(value = "functionAggregation")
     private ScoringFunctionAggregation functionAggregation;
 
-    /** Creates an instance of ScoringProfile class. */
+    /**
+     * Creates an instance of ScoringProfile class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
     public ScoringProfile(@JsonProperty(value = "name", required = true) String name) {
         this.name = name;

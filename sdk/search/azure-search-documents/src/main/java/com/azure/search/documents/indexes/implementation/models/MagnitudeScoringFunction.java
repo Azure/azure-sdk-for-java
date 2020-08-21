@@ -23,7 +23,13 @@ public final class MagnitudeScoringFunction extends ScoringFunction {
     @JsonProperty(value = "magnitude", required = true)
     private MagnitudeScoringParameters parameters;
 
-    /** Creates an instance of MagnitudeScoringFunction class. */
+    /**
+     * Creates an instance of MagnitudeScoringFunction class.
+     *
+     * @param fieldName the fieldName value to set.
+     * @param boost the boost value to set.
+     * @param parameters the parameters value to set.
+     */
     @JsonCreator
     public MagnitudeScoringFunction(
             @JsonProperty(value = "fieldName", required = true) String fieldName,

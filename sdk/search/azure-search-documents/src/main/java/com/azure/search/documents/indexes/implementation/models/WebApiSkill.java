@@ -59,7 +59,13 @@ public class WebApiSkill extends SearchIndexerSkill {
     @JsonProperty(value = "degreeOfParallelism")
     private Integer degreeOfParallelism;
 
-    /** Creates an instance of WebApiSkill class. */
+    /**
+     * Creates an instance of WebApiSkill class.
+     *
+     * @param inputs the inputs value to set.
+     * @param outputs the outputs value to set.
+     * @param uri the uri value to set.
+     */
     @JsonCreator
     public WebApiSkill(
             @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,

@@ -34,7 +34,11 @@ public class LuceneStandardAnalyzer extends LexicalAnalyzer {
     @JsonProperty(value = "stopwords")
     private List<String> stopwords;
 
-    /** Creates an instance of LuceneStandardAnalyzer class. */
+    /**
+     * Creates an instance of LuceneStandardAnalyzer class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
     public LuceneStandardAnalyzer(@JsonProperty(value = "name", required = true) String name) {
         super(name);

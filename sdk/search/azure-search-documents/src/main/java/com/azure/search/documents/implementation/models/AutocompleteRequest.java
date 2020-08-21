@@ -91,7 +91,12 @@ public final class AutocompleteRequest {
     @JsonProperty(value = "top")
     private Integer top;
 
-    /** Creates an instance of AutocompleteRequest class. */
+    /**
+     * Creates an instance of AutocompleteRequest class.
+     *
+     * @param searchText the searchText value to set.
+     * @param suggesterName the suggesterName value to set.
+     */
     @JsonCreator
     public AutocompleteRequest(
             @JsonProperty(value = "search", required = true) String searchText,

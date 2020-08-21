@@ -33,7 +33,11 @@ public class PhoneticTokenFilter extends TokenFilter {
     @JsonProperty(value = "replace")
     private Boolean replaceOriginalTokens;
 
-    /** Creates an instance of PhoneticTokenFilter class. */
+    /**
+     * Creates an instance of PhoneticTokenFilter class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
     public PhoneticTokenFilter(@JsonProperty(value = "name", required = true) String name) {
         super(name);

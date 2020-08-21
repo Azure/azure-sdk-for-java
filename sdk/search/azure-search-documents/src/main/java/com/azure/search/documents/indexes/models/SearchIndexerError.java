@@ -57,7 +57,12 @@ public final class SearchIndexerError {
     @JsonProperty(value = "documentationLink", access = JsonProperty.Access.WRITE_ONLY)
     private String documentationLink;
 
-    /** Creates an instance of SearchIndexerError class. */
+    /**
+     * Creates an instance of SearchIndexerError class.
+     *
+     * @param errorMessage the errorMessage value to set.
+     * @param statusCode the statusCode value to set.
+     */
     @JsonCreator
     public SearchIndexerError(
             @JsonProperty(value = "errorMessage", required = true, access = JsonProperty.Access.WRITE_ONLY)

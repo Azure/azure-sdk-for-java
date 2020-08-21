@@ -32,7 +32,11 @@ public class LengthTokenFilter extends TokenFilter {
     @JsonProperty(value = "max")
     private Integer maxLength;
 
-    /** Creates an instance of LengthTokenFilter class. */
+    /**
+     * Creates an instance of LengthTokenFilter class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
     public LengthTokenFilter(@JsonProperty(value = "name", required = true) String name) {
         super(name);

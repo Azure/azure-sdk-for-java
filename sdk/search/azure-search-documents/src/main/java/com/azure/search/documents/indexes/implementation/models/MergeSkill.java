@@ -35,7 +35,12 @@ public class MergeSkill extends SearchIndexerSkill {
     @JsonProperty(value = "insertPostTag")
     private String insertPostTag;
 
-    /** Creates an instance of MergeSkill class. */
+    /**
+     * Creates an instance of MergeSkill class.
+     *
+     * @param inputs the inputs value to set.
+     * @param outputs the outputs value to set.
+     */
     @JsonCreator
     public MergeSkill(
             @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,

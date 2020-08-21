@@ -79,7 +79,15 @@ public final class IndexerExecutionResult {
     @JsonProperty(value = "finalTrackingState", access = JsonProperty.Access.WRITE_ONLY)
     private String finalTrackingState;
 
-    /** Creates an instance of IndexerExecutionResult class. */
+    /**
+     * Creates an instance of IndexerExecutionResult class.
+     *
+     * @param status the status value to set.
+     * @param errors the errors value to set.
+     * @param warnings the warnings value to set.
+     * @param itemCount the itemCount value to set.
+     * @param failedItemCount the failedItemCount value to set.
+     */
     @JsonCreator
     public IndexerExecutionResult(
             @JsonProperty(value = "status", required = true, access = JsonProperty.Access.WRITE_ONLY)

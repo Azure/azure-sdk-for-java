@@ -20,7 +20,11 @@ public final class ListIndexesResult {
     @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private List<SearchIndex> indexes;
 
-    /** Creates an instance of ListIndexesResult class. */
+    /**
+     * Creates an instance of ListIndexesResult class.
+     *
+     * @param indexes the indexes value to set.
+     */
     @JsonCreator
     public ListIndexesResult(
             @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)

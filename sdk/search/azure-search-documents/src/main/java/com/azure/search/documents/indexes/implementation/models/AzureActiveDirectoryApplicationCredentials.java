@@ -28,7 +28,11 @@ public final class AzureActiveDirectoryApplicationCredentials {
     @JsonProperty(value = "applicationSecret")
     private String applicationSecret;
 
-    /** Creates an instance of AzureActiveDirectoryApplicationCredentials class. */
+    /**
+     * Creates an instance of AzureActiveDirectoryApplicationCredentials class.
+     *
+     * @param applicationId the applicationId value to set.
+     */
     @JsonCreator
     public AzureActiveDirectoryApplicationCredentials(
             @JsonProperty(value = "applicationId", required = true) String applicationId) {

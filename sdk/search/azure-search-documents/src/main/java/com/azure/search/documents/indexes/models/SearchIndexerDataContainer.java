@@ -28,7 +28,11 @@ public final class SearchIndexerDataContainer {
     @JsonProperty(value = "query")
     private String query;
 
-    /** Creates an instance of SearchIndexerDataContainer class. */
+    /**
+     * Creates an instance of SearchIndexerDataContainer class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
     public SearchIndexerDataContainer(@JsonProperty(value = "name", required = true) String name) {
         this.name = name;

@@ -40,7 +40,11 @@ public class NGramTokenizer extends LexicalTokenizer {
     @JsonProperty(value = "tokenChars")
     private List<TokenCharacterKind> tokenChars;
 
-    /** Creates an instance of NGramTokenizer class. */
+    /**
+     * Creates an instance of NGramTokenizer class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
     public NGramTokenizer(@JsonProperty(value = "name", required = true) String name) {
         super(name);

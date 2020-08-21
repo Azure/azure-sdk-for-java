@@ -21,7 +21,12 @@ import java.util.List;
 @JsonFlatten
 @Immutable
 public class ConditionalSkill extends SearchIndexerSkill {
-    /** Creates an instance of ConditionalSkill class. */
+    /**
+     * Creates an instance of ConditionalSkill class.
+     *
+     * @param inputs the inputs value to set.
+     * @param outputs the outputs value to set.
+     */
     @JsonCreator
     public ConditionalSkill(
             @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,

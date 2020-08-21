@@ -21,7 +21,11 @@ public final class FreshnessScoringParameters {
     @JsonProperty(value = "boostingDuration", required = true)
     private Duration boostingDuration;
 
-    /** Creates an instance of FreshnessScoringParameters class. */
+    /**
+     * Creates an instance of FreshnessScoringParameters class.
+     *
+     * @param boostingDuration the boostingDuration value to set.
+     */
     @JsonCreator
     public FreshnessScoringParameters(
             @JsonProperty(value = "boostingDuration", required = true) Duration boostingDuration) {

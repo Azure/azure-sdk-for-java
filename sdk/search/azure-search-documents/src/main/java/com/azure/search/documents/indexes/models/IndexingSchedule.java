@@ -27,7 +27,11 @@ public final class IndexingSchedule {
     @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
-    /** Creates an instance of IndexingSchedule class. */
+    /**
+     * Creates an instance of IndexingSchedule class.
+     *
+     * @param interval the interval value to set.
+     */
     @JsonCreator
     public IndexingSchedule(@JsonProperty(value = "interval", required = true) Duration interval) {
         this.interval = interval;

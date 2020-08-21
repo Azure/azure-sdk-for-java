@@ -41,7 +41,11 @@ public class PatternTokenizer extends LexicalTokenizer {
     @JsonProperty(value = "group")
     private Integer group;
 
-    /** Creates an instance of PatternTokenizer class. */
+    /**
+     * Creates an instance of PatternTokenizer class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
     public PatternTokenizer(@JsonProperty(value = "name", required = true) String name) {
         super(name);

@@ -30,7 +30,11 @@ public final class CorsOptions {
     @JsonProperty(value = "maxAgeInSeconds")
     private Long maxAgeInSeconds;
 
-    /** Creates an instance of CorsOptions class. */
+    /**
+     * Creates an instance of CorsOptions class.
+     *
+     * @param allowedOrigins the allowedOrigins value to set.
+     */
     @JsonCreator
     public CorsOptions(@JsonProperty(value = "allowedOrigins", required = true) List<String> allowedOrigins) {
         this.allowedOrigins = allowedOrigins;

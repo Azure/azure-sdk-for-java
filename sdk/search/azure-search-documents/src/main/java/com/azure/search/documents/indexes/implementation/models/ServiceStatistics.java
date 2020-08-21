@@ -25,7 +25,12 @@ public final class ServiceStatistics {
     @JsonProperty(value = "limits", required = true)
     private ServiceLimits limits;
 
-    /** Creates an instance of ServiceStatistics class. */
+    /**
+     * Creates an instance of ServiceStatistics class.
+     *
+     * @param counters the counters value to set.
+     * @param limits the limits value to set.
+     */
     @JsonCreator
     public ServiceStatistics(
             @JsonProperty(value = "counters", required = true) ServiceCounters counters,

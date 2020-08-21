@@ -24,7 +24,13 @@ public final class DistanceScoringFunction extends ScoringFunction {
     @JsonProperty(value = "distance", required = true)
     private DistanceScoringParameters parameters;
 
-    /** Creates an instance of DistanceScoringFunction class. */
+    /**
+     * Creates an instance of DistanceScoringFunction class.
+     *
+     * @param fieldName the fieldName value to set.
+     * @param boost the boost value to set.
+     * @param parameters the parameters value to set.
+     */
     @JsonCreator
     public DistanceScoringFunction(
             @JsonProperty(value = "fieldName", required = true) String fieldName,

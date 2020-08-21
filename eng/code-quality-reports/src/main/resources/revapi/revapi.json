@@ -165,6 +165,18 @@
         "code": "java.method.finalMethodAddedToNonFinalClass",
         "new": "method <V> reactor.core.publisher.Flux<V> reactor.core.publisher.Flux<T>::switchOnFirst(java.util.function.BiFunction<reactor.core.publisher.Signal<? extends T>, reactor.core.publisher.Flux<T>, org.reactivestreams.Publisher<? extends V>>, boolean) @ com.azure.core.util.paging.ContinuablePagedFluxCore<C, T, P extends com.azure.core.util.paging.ContinuablePage<C extends java.lang.Object, T extends java.lang.Object>>",
         "justification": "Reactor added new final APIs to Flux."
+      },
+      {
+        "regex": true,
+        "code": "java\\.annotation\\.added",
+        "new": "^method\\s.+?\\scom\\.azure\\.search\\.documents(\\.indexes)?\\.models\\.(FacetResult)::.+$",
+        "justification": "Annotations better indicate which parameters are required when handling service requests and responses."
+      },
+      {
+        "regex": true,
+        "code": "java\\.annotation\\.attributeAdded",
+        "new": "^parameter\\s.+?\\scom\\.azure\\.search\\.documents(\\.indexes)?\\.models\\.(AnalyzedTokenInfo|CorsOptions|FieldMapping|IndexerExecutionResult|SearchIndexerStatus|TextWeights|AutocompleteResult)::<init>\\(.+\\)$",
+        "justification": "Annotations attributes better indicate which parameters are required when handling service requests and responses."
       }
     ]
   }

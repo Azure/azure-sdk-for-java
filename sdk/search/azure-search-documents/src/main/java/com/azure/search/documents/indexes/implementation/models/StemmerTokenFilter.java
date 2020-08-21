@@ -26,7 +26,12 @@ public class StemmerTokenFilter extends TokenFilter {
     @JsonProperty(value = "language", required = true)
     private StemmerTokenFilterLanguage language;
 
-    /** Creates an instance of StemmerTokenFilter class. */
+    /**
+     * Creates an instance of StemmerTokenFilter class.
+     *
+     * @param name the name value to set.
+     * @param language the language value to set.
+     */
     @JsonCreator
     public StemmerTokenFilter(
             @JsonProperty(value = "name", required = true) String name,

@@ -38,7 +38,11 @@ public class LexicalAnalyzer {
     @JsonProperty(value = "name", required = true)
     private String name;
 
-    /** Creates an instance of LexicalAnalyzer class. */
+    /**
+     * Creates an instance of LexicalAnalyzer class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
     public LexicalAnalyzer(@JsonProperty(value = "name", required = true) String name) {
         this.name = name;

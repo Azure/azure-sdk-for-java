@@ -52,7 +52,11 @@ public final class AnalyzeRequest {
     @JsonProperty(value = "charFilters")
     private List<CharFilterName> charFilters;
 
-    /** Creates an instance of AnalyzeRequest class. */
+    /**
+     * Creates an instance of AnalyzeRequest class.
+     *
+     * @param text the text value to set.
+     */
     @JsonCreator
     public AnalyzeRequest(@JsonProperty(value = "text", required = true) String text) {
         this.text = text;

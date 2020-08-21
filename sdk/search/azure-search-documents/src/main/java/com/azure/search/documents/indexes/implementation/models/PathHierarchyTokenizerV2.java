@@ -50,7 +50,11 @@ public class PathHierarchyTokenizerV2 extends LexicalTokenizer {
     @JsonProperty(value = "skip")
     private Integer numberOfTokensToSkip;
 
-    /** Creates an instance of PathHierarchyTokenizerV2 class. */
+    /**
+     * Creates an instance of PathHierarchyTokenizerV2 class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
     public PathHierarchyTokenizerV2(@JsonProperty(value = "name", required = true) String name) {
         super(name);

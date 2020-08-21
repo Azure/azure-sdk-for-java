@@ -25,7 +25,12 @@ public final class AutocompleteItem {
     @JsonProperty(value = "queryPlusText", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String queryPlusText;
 
-    /** Creates an instance of AutocompleteItem class. */
+    /**
+     * Creates an instance of AutocompleteItem class.
+     *
+     * @param text the text value to set.
+     * @param queryPlusText the queryPlusText value to set.
+     */
     @JsonCreator
     public AutocompleteItem(
             @JsonProperty(value = "text", required = true, access = JsonProperty.Access.WRITE_ONLY) String text,

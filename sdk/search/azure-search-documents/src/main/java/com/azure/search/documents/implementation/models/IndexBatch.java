@@ -20,7 +20,11 @@ public final class IndexBatch {
     @JsonProperty(value = "value", required = true)
     private List<IndexAction> actions;
 
-    /** Creates an instance of IndexBatch class. */
+    /**
+     * Creates an instance of IndexBatch class.
+     *
+     * @param actions the actions value to set.
+     */
     @JsonCreator
     public IndexBatch(@JsonProperty(value = "value", required = true) List<IndexAction> actions) {
         this.actions = actions;

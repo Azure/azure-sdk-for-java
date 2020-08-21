@@ -52,7 +52,12 @@ public class EntityRecognitionSkill extends SearchIndexerSkill {
     @JsonProperty(value = "minimumPrecision")
     private Double minimumPrecision;
 
-    /** Creates an instance of EntityRecognitionSkill class. */
+    /**
+     * Creates an instance of EntityRecognitionSkill class.
+     *
+     * @param inputs the inputs value to set.
+     * @param outputs the outputs value to set.
+     */
     @JsonCreator
     public EntityRecognitionSkill(
             @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,

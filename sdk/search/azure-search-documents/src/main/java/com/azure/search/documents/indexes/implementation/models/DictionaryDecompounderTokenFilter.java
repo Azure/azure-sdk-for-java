@@ -54,7 +54,12 @@ public class DictionaryDecompounderTokenFilter extends TokenFilter {
     @JsonProperty(value = "onlyLongestMatch")
     private Boolean onlyLongestMatch;
 
-    /** Creates an instance of DictionaryDecompounderTokenFilter class. */
+    /**
+     * Creates an instance of DictionaryDecompounderTokenFilter class.
+     *
+     * @param name the name value to set.
+     * @param wordList the wordList value to set.
+     */
     @JsonCreator
     public DictionaryDecompounderTokenFilter(
             @JsonProperty(value = "name", required = true) String name,

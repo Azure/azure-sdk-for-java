@@ -50,7 +50,16 @@ public final class ServiceCounters {
     @JsonProperty(value = "synonymMaps", required = true)
     private ResourceCounter synonymMapCounter;
 
-    /** Creates an instance of ServiceCounters class. */
+    /**
+     * Creates an instance of ServiceCounters class.
+     *
+     * @param documentCounter the documentCounter value to set.
+     * @param indexCounter the indexCounter value to set.
+     * @param indexerCounter the indexerCounter value to set.
+     * @param dataSourceCounter the dataSourceCounter value to set.
+     * @param storageSizeCounter the storageSizeCounter value to set.
+     * @param synonymMapCounter the synonymMapCounter value to set.
+     */
     @JsonCreator
     public ServiceCounters(
             @JsonProperty(value = "documentCount", required = true) ResourceCounter documentCounter,

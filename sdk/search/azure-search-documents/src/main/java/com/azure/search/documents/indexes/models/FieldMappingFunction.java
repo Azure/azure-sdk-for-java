@@ -27,7 +27,11 @@ public final class FieldMappingFunction {
     @JsonProperty(value = "parameters")
     private Map<String, Object> parameters;
 
-    /** Creates an instance of FieldMappingFunction class. */
+    /**
+     * Creates an instance of FieldMappingFunction class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
     public FieldMappingFunction(@JsonProperty(value = "name", required = true) String name) {
         this.name = name;

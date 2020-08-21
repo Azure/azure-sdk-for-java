@@ -61,7 +61,11 @@ public class ShingleTokenFilter extends TokenFilter {
     @JsonProperty(value = "filterToken")
     private String filterToken;
 
-    /** Creates an instance of ShingleTokenFilter class. */
+    /**
+     * Creates an instance of ShingleTokenFilter class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
     public ShingleTokenFilter(@JsonProperty(value = "name", required = true) String name) {
         super(name);

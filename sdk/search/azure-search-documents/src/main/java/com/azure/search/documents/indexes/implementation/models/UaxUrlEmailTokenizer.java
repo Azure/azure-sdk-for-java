@@ -27,7 +27,11 @@ public class UaxUrlEmailTokenizer extends LexicalTokenizer {
     @JsonProperty(value = "maxTokenLength")
     private Integer maxTokenLength;
 
-    /** Creates an instance of UaxUrlEmailTokenizer class. */
+    /**
+     * Creates an instance of UaxUrlEmailTokenizer class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
     public UaxUrlEmailTokenizer(@JsonProperty(value = "name", required = true) String name) {
         super(name);

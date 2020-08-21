@@ -21,7 +21,11 @@ public final class AnalyzeResult {
     @JsonProperty(value = "tokens", required = true)
     private List<AnalyzedTokenInfo> tokens;
 
-    /** Creates an instance of AnalyzeResult class. */
+    /**
+     * Creates an instance of AnalyzeResult class.
+     *
+     * @param tokens the tokens value to set.
+     */
     @JsonCreator
     public AnalyzeResult(@JsonProperty(value = "tokens", required = true) List<AnalyzedTokenInfo> tokens) {
         this.tokens = tokens;

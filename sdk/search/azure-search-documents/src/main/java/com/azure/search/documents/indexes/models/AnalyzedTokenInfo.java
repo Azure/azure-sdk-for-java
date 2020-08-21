@@ -40,7 +40,14 @@ public final class AnalyzedTokenInfo {
     @JsonProperty(value = "position", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private int position;
 
-    /** Creates an instance of AnalyzedTokenInfo class. */
+    /**
+     * Creates an instance of AnalyzedTokenInfo class.
+     *
+     * @param token the token value to set.
+     * @param startOffset the startOffset value to set.
+     * @param endOffset the endOffset value to set.
+     * @param position the position value to set.
+     */
     @JsonCreator
     public AnalyzedTokenInfo(
             @JsonProperty(value = "token", required = true, access = JsonProperty.Access.WRITE_ONLY) String token,

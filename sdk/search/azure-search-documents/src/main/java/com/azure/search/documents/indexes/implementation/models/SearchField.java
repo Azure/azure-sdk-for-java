@@ -161,7 +161,12 @@ public final class SearchField {
     @JsonProperty(value = "fields")
     private List<SearchField> fields;
 
-    /** Creates an instance of SearchField class. */
+    /**
+     * Creates an instance of SearchField class.
+     *
+     * @param name the name value to set.
+     * @param type the type value to set.
+     */
     @JsonCreator
     public SearchField(
             @JsonProperty(value = "name", required = true) String name,

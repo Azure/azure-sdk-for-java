@@ -39,7 +39,11 @@ public final class SearchResult {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of SearchResult class. */
+    /**
+     * Creates an instance of SearchResult class.
+     *
+     * @param score the score value to set.
+     */
     @JsonCreator
     public SearchResult(
             @JsonProperty(value = "@search.score", required = true, access = JsonProperty.Access.WRITE_ONLY)

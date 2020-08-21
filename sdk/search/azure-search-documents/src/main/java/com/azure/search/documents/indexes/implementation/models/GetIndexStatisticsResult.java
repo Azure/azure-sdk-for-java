@@ -25,7 +25,12 @@ public final class GetIndexStatisticsResult {
     @JsonProperty(value = "storageSize", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private long storageSize;
 
-    /** Creates an instance of GetIndexStatisticsResult class. */
+    /**
+     * Creates an instance of GetIndexStatisticsResult class.
+     *
+     * @param documentCount the documentCount value to set.
+     * @param storageSize the storageSize value to set.
+     */
     @JsonCreator
     public GetIndexStatisticsResult(
             @JsonProperty(value = "documentCount", required = true, access = JsonProperty.Access.WRITE_ONLY)

@@ -66,7 +66,11 @@ public final class SearchDocumentsResult {
     @JsonProperty(value = "@odata.nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of SearchDocumentsResult class. */
+    /**
+     * Creates an instance of SearchDocumentsResult class.
+     *
+     * @param results the results value to set.
+     */
     @JsonCreator
     public SearchDocumentsResult(
             @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)

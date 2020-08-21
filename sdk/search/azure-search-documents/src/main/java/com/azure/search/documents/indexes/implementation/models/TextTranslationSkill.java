@@ -45,7 +45,13 @@ public class TextTranslationSkill extends SearchIndexerSkill {
     @JsonProperty(value = "suggestedFrom")
     private TextTranslationSkillLanguage suggestedFrom;
 
-    /** Creates an instance of TextTranslationSkill class. */
+    /**
+     * Creates an instance of TextTranslationSkill class.
+     *
+     * @param inputs the inputs value to set.
+     * @param outputs the outputs value to set.
+     * @param defaultToLanguageCode the defaultToLanguageCode value to set.
+     */
     @JsonCreator
     public TextTranslationSkill(
             @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,

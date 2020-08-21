@@ -51,7 +51,12 @@ public class SynonymTokenFilter extends TokenFilter {
     @JsonProperty(value = "expand")
     private Boolean expand;
 
-    /** Creates an instance of SynonymTokenFilter class. */
+    /**
+     * Creates an instance of SynonymTokenFilter class.
+     *
+     * @param name the name value to set.
+     * @param synonyms the synonyms value to set.
+     */
     @JsonCreator
     public SynonymTokenFilter(
             @JsonProperty(value = "name", required = true) String name,

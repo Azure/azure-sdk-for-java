@@ -35,7 +35,12 @@ public class KeyPhraseExtractionSkill extends SearchIndexerSkill {
     @JsonProperty(value = "maxKeyPhraseCount")
     private Integer maxKeyPhraseCount;
 
-    /** Creates an instance of KeyPhraseExtractionSkill class. */
+    /**
+     * Creates an instance of KeyPhraseExtractionSkill class.
+     *
+     * @param inputs the inputs value to set.
+     * @param outputs the outputs value to set.
+     */
     @JsonCreator
     public KeyPhraseExtractionSkill(
             @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,

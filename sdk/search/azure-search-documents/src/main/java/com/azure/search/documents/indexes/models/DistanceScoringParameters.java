@@ -27,7 +27,12 @@ public final class DistanceScoringParameters {
     @JsonProperty(value = "boostingDistance", required = true)
     private double boostingDistance;
 
-    /** Creates an instance of DistanceScoringParameters class. */
+    /**
+     * Creates an instance of DistanceScoringParameters class.
+     *
+     * @param referencePointParameter the referencePointParameter value to set.
+     * @param boostingDistance the boostingDistance value to set.
+     */
     @JsonCreator
     public DistanceScoringParameters(
             @JsonProperty(value = "referencePointParameter", required = true) String referencePointParameter,

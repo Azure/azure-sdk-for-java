@@ -79,7 +79,12 @@ public class SearchIndexerSkill {
     @JsonProperty(value = "outputs", required = true)
     private List<OutputFieldMappingEntry> outputs;
 
-    /** Creates an instance of SearchIndexerSkill class. */
+    /**
+     * Creates an instance of SearchIndexerSkill class.
+     *
+     * @param inputs the inputs value to set.
+     * @param outputs the outputs value to set.
+     */
     @JsonCreator
     public SearchIndexerSkill(
             @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,

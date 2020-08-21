@@ -26,7 +26,11 @@ public class UniqueTokenFilter extends TokenFilter {
     @JsonProperty(value = "onlyOnSamePosition")
     private Boolean onlyOnSamePosition;
 
-    /** Creates an instance of UniqueTokenFilter class. */
+    /**
+     * Creates an instance of UniqueTokenFilter class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
     public UniqueTokenFilter(@JsonProperty(value = "name", required = true) String name) {
         super(name);

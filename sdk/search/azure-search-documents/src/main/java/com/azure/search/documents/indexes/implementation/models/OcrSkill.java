@@ -35,7 +35,12 @@ public class OcrSkill extends SearchIndexerSkill {
     @JsonProperty(value = "detectOrientation")
     private Boolean shouldDetectOrientation;
 
-    /** Creates an instance of OcrSkill class. */
+    /**
+     * Creates an instance of OcrSkill class.
+     *
+     * @param inputs the inputs value to set.
+     * @param outputs the outputs value to set.
+     */
     @JsonCreator
     public OcrSkill(
             @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,

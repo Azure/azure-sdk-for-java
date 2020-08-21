@@ -27,7 +27,12 @@ public class MappingCharFilter extends CharFilter {
     @JsonProperty(value = "mappings", required = true)
     private List<String> mappings;
 
-    /** Creates an instance of MappingCharFilter class. */
+    /**
+     * Creates an instance of MappingCharFilter class.
+     *
+     * @param name the name value to set.
+     * @param mappings the mappings value to set.
+     */
     @JsonCreator
     public MappingCharFilter(
             @JsonProperty(value = "name", required = true) String name,

@@ -31,7 +31,13 @@ public class PatternReplaceTokenFilter extends TokenFilter {
     @JsonProperty(value = "replacement", required = true)
     private String replacement;
 
-    /** Creates an instance of PatternReplaceTokenFilter class. */
+    /**
+     * Creates an instance of PatternReplaceTokenFilter class.
+     *
+     * @param name the name value to set.
+     * @param pattern the pattern value to set.
+     * @param replacement the replacement value to set.
+     */
     @JsonCreator
     public PatternReplaceTokenFilter(
             @JsonProperty(value = "name", required = true) String name,

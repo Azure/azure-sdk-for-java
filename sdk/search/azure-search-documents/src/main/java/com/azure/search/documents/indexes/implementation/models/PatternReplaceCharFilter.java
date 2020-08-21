@@ -31,7 +31,13 @@ public class PatternReplaceCharFilter extends CharFilter {
     @JsonProperty(value = "replacement", required = true)
     private String replacement;
 
-    /** Creates an instance of PatternReplaceCharFilter class. */
+    /**
+     * Creates an instance of PatternReplaceCharFilter class.
+     *
+     * @param name the name value to set.
+     * @param pattern the pattern value to set.
+     * @param replacement the replacement value to set.
+     */
     @JsonCreator
     public PatternReplaceCharFilter(
             @JsonProperty(value = "name", required = true) String name,
