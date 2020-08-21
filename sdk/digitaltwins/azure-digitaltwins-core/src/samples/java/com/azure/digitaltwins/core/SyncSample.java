@@ -4,7 +4,7 @@
 package com.azure.digitaltwins.core;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.digitaltwins.core.models.DigitalTwinsGetByIdResponse;
+import com.azure.core.http.rest.Response;
 import com.azure.identity.ClientSecretCredentialBuilder;
 
 public class SyncSample
@@ -28,7 +28,7 @@ public class SyncSample
             .endpoint(endpoint)
             .buildClient();
 
-        DigitalTwinsGetByIdResponse syncResponse = client.getDigitalTwin(digitalTwinId);
+        Response<Object> syncResponse = client.getDigitalTwin(digitalTwinId);
         Object digitalTwin = syncResponse.getValue();
         System.out.println(digitalTwin);
     }

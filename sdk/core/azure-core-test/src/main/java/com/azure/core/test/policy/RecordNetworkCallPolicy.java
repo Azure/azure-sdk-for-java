@@ -193,7 +193,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
                             bytesRead = gis.read(buffer, position, buffer.length);
                         }
 
-                        content = new String(output.toByteArray(), StandardCharsets.UTF_8);
+                        content = output.toString("UTF-8");
                     } catch (IOException e) {
                         throw logger.logExceptionAsWarning(Exceptions.propagate(e));
                     }

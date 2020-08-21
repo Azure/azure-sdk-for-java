@@ -523,9 +523,9 @@
 
   <!-- False positive as the methods are implemented in an anonymous class that is not exposed publicly. EntityHelper's
     accessor classes are not visible. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.messaging.servicebus.models.QueueProperties.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.messaging.servicebus.models.SubscriptionProperties.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.messaging.servicebus.models.TopicProperties.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.messaging.servicebus.administration.models.QueueProperties.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.messaging.servicebus.administration.models.SubscriptionProperties.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.messaging.servicebus.administration.models.TopicProperties.java"/>
 
   <!-- Suppress DigitalTwins for now -->
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-digitaltwins-core[/\\]src[/\\]"/>
