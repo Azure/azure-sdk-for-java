@@ -44,7 +44,9 @@ import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.options.RemoveAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.SetAccessControlRecursiveOptions;
+import com.azure.storage.file.datalake.options.UpdateAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
@@ -297,7 +299,7 @@ public class DataLakePathAsyncClient {
             .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince());
 
         context = context == null ? Context.NONE : context;
-        return this.dataLakeStorage.paths().createWithRestResponseAsync(resourceType, null, null, null, null,
+        return this.dataLakeStorage.paths().createWithRestResponseAsync(resourceType, null, null, null, null, null,
             buildMetadataString(metadata), permissions, umask, null, null, headers, lac, mac, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
@@ -681,6 +683,100 @@ public class DataLakePathAsyncClient {
         }
     }
 
+    /**
+     * Updates the access control on a path and subpaths.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.updateAccessControlRecursive#List}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
+     *
+     * @param accessControlList The POSIX access control list for the file or directory.
+     * @return A reactive response containing the result of the operation.
+     */
+    public Mono<AccessControlChangeResult> updateAccessControlRecursive(List<PathAccessControlEntry> accessControlList)
+    {
+        try {
+            return updateAccessControlRecursiveWithResponse(new UpdateAccessControlRecursiveOptions(accessControlList))
+                .flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Updates the access control on a path and subpaths.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.updateAccessControlRecursive#UpdateAccessControlRecursiveOptions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
+     *
+     * @param options {@link UpdateAccessControlRecursiveOptions}
+     * @return A reactive response containing the result of the operation.
+     */
+    public Mono<Response<AccessControlChangeResult>> updateAccessControlRecursiveWithResponse(
+        UpdateAccessControlRecursiveOptions options) {
+        try {
+            return withContext(context -> setAccessControlRecursiveWithResponse(options.getAccessControlList(),
+                options.getProgressHandler(), PathSetAccessControlRecursiveMode.MODIFY, options.getBatchSize(),
+                options.getMaxBatches(), options.isContinuingOnFailure(), options.getContinuationToken(), context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Removes the access control on a path and subpaths.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.removeAccessControlRecursive#List}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
+     *
+     * @param accessControlList The POSIX access control list for the file or directory.
+     * @return A reactive response containing the result of the operation.
+     */
+    public Mono<AccessControlChangeResult> removeAccessControlRecursive(List<PathAccessControlEntry> accessControlList)
+    {
+        try {
+            return removeAccessControlRecursiveWithResponse(new RemoveAccessControlRecursiveOptions(accessControlList))
+                .flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Remove the access control on a path and subpaths.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.removeAccessControlRecursive#RemoveAccessControlRecursiveOptions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
+     *
+     * @param options {@link RemoveAccessControlRecursiveOptions}
+     * @return A reactive response containing the result of the operation.
+     */
+    public Mono<Response<AccessControlChangeResult>> removeAccessControlRecursiveWithResponse(
+        RemoveAccessControlRecursiveOptions options) {
+        try {
+            return withContext(context -> setAccessControlRecursiveWithResponse(options.getAccessControlList(),
+                options.getProgressHandler(), PathSetAccessControlRecursiveMode.REMOVE, options.getBatchSize(),
+                options.getMaxBatches(), options.isContinuingOnFailure(), options.getContinuationToken(), context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
     Mono<Response<AccessControlChangeResult>> setAccessControlRecursiveWithResponse(
         List<PathAccessControlEntry> accessControlList, Consumer<Response<AccessControlChanges>> progressHandler,
         PathSetAccessControlRecursiveMode mode, Integer batchSize, Integer maxBatches, Boolean continueOnFailure,
@@ -695,10 +791,12 @@ public class DataLakePathAsyncClient {
         String listStr = PathAccessControlEntry.serializeList(accessControlList);
 
         return this.dataLakeStorage.paths().setAccessControlRecursiveWithRestResponseAsync(mode, null,
-            continuationToken, continueOnFailure, batchSize, listStr, null, context)
+            continuationToken, continueOnFailure, batchSize, listStr, null,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .flatMap(response -> setAccessControlRecursiveWithResponseHelper(response, maxBatches,
                 directoriesSuccessfulCount, filesSuccessfulCount, failureCount, batchesCount, progressHandler,
-                listStr, mode, batchSize, continueOnFailure, continuationToken, context));
+                listStr, mode, batchSize, continueOnFailure, continuationToken,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE)));
     }
 
     Mono<Response<AccessControlChangeResult>> setAccessControlRecursiveWithResponseHelper(
@@ -718,7 +816,8 @@ public class DataLakePathAsyncClient {
 
         /*
         Determine which token we should report/return/use next.
-        If there was a token present on the response, use that one.
+        If there was a token present on the response (still processing and either no errors or forceFlag set),
+        use that one.
         If there were no failures and still nothing present, we are at the end, so use that.
         If there were failures, use the last token (no token is returned in this case).
          */
@@ -895,7 +994,7 @@ public class DataLakePathAsyncClient {
         String renameSource = "/" + this.fileSystemName + "/" + pathName;
 
         return dataLakePathAsyncClient.dataLakeStorage.paths().createWithRestResponseAsync(null /* pathResourceType */,
-            null /* continuation */, PathRenameMode.LEGACY, renameSource, sourceRequestConditions.getLeaseId(),
+            null /* continuation */, null /* blobType */, PathRenameMode.LEGACY, renameSource, sourceRequestConditions.getLeaseId(),
             null /* metadata */, null /* permissions */, null /* umask */, null /* request id */, null /* timeout */,
             null /* pathHttpHeaders */, destLac, destMac, sourceConditions,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
