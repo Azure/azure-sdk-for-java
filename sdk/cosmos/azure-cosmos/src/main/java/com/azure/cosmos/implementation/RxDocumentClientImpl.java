@@ -1424,10 +1424,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Mono<ResourceResponse<Document>> deleteDocument(String documentLink, RequestOptions options) {
         DocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
-        return ObservableHelper.inlineIfPossibleAsObs(() -> deleteDocumentInternal(documentLink, options, requestRetryPolicy), requestRetryPolicy);
+        return ObservableHelper.inlineIfPossibleAsObs(() -> deleteDocumentInternal(documentLink, null, options, requestRetryPolicy), requestRetryPolicy);
     }
 
-    private Mono<ResourceResponse<Document>> deleteDocumentInternal(String documentLink, RequestOptions options,
+    @Override
+    public Mono<ResourceResponse<Document>> deleteDocument(String documentLink, Document document, RequestOptions options) {
+        DocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        return ObservableHelper.inlineIfPossibleAsObs(() -> deleteDocumentInternal(documentLink, document, options, requestRetryPolicy),
+            requestRetryPolicy);
+    }
+
+    private Mono<ResourceResponse<Document>> deleteDocumentInternal(String documentLink, Document document, RequestOptions options,
                                                                     DocumentClientRetryPolicy retryPolicyInstance) {
         try {
             if (StringUtils.isEmpty(documentLink)) {
@@ -1437,15 +1444,33 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             logger.debug("Deleting a Document. documentLink: [{}]", documentLink);
             String path = Utils.joinPath(documentLink, null);
             Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.Document, OperationType.Delete);
-            RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Delete,
-                ResourceType.Document, path, requestHeaders, options);
+            RxDocumentServiceRequest request;
+            ByteBuffer content = null;
+            if (document != null) {
+                Instant serializationStartTimeUTC = Instant.now();
+                content = serializeJsonToByteBuffer(document);
+                Instant serializationEndTime = Instant.now();
+                SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
+                    serializationStartTimeUTC,
+                    serializationEndTime,
+                    SerializationDiagnosticsContext.SerializationType.ITEM_SERIALIZATION);
+                request = RxDocumentServiceRequest.create(OperationType.Delete,
+                    ResourceType.Document, path, requestHeaders, options, content);
+                SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosDiagnostics);
+                if (serializationDiagnosticsContext != null) {
+                    serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
+                }
+            } else {
+                request = RxDocumentServiceRequest.create(OperationType.Delete,
+                    ResourceType.Document, path, requestHeaders, options);
+            }
             if (retryPolicyInstance != null) {
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
             Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
 
-            Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs);
+            Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, content, document, options, collectionObs);
 
             return requestObs.flatMap(req -> {
                 return this.delete(req, retryPolicyInstance)

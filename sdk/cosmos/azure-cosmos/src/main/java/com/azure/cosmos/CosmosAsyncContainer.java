@@ -15,7 +15,6 @@ import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.query.QueryInfo;
-import com.azure.cosmos.implementation.query.Transformer;
 import com.azure.cosmos.models.CosmosConflictProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
@@ -33,7 +32,6 @@ import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 
 import java.util.List;
 import java.util.function.Function;
@@ -608,7 +606,27 @@ public class CosmosAsyncContainer {
         }
         ModelBridgeInternal.setPartitionKey(options, partitionKey);
         RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(options);
-        return withContext(context -> deleteItemInternal(itemId, requestOptions, context));
+        return withContext(context -> deleteItemInternal(itemId, null, requestOptions, context));
+    }
+
+    /**
+     * Deletes the item.
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain a single Cosmos item response for the deleted item.
+     *
+     * @param <T> the type parameter.
+     * @param item item to be deleted.
+     * @param options the request options.
+     * @return an {@link Mono} containing the Cosmos item resource response.
+     */
+    public <T> Mono<CosmosItemResponse<Object>> deleteItem(T item, CosmosItemRequestOptions options) {
+        if (options == null) {
+            options = new CosmosItemRequestOptions();
+        }
+        RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(options);
+        Document doc = InternalObjectNode.fromObject(item);
+        return withContext(context -> deleteItemInternal(doc.getId(), doc, requestOptions, context));
     }
 
     private String getItemLink(String itemId) {
@@ -741,11 +759,12 @@ public class CosmosAsyncContainer {
 
     private Mono<CosmosItemResponse<Object>> deleteItemInternal(
         String itemId,
+        Document document,
         RequestOptions requestOptions,
         Context context) {
         Mono<CosmosItemResponse<Object>> responseMono = this.getDatabase()
             .getDocClientWrapper()
-            .deleteDocument(getItemLink(itemId), requestOptions)
+            .deleteDocument(getItemLink(itemId), document, requestOptions)
             .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponseWithObjectType(response))
             .single();
         return database.getClient().getTracerProvider().traceEnabledCosmosItemResponsePublisher(responseMono,
