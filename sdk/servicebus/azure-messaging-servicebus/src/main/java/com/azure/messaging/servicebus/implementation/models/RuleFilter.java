@@ -19,9 +19,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 @JsonTypeName("RuleFilter")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "CorrelationFilter", value = CorrelationFilter.class),
-    @JsonSubTypes.Type(name = "SqlFilter", value = SqlFilter.class),
-    @JsonSubTypes.Type(name = "TrueFilter", value = TrueFilter.class),
-    @JsonSubTypes.Type(name = "FalseFilter", value = FalseFilter.class)
+    @JsonSubTypes.Type(name = "SqlFilter", value = SqlFilter.class)
 })
 @JacksonXmlRootElement(
         localName = "Filter",

@@ -3,23 +3,25 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
-import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
-import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
-import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
+import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
+import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
+import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
+import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
+import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
+import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -184,7 +186,7 @@ public final class TextAnalyticsClient {
      *
      * For a list of supported entity types, check: <a href="https://aka.ms/taner">this</a>
      *
-     * This method will use the default language that sets up in
+     * This method will use the default language that can be set by using method
      * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
      * the language.
      *
@@ -192,7 +194,7 @@ public final class TextAnalyticsClient {
      * <p>Recognize the entities of documents</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeCategorizedEntities#String}
      *
-     * @param document the document to recognize entities for.
+     * @param document The document to recognize entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      *
@@ -289,12 +291,125 @@ public final class TextAnalyticsClient {
         return client.recognizeEntityAsyncClient.recognizeEntitiesBatchWithContext(documents, options, context).block();
     }
 
+    // PII Entity
+    /**
+     * Returns a list of Personally Identifiable Information(PII) entities in the provided document.
+     *
+     * For a list of supported entity types, check: <a href="https://aka.ms/tanerpii">this</a>
+     * For a list of enabled languages, check: <a href="https://aka.ms/talangs">this</a>. This method will use the
+     * default language that is set using {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is
+     * specified, service will use 'en' as the language.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Recognize the PII entities details in a document.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String}
+     *
+     * @param document The document to recognize PII entities details for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     *
+     * @return A {@link PiiEntityCollection recognized PII entities collection}.
+     *
+     * @throws NullPointerException if {@code document} is null.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PiiEntityCollection recognizePiiEntities(String document) {
+        return recognizePiiEntities(document, client.getDefaultLanguage());
+    }
+
+    /**
+     * Returns a list of Personally Identifiable Information(PII) entities in the provided document
+     * with provided language code.
+     *
+     * For a list of supported entity types, check: <a href="https://aka.ms/tanerpii">this</a>
+     * For a list of enabled languages, check: <a href="https://aka.ms/talangs">this</a>
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Recognizes the PII entities details in a document with a provided language code.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String-String}
+     *
+     * @param document The document to recognize PII entities details for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
+     *
+     * @return The {@link PiiEntityCollection recognized PII entities collection}.
+     *
+     * @throws NullPointerException if {@code document} is null.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PiiEntityCollection recognizePiiEntities(String document, String language) {
+        Objects.requireNonNull(document, "'document' cannot be null.");
+        return client.recognizePiiEntities(document, language).block();
+    }
+
+    /**
+     * Returns a list of Personally Identifiable Information(PII) entities for the provided list of documents with
+     * provided language code and request options.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Recognizes the PII entities details in a list of documents with a provided language code
+     * and request options.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions}
+     *
+     * @param documents A list of documents to recognize PII entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
+     * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
+     * and show statistics.
+     *
+     * @return A {@link RecognizePiiEntitiesResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RecognizePiiEntitiesResultCollection recognizePiiEntitiesBatch(
+        Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
+        return client.recognizePiiEntitiesBatch(documents, language, options).block();
+    }
+
+    /**
+     * Returns a list of Personally Identifiable Information(PII) entities for the provided list of
+     * {@link TextDocumentInput document} with provided request options.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Recognizes the PII entities details with http response in a list of {@link TextDocumentInput document}
+     * with provided request options.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable-TextAnalyticsRequestOptions-Context}
+     *
+     * @param documents A list of {@link TextDocumentInput documents} to recognize PII entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
+     * and show statistics.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A {@link Response} that contains a {@link RecognizePiiEntitiesResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RecognizePiiEntitiesResultCollection> recognizePiiEntitiesBatchWithResponse(
+        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        return client.recognizePiiEntityAsyncClient.recognizePiiEntitiesBatchWithContext(documents, options,
+            context).block();
+    }
+
     // Linked Entities
     /**
      * Returns a list of recognized entities with links to a well-known knowledge base for the provided document.
      * See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.
      *
-     * This method will use the default language that sets up in
+     * This method will use the default language that can be set by using method
      * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
      * the language.
      *
@@ -302,7 +417,7 @@ public final class TextAnalyticsClient {
      * <p>Recognize the linked entities of documents</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntities#String}
      *
-     * @param document the document to recognize linked entities for.
+     * @param document The document to recognize linked entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      *
@@ -410,7 +525,7 @@ public final class TextAnalyticsClient {
     /**
      * Returns a list of strings denoting the key phrases in the document.
      *
-     * This method will use the default language that sets up in
+     * This method will use the default language that can be set by using method
      * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
      * the language.
      *
@@ -522,7 +637,7 @@ public final class TextAnalyticsClient {
      * Returns a sentiment prediction, as well as confidence scores for each sentiment label
      * (Positive, Negative, and Neutral) for the document and each sentence within i
      *
-     * This method will use the default language that sets up in
+     * This method will use the default language that can be set by using method
      * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
      * the language.
      *

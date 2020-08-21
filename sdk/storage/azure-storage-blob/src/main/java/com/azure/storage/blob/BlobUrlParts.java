@@ -9,16 +9,14 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.sas.BlobServiceSasQueryParameters;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.sas.CommonSasQueryParameters;
 import com.azure.storage.common.implementation.Constants;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * This class represents the components that make up an Azure Storage Container/Blob URL. You may parse an
@@ -201,7 +199,7 @@ public final class BlobUrlParts {
     @Deprecated
     public BlobServiceSasQueryParameters getSasQueryParameters() {
         String encodedSas = commonSasQueryParameters.encode();
-        return new BlobServiceSasQueryParameters(parseQueryString(encodedSas), true);
+        return new BlobServiceSasQueryParameters(SasImplUtils.parseQueryString(encodedSas), true);
     }
 
     /**
@@ -214,7 +212,8 @@ public final class BlobUrlParts {
     @Deprecated
     public BlobUrlParts setSasQueryParameters(BlobServiceSasQueryParameters blobServiceSasQueryParameters) {
         String encodedBlobSas = blobServiceSasQueryParameters.encode();
-        this.commonSasQueryParameters = new CommonSasQueryParameters(parseQueryString(encodedBlobSas), true);
+        this.commonSasQueryParameters = new CommonSasQueryParameters(SasImplUtils.parseQueryString(encodedBlobSas),
+            true);
         return this;
     }
 
@@ -248,7 +247,7 @@ public final class BlobUrlParts {
      * @return the updated BlobUrlParts object.
      */
     public BlobUrlParts parseSasQueryParameters(String queryParams) {
-        this.commonSasQueryParameters = new CommonSasQueryParameters(parseQueryString(queryParams), true);
+        this.commonSasQueryParameters = new CommonSasQueryParameters(SasImplUtils.parseQueryString(queryParams), true);
         return this;
     }
 
@@ -378,7 +377,7 @@ public final class BlobUrlParts {
                 + url.getAuthority()));
         }
 
-        Map<String, String[]> queryParamsMap = parseQueryString(url.getQuery());
+        Map<String, String[]> queryParamsMap = SasImplUtils.parseQueryString(url.getQuery());
 
         String[] snapshotArray = queryParamsMap.remove("snapshot");
         if (snapshotArray != null) {
@@ -460,49 +459,5 @@ public final class BlobUrlParts {
         }
 
         parts.isIpUrl = false;
-    }
-
-    /**
-     * Parses a query string into a one to many TreeMap.
-     *
-     * @param queryParams The string of query params to parse.
-     * @return A {@code HashMap<String, String[]>} of the key values.
-     */
-    private static TreeMap<String, String[]> parseQueryString(String queryParams) {
-        final TreeMap<String, String[]> retVals = new TreeMap<>(Comparator.naturalOrder());
-
-        if (CoreUtils.isNullOrEmpty(queryParams)) {
-            return retVals;
-        }
-
-        // split name value pairs by splitting on the '&' character
-        final String[] valuePairs = queryParams.split("&");
-
-        // for each field value pair parse into appropriate map entries
-        for (String valuePair : valuePairs) {
-            // Getting key and value for a single query parameter
-            final int equalDex = valuePair.indexOf("=");
-            String key = Utility.urlDecode(valuePair.substring(0, equalDex)).toLowerCase(Locale.ROOT);
-            String value = Utility.urlDecode(valuePair.substring(equalDex + 1));
-
-            // add to map
-            String[] keyValues = retVals.get(key);
-
-            // check if map already contains key
-            if (keyValues == null) {
-                // map does not contain this key
-                keyValues = new String[]{value};
-            } else {
-                // map contains this key already so append
-                final String[] newValues = new String[keyValues.length + 1];
-                System.arraycopy(keyValues, 0, newValues, 0, keyValues.length);
-
-                newValues[newValues.length - 1] = value;
-                keyValues = newValues;
-            }
-            retVals.put(key, keyValues);
-        }
-
-        return retVals;
     }
 }
