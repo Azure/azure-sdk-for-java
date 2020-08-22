@@ -12,6 +12,7 @@ import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.sas.BlobSasServiceVersion
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.common.Utility
+import com.azure.storage.common.implementation.SasImplUtils
 import com.azure.storage.common.sas.CommonSasQueryParameters
 import reactor.test.StepVerifier
 import spock.lang.Unroll
@@ -100,7 +101,7 @@ class HelperTest extends APISpec {
         def implUtil = new BlobSasImplUtil(sasValues, "containerName", "blobName", "snapshot", null)
         def sas = implUtil.generateSas(primaryCredential)
 
-        parts.setCommonSasQueryParameters(new CommonSasQueryParameters(BlobUrlParts.parseQueryString(sas), true))
+        parts.setCommonSasQueryParameters(new CommonSasQueryParameters(SasImplUtils.parseQueryString(sas), true))
 
         when:
         def splitParts = parts.toUrl().toString().split("\\?")
