@@ -64,7 +64,7 @@ public class AzureKeyVaultKeyWrapProvider implements EncryptionKeyWrapProvider {
             throw new IllegalArgumentException(String.format("KeyVault Key Uri %s is invalid.", metadata.value));
         }
 
-        byte[] result = this.keyVaultAccessClient.UnwrapKeyAsync(wrappedKey, keyVaultUriPropertiesRef.get()).block();
+        byte[] result = this.keyVaultAccessClient.unwrapKeyAsync(wrappedKey, keyVaultUriPropertiesRef.get()).block();
         return new EncryptionKeyUnwrapResult(result, this.rawDekCacheTimeToLive);
     }
 
@@ -81,12 +81,12 @@ public class AzureKeyVaultKeyWrapProvider implements EncryptionKeyWrapProvider {
             throw new IllegalArgumentException(String.format("KeyVault Key Uri %s is invalid.", metadata.value));
         }
 
-        if (!this.keyVaultAccessClient.ValidatePurgeProtectionAndSoftDeleteSettingsAsync(keyVaultUriPropertiesRef.get()).block()) {
+        if (!this.keyVaultAccessClient.validatePurgeProtectionAndSoftDeleteSettingsAsync(keyVaultUriPropertiesRef.get()).block()) {
             throw new IllegalArgumentException(String.format("Key Vault %s provided must have soft delete and purge "
                 + "protection enabled.", keyVaultUriPropertiesRef.get().getKeyUri()));
         }
 
-        byte[] result = this.keyVaultAccessClient.WrapKeyAsync(key, keyVaultUriPropertiesRef.get()).block();
+        byte[] result = this.keyVaultAccessClient.wrapKeyAsync(key, keyVaultUriPropertiesRef.get()).block();
         EncryptionKeyWrapMetadata responseMetadata = new EncryptionKeyWrapMetadata(metadata.type, metadata.value,
             KeyVaultConstants.RsaOaep256.toString());
         return new EncryptionKeyWrapResult(result, responseMetadata);

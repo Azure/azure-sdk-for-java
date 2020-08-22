@@ -35,7 +35,7 @@ public class UserProvidedTokenCredentialFactory extends KeyVaultTokenCredentialF
      * Get the TokenCredentials for the Given KeyVaultKey URI
      *
      * @param keyVaultKeyUri Key-Vault Key  Uri
-     * @return Mono<TokenCredential> User passed TokenCredential
+     * @return Mono of TokenCredential User passed TokenCredential.
      */
     @Override
     public Mono<TokenCredential> getTokenCredentialAsync(URI keyVaultKeyUri) {

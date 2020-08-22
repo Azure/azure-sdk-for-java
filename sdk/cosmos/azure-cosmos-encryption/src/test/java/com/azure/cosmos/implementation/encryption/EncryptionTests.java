@@ -689,9 +689,8 @@ public class EncryptionTests extends TestSuiteBase {
     /// Validates UnWrapKey via KeyVault Wrap Provider.
     /// </summary>
     /// <returns></returns>
-    @Test(groups = { "encryption" }, timeOut = TIMEOUT * 1000)
-    public void unWrapKeyUsingKeyVault()
-    {
+    @Test(groups = { "encryption" }, timeOut = TIMEOUT)
+    public void unWrapKeyUsingKeyVault() {
         EncryptionKeyWrapResult wrappedKey = EncryptionTests.wrapDekKeyVaultAsync(rawDekForKeyVault, azureKeyVaultKeyWrapMetadata).block();
         byte[] wrappedDek = wrappedKey.getWrappedDataEncryptionKey();
         EncryptionKeyWrapMetadata wrappedKeyVaultMetaData = wrappedKey.getEncryptionKeyWrapMetadata();
@@ -708,11 +707,8 @@ public class EncryptionTests extends TestSuiteBase {
     /// Validates handling of PurgeProtection Settings.
     /// </summary>
     /// <returns></returns>
-    @Test(groups = { "encryption" }, timeOut = TIMEOUT * 1000)
-
-    public void SetKeyVaultValidatePurgeProtectionAndSoftDeleteSettingsAsync() throws Exception
-    {
-
+    @Test(groups = { "encryption" }, timeOut = TIMEOUT)
+    public void SetKeyVaultValidatePurgeProtectionAndSoftDeleteSettingsAsync() throws Exception {
         KeyVaultAccessClient keyVaultAccessClient = new KeyVaultAccessClient(encryptionTestsTokenCredentialFactory, new KeyClientTestFactory(),
             new KeyVaultAccessClientTests.CryptographyClientFactoryTestFactory());
 
@@ -722,7 +718,7 @@ public class EncryptionTests extends TestSuiteBase {
         AtomicReference<KeyVaultKeyUriProperties> keyVaultKeyUriPropertiesRef = new AtomicReference<KeyVaultKeyUriProperties>();
         KeyVaultKeyUriProperties.tryParse(new URI(wrapKeyVaultMetaData.value), keyVaultKeyUriPropertiesRef);
         boolean validatepurgeprotection =
-            keyVaultAccessClient.ValidatePurgeProtectionAndSoftDeleteSettingsAsync(keyVaultKeyUriPropertiesRef.get()).block();
+            keyVaultAccessClient.validatePurgeProtectionAndSoftDeleteSettingsAsync(keyVaultKeyUriPropertiesRef.get()).block();
 
         assertThat(validatepurgeprotection).isEqualTo(true);
     }
@@ -731,10 +727,8 @@ public class EncryptionTests extends TestSuiteBase {
     /// Validates handling of PurgeProtection Settings.
     /// </summary>
     /// <returns></returns>
-    @Test(groups = { "encryption" }, timeOut = TIMEOUT * 1000)
-    public void NotSetKeyVaultValidatePurgeProtectionAndSoftDeleteSettingsAsync2() throws Exception
-    {
-
+    @Test(groups = { "encryption" }, timeOut = TIMEOUT)
+    public void NotSetKeyVaultValidatePurgeProtectionAndSoftDeleteSettingsAsync2() throws Exception {
         KeyVaultAccessClient keyVaultAccessClient = new KeyVaultAccessClient(encryptionTestsTokenCredentialFactory, new KeyClientTestFactory(), new CryptographyClientFactoryTestFactory());
 
         URI keyVaultKeyUriPurgeTest = new URI("https://testdemo2.vault.azure.net/keys/testkey2/ad47829797dc46489223cc5da3cba3ca");
@@ -743,7 +737,7 @@ public class EncryptionTests extends TestSuiteBase {
         KeyVaultKeyUriProperties.tryParse(new URI(wrapKeyVaultMetaData.value), keyVaultUriPropertiesRef);
 
         boolean validatepurgeprotection =
-            keyVaultAccessClient.ValidatePurgeProtectionAndSoftDeleteSettingsAsync(keyVaultUriPropertiesRef.get()).block();
+            keyVaultAccessClient.validatePurgeProtectionAndSoftDeleteSettingsAsync(keyVaultUriPropertiesRef.get()).block();
 
         assertThat(validatepurgeprotection).isEqualTo(false);
     }
@@ -753,11 +747,11 @@ public class EncryptionTests extends TestSuiteBase {
     /// Validates handling of Null Wrapped Key Returned from Key Vault
     /// </summary>
     /// <returns></returns>
-//        [TestMethod]
-//        [ExpectedException(typeof(ArgumentNullException),
-//        "ArgumentNullException when provided with null key.")]
-
-    @Test(groups = { "encryption" }, timeOut = TIMEOUT * 1000, expectedExceptions = {NullPointerException.class}, expectedExceptionsMessageRegExp = "wrappedDataEncryptionKey is null")
+    //        [TestMethod]
+    //        [ExpectedException(typeof(ArgumentNullException),
+    //        "ArgumentNullException when provided with null key.")]
+    @Test(groups = { "encryption" }, timeOut = TIMEOUT, expectedExceptions = { NullPointerException.class },
+        expectedExceptionsMessageRegExp = "wrappedDataEncryptionKey is null")
     public void ValidateNullWrappedKeyResult() throws Exception {
         URI keyUri =
             new URI("https://testdemo.vault.azure.net/keys/testkey1/" + KeyVaultTestConstants.ValidateNullWrappedKey);
@@ -773,9 +767,8 @@ public class EncryptionTests extends TestSuiteBase {
     /// Validates handling of Null Unwrapped Key from Key Vault
     /// </summary>
     /// <returns></returns>
-    @Test(groups = { "encryption" }, timeOut = TIMEOUT * 1000, expectedExceptions = {NullPointerException.class}, expectedExceptionsMessageRegExp = "dataEncryptionKey is null")
-    public void ValidateNullUnwrappedKeyResult() throws Exception
-    {
+    @Test(groups = { "encryption" }, timeOut = TIMEOUT, expectedExceptions = {NullPointerException.class}, expectedExceptionsMessageRegExp = "dataEncryptionKey is null")
+    public void ValidateNullUnwrappedKeyResult() throws Exception {
         URI keyUri = new URI("https://testdemo.vault.azure.net/keys/testkey1/" + KeyVaultTestConstants.ValidateNullUnwrappedKey);
         EncryptionKeyWrapMetadata invalidWrapMetadata = new EncryptionKeyWrapMetadata("akv", keyUri.toString(), KeyVaultConstants.RsaOaep256.toString());
 
@@ -791,14 +784,14 @@ public class EncryptionTests extends TestSuiteBase {
     /// Validates Null Response from KeyVault
     /// </summary>
     /// <returns></returns>
-//        [TestMethod]
-//        [ExpectedException(typeof(NullReferenceException),
-//        "ArgumentNullException Method should catch Null References sent back by GetKeyAsync")]
-
-
-    @Test(groups = { "encryption" }, timeOut = TIMEOUT, expectedExceptions = {IllegalArgumentException.class}, expectedExceptionsMessageRegExp = "Key Vault https://testdemo.vault.azure.net/keys/nullKeyVaultKey/47d306aeaae74baab294672354603ca3 provided must have soft delete and purge protection enabled.")
-    public void ValidateKeyClientReturnsNullKeyVaultResponse() throws Exception
-    {
+    //        [TestMethod]
+    //        [ExpectedException(typeof(NullReferenceException),
+    //        "ArgumentNullException Method should catch Null References sent back by GetKeyAsync")]
+    @Test(groups = { "encryption" }, timeOut = TIMEOUT, expectedExceptions = { IllegalArgumentException.class },
+        expectedExceptionsMessageRegExp = "Key Vault https://testdemo.vault.azure"
+            + ".net/keys/nullKeyVaultKey/47d306aeaae74baab294672354603ca3 provided must have soft delete and purge "
+            + "protection enabled.")
+    public void ValidateKeyClientReturnsNullKeyVaultResponse() throws Exception {
         URI keyUri = new URI("https://testdemo.vault.azure.net/keys/" + KeyVaultTestConstants.ValidateNullKeyVaultKey + "47d306aeaae74baab294672354603ca3");
         EncryptionKeyWrapMetadata invalidWrapMetadata = new EncryptionKeyWrapMetadata("akv", keyUri.toString());
         EncryptionKeyWrapResult keyWrapResponse =  EncryptionTests.wrapDekKeyVaultAsync(rawDekForKeyVault, invalidWrapMetadata).block();
@@ -808,8 +801,7 @@ public class EncryptionTests extends TestSuiteBase {
     /// </summary>
     /// <returns></returns>
     @Test(groups = { "encryption" }, timeOut = TIMEOUT)
-    public void WrapKeyUsingKeyVault()
-    {
+    public void WrapKeyUsingKeyVault() {
         EncryptionKeyWrapResult keyWrapResponse =  EncryptionTests.wrapDekKeyVaultAsync(rawDekForKeyVault, azureKeyVaultKeyWrapMetadata).block();
 
         assertThat(keyWrapResponse).isNotNull();
@@ -821,16 +813,22 @@ public class EncryptionTests extends TestSuiteBase {
     /// Validates handling of KeyClient returning a Request Failed.
     /// </summary>
     /// <returns></returns>
-//        [TestMethod]
-//        [ExpectedException(typeof(KeyVaultAccessException),
-    @Test(groups = { "encryption" }, timeOut = TIMEOUT, expectedExceptions = {IllegalArgumentException.class}, expectedExceptionsMessageRegExp = "Key Vault https://testdemo.vault.azure.net/keys/requestFailed/47d306aeaae74baab294672354603ca3 provided must have soft delete and purge protection enabled.")
-//
-//        "ArgumentNullException Method catches and returns RequestFailed Exception KeyVaultAccess Client to throw inner exception")]
-    public void ValidateKeyClientReturnRequestFailed() throws Exception
-    {
-        URI keyUri = new URI("https://testdemo.vault.azure.net/keys/" + KeyVaultTestConstants.ValidateRequestFailedEx + "47d306aeaae74baab294672354603ca3");
+    //        [TestMethod]
+    //        [ExpectedException(typeof(KeyVaultAccessException),
+    @Test(groups = { "encryption" }, timeOut = TIMEOUT, expectedExceptions = { IllegalArgumentException.class },
+        expectedExceptionsMessageRegExp = "Key Vault https://testdemo.vault.azure"
+            + ".net/keys/requestFailed/47d306aeaae74baab294672354603ca3 provided must have soft delete and purge "
+            + "protection enabled.")
+    //
+    //        "ArgumentNullException Method catches and returns RequestFailed Exception KeyVaultAccess Client to
+    //        throw inner exception")]
+    public void ValidateKeyClientReturnRequestFailed() throws Exception {
+        URI keyUri =
+            new URI("https://testdemo.vault.azure.net/keys/" + KeyVaultTestConstants.ValidateRequestFailedEx +
+                "47d306aeaae74baab294672354603ca3");
         EncryptionKeyWrapMetadata invalidWrapMetadata = new EncryptionKeyWrapMetadata("akv", keyUri.toString());
-        EncryptionKeyWrapResult keyWrapResponse = EncryptionTests.wrapDekKeyVaultAsync(rawDekForKeyVault, invalidWrapMetadata).block();
+        EncryptionKeyWrapResult keyWrapResponse = EncryptionTests.wrapDekKeyVaultAsync(rawDekForKeyVault,
+            invalidWrapMetadata).block();
     }
 
     /// <summary>
@@ -838,18 +836,17 @@ public class EncryptionTests extends TestSuiteBase {
     /// </summary>
     /// <returns></returns>
     @Test(groups = { "encryption" }, timeOut = TIMEOUT)
-    public void EncryptionCreateDekKeyVaultWrapProvider()
-    {
+    public void EncryptionCreateDekKeyVaultWrapProvider() {
         String dekId = "DekWithKeyVault";
-        DataEncryptionKeyProperties dekProperties =  EncryptionTests.createDek(EncryptionTests.dekProvider, dekId);
-
-        assertThat(new EncryptionKeyWrapMetadata(EncryptionTests.metadata1.value + EncryptionTests.metadataUpdateSuffix)).isEqualTo(dekProperties.encryptionKeyWrapMetadata);
-
+        DataEncryptionKeyProperties dekProperties = EncryptionTests.createDek(EncryptionTests.dekProvider, dekId);
+        assertThat(new EncryptionKeyWrapMetadata(EncryptionTests.metadata1.value + EncryptionTests.metadataUpdateSuffix))
+            .isEqualTo(dekProperties.encryptionKeyWrapMetadata);
         CosmosDataEncryptionKeyProvider dekProvider = new CosmosDataEncryptionKeyProvider(azureKeyVaultKeyWrapProvider);
 
-
-         dekProvider.initialize(EncryptionTests.databaseCore, EncryptionTests.keyContainer.getId());
-        DataEncryptionKeyProperties readProperties =  dekProvider.getDataEncryptionKeyContainer().readDataEncryptionKeyAsync(dekId, new CosmosItemRequestOptions()).block().getItem();
+        dekProvider.initialize(EncryptionTests.databaseCore, EncryptionTests.keyContainer.getId());
+        DataEncryptionKeyProperties readProperties =
+            dekProvider.getDataEncryptionKeyContainer().readDataEncryptionKeyAsync(dekId,
+                new CosmosItemRequestOptions()).block().getItem();
 
         assertThat(readProperties).isEqualTo(dekProperties);
     }
@@ -858,51 +855,53 @@ public class EncryptionTests extends TestSuiteBase {
     /// Integration testing for Rewrapping Dek with KeyVault Wrap Provider.
     /// </summary>
     /// <returns></returns>
-//        [TestMethod]
+    //        [TestMethod]
     /// <returns></returns>
     @Test(groups = { "encryption" }, timeOut = TIMEOUT)
-    public void EncryptionRewrapDekWithKeyVaultWrapProvider()
-    {
+    public void EncryptionRewrapDekWithKeyVaultWrapProvider() {
         String dekId = "randomDekKeyVault";
         DataEncryptionKeyProperties dekProperties = EncryptionTests.createDek(EncryptionTests.dekProvider, dekId);
+        assertThat(new EncryptionKeyWrapMetadata(EncryptionTests.metadata1.value + EncryptionTests.metadataUpdateSuffix))
+            .isEqualTo(dekProperties.encryptionKeyWrapMetadata);
 
-        assertThat(new EncryptionKeyWrapMetadata(EncryptionTests.metadata1.value + EncryptionTests.metadataUpdateSuffix)).isEqualTo(dekProperties.encryptionKeyWrapMetadata);
-
-
-        CosmosItemResponse<DataEncryptionKeyProperties> dekResponse =  EncryptionTests.dekProvider.getDataEncryptionKeyContainer().rewrapDataEncryptionKeyAsync(
-        dekId,
-        EncryptionTests.metadata2, new CosmosItemRequestOptions()).block();
+        CosmosItemResponse<DataEncryptionKeyProperties> dekResponse =
+            EncryptionTests.dekProvider.getDataEncryptionKeyContainer().rewrapDataEncryptionKeyAsync(
+            dekId,
+            EncryptionTests.metadata2, new CosmosItemRequestOptions()).block();
 
         assertThat(dekResponse.getStatusCode()).isEqualTo(ResponseStatusCode.OK);
 
-//        Assert.AreEqual(HttpStatusCode.OK, dekResponse.StatusCode);
+        //        Assert.AreEqual(HttpStatusCode.OK, dekResponse.StatusCode);
         dekProperties = EncryptionTests.verifyDekResponse(
             dekResponse,
             dekId);
 
         assertThat(new EncryptionKeyWrapMetadata(EncryptionTests.metadata2.value + EncryptionTests.metadataUpdateSuffix)).isEqualTo(dekProperties.encryptionKeyWrapMetadata);
-//        Assert.AreEqual(
-//            new EncryptionKeyWrapMetadata(EncryptionTests.metadata2.Value + EncryptionTests.metadataUpdateSuffix),
-//            dekProperties.EncryptionKeyWrapMetadata);
+        //        Assert.AreEqual(
+        //            new EncryptionKeyWrapMetadata(EncryptionTests.metadata2.Value + EncryptionTests
+        //            .metadataUpdateSuffix),
+        //            dekProperties.EncryptionKeyWrapMetadata);
 
         CosmosDataEncryptionKeyProvider dekProvider = new CosmosDataEncryptionKeyProvider(azureKeyVaultKeyWrapProvider);
-         dekProvider.initialize(EncryptionTests.databaseCore, EncryptionTests.keyContainer.getId());
-        DataEncryptionKeyProperties readProperties =  dekProvider.getDataEncryptionKeyContainer().readDataEncryptionKeyAsync(dekId, new CosmosItemRequestOptions()).block().getItem();
+        dekProvider.initialize(EncryptionTests.databaseCore, EncryptionTests.keyContainer.getId());
+        DataEncryptionKeyProperties readProperties =
+            dekProvider.getDataEncryptionKeyContainer().readDataEncryptionKeyAsync(dekId,
+                new CosmosItemRequestOptions()).block().getItem();
 
         assertThat(readProperties).isEqualTo(dekProperties);
     }
-//
+    //
     /// <summary>
     /// Validates handling of Null Key Passed to Wrap Provider.
     /// </summary>
     /// <returns></returns>
 
-//    @Test(groups = { "encryption" }, timeOut = TIMEOUT, expectedExceptions = {IllegalArgumentException.class}, expectedExceptionsMessageRegExp = "Key is Null.")
-@Test(groups = { "encryption" }, timeOut = TIMEOUT, expectedExceptions = {RuntimeException.class})
-// TODO: fix the error message validation and the type
-public void WrapNullKeyUsingKeyVault()
-    {
-        EncryptionKeyWrapResult keyWrapResponse =  EncryptionTests.wrapDekKeyVaultAsync(null, azureKeyVaultKeyWrapMetadata).block();
+    //    @Test(groups = { "encryption" }, timeOut = TIMEOUT, expectedExceptions = {IllegalArgumentException.class},
+    //    expectedExceptionsMessageRegExp = "Key is Null.")
+    @Test(groups = { "encryption" }, timeOut = TIMEOUT, expectedExceptions = { RuntimeException.class })
+    // TODO: fix the error message validation and the type
+    public void WrapNullKeyUsingKeyVault() {
+        EncryptionKeyWrapResult keyWrapResponse = EncryptionTests.wrapDekKeyVaultAsync(null, azureKeyVaultKeyWrapMetadata).block();
     }
 
 
@@ -910,17 +909,18 @@ public void WrapNullKeyUsingKeyVault()
     /// Validates handling of Incorrect Wrap Meta to Wrap Provider.
     /// </summary>
     /// <returns></returns>
-//        [TestMethod]
-//        [ExpectedException(typeof(ArgumentException),
-//        "ArgumentException when provided with incorrect WrapMetaData TypeConstants")]
-    @Test(groups = { "encryption" }, timeOut = TIMEOUT, expectedExceptions = {RuntimeException.class})
+    //        [TestMethod]
+    //        [ExpectedException(typeof(ArgumentException),
+    //        "ArgumentException when provided with incorrect WrapMetaData TypeConstants")]
+    @Test(groups = { "encryption" }, timeOut = TIMEOUT, expectedExceptions = { RuntimeException.class })
     // TODO: fix the error message validation and the type
 
-    public void WrapKeyUsingKeyVaultInValidTypeConstants() throws Exception
-    {
+    public void WrapKeyUsingKeyVaultInValidTypeConstants() throws Exception {
         URI keyUri = new URI("https://testdemo.vault.azure.net/keys/testkey1/47d306aeaae74baab294672354603ca3");
-        EncryptionKeyWrapMetadata invalidWrapMetadata = new EncryptionKeyWrapMetadata("incorrectConstant", keyUri.toString());
-        EncryptionKeyWrapResult keyWrapResponse = EncryptionTests.wrapDekKeyVaultAsync(rawDekForKeyVault, invalidWrapMetadata).block();
+        EncryptionKeyWrapMetadata invalidWrapMetadata = new EncryptionKeyWrapMetadata("incorrectConstant",
+            keyUri.toString());
+        EncryptionKeyWrapResult keyWrapResponse = EncryptionTests.wrapDekKeyVaultAsync(rawDekForKeyVault,
+            invalidWrapMetadata).block();
     }
 
 

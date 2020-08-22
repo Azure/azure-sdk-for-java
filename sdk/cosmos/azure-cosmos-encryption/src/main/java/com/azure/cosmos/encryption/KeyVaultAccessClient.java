@@ -47,7 +47,6 @@ public class KeyVaultAccessClient {
      * @param keyVaultTokenCredentialFactory TokenCredential
      * @param keyClientFactory KeyClient Factory
      * @param cryptographyClientFactory KeyClient Factory
-     * @return
      */
     public KeyVaultAccessClient(KeyVaultTokenCredentialFactory keyVaultTokenCredentialFactory,
                                 KeyClientFactory keyClientFactory,
@@ -62,22 +61,29 @@ public class KeyVaultAccessClient {
     /**
      * Unwrap the encrypted Key. Only supports encrypted bytes in base64 format.
      *
+     * Note: this may return an empty Mono if cryptoClient returns empty/null
+     *
      * @param wrappedKey encrypted bytes.
      * @param keyVaultUriProperties Parsed key Vault Uri Properties.Properties as in sample Format:
      * https://{keyvault-name}.vault.azure.net/keys/{key-name}/{key-version}
      * @return Mono of Result including KeyIdentifier and decrypted bytes in base64 string format, can be convert to
      * bytes using Convert.FromBase64String().
      */
-    public Mono<byte[]> UnwrapKeyAsync(
+    public Mono<byte[]> unwrapKeyAsync(
         byte[] wrappedKey,
         KeyVaultKeyUriProperties keyVaultUriProperties) {
         UnwrapResult keyOpResult;
 
         // Get a Crypto Client for Wrap and UnWrap,this gets init per Key ID
-        Mono<CryptographyAsyncClient> cryptoClientMono = this.GetCryptoClientAsync(keyVaultUriProperties);
+        Mono<CryptographyAsyncClient> cryptoClientMono = this.getCryptoClientAsync(keyVaultUriProperties);
 
         // TODO: moderakh change to async
         CryptographyAsyncClient cryptoClient = cryptoClientMono.block();
+        if (cryptoClient == null) {
+            // this never be empty Mono and hence never null
+            // TODO: remove this once moved to async and removed blocking call
+            return Mono.error(new IllegalStateException("avk cannot be null"));
+        }
 
         try {
             keyOpResult = cryptoClient.unwrapKey(KeyVaultConstants.RsaOaep256, wrappedKey).block();
@@ -92,6 +98,12 @@ public class KeyVaultAccessClient {
             //                ex);
         }
 
+        if (keyOpResult == null) {
+            // this never be empty Mono and hence never null
+            // TODO: remove this once moved to async and removed blocking call
+            return Mono.error(new IllegalStateException("keyOpResult cannot be null"));
+        }
+
         // may return null
         return Mono.justOrEmpty(keyOpResult.getKey());
     }
@@ -104,13 +116,18 @@ public class KeyVaultAccessClient {
      * https://{keyvault-name}.vault.azure.net/keys/{key-name}/{key-version}
      * @return Mono of Result including KeyIdentifier and encrypted bytes in base64 string format.
      */
-    public Mono<byte[]> WrapKeyAsync(
+    public Mono<byte[]> wrapKeyAsync(
         byte[] key,
         KeyVaultKeyUriProperties keyVaultUriProperties) {
         WrapResult keyOpResult;
 
         // Get a Crypto Client for Wrap and UnWrap,this gets init per Key ID
-        CryptographyAsyncClient cryptoClient = this.GetCryptoClientAsync(keyVaultUriProperties).block();
+        CryptographyAsyncClient cryptoClient = this.getCryptoClientAsync(keyVaultUriProperties).block();
+        if (cryptoClient == null) {
+            // this never be empty Mono and hence never null
+            // TODO: remove this once moved to async and removed blocking call
+            return Mono.error(new IllegalStateException("avk cannot be null"));
+        }
 
         try {
             keyOpResult = cryptoClient.wrapKey(KeyVaultConstants.RsaOaep256, key).block();
@@ -139,9 +156,14 @@ public class KeyVaultAccessClient {
      * @param keyVaultUriProperties Parsed key Vault Uri Properties.
      * @return Whether The Customer has the correct Deletion Level.
      */
-    public Mono<Boolean> ValidatePurgeProtectionAndSoftDeleteSettingsAsync(
+    public Mono<Boolean> validatePurgeProtectionAndSoftDeleteSettingsAsync(
         KeyVaultKeyUriProperties keyVaultUriProperties) {
-        KeyAsyncClient akvClient = this.GetAkvClientAsync(keyVaultUriProperties).block();
+        KeyAsyncClient akvClient = this.getAkvClientAsync(keyVaultUriProperties).block();
+        if (akvClient == null) {
+            // this never be empty Mono and hence never null
+            // TODO: remove this once moved to async and removed blocking call
+            return Mono.error(new IllegalStateException("avk cannot be null"));
+        }
         try {
             KeyVaultKey getKeyResponse = akvClient.getKey(keyVaultUriProperties.getKeyName()).block();
 
@@ -172,11 +194,11 @@ public class KeyVaultAccessClient {
 
     /**
      * Obtains the KeyClient to retrieve keys from Keyvault.
-     *
+     * returned Mono will never be an empty Mono.
      * @param keyVaultUriProperties Parsed key Vault Uri Properties.
-     * @return Key Client
+     * @return Mono of KeyClient
      */
-    private Mono<KeyAsyncClient> GetAkvClientAsync(
+    private Mono<KeyAsyncClient> getAkvClientAsync(
         KeyVaultKeyUriProperties keyVaultUriProperties) {
 
         // Called once per KEYVALTNAME
@@ -201,7 +223,7 @@ public class KeyVaultAccessClient {
     //    /// <param name="keyVaultUriProperties"> Parsed key Vault Uri Properties. </param>
     //    /// <param name="cancellationToken"> cancellation token </param>
     //    /// <returns> CryptographyClient </returns>
-    private Mono<CryptographyAsyncClient> GetCryptoClientAsync(
+    private Mono<CryptographyAsyncClient> getCryptoClientAsync(
         KeyVaultKeyUriProperties keyVaultUriProperties) {
 
         // Get a Crypto Client for Wrap and UnWrap,this gets init per Key Version
@@ -217,7 +239,7 @@ public class KeyVaultAccessClient {
                     this.keyVaultTokenCredentialFactory.getTokenCredentialAsync(keyVaultUriProperties.getKeyUri());
                 return tokenCredMono.map(
                     tokenCred -> {
-                        return this.cryptographyClientFactory.GetCryptographyClient(keyVaultUriProperties, tokenCred);
+                        return this.cryptographyClientFactory.getCryptographyClient(keyVaultUriProperties, tokenCred);
                     }
 
                 );

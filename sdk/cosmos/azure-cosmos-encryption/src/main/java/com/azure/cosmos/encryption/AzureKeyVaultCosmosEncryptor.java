@@ -24,7 +24,7 @@ public class AzureKeyVaultCosmosEncryptor implements Encryptor {
     /**
      * Gets Container for data encryption keys. TODO: is this needed?
      *
-     * @return
+     * @return DataEncryptionKeyContainer key container.
      */
     public DataEncryptionKeyContainer getDataEncryptionKeyContainer() {
         return this.cosmosDekProvider.getDataEncryptionKeyContainer();

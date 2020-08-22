@@ -11,7 +11,7 @@ import com.azure.security.keyvault.keys.cryptography.CryptographyClientBuilder;
  * Factory Class for Accessing CryptographyClient methods.
  */
 class CryptographyClientFactory {
-    public CryptographyAsyncClient GetCryptographyClient(KeyVaultKeyUriProperties keyVaultKeyUriProperties,
+    public CryptographyAsyncClient getCryptographyClient(KeyVaultKeyUriProperties keyVaultKeyUriProperties,
                                                          TokenCredential tokenCredential) {
         return new CryptographyClientBuilder()
             .credential(tokenCredential)

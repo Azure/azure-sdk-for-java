@@ -429,7 +429,7 @@ public class KeyVaultAccessClientTests {
      * Returns an instance of TestCryptographyClient for mocking CryptographyClient.
      */
     public static class CryptographyClientFactoryTestFactory extends CryptographyClientFactory {
-        public CryptographyAsyncClient GetCryptographyClient(KeyVaultKeyUriProperties keyVaultKeyUriProperties,
+        public CryptographyAsyncClient getCryptographyClient(KeyVaultKeyUriProperties keyVaultKeyUriProperties,
                                                              TokenCredential tokenCred) {
             return new TestCryptographyClientProvider().createTestCryptographyClient(keyVaultKeyUriProperties.getKeyUri(), tokenCred);
         }
