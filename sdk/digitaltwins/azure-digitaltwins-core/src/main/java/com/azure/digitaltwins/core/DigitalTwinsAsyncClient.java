@@ -74,7 +74,7 @@ public class DigitalTwinsAsyncClient {
      * @return The application/json digital twin created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> createDigitalTwinAsString(String digitalTwinId, String digitalTwin) throws JsonProcessingException {
+    public Mono<String> createDigitalTwinString(String digitalTwinId, String digitalTwin) throws JsonProcessingException {
         Object payload = mapper.readValue(digitalTwin, Object.class);
         try {
             return protocolLayer
@@ -107,10 +107,27 @@ public class DigitalTwinsAsyncClient {
      * @return The application/json digital twin created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DigitalTwinsAddResponse> createDigitalTwinAsObject(String digitalTwinId, Object digitalTwin) {
+    public Mono<DigitalTwinsAddResponse> createDigitalTwinObject(String digitalTwinId, Object digitalTwin) {
         return protocolLayer
             .getDigitalTwins()
             .addWithResponseAsync(digitalTwinId, digitalTwin);
+    }
+
+    /**
+     * Creates a digital twin.
+     *
+     * @param digitalTwinId The Id of the digital twin.
+     * @param digitalTwin The application/json digital twin to create.
+     * @return The application/json digital twin created.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public <T> Mono<T> createDigitalTwinGeneric(String digitalTwinId, Object digitalTwin, Class<T> klazz) {
+        return protocolLayer
+            .getDigitalTwins()
+            .addWithResponseAsync(digitalTwinId, digitalTwin)
+            .flatMap(
+                response -> Mono.just(mapper.convertValue(response.getValue(), klazz))
+            );
     }
 
     /**
