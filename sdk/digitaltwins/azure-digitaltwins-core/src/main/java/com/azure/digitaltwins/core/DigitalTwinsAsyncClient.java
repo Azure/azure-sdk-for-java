@@ -14,6 +14,9 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImpl;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImplBuilder;
+import com.azure.digitaltwins.core.models.DigitalTwinsAddResponse;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
 
@@ -32,6 +35,7 @@ import reactor.core.publisher.Mono;
 @ServiceClient(builder = DigitalTwinsClientBuilder.class)
 public class DigitalTwinsAsyncClient {
     private final ClientLogger logger = new ClientLogger(DigitalTwinsAsyncClient.class);
+    private final ObjectMapper mapper = new ObjectMapper();
     private final DigitalTwinsServiceVersion serviceVersion;
     private final AzureDigitalTwinsAPIImpl protocolLayer;
 
@@ -70,22 +74,43 @@ public class DigitalTwinsAsyncClient {
      * @return The application/json digital twin created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> createDigitalTwin(String digitalTwinId, String digitalTwin) {
+    public Mono<String> createDigitalTwinAsString(String digitalTwinId, String digitalTwin) throws JsonProcessingException {
+        Object payload = mapper.readValue(digitalTwin, Object.class);
         try {
             return protocolLayer
                 .getDigitalTwins()
-                .addWithResponseAsync(digitalTwinId, digitalTwin)
+                .addWithResponseAsync(digitalTwinId, payload)
                 // Mono.flatMap: Transform the item emitted by this Mono asynchronously, returning the value emitted by another Mono (possibly changing the value type).
                 // The PL gives us a Mono<DigitalTwinsAddResponse>, so we use Mono.flatMap to transform the items emitted
                 // from Mono<DigitalTwinsAddResponse> to Mono<String>, asynchronously.
                 .flatMap(
                     // Mono.just(item) creates a new Mono that emits the specified item.
                     // response.getValue gives us the deserialized Http response body (Object).
-                    response -> Mono.just(response.getValue().toString()));
+                    response -> {
+                        try {
+                            return Mono.just(mapper.writeValueAsString(response.getValue()));
+                        } catch (JsonProcessingException e) {
+                            return Mono.error(e);
+                        }
+                    });
         } catch (RuntimeException ex) {
             // TODO: Ensure that exceptions are handled in a reactive way
             return FluxUtil.monoError(logger, ex);
         }
+    }
+
+    /**
+     * Creates a digital twin.
+     *
+     * @param digitalTwinId The Id of the digital twin.
+     * @param digitalTwin The application/json digital twin to create.
+     * @return The application/json digital twin created.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DigitalTwinsAddResponse> createDigitalTwinAsObject(String digitalTwinId, Object digitalTwin) {
+        return protocolLayer
+            .getDigitalTwins()
+            .addWithResponseAsync(digitalTwinId, digitalTwin);
     }
 
     /**
