@@ -64,7 +64,6 @@ public class AadAuthorizationTests extends TestSuiteBase {
         CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
             .endpoint(HOST)
             .key(EMULATOR_KEY)
-            .credential(emulatorCredential)
             .buildAsyncClient();
 
         CosmosAsyncClient cosmosAadClient = new CosmosClientBuilder()

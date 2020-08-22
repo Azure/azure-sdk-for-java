@@ -268,7 +268,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 };
                 this.tokenCredentialCache = new SimpleTokenCache(() -> this.tokenCredential
                     .getToken(new TokenRequestContext().addScopes(this.tokenCredentialScopes)));
-                this.authorizationTokenType = AuthorizationTokenType.ResourceToken;
+                this.authorizationTokenType = AuthorizationTokenType.AadToken;
             }
         }
 

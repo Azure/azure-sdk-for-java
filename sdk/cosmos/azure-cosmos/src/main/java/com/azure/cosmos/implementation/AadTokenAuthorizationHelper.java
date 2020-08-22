@@ -22,7 +22,12 @@ public class AadTokenAuthorizationHelper {
     public static final String AAD_AUTH_SCHEMA_TYPE_VALUE = "aad";
     public static final String AAD_AUTH_VERSION_VALUE = "1.0";
     public static final String AAD_AUTH_TOKEN_COSMOS_SCOPE = "https://cosmos.azure.com/.default";
-    private static final String AUTH_PREFIX = "type=aad&ver=1.0&sig=";
+    private static final String AUTH_PREFIX =
+            AAD_AUTH_SCHEMA_TYPE_SEGMENT + "=" + AAD_AUTH_SCHEMA_TYPE_VALUE
+            + "&"
+            + AAD_AUTH_VERSION_SEGMENT + "=" + AAD_AUTH_VERSION_VALUE
+            + "&"
+            + AAD_AUTH_SIGNATURE_SEGMENT + "=";
     private static final Logger logger = LoggerFactory.getLogger(AadTokenAuthorizationHelper.class);
 
     /**
@@ -51,10 +56,7 @@ public class AadTokenAuthorizationHelper {
         return simpleTokenCache.getToken()
             .map(accessToken -> {
                 String authorization;
-                String authorizationPayload =
-                    AAD_AUTH_SCHEMA_TYPE_SEGMENT + "=" + AAD_AUTH_SCHEMA_TYPE_VALUE
-                    + AAD_AUTH_VERSION_SEGMENT + "=" + AAD_AUTH_VERSION_VALUE
-                    + AAD_AUTH_SIGNATURE_SEGMENT + "=" + accessToken.getToken();
+                String authorizationPayload = AUTH_PREFIX + accessToken.getToken();
 
                 try {
                     authorization = URLEncoder.encode(authorizationPayload, "UTF-8");
