@@ -6,6 +6,9 @@ package com.azure.digitaltwins.core;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
+import com.azure.digitaltwins.core.models.DigitalTwinsAddHeaders;
 import com.azure.digitaltwins.core.models.DigitalTwinsAddResponse;
 import com.azure.digitaltwins.core.serialization.BasicDigitalTwin;
 import com.azure.digitaltwins.core.serialization.DigitalTwinMetadata;
@@ -17,10 +20,12 @@ import reactor.core.publisher.Mono;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 public class AsyncSample
 {
     private static final ObjectMapper mapper = new ObjectMapper();
+    private static final Random random = new Random();
 
     public static void main(String[] args) throws InterruptedException, JsonProcessingException {
         String tenantId = System.getenv("TENANT_ID");
@@ -41,23 +46,25 @@ public class AsyncSample
             .endpoint(endpoint)
             .httpLogOptions(
                 new HttpLogOptions()
-                    .setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                    .setLogLevel(HttpLogDetailLevel.NONE))
             .buildAsyncClient();
 
         // Create the source twin
         final Semaphore createTwinsSemaphore = new Semaphore(0);
 
+        // Request is json string
+        String dtId_String = "dt_String_" + random.nextInt();
+        String dtId_WithResponse_ResponseBase_String = "dt_WithResponse_ResponseBase_String_" + random.nextInt();
+        String dtId_WithResponse_DigitalTwinsAddResponse_String = "dt_WithResponse_DigitalTwinsAddResponse_String_" + random.nextInt();
         DigitalTwinMetadata metadata = new DigitalTwinMetadata().setModelId(modelId);
-
-        // Request and response are both json string
-        String dtId_String = "dt_String_" + new Random().nextInt();
         BasicDigitalTwin basicDigitalTwin = new BasicDigitalTwin()
             .setId(dtId_String)
             .setMetadata(metadata)
-            .setCustomProperties("AverageTemperature", 68)
+            .setCustomProperties("AverageTemperature", random.nextInt(50))
             .setCustomProperties("TemperatureUnit", "Celsius");
-
         String dt_String = mapper.writeValueAsString(basicDigitalTwin);
+
+        // Response is String
         Mono<String> sourceTwinString = client.createDigitalTwinString(dtId_String, dt_String);
         sourceTwinString.subscribe(
             result -> {
@@ -75,19 +82,61 @@ public class AsyncSample
             throwable -> System.err.println("Failed to create source twin on digital twin with Id " + dtId_String + " due to error message " + throwable.getMessage()),
             createTwinsSemaphore::release);
 
-        // Request and response are both objects - input is strongly typed, and output is Object.
-        String dtId_Object = "dt_Object_" + new Random().nextInt();
+        // Response is Response<String> -> ResponseBase<DigitalTwinsAddHeaders, String>
+        Mono<ResponseBase<DigitalTwinsAddHeaders, String>> sourceTwinWithResponseResponseBaseString = client.createDigitalTwinWithResponseResponseBaseString(dtId_WithResponse_ResponseBase_String, dt_String);
+        sourceTwinWithResponseResponseBaseString.subscribe(
+            result -> {
+                System.out.println(String.format("Successfully created twin: Id=%s, Status=%d, Etag=%s",
+                    dtId_WithResponse_ResponseBase_String, result.getStatusCode(), result.getDeserializedHeaders().getETag()));
+                try {
+                    BasicDigitalTwin twin = mapper.readValue(result.getValue(), BasicDigitalTwin.class);
+                    System.out.println(
+                        String.format("Created twin: Id=%s, Etag=%s, ModelId=%s, AverageTemperature=%d, TemperatureUnit=%s",
+                            twin.getId(), twin.getEtag(), twin.getMetadata().getModelId(), (Integer)twin.getCustomProperties().get("AverageTemperature"), twin.getCustomProperties().get("TemperatureUnit")));
+                } catch (JsonProcessingException e) {
+                    System.err.println("Reading response into BasicDigitalTwin failed: ");
+                    e.printStackTrace();
+                }
+
+            },
+            throwable -> System.err.println("Failed to create source twin on digital twin with Id " + dtId_WithResponse_ResponseBase_String + " due to error message " + throwable.getMessage()),
+            createTwinsSemaphore::release);
+
+        // Response is Response<String> -> DigitalTwinsAddResponse (json string)
+        Mono<DigitalTwinsAddResponse> sourceTwinWithResponseDigitalTwinAddResponseString = client.createDigitalTwinWithResponseDigitalTwinAddResponseString(dtId_WithResponse_DigitalTwinsAddResponse_String, dt_String);
+        sourceTwinWithResponseDigitalTwinAddResponseString.subscribe(
+            result -> {
+                System.out.println(String.format("Successfully created twin: Id=%s, Status=%d, Etag=%s",
+                    dtId_WithResponse_DigitalTwinsAddResponse_String, result.getStatusCode(), result.getDeserializedHeaders().getETag()));
+                try {
+                    BasicDigitalTwin twin = mapper.readValue(result.getValue().toString(), BasicDigitalTwin.class);
+                    System.out.println(
+                        String.format("Created twin: Id=%s, Etag=%s, ModelId=%s, AverageTemperature=%d, TemperatureUnit=%s",
+                            twin.getId(), twin.getEtag(), twin.getMetadata().getModelId(), (Integer)twin.getCustomProperties().get("AverageTemperature"), twin.getCustomProperties().get("TemperatureUnit")));
+                } catch (JsonProcessingException e) {
+                    System.err.println("Reading response into BasicDigitalTwin failed: ");
+                    e.printStackTrace();
+                }
+
+            },
+            throwable -> System.err.println("Failed to create source twin on digital twin with Id " + dtId_WithResponse_DigitalTwinsAddResponse_String + " due to error message " + throwable.getMessage()),
+            createTwinsSemaphore::release);
+
+        // Request is Object - strongly typed is allowed. - input can be strongly typed, and output is Object.
+        String dtId_Object = "dt_Object_" + random.nextInt();
+        String dtId_WithResponse_Object = "dt_WithResponse_Object_" + random.nextInt();
         CustomDigitalTwin customDigitalTwin = new CustomDigitalTwin()
             .id(dtId_Object)
             .metadata((CustomDigitalTwinMetadata) new CustomDigitalTwinMetadata().modelId(modelId))
-            .averageTemperature(48)
+            .averageTemperature(random.nextInt(50))
             .temperatureUnit("Celsius");
 
-        Mono<DigitalTwinsAddResponse> sourceTwinObject = client.createDigitalTwinObject(dtId_Object, customDigitalTwin);
+        // Response is Object
+        Mono<Object> sourceTwinObject = client.createDigitalTwinObject(dtId_Object, customDigitalTwin);
         sourceTwinObject.subscribe(
             result -> {
                 System.out.println("Successfully created twin with Id: " + dtId_Object);
-                CustomDigitalTwin twin = mapper.convertValue(result.getValue(), CustomDigitalTwin.class);
+                CustomDigitalTwin twin = mapper.convertValue(result, CustomDigitalTwin.class);
                 System.out.println(
                     String.format("Created twin: Id=%s, Etag=%s, ModelId=%s, AverageTemperature=%d, TemperatureUnit=%s",
                         twin.id(), twin.etag(), twin.metadata().modelId(), twin.averageTemperature(), twin.temperatureUnit()));
@@ -95,14 +144,30 @@ public class AsyncSample
             throwable -> System.err.println("Failed to create source twin on digital twin with Id " + dtId_Object + " due to error message " + throwable.getMessage()),
             createTwinsSemaphore::release);
 
-        // Request and response are both strongly typed objects.
-        String dtId_Generic = "dt_Generic_" + new Random().nextInt();
+        // Response is Response<Object>
+        Mono<DigitalTwinsAddResponse> sourceTwinWithResponseObject = client.createDigitalTwinWithResponseDigitalTwinsAddResponseObject(dtId_WithResponse_Object, customDigitalTwin);
+        sourceTwinWithResponseObject.subscribe(
+            result -> {
+                System.out.println(String.format("Successfully created twin: Id=%s, Status=%d, Etag=%s",
+                    dtId_WithResponse_Object, result.getStatusCode(), result.getDeserializedHeaders().getETag()));
+                CustomDigitalTwin twin = mapper.convertValue(result.getValue(), CustomDigitalTwin.class);
+                System.out.println(
+                    String.format("Created twin: Id=%s, Etag=%s, ModelId=%s, AverageTemperature=%d, TemperatureUnit=%s",
+                        twin.id(), twin.etag(), twin.metadata().modelId(), twin.averageTemperature(), twin.temperatureUnit()));
+            },
+            throwable -> System.err.println("Failed to create source twin on digital twin with Id " + dtId_WithResponse_Object + " due to error message " + throwable.getMessage()),
+            createTwinsSemaphore::release);
+
+        // Request is strongly typed object
+        String dtId_Generic = "dt_Generic_" + random.nextInt();
+        String dtId_WithResponse_Generic = "dt_WithResponse_Generic_" + random.nextInt();
         CustomDigitalTwin genericDigitalTwin = new CustomDigitalTwin()
             .id(dtId_Object)
             .metadata((CustomDigitalTwinMetadata) new CustomDigitalTwinMetadata().modelId(modelId))
-            .averageTemperature(48)
+            .averageTemperature(random.nextInt(50))
             .temperatureUnit("Celsius");
 
+        // Response is strongly typed object <T>
         Mono<CustomDigitalTwin> sourceTwinGeneric = client.createDigitalTwinGeneric(dtId_Generic, genericDigitalTwin, CustomDigitalTwin.class);
         sourceTwinGeneric.subscribe(
             result -> {
@@ -114,7 +179,22 @@ public class AsyncSample
             throwable -> System.err.println("Failed to create source twin on digital twin with Id " + dtId_Generic + " due to error message " + throwable.getMessage()),
             createTwinsSemaphore::release);
 
-        boolean created = createTwinsSemaphore.tryAcquire(3, 20, TimeUnit.SECONDS);
+        // Response is strongly typed object ResponseBase<DigitalTwinsAddHeaders, T>
+        Mono<ResponseBase<DigitalTwinsAddHeaders, CustomDigitalTwin>> sourceTwinGenericWithResponse = client.createDigitalTwinWithResponseGeneric(dtId_WithResponse_Generic, genericDigitalTwin, CustomDigitalTwin.class);
+        sourceTwinGenericWithResponse.subscribe(
+            result -> {
+                System.out.println(String.format("Successfully created twin: Id=%s, Status=%d, Etag=%s",
+                    dtId_WithResponse_Generic, result.getStatusCode(), result.getDeserializedHeaders().getETag()));
+                CustomDigitalTwin twin = mapper.convertValue(result.getValue(), CustomDigitalTwin.class);
+                System.out.println(
+                    String.format("Created twin: Id=%s, Etag=%s, ModelId=%s, AverageTemperature=%d, TemperatureUnit=%s",
+                        twin.id(), twin.etag(), twin.metadata().modelId(), twin.averageTemperature(), twin.temperatureUnit()));
+            },
+            throwable -> System.err.println("Failed to create source twin on digital twin with Id " + dtId_WithResponse_Generic + " due to error message " + throwable.getMessage()),
+            createTwinsSemaphore::release);
+
+        boolean created = createTwinsSemaphore.tryAcquire(7, 20, TimeUnit.SECONDS);
         System.out.println("Source twins created: " + created);
+
     }
 }

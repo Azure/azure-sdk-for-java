@@ -320,3 +320,6 @@ spring_com.microsoft.azure:azure;1.34.0
 
 # sdk\cosmos
 springdata22_org.springframework.data:spring-data-commons;2.2.9.RELEASE
+
+# sdk\digitaltwins\azure-digitaltwins-core\pom.xml
+org.projectlombok:lombok;1.18.6

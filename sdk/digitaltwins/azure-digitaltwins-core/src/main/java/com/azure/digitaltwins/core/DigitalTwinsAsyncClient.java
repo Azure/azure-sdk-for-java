@@ -9,9 +9,11 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.digitaltwins.core.models.DigitalTwinsAddHeaders;
 import com.azure.digitaltwins.core.models.DigitalTwinsAddResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -63,69 +65,99 @@ public class DigitalTwinsAsyncClient {
         return this.protocolLayer.getHttpPipeline();
     }
 
-    // TODO These are temporary implementations for sample purposes. This should be spruced up/replaced once this API is actually designed.
-    /**
-     * Creates a digital twin.
-     *
-     * @param digitalTwinId The Id of the digital twin.
-     * @param digitalTwin The application/json digital twin to create.
-     * @return The application/json digital twin created.
-     */
+    // TODO: Input and output as String.
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> createDigitalTwinString(String digitalTwinId, String digitalTwin) throws JsonProcessingException {
         Object payload = mapper.readValue(digitalTwin, Object.class);
-        try {
-            return protocolLayer
-                .getDigitalTwins()
-                .addWithResponseAsync(digitalTwinId, payload)
-                // Mono.flatMap: Transform the item emitted by this Mono asynchronously, returning the value emitted by another Mono (possibly changing the value type).
-                // The PL gives us a Mono<DigitalTwinsAddResponse>, so we use Mono.flatMap to transform the items emitted
-                // from Mono<DigitalTwinsAddResponse> to Mono<String>, asynchronously.
-                .flatMap(
-                    // Mono.just(item) creates a new Mono that emits the specified item.
-                    // response.getValue gives us the deserialized Http response body (Object).
-                    response -> {
-                        try {
-                            return Mono.just(mapper.writeValueAsString(response.getValue()));
-                        } catch (JsonProcessingException e) {
-                            return Mono.error(e);
-                        }
-                    });
-        } catch (RuntimeException ex) {
-            // TODO: Ensure that exceptions are handled in a reactive way
-            return FluxUtil.monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Creates a digital twin.
-     *
-     * @param digitalTwinId The Id of the digital twin.
-     * @param digitalTwin The application/json digital twin to create.
-     * @return The application/json digital twin created.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DigitalTwinsAddResponse> createDigitalTwinObject(String digitalTwinId, Object digitalTwin) {
         return protocolLayer
             .getDigitalTwins()
-            .addWithResponseAsync(digitalTwinId, digitalTwin);
+            .addWithResponseAsync(digitalTwinId, payload)
+            .flatMap(
+                response -> {
+                    try {
+                        return Mono.just(mapper.writeValueAsString(response.getValue()));
+                    } catch (JsonProcessingException e) {
+                        return Mono.error(e);
+                    }
+                });
     }
 
-    /**
-     * Creates a digital twin.
-     *
-     * @param digitalTwinId The Id of the digital twin.
-     * @param digitalTwin The application/json digital twin to create.
-     * @return The application/json digital twin created.
-     */
+    // TODO: Input and output are Object.
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Object> createDigitalTwinObject(String digitalTwinId, Object digitalTwin) {
+        return protocolLayer
+            .getDigitalTwins()
+            .addWithResponseAsync(digitalTwinId, digitalTwin)
+            .flatMap(
+                response -> Mono.just(response.getValue()));
+    }
+
+    // TODO: Input and output are T (Generics).
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> Mono<T> createDigitalTwinGeneric(String digitalTwinId, Object digitalTwin, Class<T> klazz) {
         return protocolLayer
             .getDigitalTwins()
             .addWithResponseAsync(digitalTwinId, digitalTwin)
             .flatMap(
-                response -> Mono.just(mapper.convertValue(response.getValue(), klazz))
-            );
+                response -> Mono.just(mapper.convertValue(response.getValue(), klazz)));
+    }
+
+    // TODO: Input is String and output is Response<String> -> ResponseBase<DigitalTwinsAddHeaders, String>.
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<DigitalTwinsAddHeaders, String>> createDigitalTwinWithResponseResponseBaseString(String digitalTwinId, String digitalTwin) throws JsonProcessingException {
+        Object payload = mapper.readValue(digitalTwin, Object.class);
+        return protocolLayer
+            .getDigitalTwins()
+            .addWithResponseAsync(digitalTwinId, payload)
+            .flatMap(
+                response -> {
+                    try {
+                        String jsonResponse = mapper.writeValueAsString(response.getValue());
+                        return Mono.just(new ResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), jsonResponse, response.getDeserializedHeaders()));
+                    } catch (JsonProcessingException e) {
+                        return Mono.error(e);
+                    }
+                });
+    }
+
+    // TODO: Input is String and output is Response<String> -> DigitalTwinsAddResponse (json string).
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DigitalTwinsAddResponse> createDigitalTwinWithResponseDigitalTwinAddResponseString(String digitalTwinId, String digitalTwin) throws JsonProcessingException {
+        Object payload = mapper.readValue(digitalTwin, Object.class);
+        return protocolLayer
+            .getDigitalTwins()
+            .addWithResponseAsync(digitalTwinId, payload)
+            .flatMap(
+                response -> {
+                    try {
+                        String jsonResponse = mapper.writeValueAsString(response.getValue());
+                        DigitalTwinsAddResponse addResponse = new DigitalTwinsAddResponse(response.getRequest(), response.getStatusCode(), response.getHeaders(), jsonResponse, response.getDeserializedHeaders());
+                        return Mono.just(addResponse);
+                    } catch (JsonProcessingException e) {
+                        return Mono.error(e);
+                    }
+                });
+    }
+
+    // TODO: Input is Object and output is Response<Object> -> DigitalTwinsAddResponse.
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DigitalTwinsAddResponse> createDigitalTwinWithResponseDigitalTwinsAddResponseObject(String digitalTwinId, Object digitalTwin) {
+        return protocolLayer
+            .getDigitalTwins()
+            .addWithResponseAsync(digitalTwinId, digitalTwin);
+    }
+
+    // TODO: Input is Object and output is Response<T> -> ResponseBase<DigitalTwinsAddHeaders, T>.
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public <T> Mono<ResponseBase<DigitalTwinsAddHeaders, T>> createDigitalTwinWithResponseGeneric(String digitalTwinId, Object digitalTwin, Class<T> klazz) {
+        return protocolLayer
+            .getDigitalTwins()
+            .addWithResponseAsync(digitalTwinId, digitalTwin)
+            .flatMap(
+                response -> {
+                    T genericResponse = mapper.convertValue(response.getValue(), klazz);
+                    return Mono.just(new ResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), genericResponse, response.getDeserializedHeaders()));
+                });
     }
 
     /**
