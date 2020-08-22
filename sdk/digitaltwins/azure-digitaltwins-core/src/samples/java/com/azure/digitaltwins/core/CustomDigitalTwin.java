@@ -4,7 +4,6 @@
 package com.azure.digitaltwins.core;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.digitaltwins.core.serialization.DigitalTwinMetadata;
 import com.azure.digitaltwins.core.serialization.WritableProperty;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
