@@ -7,26 +7,29 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.digitaltwins.core.models.DigitalTwinsAddResponse;
+import com.azure.digitaltwins.core.serialization.BasicDigitalTwin;
+import com.azure.digitaltwins.core.serialization.DigitalTwinMetadata;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
+import java.util.Random;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 public class AsyncSample
 {
-    public static void main(String[] args) throws InterruptedException
-    {
+    private static final ObjectMapper mapper = new ObjectMapper();
+
+    public static void main(String[] args) throws InterruptedException, JsonProcessingException {
         String tenantId = System.getenv("TENANT_ID");
         String clientId = System.getenv("CLIENT_ID");
         String clientSecret = System.getenv("CLIENT_SECRET");
         String endpoint = System.getenv("DIGITAL_TWINS_ENDPOINT");
-        String sourceDigitalTwinId = System.getenv("SOURCE_DIGITAL_TWIN_ID");
-        String sourceDigitalTwin = System.getenv("SOURCE_DIGITAL_TWIN");
-        String targetDigitalTwinId = System.getenv("TARGET_DIGITAL_TWIN_ID");
-        String targetDigitalTwin = System.getenv("TARGET_DIGITAL_TWIN");
-        String relationshipId = System.getenv("RELATIONSHIP_ID");
-        String relationship = System.getenv("RELATIONSHIP");
+
+        String modelId = "dtmi:samples:Building;1";
 
         TokenCredential tokenCredential = new ClientSecretCredentialBuilder()
             .tenantId(tenantId)
@@ -42,102 +45,58 @@ public class AsyncSample
                     .setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildAsyncClient();
 
-        // Create the source and target twins
+        // Create the source twin
         final Semaphore createTwinsSemaphore = new Semaphore(0);
 
-        // Create source digital twin
-        Mono<String> sourceTwin = client.createDigitalTwin(sourceDigitalTwinId, sourceDigitalTwin);
-        sourceTwin.subscribe(
-            result -> System.out.println("Created source twin: " + result),
-            throwable -> System.err.println("Failed to create source twin on digital twin with Id " + sourceDigitalTwinId + " due to error message " + throwable.getMessage()),
-            // Once the createRelationship operation has completed asynchronously, release the corresponding semaphore so that
-            // the thread that is subscribed to this method call can complete successfully.
-            createTwinsSemaphore::release); // This is an method reference call, which is the same as the following lambda expression: () -> createSemaphore.release()
+        DigitalTwinMetadata metadata = new DigitalTwinMetadata().setModelId(modelId);
 
-        // Create target digital twin
-        Mono<String> targetTwin = client.createDigitalTwin(targetDigitalTwinId, targetDigitalTwin);
-        targetTwin.subscribe(
-            result -> System.out.println("Created target twin: " + result),
-            throwable -> System.err.println("Failed to create target twin on digital twin with Id " + targetDigitalTwinId + " due to error message " + throwable.getMessage()),
-            // Once the createRelationship operation has completed asynchronously, release the corresponding semaphore so that
-            // the thread that is subscribed to this method call can complete successfully.
-            createTwinsSemaphore::release); // This is an method reference call, which is the same as the following lambda expression: () -> createSemaphore.release()
+        // Request and response are both json string
+        String dtId_String = "dt_String_" + new Random().nextInt();
+        BasicDigitalTwin basicDigitalTwin = new BasicDigitalTwin()
+            .setId(dtId_String)
+            .setMetadata(metadata)
+            .setCustomProperties("AverageTemperature", 68)
+            .setCustomProperties("TemperatureUnit", "Celsius");
 
-        boolean created = createTwinsSemaphore.tryAcquire(2, 5, TimeUnit.SECONDS);
-        System.out.println("Source and target twins created: " + created);
+        String dt_String = mapper.writeValueAsString(basicDigitalTwin);
+        Mono<String> sourceTwinString = client.createDigitalTwinAsString(dtId_String, dt_String);
+        sourceTwinString.subscribe(
+            result -> {
+                System.out.println("Successfully created twin with Id: " + dtId_String);
+                try {
+                    BasicDigitalTwin twin = mapper.readValue(result, BasicDigitalTwin.class);
+                    System.out.println(
+                        String.format("Created twin: Id=%s, Etag=%s, ModelId=%s, AverageTemperature=%d, TemperatureUnit=%s",
+                            twin.getId(), twin.getEtag(), twin.getMetadata().getModelId(), (Integer)twin.getCustomProperties().get("AverageTemperature"), twin.getCustomProperties().get("TemperatureUnit")));
+                } catch (JsonProcessingException e) {
+                    System.err.println("Reading response into BasicDigitalTwin failed: ");
+                    e.printStackTrace();
+                }
+            },
+            throwable -> System.err.println("Failed to create source twin on digital twin with Id " + dtId_String + " due to error message " + throwable.getMessage()),
+            createTwinsSemaphore::release);
 
-        // Create relationship on a digital twin
+        // Request and response are both objects - input is strongly typed, and output is Object.
+        String dtId_Object = "dt_Object_" + new Random().nextInt();
+        CustomDigitalTwin customDigitalTwin = new CustomDigitalTwin()
+            .id(dtId_Object)
+            .metadata((CustomDigitalTwinMetadata) new CustomDigitalTwinMetadata().modelId(modelId))
+            .averageTemperature(48)
+            .temperatureUnit("Celsius");
 
-        // Initialize a semaphore with no permits available. A permit must be released before this semaphore can be grabbed by a thread.
-        final Semaphore createSemaphore = new Semaphore(0);
+        Mono<DigitalTwinsAddResponse> sourceTwinObject = client.createDigitalTwinAsObject(dtId_Object, customDigitalTwin);
+        sourceTwinObject.subscribe(
+            result -> {
+                System.out.println("Successfully created twin with Id: " + dtId_Object);
+                CustomDigitalTwin twin = mapper.convertValue(result.getValue(), CustomDigitalTwin.class);
+                System.out.println(
+                    String.format("Created twin: Id=%s, Etag=%s, ModelId=%s, AverageTemperature=%d, TemperatureUnit=%s",
+                        twin.id(), twin.etag(), twin.metadata().modelId(), twin.averageTemperature(), twin.temperatureUnit()));
+            },
+            throwable -> System.err.println("Failed to create source twin on digital twin with Id " + dtId_String + " due to error message " + throwable.getMessage()),
+            createTwinsSemaphore::release);
 
-        Mono<String> createdRelationship = client.createRelationship(sourceDigitalTwinId, relationshipId, relationship);
-
-        // Once the async thread completes, the relationship created on the digital twin will be printed, or an error will be printed.
-        createdRelationship.subscribe(
-            result -> System.out.println("Created relationship: " + result),
-            throwable -> System.err.println("Failed to create relationship " + relationshipId + "on digital twin with Id " + sourceDigitalTwin + " due to error message " + throwable.getMessage()),
-            // Once the createRelationship operation has completed asynchronously, release the corresponding semaphore so that
-            // the thread that is subscribed to this method call can complete successfully.
-            createSemaphore::release); // This is an method reference call, which is the same as the following lambda expression: () -> createSemaphore.release()
-
-        // Wait for a maximum of 5secs to acquire the semaphore.
-        boolean createSuccessful = createSemaphore.tryAcquire(5, TimeUnit.SECONDS);
-
-        if (createSuccessful) {
-            System.out.println("Create operations completed successfully.");
-        } else {
-            System.out.println("Could not finish the create operations within the specified time.");
-        }
-
-        if (createSuccessful) {
-            // List all relationships on a digital twin
-
-            // Initialize a semaphore with no permits available. A permit must be released before this semaphore can be grabbed by a thread.
-            final Semaphore listSemaphore = new Semaphore(0);
-
-            PagedFlux<Object> relationships = client.listRelationships(sourceDigitalTwinId, relationshipId);
-
-            // Subscribe to process one relationship at a time
-            relationships
-                .subscribe(
-                    item -> System.out.println("Relationship retrieved: " + item),
-                    throwable -> System.err.println("Error occurred while retrieving relationship: " + throwable),
-                    () -> {
-                        System.out.println("Completed processing, all relationships have been retrieved.");
-                        // Once the createRelationship operation has completed asynchronously, release the corresponding semaphore so that
-                        // the thread that is subscribed to this API call can complete successfully.
-                        listSemaphore.release();
-                    });
-
-            // Subscribe to process one page at a time from the beginning
-            relationships
-                // You can also subscribe to pages by specifying the preferred page size or the associated continuation token to start the processing from.
-                .byPage()
-                .subscribe(
-                    page -> {
-                        System.out.println("Response headers status code is " + page.getStatusCode());
-                        page.getValue().forEach(item -> System.out.println("Relationship retrieved: " + item));
-                    },
-                    throwable -> System.err.println("Error occurred while retrieving relationship: " + throwable),
-                    () -> {
-                        System.out.println("Completed processing, all relationships have been retrieved.");
-                        // Once the createRelationship operation has completed asynchronously, release the corresponding semaphore so that
-                        // the thread that is subscribed to this API call can complete successfully.
-                        listSemaphore.release();
-                    }
-                );
-
-            // Wait for a maximum of 5secs to acquire both the semaphores.
-            boolean listSuccessful = listSemaphore.tryAcquire(2, 5, TimeUnit.SECONDS);
-
-            if (listSuccessful) {
-                System.out.println("List operations completed successfully.");
-            } else {
-                System.out.println("Could not finish the list operations within the specified time.");
-            }
-
-            System.out.println("Done, exiting.");
-        }
+        boolean created = createTwinsSemaphore.tryAcquire(2, 20, TimeUnit.SECONDS);
+        System.out.println("Source twins created: " + created);
     }
 }

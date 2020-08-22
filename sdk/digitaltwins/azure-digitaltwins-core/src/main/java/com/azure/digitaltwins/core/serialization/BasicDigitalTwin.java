@@ -5,14 +5,20 @@ package com.azure.digitaltwins.core.serialization;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.HashMap;
 import java.util.Map;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.*;
+
 /**
- * An optional helper class for deserializing a digital twin.
+ * An optional, helper class for deserializing a digital twin.
+ * Only properties with non-null values are included.
  */
 @Fluent
+@JsonInclude(Include.NON_NULL)
 public class BasicDigitalTwin {
 
     @JsonProperty(value = "$dtId", required = true)
@@ -24,7 +30,7 @@ public class BasicDigitalTwin {
     @JsonProperty(value = "$metadata", required = true)
     private DigitalTwinMetadata metadata;
 
-    private Map<String, Object> customProperties;
+    private final Map<String, Object> customProperties = new HashMap<>();
 
     /**
      * Gets the unique Id of the digital twin in a digital twins instance. This field is present on every digital twin.
@@ -91,9 +97,11 @@ public class BasicDigitalTwin {
 
     /**
      * Sets the additional properties of the digital twin. This field will contain any properties of the digital twin that are not already defined by the other strong types of this class.
+     * @return The BasicDigitalTwin object itself.
      */
     @JsonAnySetter
-    public void setCustomProperties(String key, Object value) {
-        customProperties.put(key, value);
+    public BasicDigitalTwin setCustomProperties(String key, Object value) {
+        this.customProperties.put(key, value);
+        return this;
     }
 }
