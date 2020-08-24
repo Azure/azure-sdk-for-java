@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
 
 @Fluent
 @Accessors(fluent = true)
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 class CustomDigitalTwin {
 
     @JsonProperty(value = "$dtId", required = true)
@@ -39,7 +39,7 @@ class CustomDigitalTwin {
 
 @Fluent
 @Accessors(fluent = true)
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 class Metadata {
 
     @JsonProperty(value = "$model", required = true)
@@ -49,7 +49,7 @@ class Metadata {
 
 @Fluent
 @Accessors(fluent = true)
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 class CustomDigitalTwinMetadata extends Metadata {
 
     @JsonProperty(value = "AverageTemperature")

@@ -6,11 +6,11 @@ package com.azure.digitaltwins.core;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 public class SyncSample
 {
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) throws JsonProcessingException {
         String tenantId = System.getenv("TENANT_ID");
         String clientId = System.getenv("CLIENT_ID");
         String clientSecret = System.getenv("CLIENT_SECRET");

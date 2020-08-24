@@ -9,6 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
  * This class provides a client for interacting synchronously with an Azure Digital Twins instance.
@@ -61,7 +62,7 @@ public final class DigitalTwinsClient {
      * @return The application/json relationship created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public String createRelationship(String digitalTwinId, String relationshipId, String relationship) {
+    public String createRelationship(String digitalTwinId, String relationshipId, String relationship) throws JsonProcessingException {
         return digitalTwinsAsyncClient.createRelationship(digitalTwinId, relationshipId, relationship).block();
     }
 
