@@ -94,7 +94,7 @@ public class DigitalTwinsAsyncClient {
 
     // Input and output are T (Generics).
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<T> createDigitalTwinGeneric(String digitalTwinId, Object digitalTwin, Class<T> klazz) {
+    public <T> Mono<T> createDigitalTwinGeneric(String digitalTwinId, T digitalTwin, Class<T> klazz) {
         return protocolLayer
             .getDigitalTwins()
             .addWithResponseAsync(digitalTwinId, digitalTwin)
