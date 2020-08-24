@@ -1,10 +1,10 @@
-# Azure Event Grid
+# Azure Event Grid client library for Java
 
 This project provides client tools or utilities in Java that make it easy to interact with [Azure Event Grid](https://azure.com/eventgrid). For documentation please see the Microsoft Azure [Java Developer Center](https://azure.microsoft.com/develop/java/) or the [JavaDocs](https://azure.github.io/azure-sdk-for-java/).
 
 Azure Event Grid is a fully-managed intelligent event routing service that allows for uniform event consumption using a publish-subscribe model.
 
-## Getting Started
+## Getting started
 
 ### Latest stable release
 
@@ -84,7 +84,7 @@ events.add(
 egClient.sendCloudEvents(events);
 ```
 
-## Key Concepts 
+## Key concepts 
 
 Events can be sent or received in either the `CloudEvent` or the `EventGridEvent` 
 format, depending on the Event Grid topic.
@@ -169,7 +169,7 @@ which wraps the error code.
 
 If you encounter any bugs with these SDKs, please file issues via [Issues](https://github.com/Azure/azure-sdk-for-java/issues) or checkout [StackOverflow for Azure Java SDK](http://stackoverflow.com/questions/tagged/azure-java-sdk).
 
-## Next Steps
+## Next steps
 
 - [Javadoc](https://azure.github.io/azure-sdk-for-java/)
 - [Azure Java SDKs](https://docs.microsoft.com/java/azure/)
