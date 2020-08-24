@@ -46,6 +46,7 @@ import java.util.stream.Collector;
 import static com.azure.core.amqp.implementation.RetryUtil.getRetryPolicy;
 import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
 import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
@@ -327,6 +328,38 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     }
 
     /**
+     * Sends a scheduled message to the Azure Service Bus entity this sender is connected to. A scheduled message is
+     * enqueued and made available to receivers only at the scheduled enqueue time.
+     *
+     * @param messages Message to be sent to the Service Bus Queue.
+     * @param scheduledEnqueueTime Instant at which the message should appear in the Service Bus queue or topic.
+     *
+     * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
+     *
+     * @throws NullPointerException if {@code message} or {@code scheduledEnqueueTime} is {@code null}.
+     */
+    public Flux<Long> scheduleMessages(Iterable<ServiceBusMessage> messages, Instant scheduledEnqueueTime) {
+        return scheduleMessagesInternal(messages, scheduledEnqueueTime, null);
+    }
+
+    /**
+     * Sends a scheduled message to the Azure Service Bus entity this sender is connected to. A scheduled message is
+     * enqueued and made available to receivers only at the scheduled enqueue time.
+     *
+     * @param messages Message to be sent to the Service Bus Queue.
+     * @param scheduledEnqueueTime Instant at which the message should appear in the Service Bus queue or topic.
+     * @param transactionContext to be set on batch message before scheduling them on Service Bus.
+     *
+     * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
+     *
+     * @throws NullPointerException if {@code message} or {@code scheduledEnqueueTime} is {@code null}.
+     */
+    public Flux<Long> scheduleMessages(Iterable<ServiceBusMessage> messages, Instant scheduledEnqueueTime,
+        ServiceBusTransactionContext transactionContext) {
+        return scheduleMessagesInternal(messages, scheduledEnqueueTime, transactionContext);
+    }
+
+    /**
      * Cancels the enqueuing of an already scheduled message, if it was not already enqueued.
      *
      * @param sequenceNumber of the scheduled message to cancel.
@@ -343,6 +376,60 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityName, entityType))
             .flatMap(managementNode -> managementNode.cancelScheduledMessage(sequenceNumber, linkName.get()));
+    }
+
+    /**
+     * Cancels the enqueuing of an already scheduled message, if it was not already enqueued.
+     *
+     * @param sequenceNumbers of the scheduled messages to cancel.
+     *
+     * @return The {@link Mono} that finishes this operation on service bus resource.
+     *
+     * @throws NullPointerException if {@code sequenceNumbers} is null.
+     */
+    public Mono<Void> cancelScheduledMessages(Iterable<Long> sequenceNumbers) {
+
+        if (isDisposed.get()) {
+            return monoError(logger, new IllegalStateException(
+                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "cancelScheduledMessages")));
+        }
+
+        if (Objects.isNull(sequenceNumbers)) {
+            return monoError(logger, new NullPointerException("'messages' cannot be null."));
+        }
+
+        return connectionProcessor
+            .flatMap(connection -> connection.getManagementNode(entityName, entityType))
+            .flatMap(managementNode -> managementNode.cancelScheduledMessages(sequenceNumbers, linkName.get(),
+                null));
+    }
+
+    /**
+     * Cancels the enqueuing of an already scheduled message, if it was not already enqueued.
+     *
+     * @param sequenceNumbers of the scheduled messages to cancel.
+     * @param transactionContext to be set on batch sequence numbers for this operation on Service Bus.
+     *
+     * @return The {@link Mono} that finishes this operation on service bus resource.
+     *
+     * @throws NullPointerException if {@code sequenceNumbers} is null.
+     */
+    public Mono<Void> cancelScheduledMessages(Iterable<Long> sequenceNumbers,
+        ServiceBusTransactionContext transactionContext) {
+
+        if (isDisposed.get()) {
+            return monoError(logger, new IllegalStateException(
+                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "cancelScheduledMessages")));
+        }
+
+        if (Objects.isNull(sequenceNumbers)) {
+            return monoError(logger, new NullPointerException("'messages' cannot be null."));
+        }
+
+        return connectionProcessor
+            .flatMap(connection -> connection.getManagementNode(entityName, entityType))
+            .flatMap(managementNode -> managementNode.cancelScheduledMessages(sequenceNumbers, linkName.get(),
+                transactionContext));
     }
 
     /**
@@ -426,8 +513,47 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         });
     }
 
+    private Flux<Long> scheduleMessagesInternal(Iterable<ServiceBusMessage> messages, Instant scheduledEnqueueTime,
+        ServiceBusTransactionContext transaction) {
+        if (Objects.isNull(messages)) {
+            return fluxError(logger, new NullPointerException("'messages' cannot be null."));
+        }
+
+        if (Objects.isNull(scheduledEnqueueTime)) {
+            return fluxError(logger, new NullPointerException("'scheduledEnqueueTime' cannot be null."));
+        }
+
+        return createBatch().flatMapMany(messageBatch -> {
+            messages.forEach(message -> messageBatch.tryAdd(message));
+            return scheduleMessagesInternal(messageBatch, scheduledEnqueueTime, transaction);
+        });
+    }
+
+    private Flux<Long> scheduleMessagesInternal(ServiceBusMessageBatch message, Instant scheduledEnqueueTime,
+        ServiceBusTransactionContext transactionContext) {
+        if (Objects.isNull(message)) {
+            return fluxError(logger, new NullPointerException("'message' cannot be null."));
+        }
+
+        if (Objects.isNull(scheduledEnqueueTime)) {
+            return fluxError(logger, new NullPointerException("'scheduledEnqueueTime' cannot be null."));
+        }
+
+        return getSendLink()
+            .flatMapMany(link -> link.getLinkSize().flatMapMany(size -> {
+                int maxSize =  size > 0
+                    ? size
+                    : MAX_MESSAGE_LENGTH_BYTES;
+
+                return connectionProcessor
+                    .flatMap(connection -> connection.getManagementNode(entityName, entityType))
+                    .flatMapMany(managementNode -> managementNode.schedule(message, scheduledEnqueueTime, maxSize,
+                        link.getLinkName(), transactionContext));
+            }));
+    }
+
     private Mono<Long> scheduleMessageInternal(ServiceBusMessage message, Instant scheduledEnqueueTime,
-                                               ServiceBusTransactionContext transactionContext) {
+        ServiceBusTransactionContext transactionContext) {
         if (Objects.isNull(message)) {
             return monoError(logger, new NullPointerException("'message' cannot be null."));
         }

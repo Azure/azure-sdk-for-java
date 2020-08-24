@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.messaging.servicebus.ServiceBusMessage;
+import com.azure.messaging.servicebus.ServiceBusMessageBatch;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusTransactionContext;
 import com.azure.messaging.servicebus.models.ReceiveMode;
@@ -11,6 +12,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Instant;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -25,6 +27,16 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      * @return {@link Void} The successful completion represents the pending cancellation.
      */
     Mono<Void> cancelScheduledMessage(long sequenceNumber, String associatedLinkName);
+
+    /**
+     * Cancels the enqueuing of an already sent scheduled messages, if it was not already enqueued.
+     *
+     * @param sequenceNumbers The sequence number of the scheduled messages.
+     *
+     * @return {@link Void} The successful completion represents the pending cancellation.
+     */
+    Mono<Void> cancelScheduledMessages(Iterable<Long> sequenceNumbers, String associatedLinkName,
+        ServiceBusTransactionContext transactionContext);
 
     /**
      * Gets the session state.
@@ -100,6 +112,23 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      *     message. This sequence number can be used to cancel the scheduling of the message.
      */
     Mono<Long> schedule(ServiceBusMessage message, Instant scheduledEnqueueTime, int maxSendLinkSize,
+        String associatedLinkName, ServiceBusTransactionContext transactionContext);
+
+    /**
+     * Sends a scheduled {@link ServiceBusMessageBatch} message to the Azure Service Bus entity this sender is
+     * connected to. A scheduled message is enqueued and made available to receivers only at the scheduled enqueue time.
+     * This is an asynchronous method returning a CompletableFuture which completes when the message is sent to the
+     * entity. The CompletableFuture, on completion, returns the sequence number of the scheduled message which can be
+     * used to cancel the scheduling of the message.
+     *
+     * @param message The {@link ServiceBusMessageBatch} message to be sent to the entity.
+     * @param scheduledEnqueueTime The {@link Instant} at which the message should be enqueued in the entity.
+     * @param transactionContext to be set on message before sending to Service Bus.
+     *
+     * @return The sequence number representing the pending send, which returns the sequence number of the scheduled
+     *     message. This sequence number can be used to cancel the scheduling of the message.
+     */
+    Flux<Long> schedule(ServiceBusMessageBatch message, Instant scheduledEnqueueTime, int maxSendLinkSize,
         String associatedLinkName, ServiceBusTransactionContext transactionContext);
 
     /**
