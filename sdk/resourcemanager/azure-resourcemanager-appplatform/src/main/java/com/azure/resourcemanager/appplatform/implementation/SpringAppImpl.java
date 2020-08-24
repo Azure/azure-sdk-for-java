@@ -169,27 +169,19 @@ public class SpringAppImpl
 
     @Override
     public SpringAppImpl withCustomDomain(String domain) {
-        this.addPostRunDependent(
-            context -> domains.createOrUpdateAsync(domain, new CustomDomainProperties())
-                .cast(Indexable.class)
-        );
+        domains.prepareCreateOrUpdate(domain, new CustomDomainProperties());
         return this;
     }
 
     @Override
     public SpringAppImpl withCustomDomain(String domain, String certThumbprint) {
-        this.addPostRunDependent(
-            context -> domains.createOrUpdateAsync(domain, new CustomDomainProperties().withThumbprint(certThumbprint))
-                .cast(Indexable.class)
-        );
+        domains.prepareCreateOrUpdate(domain, new CustomDomainProperties().withThumbprint(certThumbprint));
         return this;
     }
 
     @Override
     public Update withoutCustomDomain(String domain) {
-        this.addPostRunDependent(
-            context -> domains.deleteByNameAsync(domain).then(context.voidMono())
-        );
+        domains.prepareDelete(domain);
         return this;
     }
 
@@ -290,17 +282,13 @@ public class SpringAppImpl
 
     @Override
     public SpringAppImpl withServiceBinding(String name, BindingResourceProperties bindingProperties) {
-        this.addPostRunDependent(
-            context -> serviceBindings.createOrUpdateAsync(name, bindingProperties).cast(Indexable.class)
-        );
+        serviceBindings.prepareCreateOrUpdate(name, bindingProperties);
         return this;
     }
 
     @Override
     public SpringAppImpl withoutServiceBinding(String name) {
-        this.addPostRunDependent(
-            context -> serviceBindings.deleteByNameAsync(name).then(context.voidMono())
-        );
+        serviceBindings.prepareDelete(name);
         return this;
     }
 

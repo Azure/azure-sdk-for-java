@@ -19,7 +19,7 @@ import com.azure.resourcemanager.appplatform.models.SpringServiceCertificates;
 import com.azure.resourcemanager.appplatform.models.TestKeyType;
 import com.azure.resourcemanager.appplatform.models.TestKeys;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
+import com.azure.resourcemanager.resources.fluentcore.dag.FunctionalTaskItem;
 import reactor.core.publisher.Mono;
 
 public class SpringServiceImpl
@@ -27,6 +27,8 @@ public class SpringServiceImpl
     implements SpringService, SpringService.Definition, SpringService.Update {
     private final SpringServiceCertificatesImpl certificates = new SpringServiceCertificatesImpl(this);
     private final SpringAppsImpl apps = new SpringAppsImpl(this);
+    private FunctionalTaskItem configServerTask = null;
+    private FunctionalTaskItem monitoringSettingTask = null;
     private boolean needUpdate = false;
 
     SpringServiceImpl(String name, ServiceResourceInner innerObject, AppPlatformManager manager) {
@@ -128,42 +130,39 @@ public class SpringServiceImpl
 
     @Override
     public SpringServiceImpl withTracing(String appInsightInstrumentationKey) {
-        this.addPostRunDependent(
+        monitoringSettingTask =
             context -> manager().inner().getMonitoringSettings()
                 .updatePatchAsync(resourceGroupName(), name(), new MonitoringSettingProperties()
                     .withAppInsightsInstrumentationKey(appInsightInstrumentationKey)
                     .withTraceEnabled(true))
-                .then(context.voidMono())
-        );
+                .then(context.voidMono());
         return this;
     }
 
     @Override
     public SpringServiceImpl withoutTracing() {
-        this.addPostRunDependent(
+        monitoringSettingTask =
             context -> manager().inner().getMonitoringSettings()
                 .updatePatchAsync(resourceGroupName(), name(), new MonitoringSettingProperties().withTraceEnabled(false))
-                .then(context.voidMono())
-        );
+                .then(context.voidMono());
         return this;
     }
 
     @Override
     public SpringServiceImpl withGitUri(String uri) {
-        this.addPostRunDependent(
+        configServerTask =
             context -> manager().inner().getConfigServers()
                 .updatePatchAsync(resourceGroupName(), name(), new ConfigServerProperties()
                     .withConfigServer(new ConfigServerSettings().withGitProperty(
                         new ConfigServerGitProperty().withUri(uri)
                     )))
-                .then(context.voidMono())
-        );
+                .then(context.voidMono());
         return this;
     }
 
     @Override
     public SpringServiceImpl withGitUriAndCredential(String uri, String username, String password) {
-        this.addPostRunDependent(
+        configServerTask =
             context -> manager().inner().getConfigServers()
                 .updatePatchAsync(resourceGroupName(), name(), new ConfigServerProperties()
                     .withConfigServer(new ConfigServerSettings().withGitProperty(
@@ -172,30 +171,39 @@ public class SpringServiceImpl
                             .withUsername(username)
                             .withPassword(password)
                     )))
-                .then(context.voidMono())
-        );
+                .then(context.voidMono());
         return this;
     }
 
     @Override
     public SpringServiceImpl withGitConfig(ConfigServerGitProperty gitConfig) {
-        this.addPostRunDependent(
+        configServerTask =
             context -> manager().inner().getConfigServers()
                 .updatePatchAsync(resourceGroupName(), name(), new ConfigServerProperties()
                     .withConfigServer(new ConfigServerSettings().withGitProperty(gitConfig)))
-                .then(context.voidMono())
-        );
+                .then(context.voidMono());
         return this;
     }
 
     @Override
     public SpringServiceImpl withoutGitConfig() {
-        this.addPostRunDependent(
+        configServerTask =
             context -> manager().inner().getConfigServers()
                 .updatePatchAsync(resourceGroupName(), name(), new ConfigServerProperties())
-                .then(context.voidMono())
-        );
+                .then(context.voidMono());
         return this;
+    }
+
+    @Override
+    public void beforeGroupCreateOrUpdate() {
+        if (configServerTask != null) {
+            this.addPostRunDependent(configServerTask);
+        }
+        if (monitoringSettingTask != null) {
+            this.addPostRunDependent(monitoringSettingTask);
+        }
+        configServerTask = null;
+        monitoringSettingTask = null;
     }
 
     @Override
@@ -223,36 +231,29 @@ public class SpringServiceImpl
 
     @Override
     public SpringServiceImpl withCertificate(String name, String keyVaultUri, String certNameInKeyVault) {
-        this.addPostRunDependent(
-            context -> certificates.createOrUpdateAsync(
+        certificates.prepareCreateOrUpdate(
                 name,
                 new CertificateProperties().withVaultUri(keyVaultUri).withKeyVaultCertName(certNameInKeyVault)
-            ).cast(Indexable.class)
-        );
+            );
         return this;
     }
 
     @Override
     public SpringServiceImpl withCertificate(String name, String keyVaultUri,
                                              String certNameInKeyVault, String certVersion) {
-        this.addPostRunDependent(
-            context -> certificates.createOrUpdateAsync(
+        certificates.prepareCreateOrUpdate(
                 name,
                 new CertificateProperties()
                     .withVaultUri(keyVaultUri)
                     .withKeyVaultCertName(certNameInKeyVault)
                     .withCertVersion(certVersion)
-            ).cast(Indexable.class)
-        );
+            );
         return this;
     }
 
     @Override
     public SpringServiceImpl withoutCertificate(String name) {
-        this.addPostRunDependent(
-            context -> certificates.deleteByNameAsync(name)
-                .then(context.voidMono())
-        );
+        certificates.prepareDelete(name);
         return this;
     }
 }

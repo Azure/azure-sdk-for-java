@@ -108,9 +108,11 @@ public class SpringAppDomainsImpl
             parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), domain);
     }
 
-    Mono<SpringAppDomain> createOrUpdateAsync(String name, CustomDomainProperties properties) {
-        return inner().createOrUpdateAsync(
-            parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name, properties
-        ).map(this::wrapModel);
+    SpringAppDomain prepareCreateOrUpdate(String name, CustomDomainProperties properties) {
+        return prepareInlineDefine(new SpringAppDomainImpl(name, parent(), new CustomDomainResourceInner().withProperties(properties)));
+    }
+
+    void prepareDelete(String name) {
+        prepareInlineRemove(new SpringAppDomainImpl(name, parent(), new CustomDomainResourceInner()));
     }
 }

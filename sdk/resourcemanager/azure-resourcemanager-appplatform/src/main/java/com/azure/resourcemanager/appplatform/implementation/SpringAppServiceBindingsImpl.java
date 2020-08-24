@@ -96,9 +96,11 @@ public class SpringAppServiceBindingsImpl
         return manager().inner().getBindings();
     }
 
-    Mono<SpringAppServiceBinding> createOrUpdateAsync(String name, BindingResourceProperties properties) {
-        return inner().createOrUpdateAsync(
-            parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name, properties
-        ).map(this::wrapModel);
+    SpringAppServiceBinding prepareCreateOrUpdate(String name, BindingResourceProperties properties) {
+        return prepareInlineDefine(new SpringAppServiceBindingImpl(name, parent(), new BindingResourceInner().withProperties(properties)));
+    }
+
+    void prepareDelete(String name) {
+        prepareInlineRemove(new SpringAppServiceBindingImpl(name, parent(), new BindingResourceInner()));
     }
 }
