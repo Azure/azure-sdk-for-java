@@ -10,6 +10,10 @@ import java.time.Duration;
 import java.util.concurrent.atomic.AtomicReference;
 
 // TODO: moderakh remove blocking calls
+/**
+ * Provides functionality to wrap (encrypt) and unwrap (decrypt) data encryption keys using master keys stored in Azure Key Vault.
+ * Unwrapped data encryption keys will be cached within the client SDK for a period of 1 hour.
+ */
 public class AzureKeyVaultKeyWrapProvider implements EncryptionKeyWrapProvider {
     private final KeyVaultAccessClient keyVaultAccessClient;
     private final Duration rawDekCacheTimeToLive;

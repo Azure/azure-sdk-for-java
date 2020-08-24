@@ -11,6 +11,8 @@ import com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient;
 import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
 import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
@@ -26,6 +28,7 @@ public class KeyVaultAccessClient {
     private final KeyVaultTokenCredentialFactory keyVaultTokenCredentialFactory;
     private final KeyClientFactory keyClientFactory;
     private final CryptographyClientFactory cryptographyClientFactory;
+    private final Logger logger = LoggerFactory.getLogger(KeyVaultAccessClient.class);
 
     /**
      * Initializes a new instance of the {@link KeyVaultAccessClient}
@@ -142,7 +145,8 @@ public class KeyVaultAccessClient {
         //                ex);
         //        }
         catch (Exception ex) {
-            ex.printStackTrace();
+            // TODO: error should be passed to the wrapped exception
+            logger.error("cryptoClient error {}", ex);
             throw new KeyVaultAccessException();
         }
 
@@ -187,7 +191,8 @@ public class KeyVaultAccessClient {
         //                ex);
         //        }
         catch (Exception ex) {
-            ex.printStackTrace();
+            // TODO: error should be passed to the wrapped exception
+            logger.error("cryptoClient error {}", ex);
             throw new KeyVaultAccessException();
         }
     }

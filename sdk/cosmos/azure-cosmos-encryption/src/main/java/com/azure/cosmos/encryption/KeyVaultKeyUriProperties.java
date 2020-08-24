@@ -4,6 +4,8 @@
 package com.azure.cosmos.encryption;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -12,6 +14,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 //  TODO: this also doesn't need to be public, it is public because of test FIXME
 public class KeyVaultKeyUriProperties {
+    private final static Logger logger = LoggerFactory.getLogger(KeyVaultKeyUriProperties.class);
     private final URI keyUri;
     private String keyName;
     private URI keyVaultUri;
@@ -70,6 +73,7 @@ public class KeyVaultKeyUriProperties {
 
             keyVaultUriPropertiesReference.set(keyVaultUriProperties);
         } catch (URISyntaxException e) {
+            logger.error("failed to parse uri {}", keyUri, e);
             return false;
         }
         return true;

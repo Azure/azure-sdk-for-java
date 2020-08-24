@@ -54,7 +54,7 @@ Licensed under the MIT License.
       <!-- Due to a bug in RNTBD (https://github.com/Azure/azure-sdk-for-java/issues/7829),
            transitive dependency on netty-tcnative* cause problem.
 
-           Excluding transitive dependencies and forcing azure-core to be imported from azure-cosmos
+           Excluding transitive dependencies and forcing azure-core to be imported from azure-cosmos.
            We can remove this once the bug is fixed.
       -->
       <exclusions>
