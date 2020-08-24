@@ -129,6 +129,7 @@ public class TableAsyncClient {
      *
      * @return void
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> create() {
         return createWithResponse().flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
@@ -138,6 +139,7 @@ public class TableAsyncClient {
      *
      * @return void
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createWithResponse() {
         return withContext(context -> createWithResponse(context));
     }
@@ -275,6 +277,7 @@ public class TableAsyncClient {
      *
      * @return void
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateEntity(TableEntity entity, UpdateMode updateMode) {
         return updateEntity(entity, false, updateMode);
     }
@@ -360,6 +363,7 @@ public class TableAsyncClient {
      *
      * @return void
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> delete() {
         return deleteWithResponse().flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
@@ -369,6 +373,7 @@ public class TableAsyncClient {
      *
      * @return void
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponse() {
         return withContext(context -> deleteWithResponse(context));
     }

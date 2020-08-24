@@ -67,6 +67,7 @@ public class TableClient {
     /**
      * creates new table with the name of this client
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void create() { client.create().block(); }
 
     /**
@@ -74,6 +75,7 @@ public class TableClient {
      *
      * @param timeout Duration to wait for operation to complete.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void create(Duration timeout) { client.create().block(timeout); }
 
     /**
@@ -83,6 +85,7 @@ public class TableClient {
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return The HTTP response.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createWithResponse(Duration timeout, Context context) {
         return client.createWithResponse(context).block(timeout);
     }
@@ -239,6 +242,7 @@ public class TableClient {
     /**
      * deletes the table with the name of this client
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete() { client.delete().block(); }
 
     /**
@@ -246,6 +250,7 @@ public class TableClient {
      *
      * @param timeout Duration to wait for operation to complete.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(Duration timeout) { client.delete().block(timeout); }
 
     /**
@@ -255,6 +260,7 @@ public class TableClient {
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return The HTTP response.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(Duration timeout, Context context) {
         return client.deleteWithResponse(context).block(timeout);
     }
