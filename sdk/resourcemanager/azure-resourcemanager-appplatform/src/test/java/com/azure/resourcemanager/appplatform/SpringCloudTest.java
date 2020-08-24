@@ -127,16 +127,19 @@ public class SpringCloudTest extends AppPlatformTest {
         Assertions.assertEquals(RuntimeVersion.JAVA_11, deployment.settings().runtimeVersion());
         Assertions.assertEquals(2, deployment.instances().size());
 
-        File sourceCodeFolder = new File("piggymetrics");
-        if (!sourceCodeFolder.exists() || sourceCodeFolder.isFile()) {
-            if (sourceCodeFolder.isFile() && !sourceCodeFolder.delete()) {
-                Assertions.fail();
+        File gzFile = new File("piggymetrics.tar.gz");
+        if (!gzFile.exists()) {
+            HttpURLConnection connection = (HttpURLConnection) new URL(PIGGYMETRICS_TAR_GZ_URL).openConnection();
+            connection.connect();
+            try (InputStream inputStream = connection.getInputStream();
+                 OutputStream outputStream = new FileOutputStream(gzFile)) {
+                IOUtils.copy(inputStream, outputStream);
             }
-            extraTarGzSource(sourceCodeFolder, new URL(PIGGYMETRICS_TAR_GZ_URL));
+            connection.disconnect();
         }
 
         deployment = app.deployments().define(deploymentName)
-            .withSourceCodeFolder(sourceCodeFolder)
+            .withSourceCodeTarGzFile(gzFile)
             .withTargetModule("gateway")
             .withActivation()
             .create();

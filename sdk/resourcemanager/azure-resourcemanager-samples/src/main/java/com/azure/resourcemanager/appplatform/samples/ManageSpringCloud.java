@@ -36,6 +36,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -95,12 +96,15 @@ public class ManageSpringCloud {
             Utils.print(service);
 
             // get source code of a sample project
-            File sourceCodeFolder = new File("piggymetrics");
-            if (!sourceCodeFolder.exists() || sourceCodeFolder.isFile()) {
-                if (sourceCodeFolder.isFile() && !sourceCodeFolder.delete()) {
-                    throw new IllegalStateException("could not delete piggymetrics file");
+            File gzFile = new File("piggymetrics.tar.gz");
+            if (!gzFile.exists()) {
+                HttpURLConnection connection = (HttpURLConnection) new URL(PIGGYMETRICS_TAR_GZ_URL).openConnection();
+                connection.connect();
+                try (InputStream inputStream = connection.getInputStream();
+                     OutputStream outputStream = new FileOutputStream(gzFile)) {
+                    IOUtils.copy(inputStream, outputStream);
                 }
-                extraTarGzSource(sourceCodeFolder, new URL(PIGGYMETRICS_TAR_GZ_URL));
+                connection.disconnect();
             }
 
             //============================================================
@@ -113,7 +117,7 @@ public class ManageSpringCloud {
                 .create();
             gateway.getActiveDeployment()
                 .update()
-                .withSourceCodeFolder(sourceCodeFolder)
+                .withSourceCodeTarGzFile(gzFile)
                 .withTargetModule("gateway")
                 .apply();
 
@@ -128,7 +132,7 @@ public class ManageSpringCloud {
                 .create();
             authService.getActiveDeployment()
                 .update()
-                .withSourceCodeFolder(sourceCodeFolder)
+                .withSourceCodeTarGzFile(gzFile)
                 .withTargetModule("auth-service")
                 .apply();
 
@@ -143,7 +147,7 @@ public class ManageSpringCloud {
                 .create();
             accountService.getActiveDeployment()
                 .update()
-                .withSourceCodeFolder(sourceCodeFolder)
+                .withSourceCodeTarGzFile(gzFile)
                 .withTargetModule("account-service")
                 .apply();
 
