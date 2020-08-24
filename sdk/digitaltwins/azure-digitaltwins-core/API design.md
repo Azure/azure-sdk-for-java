@@ -726,9 +726,159 @@ When updating a model, the payload for a multi-operation json patch follows the 
 
 <details><summary><b>APIs</b></summary>
 
-```java
-TODO:
+Async APIs
+
+```java	
+    /**
+     * Creates one or many models synchronously.
+     * @param models The list of models to create. Each string corresponds to exactly one model.
+     * @return The list of created models
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Mono<List<ModelData>> createModels(List<String> models) { }
+
+    /**
+     * Creates one or many models synchronously.
+     * @param models The list of models to create. Each string corresponds to exactly one model.
+     * @return A REST response containing the list of created models.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Mono<Response<List<ModelData>>> createModelsWithResponse(List<String> models) { }
+
+    /**
+     * Gets a model, including the model metadata and the model definition asynchronously.
+     * @param modelId The Id of the model.
+     * @return The application/json model
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ModelData> getModel(String modelId) { }
+
+    /**
+     * Gets a model, including the model metadata and the model definition asynchronously.
+     * @param modelId The Id of the model.
+     * @return A REST response containing the model.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ModelData>> getModelWithResponse(String modelId) { }
+
+    /**
+     * Gets the list of models by iterating through a collection asynchronously.
+     * @param dependenciesFor The model Ids to have dependencies retrieved.
+     * @param includeModelDefinition Whether to include the model definition in the result. If false, only the model metadata will be returned.
+     * @param options The options to follow when listing the models. For example, the page size hint can be specified.
+     * @return A {@link PagedFlux} of ModelData.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Mono<PagedFlux<ModelData>> listModels(List<String> dependenciesFor, boolean includeModelDefinition, DigitalTwinModelsListOptions options) { }
+
+    /**
+     * Deletes a model asynchronously.
+     * @param modelId The id for the model. The id is globally unique and case sensitive.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteModel(String modelId) { }
+
+    /**
+     * Deletes a model asynchronously.
+     * @param modelId The id for the model. The id is globally unique and case sensitive.
+     * @return The http response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response> deleteModelWithResponse(String modelId) { }
+
+    /**
+     * Decommissions a model asynchronously.
+     * @param modelId The Id of the model to decommission.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> decommissionModel(String modelId) { }
+
+    /**
+     * Decommissions a model asynchronously.
+     * @param modelId The Id of the model to decommission.
+     * @return The http response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response> decommissionModelWithResponse(String modelId) { }
+
 ```
+
+Sync APIs
+```java
+ /**
+     * Creates one or many models synchronously.
+     * @param models The list of models to create. Each string corresponds to exactly one model.
+     * @return The list of created models
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public List<ModelData> createModels(List<String> models) { }
+
+    /**
+     * Creates one or many models synchronously.
+     * @param models The list of models to create. Each string corresponds to exactly one model.
+     * @return A REST response containing the list of created models.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Response<List<ModelData>> createModelsWithResponse(List<String> models) { }
+
+    /**
+     * Gets a model, including the model metadata and the model definition synchronously.
+     * @param modelId The Id of the model.
+     * @return The application/json model
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ModelData getModel(String modelId) { }
+
+    /**
+     * Gets a model, including the model metadata and the model definition synchronously.
+     * @param modelId The Id of the model.
+     * @return A REST response containing the model.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ModelData> getModelWithResponse(String modelId) { }
+
+    /**
+     * Gets the list of models by iterating through a collection synchronously.
+     * @param dependenciesFor The model Ids to have dependencies retrieved.
+     * @param includeModelDefinition Whether to include the model definition in the result. If false, only the model metadata will be returned.
+     * @param options The options to follow when listing the models. For example, the page size hint can be specified.
+     * @return A {@link PagedFlux} of ModelData.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ModelData> listModels(List<String> dependenciesFor, boolean includeModelDefinition, DigitalTwinModelsListOptions options) { }
+    
+    /**
+     * Deletes a model synchronously.
+     * @param modelId The id for the model. The id is globally unique and case sensitive.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteModel(String modelId) { }
+
+    /**
+     * Deletes a model synchronously.
+     * @param modelId The id for the model. The id is globally unique and case sensitive.
+     * @return The http response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response deleteModelWithResponse(String modelId) { }
+
+    /**
+     * Decommissions a model synchronously.
+     * @param modelId The Id of the model to decommission.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Void decommissionModel(String modelId) { }
+
+    /**
+     * Decommissions a model synchronously.
+     * @param modelId The Id of the model to decommission.
+     * @return The http response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response decommissionModelWithResponse(String modelId) { }
+
+```
+
 </details>
 
 ## Event Routes
