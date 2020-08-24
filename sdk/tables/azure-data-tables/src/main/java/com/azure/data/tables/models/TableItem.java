@@ -1,14 +1,18 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.data.tables;
+package com.azure.data.tables.models;
 
 /**
  * class for a table object
  */
-public class AzureTable {
+public class TableItem {
     private final String name;
 
-    AzureTable(String name) {
+    /**
+     * crete a table
+     * @param name the name of the table
+     */
+    public TableItem(String name) {
         this.name = name;
     }
 
@@ -19,13 +23,5 @@ public class AzureTable {
      */
     public String getName() {
         return name;
-    }
-
-    /**
-     * returns the associated table client or null if it doesn't exist
-     * @return the associated table client
-     */
-    public TableClient getClient() {
-        return null;
     }
 }
