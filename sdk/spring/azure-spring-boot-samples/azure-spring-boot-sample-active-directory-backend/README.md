@@ -14,7 +14,7 @@ The sample retrieves user's group membership using Azure AD graph API which requ
 * In the list of pages for the app, select **API permissions**
    - Click the **Add a permission** button and then,
    - Ensure that the **Microsoft APIs** tab is selected
-   - In the *Commonly used Microsoft APIs* section, click on **Microsoft Graph**
+   - In the *Supported legacy APIs* section, click on **Azure Active Directory Graph**
    - In the **Delegated permissions** section, ensure that the right permissions are checked: **Directory.AccessAsUser.All**
    - Select the **Add permissions** button
 ### Configure groups for sign in user
