@@ -177,7 +177,8 @@ public class TableServiceAsyncClient {
         }
     } //1459
 
-    private Mono<PagedResponse<TableItem>> listTablesNextPage(String token, Context context, ListTablesOptions options) {
+    private Mono<PagedResponse<TableItem>> listTablesNextPage(String token, Context context,
+                                                              ListTablesOptions options) {
         try {
             return listTables(token, context, options);
         } catch (RuntimeException e) {
@@ -185,7 +186,8 @@ public class TableServiceAsyncClient {
         }
     } //1459
 
-    private Mono<PagedResponse<TableItem>> listTables(String nextTableName, Context context, ListTablesOptions options) {
+    private Mono<PagedResponse<TableItem>> listTables(String nextTableName, Context context,
+                                                      ListTablesOptions options) {
         QueryOptions queryOptions = new QueryOptions()
             .setFilter(options.getFilter())
             .setTop(options.getTop())

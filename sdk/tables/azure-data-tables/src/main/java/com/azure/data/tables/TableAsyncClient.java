@@ -21,7 +21,11 @@ import com.azure.data.tables.implementation.AzureTableImplBuilder;
 import com.azure.data.tables.implementation.TableEntityHelper;
 import com.azure.data.tables.implementation.TableConstants;
 import com.azure.data.tables.implementation.TablesImpl;
-import com.azure.data.tables.implementation.models.*;
+import com.azure.data.tables.implementation.models.OdataMetadataFormat;
+import com.azure.data.tables.implementation.models.QueryOptions;
+import com.azure.data.tables.implementation.models.ResponseFormat;
+import com.azure.data.tables.implementation.models.TableEntityQueryResponse;
+import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.UpdateMode;
@@ -154,9 +158,9 @@ public class TableAsyncClient {
     Mono<Response<Void>> createWithResponse(Context context) {
         return tableImplementation.createWithResponseAsync(new TableProperties().setTableName(tableName), null,
             ResponseFormat.RETURN_NO_CONTENT, null, context).map(response -> {
-            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                 null);
-        });
+            });
     }
 
     /**
@@ -309,7 +313,8 @@ public class TableAsyncClient {
      * @return a response
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateEntityWithResponse(TableEntity entity, boolean ifUnchanged, UpdateMode updateMode) {
+    public Mono<Response<Void>> updateEntityWithResponse(TableEntity entity, boolean ifUnchanged,
+                                                         UpdateMode updateMode) {
         return withContext(context -> updateEntityWithResponse(entity, ifUnchanged, updateMode, null, context));
     }
 
@@ -484,7 +489,8 @@ public class TableAsyncClient {
         }
     } //1459
 
-    private Mono<PagedResponse<TableEntity>> listNextPageEntities(String token, Context context, ListEntitiesOptions options) {
+    private Mono<PagedResponse<TableEntity>> listNextPageEntities(String token, Context context,
+                                                                  ListEntitiesOptions options) {
         if (token == null) {
             return Mono.empty();
         }
@@ -538,8 +544,8 @@ public class TableAsyncClient {
         private final IterableStream<TableEntity> entityStream;
         private final String continuationToken;
 
-        EntityPaged(Response<TableEntityQueryResponse> httpResponse, List<TableEntity> entityList, String nextPartitionKey,
-                    String nextRowKey) {
+        EntityPaged(Response<TableEntityQueryResponse> httpResponse, List<TableEntity> entityList,
+                    String nextPartitionKey, String nextRowKey) {
             if (nextPartitionKey == null || nextRowKey == null) {
                 this.continuationToken = null;
             } else {

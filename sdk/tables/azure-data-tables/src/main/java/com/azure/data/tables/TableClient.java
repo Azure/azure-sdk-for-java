@@ -68,7 +68,9 @@ public class TableClient {
      * creates new table with the name of this client
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void create() { client.create().block(); }
+    public void create() {
+        client.create().block();
+    }
 
     /**
      * creates new table with the name of this client
@@ -76,7 +78,9 @@ public class TableClient {
      * @param timeout Duration to wait for operation to complete.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void create(Duration timeout) { client.create().block(timeout); }
+    public void create(Duration timeout) {
+        client.create().block(timeout);
+    }
 
     /**
      * creates a new table with the name of this client
@@ -97,7 +101,9 @@ public class TableClient {
      * @param tableEntity the entity to add
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createEntity(TableEntity tableEntity) { client.createEntity(tableEntity).block(); }
+    public void createEntity(TableEntity tableEntity) {
+        client.createEntity(tableEntity).block();
+    }
 
     /**
      * insert a TableEntity with the given properties and return that TableEntity. Property map must include
@@ -118,6 +124,7 @@ public class TableClient {
      * @param tableEntity the entity to add
      * @param timeout max time for query to execute before erroring out
      * @param context the context of the query
+     * @return a response
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createEntityWithResponse(TableEntity tableEntity, Duration timeout, Context context) {
@@ -243,7 +250,9 @@ public class TableClient {
      * deletes the table with the name of this client
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete() { client.delete().block(); }
+    public void delete() {
+        client.delete().block();
+    }
 
     /**
      * deletes the table with the name of this client
@@ -251,7 +260,9 @@ public class TableClient {
      * @param timeout Duration to wait for operation to complete.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(Duration timeout) { client.delete().block(timeout); }
+    public void delete(Duration timeout) {
+        client.delete().block(timeout);
+    }
 
     /**
      * deletes the table with the name of this client
