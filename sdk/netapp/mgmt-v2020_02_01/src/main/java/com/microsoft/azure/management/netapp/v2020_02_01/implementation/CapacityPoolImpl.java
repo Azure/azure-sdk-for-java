@@ -12,8 +12,9 @@ import com.microsoft.azure.management.netapp.v2020_02_01.CapacityPool;
 import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 import com.microsoft.azure.management.netapp.v2020_02_01.CapacityPoolPatch;
-import com.microsoft.azure.management.netapp.v2020_02_01.ServiceLevel;
+import com.microsoft.azure.management.netapp.v2020_02_01.PoolServiceLevel;
 import java.util.Map;
+import com.microsoft.azure.management.netapp.v2020_02_01.PatchServiceLevel;
 import rx.functions.Func1;
 
 class CapacityPoolImpl extends CreatableUpdatableImpl<CapacityPool, CapacityPoolInner, CapacityPoolImpl> implements CapacityPool, CapacityPool.Definition, CapacityPool.Update {
@@ -119,7 +120,7 @@ class CapacityPoolImpl extends CreatableUpdatableImpl<CapacityPool, CapacityPool
     }
 
     @Override
-    public ServiceLevel serviceLevel() {
+    public PoolServiceLevel serviceLevel() {
         return this.inner().serviceLevel();
     }
 
@@ -152,24 +153,26 @@ class CapacityPoolImpl extends CreatableUpdatableImpl<CapacityPool, CapacityPool
     }
 
     @Override
+    public CapacityPoolImpl withServiceLevel(PoolServiceLevel serviceLevel) {
+        this.inner().withServiceLevel(serviceLevel);
+        return this;
+    }
+
+    @Override
     public CapacityPoolImpl withSize(long size) {
         this.inner().withSize(size);
         return this;
     }
 
     @Override
-    public CapacityPoolImpl withSize(Long size) {
-        this.updateParameter.withSize(size);
+    public CapacityPoolImpl withServiceLevel(PatchServiceLevel serviceLevel) {
+        this.updateParameter.withServiceLevel(serviceLevel);
         return this;
     }
 
     @Override
-    public CapacityPoolImpl withServiceLevel(ServiceLevel serviceLevel) {
-        if (isInCreateMode()) {
-            this.inner().withServiceLevel(serviceLevel);
-        } else {
-            this.updateParameter.withServiceLevel(serviceLevel);
-        }
+    public CapacityPoolImpl withSize(Long size) {
+        this.updateParameter.withSize(size);
         return this;
     }
 

@@ -8,7 +8,7 @@
 
 package com.microsoft.azure.management.netapp.v2020_02_01.implementation;
 
-import com.microsoft.azure.management.netapp.v2020_02_01.ServiceLevel;
+import com.microsoft.azure.management.netapp.v2020_02_01.VolumeServiceLevel;
 import com.microsoft.azure.management.netapp.v2020_02_01.VolumePropertiesExportPolicy;
 import java.util.List;
 import com.microsoft.azure.management.netapp.v2020_02_01.MountTargetProperties;
@@ -42,7 +42,7 @@ public class VolumeInner extends Resource {
      * 'Standard', 'Premium', 'Ultra'.
      */
     @JsonProperty(value = "properties.serviceLevel")
-    private ServiceLevel serviceLevel;
+    private VolumeServiceLevel serviceLevel;
 
     /**
      * usageThreshold.
@@ -163,7 +163,7 @@ public class VolumeInner extends Resource {
      *
      * @return the serviceLevel value
      */
-    public ServiceLevel serviceLevel() {
+    public VolumeServiceLevel serviceLevel() {
         return this.serviceLevel;
     }
 
@@ -173,7 +173,7 @@ public class VolumeInner extends Resource {
      * @param serviceLevel the serviceLevel value to set
      * @return the VolumeInner object itself.
      */
-    public VolumeInner withServiceLevel(ServiceLevel serviceLevel) {
+    public VolumeInner withServiceLevel(VolumeServiceLevel serviceLevel) {
         this.serviceLevel = serviceLevel;
         return this;
     }
