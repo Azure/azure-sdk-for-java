@@ -66,26 +66,38 @@ public class AadAuthorizationTests extends TestSuiteBase {
             .key(EMULATOR_KEY)
             .buildAsyncClient();
 
+        String containerName = UUID.randomUUID().toString();
+
+        try {
+            // CREATE database
+            CosmosDatabaseResponse databaseResponse = cosmosAsyncClient.createDatabase(databaseId).block();
+
+            // CREATE collection
+            CosmosContainerResponse containerResponse = cosmosAsyncClient.getDatabase(databaseId).createContainer(containerName, PARTITION_KEY_PATH).block();
+        } finally {
+            if (cosmosAsyncClient != null) {
+                safeClose(cosmosAsyncClient);
+            }
+        }
+
+        Thread.sleep(5000);
+
         CosmosAsyncClient cosmosAadClient = new CosmosClientBuilder()
             .endpoint(HOST)
             .credential(emulatorCredential)
             .buildAsyncClient();
 
         try {
-            CosmosDatabaseResponse databaseResponse = cosmosAsyncClient.createDatabase(databaseId).block();
-
+            // READ database
             db = cosmosAadClient.getDatabase(databaseId).read()
                 .map(dabaseResponse -> {
                     CosmosAsyncDatabase database = cosmosAadClient.getDatabase(dabaseResponse.getProperties().getId());
                     log.info("Found database {} with {}", database.getId(), dabaseResponse.getProperties().getETag());
                     return database;
                 }).block();
-
-            // CREATE collection
             assert db != null;
-            String containerName = UUID.randomUUID().toString();
-            CosmosContainerResponse containerResponse = cosmosAsyncClient.getDatabase(databaseId).createContainer(containerName, PARTITION_KEY_PATH).block();
 
+            // READ database
             CosmosAsyncContainer container = db.getContainer(containerName).read()
                 .map(cosmosContainerResponse -> {
                     CosmosAsyncContainer container1 = cosmosAadClient.getDatabase(databaseId).getContainer(cosmosContainerResponse.getProperties().getId());
@@ -135,10 +147,6 @@ public class AadAuthorizationTests extends TestSuiteBase {
 
             if (cosmosAadClient != null) {
                 safeClose(cosmosAadClient);
-            }
-
-            if (cosmosAsyncClient != null) {
-                safeClose(cosmosAsyncClient);
             }
         }
 
