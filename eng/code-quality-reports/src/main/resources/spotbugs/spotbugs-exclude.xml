@@ -2115,7 +2115,7 @@
   <Match>
     <Package name="~com\.azure\.resourcemanager(\.[^.]+)*\.samples(\.[^.]+)*"/>
     <Bug pattern="REC_CATCH_EXCEPTION,
-                  RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE, 
+                  RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE,
                   RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
 
@@ -2223,5 +2223,10 @@
           <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/> <!-- false positive -->
           <Bug pattern="UI_INHERITANCE_UNSAFE_GETRESOURCE"/>
       </Or>
+  </Match>
+
+  <Match>
+    <Bug pattern="EI_EXPOSE_REP"/>
+    <Class name="com.azure.core.implementation.AccessibleByteArrayOutputStream"/>
   </Match>
 </FindBugsFilter>

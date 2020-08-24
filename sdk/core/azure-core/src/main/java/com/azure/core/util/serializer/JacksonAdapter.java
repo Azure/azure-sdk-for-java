@@ -6,6 +6,7 @@ package com.azure.core.util.serializer;
 import com.azure.core.annotation.HeaderCollection;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.serializer.MalformedValueException;
 import com.azure.core.util.CoreUtils;
@@ -22,11 +23,14 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.StringWriter;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
@@ -34,11 +38,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * Implementation of {@link SerializerAdapter} for Jackson.
  */
 public class JacksonAdapter implements SerializerAdapter {
+    private static final Pattern PATTERN = Pattern.compile("^\"*|\"*$");
+
     private final ClientLogger logger = new ClientLogger(JacksonAdapter.class);
 
     /**
@@ -51,7 +58,7 @@ public class JacksonAdapter implements SerializerAdapter {
      */
     private final ObjectMapper simpleMapper;
 
-    private final XmlMapper xmlMapper;
+    private final ObjectMapper xmlMapper;
 
     private final ObjectMapper headerMapper;
 
@@ -65,18 +72,22 @@ public class JacksonAdapter implements SerializerAdapter {
      */
     public JacksonAdapter() {
         simpleMapper = initializeObjectMapper(new ObjectMapper());
-        xmlMapper = initializeObjectMapper(new XmlMapper());
-        xmlMapper.configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true);
-        xmlMapper.setDefaultUseWrapper(false);
+
+        xmlMapper = initializeObjectMapper(new XmlMapper())
+            .setDefaultUseWrapper(false)
+            .configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true);
+
         ObjectMapper flatteningMapper = initializeObjectMapper(new ObjectMapper())
             .registerModule(FlatteningSerializer.getModule(simpleMapper()))
             .registerModule(FlatteningDeserializer.getModule(simpleMapper()));
+
         mapper = initializeObjectMapper(new ObjectMapper())
             // Order matters: must register in reverse order of hierarchy
             .registerModule(AdditionalPropertiesSerializer.getModule(flatteningMapper))
             .registerModule(AdditionalPropertiesDeserializer.getModule(flatteningMapper))
             .registerModule(FlatteningSerializer.getModule(simpleMapper()))
             .registerModule(FlatteningDeserializer.getModule(simpleMapper()));
+
         headerMapper = simpleMapper
             .copy()
             .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
@@ -115,14 +126,24 @@ public class JacksonAdapter implements SerializerAdapter {
         if (object == null) {
             return null;
         }
-        StringWriter writer = new StringWriter();
-        if (encoding == SerializerEncoding.XML) {
-            xmlMapper.writeValue(writer, object);
-        } else {
-            serializer().writeValue(writer, object);
+
+        ByteArrayOutputStream stream = new AccessibleByteArrayOutputStream();
+        serialize(object, encoding, stream);
+
+        return new String(stream.toByteArray(), 0, stream.size(), StandardCharsets.UTF_8);
+    }
+
+    @Override
+    public void serialize(Object object, SerializerEncoding encoding, OutputStream outputStream) throws IOException {
+        if (object == null) {
+            return;
         }
 
-        return writer.toString();
+        if ((encoding == SerializerEncoding.XML)) {
+            xmlMapper.writeValue(outputStream, object);
+        } else {
+            serializer().writeValue(outputStream, object);
+        }
     }
 
     @Override
@@ -131,7 +152,7 @@ public class JacksonAdapter implements SerializerAdapter {
             return null;
         }
         try {
-            return serialize(object, SerializerEncoding.JSON).replaceAll("^\"*", "").replaceAll("\"*$", "");
+            return PATTERN.matcher(serialize(object, SerializerEncoding.JSON)).replaceAll("");
         } catch (IOException ex) {
             logger.warning("Failed to serialize {} to JSON.", object.getClass(), ex);
             return null;
@@ -153,7 +174,7 @@ public class JacksonAdapter implements SerializerAdapter {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> T deserialize(String value, final Type type, SerializerEncoding encoding) throws IOException {
+    public <U> U deserialize(String value, Type type, SerializerEncoding encoding) throws IOException {
         if (CoreUtils.isNullOrEmpty(value)) {
             return null;
         }
@@ -161,9 +182,29 @@ public class JacksonAdapter implements SerializerAdapter {
         final JavaType javaType = createJavaType(type);
         try {
             if (encoding == SerializerEncoding.XML) {
-                return (T) xmlMapper.readValue(value, javaType);
+                return (U) xmlMapper.readValue(value, javaType);
             } else {
-                return (T) serializer().readValue(value, javaType);
+                return (U) serializer().readValue(value, javaType);
+            }
+        } catch (JsonParseException jpe) {
+            throw logger.logExceptionAsError(new MalformedValueException(jpe.getMessage(), jpe));
+        }
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> T deserialize(InputStream inputStream, final Type type, SerializerEncoding encoding)
+        throws IOException {
+        if (inputStream == null) {
+            return null;
+        }
+
+        final JavaType javaType = createJavaType(type);
+        try {
+            if (encoding == SerializerEncoding.XML) {
+                return (T) xmlMapper.readValue(inputStream, javaType);
+            } else {
+                return (T) serializer().readValue(inputStream, javaType);
             }
         } catch (JsonParseException jpe) {
             throw logger.logExceptionAsError(new MalformedValueException(jpe.getMessage(), jpe));
@@ -222,7 +263,7 @@ public class JacksonAdapter implements SerializerAdapter {
                     } finally {
                         if (!declaredFieldAccessibleBackup) {
                             AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-                                declaredField.setAccessible(declaredFieldAccessibleBackup);
+                                declaredField.setAccessible(false);
                                 return null;
                             });
                         }
