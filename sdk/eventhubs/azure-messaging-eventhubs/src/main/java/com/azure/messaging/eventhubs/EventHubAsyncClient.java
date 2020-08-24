@@ -13,6 +13,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 
 import java.io.Closeable;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -32,9 +33,13 @@ class EventHubAsyncClient implements Closeable {
     private final boolean isSharedConnection;
     private final Runnable onClientClose;
     private final TracerProvider tracerProvider;
+    private final boolean enableIdempotentPartitions;
+    private final Map<String, PartitionPublishingOptions> partitionPublishingOptions;
 
-    EventHubAsyncClient(EventHubConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
-        MessageSerializer messageSerializer, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose) {
+    EventHubAsyncClient(
+        EventHubConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
+        MessageSerializer messageSerializer, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose,
+        boolean enableIdempotentPartitions, Map<String, PartitionPublishingOptions> partitionPublishingOptions) {
         this.tracerProvider = Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.connectionProcessor = Objects.requireNonNull(connectionProcessor,
@@ -43,6 +48,8 @@ class EventHubAsyncClient implements Closeable {
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
 
         this.isSharedConnection = isSharedConnection;
+        this.enableIdempotentPartitions = enableIdempotentPartitions;
+        this.partitionPublishingOptions = partitionPublishingOptions;
     }
 
     /**
@@ -105,7 +112,7 @@ class EventHubAsyncClient implements Closeable {
     EventHubProducerAsyncClient createProducer() {
         return new EventHubProducerAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), getEventHubName(),
             connectionProcessor, connectionProcessor.getRetryOptions(), tracerProvider, messageSerializer, scheduler,
-            isSharedConnection, onClientClose);
+            isSharedConnection, onClientClose, enableIdempotentPartitions, partitionPublishingOptions);
     }
 
     /**

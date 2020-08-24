@@ -32,6 +32,7 @@ import reactor.core.scheduler.Scheduler;
 import java.io.Closeable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -110,15 +111,20 @@ public class EventHubProducerAsyncClient implements Closeable {
     private final Scheduler scheduler;
     private final boolean isSharedConnection;
     private final Runnable onClientClose;
+    private final boolean enableIdempotentPartitions;
+    private final Map<String, PartitionPublishingOptions> partitionOptions;
 
     /**
      * Creates a new instance of this {@link EventHubProducerAsyncClient} that can send messages to a single partition
      * when {@link CreateBatchOptions#getPartitionId()} is not null or an empty string. Otherwise, allows the service to
      * load balance the messages amongst available partitions.
      */
-    EventHubProducerAsyncClient(String fullyQualifiedNamespace, String eventHubName,
+    EventHubProducerAsyncClient(
+        String fullyQualifiedNamespace, String eventHubName,
         EventHubConnectionProcessor connectionProcessor, AmqpRetryOptions retryOptions, TracerProvider tracerProvider,
-        MessageSerializer messageSerializer, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose) {
+        MessageSerializer messageSerializer, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose,
+        boolean enableIdempotentPartitions, Map<String, PartitionPublishingOptions> partitionOptions
+    ) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
@@ -132,6 +138,8 @@ public class EventHubProducerAsyncClient implements Closeable {
         this.retryPolicy = getRetryPolicy(retryOptions);
         this.scheduler = scheduler;
         this.isSharedConnection = isSharedConnection;
+        this.enableIdempotentPartitions = enableIdempotentPartitions;
+        this.partitionOptions = partitionOptions;
     }
 
     /**
@@ -244,7 +252,7 @@ public class EventHubProducerAsyncClient implements Closeable {
                         : maximumLinkSize;
 
                     return Mono.just(new EventDataBatch(batchSize, partitionId, partitionKey, link::getErrorContext,
-                        tracerProvider, link.getEntityPath(), link.getHostname()));
+                        tracerProvider, link.getEntityPath(), link.getHostname(), null));
                 }));
     }
 
@@ -560,7 +568,7 @@ public class EventHubProducerAsyncClient implements Closeable {
             this.hostname = hostname;
 
             currentBatch = new EventDataBatch(maxMessageSize, partitionId, partitionKey, contextProvider,
-                tracerProvider, entityPath, hostname);
+                tracerProvider, entityPath, hostname, null);
         }
 
         @Override
@@ -585,7 +593,7 @@ public class EventHubProducerAsyncClient implements Closeable {
                 }
 
                 currentBatch = new EventDataBatch(maxMessageSize, partitionId, partitionKey, contextProvider,
-                    tracerProvider, entityPath, hostname);
+                    tracerProvider, entityPath, hostname, null);
                 currentBatch.tryAdd(event);
                 list.add(batch);
             };

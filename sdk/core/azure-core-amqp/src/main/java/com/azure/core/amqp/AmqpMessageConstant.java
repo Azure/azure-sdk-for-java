@@ -93,7 +93,12 @@ public enum AmqpMessageConstant {
     /**
      * The name of the entity that published a message.
      */
-    PUBLISHER_ANNOTATION_NAME("x-opt-publisher");
+    PUBLISHER_ANNOTATION_NAME("x-opt-publisher"),
+
+    /**
+     * The published sequence number when a message was sent from an idempotent producer.
+     */
+    PUBLISHED_SEQUENCE_NUMBER_ANNOTATION_NAME("x-opt-published-sequence-number");  // TODO: to confirm with service what string to use
 
     private static final Map<String, AmqpMessageConstant> RESERVED_CONSTANTS_MAP = new HashMap<>();
     private final String constant;

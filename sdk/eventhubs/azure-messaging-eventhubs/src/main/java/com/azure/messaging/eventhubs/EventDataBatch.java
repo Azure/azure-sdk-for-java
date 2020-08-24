@@ -58,9 +58,10 @@ public final class EventDataBatch {
     private final TracerProvider tracerProvider;
     private final String entityPath;
     private final String hostname;
+    private final Integer startingPublishedSequenceNumber;
 
     EventDataBatch(int maxMessageSize, String partitionId, String partitionKey, ErrorContextProvider contextProvider,
-        TracerProvider tracerProvider, String entityPath, String hostname) {
+        TracerProvider tracerProvider, String entityPath, String hostname, Integer startingPublishedSequenceNumber) {
         this.maxMessageSize = maxMessageSize;
         this.partitionKey = partitionKey;
         this.partitionId = partitionId;
@@ -71,6 +72,7 @@ public final class EventDataBatch {
         this.tracerProvider = tracerProvider;
         this.entityPath = entityPath;
         this.hostname = hostname;
+        this.startingPublishedSequenceNumber = startingPublishedSequenceNumber;
     }
 
     /**
@@ -99,6 +101,19 @@ public final class EventDataBatch {
     public int getSizeInBytes() {
         return this.sizeInBytes;
     }
+
+    /**
+     * Gets the sequence number of the first event in the batch, if the batch was successfully
+     * published by a sequence-aware producer.  If the producer was not configured to apply
+     * sequence numbering or if the batch has not yet been successfully published, this member
+     * will be {@code null}.
+     *
+     * @return the publishing sequence number assigned to the first event in the batch at the time
+     * the batch was successfully published. {@code null} if the producer was not configured to apply
+     * sequence numbering or if the batch has not yet been successfully published.
+     */
+    public Integer getStartingPublishedSequenceNumber() { return this.startingPublishedSequenceNumber; }
+
 
     /**
      * Tries to add an {@link EventData event} to the batch.

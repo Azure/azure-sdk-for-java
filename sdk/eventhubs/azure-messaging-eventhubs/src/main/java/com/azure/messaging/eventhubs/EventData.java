@@ -22,6 +22,7 @@ import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.PUBLISHER_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.PUBLISHED_SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -214,6 +215,20 @@ public class EventData {
     }
 
     /**
+     * Gets the sequence number that was assigned during publishing, if the event was successfully
+     * published by a sequence-aware producer.  If the producer was not configured to apply
+     * sequence numbering or if the event has not yet been successfully published, this member
+     * will be {@code null}.
+     *
+     * The published sequence number is only populated and relevant when certain features
+     * of the producer are enabled. For example, it is used by idempotent publishing.
+     *
+     * @return The publishing sequence number assigned to the event at the time it was successfully published.
+     * {@code null} if the {@link EventData} hasn't been sent or it's sent without idempotent publishing enabled.
+     */
+    public Integer getPublishedSequenceNumber() { return systemProperties.getPublishedSequenceNumber(); }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -271,6 +286,7 @@ public class EventData {
         private final String partitionKey;
         private final Instant enqueuedTime;
         private final Long sequenceNumber;
+        private final Integer publishedSequenceNumber;
 
         SystemProperties() {
             super();
@@ -278,6 +294,7 @@ public class EventData {
             partitionKey = null;
             enqueuedTime = null;
             sequenceNumber = null;
+            publishedSequenceNumber=null;
         }
 
         SystemProperties(final Map<String, Object> map) {
@@ -307,6 +324,10 @@ public class EventData {
             }
             this.sequenceNumber = sequenceNumber;
             put(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), this.sequenceNumber);
+
+            this.publishedSequenceNumber = removeSystemProperty(
+                PUBLISHED_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
+            put(PUBLISHED_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), this.publishedSequenceNumber);
         }
 
         /**
@@ -348,6 +369,8 @@ public class EventData {
         private Long getSequenceNumber() {
             return sequenceNumber;
         }
+
+        private Integer getPublishedSequenceNumber() { return publishedSequenceNumber; }
 
         @SuppressWarnings("unchecked")
         private <T> T removeSystemProperty(final String key) {

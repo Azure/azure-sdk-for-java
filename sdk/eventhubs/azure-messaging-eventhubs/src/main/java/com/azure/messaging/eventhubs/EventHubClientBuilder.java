@@ -139,6 +139,8 @@ public class EventHubClientBuilder {
     private String consumerGroup;
     private EventHubConnectionProcessor eventHubConnectionProcessor;
     private Integer prefetchCount;
+    private boolean enableIdempotentPartitionPublishing;
+    private Map<String, PartitionPublishingOptions> partitionPublishingOptions;
 
     /**
      * Keeps track of the open clients that were created from this builder when there is a shared connection.
@@ -365,6 +367,46 @@ public class EventHubClientBuilder {
     }
 
     /**
+     * Enables idempotent publishing when an {@link EventHubProducerAsyncClient} or {@link EventHubProducerClient}
+     * is built.
+     *
+     * If enabled, the producer will only be able to publish directly to partitions; it will not be able to publish to
+     * the Event Hubs gateway for automatic partition routing nor using a partition key.
+     *
+     * @return The updated {@link EventHubClientBuilder} object.
+     */
+    public EventHubClientBuilder enableIdempotentPartitionPublishing() {
+        this.enableIdempotentPartitionPublishing = true;
+        return this;
+    }
+
+    /**
+     * Sets the idempotent publishing options to {@link EventHubProducerAsyncClient} or {@link EventHubProducerClient}
+     * when you build them.
+     *
+     * The set of options that can be specified to influence publishing behavior specific to the configured Event Hub
+     * partition.
+     * These options are not necessary in the majority of scenarios and are intended for use with specialized scenarios,
+     * such as when recovering the state used for idempotent publishing.
+     *
+     * It is highly recommended that these options only be specified if there is a proven need to do so; Incorrectly
+     * configuring these values may result in the built {@link EventHubProducerAsyncClient} or
+     * {@link EventHubProducerClient} instance unable to publish to the Event Hubs.
+     *
+     * These options are ignored when publishing to the Event Hubs gateway for automatic routing or when using a
+     * partition key.
+     *
+     * @param partitionPublishingOptions The {@link PartitionPublishingOptions} for each partition. The keys of the map
+     * are the partition ids.
+     * @return The updated {@link EventHubClientBuilder} object.
+     */
+    public EventHubClientBuilder partitionPublishingOptions(Map<String,
+        PartitionPublishingOptions> partitionPublishingOptions) {
+        this.partitionPublishingOptions = partitionPublishingOptions;
+        return this;
+    }
+
+    /**
      * Package-private method that sets the scheduler for the created Event Hub client.
      *
      * @param scheduler Scheduler to set.
@@ -493,7 +535,7 @@ public class EventHubClientBuilder {
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
         return new EventHubAsyncClient(processor, tracerProvider, messageSerializer, scheduler,
-            isSharedConnection.get(), this::onClientClose);
+            isSharedConnection.get(), this::onClientClose, enableIdempotentPartitionPublishing, partitionPublishingOptions);
     }
 
     /**
