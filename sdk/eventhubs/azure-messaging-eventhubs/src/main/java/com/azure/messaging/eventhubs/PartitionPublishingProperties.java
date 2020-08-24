@@ -10,14 +10,28 @@ import com.azure.core.annotation.Immutable;
  */
 @Immutable
 public final class PartitionPublishingProperties {
+    private final boolean isIdempotentPublishingEnabled;
     private final Short ownerLevel;
     private final Long producerGroupId;
     private final Integer lastSequenceNumber;
 
-    PartitionPublishingProperties(Long producerGroupId, Short ownerLevel, Integer lastSequenceNumber) {
+    PartitionPublishingProperties(
+        boolean isIdempotentPublishingEnabled, Long producerGroupId, Short ownerLevel, Integer lastSequenceNumber
+    ) {
+        this.isIdempotentPublishingEnabled = isIdempotentPublishingEnabled;
         this.ownerLevel = ownerLevel;
         this.producerGroupId = producerGroupId;
         this.lastSequenceNumber = lastSequenceNumber;
+    }
+
+    /**
+     * Indicates whether or not idempotent publishing is enabled for the producer and, by extension,
+     * the associated partition.
+     * @see EventHubClientBuilder#enableIdempotentPartitionPublishing()
+     * @return {@code true} if the idempotent publishing is enabled; otherwise, {@code false}.
+     */
+    public boolean isIdempotentPublishingEnabled() {
+        return isIdempotentPublishingEnabled;
     }
 
     /**
