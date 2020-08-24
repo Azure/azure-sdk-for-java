@@ -51,6 +51,7 @@ public final class DigitalTwinsClient {
         return this.digitalTwinsAsyncClient.getServiceVersion();
     }
 
+    // TODO These are temporary implementations for sample purposes. This should be spruced up/replaced once this API is actually designed.
     /**
      * Creates a relationship on a digital twin.
      *

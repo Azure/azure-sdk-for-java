@@ -15,7 +15,10 @@ public class SyncSample
         String clientId = System.getenv("CLIENT_ID");
         String clientSecret = System.getenv("CLIENT_SECRET");
         String endpoint = System.getenv("DIGITAL_TWINS_ENDPOINT");
-        String digitalTwinId = System.getenv("DIGITAL_TWIN_ID");
+        String sourceDigitalTwinId = System.getenv("SOURCE_DIGITAL_TWIN_ID");
+        String sourceDigitalTwin = System.getenv("SOURCE_DIGITAL_TWIN");
+        String targetDigitalTwinId = System.getenv("TARGET_DIGITAL_TWIN_ID");
+        String targetDigitalTwin = System.getenv("TARGET_DIGITAL_TWIN");
         String relationshipId = System.getenv("RELATIONSHIP_ID");
         String relationship = System.getenv("RELATIONSHIP");
 
@@ -31,11 +34,11 @@ public class SyncSample
             .buildClient();
 
         // Create relationship on a digital twin
-        String createdRelationship = client.createRelationship(digitalTwinId, relationshipId, relationship);
+        String createdRelationship = client.createRelationship(sourceDigitalTwinId, relationshipId, relationship);
         System.out.println("Created relationship: " + createdRelationship);
 
         // List all relationships on a digital twin
-        PagedIterable<Object> relationships = client.listRelationships(digitalTwinId, relationshipId);
+        PagedIterable<Object> relationships = client.listRelationships(sourceDigitalTwinId, relationshipId);
 
         // Process using the Stream interface by iterating over each page
         relationships

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.test.cosmosdb;
 
 import com.microsoft.azure.test.utils.AppRunner;

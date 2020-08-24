@@ -10,7 +10,6 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
@@ -22,7 +21,10 @@ public class AsyncSample
         String clientId = System.getenv("CLIENT_ID");
         String clientSecret = System.getenv("CLIENT_SECRET");
         String endpoint = System.getenv("DIGITAL_TWINS_ENDPOINT");
-        String digitalTwinId = System.getenv("DIGITAL_TWIN_ID");
+        String sourceDigitalTwinId = System.getenv("SOURCE_DIGITAL_TWIN_ID");
+        String sourceDigitalTwin = System.getenv("SOURCE_DIGITAL_TWIN");
+        String targetDigitalTwinId = System.getenv("TARGET_DIGITAL_TWIN_ID");
+        String targetDigitalTwin = System.getenv("TARGET_DIGITAL_TWIN");
         String relationshipId = System.getenv("RELATIONSHIP_ID");
         String relationship = System.getenv("RELATIONSHIP");
 
@@ -127,7 +129,7 @@ public class AsyncSample
                 );
 
             // Wait for a maximum of 5secs to acquire both the semaphores.
-            boolean listSuccessful = listSemaphore.tryAcquire(2,5, TimeUnit.SECONDS);
+            boolean listSuccessful = listSemaphore.tryAcquire(2, 5, TimeUnit.SECONDS);
 
             if (listSuccessful) {
                 System.out.println("List operations completed successfully.");
