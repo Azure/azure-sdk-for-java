@@ -12,6 +12,7 @@ import com.azure.resourcemanager.appplatform.models.DeploymentResourceStatus;
 import com.azure.resourcemanager.appplatform.models.DeploymentSettings;
 import com.azure.resourcemanager.appplatform.models.ResourceUploadDefinition;
 import com.azure.resourcemanager.appplatform.models.RuntimeVersion;
+import com.azure.resourcemanager.appplatform.models.Sku;
 import com.azure.resourcemanager.appplatform.models.SpringApp;
 import com.azure.resourcemanager.appplatform.models.SpringAppDeployment;
 import com.azure.resourcemanager.appplatform.models.UserSourceInfo;
@@ -256,6 +257,18 @@ public class SpringAppDeploymentImpl
     public SpringAppDeploymentImpl withSingleModule() {
         ensureSource();
         inner().properties().source().withArtifactSelector(null);
+        return this;
+    }
+
+    @Override
+    public SpringAppDeploymentImpl withInstance(int count) {
+        if (inner().sku() == null) {
+            inner().withSku(parent().parent().sku());
+        }
+        if (inner().sku() == null) {
+            inner().withSku(new Sku().withName("B0"));
+        }
+        inner().sku().withCapacity(count);
         return this;
     }
 
