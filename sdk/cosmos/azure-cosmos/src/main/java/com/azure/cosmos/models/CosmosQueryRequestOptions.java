@@ -28,6 +28,7 @@ public class CosmosQueryRequestOptions {
      * Instantiates a new query request options.
      */
     public CosmosQueryRequestOptions() {
+        this.queryMetricsEnabled = true;
     }
 
     /**
