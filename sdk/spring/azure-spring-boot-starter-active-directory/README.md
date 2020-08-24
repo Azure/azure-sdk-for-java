@@ -35,8 +35,10 @@ The authorization flow is composed of 3 phrases:
 * Evaluate the permission based on membership info to grant or deny access
 
 ### Authenticate in frontend
-Sends bearer authorization code to backend, in backend a Spring Security filter `AADAuthenticationFilter` validates the Jwt token from Azure AD and save authentication. The Jwt token is also used to acquire a On-Behalf-Of token for Azure AD Graph API so that authenticated user's membership information is available for authorization of access of API resources. Below is a diagram that shows the layers and typical flow for Single Page Application with Spring Boot web API backend that uses the filter for Authentication and Authorization.
+Sends bearer authorization code to backend, in backend a Spring Security filter `AADAuthenticationFilter` validates the Jwt token from Azure AD and save authentication. The Jwt token is also used to acquire a On-Behalf-Of token for Azure AD Graph API so that authenticated user's membership information is available for authorization of access of API resources. 
+Below is a diagram that shows the layers and typical flow for Single Page Application with Spring Boot web API backend that uses the filter for Authentication and Authorization.
 ![Single Page Application + Spring Boot Web API + Azure AD](resource/auth-in-frontend-with-aad-filter.png)
+
 
 ### Authenticate in backend
 Auto configuration for common Azure Active Directory OAuth2 properties and `OAuth2UserService` to map authorities are provided.
@@ -44,7 +46,7 @@ Auto configuration for common Azure Active Directory OAuth2 properties and `OAut
 #### Authorization Code mode usage
 ![Single Page Application + Spring Boot Web API + Azure AD](resource/auth-in-backend-code-mode.png)
 
-#### ID Token mode usage(Implicit)
+#### ID Token mode usage(Stateless implicit)
 
 ![Single Page Application + Spring Boot Web API + Azure AD](resource/auth-in-backend-id-token-mode.png)
 When the session is stateless, use `AADAppRoleStatelessAuthenticationFilter` as a Spring Security filter to validate the Jwt token from Azure AD and save authentication
