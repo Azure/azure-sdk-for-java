@@ -9,12 +9,24 @@
 package com.microsoft.azure.management.loganalytics.v2015_03_20;
 
 import rx.Observable;
+import com.microsoft.azure.management.loganalytics.v2015_03_20.implementation.WorkspacesInner;
+import com.microsoft.azure.arm.model.HasInner;
 import rx.Completable;
 
 /**
  * Type representing Workspaces.
  */
-public interface Workspaces {
+public interface Workspaces extends HasInner<WorkspacesInner> {
+    /**
+     * Gets the available service tiers for the workspace.
+     *
+     * @param resourceGroupName The Resource Group name.
+     * @param workspaceName The Log Analytics Workspace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<AvailableServiceTier> availableServiceTiersAsync(String resourceGroupName, String workspaceName);
+
     /**
      * Gets status of an ongoing purge operation.
      *
@@ -36,29 +48,8 @@ public interface Workspaces {
     Observable<SearchGetSchemaResponse> getSchemaAsync(String resourceGroupName, String workspaceName);
 
     /**
-     * Submit a search for a given workspace. The response will contain an id to track the search. User can use the id to poll the search status and get the full search result later if the search takes long time to finish.
-     *
-     * @param resourceGroupName The Resource Group name.
-     * @param workspaceName The Log Analytics Workspace name.
-     * @param parameters The parameters required to execute a search query.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<SearchResultsResponse> getSearchResultsAsync(String resourceGroupName, String workspaceName, SearchParameters parameters);
-
-    /**
-     * Gets updated search results for a given search query.
-     *
-     * @param resourceGroupName The Resource Group name.
-     * @param workspaceName The Log Analytics Workspace name.
-     * @param id The id of the search that will have results updated. You can get the id from the response of the GetResults call.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<SearchResultsResponse> updateSearchResultsAsync(String resourceGroupName, String workspaceName, String id);
-
-    /**
      * Purges data in an Log Analytics workspace by a set of user-defined filters.
+    In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch the execution of purge requests by sending a single command whose predicate includes all user identities that require purging. Use the in operator to specify multiple identities. You should run the query prior to using for a purge request to verify that the results are expected.
      *
      * @param resourceGroupName The Resource Group name.
      * @param workspaceName The Log Analytics Workspace name.
