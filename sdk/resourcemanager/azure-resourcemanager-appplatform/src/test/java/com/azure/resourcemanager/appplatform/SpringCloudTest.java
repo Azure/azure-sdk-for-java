@@ -113,6 +113,7 @@ public class SpringCloudTest extends AppPlatformTest {
         SpringAppDeployment deployment = app.getActiveDeployment();
         deployment
             .update()
+            .withInstance(2)
             .withCpu(2)
             .withMemory(4)
             .withRuntime(RuntimeVersion.JAVA_11)
@@ -130,8 +131,7 @@ public class SpringCloudTest extends AppPlatformTest {
         Assertions.assertEquals(2, deployment.settings().cpu());
         Assertions.assertEquals(4, deployment.settings().memoryInGB());
         Assertions.assertEquals(RuntimeVersion.JAVA_11, deployment.settings().runtimeVersion());
-        // TODO: remove comment after service fix
-        // Assertions.assertEquals(2, deployment.instances().size());
+        Assertions.assertEquals(2, deployment.instances().size());
 
         File gzFile = new File("piggymetrics.tar.gz");
         if (!gzFile.exists()) {
