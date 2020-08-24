@@ -1,6 +1,9 @@
 # Release History
 
-## 12.8.0-beta.2 (Unreleased)
+## 12.9.0-beta.1 (Unreleased)
+
+
+## 12.8.0 (2020-08-13)
 - Fixed a bug that, when the data length parameter did not match the actual length of the data in BlobClient.upload, caused a zero length blob to be uploaded rather than throwing an exception.
 - Fixed a bug that ignored the customer's specified block size when determining buffer sizes in BlobClient.upload
 - Added support for Object Replication Service on listBlobs and getProperties.
@@ -182,7 +185,7 @@ and
 demonstrate the new API.
 
 ## 12.0.0-preview.2 (2019-08-08)
-For details on the Azure SDK for Java (August 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview2-java).
+For details on the Azure SDK for Java (August 2019 Preview) release refer to the [release announcement](https://azure.github.io/azure-sdk/releases/2019-08-06/java.html).
 
 - Renamed `StorageClient`, `StorageAsyncClient`, and `StorageClientBuilder` to `BlobServiceClient`, `BlobServiceAsyncClient`, and `BlobServiceClientBuilder`.
 - Combined `AppendBlobClientBuilder`, `BlockBlobClientBuilder`, and `PageBlobClientBuilder` into `BlobClientBuilder`. Methods to create each client type were added.

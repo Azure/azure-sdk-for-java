@@ -20,7 +20,7 @@ process change events that occur in your Blob Storage account at a low cost.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob-changefeed</artifactId>
-    <version>12.0.0-beta.1</version>
+    <version>12.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -118,17 +118,18 @@ tasks, including:
 - [Get events](#get-events)
 - [Get events between a start and end time](#get-events-start-end)
 - [Resume with a cursor](#get-events-cursor)
+- [Poll for events with a cursor](#poll-events-cursor)
 
 ### Create a `BlobChangefeedClient`
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/changefeed/ReadmeSamples.java#L23-L23 -->
+<!-- embedme ./src/samples/java/com/azure/storage/blob/changefeed/ReadmeSamples.java#L26-L26 -->
 ```java
 client = new BlobChangefeedClientBuilder(blobServiceClient).buildClient();
 ```
 
 ### Get events
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/changefeed/ReadmeSamples.java#L27-L28 -->
+<!-- embedme ./src/samples/java/com/azure/storage/blob/changefeed/ReadmeSamples.java#L30-L31 -->
 ```java
 client.getEvents().forEach(event ->
     System.out.printf("Topic: %s, Subject: %s%n", event.getTopic(), event.getSubject()));
@@ -136,7 +137,7 @@ client.getEvents().forEach(event ->
 
 ### Get events between a start and end time
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/changefeed/ReadmeSamples.java#L32-L36 -->
+<!-- embedme ./src/samples/java/com/azure/storage/blob/changefeed/ReadmeSamples.java#L35-L39 -->
 ```java
 OffsetDateTime startTime = OffsetDateTime.MIN;
 OffsetDateTime endTime = OffsetDateTime.now();
@@ -147,7 +148,7 @@ client.getEvents(startTime, endTime).forEach(event ->
 
 ### Resume with a cursor
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/changefeed/ReadmeSamples.java#L40-L56 -->
+<!-- embedme ./src/samples/java/com/azure/storage/blob/changefeed/ReadmeSamples.java#L43-L59 -->
 ```java
 BlobChangefeedPagedIterable iterable = client.getEvents();
 Iterable<BlobChangefeedPagedResponse> pages = iterable.iterableByPage();
@@ -166,6 +167,46 @@ for (BlobChangefeedPagedResponse page : pages) {
 /* Resume iterating from the pervious position with the cursor. */
 client.getEvents(cursor).forEach(event ->
     System.out.printf("Topic: %s, Subject: %s%n", event.getTopic(), event.getSubject()));
+```
+
+### Poll for events with a cursor
+
+<!-- embedme ./src/samples/java/com/azure/storage/blob/changefeed/ReadmeSamples.java#L63-L96 -->
+```java
+List<BlobChangefeedEvent> changefeedEvents = new ArrayList<BlobChangefeedEvent>();
+
+/* Get the start time.  The change feed client will round start time down to the nearest hour if you provide
+   an OffsetDateTime with minutes and seconds. */
+OffsetDateTime startTime = OffsetDateTime.now();
+
+/* Get your polling interval. */
+long pollingInterval = 1000 * 60 * 5; /* 5 minutes. */
+
+/* Get initial set of events. */
+Iterable<BlobChangefeedPagedResponse> pages = client.getEvents(startTime, null).iterableByPage();
+
+String continuationToken = null;
+
+while (true) {
+    for (BlobChangefeedPagedResponse page : pages) {
+        changefeedEvents.addAll(page.getValue());
+        /*
+         * Get the change feed cursor. The cursor is not required to get each page of events,
+         * it is intended to be saved and used to resume iterating at a later date.
+         */
+        continuationToken = page.getContinuationToken();
+    }
+
+    /* Wait before processing next batch of events. */
+    try {
+        Thread.sleep(pollingInterval);
+    } catch (InterruptedException e) {
+        e.printStackTrace();
+    }
+
+    /* Resume from last continuation token and fetch latest set of events. */
+    pages = client.getEvents(continuationToken).iterableByPage();
+}
 ```
 
 ## Troubleshooting

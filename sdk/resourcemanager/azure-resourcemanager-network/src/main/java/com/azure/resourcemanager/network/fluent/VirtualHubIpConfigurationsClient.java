@@ -465,8 +465,12 @@ public final class VirtualHubIpConfigurationsClient {
             createOrUpdateWithResponseAsync(resourceGroupName, virtualHubName, ipConfigName, parameters);
         return this
             .client
-            .<HubIpConfigurationInner, HubIpConfigurationInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), HubIpConfigurationInner.class, HubIpConfigurationInner.class);
+            .<HubIpConfigurationInner, HubIpConfigurationInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                HubIpConfigurationInner.class,
+                HubIpConfigurationInner.class,
+                Context.NONE);
     }
 
     /**
@@ -490,12 +494,17 @@ public final class VirtualHubIpConfigurationsClient {
         String ipConfigName,
         HubIpConfigurationInner parameters,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, virtualHubName, ipConfigName, parameters, context);
         return this
             .client
-            .<HubIpConfigurationInner, HubIpConfigurationInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), HubIpConfigurationInner.class, HubIpConfigurationInner.class);
+            .<HubIpConfigurationInner, HubIpConfigurationInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                HubIpConfigurationInner.class,
+                HubIpConfigurationInner.class,
+                context);
     }
 
     /**
@@ -750,7 +759,9 @@ public final class VirtualHubIpConfigurationsClient {
         String resourceGroupName, String virtualHubName, String ipConfigName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, virtualHubName, ipConfigName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -768,9 +779,12 @@ public final class VirtualHubIpConfigurationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String virtualHubName, String ipConfigName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, virtualHubName, ipConfigName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1020,7 +1034,7 @@ public final class VirtualHubIpConfigurationsClient {
         String resourceGroupName, String virtualHubName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, virtualHubName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

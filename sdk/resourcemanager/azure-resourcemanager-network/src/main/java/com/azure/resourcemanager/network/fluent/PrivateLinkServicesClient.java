@@ -405,7 +405,9 @@ public final class PrivateLinkServicesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serviceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, serviceName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -422,8 +424,11 @@ public final class PrivateLinkServicesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String serviceName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, serviceName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -867,8 +872,12 @@ public final class PrivateLinkServicesClient
             createOrUpdateWithResponseAsync(resourceGroupName, serviceName, parameters);
         return this
             .client
-            .<PrivateLinkServiceInner, PrivateLinkServiceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), PrivateLinkServiceInner.class, PrivateLinkServiceInner.class);
+            .<PrivateLinkServiceInner, PrivateLinkServiceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                PrivateLinkServiceInner.class,
+                PrivateLinkServiceInner.class,
+                Context.NONE);
     }
 
     /**
@@ -886,12 +895,17 @@ public final class PrivateLinkServicesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<PrivateLinkServiceInner>, PrivateLinkServiceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serviceName, PrivateLinkServiceInner parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, serviceName, parameters, context);
         return this
             .client
-            .<PrivateLinkServiceInner, PrivateLinkServiceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), PrivateLinkServiceInner.class, PrivateLinkServiceInner.class);
+            .<PrivateLinkServiceInner, PrivateLinkServiceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                PrivateLinkServiceInner.class,
+                PrivateLinkServiceInner.class,
+                context);
     }
 
     /**
@@ -1127,7 +1141,7 @@ public final class PrivateLinkServicesClient
     public PagedFlux<PrivateLinkServiceInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1260,7 +1274,7 @@ public final class PrivateLinkServicesClient
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PrivateLinkServiceInner> listAsync(Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1889,7 +1903,9 @@ public final class PrivateLinkServicesClient
         String resourceGroupName, String serviceName, String peConnectionName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deletePrivateEndpointConnectionWithResponseAsync(resourceGroupName, serviceName, peConnectionName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1907,9 +1923,12 @@ public final class PrivateLinkServicesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeletePrivateEndpointConnectionAsync(
         String resourceGroupName, String serviceName, String peConnectionName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deletePrivateEndpointConnectionWithResponseAsync(resourceGroupName, serviceName, peConnectionName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -2164,7 +2183,7 @@ public final class PrivateLinkServicesClient
         String resourceGroupName, String serviceName, Context context) {
         return new PagedFlux<>(
             () -> listPrivateEndpointConnectionsSinglePageAsync(resourceGroupName, serviceName, context),
-            nextLink -> listPrivateEndpointConnectionsNextSinglePageAsync(nextLink));
+            nextLink -> listPrivateEndpointConnectionsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2300,11 +2319,12 @@ public final class PrivateLinkServicesClient
             checkPrivateLinkServiceVisibilityWithResponseAsync(location, privateLinkServiceAlias);
         return this
             .client
-            .<PrivateLinkServiceVisibilityInner, PrivateLinkServiceVisibilityInner>getLroResultAsync(
+            .<PrivateLinkServiceVisibilityInner, PrivateLinkServiceVisibilityInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 PrivateLinkServiceVisibilityInner.class,
-                PrivateLinkServiceVisibilityInner.class);
+                PrivateLinkServiceVisibilityInner.class,
+                Context.NONE);
     }
 
     /**
@@ -2321,15 +2341,17 @@ public final class PrivateLinkServicesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
         beginCheckPrivateLinkServiceVisibilityAsync(String location, String privateLinkServiceAlias, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             checkPrivateLinkServiceVisibilityWithResponseAsync(location, privateLinkServiceAlias, context);
         return this
             .client
-            .<PrivateLinkServiceVisibilityInner, PrivateLinkServiceVisibilityInner>getLroResultAsync(
+            .<PrivateLinkServiceVisibilityInner, PrivateLinkServiceVisibilityInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 PrivateLinkServiceVisibilityInner.class,
-                PrivateLinkServiceVisibilityInner.class);
+                PrivateLinkServiceVisibilityInner.class,
+                context);
     }
 
     /**
@@ -2555,11 +2577,12 @@ public final class PrivateLinkServicesClient
                 location, resourceGroupName, privateLinkServiceAlias);
         return this
             .client
-            .<PrivateLinkServiceVisibilityInner, PrivateLinkServiceVisibilityInner>getLroResultAsync(
+            .<PrivateLinkServiceVisibilityInner, PrivateLinkServiceVisibilityInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 PrivateLinkServiceVisibilityInner.class,
-                PrivateLinkServiceVisibilityInner.class);
+                PrivateLinkServiceVisibilityInner.class,
+                Context.NONE);
     }
 
     /**
@@ -2578,16 +2601,18 @@ public final class PrivateLinkServicesClient
     public PollerFlux<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
         beginCheckPrivateLinkServiceVisibilityByResourceGroupAsync(
             String location, String resourceGroupName, String privateLinkServiceAlias, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             checkPrivateLinkServiceVisibilityByResourceGroupWithResponseAsync(
                 location, resourceGroupName, privateLinkServiceAlias, context);
         return this
             .client
-            .<PrivateLinkServiceVisibilityInner, PrivateLinkServiceVisibilityInner>getLroResultAsync(
+            .<PrivateLinkServiceVisibilityInner, PrivateLinkServiceVisibilityInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 PrivateLinkServiceVisibilityInner.class,
-                PrivateLinkServiceVisibilityInner.class);
+                PrivateLinkServiceVisibilityInner.class,
+                context);
     }
 
     /**
@@ -2836,7 +2861,7 @@ public final class PrivateLinkServicesClient
         String location, Context context) {
         return new PagedFlux<>(
             () -> listAutoApprovedPrivateLinkServicesSinglePageAsync(location, context),
-            nextLink -> listAutoApprovedPrivateLinkServicesNextSinglePageAsync(nextLink));
+            nextLink -> listAutoApprovedPrivateLinkServicesNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -3021,7 +3046,7 @@ public final class PrivateLinkServicesClient
         return new PagedFlux<>(
             () ->
                 listAutoApprovedPrivateLinkServicesByResourceGroupSinglePageAsync(location, resourceGroupName, context),
-            nextLink -> listAutoApprovedPrivateLinkServicesByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listAutoApprovedPrivateLinkServicesByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**

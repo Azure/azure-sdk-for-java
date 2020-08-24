@@ -6,6 +6,9 @@ dist/
 output/
 temp/
 
+# Spring
+**/*packageOutputDirectory*
+
 #javadoc overview files generated from README.md
 readme_overview.html
 **/javadocTemp/**
@@ -71,3 +74,6 @@ package-lock.json
 .vscode/
 .factorypath
 jacoco.exec
+
+# Generated client pom file
+ClientAggregatePom.xml

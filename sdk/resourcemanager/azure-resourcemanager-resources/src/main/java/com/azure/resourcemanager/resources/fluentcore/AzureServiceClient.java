@@ -3,14 +3,15 @@
 
 package com.azure.resourcemanager.resources.fluentcore;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.management.polling.PollResult;
-import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -20,23 +21,14 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
-import java.time.temporal.TemporalQueries;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 /**
@@ -58,21 +50,11 @@ public abstract class AzureServiceClient {
 
     private final String sdkName;
 
-    protected AzureServiceClient(HttpPipeline httpPipeline, AzureEnvironment environment) {
-        sdkName = this.getClass().getPackage().getName();
-
-        this.serializerAdapter = new AzureJacksonAdapter();
-        ((AzureJacksonAdapter) serializerAdapter).serializer().registerModule(DateTimeDeserializer.getModule());
-    }
-
     protected AzureServiceClient(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
                                  AzureEnvironment environment) {
         sdkName = this.getClass().getPackage().getName();
 
         this.serializerAdapter = serializerAdapter;
-        if (serializerAdapter instanceof AzureJacksonAdapter) {
-            ((AzureJacksonAdapter) serializerAdapter).serializer().registerModule(DateTimeDeserializer.getModule());
-        }
     }
 
     /**
@@ -114,20 +96,23 @@ public abstract class AzureServiceClient {
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
      * @param finalResultType type of final result.
+     * @param context the context shared by all requests.
      * @param <T> type of poll result.
      * @param <U> type of final result.
      * @return poller flux for poll result and final result.
      */
-    public <T, U> PollerFlux<PollResult<T>, U> getLroResultAsync(Mono<Response<Flux<ByteBuffer>>> lroInit,
-                                                                 HttpPipeline httpPipeline,
-                                                                 Type pollResultType, Type finalResultType) {
+    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(Mono<Response<Flux<ByteBuffer>>> lroInit,
+                                                            HttpPipeline httpPipeline,
+                                                            Type pollResultType, Type finalResultType,
+                                                            Context context) {
         return PollerFactory.create(
             getSerializerAdapter(),
             httpPipeline,
             pollResultType,
             finalResultType,
             SdkContext.getLroRetryDuration(),
-            lroInit
+            lroInit,
+            context
         );
     }
 
@@ -143,7 +128,12 @@ public abstract class AzureServiceClient {
         if (response.getStatus() != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
             String errorMessage;
             ManagementError managementError = null;
-            if (response.getValue().getError() != null) {
+            HttpResponse errorResponse = null;
+            PollResult.Error lroError = response.getValue().getError();
+            if (lroError != null) {
+                errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(),
+                    lroError.getResponseHeaders(), lroError.getResponseBody());
+
                 errorMessage = response.getValue().getError().getMessage();
                 String errorBody = response.getValue().getError().getResponseBody();
                 if (errorBody != null) {
@@ -168,32 +158,57 @@ public abstract class AzureServiceClient {
                 // fallback to default ManagementError
                 managementError = new ManagementError(response.getStatus().toString(), errorMessage);
             }
-            return Mono.error(new ManagementException(errorMessage, null, managementError));
+            return Mono.error(new ManagementException(errorMessage, errorResponse, managementError));
         } else {
             return response.getFinalResult();
         }
     }
 
-    // this should be moved to core-mgmt when stable.
-    private static class DateTimeDeserializer extends JsonDeserializer<OffsetDateTime> {
+    private static class HttpResponseImpl extends HttpResponse {
+        private final int statusCode;
+        private final byte[] responseBody;
+        private final HttpHeaders httpHeaders;
 
-        public static SimpleModule getModule() {
-            SimpleModule module = new SimpleModule();
-            module.addDeserializer(OffsetDateTime.class, new DateTimeDeserializer());
-            return module;
+        HttpResponseImpl(int statusCode, HttpHeaders httpHeaders, String responseBody) {
+            super(null);
+            this.statusCode = statusCode;
+            this.httpHeaders = httpHeaders;
+            this.responseBody = responseBody.getBytes(StandardCharsets.UTF_8);
         }
 
         @Override
-        public OffsetDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
-                    throws IOException, JsonProcessingException {
-            String string = jsonParser.getText();
-            TemporalAccessor temporal =
-                DateTimeFormatter.ISO_DATE_TIME.parseBest(string, OffsetDateTime::from, LocalDateTime::from);
-            if (temporal.query(TemporalQueries.offset()) == null) {
-                return LocalDateTime.from(temporal).atOffset(ZoneOffset.UTC);
-            } else {
-                return OffsetDateTime.from(temporal);
-            }
+        public int getStatusCode() {
+            return statusCode;
+        }
+
+        @Override
+        public String getHeaderValue(String s) {
+            return httpHeaders.getValue(s);
+        }
+
+        @Override
+        public HttpHeaders getHeaders() {
+            return httpHeaders;
+        }
+
+        @Override
+        public Flux<ByteBuffer> getBody() {
+            return Flux.just(ByteBuffer.wrap(responseBody));
+        }
+
+        @Override
+        public Mono<byte[]> getBodyAsByteArray() {
+            return Mono.just(responseBody);
+        }
+
+        @Override
+        public Mono<String> getBodyAsString() {
+            return Mono.just(new String(responseBody, StandardCharsets.UTF_8));
+        }
+
+        @Override
+        public Mono<String> getBodyAsString(Charset charset) {
+            return Mono.just(new String(responseBody, charset));
         }
     }
 }

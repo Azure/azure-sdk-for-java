@@ -1,0 +1,99 @@
+= Spring Cloud Azure Stream Binder for Service Bus topic Code Sample shared library for Java
+
+== Key concepts
+== Getting started
+
+This code sample demonstrates how to use the Spring Cloud Stream binder for Azure Service Bus topic.
+The sample app exposes a rest api to receive string message.
+Then message is sent through Azure Service Bus to a `sink` which simply logs the message.
+
+Running this sample will be charged by Azure.
+You can check the usage and bill at https://azure.microsoft.com/en-us/account/[this link].
+
+=== Connection string based usage
+
+1. Create Azure Service Bus namespace, queue and topic.
+Please see https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-create-namespace-portal[how to create].
+
+2. Update link:src/main/resources/application.properties[application.properties]
+
++
+....
+# Fill service bus namespace connection string copied from portal
+spring.cloud.azure.servicebus.connection-string=[servicebus-namespace-connection-string]
+....
+
+=== Credential file based usage
+
+1. Create Azure credential file.
+Please see https://github.com/Azure/azure-libraries-for-java/blob/master/AUTH.md[how
+to create credential file]
++
+....
+$  az login
+$  az account set --subscription <name or id>
+$  az ad sp create-for-rbac --sdk-auth > my.azureauth
+....
++
+Make sure `my.azureauth` is encoded with UTF-8.
+
+2. Put credential file under `src/main/resources/`.
+
+3. Create Azure Service Bus namespace, queue and topic.
+Please see https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-create-namespace-portal[how to create].
+Or enable auto create resources feature in link:src/main/resources/application.properties[application.properties]:
++
+....
+spring.cloud.azure.auto-create-resources=true
+
+# Default environment is GLOBAL. Provide your own if in another environment
+# Example environment is China, GLOBAL
+# spring.cloud.azure.environment=[environment]
+# Example region is westUS, northchina
+spring.cloud.azure.region=[region]
+....
+
+4. Update link:src/main/resources/application.properties[application.properties] file
++
+....
+# Enter 'my.azureauth' here if following step 1 and 2
+spring.cloud.azure.credential-file-path=[credential-file-path]
+spring.cloud.azure.resource-group=[resource-group]
+
+spring.cloud.azure.servicebus.namespace=[servicebus-namespace]
+....
+
+=== How to run
+
+4. Update stream binding related property in link:src/main/resources/application.properties[application.properties] file
++
+....
+
+# For example here, the destination name of input and output should be the same.
+spring.cloud.stream.bindings.input.destination=[servicebus-topic-name]
+spring.cloud.stream.bindings.input.group=[topic-subscription-name]
+spring.cloud.stream.bindings.output.destination=[servicebus-topic-name-same-as-above]
+....
++
+
+5. Run the `mvn clean spring-boot:run` in the root of the code sample to get the app running.
+
+6. Send a POST request
++
+....
+$ curl -X POST localhost:8080/messages?message=hello
+....
+
+7. Verify in your app's logs that a similar message was posted:
++
+....
+New message received: 'hello'
+Message 'hello' successfully checkpointed
+....
+
+8. Delete the resources on http://ms.portal.azure.com/[Azure Portal] to avoid unexpected charges.
+
+== Examples
+== Troubleshooting
+== Next steps
+== Contributing

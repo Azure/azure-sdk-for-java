@@ -21,6 +21,7 @@ import com.azure.resourcemanager.sql.models.ImportRequest;
 import com.azure.resourcemanager.sql.models.ReplicationLink;
 import com.azure.resourcemanager.sql.models.RestorePoint;
 import com.azure.resourcemanager.sql.models.SampleName;
+import com.azure.resourcemanager.sql.models.SecurityAlertPolicyName;
 import com.azure.resourcemanager.sql.models.ServiceObjectiveName;
 import com.azure.resourcemanager.sql.models.ServiceTierAdvisor;
 import com.azure.resourcemanager.sql.models.Sku;
@@ -53,6 +54,7 @@ import com.azure.resourcemanager.sql.fluent.inner.ReplicationLinkInner;
 import com.azure.resourcemanager.sql.fluent.inner.RestorePointInner;
 import com.azure.resourcemanager.sql.fluent.inner.ServiceTierAdvisorInner;
 import com.azure.resourcemanager.sql.fluent.inner.TransparentDataEncryptionInner;
+import com.azure.resourcemanager.sql.models.TransparentDataEncryptionName;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import reactor.core.publisher.Mono;
 
@@ -372,7 +374,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
                 .sqlServerManager
                 .inner()
                 .getDatabaseThreatDetectionPolicies()
-                .get(this.resourceGroupName, this.sqlServerName, this.name());
+                .get(this.resourceGroupName, this.sqlServerName, this.name(), SecurityAlertPolicyName.DEFAULT);
         return policyInner != null
             ? new SqlDatabaseThreatDetectionPolicyImpl(policyInner.name(), this, policyInner, this.sqlServerManager)
             : null;
@@ -509,7 +511,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
                 .sqlServerManager
                 .inner()
                 .getTransparentDataEncryptions()
-                .get(this.resourceGroupName, this.sqlServerName, this.name());
+                .get(this.resourceGroupName, this.sqlServerName, this.name(), TransparentDataEncryptionName.CURRENT);
         return (transparentDataEncryptionInner == null)
             ? null
             : new TransparentDataEncryptionImpl(
@@ -523,7 +525,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             .sqlServerManager
             .inner()
             .getTransparentDataEncryptions()
-            .getAsync(this.resourceGroupName, this.sqlServerName, this.name())
+            .getAsync(this.resourceGroupName, this.sqlServerName, this.name(), TransparentDataEncryptionName.CURRENT)
             .map(
                 transparentDataEncryptionInner ->
                     new TransparentDataEncryptionImpl(

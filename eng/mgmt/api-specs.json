@@ -150,6 +150,10 @@
     "source": "specification/hdinsight/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "hybridcompute/resource-manager": {
+    "source": "specification/hybridcompute/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "iotcentral/resource-manager": {
     "source": "specification/iotcentral/resource-manager/readme.md",
     "args": "--multiapi --fluent",
@@ -345,7 +349,10 @@
   },
   "subscription/resource-manager": {
     "source": "specification/subscription/resource-manager/readme.md",
-    "args": "--multiapi --fluent"
+    "args": "--multiapi --fluent",
+    "fconfig": {
+      "\"moduleName\"": "\"Subscription\""
+    }
   },
   "support/resource-manager": {
     "source": "specification/support/resource-manager/readme.md",

@@ -14,6 +14,7 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
+import com.azure.messaging.servicebus.administration.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessageWithLockToken;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
@@ -21,7 +22,7 @@ import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorReceiver;
-import com.azure.messaging.servicebus.models.DeadLetterOptions;
+import com.azure.messaging.servicebus.models.LockRenewalStatus;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.amqp.messaging.Rejected;
 import org.apache.qpid.proton.amqp.transport.DeliveryState.DeliveryStateType;
@@ -34,7 +35,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
@@ -56,12 +56,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import static com.azure.messaging.servicebus.TestUtils.getMessage;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -120,6 +123,8 @@ class ServiceBusReceiverAsyncClientTest {
     private ServiceBusReceivedMessage receivedMessage2;
     @Mock
     private Runnable onClientClose;
+    @Mock
+    private Function<String, Mono<Instant>> renewalOperation;
 
     @BeforeAll
     static void beforeAll() {
@@ -748,21 +753,76 @@ class ServiceBusReceiverAsyncClientTest {
             .verify();
     }
 
+    /**
+     * Verifies that we can auto-renew a message lock.
+     */
+    @Test
+    void autoRenewMessageLock() throws InterruptedException {
+        // Arrange
+        final Duration maxDuration = Duration.ofSeconds(8);
+        final Duration renewalPeriod = Duration.ofSeconds(3);
+        final String lockToken = "some-token";
+        final Instant startTime = Instant.now();
+
+        // At most 4 times because we renew the lock before it expires (by some seconds).
+        final int atMost = 5;
+        final Duration totalSleepPeriod = maxDuration.plusMillis(500);
+
+        when(managementNode.renewMessageLock(lockToken, null))
+            .thenReturn(Mono.fromCallable(() -> Instant.now().plus(renewalPeriod)));
+
+        // Act & Assert
+        final LockRenewalOperation operation = receiver.getAutoRenewMessageLock(lockToken, maxDuration);
+        Thread.sleep(totalSleepPeriod.toMillis());
+        logger.info("Finished renewals for first sleep.");
+
+        // Assert
+        assertEquals(LockRenewalStatus.COMPLETE, operation.getStatus());
+        assertNull(operation.getThrowable());
+        assertTrue(startTime.isBefore(operation.getLockedUntil()), String.format(
+            "initial lockedUntil[%s] is not before lockedUntil[%s]", startTime, operation.getLockedUntil()));
+
+        verify(managementNode, Mockito.atMost(atMost)).renewMessageLock(lockToken, null);
+    }
+
+
+    /**
+     * Verifies that we can auto-renew a message lock.
+     */
+    @Test
+    void autoRenewSessionLock() throws InterruptedException {
+        // Arrange
+        final Duration maxDuration = Duration.ofSeconds(8);
+        final Duration renewalPeriod = Duration.ofSeconds(3);
+        final String sessionId = "some-token";
+        final Instant startTime = Instant.now();
+
+        // At most 4 times because we renew the lock before it expires (by some seconds).
+        final int atMost = 5;
+        final Duration totalSleepPeriod = maxDuration.plusMillis(500);
+
+        when(managementNode.renewSessionLock(sessionId, null))
+            .thenReturn(Mono.fromCallable(() -> Instant.now().plus(renewalPeriod)));
+
+        // Act & Assert
+        final LockRenewalOperation operation = sessionReceiver.getAutoRenewSessionLock(sessionId, maxDuration);
+        Thread.sleep(totalSleepPeriod.toMillis());
+        logger.info("Finished renewals for first sleep.");
+
+        // Assert
+        assertEquals(LockRenewalStatus.COMPLETE, operation.getStatus());
+        assertNull(operation.getThrowable());
+        assertTrue(startTime.isBefore(operation.getLockedUntil()), String.format(
+            "initial lockedUntil[%s] is not before lockedUntil[%s]", startTime, operation.getLockedUntil()));
+
+        verify(managementNode, Mockito.atMost(atMost)).renewSessionLock(sessionId, null);
+    }
+
     private List<Message> getMessages(int numberOfEvents) {
         final Map<String, String> map = Collections.singletonMap("SAMPLE_HEADER", "foo");
 
         return IntStream.range(0, numberOfEvents)
             .mapToObj(index -> getMessage(PAYLOAD_BYTES, messageTrackingUUID, map))
             .collect(Collectors.toList());
-    }
-
-    protected static Stream<Arguments> dispositionStatus() {
-        return Stream.of(
-            // The data corresponds to :entityType, isSessionEnabled, commit, dispositionStatus
-            Arguments.of(MessagingEntityType.QUEUE, false, true, DispositionStatus.COMPLETED),
-            Arguments.of(MessagingEntityType.QUEUE, false, true, DispositionStatus.ABANDONED),
-            Arguments.of(MessagingEntityType.QUEUE, false, true, DispositionStatus.SUSPENDED),
-            Arguments.of(MessagingEntityType.QUEUE, false, true, DispositionStatus.DEFERRED)
-        );
     }
 }
