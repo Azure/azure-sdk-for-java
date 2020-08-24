@@ -11,6 +11,7 @@ package com.microsoft.azure.management.netapp.v2019_10_01.implementation;
 import com.microsoft.azure.management.netapp.v2019_10_01.ServiceLevel;
 import com.microsoft.azure.management.netapp.v2019_10_01.VolumePropertiesExportPolicy;
 import java.util.List;
+import com.microsoft.azure.management.netapp.v2019_10_01.MountTargetProperties;
 import com.microsoft.azure.management.netapp.v2019_10_01.VolumePropertiesDataProtection;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -98,7 +99,7 @@ public class VolumeInner extends Resource {
      * List of mount targets.
      */
     @JsonProperty(value = "properties.mountTargets")
-    private Object mountTargets;
+    private List<MountTargetProperties> mountTargets;
 
     /**
      * What type of volume is this.
@@ -292,7 +293,7 @@ public class VolumeInner extends Resource {
      *
      * @return the mountTargets value
      */
-    public Object mountTargets() {
+    public List<MountTargetProperties> mountTargets() {
         return this.mountTargets;
     }
 
@@ -302,7 +303,7 @@ public class VolumeInner extends Resource {
      * @param mountTargets the mountTargets value to set
      * @return the VolumeInner object itself.
      */
-    public VolumeInner withMountTargets(Object mountTargets) {
+    public VolumeInner withMountTargets(List<MountTargetProperties> mountTargets) {
         this.mountTargets = mountTargets;
         return this;
     }
