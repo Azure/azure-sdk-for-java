@@ -96,12 +96,13 @@ public interface SpringAppDeployment
              */
             WithCreate withJarFile(File jar);
 
-            /**
-             * Specifies the source code for the deployment.
-             * @param sourceCodeFolder the folder of the source code
-             * @return the next stage of deployment definition
-             */
-            WithModule withSourceCodeFolder(File sourceCodeFolder);
+            // Remove compression first due to tar.gz needs extern dependency
+            // /**
+            //  * Specifies the source code for the deployment.
+            //  * @param sourceCodeFolder the folder of the source code
+            //  * @return the next stage of deployment definition
+            //  */
+            // WithModule withSourceCodeFolder(File sourceCodeFolder);
 
             /**
              * Specifies the source code for the deployment.
@@ -273,12 +274,12 @@ public interface SpringAppDeployment
              */
             Update withJarFile(File jar);
 
-            /**
-             * Specifies the source code for the deployment.
-             * @param sourceCodeFolder the folder of the source code
-             * @return the next stage of deployment update
-             */
-            WithModule withSourceCodeFolder(File sourceCodeFolder);
+            // /**
+            //  * Specifies the source code for the deployment.
+            //  * @param sourceCodeFolder the folder of the source code
+            //  * @return the next stage of deployment update
+            //  */
+            // WithModule withSourceCodeFolder(File sourceCodeFolder);
 
             /**
              * Specifies the source code for the deployment.
