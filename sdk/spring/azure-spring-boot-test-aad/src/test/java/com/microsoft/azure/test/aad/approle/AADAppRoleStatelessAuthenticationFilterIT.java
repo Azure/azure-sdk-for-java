@@ -31,8 +31,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 
-import static com.microsoft.azure.test.oauth.OAuthUtils.AAD_CLIENT_ID;
-import static com.microsoft.azure.test.oauth.OAuthUtils.AAD_CLIENT_SECRET;
+import static com.microsoft.azure.test.oauth.OAuthUtils.AAD_MULTI_TENANT_CLIENT_ID;
+import static com.microsoft.azure.test.oauth.OAuthUtils.AAD_MULTI_TENANT_CLIENT_SECRET;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -44,13 +44,13 @@ public class AADAppRoleStatelessAuthenticationFilterIT {
 
     @Test
     public void testAADAppRoleStatelessAuthenticationFilter() {
-        final OAuthResponse authResponse = OAuthUtils.executeOAuth2ROPCFlow(System.getenv(AAD_CLIENT_ID),
-            System.getenv(AAD_CLIENT_SECRET));
+        final OAuthResponse authResponse = OAuthUtils.executeOAuth2ROPCFlow(System.getenv(AAD_MULTI_TENANT_CLIENT_ID),
+            System.getenv(AAD_MULTI_TENANT_CLIENT_SECRET));
         assertNotNull(authResponse);
 
         try (AppRunner app = new AppRunner(DumbApp.class)) {
 
-            app.property("azure.activedirectory.client-id", System.getenv(AAD_CLIENT_ID));
+            app.property("azure.activedirectory.client-id", System.getenv(AAD_MULTI_TENANT_CLIENT_ID));
             app.property("azure.activedirectory.session-stateless", "true");
 
             app.start();

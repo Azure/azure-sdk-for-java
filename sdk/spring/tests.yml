@@ -31,3 +31,13 @@ jobs:
 
         EnvVars:
           AZURE_TEST_MODE: LIVE
+          AAD_TENANT_ID_1: $(java-spring-test-aad-tenant-id-1)
+          AAD_USER_NAME_1: $(java-spring-test-aad-user-name-1)
+          AAD_USER_PASSWORD_1: $(java-spring-test-aad-user-password-1)
+          AAD_TENANT_ID_2: $(java-spring-test-aad-tenant-id-2)
+          AAD_USER_NAME_2: $(java-spring-test-aad-user-name-2)
+          AAD_USER_PASSWORD_2: $(java-spring-test-aad-user-password-2)
+          AAD_MULTI_TENANT_CLIENT_ID: $(java-spring-test-aad-multi-tenant-client-id)
+          AAD_MULTI_TENANT_CLIENT_SECRET: $(java-spring-test-aad-multi-tenant-client-secret)
+          AAD_SINGLE_TENANT_CLIENT_ID: $(java-spring-test-aad-single-tenant-id)
+          AAD_SINGLE_TENANT_CLIENT_SECRET: $(java-spring-test-aad-single-tenant-secret)

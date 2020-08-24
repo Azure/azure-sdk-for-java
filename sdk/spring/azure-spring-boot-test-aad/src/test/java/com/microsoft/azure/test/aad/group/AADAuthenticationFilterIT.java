@@ -35,10 +35,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-import static com.microsoft.azure.test.oauth.OAuthUtils.AAD_CLIENT_ID;
-import static com.microsoft.azure.test.oauth.OAuthUtils.AAD_CLIENT_SECRET;
-import static com.microsoft.azure.test.oauth.OAuthUtils.SINGLE_TENANT_AAD_CLIENT_ID;
-import static com.microsoft.azure.test.oauth.OAuthUtils.SINGLE_TENANT_AAD_CLIENT_SECRET;
+import static com.microsoft.azure.test.oauth.OAuthUtils.AAD_MULTI_TENANT_CLIENT_ID;
+import static com.microsoft.azure.test.oauth.OAuthUtils.AAD_MULTI_TENANT_CLIENT_SECRET;
+import static com.microsoft.azure.test.oauth.OAuthUtils.AAD_SINGLE_TENANT_CLIENT_ID;
+import static com.microsoft.azure.test.oauth.OAuthUtils.AAD_SINGLE_TENANT_CLIENT_SECRET;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.http.HttpHeaders.COOKIE;
@@ -52,8 +52,8 @@ public class AADAuthenticationFilterIT {
 
     @Test
     public void testAADAuthenticationFilterWithSingleTenantApp() {
-        final String clientId = System.getenv(SINGLE_TENANT_AAD_CLIENT_ID);
-        final String clientSecret = System.getenv(SINGLE_TENANT_AAD_CLIENT_SECRET);
+        final String clientId = System.getenv(AAD_SINGLE_TENANT_CLIENT_ID);
+        final String clientSecret = System.getenv(AAD_SINGLE_TENANT_CLIENT_SECRET);
 
         final OAuthResponse authResponse = OAuthUtils.executeOAuth2ROPCFlow(clientId, clientSecret);
         assertNotNull(authResponse);
@@ -63,8 +63,8 @@ public class AADAuthenticationFilterIT {
 
     @Test
     public void testAADAuthenticationFilterWithMultiTenantApp() {
-        final String clientId = System.getenv(AAD_CLIENT_ID);
-        final String clientSecret = System.getenv(AAD_CLIENT_SECRET);
+        final String clientId = System.getenv(AAD_MULTI_TENANT_CLIENT_ID);
+        final String clientSecret = System.getenv(AAD_MULTI_TENANT_CLIENT_SECRET);
 
         final OAuthResponse authResponse = OAuthUtils.executeOAuth2ROPCFlow(clientId, clientSecret);
         assertNotNull(authResponse);
