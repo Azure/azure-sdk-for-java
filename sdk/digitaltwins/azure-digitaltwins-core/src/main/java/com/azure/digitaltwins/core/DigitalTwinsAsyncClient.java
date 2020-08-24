@@ -170,16 +170,16 @@ public class DigitalTwinsAsyncClient {
             .addWithResponseAsync(digitalTwinId, digitalTwin);
     }
 
-    // Input is Object and output is Response<T> -> ResponseBase<DigitalTwinsAddHeaders, T>.
+    // Input is T and output is Response<T>.
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<ResponseBase<DigitalTwinsAddHeaders, T>> createDigitalTwinWithResponseGeneric(String digitalTwinId, Object digitalTwin, Class<T> klazz) {
+    public <T> Mono<Response<T>> createDigitalTwinWithResponseGeneric(String digitalTwinId, T digitalTwin, Class<T> klazz) {
         return protocolLayer
             .getDigitalTwins()
             .addWithResponseAsync(digitalTwinId, digitalTwin)
             .flatMap(
                 response -> {
                     T genericResponse = mapper.convertValue(response.getValue(), klazz);
-                    return Mono.just(new ResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), genericResponse, response.getDeserializedHeaders()));
+                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), genericResponse));
                 });
     }
 

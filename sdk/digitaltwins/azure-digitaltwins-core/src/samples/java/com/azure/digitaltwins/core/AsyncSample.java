@@ -316,11 +316,11 @@ public class AsyncSample
             createTwinsSemaphore::release);
 
         // Response is strongly typed object ResponseBase<DigitalTwinsAddHeaders, T>
-        Mono<ResponseBase<DigitalTwinsAddHeaders, CustomDigitalTwin>> sourceTwinGenericWithResponse = client.createDigitalTwinWithResponseGeneric(dtId_WithResponse_Generic, genericDigitalTwin, CustomDigitalTwin.class);
+        Mono<Response<CustomDigitalTwin>> sourceTwinGenericWithResponse = client.createDigitalTwinWithResponseGeneric(dtId_WithResponse_Generic, genericDigitalTwin, CustomDigitalTwin.class);
         sourceTwinGenericWithResponse.subscribe(
             result -> {
                 System.out.println(String.format("%s: Created twin, Status = %d, Etag = %s",
-                    dtId_WithResponse_Generic, result.getStatusCode(), result.getDeserializedHeaders().getETag()));
+                    dtId_WithResponse_Generic, result.getStatusCode(), result.getHeaders().get("etag")));
                 CustomDigitalTwin twin = result.getValue();
                 System.out.println(String.format("%s: Deserialized CustomDigitalTwin, \n\tId=%s, \n\tEtag=%s, \n\tModelId=%s, \n\tAverageTemperature=%d, \n\tTemperatureUnit=%s \n",
                     dtId_WithResponse_Generic, twin.id(), twin.etag(), twin.metadata().modelId(), twin.averageTemperature(), twin.temperatureUnit()));
