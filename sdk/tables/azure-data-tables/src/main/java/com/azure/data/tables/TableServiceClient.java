@@ -84,7 +84,7 @@ public class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableItem> listTables() {
-        return new PagedIterable<>(client.listTables(new ListTablesOptions()));
+        return new PagedIterable<>(client.listTables());
     }
 
     /**
