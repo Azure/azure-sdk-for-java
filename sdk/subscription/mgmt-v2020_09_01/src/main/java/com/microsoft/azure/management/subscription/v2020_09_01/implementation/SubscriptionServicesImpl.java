@@ -18,14 +18,14 @@ import com.microsoft.azure.management.subscription.v2020_09_01.RenamedSubscripti
 import com.microsoft.azure.management.subscription.v2020_09_01.EnabledSubscriptionId;
 
 class SubscriptionServicesImpl extends WrapperImpl<SubscriptionServicesInner> implements SubscriptionServices {
-    private final Manager manager;
+    private final SubscriptionManager manager;
 
-    SubscriptionServicesImpl(Manager manager) {
+    SubscriptionServicesImpl(SubscriptionManager manager) {
         super(manager.inner().subscriptionServices());
         this.manager = manager;
     }
 
-    public Manager manager() {
+    public SubscriptionManager manager() {
         return this.manager;
     }
 

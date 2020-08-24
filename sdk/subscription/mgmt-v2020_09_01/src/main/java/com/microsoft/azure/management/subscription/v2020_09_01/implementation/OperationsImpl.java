@@ -16,14 +16,14 @@ import rx.Observable;
 import com.microsoft.azure.management.subscription.v2020_09_01.OperationListResult;
 
 class OperationsImpl extends WrapperImpl<OperationsInner> implements Operations {
-    private final Manager manager;
+    private final SubscriptionManager manager;
 
-    OperationsImpl(Manager manager) {
+    OperationsImpl(SubscriptionManager manager) {
         super(manager.inner().operations());
         this.manager = manager;
     }
 
-    public Manager manager() {
+    public SubscriptionManager manager() {
         return this.manager;
     }
 

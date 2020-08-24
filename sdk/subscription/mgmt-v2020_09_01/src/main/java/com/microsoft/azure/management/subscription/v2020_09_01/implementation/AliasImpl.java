@@ -18,14 +18,14 @@ import com.microsoft.azure.management.subscription.v2020_09_01.PutAliasResponse;
 import com.microsoft.azure.management.subscription.v2020_09_01.PutAliasListResult;
 
 class AliasImpl extends WrapperImpl<AliasInner> implements Alias {
-    private final Manager manager;
+    private final SubscriptionManager manager;
 
-    AliasImpl(Manager manager) {
+    AliasImpl(SubscriptionManager manager) {
         super(manager.inner().alias());
         this.manager = manager;
     }
 
-    public Manager manager() {
+    public SubscriptionManager manager() {
         return this.manager;
     }
 

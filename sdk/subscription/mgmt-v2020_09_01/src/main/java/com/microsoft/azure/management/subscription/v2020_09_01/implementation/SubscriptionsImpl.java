@@ -19,14 +19,14 @@ import java.util.List;
 import com.microsoft.azure.management.subscription.v2020_09_01.Location;
 
 class SubscriptionsImpl extends WrapperImpl<SubscriptionsInner> implements Subscriptions {
-    private final Manager manager;
+    private final SubscriptionManager manager;
 
-    SubscriptionsImpl(Manager manager) {
+    SubscriptionsImpl(SubscriptionManager manager) {
         super(manager.inner().subscriptions());
         this.manager = manager;
     }
 
-    public Manager manager() {
+    public SubscriptionManager manager() {
         return this.manager;
     }
 

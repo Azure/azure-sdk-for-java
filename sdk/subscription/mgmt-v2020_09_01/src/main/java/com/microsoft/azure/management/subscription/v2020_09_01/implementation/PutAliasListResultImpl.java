@@ -13,14 +13,14 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import java.util.List;
 
 class PutAliasListResultImpl extends WrapperImpl<PutAliasListResultInner> implements PutAliasListResult {
-    private final Manager manager;
-    PutAliasListResultImpl(PutAliasListResultInner inner, Manager manager) {
+    private final SubscriptionManager manager;
+    PutAliasListResultImpl(PutAliasListResultInner inner, SubscriptionManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public Manager manager() {
+    public SubscriptionManager manager() {
         return this.manager;
     }
 

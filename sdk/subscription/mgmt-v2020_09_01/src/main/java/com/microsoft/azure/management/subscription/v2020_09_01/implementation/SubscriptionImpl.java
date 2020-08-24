@@ -14,14 +14,14 @@ import com.microsoft.azure.management.subscription.v2020_09_01.SubscriptionState
 import com.microsoft.azure.management.subscription.v2020_09_01.SubscriptionPolicies;
 
 class SubscriptionImpl extends WrapperImpl<SubscriptionInner> implements Subscription {
-    private final Manager manager;
-    SubscriptionImpl(SubscriptionInner inner, Manager manager) {
+    private final SubscriptionManager manager;
+    SubscriptionImpl(SubscriptionInner inner, SubscriptionManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public Manager manager() {
+    public SubscriptionManager manager() {
         return this.manager;
     }
 

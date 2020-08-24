@@ -11,12 +11,12 @@ package com.microsoft.azure.management.subscription.v2020_09_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.subscription.v2020_09_01.implementation.LocationInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.subscription.v2020_09_01.implementation.Manager;
+import com.microsoft.azure.management.subscription.v2020_09_01.implementation.SubscriptionManager;
 
 /**
  * Type representing Location.
  */
-public interface Location extends HasInner<LocationInner>, HasManager<Manager> {
+public interface Location extends HasInner<LocationInner>, HasManager<SubscriptionManager> {
     /**
      * @return the displayName value.
      */

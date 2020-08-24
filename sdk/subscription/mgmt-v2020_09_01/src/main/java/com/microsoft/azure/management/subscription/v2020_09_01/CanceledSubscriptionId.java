@@ -10,13 +10,13 @@ package com.microsoft.azure.management.subscription.v2020_09_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.subscription.v2020_09_01.implementation.Manager;
+import com.microsoft.azure.management.subscription.v2020_09_01.implementation.SubscriptionManager;
 import com.microsoft.azure.management.subscription.v2020_09_01.implementation.CanceledSubscriptionIdInner;
 
 /**
  * Type representing CanceledSubscriptionId.
  */
-public interface CanceledSubscriptionId extends HasInner<CanceledSubscriptionIdInner>, HasManager<Manager> {
+public interface CanceledSubscriptionId extends HasInner<CanceledSubscriptionIdInner>, HasManager<SubscriptionManager> {
     /**
      * @return the value value.
      */

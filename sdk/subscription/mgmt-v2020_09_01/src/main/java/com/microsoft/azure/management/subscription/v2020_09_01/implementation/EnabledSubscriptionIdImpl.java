@@ -12,14 +12,14 @@ import com.microsoft.azure.management.subscription.v2020_09_01.EnabledSubscripti
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 
 class EnabledSubscriptionIdImpl extends WrapperImpl<EnabledSubscriptionIdInner> implements EnabledSubscriptionId {
-    private final Manager manager;
-    EnabledSubscriptionIdImpl(EnabledSubscriptionIdInner inner, Manager manager) {
+    private final SubscriptionManager manager;
+    EnabledSubscriptionIdImpl(EnabledSubscriptionIdInner inner, SubscriptionManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public Manager manager() {
+    public SubscriptionManager manager() {
         return this.manager;
     }
 

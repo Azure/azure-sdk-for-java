@@ -20,9 +20,9 @@ class PutAliasResponseImpl extends CreatableUpdatableImpl<PutAliasResponse, PutA
     private String aliasName;
     private PutAliasRequestProperties cproperties;
     private PutAliasRequestProperties uproperties;
-    private final Manager manager;
+    private final SubscriptionManager manager;
 
-    PutAliasResponseImpl(String name, Manager manager) {
+    PutAliasResponseImpl(String name, SubscriptionManager manager) {
         super(name, new PutAliasResponseInner());
         this.manager = manager;
         // Set resource name
@@ -32,7 +32,7 @@ class PutAliasResponseImpl extends CreatableUpdatableImpl<PutAliasResponse, PutA
         this.uproperties = new PutAliasRequestProperties();
     }
 
-    PutAliasResponseImpl(PutAliasResponseInner inner, Manager manager) {
+    PutAliasResponseImpl(PutAliasResponseInner inner, SubscriptionManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -45,7 +45,7 @@ class PutAliasResponseImpl extends CreatableUpdatableImpl<PutAliasResponse, PutA
     }
 
     @Override
-    public Manager manager() {
+    public SubscriptionManager manager() {
         return this.manager;
     }
 

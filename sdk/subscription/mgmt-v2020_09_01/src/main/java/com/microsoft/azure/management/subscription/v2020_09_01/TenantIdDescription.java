@@ -10,13 +10,13 @@ package com.microsoft.azure.management.subscription.v2020_09_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.subscription.v2020_09_01.implementation.Manager;
+import com.microsoft.azure.management.subscription.v2020_09_01.implementation.SubscriptionManager;
 import com.microsoft.azure.management.subscription.v2020_09_01.implementation.TenantIdDescriptionInner;
 
 /**
  * Type representing TenantIdDescription.
  */
-public interface TenantIdDescription extends HasInner<TenantIdDescriptionInner>, HasManager<Manager> {
+public interface TenantIdDescription extends HasInner<TenantIdDescriptionInner>, HasManager<SubscriptionManager> {
     /**
      * @return the id value.
      */

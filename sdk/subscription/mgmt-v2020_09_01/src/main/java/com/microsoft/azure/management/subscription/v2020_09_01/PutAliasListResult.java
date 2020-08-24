@@ -10,7 +10,7 @@ package com.microsoft.azure.management.subscription.v2020_09_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.subscription.v2020_09_01.implementation.Manager;
+import com.microsoft.azure.management.subscription.v2020_09_01.implementation.SubscriptionManager;
 import com.microsoft.azure.management.subscription.v2020_09_01.implementation.PutAliasListResultInner;
 import com.microsoft.azure.management.subscription.v2020_09_01.implementation.PutAliasResponseInner;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Type representing PutAliasListResult.
  */
-public interface PutAliasListResult extends HasInner<PutAliasListResultInner>, HasManager<Manager> {
+public interface PutAliasListResult extends HasInner<PutAliasListResultInner>, HasManager<SubscriptionManager> {
     /**
      * @return the nextLink value.
      */

@@ -12,14 +12,14 @@ import com.microsoft.azure.management.subscription.v2020_09_01.TenantIdDescripti
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 
 class TenantIdDescriptionImpl extends WrapperImpl<TenantIdDescriptionInner> implements TenantIdDescription {
-    private final Manager manager;
-    TenantIdDescriptionImpl(TenantIdDescriptionInner inner, Manager manager) {
+    private final SubscriptionManager manager;
+    TenantIdDescriptionImpl(TenantIdDescriptionInner inner, SubscriptionManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public Manager manager() {
+    public SubscriptionManager manager() {
         return this.manager;
     }
 

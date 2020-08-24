@@ -12,14 +12,14 @@ import com.microsoft.azure.management.subscription.v2020_09_01.RenamedSubscripti
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 
 class RenamedSubscriptionIdImpl extends WrapperImpl<RenamedSubscriptionIdInner> implements RenamedSubscriptionId {
-    private final Manager manager;
-    RenamedSubscriptionIdImpl(RenamedSubscriptionIdInner inner, Manager manager) {
+    private final SubscriptionManager manager;
+    RenamedSubscriptionIdImpl(RenamedSubscriptionIdInner inner, SubscriptionManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public Manager manager() {
+    public SubscriptionManager manager() {
         return this.manager;
     }
 

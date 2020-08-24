@@ -16,12 +16,12 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.subscription.v2020_09_01.implementation.Manager;
+import com.microsoft.azure.management.subscription.v2020_09_01.implementation.SubscriptionManager;
 
 /**
  * Type representing PutAliasResponse.
  */
-public interface PutAliasResponse extends HasInner<PutAliasResponseInner>, Indexable, Updatable<PutAliasResponse.Update>, Refreshable<PutAliasResponse>, HasManager<Manager> {
+public interface PutAliasResponse extends HasInner<PutAliasResponseInner>, Indexable, Updatable<PutAliasResponse.Update>, Refreshable<PutAliasResponse>, HasManager<SubscriptionManager> {
     /**
      * @return the id value.
      */
