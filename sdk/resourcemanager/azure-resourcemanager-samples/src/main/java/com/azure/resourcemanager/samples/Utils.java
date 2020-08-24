@@ -3146,7 +3146,8 @@ public final class Utils {
             .append("\n\tTags: ").append(springService.tags());
 
         ConfigServerProperties serverProperties = springService.getServerProperties();
-        if (serverProperties != null && serverProperties.provisioningState().equals(ConfigServerState.SUCCEEDED) && serverProperties.configServer() != null) {
+        if (serverProperties != null && serverProperties.provisioningState() != null
+            && serverProperties.provisioningState().equals(ConfigServerState.SUCCEEDED) && serverProperties.configServer() != null) {
             info.append("\n\tProperties: ");
             if (serverProperties.configServer().gitProperty() != null) {
                 info.append("\n\t\tGit: ").append(serverProperties.configServer().gitProperty().uri());
@@ -3161,7 +3162,8 @@ public final class Utils {
         }
 
         MonitoringSettingProperties monitoringSettingProperties = springService.getMonitoringSetting();
-        if (monitoringSettingProperties != null && monitoringSettingProperties.provisioningState().equals(MonitoringSettingState.SUCCEEDED)) {
+        if (monitoringSettingProperties != null && monitoringSettingProperties.provisioningState() != null
+            && monitoringSettingProperties.provisioningState().equals(MonitoringSettingState.SUCCEEDED)) {
             info.append("\n\tTrace: ")
                 .append("\n\t\tEnabled: ").append(monitoringSettingProperties.traceEnabled())
                 .append("\n\t\tApp Insight Instrumentation Key: ").append(monitoringSettingProperties.appInsightsInstrumentationKey());
