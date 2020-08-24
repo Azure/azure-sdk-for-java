@@ -315,7 +315,7 @@ public class AsyncSample
             throwable -> System.err.println("Failed to create source twin on digital twin with Id " + dtId_Generic + " due to error message " + throwable.getMessage()),
             createTwinsSemaphore::release);
 
-        // Response is strongly typed object ResponseBase<DigitalTwinsAddHeaders, T>
+        // Response is strongly typed object Response<T>
         Mono<Response<CustomDigitalTwin>> sourceTwinGenericWithResponse = client.createDigitalTwinWithResponseGeneric(dtId_WithResponse_Generic, genericDigitalTwin, CustomDigitalTwin.class);
         sourceTwinGenericWithResponse.subscribe(
             result -> {
