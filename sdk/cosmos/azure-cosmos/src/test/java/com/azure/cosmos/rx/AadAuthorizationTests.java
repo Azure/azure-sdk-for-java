@@ -156,10 +156,6 @@ public class AadAuthorizationTests extends TestSuiteBase {
         return itemSample;
     }
 
-    @Factory(dataProvider = "clientBuilders")
-    public AadAuthorizationTests(CosmosClientBuilder clientBuilder) {
-    }
-
     @BeforeMethod(groups = { "emulator" }, timeOut = 2 * SETUP_TIMEOUT, alwaysRun = true)
     public void beforeMethod() {
     }
