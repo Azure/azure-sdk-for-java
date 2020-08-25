@@ -68,7 +68,7 @@ public final class ClientOptions {
      * @param value the value
      * @return The updated ClientOptions object
      *
-     * @throws NullPointerException if {@code name} or {code value} is null.
+     * @throws NullPointerException if {@code name} or {@code value} is null.
      */
     public ClientOptions addHeader(String name, String value) {
         Objects.requireNonNull(name, "'name' cannot be null.");
