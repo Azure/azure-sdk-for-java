@@ -15,6 +15,9 @@ import com.azure.storage.file.datalake.models.AccessTier
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions
 import com.azure.storage.file.datalake.models.DataLakeStorageException
 import com.azure.storage.file.datalake.models.FileExpirationOffset
+import com.azure.storage.file.datalake.models.FileQueryArrowField
+import com.azure.storage.file.datalake.models.FileQueryArrowFieldType
+import com.azure.storage.file.datalake.models.FileQueryArrowSerialization
 import com.azure.storage.file.datalake.models.FileQueryDelimitedSerialization
 import com.azure.storage.file.datalake.models.FileQueryError
 import com.azure.storage.file.datalake.models.FileQueryJsonSerialization
@@ -3089,6 +3092,43 @@ class FileAPITest extends APISpec {
     }
 
     @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
+    def "Query Input csv Output arrow"() {
+        setup:
+        FileQueryDelimitedSerialization inSer = new FileQueryDelimitedSerialization()
+            .setRecordSeparator('\n' as char)
+            .setColumnSeparator(',' as char)
+            .setEscapeChar('\0' as char)
+            .setFieldQuote('\0' as char)
+            .setHeadersPresent(false)
+        uploadCsv(inSer, 32)
+        List<FileQueryArrowField> schema = new ArrayList<>()
+        schema.add(new FileQueryArrowField(FileQueryArrowFieldType.DECIMAL).setName("Name").setPrecision(4).setScale(2))
+        FileQueryArrowSerialization outSer = new FileQueryArrowSerialization().setSchema(schema)
+        def expression = "SELECT _2 from BlobStorage WHERE _1 > 250;"
+        String expectedData = "/////4AAAAAQAAAAAAAKAAwABgAFAAgACgAAAAABAwAMAAAACAAIAAAABAAIAAAABAAAAAEAAAAUAAAAEAAUAAgABgAHAAwAAAAQABAAAAAAAAEHJAAAABQAAAAEAAAAAAAAAAgADAAEAAgACAAAAAQAAAACAAAABAAAAE5hbWUAAAAAAAAAAP////9wAAAAEAAAAAAACgAOAAYABQAIAAoAAAAAAwMAEAAAAAAACgAMAAAABAAIAAoAAAAwAAAABAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAP////+IAAAAFAAAAAAAAAAMABYABgAFAAgADAAMAAAAAAMDABgAAAAAAgAAAAAAAAAACgAYAAwABAAIAAoAAAA8AAAAEAAAACAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAABAAAAIAAAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAA"
+        OutputStream os = new ByteArrayOutputStream()
+        FileQueryOptions options = new FileQueryOptions(expression, os).setInputSerialization(inSer).setOutputSerialization(outSer)
+
+        /* Input Stream. */
+        when:
+        InputStream qqStream = fc.openQueryInputStreamWithResponse(options).getValue()
+        byte[] queryData = readFromInputStream(qqStream, 912)
+
+        then:
+        notThrown(IOException)
+        Base64.getEncoder().encodeToString(queryData) == expectedData
+
+        /* Output Stream. */
+        when:
+        fc.queryWithResponse(options, null, null)
+        byte[] osData = os.toByteArray()
+
+        then:
+        notThrown(BlobStorageException)
+        Base64.getEncoder().encodeToString(osData) == expectedData
+    }
+
+    @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
     def "Query non fatal error"() {
         setup:
         FileQueryDelimitedSerialization base = new FileQueryDelimitedSerialization()
@@ -3286,6 +3326,29 @@ class FileAPITest extends APISpec {
         input   | output   || _
         true    | false    || _
         false   | true     || _
+    }
+
+    @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
+    def "Query arrow input IA"() {
+        setup:
+        def inSer = new FileQueryArrowSerialization()
+        def expression = "SELECT * from BlobStorage"
+        FileQueryOptions options = new FileQueryOptions(expression)
+            .setInputSerialization(inSer)
+
+        when:
+        InputStream stream = fc.openQueryInputStreamWithResponse(options).getValue()  /* Don't need to call read. */
+
+        then:
+        thrown(IllegalArgumentException)
+
+        when:
+        options = new FileQueryOptions(expression, new ByteArrayOutputStream())
+            .setInputSerialization(inSer)
+        fc.queryWithResponse(options, null, null)
+
+        then:
+        thrown(IllegalArgumentException)
     }
 
     @Unroll
