@@ -643,6 +643,29 @@ class BlobBaseAPITest extends APISpec {
         false   | true     || _
     }
 
+//    @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
+    def "Query arrow input IA"() {
+        setup:
+        def inSer = new BlobQueryArrowSerialization()
+        def expression = "SELECT * from BlobStorage"
+        BlobQueryOptions options = new BlobQueryOptions(expression)
+            .setInputSerialization(inSer)
+
+        when:
+        InputStream stream = bc.openQueryInputStreamWithResponse(options).getValue()  /* Don't need to call read. */
+
+        then:
+        thrown(IllegalArgumentException)
+
+        when:
+        options = new BlobQueryOptions(expression, new ByteArrayOutputStream())
+            .setInputSerialization(inSer)
+        bc.queryWithResponse(options, null, null)
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
     @Unroll
     @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
     def "Query AC"() {

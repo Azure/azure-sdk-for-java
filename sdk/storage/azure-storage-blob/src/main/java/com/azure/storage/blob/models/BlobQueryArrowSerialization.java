@@ -19,7 +19,7 @@ public class BlobQueryArrowSerialization implements BlobQuerySerialization {
      * @return the arrow fields.
      */
     public List<BlobQueryArrowField> getSchema() {
-        return Collections.unmodifiableList(schema);
+        return schema == null ? null : Collections.unmodifiableList(schema);
     }
 
     /**
@@ -29,7 +29,7 @@ public class BlobQueryArrowSerialization implements BlobQuerySerialization {
      * @return the updated BlobQueryArrowSerialization object.
      */
     public BlobQueryArrowSerialization setSchema(List<BlobQueryArrowField> schema) {
-        this.schema = Collections.unmodifiableList(schema);
+        this.schema = schema == null ? null : Collections.unmodifiableList(schema);
         return this;
     }
 }

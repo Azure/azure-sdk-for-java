@@ -19,7 +19,7 @@ public class FileQueryArrowSerialization implements FileQuerySerialization {
      * @return the arrow fields.
      */
     public List<FileQueryArrowField> getSchema() {
-        return Collections.unmodifiableList(schema);
+        return schema == null ? null : Collections.unmodifiableList(schema);
     }
 
     /**
@@ -29,7 +29,7 @@ public class FileQueryArrowSerialization implements FileQuerySerialization {
      * @return the updated FileQueryArrowSerialization object.
      */
     public FileQueryArrowSerialization setSchema(List<FileQueryArrowField> schema) {
-        this.schema = Collections.unmodifiableList(schema);
+        this.schema = schema == null ? null : Collections.unmodifiableList(schema);
         return this;
     }
 }

@@ -3328,6 +3328,29 @@ class FileAPITest extends APISpec {
         false   | true     || _
     }
 
+    @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
+    def "Query arrow input IA"() {
+        setup:
+        def inSer = new FileQueryArrowSerialization()
+        def expression = "SELECT * from BlobStorage"
+        FileQueryOptions options = new FileQueryOptions(expression)
+            .setInputSerialization(inSer)
+
+        when:
+        InputStream stream = fc.openQueryInputStreamWithResponse(options).getValue()  /* Don't need to call read. */
+
+        then:
+        thrown(IllegalArgumentException)
+
+        when:
+        options = new FileQueryOptions(expression, new ByteArrayOutputStream())
+            .setInputSerialization(inSer)
+        fc.queryWithResponse(options, null, null)
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
     @Unroll
     @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
     def "Query AC"() {
