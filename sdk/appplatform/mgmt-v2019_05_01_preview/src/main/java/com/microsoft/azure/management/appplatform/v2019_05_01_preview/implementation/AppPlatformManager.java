@@ -19,8 +19,12 @@ import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.appplatform.v2019_05_01_preview.Services;
 import com.microsoft.azure.management.appplatform.v2019_05_01_preview.Apps;
 import com.microsoft.azure.management.appplatform.v2019_05_01_preview.Bindings;
+import com.microsoft.azure.management.appplatform.v2019_05_01_preview.Certificates;
+import com.microsoft.azure.management.appplatform.v2019_05_01_preview.CustomDomains;
 import com.microsoft.azure.management.appplatform.v2019_05_01_preview.Deployments;
 import com.microsoft.azure.management.appplatform.v2019_05_01_preview.Operations;
+import com.microsoft.azure.management.appplatform.v2019_05_01_preview.RuntimeVersions;
+import com.microsoft.azure.management.appplatform.v2019_05_01_preview.Skus;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -31,8 +35,12 @@ public final class AppPlatformManager extends ManagerCore<AppPlatformManager, Ap
     private Services services;
     private Apps apps;
     private Bindings bindings;
+    private Certificates certificates;
+    private CustomDomains customDomains;
     private Deployments deployments;
     private Operations operations;
+    private RuntimeVersions runtimeVersions;
+    private Skus skus;
     /**
     * Get a Configurable instance that can be used to create AppPlatformManager with optional configuration.
     *
@@ -111,6 +119,26 @@ public final class AppPlatformManager extends ManagerCore<AppPlatformManager, Ap
     }
 
     /**
+     * @return Entry point to manage Certificates.
+     */
+    public Certificates certificates() {
+        if (this.certificates == null) {
+            this.certificates = new CertificatesImpl(this);
+        }
+        return this.certificates;
+    }
+
+    /**
+     * @return Entry point to manage CustomDomains.
+     */
+    public CustomDomains customDomains() {
+        if (this.customDomains == null) {
+            this.customDomains = new CustomDomainsImpl(this);
+        }
+        return this.customDomains;
+    }
+
+    /**
      * @return Entry point to manage Deployments.
      */
     public Deployments deployments() {
@@ -128,6 +156,26 @@ public final class AppPlatformManager extends ManagerCore<AppPlatformManager, Ap
             this.operations = new OperationsImpl(this);
         }
         return this.operations;
+    }
+
+    /**
+     * @return Entry point to manage RuntimeVersions.
+     */
+    public RuntimeVersions runtimeVersions() {
+        if (this.runtimeVersions == null) {
+            this.runtimeVersions = new RuntimeVersionsImpl(this);
+        }
+        return this.runtimeVersions;
+    }
+
+    /**
+     * @return Entry point to manage Skus.
+     */
+    public Skus skus() {
+        if (this.skus == null) {
+            this.skus = new SkusImpl(this);
+        }
+        return this.skus;
     }
 
     /**

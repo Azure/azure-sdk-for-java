@@ -46,6 +46,11 @@ class ServiceResourceImpl extends WrapperImpl<ServiceResourceInner> implements S
     }
 
     @Override
+    public SkuInner sku() {
+        return this.inner().sku();
+    }
+
+    @Override
     public Map<String, String> tags() {
         return this.inner().getTags();
     }

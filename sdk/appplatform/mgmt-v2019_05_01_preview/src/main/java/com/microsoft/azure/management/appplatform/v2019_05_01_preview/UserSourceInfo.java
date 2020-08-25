@@ -15,7 +15,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class UserSourceInfo {
     /**
-     * Type of the source uploaded. Possible values include: 'Jar', 'Source'.
+     * Type of the source uploaded. Possible values include: 'Jar',
+     * 'NetCoreZip', 'Source'.
      */
     @JsonProperty(value = "type")
     private UserSourceType type;
@@ -41,7 +42,7 @@ public class UserSourceInfo {
     private String artifactSelector;
 
     /**
-     * Get type of the source uploaded. Possible values include: 'Jar', 'Source'.
+     * Get type of the source uploaded. Possible values include: 'Jar', 'NetCoreZip', 'Source'.
      *
      * @return the type value
      */
@@ -50,7 +51,7 @@ public class UserSourceInfo {
     }
 
     /**
-     * Set type of the source uploaded. Possible values include: 'Jar', 'Source'.
+     * Set type of the source uploaded. Possible values include: 'Jar', 'NetCoreZip', 'Source'.
      *
      * @param type the type value to set
      * @return the UserSourceInfo object itself.
