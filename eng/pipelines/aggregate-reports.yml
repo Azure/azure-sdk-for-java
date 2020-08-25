@@ -21,17 +21,51 @@ jobs:
       parameters:
         Directory: ""
 
-    - task: Maven@3
-      displayName: 'Generate Reports'
+    - task: PowerShell@2
+      # The root pom.xml contains both track 1, data, and track 2, client libraries.
+      # This task calls a powershell script that will go through all of the pom files
+      # in the repository looking, specifically, for ones whose parent is
+      # azure-client-sdk-parent and create a temporary pom file with just those libraries.
+      # Note: It excludes items within the /eng directory otherwise we'd be picking up
+      # jacoco and spotbugs which are unnecessary for the Aggregate Reports run.
+      displayName: 'Generate Aggregate Pom for Aggregate Reports'
       inputs:
-        mavenPomFile: pom.xml
-        options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Ddependency-checker -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl com.azure:jacoco-test-coverage -am'
+        pwsh: true
+        workingDirectory: $(Agent.BuildDirectory)
+        filePath: eng/scripts/Generate-Client-Aggregate-Pom.ps1
+      condition: succeeded()
+
+    - task: Maven@3
+      displayName: 'Build for Aggregate Reports run'
+      inputs:
+        mavenPomFile: ClientAggregatePom.xml
+        goals: 'install'
+        # Build and install every track 2, client, library. The purpose is to have all of
+        # the libraries installed on the machine so we can simply run tests with the -amd
+        # switch and we can remove the SNAFU of dependencies that bloated the ci.yml files'
+        # AdditionalModules because we ended up having to list every transitive azure client
+        # dependency. Note: The -T 1C says spin up a build thread per core. Since we're building
+        # all of the track 2, client, libraries (which is now over 100) this effectively cuts the
+        # the build time in half.
+        options: '$(DefaultOptions) -T 1C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true'
         mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: $(JavaBuildVersion)
         jdkArchitectureOption: 'x64'
         publishJUnitResults: false
-        goals: 'clean verify site:site site:stage'
+      condition: succeeded()
+
+    - task: Maven@3
+      displayName: 'Generate Jacoco Code Coverage'
+      inputs:
+        mavenPomFile: eng/jacoco-test-coverage/pom.xml
+        options: '$(DefaultOptions)'
+        mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: $(JavaBuildVersion)
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: false
+        goals: 'jacoco:prepare-agent jacoco:instrument surefire:test jacoco:restore-instrumented-classes jacoco:report'
 
     - task: PublishTestResults@2
       condition: succeededOrFailed()
@@ -47,6 +81,18 @@ jobs:
         summaryFileLocation: eng/jacoco-test-coverage/target/site/test-coverage/jacoco.xml
         reportDirectory: eng/jacoco-test-coverage/target/site/test-coverage/
         failIfCoverageEmpty: true
+
+    - task: Maven@3
+      displayName: 'Generate site'
+      inputs:
+        mavenPomFile: eng/jacoco-test-coverage/pom.xml
+        options: '$(DefaultOptions) -DskipTests'
+        mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: $(JavaBuildVersion)
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: false
+        goals: 'site:site site:stage'
 
     # Publish code coverage to an artifact so it can be uploaded to the Maven site.
     # Do this for track 2 modules only. Code coverage from previous step is only published for Linux + Java LTS.
