@@ -481,7 +481,7 @@ public class IdentityClient {
 
     private HttpPipeline setupPipeline(HttpClient httpClient) {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        HttpLogOptions httpLogOptions = new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS);
+        HttpLogOptions httpLogOptions = new HttpLogOptions();
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(new RetryPolicy());
         HttpPolicyProviders.addAfterRetryPolicies(policies);
@@ -581,8 +581,7 @@ public class IdentityClient {
                 DeviceCodeFlowParameters parameters = DeviceCodeFlowParameters.builder(
                     new HashSet<>(request.getScopes()), dc -> deviceCodeConsumer.accept(
                         new DeviceCodeInfo(dc.userCode(), dc.deviceCode(), dc.verificationUri(),
-                        OffsetDateTime.now().plusSeconds(dc.expiresIn()), dc.message())))
-                                                          .build();
+                        OffsetDateTime.now().plusSeconds(dc.expiresIn()), dc.message()))).build();
                 return pc.acquireToken(parameters);
             }).onErrorMap(t -> new ClientAuthenticationException("Failed to acquire token with device code", null, t))
                 .map(MsalToken::new));
@@ -651,8 +650,7 @@ public class IdentityClient {
                 String browserUri;
                 try {
                     redirectUri = new URI(String.format("http://localhost:%s", port));
-                    StringBuilder endpont = new StringBuilder(authorityUrl);
-                    endpont.append("/oauth2/");
+                    StringBuilder endpont = new StringBuilder(authorityUrl + "/oauth2/");
                     if (!isAdfsTenant(tenantId)) {
                         endpont.append("v2.0/");
                     }
