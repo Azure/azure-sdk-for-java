@@ -31,7 +31,7 @@ public class CapacityPoolPatch extends Resource {
      * 'Standard', 'Premium', 'Ultra'.
      */
     @JsonProperty(value = "properties.serviceLevel")
-    private ServiceLevel serviceLevel;
+    private PatchServiceLevel serviceLevel;
 
     /**
      * Get provisioned size of the pool (in bytes). Allowed values are in 4TiB chunks (value must be multiply of 4398046511104).
@@ -58,7 +58,7 @@ public class CapacityPoolPatch extends Resource {
      *
      * @return the serviceLevel value
      */
-    public ServiceLevel serviceLevel() {
+    public PatchServiceLevel serviceLevel() {
         return this.serviceLevel;
     }
 
@@ -68,7 +68,7 @@ public class CapacityPoolPatch extends Resource {
      * @param serviceLevel the serviceLevel value to set
      * @return the CapacityPoolPatch object itself.
      */
-    public CapacityPoolPatch withServiceLevel(ServiceLevel serviceLevel) {
+    public CapacityPoolPatch withServiceLevel(PatchServiceLevel serviceLevel) {
         this.serviceLevel = serviceLevel;
         return this;
     }
