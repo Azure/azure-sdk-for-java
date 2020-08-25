@@ -48,66 +48,29 @@ public class AsyncSample
             .endpoint(endpoint)
             .httpLogOptions(
                 new HttpLogOptions()
-                    .setLogLevel(HttpLogDetailLevel.NONE))
+                    .setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildAsyncClient();
 
         // Create the source twin
         final Semaphore createTwinsSemaphore = new Semaphore(0);
 
         // Request is json string
-        String dtId_String = "dt_String_" + random.nextInt();
-        String dtId_WithResponse_String = "dt_WithResponse_String_" + random.nextInt();
-        String dtId_WithResponse_ResponseBase_String = "dt_WithResponse_ResponseBase_String_" + random.nextInt();
-        String dtId_WithResponse_DigitalTwinsAddResponse_String = "dt_WithResponse_DigitalTwinsAddResponse_String_" + random.nextInt();
         DigitalTwinMetadata metadata = new DigitalTwinMetadata().setModelId(modelId);
-        BasicDigitalTwin basicDigitalTwin = new BasicDigitalTwin()
-            .setId(dtId_String)
+
+        // Response is Response<String>
+        String dtId_Response_String = "dt_Response_String_" + random.nextInt();
+        BasicDigitalTwin basicDigitalTwin_Response_String = new BasicDigitalTwin()
+            .setId(dtId_Response_String)
             .setMetadata(metadata)
             .setCustomProperties("AverageTemperature", random.nextInt(50))
             .setCustomProperties("TemperatureUnit", "Celsius");
-        String dt_String = mapper.writeValueAsString(basicDigitalTwin);
+        String dt_Response_String = mapper.writeValueAsString(basicDigitalTwin_Response_String);
 
-        // Response is String
-        Mono<String> sourceTwinString = client.createDigitalTwinString(dtId_String, dt_String);
-        sourceTwinString.subscribe(
-            result -> {
-                System.out.println(String.format("%s: Created twin", dtId_String));
-                try {
-                    // Convert to Jackson's tree model, which is useful to parse json string when you are not sure what the json string looks like
-                    JsonNode jsonNode = mapper.readTree(result);
-
-                    // Verify that the returned json string conforms to digital twin format -> has a root element $metadata and child-element $model in it.
-                    if (!jsonNode.path("$metadata").path("$model").isNull()) {
-
-                        // Verify if the returned json string is CustomDigitalTwin
-                        if (jsonNode.path("$metadata").path("$model").textValue().equals(modelId)) {
-                            // Parse it as CustomDigitalTwin
-                            CustomDigitalTwin twin = mapper.treeToValue(jsonNode, CustomDigitalTwin.class);
-                            System.out.println(
-                                String.format("%s: Deserialized CustomDigitalTwin, \n\tId=%s, \n\tEtag=%s, \n\tModelId=%s, \n\tAverageTemperature=%d, \n\tTemperatureUnit=%s \n",
-                                    dtId_String, twin.id(), twin.etag(), twin.metadata().modelId(), twin.averageTemperature(), twin.temperatureUnit()));
-                        } else {
-                            // Parse it as BasicDigitalTwin
-                            BasicDigitalTwin twin = mapper.treeToValue(jsonNode, BasicDigitalTwin.class);
-                            System.out.println(
-                                String.format("%s: Deserialized BasicDigitalTwin, \n\tId=%s, \n\tEtag=%s, \n\tModelId=%s, \n\tCustomProperties=%s \n",
-                                    dtId_String, twin.getId(), twin.getEtag(), twin.getMetadata().getModelId(), Arrays.toString(twin.getCustomProperties().entrySet().toArray())));
-                        }
-                    }
-                } catch (JsonProcessingException e) {
-                    System.err.println("Reading response into DigitalTwin failed: ");
-                    e.printStackTrace();
-                }
-            },
-            throwable -> System.err.println("Failed to create source twin on digital twin with Id " + dtId_String + " due to error message " + throwable.getMessage()),
-            createTwinsSemaphore::release);
-
-        // Response is Response<String>
-        Mono<Response<String>> sourceTwinWithResponseString = client.createDigitalTwinWithResponseString(dtId_WithResponse_String, dt_String);
+        Mono<Response<String>> sourceTwinWithResponseString = client.createDigitalTwinWithResponseString(dtId_Response_String, dt_Response_String);
         sourceTwinWithResponseString.subscribe(
             result -> {
                 System.out.println(String.format("%s: Created twin, Status = %d, Etag = %s",
-                    dtId_WithResponse_String, result.getStatusCode(), result.getHeaders().get("etag")));
+                    dtId_Response_String, result.getStatusCode(), result.getHeaders().get("etag")));
                 try {
                     // Convert to Jackson's tree model, which is useful to parse json string when you are not sure what the json string looks like
                     JsonNode jsonNode = mapper.readTree(result.getValue());
@@ -121,13 +84,13 @@ public class AsyncSample
                             CustomDigitalTwin twin = mapper.treeToValue(jsonNode, CustomDigitalTwin.class);
                             System.out.println(
                                 String.format("%s: Deserialized CustomDigitalTwin, \n\tId=%s, \n\tEtag=%s, \n\tModelId=%s, \n\tAverageTemperature=%d, \n\tTemperatureUnit=%s \n",
-                                    dtId_WithResponse_String, twin.id(), twin.etag(), twin.metadata().modelId(), twin.averageTemperature(), twin.temperatureUnit()));
+                                    dtId_Response_String, twin.id(), twin.etag(), twin.metadata().modelId(), twin.averageTemperature(), twin.temperatureUnit()));
                         } else {
                             // Parse it as BasicDigitalTwin
                             BasicDigitalTwin twin = mapper.treeToValue(jsonNode, BasicDigitalTwin.class);
                             System.out.println(
                                 String.format("%s: Deserialized BasicDigitalTwin, \n\tId=%s, \n\tEtag=%s, \n\tModelId=%s, \n\tCustomProperties=%s \n",
-                                    dtId_WithResponse_String, twin.getId(), twin.getEtag(), twin.getMetadata().getModelId(), Arrays.toString(twin.getCustomProperties().entrySet().toArray())));
+                                    dtId_Response_String, twin.getId(), twin.getEtag(), twin.getMetadata().getModelId(), Arrays.toString(twin.getCustomProperties().entrySet().toArray())));
                         }
                     }
                 } catch (JsonProcessingException e) {
@@ -135,15 +98,23 @@ public class AsyncSample
                     e.printStackTrace();
                 }
             },
-            throwable -> System.err.println("Failed to create source twin on digital twin with Id " + dtId_WithResponse_String + " due to error message " + throwable.getMessage()),
+            throwable -> System.err.println("Failed to create source twin on digital twin with Id " + dtId_Response_String + " due to error message " + throwable.getMessage()),
             createTwinsSemaphore::release);
 
         // Response is Response<String> -> ResponseBase<DigitalTwinsAddHeaders, String>
-        Mono<ResponseBase<DigitalTwinsAddHeaders, String>> sourceTwinWithResponseResponseBaseString = client.createDigitalTwinWithResponseResponseBaseString(dtId_WithResponse_ResponseBase_String, dt_String);
-        sourceTwinWithResponseResponseBaseString.subscribe(
+        String dtId_ResponseBase_String = "dt_ResponseBase_String_" + random.nextInt();
+        BasicDigitalTwin basicDigitalTwin_ResponseBase_String = new BasicDigitalTwin()
+            .setId(dtId_ResponseBase_String)
+            .setMetadata(metadata)
+            .setCustomProperties("AverageTemperature", random.nextInt(50))
+            .setCustomProperties("TemperatureUnit", "Celsius");
+        String dt_ResponseBase_String = mapper.writeValueAsString(basicDigitalTwin_ResponseBase_String);
+
+        Mono<ResponseBase<DigitalTwinsAddHeaders, String>> sourceTwinWithResponseBaseString = client.createDigitalTwinWithResponseBaseString(dtId_ResponseBase_String, dt_ResponseBase_String);
+        sourceTwinWithResponseBaseString.subscribe(
             result -> {
                 System.out.println(String.format("%s: Created twin, Status = %d, Etag = %s",
-                    dtId_WithResponse_ResponseBase_String, result.getStatusCode(), result.getDeserializedHeaders().getETag()));
+                    dtId_ResponseBase_String, result.getStatusCode(), result.getDeserializedHeaders().getETag()));
                 try {
                     // Convert to Jackson's tree model, which is useful to parse json string when you are not sure what the json string looks like
                     JsonNode jsonNode = mapper.readTree(result.getValue());
@@ -157,13 +128,13 @@ public class AsyncSample
                             CustomDigitalTwin twin = mapper.treeToValue(jsonNode, CustomDigitalTwin.class);
                             System.out.println(
                                 String.format("%s: Deserialized CustomDigitalTwin, \n\tId=%s, \n\tEtag=%s, \n\tModelId=%s, \n\tAverageTemperature=%d, \n\tTemperatureUnit=%s \n",
-                                    dtId_WithResponse_ResponseBase_String, twin.id(), twin.etag(), twin.metadata().modelId(), twin.averageTemperature(), twin.temperatureUnit()));
+                                    dtId_ResponseBase_String, twin.id(), twin.etag(), twin.metadata().modelId(), twin.averageTemperature(), twin.temperatureUnit()));
                         } else {
                             // Parse it as BasicDigitalTwin
                             BasicDigitalTwin twin = mapper.treeToValue(jsonNode, BasicDigitalTwin.class);
                             System.out.println(
                                 String.format("%s: Deserialized BasicDigitalTwin, \n\tId=%s, \n\tEtag=%s, \n\tModelId=%s, \n\tCustomProperties=%s \n",
-                                    dtId_WithResponse_ResponseBase_String, twin.getId(), twin.getEtag(), twin.getMetadata().getModelId(), Arrays.toString(twin.getCustomProperties().entrySet().toArray())));
+                                    dtId_ResponseBase_String, twin.getId(), twin.getEtag(), twin.getMetadata().getModelId(), Arrays.toString(twin.getCustomProperties().entrySet().toArray())));
                         }
                     }
                 } catch (JsonProcessingException e) {
@@ -171,15 +142,23 @@ public class AsyncSample
                     e.printStackTrace();
                 }
             },
-            throwable -> System.err.println("Failed to create source twin on digital twin with Id " + dtId_WithResponse_ResponseBase_String + " due to error message " + throwable.getMessage()),
+            throwable -> System.err.println("Failed to create source twin on digital twin with Id " + dtId_ResponseBase_String + " due to error message " + throwable.getMessage()),
             createTwinsSemaphore::release);
 
         // Response is Response<String> -> DigitalTwinsAddResponse (json string)
-        Mono<DigitalTwinsAddResponse> sourceTwinWithResponseDigitalTwinAddResponseString = client.createDigitalTwinWithResponseDigitalTwinAddResponseString(dtId_WithResponse_DigitalTwinsAddResponse_String, dt_String);
-        sourceTwinWithResponseDigitalTwinAddResponseString.subscribe(
+        String dtId_DigitalTwinsAddResponse_String = "dt_DigitalTwinsAddResponse_String_" + random.nextInt();
+        BasicDigitalTwin basicDigitalTwin_DigitalTwinsAddResponse_String = new BasicDigitalTwin()
+            .setId(dtId_ResponseBase_String)
+            .setMetadata(metadata)
+            .setCustomProperties("AverageTemperature", random.nextInt(50))
+            .setCustomProperties("TemperatureUnit", "Celsius");
+        String dt_DigitalTwinsAddResponse_String = mapper.writeValueAsString(basicDigitalTwin_DigitalTwinsAddResponse_String);
+
+        Mono<DigitalTwinsAddResponse> sourceTwinWithDigitalTwinAddResponseString = client.createDigitalTwinWithDigitalTwinAddResponseString(dtId_DigitalTwinsAddResponse_String, dt_DigitalTwinsAddResponse_String);
+        sourceTwinWithDigitalTwinAddResponseString.subscribe(
             result -> {
                 System.out.println(String.format("%s: Created twin, Status = %d, Etag = %s",
-                    dtId_WithResponse_DigitalTwinsAddResponse_String, result.getStatusCode(), result.getDeserializedHeaders().getETag()));
+                    dtId_DigitalTwinsAddResponse_String, result.getStatusCode(), result.getDeserializedHeaders().getETag()));
                 try {
                     // Convert to Jackson's tree model, which is useful to parse json string when you are not sure what the json string looks like
                     JsonNode jsonNode = mapper.readTree(result.getValue().toString());
@@ -193,13 +172,13 @@ public class AsyncSample
                             CustomDigitalTwin twin = mapper.treeToValue(jsonNode, CustomDigitalTwin.class);
                             System.out.println(
                                 String.format("%s: Deserialized CustomDigitalTwin, \n\tId=%s, \n\tEtag=%s, \n\tModelId=%s, \n\tAverageTemperature=%d, \n\tTemperatureUnit=%s \n",
-                                    dtId_WithResponse_DigitalTwinsAddResponse_String, twin.id(), twin.etag(), twin.metadata().modelId(), twin.averageTemperature(), twin.temperatureUnit()));
+                                    dtId_DigitalTwinsAddResponse_String, twin.id(), twin.etag(), twin.metadata().modelId(), twin.averageTemperature(), twin.temperatureUnit()));
                         } else {
                             // Parse it as BasicDigitalTwin
                             BasicDigitalTwin twin = mapper.treeToValue(jsonNode, BasicDigitalTwin.class);
                             System.out.println(
                                 String.format("%s: Deserialized BasicDigitalTwin, \n\tId=%s, \n\tEtag=%s, \n\tModelId=%s, \n\tCustomProperties=%s \n",
-                                    dtId_WithResponse_DigitalTwinsAddResponse_String, twin.getId(), twin.getEtag(), twin.getMetadata().getModelId(), Arrays.toString(twin.getCustomProperties().entrySet().toArray())));
+                                    dtId_DigitalTwinsAddResponse_String, twin.getId(), twin.getEtag(), twin.getMetadata().getModelId(), Arrays.toString(twin.getCustomProperties().entrySet().toArray())));
                         }
                     }
                 } catch (JsonProcessingException e) {
@@ -207,59 +186,19 @@ public class AsyncSample
                     e.printStackTrace();
                 }
             },
-            throwable -> System.err.println("Failed to create source twin on digital twin with Id " + dtId_WithResponse_DigitalTwinsAddResponse_String + " due to error message " + throwable.getMessage()),
+            throwable -> System.err.println("Failed to create source twin on digital twin with Id " + dtId_DigitalTwinsAddResponse_String + " due to error message " + throwable.getMessage()),
             createTwinsSemaphore::release);
 
-        // Request is Object - input can be strongly typed, and output is Object.
-        String dtId_Object = "dt_Object_" + random.nextInt();
+        // Request is Object.
         String dtId_WithResponse_Object = "dt_WithResponse_Object_" + random.nextInt();
-        CustomDigitalTwin customDigitalTwin = new CustomDigitalTwin()
-            .id(dtId_Object)
+        CustomDigitalTwin customDigitalTwin_Object = new CustomDigitalTwin()
+            .id(dtId_WithResponse_Object)
             .metadata((CustomDigitalTwinMetadata) new CustomDigitalTwinMetadata().modelId(modelId))
             .averageTemperature(random.nextInt(50))
             .temperatureUnit("Celsius");
 
-        // Response is Object
-        Mono<Object> sourceTwinObject = client.createDigitalTwinObject(dtId_Object, customDigitalTwin);
-        sourceTwinObject.subscribe(
-            result -> {
-                System.out.println(String.format("%s: Created twin", dtId_Object));
-
-                try {
-                    // Convert to Jackson's tree model, which is useful to parse json string when you are not sure what the json string looks like
-                    JsonNode jsonNode = mapper.valueToTree(result);
-
-                    // Since the return type is defined as Object, but is dynamically returned as a Map, you can also do the following: (JsonNode approach is cleaner, though)
-                    String createdTwinModelId = ((LinkedHashMap)((LinkedHashMap)result).get("$metadata")).get("$model").toString();
-
-                    // Verify that the returned json string conforms to digital twin format -> has a root element $metadata and child-element $model in it.
-                    if (!jsonNode.path("$metadata").path("$model").isNull()) {
-
-                        // Verify if the returned json string is CustomDigitalTwin
-                        if (jsonNode.path("$metadata").path("$model").textValue().equals(modelId)) {
-                            // Parse it as CustomDigitalTwin
-                            CustomDigitalTwin twin = mapper.treeToValue(jsonNode, CustomDigitalTwin.class);
-                            System.out.println(
-                                String.format("%s: Deserialized CustomDigitalTwin, \n\tId=%s, \n\tEtag=%s, \n\tModelId=%s, \n\tAverageTemperature=%d, \n\tTemperatureUnit=%s \n",
-                                    dtId_Object, twin.id(), twin.etag(), twin.metadata().modelId(), twin.averageTemperature(), twin.temperatureUnit()));
-                        } else {
-                            // Parse it as BasicDigitalTwin
-                            BasicDigitalTwin twin = mapper.treeToValue(jsonNode, BasicDigitalTwin.class);
-                            System.out.println(
-                                String.format("%s: Deserialized BasicDigitalTwin, \n\tId=%s, \n\tEtag=%s, \n\tModelId=%s, \n\tCustomProperties=%s \n",
-                                    dtId_Object, twin.getId(), twin.getEtag(), twin.getMetadata().getModelId(), Arrays.toString(twin.getCustomProperties().entrySet().toArray())));
-                        }
-                    }
-                } catch (JsonProcessingException e) {
-                    System.err.println("Reading response into DigitalTwin failed: ");
-                    e.printStackTrace();
-                }
-            },
-            throwable -> System.err.println("Failed to create source twin on digital twin with Id " + dtId_Object + " due to error message " + throwable.getMessage()),
-            createTwinsSemaphore::release);
-
         // Response is Response<Object>
-        Mono<DigitalTwinsAddResponse> sourceTwinWithResponseObject = client.createDigitalTwinWithResponseDigitalTwinsAddResponseObject(dtId_WithResponse_Object, customDigitalTwin);
+        Mono<DigitalTwinsAddResponse> sourceTwinWithResponseObject = client.createDigitalTwinWithDigitalTwinsAddResponseObject(dtId_WithResponse_Object, customDigitalTwin_Object);
         sourceTwinWithResponseObject.subscribe(
             result -> {
                 System.out.println(String.format("%s: Created twin, Status = %d, Etag = %s",
@@ -267,6 +206,9 @@ public class AsyncSample
                 try {
                     // Convert to Jackson's tree model, which is useful to parse json string when you are not sure what the json string looks like
                     JsonNode jsonNode = mapper.valueToTree(result.getValue());
+
+                    // Since the return type is defined as Object, but is dynamically returned as a Map, you can also do the following: (JsonNode approach is cleaner, though)
+                    String createdTwinModelId = ((LinkedHashMap)((LinkedHashMap)result.getValue()).get("$metadata")).get("$model").toString();
 
                     // Verify that the returned json string conforms to digital twin format -> has a root element $metadata and child-element $model in it.
                     if (!jsonNode.path("$metadata").path("$model").isNull()) {
@@ -295,25 +237,13 @@ public class AsyncSample
             createTwinsSemaphore::release);
 
         // Request is strongly typed object
-        String dtId_Generic = "dt_Generic_" + random.nextInt();
         String dtId_WithResponse_Generic = "dt_WithResponse_Generic_" + random.nextInt();
         CustomDigitalTwin genericDigitalTwin = new CustomDigitalTwin()
-            .id(dtId_Object)
+            .id(dtId_WithResponse_Generic)
             .metadata((CustomDigitalTwinMetadata) new CustomDigitalTwinMetadata().modelId(modelId))
             .averageTemperature(random.nextInt(50))
             .temperatureUnit("Celsius");
 
-        // Response is strongly typed object <T>
-        Mono<CustomDigitalTwin> sourceTwinGeneric = client.createDigitalTwinGeneric(dtId_Generic, genericDigitalTwin, CustomDigitalTwin.class);
-        sourceTwinGeneric.subscribe(
-            result -> {
-                System.out.println(String.format("%s: Created twin", dtId_Generic));
-                System.out.println(
-                    String.format("%s: Deserialized CustomDigitalTwin, \n\tId=%s, \n\tEtag=%s, \n\tModelId=%s, \n\tAverageTemperature=%d, \n\tTemperatureUnit=%s \n",
-                        dtId_Generic, result.id(), result.etag(), result.metadata().modelId(), result.averageTemperature(), result.temperatureUnit()));
-            },
-            throwable -> System.err.println("Failed to create source twin on digital twin with Id " + dtId_Generic + " due to error message " + throwable.getMessage()),
-            createTwinsSemaphore::release);
 
         // Response is strongly typed object Response<T>
         Mono<Response<CustomDigitalTwin>> sourceTwinGenericWithResponse = client.createDigitalTwinWithResponseGeneric(dtId_WithResponse_Generic, genericDigitalTwin, CustomDigitalTwin.class);
@@ -328,7 +258,7 @@ public class AsyncSample
             throwable -> System.err.println("Failed to create source twin on digital twin with Id " + dtId_WithResponse_Generic + " due to error message " + throwable.getMessage()),
             createTwinsSemaphore::release);
 
-        boolean created = createTwinsSemaphore.tryAcquire(8, 20, TimeUnit.SECONDS);
+        boolean created = createTwinsSemaphore.tryAcquire(5, 20, TimeUnit.SECONDS);
         System.out.println("Source twins created: " + created);
 
     }

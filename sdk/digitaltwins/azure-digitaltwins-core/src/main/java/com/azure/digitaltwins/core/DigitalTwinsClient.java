@@ -59,19 +59,6 @@ public final class DigitalTwinsClient {
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be created.
      * @param relationship The application/json relationship to be created.
-     * @return The application/json relationship created.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public String createRelationship(String digitalTwinId, String relationshipId, String relationship) throws JsonProcessingException {
-        return digitalTwinsAsyncClient.createRelationship(digitalTwinId, relationshipId, relationship).block();
-    }
-
-    /**
-     * Creates a relationship on a digital twin.
-     *
-     * @param digitalTwinId The Id of the source digital twin.
-     * @param relationshipId The Id of the relationship to be created.
-     * @param relationship The application/json relationship to be created.
      * @return A REST response containing the application/json relationship created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

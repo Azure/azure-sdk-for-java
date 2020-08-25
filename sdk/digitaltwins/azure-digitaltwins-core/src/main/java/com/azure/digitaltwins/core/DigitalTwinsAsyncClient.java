@@ -88,46 +88,7 @@ public class DigitalTwinsAsyncClient {
         return this.protocolLayer.getHttpPipeline();
     }
 
-    // Input and output as String.
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> createDigitalTwinString(String digitalTwinId, String digitalTwin) {
-        return protocolLayer
-            .getDigitalTwins()
-            .addWithResponseAsync(digitalTwinId, digitalTwin)
-            .flatMap(
-                response -> {
-                    try {
-                        return Mono.just(mapper.writeValueAsString(response.getValue()));
-                    } catch (JsonProcessingException e) {
-                        return Mono.error(e);
-                    }
-                });
-    }
-
-    // Input and output are Object.
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> createDigitalTwinObject(String digitalTwinId, Object digitalTwin) {
-        return protocolLayer
-            .getDigitalTwins()
-            .addWithResponseAsync(digitalTwinId, digitalTwin)
-            .flatMap(
-                response -> Mono.just(response.getValue()));
-    }
-
-    // Input and output are T (Generics).
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<T> createDigitalTwinGeneric(String digitalTwinId, T digitalTwin, Class<T> klazz) {
-        return protocolLayer
-            .getDigitalTwins()
-            .addWithResponseAsync(digitalTwinId, digitalTwin)
-            .flatMap(
-                response -> Mono.just(mapper.convertValue(response.getValue(), klazz)));
-    }
-
     // Input is String and output is Response<String>.
-    // TODO: Autorest team -> the etag returned by the service is present under both Response.getHeaders() and ResponseBase.deserializedHeaders().
-    // TODO: (cont.) Since etag is a well known http header, it should be available via Response.getHeaders(), which it is.
-    // TODO: (cont.) So there shouldn't be a need to define DigitalTwinsAddHeaders explicitly again, and map it to ResponseBase.deserializedHeaders.
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> createDigitalTwinWithResponseString(String digitalTwinId, String digitalTwin) {
         return protocolLayer
@@ -146,7 +107,7 @@ public class DigitalTwinsAsyncClient {
 
     // Input is String and output is Response<String> -> ResponseBase<DigitalTwinsAddHeaders, String>.
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DigitalTwinsAddHeaders, String>> createDigitalTwinWithResponseResponseBaseString(String digitalTwinId, String digitalTwin) {
+    public Mono<ResponseBase<DigitalTwinsAddHeaders, String>> createDigitalTwinWithResponseBaseString(String digitalTwinId, String digitalTwin) {
         return protocolLayer
             .getDigitalTwins()
             .addWithResponseAsync(digitalTwinId, digitalTwin)
@@ -163,7 +124,7 @@ public class DigitalTwinsAsyncClient {
 
     // Input is String and output is Response<String> -> DigitalTwinsAddResponse (json string).
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DigitalTwinsAddResponse> createDigitalTwinWithResponseDigitalTwinAddResponseString(String digitalTwinId, String digitalTwin) {
+    public Mono<DigitalTwinsAddResponse> createDigitalTwinWithDigitalTwinAddResponseString(String digitalTwinId, String digitalTwin) {
         return protocolLayer
             .getDigitalTwins()
             .addWithResponseAsync(digitalTwinId, digitalTwin)
@@ -181,7 +142,7 @@ public class DigitalTwinsAsyncClient {
 
     // Input is Object and output is Response<Object> -> DigitalTwinsAddResponse.
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DigitalTwinsAddResponse> createDigitalTwinWithResponseDigitalTwinsAddResponseObject(String digitalTwinId, Object digitalTwin) {
+    public Mono<DigitalTwinsAddResponse> createDigitalTwinWithDigitalTwinsAddResponseObject(String digitalTwinId, Object digitalTwin) {
         return protocolLayer
             .getDigitalTwins()
             .addWithResponseAsync(digitalTwinId, digitalTwin);
@@ -206,39 +167,6 @@ public class DigitalTwinsAsyncClient {
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be created.
      * @param relationship The application/json relationship to be created.
-     * @return The application/json relationship created.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> createRelationship(String digitalTwinId, String relationshipId, String relationship) {
-        try {
-            return protocolLayer
-                .getDigitalTwins()
-                .addRelationshipWithResponseAsync(digitalTwinId, relationshipId, relationship)
-                // Mono.flatMap: Transform the item emitted by this Mono asynchronously, returning the value emitted by another Mono (possibly changing the value type).
-                // The PL gives us a Mono<DigitalTwinsAddRelationshipResponse>, so we use Mono.flatMap to transform the items emitted
-                // from Mono<DigitalTwinsAddRelationshipResponse> to Mono<String>, asynchronously.
-                .flatMap(
-                    // Mono.just(item) creates a new Mono that emits the specified item.
-                    response -> {
-                        try {
-                            String jsonResponse = mapper.writeValueAsString(response.getValue());
-                            return Mono.just(jsonResponse);
-                        } catch (JsonProcessingException e) {
-                            return Mono.error(e);
-                        }
-                    });
-        } catch (RuntimeException ex) {
-            // TODO: Ensure that exceptions are handled in a reactive way
-            return FluxUtil.monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Creates a relationship on a digital twin.
-     *
-     * @param digitalTwinId The Id of the source digital twin.
-     * @param relationshipId The Id of the relationship to be created.
-     * @param relationship The application/json relationship to be created.
      * @return A REST response containing the application/json relationship created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -251,7 +179,7 @@ public class DigitalTwinsAsyncClient {
                     response -> {
                         try {
                             String jsonResponse = mapper.writeValueAsString(response.getValue());
-                            return Mono.just(new SimpleResponse<>(response, jsonResponse));
+                            return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), jsonResponse));
                         } catch (JsonProcessingException e) {
                             return Mono.error(e);
                         }

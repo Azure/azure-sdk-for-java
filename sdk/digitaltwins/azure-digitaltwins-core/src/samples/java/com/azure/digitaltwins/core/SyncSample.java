@@ -34,7 +34,7 @@ public class SyncSample
             .buildClient();
 
         // Create relationship on a digital twin
-        String createdRelationship = client.createRelationship(sourceDigitalTwinId, relationshipId, relationship);
+        String createdRelationship = client.createRelationshipWithResponse(sourceDigitalTwinId, relationshipId, relationship).getValue();
         System.out.println("Created relationship: " + createdRelationship);
 
         // List all relationships on a digital twin
