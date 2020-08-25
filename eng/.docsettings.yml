@@ -52,6 +52,7 @@ known_presence_issues:
     - ['sdk/core/azure-core-auth', '#2847']
     - ['sdk/core/azure-core-management', '#2847']
     - ['sdk/e2e', '#2847']
+    - ['sdk/eventgrid/azure-messaging-eventgrid', '#2847']
     - ['sdk/eventhubs/microsoft-azure-eventhubs-extensions', '#2847']
     - ['sdk/keyvault/microsoft-azure-keyvault', '#2847']
     - ['sdk/keyvault/microsoft-azure-keyvault-core', '#2847']
