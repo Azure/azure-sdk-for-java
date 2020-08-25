@@ -4,6 +4,7 @@ package com.azure.spring.data.cosmos;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.Test;
@@ -46,9 +47,22 @@ public class CosmosFactoryTestIT {
     public void testNullEndpoint() {
         CosmosAsyncClient ignored = null;
         try {
-            ignored = CosmosFactory.createCosmosAsyncClient(new CosmosClientBuilder()
-                .endpoint(null)
-                .key(cosmosDbKey));
+            ignored = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(null).buildAsyncClient();
+        } catch (Exception e) {
+            assertThat(e instanceof NullPointerException).isTrue();
+        } finally {
+            if (ignored != null) {
+                ignored.close();
+            }
+        }
+
+        ignored = null;
+        try {
+            ignored = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key("").buildAsyncClient();
         } catch (Exception e) {
             assertThat(e instanceof IllegalArgumentException).isTrue();
         } finally {
