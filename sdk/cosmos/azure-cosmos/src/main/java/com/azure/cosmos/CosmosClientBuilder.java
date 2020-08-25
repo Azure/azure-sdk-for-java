@@ -227,7 +227,7 @@ public class CosmosClientBuilder {
      * @return current Builder
      */
     public CosmosClientBuilder endpoint(String endpoint) {
-        this.serviceEndpoint = endpoint;
+        this.serviceEndpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
         return this;
     }
 

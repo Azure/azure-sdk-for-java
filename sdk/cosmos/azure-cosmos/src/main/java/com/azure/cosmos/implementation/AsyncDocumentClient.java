@@ -193,7 +193,7 @@ public interface AsyncDocumentClient {
 
         public AsyncDocumentClient build() {
 
-            ifThrowIllegalArgException(this.serviceEndpoint == null, "cannot buildAsyncClient client without service endpoint");
+            ifThrowIllegalArgException(this.serviceEndpoint == null || StringUtils.isEmpty(this.serviceEndpoint.toString()), "cannot buildAsyncClient client without service endpoint");
             ifThrowIllegalArgException(
                     this.masterKeyOrResourceToken == null && (permissionFeed == null || permissionFeed.isEmpty())
                         && this.credential == null && this.tokenCredential == null,
