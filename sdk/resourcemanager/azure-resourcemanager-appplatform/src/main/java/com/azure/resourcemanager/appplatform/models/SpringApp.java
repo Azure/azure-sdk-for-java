@@ -57,8 +57,7 @@ public interface SpringApp
     Mono<SpringAppDeployment> getActiveDeploymentAsync();
 
     /** @return the entry point of the spring app deployment */
-    <T extends SpringAppDeployment.DefinitionStages.WithCreate<T>>
-    SpringAppDeployments<T> deployments();
+    <T extends SpringAppDeployment.DefinitionStages.WithCreate<T>> SpringAppDeployments<T> deployments();
 
     /** @return the entry point of the spring app service binding */
     SpringAppServiceBindings serviceBindings();

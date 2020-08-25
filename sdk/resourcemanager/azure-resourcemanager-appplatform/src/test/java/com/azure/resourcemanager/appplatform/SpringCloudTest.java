@@ -304,7 +304,7 @@ public class SpringCloudTest extends AppPlatformTest {
                 }
             } catch (Exception e) {
                 System.err.printf("Do request to %s with error %s%n", url, e.getMessage());
-            }  finally {
+            } finally {
                 connection.disconnect();
             }
             SdkContext.sleep(5000);

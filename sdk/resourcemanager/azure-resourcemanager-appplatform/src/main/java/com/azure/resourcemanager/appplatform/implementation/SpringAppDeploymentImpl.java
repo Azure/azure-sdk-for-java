@@ -34,8 +34,7 @@ public class SpringAppDeploymentImpl
         SpringAppDeployment.DefinitionStages.WithCreate<SpringAppDeploymentImpl>,
         SpringAppDeployment.DefinitionStages.WithAttach<SpringAppImpl, SpringAppDeploymentImpl> {
 
-    SpringAppDeploymentImpl(String name, SpringAppImpl parent,
-                            DeploymentResourceInner innerObject) {
+    SpringAppDeploymentImpl(String name, SpringAppImpl parent, DeploymentResourceInner innerObject) {
         super(name, parent, innerObject);
     }
 
@@ -192,7 +191,7 @@ public class SpringAppDeploymentImpl
             ShareFileAsyncClient shareFileAsyncClient = createShareFileAsyncClient(option);
             return shareFileAsyncClient.create(source.length())
                 .flatMap(fileInfo -> shareFileAsyncClient.uploadFromFile(source.getAbsolutePath()))
-                    .then(Mono.empty());
+                .then(Mono.empty());
         } catch (Exception e) {
             return Mono.error(e);
         }
