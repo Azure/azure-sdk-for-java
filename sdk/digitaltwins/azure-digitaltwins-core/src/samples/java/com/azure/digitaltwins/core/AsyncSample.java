@@ -70,7 +70,7 @@ public class AsyncSample
         sourceTwinWithResponseString.subscribe(
             result -> {
                 System.out.println(String.format("%s: Created twin, Status = %d, Etag = %s",
-                    dtId_Response_String, result.getStatusCode(), result.getHeaders().get("etag")));
+                    dtId_Response_String, result.getStatusCode(), result.getHeaders().get("etag").getValue()));
                 try {
                     // Convert to Jackson's tree model, which is useful to parse json string when you are not sure what the json string looks like
                     JsonNode jsonNode = mapper.readTree(result.getValue());
@@ -148,7 +148,7 @@ public class AsyncSample
         // Response is Response<String> -> DigitalTwinsAddResponse (json string)
         String dtId_DigitalTwinsAddResponse_String = "dt_DigitalTwinsAddResponse_String_" + random.nextInt();
         BasicDigitalTwin basicDigitalTwin_DigitalTwinsAddResponse_String = new BasicDigitalTwin()
-            .setId(dtId_ResponseBase_String)
+            .setId(dtId_DigitalTwinsAddResponse_String)
             .setMetadata(metadata)
             .setCustomProperties("AverageTemperature", random.nextInt(50))
             .setCustomProperties("TemperatureUnit", "Celsius");

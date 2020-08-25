@@ -43,8 +43,8 @@ import java.io.IOException;
  */
 @ServiceClient(builder = DigitalTwinsClientBuilder.class)
 public class DigitalTwinsAsyncClient {
-    private final ClientLogger logger = new ClientLogger(DigitalTwinsAsyncClient.class);
-    private final ObjectMapper mapper = new ObjectMapper();
+    private static final ClientLogger logger = new ClientLogger(DigitalTwinsAsyncClient.class);
+    private static final ObjectMapper mapper = new ObjectMapper();
     private final DigitalTwinsServiceVersion serviceVersion;
     private final AzureDigitalTwinsAPIImpl protocolLayer;
 
@@ -53,7 +53,11 @@ public class DigitalTwinsAsyncClient {
         stringModule.addSerializer(new StdSerializer<String>(String.class, false){
             @Override public void serialize(String value, JsonGenerator gen, SerializerProvider provider)
                 throws IOException {
-                gen.writeRawValue(value);
+                if (isJSONValid(value)) {
+                    gen.writeRawValue(value);
+                } else {
+                    gen.writeString(value);
+                }
             }
         });
         JacksonAdapter jacksonAdapter = new JacksonAdapter();
@@ -89,6 +93,8 @@ public class DigitalTwinsAsyncClient {
     }
 
     // Input is String and output is Response<String>.
+    // String etag = result.getHeaders().get("etag").getValue();
+    // String jsonData = result.getValue();
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> createDigitalTwinWithResponseString(String digitalTwinId, String digitalTwin) {
         return protocolLayer
@@ -106,6 +112,8 @@ public class DigitalTwinsAsyncClient {
     }
 
     // Input is String and output is Response<String> -> ResponseBase<DigitalTwinsAddHeaders, String>.
+    // String etag = result.getDeserializedHeaders().getETag();
+    // String jsonData = result.getValue();
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<DigitalTwinsAddHeaders, String>> createDigitalTwinWithResponseBaseString(String digitalTwinId, String digitalTwin) {
         return protocolLayer
@@ -123,6 +131,8 @@ public class DigitalTwinsAsyncClient {
     }
 
     // Input is String and output is Response<String> -> DigitalTwinsAddResponse (json string).
+    // String etag = result.getDeserializedHeaders().getETag();
+    // String jsonData = result.getValue().toString();
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsAddResponse> createDigitalTwinWithDigitalTwinAddResponseString(String digitalTwinId, String digitalTwin) {
         return protocolLayer
@@ -141,6 +151,8 @@ public class DigitalTwinsAsyncClient {
     }
 
     // Input is Object and output is Response<Object> -> DigitalTwinsAddResponse.
+    // String etag = result.getDeserializedHeaders().getETag();
+    // Object jsonData = result.getValue(); [This Object can be cast to a LinkedHashMap].
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsAddResponse> createDigitalTwinWithDigitalTwinsAddResponseObject(String digitalTwinId, Object digitalTwin) {
         return protocolLayer
@@ -203,5 +215,14 @@ public class DigitalTwinsAsyncClient {
         return new PagedFlux<>(
             () -> protocolLayer.getDigitalTwins().listRelationshipsSinglePageAsync(digitalTwinId, relationshipName),
             nextLink -> protocolLayer.getDigitalTwins().listRelationshipsNextSinglePageAsync(nextLink));
+    }
+
+    private static boolean isJSONValid(String jsonInString ) {
+        try {
+            mapper.readTree(jsonInString);
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
     }
 }
