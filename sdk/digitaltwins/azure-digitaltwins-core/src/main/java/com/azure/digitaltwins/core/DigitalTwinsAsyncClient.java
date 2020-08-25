@@ -54,7 +54,7 @@ public class DigitalTwinsAsyncClient {
         stringModule.addSerializer(new StdSerializer<String>(String.class, false) {
             @Override public void serialize(String value, JsonGenerator gen, SerializerProvider provider)
                 throws IOException {
-                if (isJSONValid(value)) {
+                if (isValidJson(value)) {
                     gen.writeRawValue(value);
                 } else {
                     gen.writeString(value);
@@ -232,7 +232,7 @@ public class DigitalTwinsAsyncClient {
             nextLink -> protocolLayer.getDigitalTwins().listRelationshipsNextSinglePageAsync(nextLink));
     }
 
-    private static boolean isJSONValid(String jsonInString ) {
+    private static boolean isValidJson(String jsonInString ) {
         try {
             mapper.readTree(jsonInString);
             return true;
