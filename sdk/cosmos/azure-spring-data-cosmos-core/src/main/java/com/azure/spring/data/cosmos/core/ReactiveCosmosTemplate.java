@@ -349,24 +349,19 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         generateIdIfNullAndAutoGenerationEnabled(objectToSave, domainType);
         final JsonNode originalItem = prepareToPersistAndConvertToItemProperties(objectToSave);
         final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-        CosmosAsyncContainer cosmosAsyncContainer = cosmosAsyncClient.getDatabase(this.databaseName)
-                                                                     .getContainer(containerName);
-        Mono<CosmosItemResponse<JsonNode>> item;
-        if (partitionKey == null) {
-            //  if the partition key is null, SDK will get the partitionKey from the object
-            item = cosmosAsyncContainer.createItem(originalItem, options);
-        } else {
-            item = cosmosAsyncContainer.createItem(originalItem, partitionKey, options);
-        }
-
-        return item.publishOn(Schedulers.parallel())
-                   .onErrorResume(throwable ->
-                       CosmosExceptionUtils.exceptionHandler("Failed to insert item", throwable))
-                   .flatMap(cosmosItemResponse -> {
-                       CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
-                           cosmosItemResponse.getDiagnostics(), null);
-                       return Mono.just(toDomainObject(domainType, cosmosItemResponse.getItem()));
-                   });
+        //  if the partition key is null, SDK will get the partitionKey from the object
+        return cosmosAsyncClient
+            .getDatabase(this.databaseName)
+            .getContainer(containerName)
+            .createItem(originalItem, partitionKey, options)
+            .publishOn(Schedulers.parallel())
+            .onErrorResume(throwable ->
+                CosmosExceptionUtils.exceptionHandler("Failed to insert item", throwable))
+            .flatMap(cosmosItemResponse -> {
+                CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
+                    cosmosItemResponse.getDiagnostics(), null);
+                return Mono.just(toDomainObject(domainType, cosmosItemResponse.getItem()));
+            });
     }
 
     /**

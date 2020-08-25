@@ -189,16 +189,11 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
         final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
 
-        CosmosAsyncContainer cosmosAsyncContainer = cosmosAsyncClient.getDatabase(this.databaseName)
-                                                          .getContainer(containerName);
-        Mono<CosmosItemResponse<JsonNode>> item;
-        if (partitionKey == null) {
-            //  if the partition key is null, SDK will get the partitionKey from the object
-            item = cosmosAsyncContainer.createItem(originalItem, options);
-        } else {
-            item = cosmosAsyncContainer.createItem(originalItem, partitionKey, options);
-        }
-        final CosmosItemResponse<JsonNode> response = item
+        //  if the partition key is null, SDK will get the partitionKey from the object
+        final CosmosItemResponse<JsonNode> response = cosmosAsyncClient
+            .getDatabase(this.databaseName)
+            .getContainer(containerName)
+            .createItem(originalItem, partitionKey, options)
             .publishOn(Schedulers.parallel())
             .doOnNext(cosmosItemResponse ->
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
