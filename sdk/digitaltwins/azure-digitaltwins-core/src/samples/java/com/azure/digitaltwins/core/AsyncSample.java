@@ -107,7 +107,7 @@ public class AsyncSample
         sourceTwinWithResponseString.subscribe(
             result -> {
                 System.out.println(String.format("%s: Created twin, Status = %d, Etag = %s",
-                    dtId_WithResponse_String, result.getStatusCode(), result.getHeaders().get("etag")));
+                    dtId_WithResponse_String, result.getStatusCode(), result.getHeaders().get("etag").getValue()));
                 try {
                     // Convert to Jackson's tree model, which is useful to parse json string when you are not sure what the json string looks like
                     JsonNode jsonNode = mapper.readTree(result.getValue());

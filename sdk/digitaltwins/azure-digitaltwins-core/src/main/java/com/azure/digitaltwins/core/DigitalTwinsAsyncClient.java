@@ -103,9 +103,8 @@ public class DigitalTwinsAsyncClient {
     }
 
     // Input is String and output is Response<String>.
-    // TODO: Autorest team -> the etag returned by the service is present under both Response.getHeaders() and ResponseBase.deserializedHeaders().
-    // TODO: (cont.) Since etag is a well known http header, it should be available via Response.getHeaders(), which it is.
-    // TODO: (cont.) So there shouldn't be a need to define DigitalTwinsAddHeaders explicitly again, and map it to ResponseBase.deserializedHeaders.
+    // String etag = result.getHeaders().get("etag").getValue();
+    // String data = result.getValue();
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> createDigitalTwinWithResponseString(String digitalTwinId, String digitalTwin) throws JsonProcessingException {
         Object payload = mapper.readValue(digitalTwin, Object.class);
@@ -124,6 +123,8 @@ public class DigitalTwinsAsyncClient {
     }
 
     // Input is String and output is Response<String> -> ResponseBase<DigitalTwinsAddHeaders, String>.
+    // String etag = result.getDeserializedHeaders().getETag();
+    // String data = result.getValue();
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<DigitalTwinsAddHeaders, String>> createDigitalTwinWithResponseResponseBaseString(String digitalTwinId, String digitalTwin) throws JsonProcessingException {
         Object payload = mapper.readValue(digitalTwin, Object.class);
@@ -142,6 +143,8 @@ public class DigitalTwinsAsyncClient {
     }
 
     // Input is String and output is Response<String> -> DigitalTwinsAddResponse (json string).
+    // String etag = result.getDeserializedHeaders().getETag();
+    // String data = result.getValue().toString();
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsAddResponse> createDigitalTwinWithResponseDigitalTwinAddResponseString(String digitalTwinId, String digitalTwin) throws JsonProcessingException {
         Object payload = mapper.readValue(digitalTwin, Object.class);
@@ -161,6 +164,8 @@ public class DigitalTwinsAsyncClient {
     }
 
     // Input is Object and output is Response<Object> -> DigitalTwinsAddResponse.
+    // String etag = result.getDeserializedHeaders().getETag();
+    // Object data = result.getValue(); [This Object can be cast to a LinkedHashMap].
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsAddResponse> createDigitalTwinWithResponseDigitalTwinsAddResponseObject(String digitalTwinId, Object digitalTwin) {
         return protocolLayer
