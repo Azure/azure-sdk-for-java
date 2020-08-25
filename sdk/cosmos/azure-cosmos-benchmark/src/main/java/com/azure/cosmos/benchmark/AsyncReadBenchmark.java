@@ -66,18 +66,18 @@ class AsyncReadBenchmark extends AsyncBenchmark<PojoizedJson> {
 
         switch (configuration.getOperationType()) {
             case ReadThroughput:
-                readThroughput(result, baseSubscriber);
+                readThroughput(result, baseSubscriber, i);
                 break;
             case ReadLatency:
-                readLatency(result, baseSubscriber);
+                readLatency(result, baseSubscriber, i);
                 break;
             default:
                 throw new IllegalArgumentException("invalid workload type " + configuration.getOperationType());
         }
     }
 
-    private void readLatency(Mono<PojoizedJson> readItem, BaseSubscriber<PojoizedJson> baseSubscriber) {
-        Mono sparsitySleepMono = sparsityMono();
+    private void readLatency(Mono<PojoizedJson> readItem, BaseSubscriber<PojoizedJson> baseSubscriber, long i) {
+        Mono sparsitySleepMono = sparsityMono(i);
         Mono<PojoizedJson> result = readItem;
         LatencySubscriber<PojoizedJson> latencySubscriber = new LatencySubscriber<>(baseSubscriber);
         if (sparsitySleepMono != null) {
@@ -95,11 +95,16 @@ class AsyncReadBenchmark extends AsyncBenchmark<PojoizedJson> {
         result.subscribeOn(Schedulers.parallel()).subscribe(latencySubscriber);
     }
 
-    private void readThroughput(Mono<PojoizedJson> result, BaseSubscriber<PojoizedJson> baseSubscriber) {
-        Mono sparsitySleepMono = sparsityMono();
-
+    private void readThroughput(Mono<PojoizedJson> readItem, BaseSubscriber<PojoizedJson> baseSubscriber, long i) {
+        Mono sparsitySleepMono = sparsityMono(i);
+        Mono<PojoizedJson> result = readItem;
         if (sparsitySleepMono != null) {
-            result = Mono.from(Flux.concat(sparsitySleepMono, result));
+            result = sparsitySleepMono.flux().flatMap(
+                null,
+                null,
+                () -> {
+                    return readItem;
+                }).single();
         }
 
         result.subscribeOn(Schedulers.parallel()).subscribe(baseSubscriber);

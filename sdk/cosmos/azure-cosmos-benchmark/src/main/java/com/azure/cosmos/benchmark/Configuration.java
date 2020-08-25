@@ -143,6 +143,9 @@ public class Configuration {
         + "PT20.345S (20.345 seconds), PT15M (15 minutes)", converter = DurationConverter.class)
     private Duration sparsityWaitTime = null;
 
+    @Parameter(names = "-skipWarmUpOperations", description = "the number of operations to be skipped before starting perf numbers.")
+    private int skipWarmUpOperations = 0;
+
     @Parameter(names = "-useSync", description = "Uses Sync API")
     private boolean useSync = false;
 
@@ -226,6 +229,10 @@ public class Configuration {
             }
             return ret;
         }
+    }
+
+    public int getSkipWarmUpOperations() {
+        return skipWarmUpOperations;
     }
 
     public Duration getSparsityWaitTime() {
