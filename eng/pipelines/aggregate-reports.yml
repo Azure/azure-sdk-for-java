@@ -65,7 +65,7 @@ jobs:
     - task: Maven@3
       displayName: 'Generate Jacoco Code Coverage'
       inputs:
-        mavenPomFile: eng/jacoco-test-coverage/pom.xml
+        mavenPomFile: ClientAggregatePom.xml
         options: '$(DefaultOptions)'
         mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
         javaHomeOption: 'JDKVersion'
@@ -73,6 +73,18 @@ jobs:
         jdkArchitectureOption: 'x64'
         publishJUnitResults: false
         goals: 'jacoco:prepare-agent jacoco:instrument surefire:test jacoco:restore-instrumented-classes jacoco:report'
+
+    - task: Maven@3
+      diplayName: 'Create Jacoco Aggregate Report'
+      inputs:
+        mavenPomFile: eng/jacoco-test-coverage/pom.xml
+        options: '$(DefaultOptions)'
+        mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: $(JavaBuildVersion)
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: false
+        goals: 'jacoco:report-aggregate'
 
     - task: PublishTestResults@2
       condition: succeededOrFailed()
