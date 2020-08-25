@@ -75,7 +75,7 @@ jobs:
         goals: 'jacoco:prepare-agent jacoco:instrument surefire:test jacoco:restore-instrumented-classes jacoco:report'
 
     - task: Maven@3
-      diplayName: 'Create Jacoco Aggregate Report'
+      displayName: 'Create Jacoco Aggregate Report'
       inputs:
         mavenPomFile: eng/jacoco-test-coverage/pom.xml
         options: '$(DefaultOptions)'
