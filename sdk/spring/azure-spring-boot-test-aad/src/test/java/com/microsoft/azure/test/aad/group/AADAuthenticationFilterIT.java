@@ -7,7 +7,6 @@ import com.microsoft.azure.spring.autoconfigure.aad.AADAuthenticationFilter;
 import com.microsoft.azure.test.utils.AppRunner;
 import com.microsoft.azure.test.oauth.OAuthResponse;
 import com.microsoft.azure.test.oauth.OAuthUtils;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +43,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.springframework.http.HttpHeaders.COOKIE;
 import static org.springframework.http.HttpHeaders.SET_COOKIE;
 
-@Ignore
 public class AADAuthenticationFilterIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADAuthenticationFilterIT.class);
