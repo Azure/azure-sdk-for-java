@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.microsoft.azure.messaging.servicebus.perf.core;
+package com.microsoft.azure.servicebus.perf.core;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -42,14 +42,15 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
         super(options);
         String connectionString = System.getenv(AZURE_SERVICE_BUS_CONNECTION_STRING);
         if (CoreUtils.isNullOrEmpty(connectionString)) {
-            throw new IllegalArgumentException("Environment variable " + AZURE_SERVICE_BUS_CONNECTION_STRING
-                + " must be set");
+            logger.logExceptionAsError(new IllegalArgumentException("Environment variable "
+                + AZURE_SERVICE_BUS_CONNECTION_STRING + " must be set."));
         }
         logger.verbose("connectionString : {}", connectionString);
 
         String queueName = System.getenv(AZURE_SERVICEBUS_QUEUE_NAME);
         if (CoreUtils.isNullOrEmpty(queueName)) {
-            throw new IllegalArgumentException("Environment variable " + AZURE_SERVICEBUS_QUEUE_NAME + " must be set");
+            logger.logExceptionAsError(new IllegalArgumentException("Environment variable "
+                + AZURE_SERVICEBUS_QUEUE_NAME + " must be set."));
         }
         logger.verbose("queueName : {}", queueName);
 

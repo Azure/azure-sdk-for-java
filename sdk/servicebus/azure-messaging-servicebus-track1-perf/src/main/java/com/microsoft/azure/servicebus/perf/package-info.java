@@ -4,4 +4,4 @@
 /**
  * Package containing classes to perform operations on Azure Service Bus.
  */
-package com.microsoft.azure.messaging.servicebus.perf;
+package com.microsoft.azure.servicebus.perf;

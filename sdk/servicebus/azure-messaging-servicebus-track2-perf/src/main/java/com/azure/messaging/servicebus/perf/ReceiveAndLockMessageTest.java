@@ -40,7 +40,7 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
         return Mono.defer(() -> {
             int total = options.getParallel() * options.getMessagesToSend() * TOTAL_MESSAGE_MULTIPLIER;
             List<ServiceBusMessage> messages = new ArrayList<>();
-            for (int i = 0; i< total; ++i) {
+            for (int i = 0; i < total; ++i) {
                 ServiceBusMessage message =  new ServiceBusMessage(CONTENTS.getBytes(Charset.defaultCharset()));
                 message.setMessageId(UUID.randomUUID().toString());
                 messages.add(message);
@@ -53,8 +53,15 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
     public void run() {
         IterableStream<ServiceBusReceivedMessageContext> messages = receiver
             .receiveMessages(options.getMessagesToReceive());
+
+        int count = 0;
         for (ServiceBusReceivedMessageContext messageContext : messages) {
             receiver.complete(messageContext.getMessage().getLockToken());
+            ++count;
+        }
+
+        if (count <= 0) {
+            throw logger.logExceptionAsWarning(new RuntimeException("Error. Should have received some messages."));
         }
     }
 
@@ -63,10 +70,13 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
         return receiverAsync
             .receiveMessages()
             .take(options.getMessagesToReceive())
-            .map(messageContext -> {
-                receiverAsync.complete(messageContext.getMessage().getLockToken()).block();
-                return messageContext;
-            })
-            .then();
+            .map(messageContext -> receiverAsync.complete(messageContext.getMessage().getLockToken()))
+            .count()
+            .handle((aLong, sink) -> {
+                if (aLong <= 0) {
+                    sink.error(new RuntimeException("Error. Should have received some messages."));
+                }
+                sink.complete();
+            });
     }
 }

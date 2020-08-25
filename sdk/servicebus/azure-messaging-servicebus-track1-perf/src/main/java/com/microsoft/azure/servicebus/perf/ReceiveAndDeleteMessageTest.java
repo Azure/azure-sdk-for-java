@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.microsoft.azure.messaging.servicebus.perf;
+package com.microsoft.azure.servicebus.perf;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.microsoft.azure.messaging.servicebus.perf.core.ServiceBusStressOptions;
-import com.microsoft.azure.messaging.servicebus.perf.core.ServiceTest;
+import com.microsoft.azure.servicebus.perf.core.ServiceBusStressOptions;
+import com.microsoft.azure.servicebus.perf.core.ServiceTest;
 import com.microsoft.azure.servicebus.IMessage;
 import com.microsoft.azure.servicebus.Message;
 import com.microsoft.azure.servicebus.ReceiveMode;
@@ -40,18 +40,16 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
     }
 
     private Mono<Void> sendMessage() {
-        return Mono.fromCallable(() -> {
-            int total = options.getParallel() * options.getMessagesToSend() * TOTAL_MESSAGE_MULTIPLIER;
+        int total = options.getParallel() * options.getMessagesToSend() * TOTAL_MESSAGE_MULTIPLIER;
 
-            List<Message> messages = new ArrayList<>();
-            for (int i = 0; i < total; ++i) {
-                Message message = new Message(CONTENTS);
-                message.setMessageId(UUID.randomUUID().toString());
-                messages.add(message);
-            }
+        List<Message> messages = new ArrayList<>();
+        for (int i = 0; i < total; ++i) {
+            Message message = new Message(CONTENTS);
+            message.setMessageId(UUID.randomUUID().toString());
+            messages.add(message);
+        }
 
-            return sender.sendBatchAsync(messages).get();
-        });
+        return Mono.fromFuture(sender.sendBatchAsync(messages));
     }
 
     @Override
@@ -63,7 +61,7 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
 
     @Override
     public void run() {
-        Collection<IMessage> messages = null;
+        Collection<IMessage> messages;
         try {
             messages = receiver.receiveBatch(options.getMessagesToReceive());
             if (messages.size() <= 0) {

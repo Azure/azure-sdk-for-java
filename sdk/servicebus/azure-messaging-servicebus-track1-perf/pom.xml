@@ -51,7 +51,7 @@
               <archive>
                 <manifest>
                   <mainClass>
-                    com.microsoft.azure.messaging.servicebus.perf.App
+                    com.microsoft.azure.servicebus.perf.App
                   </mainClass>
                 </manifest>
               </archive>

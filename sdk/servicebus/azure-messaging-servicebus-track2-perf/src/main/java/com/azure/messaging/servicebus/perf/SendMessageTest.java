@@ -37,6 +37,6 @@ public class SendMessageTest extends ServiceTest<ServiceBusStressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        return senderAsync.sendMessage(message).then();
+        return senderAsync.sendMessage(message);
     }
 }

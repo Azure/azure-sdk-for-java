@@ -39,8 +39,8 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
         return Mono.defer(() -> {
             int total = options.getParallel() * options.getMessagesToSend() * TOTAL_MESSAGE_MULTIPLIER;
             List<ServiceBusMessage> messages = new ArrayList<>();
-            for (int i = 0; i< total; ++i) {
-                ServiceBusMessage message =  new ServiceBusMessage(CONTENTS.getBytes(Charset.defaultCharset()));
+            for (int i = 0; i < total; ++i) {
+                ServiceBusMessage message = new ServiceBusMessage(CONTENTS.getBytes(Charset.defaultCharset()));
                 message.setMessageId(UUID.randomUUID().toString());
                 messages.add(message);
             }
@@ -61,10 +61,13 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
     public Mono<Void> runAsync() {
         return receiverAsync
             .receiveMessages()
-            .map(messageContext -> {
-                return messageContext;
-            })
             .take(options.getMessagesToReceive())
-            .then();
+            .count()
+            .handle((aLong, sink) -> {
+                if (aLong <= 0) {
+                    sink.error(new RuntimeException("Error. Should have received some messages."));
+                }
+                sink.complete();
+            });
     }
 }

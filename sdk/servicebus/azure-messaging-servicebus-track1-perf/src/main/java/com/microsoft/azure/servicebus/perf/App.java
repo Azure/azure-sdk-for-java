@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.microsoft.azure.messaging.servicebus.perf;
+package com.microsoft.azure.servicebus.perf;
 
 import com.azure.perf.test.core.PerfStressProgram;
 

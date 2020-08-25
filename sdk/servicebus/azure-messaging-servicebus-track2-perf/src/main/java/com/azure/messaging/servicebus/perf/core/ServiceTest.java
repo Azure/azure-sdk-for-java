@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusReceiverAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusReceiverClient;
@@ -23,6 +24,7 @@ import java.time.Duration;
  * @param <TOptions> for performance configuration.
  */
 public abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
+    private final ClientLogger logger = new ClientLogger(ServiceTest.class);
     protected static final Duration TIMEOUT = Duration.ofSeconds(60);
     protected static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions().setTryTimeout(TIMEOUT);
     protected static final String CONTENTS = "Track 2 AMQP message - Perf Test";
@@ -48,13 +50,14 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
         super(options);
         String connectionString = System.getenv(AZURE_SERVICE_BUS_CONNECTION_STRING);
         if (CoreUtils.isNullOrEmpty(connectionString)) {
-            throw new IllegalArgumentException("Environment variable " + AZURE_SERVICE_BUS_CONNECTION_STRING
-                + " must be set");
+            logger.logExceptionAsError(new IllegalArgumentException("Environment variable "
+                + AZURE_SERVICE_BUS_CONNECTION_STRING + " must be set."));
         }
 
         String queueName = System.getenv(AZURE_SERVICEBUS_QUEUE_NAME);
         if (CoreUtils.isNullOrEmpty(queueName)) {
-            throw new IllegalArgumentException("Environment variable " + AZURE_SERVICEBUS_QUEUE_NAME + " must be set");
+            logger.logExceptionAsError(new IllegalArgumentException("Environment variable "
+                + AZURE_SERVICEBUS_QUEUE_NAME + " must be set."));
         }
 
         // Setup the service client

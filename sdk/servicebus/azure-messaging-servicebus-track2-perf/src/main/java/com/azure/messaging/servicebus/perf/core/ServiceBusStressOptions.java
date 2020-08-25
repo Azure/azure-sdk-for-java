@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder(alphabetic = true)
 public class ServiceBusStressOptions extends PerfStressOptions {
 
-    @Parameter(names = { "-mr", "--maxReceive" }, description = "MaxrReceive messages")
+    @Parameter(names = { "-mr", "--maxReceive" }, description = "MaxReceive messages")
     private int messagesToReceive = 10;
 
     @Parameter(names = { "-ms", "--messageSend" }, description = "Messages to send")
