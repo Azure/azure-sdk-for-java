@@ -243,6 +243,25 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 .verifyComplete());
     }
 
+//    /**
+//     * Verifies that an InvalidDocumentBatch exception is returned for input documents with too many documents.
+//     */
+//    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+//    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+//    public void detectLanguageBatchTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+//        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+//        tooManyDocumentsRunner(inputs ->
+//            StepVerifier.create(client.detectLanguageBatch(inputs, null, null))
+//                .verifyErrorSatisfies(ex -> {
+//                    HttpResponseException httpResponseException = (HttpResponseException) ex;
+//                    assertEquals(400, httpResponseException.getResponse().getStatusCode());
+//                    TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
+//                    // TODO: TextAnalyticsError has null values for all properties,
+//                    //       https://github.com/Azure/azure-sdk-for-java/issues/13960
+//                    // assertEquals(InvalidDocumentBatch, textAnalyticsError.getErrorCode());
+//                }));
+//    }
+
     // Entities
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
@@ -365,6 +384,22 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 .verifyComplete());
     }
 
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeEntitiesBatchTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        tooManyDocumentsRunner(inputs ->
+            StepVerifier.create(client.recognizeEntitiesBatch(inputs, null, null))
+                .verifyErrorSatisfies(ex -> {
+                    HttpResponseException httpResponseException = (HttpResponseException) ex;
+                    assertEquals(400, httpResponseException.getResponse().getStatusCode());
+                    TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
+                    // TODO: TextAnalyticsError has null values for all properties,
+                    //       https://github.com/Azure/azure-sdk-for-java/issues/13960
+                    // assertEquals(InvalidDocumentBatch, textAnalyticsError.getErrorCode());
+                }));
+    }
+
     // Recognize Personally Identifiable Information entity
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -474,6 +509,22 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 .verifyComplete());
     }
 
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizePiiEntitiesBatchTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        tooManyDocumentsRunner(inputs ->
+            StepVerifier.create(client.recognizePiiEntitiesBatch(inputs, null, null))
+                .verifyErrorSatisfies(ex -> {
+                    HttpResponseException httpResponseException = (HttpResponseException) ex;
+                    assertEquals(400, httpResponseException.getResponse().getStatusCode());
+                    TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
+                    // TODO: TextAnalyticsError has null values for all properties,
+                    //       https://github.com/Azure/azure-sdk-for-java/issues/13960
+                    // assertEquals(InvalidDocumentBatch, textAnalyticsError.getErrorCode());
+                }));
+    }
+
     // Linked Entities
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
@@ -579,6 +630,22 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.recognizeLinkedEntitiesBatch(inputs, null, options))
                 .assertNext(response -> validateLinkedEntitiesResultCollection(true, getExpectedBatchLinkedEntities(), response))
                 .verifyComplete());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeLinkedEntitiesBatchTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        tooManyDocumentsRunner(inputs ->
+            StepVerifier.create(client.recognizeLinkedEntitiesBatch(inputs, null, null))
+                .verifyErrorSatisfies(ex -> {
+                    HttpResponseException httpResponseException = (HttpResponseException) ex;
+                    assertEquals(400, httpResponseException.getResponse().getStatusCode());
+                    TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
+                    // TODO: TextAnalyticsError has null values for all properties,
+                    //       https://github.com/Azure/azure-sdk-for-java/issues/13960
+                    // assertEquals(InvalidDocumentBatch, textAnalyticsError.getErrorCode());
+                }));
     }
 
     // Key Phrases
@@ -719,6 +786,22 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 ))
                 .verifyComplete()
         );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void extractKeyPhrasesBatchTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        tooManyDocumentsRunner(inputs ->
+            StepVerifier.create(client.extractKeyPhrasesBatch(inputs, null, null))
+                .verifyErrorSatisfies(ex -> {
+                    HttpResponseException httpResponseException = (HttpResponseException) ex;
+                    assertEquals(400, httpResponseException.getResponse().getStatusCode());
+                    TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
+                    // TODO: TextAnalyticsError has null values for all properties,
+                    //       https://github.com/Azure/azure-sdk-for-java/issues/13960
+                    // assertEquals(InvalidDocumentBatch, textAnalyticsError.getErrorCode());
+                }));
     }
 
     // Sentiment
@@ -868,5 +951,24 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.analyzeSentimentBatchWithResponse(inputs, options))
                 .assertNext(response -> validateSentimentResultCollectionWithResponse(true, getExpectedBatchTextSentiment(), 200, response))
                 .verifyComplete());
+    }
+
+    /**
+     * Verifies that an InvalidDocumentBatch exception is returned for input documents with too many documents.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeSentimentBatchTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        tooManyDocumentsRunner(inputs ->
+            StepVerifier.create(client.analyzeSentimentBatch(inputs, null, null))
+                .verifyErrorSatisfies(ex -> {
+                    HttpResponseException httpResponseException = (HttpResponseException) ex;
+                    assertEquals(400, httpResponseException.getResponse().getStatusCode());
+                    TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
+                    // TODO: TextAnalyticsError has null values for all properties,
+                    //       https://github.com/Azure/azure-sdk-for-java/issues/13960
+                    // assertEquals(InvalidDocumentBatch, textAnalyticsError.getErrorCode());
+                }));
     }
 }

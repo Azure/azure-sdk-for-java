@@ -319,14 +319,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept(CATEGORIZED_ENTITY_INPUTS, new TextAnalyticsRequestOptions().setIncludeStatistics(true));
     }
 
-    void recognizeEntitiesTooManyDocumentsRunner(
-        Consumer<List<String>> testRunner) {
-        final String documentInput = CATEGORIZED_ENTITY_INPUTS.get(0);
-        // max num of document size is 5
-        testRunner.accept(
-            Arrays.asList(documentInput, documentInput, documentInput, documentInput, documentInput, documentInput));
-    }
-
     // Personally Identifiable Information Entity runner
     void recognizePiiSingleDocumentRunner(Consumer<String> testRunner) {
         testRunner.accept(PII_ENTITY_INPUTS.get(0));
@@ -366,13 +358,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept(PII_ENTITY_INPUTS, new TextAnalyticsRequestOptions().setIncludeStatistics(true));
     }
 
-    void recognizePiiEntitiesTooManyDocumentsRunner(Consumer<List<String>> testRunner) {
-        final String documentInput = PII_ENTITY_INPUTS.get(0);
-        // max num of document size is 5
-        testRunner.accept(
-            Arrays.asList(documentInput, documentInput, documentInput, documentInput, documentInput, documentInput));
-    }
-
     // Linked Entity runner
     void recognizeLinkedEntitiesForSingleTextInputRunner(Consumer<String> testRunner) {
         testRunner.accept(LINKED_ENTITY_INPUTS.get(0));
@@ -404,14 +389,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     void recognizeBatchLinkedEntityDuplicateIdRunner(Consumer<List<TextDocumentInput>> testRunner) {
         testRunner.accept(getDuplicateTextDocumentInputs());
-    }
-
-    void recognizeLinkedEntitiesTooManyDocumentsRunner(
-        Consumer<List<String>> testRunner) {
-        final String documentInput = LINKED_ENTITY_INPUTS.get(0);
-        // max num of document size is 5
-        testRunner.accept(
-            Arrays.asList(documentInput, documentInput, documentInput, documentInput, documentInput, documentInput));
     }
 
     // Key Phrases runner
@@ -498,6 +475,15 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     void textAnalyticsInputEmptyIdRunner(Consumer<List<TextDocumentInput>> testRunner) {
         testRunner.accept(Arrays.asList(new TextDocumentInput("", CATEGORIZED_ENTITY_INPUTS.get(0))));
+    }
+
+    void tooManyDocumentsRunner(
+        Consumer<List<String>> testRunner) {
+        final String documentInput = CATEGORIZED_ENTITY_INPUTS.get(0);
+        // max num of document size is 10
+        testRunner.accept(Arrays.asList(
+            documentInput, documentInput, documentInput, documentInput, documentInput, documentInput,
+            documentInput, documentInput, documentInput, documentInput, documentInput, documentInput));
     }
 
     String getEndpoint() {
