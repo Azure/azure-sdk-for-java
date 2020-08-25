@@ -1369,6 +1369,24 @@ public interface AsyncDocumentClient {
         Class<T> klass);
 
     /**
+     * Read all documents of a certain logical partition.
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link Flux} will contain one or several feed response of the obtained documents.
+     * In case of failure the {@link Flux} will error.
+     *
+     * @param collectionLink the link to the parent document collection.
+     * @param partitionKey   the logical partition key.
+     * @param options        the query request options.
+     * @return a {@link Flux} containing one or several feed response pages of the obtained documents or an error.
+     */
+    Flux<FeedResponse<Document>> readAllDocuments(
+        String collectionLink,
+        PartitionKey partitionKey,
+        CosmosQueryRequestOptions options
+    );
+
+    /**
      * Close this {@link AsyncDocumentClient} instance and cleans up the resources.
      */
     void close();

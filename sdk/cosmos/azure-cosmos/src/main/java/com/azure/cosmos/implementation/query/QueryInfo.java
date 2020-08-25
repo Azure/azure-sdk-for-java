@@ -17,6 +17,8 @@ import java.util.Map;
  * Used internally to encapsulates a query's information in the Azure Cosmos DB database service.
  */
 public final class QueryInfo extends JsonSerializable {
+    public static final QueryInfo EMPTY = new QueryInfo();
+
     private static final String HAS_SELECT_VALUE = "hasSelectValue";
     private Integer top;
     private List<SortOrder> orderBy;

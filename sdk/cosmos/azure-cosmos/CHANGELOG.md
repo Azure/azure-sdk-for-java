@@ -1,7 +1,9 @@
 # Release History
 
-## 4.3.2-beta.3 (Unreleased)
-
+## 4.4.0-beta.1 (Unreleased)
+* Added new API to efficiently load many documents (via list of pk/id pairs or all documents for a set ok pk values)
+* Enabled query metrics by default
+* Fixed NPE in GatewayAddressCache
 
 ## 4.3.2-beta.2 (2020-08-17)
 ### Key Bug Fixes
