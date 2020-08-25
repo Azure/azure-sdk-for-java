@@ -3,14 +3,20 @@
 
 package com.azure.perf.test.core;
 
+import reactor.core.publisher.Flux;
+
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.SequenceInputStream;
 import java.nio.ByteBuffer;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import reactor.core.publisher.Flux;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 /**
  * Utility class to help with data creation for perf testing.
@@ -19,14 +25,12 @@ public class TestDataCreationHelper {
     private static final byte[] RANDOM_BYTES;
     private static final ByteBuffer RANDOM_BYTE_BUFFER;
     private static final int SIZE = (1024 * 1024 * 1024) + 1;
-    private static final byte[] RANDOM_STREAM_BYTES;
 
     static {
+        Random random = new Random();
         RANDOM_BYTES = new byte[1024 * 1024];
-        (new Random(0)).nextBytes(TestDataCreationHelper.RANDOM_BYTES);
+        random.nextBytes(RANDOM_BYTES);
         RANDOM_BYTE_BUFFER = ByteBuffer.wrap(TestDataCreationHelper.RANDOM_BYTES).asReadOnlyBuffer();
-        RANDOM_STREAM_BYTES = new byte[SIZE];
-        (new Random(0)).nextBytes(RANDOM_STREAM_BYTES);
     }
 
     /**
@@ -42,6 +46,7 @@ public class TestDataCreationHelper {
 
         int quotient = (int) size / remaining;
         int remainder = (int) size % remaining;
+
 
         return Flux.range(0, quotient)
             .map(i -> byteBuffer.duplicate())
@@ -69,9 +74,7 @@ public class TestDataCreationHelper {
             throw new IllegalArgumentException("size must be <= " + SIZE);
         }
 
-        // Workaround for Azure/azure-sdk-for-java#6020
-        // return CircularStream.create(_randomBytes, size);
-        return new ByteArrayInputStream(RANDOM_STREAM_BYTES, 0, (int) size);
+        return createCircularInputStream(RANDOM_BYTES, size);
     }
 
     /**
@@ -84,11 +87,23 @@ public class TestDataCreationHelper {
         int remaining = byteArray.length;
         int quotient = (int) size / remaining;
         int remainder = (int) size % remaining;
-        List<ByteArrayInputStream> list = Flux.range(0, quotient)
-            .map(i -> new ByteArrayInputStream(byteArray))
-            .concatWithValues(new ByteArrayInputStream(byteArray, 0, remainder))
-            .collectList()
-            .block();
+
+        List<InputStream> list = Stream.concat(IntStream.range(0, quotient)
+                .mapToObj(i -> new ByteArrayInputStream(byteArray)),
+            Stream.of(new ByteArrayInputStream(byteArray, 0, remainder)))
+            .collect(Collectors.toList());
+
         return new SequenceInputStream(Collections.enumeration(list));
+    }
+
+    public static void writeBytesToOutputStream(OutputStream outputStream, long size) throws IOException {
+        int quotient = (int) size / RANDOM_BYTES.length;
+        int remainder = (int) size % RANDOM_BYTES.length;
+
+        for (int i = 0; i < quotient; i++) {
+            outputStream.write(RANDOM_BYTES);
+        }
+
+        outputStream.write(RANDOM_BYTES, 0, remainder);
     }
 }

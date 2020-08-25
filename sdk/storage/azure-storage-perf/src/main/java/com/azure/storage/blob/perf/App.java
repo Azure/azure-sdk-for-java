@@ -17,21 +17,13 @@ import com.azure.perf.test.core.PerfStressProgram;
  */
 public class App {
     public static void main(String[] args) {
-        Class<?>[] testClasses;
-
-        try {
-            testClasses = new Class<?>[]{
-                Class.forName("com.azure.storage.blob.perf.DownloadBlobTest"),
-                Class.forName("com.azure.storage.blob.perf.ListBlobsTest"),
-                Class.forName("com.azure.storage.blob.perf.UploadBlockBlobTest"),
-                Class.forName("com.azure.storage.blob.perf.UploadFromFileTest"),
-                Class.forName("com.azure.storage.blob.perf.UploadOutputStreamTest"),
-                Class.forName("com.azure.storage.blob.perf.UploadBlobTest"),
-            };
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        PerfStressProgram.run(testClasses, args);
+        PerfStressProgram.run(new Class<?>[]{
+            DownloadBlobTest.class,
+            ListBlobsTest.class,
+            UploadBlobTest.class,
+            UploadBlockBlobTest.class,
+            UploadFromFileTest.class,
+            UploadOutputStreamTest.class
+        }, args);
     }
 }
