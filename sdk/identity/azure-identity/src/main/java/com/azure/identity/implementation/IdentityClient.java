@@ -651,14 +651,19 @@ public class IdentityClient {
                 String browserUri;
                 try {
                     redirectUri = new URI(String.format("http://localhost:%s", port));
-                    browserUri =
-                        String.format("%s/oauth2/authorize?response_type=code&response_mode=query&prompt"
-                                + "=select_account&client_id=%s&redirect_uri=%s&state=%s&scope=%s",
-                            authorityUrl,
-                            clientId,
-                            redirectUri.toString(),
-                            UUID.randomUUID(),
-                            String.join(" ", request.getScopes()));
+                    StringBuilder endpont = new StringBuilder(authorityUrl);
+                    endpont.append("/oauth2/");
+                    if (!isAdfsTenant(tenantId)) {
+                        endpont.append("v2.0/");
+                    }
+                    endpont.append(String.format("authorize?response_type=code&response_mode=query&prompt"
+                         + "=select_account&client_id=%s&redirect_uri=%s&state=%s&scope=%s",
+                        clientId,
+                        redirectUri.toString(),
+                        UUID.randomUUID(),
+                        String.join(" ", request.getScopes())));
+
+                    browserUri = endpont.toString();
                 } catch (URISyntaxException e) {
                     return server.dispose().then(Mono.error(e));
                 }
