@@ -41,3 +41,5 @@ jobs:
           AAD_MULTI_TENANT_CLIENT_SECRET: $(java-spring-test-aad-multi-tenant-client-secret)
           AAD_SINGLE_TENANT_CLIENT_ID: $(java-spring-test-aad-single-tenant-id)
           AAD_SINGLE_TENANT_CLIENT_SECRET: $(java-spring-test-aad-single-tenant-secret)
+          AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE: $(java-spring-test-aad-single-tenant-id-with-role)
+          AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE: $(java-spring-test-aad-single-tenant-secret-with-role)
