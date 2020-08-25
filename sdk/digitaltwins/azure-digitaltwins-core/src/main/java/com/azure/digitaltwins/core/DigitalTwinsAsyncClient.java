@@ -52,7 +52,7 @@ public class DigitalTwinsAsyncClient {
     DigitalTwinsAsyncClient(HttpPipeline pipeline, DigitalTwinsServiceVersion serviceVersion, String host) {
         final SimpleModule stringModule = new SimpleModule("String Serializer");
 
-        StdSerializer<String> adtStringSerializer = new StdSerializer<>(String.class, false) {
+        StdSerializer<String> adtStringSerializer = new StdSerializer<String>(String.class, false) {
             @Override
             public void serialize(String s, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
                 if (isValidJson(s)) {
