@@ -65,6 +65,25 @@ Licensed under the MIT License.
       </exclusions>
     </dependency>
 
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
+
+      <!-- Due to a bug in RNTBD (https://github.com/Azure/azure-sdk-for-java/issues/7829),
+           transitive dependency on netty-tcnative* cause problem.
+
+           Excluding transitive dependencies and forcing azure-core to be imported from azure-cosmos.
+           We can remove this once the bug is fixed.
+      -->
+      <exclusions>
+        <exclusion>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-core</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
     <!-- Added this provided dependency to include necessary annotations used by "reactor-core".
          Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
          which is used in @Nullable annotation in reactor core classes.
