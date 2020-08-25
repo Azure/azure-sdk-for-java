@@ -60,13 +60,13 @@ public final class EventGridSharedAccessSignatureCredential {
 
     /**
      * Create an instance of this object to authenticate calls to the EventGrid service.
-     * @param accessToken the shared access signature to use.
+     * @param accessSignature the shared access signature to use.
      */
-    public EventGridSharedAccessSignatureCredential(String accessToken) {
-        if (CoreUtils.isNullOrEmpty(accessToken)) {
-            throw new IllegalArgumentException("the access token cannot be null or empty");
+    public EventGridSharedAccessSignatureCredential(String accessSignature) {
+        if (CoreUtils.isNullOrEmpty(accessSignature)) {
+            throw new IllegalArgumentException("the access signature cannot be null or empty");
         }
-        this.accessToken = accessToken;
+        this.accessToken = accessSignature;
     }
 
     /**

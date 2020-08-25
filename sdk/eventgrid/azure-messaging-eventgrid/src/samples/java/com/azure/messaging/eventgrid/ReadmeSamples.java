@@ -3,6 +3,7 @@ package com.azure.messaging.eventgrid;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.messaging.eventgrid.systemevents.SubscriptionValidationEventData;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,10 +16,10 @@ import java.util.List;
  */
 public class ReadmeSamples {
 
-    private String endpoint = "endpoint";
-    private String key = "key";
-    private EventGridPublisherClient egClient = new EventGridPublisherClientBuilder().buildClient();
-    private String jsonData = "Json encoded event";
+    private final String endpoint = "endpoint";
+    private final String key = "key";
+    private final EventGridPublisherClient egClient = new EventGridPublisherClientBuilder().buildClient();
+    private final String jsonData = "Json encoded event";
 
     public void createPublisherClient() {
         EventGridPublisherClient egClient = new EventGridPublisherClientBuilder()
@@ -94,6 +95,13 @@ public class ReadmeSamples {
                 System.out.println(stringData); // "Example Data"
             }
         }
+    }
+
+    public void createSharedAccessSignature() {
+        OffsetDateTime expiration = OffsetDateTime.now().plusMinutes(20);
+        String credentialString = EventGridSharedAccessSignatureCredential
+            .createSharedAccessSignature(endpoint, expiration, new AzureKeyCredential(key));
+        EventGridSharedAccessSignatureCredential signature = new EventGridSharedAccessSignatureCredential(credentialString);
     }
 
 

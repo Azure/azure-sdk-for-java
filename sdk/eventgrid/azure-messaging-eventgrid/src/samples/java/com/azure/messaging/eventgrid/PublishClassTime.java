@@ -6,8 +6,6 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,11 +14,13 @@ import java.util.Random;
 
 public class PublishClassTime {
 
-    public static final int REPEATS = 100;
+    private static final int REPEATS = 50;
 
-    @Disabled("Sample code, requires system environment variables for endpoint and key")
-    @Test
-    public void publishEvents() throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException {
+        publishEvents();
+    }
+
+    public static void publishEvents() throws InterruptedException {
         String key = System.getenv("DEMO_KEY");
         String endpoint = System.getenv("DEMO_ENDPOINT");
 

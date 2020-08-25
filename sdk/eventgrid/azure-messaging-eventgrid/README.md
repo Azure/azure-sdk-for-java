@@ -1,14 +1,23 @@
 # Azure Event Grid client library for Java
 
-This project provides client tools or utilities in Java that make it easy to interact with [Azure Event Grid](https://azure.com/eventgrid). For documentation please see the Microsoft Azure [Java Developer Center](https://azure.microsoft.com/develop/java/) or the [JavaDocs](https://azure.github.io/azure-sdk-for-java/).
+This project provides client tools or utilities in Java that make it easy to interact with [Azure Event Grid][eventgrid].
 
-Azure Event Grid is a fully-managed intelligent event routing service that allows for uniform event consumption using a publish-subscribe model.
+Azure Event Grid is a fully-managed intelligent event routing service that provides reliable and scalable event delivery.
+
+The client library can be used to:
+
+- Publish events in the Event Grid, Cloud Event (1.0), or custom schema
+- Decode and process events and event data at the event destination
+- Generate shared access signatures that connect to an event topic
+
+[Sources](./src) | [Maven][maven] | [Javadocs][javadocs] | [Samples][samples]
+
 
 ## Getting started
 
 ### Latest stable release
 
-To get the binaries of the official Microsoft Azure Event Grid Java SDK as distributed by Microsoft, ready for use within your project, you can use Maven.
+To get the binaries of the official Microsoft Azure Event Grid Java SDK as distributed by Microsoft, ready for use within your project, you can use [Maven][maven].
 
 [//]: # ({x-version-update-start;com.azure:azure-messaging-eventgrid;current})
 ```xml
@@ -23,19 +32,67 @@ To get the binaries of the official Microsoft Azure Event Grid Java SDK as distr
 ### Prerequisites
 
 - [Java Development Kit (JDK) with version 8 or above][jdk]
-- [Azure subscription][azure_subscription]
-- [Maven][maven]
+- An [Azure subscription][azure_subscription]
+- An [Event Grid][eventgrid] topic or domain. To create the resource, you can use [Azure portal][portal] or 
+[Azure CLI][cli]
 
-### Creating a topic
+If you use the Azure CLI, replace `<your-resource-group-name>` and `<your-resource-name>` with your own unique names 
+and `<location>` with a valid Azure service location.
 
-Check out this [quickstart][custom_topic_portal_qs] to create a custom event topic using azure portal,
-or [this one][custom_topic_cli_qs] to use Azure CLI.
+#### Creating a topic ([Azure CLI][cli])
+
+```bash
+az eventgrid topic create --location <location> --resource-group <your-resource-group-name> --name <your-resource-name>
+```
+
+
+#### Creating a domain ([Azure CLI][cli])
+
+```bash
+az eventgrid domain create --location <location> --resource-group <your-resource-group-name> --name <your-resource-name>
+```
+
+### Authenticating the Client
+
+In order to send events, we need an endpoint to send to and some authentication for the endpoint, either as a 
+key credential or a shared access signature (which will in turn need an endpoint and key).
+The endpoint and key can both be obtained through [Azure Portal][portal] or [Azure CLI][cli].
+
+#### Endpoint
+
+The endpoint is listed on the dashboard of the topic or domain in the [Azure Portal][portal],
+or can be obtained using the following command in [Azure CLI][cli].
+```bash
+az eventgrid topic show --name <your-resource-name> --resource-group <your-resource-group-name> --query "endpoint"
+```
+
+#### Access Key
+
+The keys are listed in the "Access Keys" tab of the [Azure Portal][portal], or can be obtained
+using the following command in [Azure CLI][cli].
+
+#### Creating a shared access signature
+
+A shared access signature is an alternative way to authenticate requests to an [Event Grid][eventgrid]
+topic or domain. They behave similarly to keys, and require a key to produce, but can be configured
+with an expiration time, so they can be used to restrict access to a topic or domain.
+Here is sample code to produce a shared access signature that expires after 20 minutes:
+
+<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L101-L104 -->
+```java
+OffsetDateTime expiration = OffsetDateTime.now().plusMinutes(20);
+String credentialString = EventGridSharedAccessSignatureCredential
+    .createSharedAccessSignature(endpoint, expiration, new AzureKeyCredential(key));
+EventGridSharedAccessSignatureCredential signature = new EventGridSharedAccessSignatureCredential(credentialString);
+```
 
 ### Creating the Client
 
 In order to start sending events, we need an `EventGridPublisherClient`. Here is code to 
-create the synchronous and the asynchronous versions. You can obtain the key and endpoint 
-from the portal or Azure CLI from the quick starts above.
+create the synchronous and the asynchronous versions. Note that a shared access signature can
+be used instead of a key in any of these samples by calling the `sharedAccessSignatureCredential` 
+method instead of `keyCredential'. 
+
 
 <!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L19-L22 -->
 ```java
@@ -55,10 +112,26 @@ EventGridPublisherAsyncClient egAsyncClient = new EventGridPublisherClientBuilde
     .buildAsyncClient();
 ```
 
+## Key concepts 
+
+Events can be sent in either the `CloudEvent` or the `EventGridEvent` 
+format, or a custom schema, depending on the Event Grid topic/domain.
+
+`EventGridEvent`: See specifications and requirements [here](https://docs.microsoft.com/en-us/azure/event-grid/event-schema).
+
+`CloudEvent`: See the Cloud Event specification [here](https://github.com/cloudevents/spec)
+and the Event Grid service summary of Cloud Events [here](https://docs.microsoft.com/en-us/azure/event-grid/cloud-event-schema).
+
+Both `CloudEvent` and `EventGridEvent` can be used to parse events from a JSON payload,
+from the event destination, however custom schema will need to be parsed by the user.
+
+## Examples
+
 ### Sending Events
 
-Events can be sent in the `EventGridEvent` or `CloudEvent` schema, as detailed in the Key Concepts below.
-For now, we can send the events to the topic using whatever format the topic was set to.
+Events can be sent in the `EventGridEvent`, `CloudEvent`, or a custom schema, as detailed in the Key Concepts above.
+The topic or domain must be configured to accept the schema being sent. For simplicity,
+the synchronous client is used for samples, however the asynchronous client has the same method names.
 
 #### `EventGridEvent`
 <!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L38-L41 -->
@@ -84,20 +157,10 @@ events.add(
 egClient.sendCloudEvents(events);
 ```
 
-## Key concepts 
+#### Custom Events
 
-Events can be sent or received in either the `CloudEvent` or the `EventGridEvent` 
-format, depending on the Event Grid topic.
-
-`EventGridEvent`: See specifications and requirements [here](https://docs.microsoft.com/en-us/azure/event-grid/event-schema).
-
-`CloudEvent`: See the Cloud Event specification [here](https://github.com/cloudevents/spec)
-and the Event Grid service summary of Cloud Events [here](https://docs.microsoft.com/en-us/azure/event-grid/cloud-event-schema).
-
-Both classes can be used to consume events from a JSON payload, and can be constructed and sent
-for publishing, using a `PublisherClient`
-
-## Examples
+To send custom events in any defined schema, use the `sendCustomEvents` method
+on the `PublisherClient`.
 
 ### Recieving and Consuming Events
 
@@ -192,12 +255,15 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 <!-- LINKS -->
 [jdk]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[api_documentation]: https://aka.ms/java-docs
+[javadocs]: https://azure.github.io/azure-sdk-for-java/eventgrid.html
 [azure_subscription]: https://azure.microsoft.com/free
 [maven]: https://maven.apache.org/
-[custom_topic_portal_qs]: https://docs.microsoft.com/en-us/azure/event-grid/custom-event-quickstart-portal
-[custom_topic_cli_qs]: https://docs.microsoft.com/en-us/azure/event-grid/custom-event-quickstart
 [HttpResponseException]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/exception/HttpResponseException.java
 [samples]: ./src/samples/java/com/azure/messaging/eventgrid
+[eventgrid]: https://azure.com/eventgrid
+[portal]: https://ms.portal.azure.com/
+[cli]: https://docs.microsoft.com/cli/azure
+
+
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventgrid%2Fazure-messaging-eventgrid%2FREADME.png)
