@@ -47,6 +47,7 @@ import java.nio.file.StandardOpenOption
 import java.security.MessageDigest
 import java.time.Duration
 import java.time.OffsetDateTime
+import java.time.temporal.ChronoUnit
 import java.util.function.Consumer
 
 class FileAPITest extends APISpec {
@@ -3390,7 +3391,8 @@ class FileAPITest extends APISpec {
 
     def "Schedule deletion time"() {
         given:
-        def fileScheduleDeletionOptions = new FileScheduleDeletionOptions(getUTCNow().plusDays(1))
+        OffsetDateTime now = getUTCNow()
+        def fileScheduleDeletionOptions = new FileScheduleDeletionOptions(now.plusDays(1))
         def fileClient = fsc.getFileClient(generatePathName())
         fileClient.create()
 
@@ -3399,7 +3401,7 @@ class FileAPITest extends APISpec {
         def expiryTimeProperty = fileClient.getProperties().getExpiresOn()
 
         then:
-        expiryTimeProperty
+        expiryTimeProperty == now.plusDays(1).truncatedTo(ChronoUnit.SECONDS)
     }
 
     def "Schedule deletion error"() {
