@@ -6,13 +6,13 @@ import com.azure.messaging.servicebus.ServiceBusMessage;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.azure.messaging.servicebus.administration.models.SqlRuleFilter.MAXIMUM_SQL_RULE_ACTION_STATEMENT_LENGTH;
+
 /**
  * Represents set of actions written in SQL language-based syntax that is performed against a
  * {@link ServiceBusMessage}.
  */
 public class SqlRuleAction extends RuleAction {
-    private static final int MAXIMUM_SQL_RULE_ACTION_STATEMENT_LENGTH = 1024;
-
     private final Map<String, Object> properties = new HashMap<>();
     private final String sqlExpression;
 
