@@ -49,9 +49,9 @@ public final class DataLakeServiceSasSignatureValues {
 
     private String contentType;
 
-    private String authorizedAADObjectId;
+    private String authorizedAadObjectId;
 
-    private String unknownAADObjectId;
+    private String unauthorizedAadObjectId;
 
     private String correlationId;
 
@@ -335,39 +335,39 @@ public final class DataLakeServiceSasSignatureValues {
     /**
      * @return the authorized AAD object id value for the SAS.
      */
-    public String getAuthorizedAADObjectId() {
-        return authorizedAADObjectId;
+    public String getAuthorizedAadObjectId() {
+        return authorizedAadObjectId;
     }
 
     /**
      * Sets the authorized AAD object id value for the SAS.
      *
-     * @param authorizedAADObjectId The AAD object ID of a user authorized by the owner of the user delegation key
+     * @param authorizedAadObjectId The AAD object ID of a user authorized by the owner of the user delegation key
      * to perform the action granted by the SAS token.
      * @return the updated DataLakeServiceSasSignatureValues object
      */
-    public DataLakeServiceSasSignatureValues setAuthorizedAADObjectId(String authorizedAADObjectId) {
-        this.authorizedAADObjectId = authorizedAADObjectId;
+    public DataLakeServiceSasSignatureValues setAuthorizedAadObjectId(String authorizedAadObjectId) {
+        this.authorizedAadObjectId = authorizedAadObjectId;
         return this;
     }
 
     /**
      * @return the unknown AAD object id value for the SAS.
      */
-    public String getUnknownAADObjectId() {
-        return unknownAADObjectId;
+    public String getUnauthorizedAadObjectId() {
+        return unauthorizedAadObjectId;
     }
 
     /**
      * Sets the unknown AAD object id value for the SAS.
      *
-     * @param unknownAADObjectId The AAD object ID of a user assumed to be unauthorized by the owner of the user
+     * @param unauthorizedAadObjectId The AAD object ID of a user assumed to be unauthorized by the owner of the user
      * delegation key to perform the action granted by the SAS token. The service will perform an additional
      *  POSIX ACL check to determine if the user is authorized.
      * @return the updated DataLakeServiceSasSignatureValues object
      */
-    public DataLakeServiceSasSignatureValues setUnknownAADObjectId(String unknownAADObjectId) {
-        this.unknownAADObjectId = unknownAADObjectId;
+    public DataLakeServiceSasSignatureValues setUnauthorizedAadObjectId(String unauthorizedAadObjectId) {
+        this.unauthorizedAadObjectId = unauthorizedAadObjectId;
         return this;
     }
 

@@ -79,9 +79,9 @@ public class DataLakeSasImplUtil {
 
     private Integer directoryDepth;
 
-    private String aadObjectId;
+    private String authorizedAadObjectId;
 
-    private String unauthorizedObjectId;
+    private String unauthorizedAadObjectId;
 
     private String correlationId;
 
@@ -119,10 +119,10 @@ public class DataLakeSasImplUtil {
         this.contentEncoding = sasValues.getContentEncoding();
         this.contentLanguage = sasValues.getContentLanguage();
         this.contentType = sasValues.getContentType();
+        this.authorizedAadObjectId = sasValues.getAuthorizedAadObjectId();
+        this.unauthorizedAadObjectId = sasValues.getUnauthorizedAadObjectId();
+        this.correlationId = sasValues.getCorrelationId();
         this.isDirectory = isDirectory;
-        if (this.isDirectory) {
-            this.directoryDepth = pathName.split("/").length;
-        }
     }
 
     /**
@@ -197,11 +197,12 @@ public class DataLakeSasImplUtil {
                 userDelegationKey.getSignedService());
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_VERSION,
                 userDelegationKey.getSignedVersion());
-        }
 
-        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_AAD_OBJECT_ID, this.aadObjectId);
-        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_UNAUTHORIZED_OBJECT_ID, this.unauthorizedObjectId);
-        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CORRELATION_ID, this.correlationId);
+            /* Only parameters relevant for user delegation SAS. */
+            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_AAD_OBJECT_ID, this.authorizedAadObjectId);
+            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_UNAUTHORIZED_OBJECT_ID, this.unauthorizedAadObjectId);
+            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CORRELATION_ID, this.correlationId);
+        }
 
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_RESOURCE, this.resource);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_PERMISSIONS, this.permissions);
@@ -224,14 +225,14 @@ public class DataLakeSasImplUtil {
     /**
      * Ensures that the builder's properties are in a consistent state.
 
-     * 1. If there is no version, use latest.
-     * 2. If there is no identifier set, ensure expiryTime and permissions are set.
-     * 3. Resource name is chosen by:
+     * 1. If there is no identifier set, ensure expiryTime and permissions are set.
+     * 2. Resource name is chosen by:
      *    a. If "BlobName" is _not_ set, it is a container resource.
      *    b. Otherwise, if "SnapshotId" is set, it is a blob snapshot resource.
      *    c. Otherwise, if "VersionId" is set, it is a blob version resource.
      *    d. Otherwise, it is a blob resource.
-     * 4. Reparse permissions depending on what the resource is. If it is an unrecognised resource, do nothing.
+     * 3. Reparse permissions depending on what the resource is. If it is an unrecognised resource, do nothing.
+     * 4. Ensure saoid is not set when suoid is set and vice versa.
      *
      * Taken from:
      * https://github.com/Azure/azure-storage-blob-go/blob/master/azblob/sas_service.go#L33
@@ -250,6 +251,7 @@ public class DataLakeSasImplUtil {
         } else {
             if (isDirectory) {
                 resource = SAS_DIRECTORY_CONSTANT;
+                this.directoryDepth = pathName.split("/").length - 1;
             } else {
                 resource = SAS_BLOB_CONSTANT;
             }
@@ -269,6 +271,10 @@ public class DataLakeSasImplUtil {
                     logger.info("Not re-parsing permissions. Resource type '{}' is unknown.", resource);
                     break;
             }
+        }
+
+        if (this.authorizedAadObjectId != null && this.unauthorizedAadObjectId != null) {
+            throw logger.logExceptionAsError(new IllegalStateException("saoid and suoid can not both be set."));
         }
     }
 
@@ -315,9 +321,9 @@ public class DataLakeSasImplUtil {
             key.getSignedExpiry() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedExpiry()),
             key.getSignedService() == null ? "" : key.getSignedService(),
             key.getSignedVersion() == null ? "" : key.getSignedVersion(),
-            "",
-            "",
-            "",
+            this.authorizedAadObjectId == null ? "" : this.authorizedAadObjectId,
+            this.unauthorizedAadObjectId == null ? "" : this.unauthorizedAadObjectId,
+            this.correlationId == null ? "" : this.correlationId,
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(),
             version,

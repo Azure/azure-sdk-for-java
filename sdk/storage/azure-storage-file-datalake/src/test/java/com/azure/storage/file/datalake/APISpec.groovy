@@ -451,6 +451,34 @@ class APISpec extends Specification {
         return builder.sasToken(sasToken).buildFileClient()
     }
 
+    DataLakeDirectoryClient getDirectoryClient(StorageSharedKeyCredential credential, String endpoint, String pathName) {
+        DataLakePathClientBuilder builder = new DataLakePathClientBuilder()
+            .endpoint(endpoint)
+            .pathName(pathName)
+            .httpClient(getHttpClient())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        return builder.credential(credential).buildDirectoryClient()
+    }
+
+    DataLakeDirectoryClient getDirectoryClient(String sasToken, String endpoint, String pathName) {
+        DataLakePathClientBuilder builder = new DataLakePathClientBuilder()
+            .endpoint(endpoint)
+            .pathName(pathName)
+            .httpClient(getHttpClient())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        return builder.sasToken(sasToken).buildDirectoryClient()
+    }
+
     DataLakeFileSystemClient getFileSystemClient(String sasToken, String endpoint) {
         getFileSystemClientBuilder(endpoint).sasToken(sasToken).buildClient()
     }
