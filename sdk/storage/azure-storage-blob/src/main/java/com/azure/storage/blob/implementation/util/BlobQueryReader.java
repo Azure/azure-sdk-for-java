@@ -321,17 +321,20 @@ public class BlobQueryReader {
         if (arrowSerialization == null) {
             return null;
         }
-        List<ArrowField> schema = new ArrayList<>(arrowSerialization.getSchema().size());
-        for (BlobQueryArrowField field : arrowSerialization.getSchema()) {
-            if (field == null) {
-                schema.add(null);
-            } else {
-                schema.add(new ArrowField()
-                    .setName(field.getName())
-                    .setPrecision(field.getPrecision())
-                    .setScale(field.getScale())
-                    .setType(field.getType().toString())
-                );
+        List<ArrowField> schema = arrowSerialization.getSchema() == null ? null
+            : new ArrayList<>(arrowSerialization.getSchema().size());
+        if (schema != null) {
+            for (BlobQueryArrowField field : arrowSerialization.getSchema()) {
+                if (field == null) {
+                    schema.add(null);
+                } else {
+                    schema.add(new ArrowField()
+                        .setName(field.getName())
+                        .setPrecision(field.getPrecision())
+                        .setScale(field.getScale())
+                        .setType(field.getType().toString())
+                    );
+                }
             }
         }
         return new ArrowConfiguration().setSchema(schema);
