@@ -97,6 +97,8 @@ public class BasicDigitalTwin {
 
     /**
      * Sets the additional properties of the digital twin. This field will contain any properties of the digital twin that are not already defined by the other strong types of this class.
+     * @param key The key of the additional property to be added to the digital twin.
+     * @param value The value of the additional property to be added to the digital twin.
      * @return The BasicDigitalTwin object itself.
      */
     @JsonAnySetter
