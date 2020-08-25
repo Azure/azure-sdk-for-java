@@ -38,13 +38,6 @@
       <artifactId>jackson-annotations</artifactId>
       <version>2.11.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
     </dependency>
-    <dependency>
-      <!--Lombok brings in easy to use annotations for generating setters and getters for models. This currently isn't required in the client library (need to sync-up with SDK board), it is used in samples/tests-->
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <version>1.18.6</version>  <!-- {x-version-update;org.projectlombok:lombok;external_dependency} -->
-      <scope>provided</scope>
-    </dependency>
   </dependencies>
 
   <build>
@@ -62,26 +55,6 @@
             </bannedDependencies>
           </rules>
         </configuration>
-      </plugin>
-      <plugin>
-        <!-- Required to generate sources from lombok -->
-        <groupId>org.projectlombok</groupId>
-        <artifactId>lombok-maven-plugin</artifactId>
-        <version>1.18.12.0</version> <!-- {x-version-update;org.projectlombok:lombok-maven-plugin;external_dependency} -->
-        <configuration>
-          <sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
-          <outputDirectory>${project.build.directory}/delombok</outputDirectory>
-          <addOutputDirectory>false</addOutputDirectory>
-        </configuration>
-        <executions>
-          <execution>
-            <id>delombok</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>delombok</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
   </build>

@@ -7,56 +7,105 @@ import com.azure.core.annotation.Fluent;
 import com.azure.digitaltwins.core.serialization.WritableProperty;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 
 @Fluent
-@Accessors(fluent = true)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-class CustomDigitalTwin {
+public class CustomDigitalTwin {
 
     @JsonProperty(value = "$dtId", required = true)
-    @Getter @Setter
     private String id;
 
     @JsonProperty(value = "$etag", required = true)
-    @Getter @Setter
     private String etag;
 
     @JsonProperty(value = "$metadata", required = true)
-    @Getter @Setter
     private CustomDigitalTwinMetadata metadata;
 
     @JsonProperty(value = "AverageTemperature")
-    @Getter @Setter
     private int averageTemperature;
 
     @JsonProperty(value = "TemperatureUnit")
-    @Getter @Setter
     private String temperatureUnit;
+
+    public String getId() {
+        return id;
+    }
+
+    public CustomDigitalTwin setId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    public String getEtag() {
+        return etag;
+    }
+
+    public CustomDigitalTwin setEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
+
+    public CustomDigitalTwinMetadata getMetadata() {
+        return metadata;
+    }
+
+    public CustomDigitalTwin setMetadata(CustomDigitalTwinMetadata metadata) {
+        this.metadata = metadata;
+        return this;
+    }
+
+    public int getAverageTemperature() {
+        return averageTemperature;
+    }
+
+    public CustomDigitalTwin setAverageTemperature(int averageTemperature) {
+        this.averageTemperature = averageTemperature;
+        return this;
+    }
+
+    public String getTemperatureUnit() {
+        return temperatureUnit;
+    }
+
+    public CustomDigitalTwin setTemperatureUnit(String temperatureUnit) {
+        this.temperatureUnit = temperatureUnit;
+        return this;
+    }
 }
 
 @Fluent
-@Accessors(fluent = true)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 class Metadata {
 
     @JsonProperty(value = "$model", required = true)
-    @Getter @Setter
     private String modelId;
+
+    public String getModelId() {
+        return modelId;
+    }
+
+    public Metadata setModelId(String modelId) {
+        this.modelId = modelId;
+        return this;
+    }
 }
 
 @Fluent
-@Accessors(fluent = true)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 class CustomDigitalTwinMetadata extends Metadata {
 
     @JsonProperty(value = "AverageTemperature")
-    @Getter @Setter
     private WritableProperty averageTemperature;
 
+    public WritableProperty getAverageTemperature() {
+        return averageTemperature;
+    }
+
     @JsonProperty(value = "TemperatureUnit")
-    @Getter @Setter
     private WritableProperty temperatureUnit;
+
+    public CustomDigitalTwinMetadata setAverageTemperature(WritableProperty averageTemperature) {
+        this.averageTemperature = averageTemperature;
+        return this;
+    }
 }

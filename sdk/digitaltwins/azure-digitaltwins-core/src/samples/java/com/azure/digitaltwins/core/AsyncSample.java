@@ -85,7 +85,7 @@ public class AsyncSample
                             CustomDigitalTwin twin = mapper.treeToValue(jsonNode, CustomDigitalTwin.class);
                             System.out.println(
                                 String.format("%s: Deserialized CustomDigitalTwin, \n\tId=%s, \n\tEtag=%s, \n\tModelId=%s, \n\tAverageTemperature=%d, \n\tTemperatureUnit=%s \n",
-                                    dtId_Response_String, twin.id(), twin.etag(), twin.metadata().modelId(), twin.averageTemperature(), twin.temperatureUnit()));
+                                    dtId_Response_String, twin.getId(), twin.getEtag(), twin.getMetadata().getModelId(), twin.getAverageTemperature(), twin.getTemperatureUnit()));
                         } else {
                             // Parse it as BasicDigitalTwin
                             BasicDigitalTwin twin = mapper.treeToValue(jsonNode, BasicDigitalTwin.class);
@@ -129,7 +129,7 @@ public class AsyncSample
                             CustomDigitalTwin twin = mapper.treeToValue(jsonNode, CustomDigitalTwin.class);
                             System.out.println(
                                 String.format("%s: Deserialized CustomDigitalTwin, \n\tId=%s, \n\tEtag=%s, \n\tModelId=%s, \n\tAverageTemperature=%d, \n\tTemperatureUnit=%s \n",
-                                    dtId_ResponseBase_String, twin.id(), twin.etag(), twin.metadata().modelId(), twin.averageTemperature(), twin.temperatureUnit()));
+                                    dtId_ResponseBase_String, twin.getId(), twin.getEtag(), twin.getMetadata().getModelId(), twin.getAverageTemperature(), twin.getTemperatureUnit()));
                         } else {
                             // Parse it as BasicDigitalTwin
                             BasicDigitalTwin twin = mapper.treeToValue(jsonNode, BasicDigitalTwin.class);
@@ -173,7 +173,7 @@ public class AsyncSample
                             CustomDigitalTwin twin = mapper.treeToValue(jsonNode, CustomDigitalTwin.class);
                             System.out.println(
                                 String.format("%s: Deserialized CustomDigitalTwin, \n\tId=%s, \n\tEtag=%s, \n\tModelId=%s, \n\tAverageTemperature=%d, \n\tTemperatureUnit=%s \n",
-                                    dtId_DigitalTwinsAddResponse_String, twin.id(), twin.etag(), twin.metadata().modelId(), twin.averageTemperature(), twin.temperatureUnit()));
+                                    dtId_DigitalTwinsAddResponse_String, twin.getId(), twin.getEtag(), twin.getMetadata().getModelId(), twin.getAverageTemperature(), twin.getTemperatureUnit()));
                         } else {
                             // Parse it as BasicDigitalTwin
                             BasicDigitalTwin twin = mapper.treeToValue(jsonNode, BasicDigitalTwin.class);
@@ -193,10 +193,10 @@ public class AsyncSample
         // Request is Object.
         String dtId_WithResponse_Object = "dt_WithResponse_Object_" + random.nextInt();
         CustomDigitalTwin customDigitalTwin_Object = new CustomDigitalTwin()
-            .id(dtId_WithResponse_Object)
-            .metadata((CustomDigitalTwinMetadata) new CustomDigitalTwinMetadata().modelId(modelId))
-            .averageTemperature(random.nextInt(50))
-            .temperatureUnit("Celsius");
+            .setId(dtId_WithResponse_Object)
+            .setMetadata((CustomDigitalTwinMetadata) new CustomDigitalTwinMetadata().setModelId(modelId))
+            .setAverageTemperature(random.nextInt(50))
+            .setTemperatureUnit("Celsius");
 
         // Response is Response<Object>
         Mono<DigitalTwinsAddResponse> sourceTwinWithResponseObject = client.createDigitalTwinWithDigitalTwinsAddResponseObject(dtId_WithResponse_Object, customDigitalTwin_Object);
@@ -220,7 +220,7 @@ public class AsyncSample
                             CustomDigitalTwin twin = mapper.treeToValue(jsonNode, CustomDigitalTwin.class);
                             System.out.println(
                                 String.format("%s: Deserialized CustomDigitalTwin, \n\tId=%s, \n\tEtag=%s, \n\tModelId=%s, \n\tAverageTemperature=%d, \n\tTemperatureUnit=%s \n",
-                                    dtId_WithResponse_Object, twin.id(), twin.etag(), twin.metadata().modelId(), twin.averageTemperature(), twin.temperatureUnit()));
+                                    dtId_WithResponse_Object, twin.getId(), twin.getEtag(), twin.getMetadata().getModelId(), twin.getAverageTemperature(), twin.getTemperatureUnit()));
                         } else {
                             // Parse it as BasicDigitalTwin
                             BasicDigitalTwin twin = mapper.treeToValue(jsonNode, BasicDigitalTwin.class);
@@ -240,10 +240,10 @@ public class AsyncSample
         // Request is strongly typed object
         String dtId_WithResponse_BasicDigitalTwin = "dt_WithResponse_BasicDigitalTwin_" + random.nextInt();
         CustomDigitalTwin genericDigitalTwin1 = new CustomDigitalTwin()
-            .id(dtId_WithResponse_BasicDigitalTwin)
-            .metadata((CustomDigitalTwinMetadata) new CustomDigitalTwinMetadata().modelId(modelId))
-            .averageTemperature(random.nextInt(50))
-            .temperatureUnit("Celsius");
+            .setId(dtId_WithResponse_BasicDigitalTwin)
+            .setMetadata((CustomDigitalTwinMetadata) new CustomDigitalTwinMetadata().setModelId(modelId))
+            .setAverageTemperature(random.nextInt(50))
+            .setTemperatureUnit("Celsius");
 
         // Response is strongly typed object Response<BasicDigitalTwin>
         Mono<Response<BasicDigitalTwin>> sourceTwinWithResponseBasicDigitalTwin = client.createDigitalTwinWithResponseBasicDigitalTwin(dtId_WithResponse_BasicDigitalTwin, genericDigitalTwin1);
@@ -262,10 +262,10 @@ public class AsyncSample
         // Request is strongly typed object
         String dtId_WithResponse_Generic = "dt_WithResponse_Generic_" + random.nextInt();
         CustomDigitalTwin genericDigitalTwin = new CustomDigitalTwin()
-            .id(dtId_WithResponse_Generic)
-            .metadata((CustomDigitalTwinMetadata) new CustomDigitalTwinMetadata().modelId(modelId))
-            .averageTemperature(random.nextInt(50))
-            .temperatureUnit("Celsius");
+            .setId(dtId_WithResponse_BasicDigitalTwin)
+            .setMetadata((CustomDigitalTwinMetadata) new CustomDigitalTwinMetadata().setModelId(modelId))
+            .setAverageTemperature(random.nextInt(50))
+            .setTemperatureUnit("Celsius");
 
 
         // Response is strongly typed object Response<T>
@@ -276,7 +276,7 @@ public class AsyncSample
                     dtId_WithResponse_Generic, result.getStatusCode(), result.getHeaders().get("etag")));
                 CustomDigitalTwin twin = result.getValue();
                 System.out.println(String.format("%s: Deserialized CustomDigitalTwin, \n\tId=%s, \n\tEtag=%s, \n\tModelId=%s, \n\tAverageTemperature=%d, \n\tTemperatureUnit=%s \n",
-                    dtId_WithResponse_Generic, twin.id(), twin.etag(), twin.metadata().modelId(), twin.averageTemperature(), twin.temperatureUnit()));
+                    dtId_WithResponse_Generic, twin.getId(), twin.getEtag(), twin.getMetadata().getModelId(), twin.getAverageTemperature(), twin.getTemperatureUnit()));
             },
             throwable -> System.err.println("Failed to create source twin on digital twin with Id " + dtId_WithResponse_Generic + " due to error message " + throwable.getMessage()),
             createTwinsSemaphore::release);
