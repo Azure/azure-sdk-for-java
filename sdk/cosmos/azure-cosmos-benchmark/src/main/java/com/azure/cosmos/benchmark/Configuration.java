@@ -137,6 +137,12 @@ public class Configuration {
     @Parameter(names = "-numberOfPreCreatedDocuments", description = "Total NUMBER Of Documents To pre create for a read workload to use")
     private int numberOfPreCreatedDocuments = 1000;
 
+    @Parameter(names = "-sparsityWaitTime", description = "Sleep time before making each request. Default is no sleep time."
+        + " NOTE: For now only ReadLatency and ReadThroughput support this."
+        + " Format: A string representation of this duration using ISO-8601 seconds based representation, such as "
+        + "PT20.345S (20.345 seconds), PT15M (15 minutes)", converter = DurationConverter.class)
+    private Duration sparsityWaitTime = null;
+
     @Parameter(names = "-useSync", description = "Uses Sync API")
     private boolean useSync = false;
 
@@ -222,6 +228,9 @@ public class Configuration {
         }
     }
 
+    public Duration getSparsityWaitTime() {
+        return sparsityWaitTime;
+    }
 
     public boolean isDisablePassingPartitionKeyAsOptionOnWrite() {
         return disablePassingPartitionKeyAsOptionOnWrite;

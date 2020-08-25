@@ -33,8 +33,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.net.InetSocketAddress;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -300,5 +302,13 @@ abstract class AsyncBenchmark<T> {
 
         reporter.report();
         reporter.close();
+    }
+
+    protected Mono sparsityMono() {
+        Duration duration = configuration.getSparsityWaitTime();
+        if (duration != null && !duration.isZero()) {
+            return Mono.delay(duration);
+        }
+        else return null;
     }
 }
