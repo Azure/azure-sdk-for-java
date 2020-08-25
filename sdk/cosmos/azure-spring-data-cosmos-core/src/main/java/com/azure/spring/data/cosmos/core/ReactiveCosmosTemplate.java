@@ -136,8 +136,6 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     @Override
     public Mono<CosmosContainerResponse> createContainerIfNotExists(CosmosEntityInformation<?, ?> information) {
 
-        final String partitionKeyPath = information.getPartitionKeyPath();
-
         return cosmosAsyncClient
             .createDatabaseIfNotExists(this.databaseName)
             .publishOn(Schedulers.parallel())
@@ -147,7 +145,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                     cosmosDatabaseResponse.getDiagnostics(), null);
                 final CosmosContainerProperties cosmosContainerProperties =
-                    new CosmosContainerProperties(information.getContainerName(), partitionKeyPath);
+                    new CosmosContainerProperties(information.getContainerName(), information.getPartitionKeyPath());
                 cosmosContainerProperties.setDefaultTimeToLiveInSeconds(information.getTimeToLive());
                 cosmosContainerProperties.setIndexingPolicy(information.getIndexingPolicy());
 
@@ -381,7 +379,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      */
     @Override
     public <T> Mono<T> insert(String containerName, T objectToSave) {
-        return insert(getContainerName(objectToSave.getClass()), objectToSave, null);
+        return insert(containerName, objectToSave, null);
     }
 
     @SuppressWarnings("unchecked")

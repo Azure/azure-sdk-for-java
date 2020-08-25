@@ -75,7 +75,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         this.autoGenerateId = isIdFieldAnnotatedWithGeneratedValue(this.id);
 
         this.containerName = getContainerName(domainType);
-        this.partitionKeyPath = getPartitionKeyPathValue(domainType);
+        this.partitionKeyPath = getPartitionKeyPathAnnotationValue(domainType);
 
         this.partitionKeyField = getPartitionKeyField(domainType);
         if (this.partitionKeyField != null) {
@@ -301,7 +301,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         return customContainerName;
     }
 
-    private String getPartitionKeyPathValue(Class<?> domainType) {
+    private String getPartitionKeyPathAnnotationValue(Class<?> domainType) {
         final Container annotation = domainType.getAnnotation(Container.class);
 
         if (annotation != null && !annotation.partitionKeyPath().isEmpty()) {
