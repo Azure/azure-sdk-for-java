@@ -25,6 +25,7 @@ import com.microsoft.azure.management.appplatform.v2020_07_01.Certificates;
 import com.microsoft.azure.management.appplatform.v2020_07_01.CustomDomains;
 import com.microsoft.azure.management.appplatform.v2020_07_01.Deployments;
 import com.microsoft.azure.management.appplatform.v2020_07_01.Operations;
+import com.microsoft.azure.management.appplatform.v2020_07_01.RuntimeVersions;
 import com.microsoft.azure.management.appplatform.v2020_07_01.Skus;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
@@ -42,6 +43,7 @@ public final class AppPlatformManager extends ManagerCore<AppPlatformManager, Ap
     private CustomDomains customDomains;
     private Deployments deployments;
     private Operations operations;
+    private RuntimeVersions runtimeVersions;
     private Skus skus;
     /**
     * Get a Configurable instance that can be used to create AppPlatformManager with optional configuration.
@@ -178,6 +180,16 @@ public final class AppPlatformManager extends ManagerCore<AppPlatformManager, Ap
             this.operations = new OperationsImpl(this);
         }
         return this.operations;
+    }
+
+    /**
+     * @return Entry point to manage RuntimeVersions.
+     */
+    public RuntimeVersions runtimeVersions() {
+        if (this.runtimeVersions == null) {
+            this.runtimeVersions = new RuntimeVersionsImpl(this);
+        }
+        return this.runtimeVersions;
     }
 
     /**
