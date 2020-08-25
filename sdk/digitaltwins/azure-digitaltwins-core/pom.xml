@@ -43,6 +43,7 @@
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <version>1.18.6</version>  <!-- {x-version-update;org.projectlombok:lombok;external_dependency} -->
+      <scope>provided</scope>
     </dependency>
   </dependencies>
 
