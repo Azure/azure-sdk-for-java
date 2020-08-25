@@ -252,6 +252,19 @@ public class AppPlatformManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The RuntimeVersionsInner object to access its operations.
+     */
+    private RuntimeVersionsInner runtimeVersions;
+
+    /**
+     * Gets the RuntimeVersionsInner object to access its operations.
+     * @return the RuntimeVersionsInner object.
+     */
+    public RuntimeVersionsInner runtimeVersions() {
+        return this.runtimeVersions;
+    }
+
+    /**
      * The SkusInner object to access its operations.
      */
     private SkusInner skus;
@@ -308,6 +321,7 @@ public class AppPlatformManagementClientImpl extends AzureServiceClient {
         this.customDomains = new CustomDomainsInner(restClient().retrofit(), this);
         this.deployments = new DeploymentsInner(restClient().retrofit(), this);
         this.operations = new OperationsInner(restClient().retrofit(), this);
+        this.runtimeVersions = new RuntimeVersionsInner(restClient().retrofit(), this);
         this.skus = new SkusInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
