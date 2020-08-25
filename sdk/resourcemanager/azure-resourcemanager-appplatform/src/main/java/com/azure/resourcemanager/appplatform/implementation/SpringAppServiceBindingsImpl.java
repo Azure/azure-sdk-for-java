@@ -97,7 +97,8 @@ public class SpringAppServiceBindingsImpl
     }
 
     SpringAppServiceBinding prepareCreateOrUpdate(String name, BindingResourceProperties properties) {
-        return prepareInlineDefine(new SpringAppServiceBindingImpl(name, parent(), new BindingResourceInner().withProperties(properties)));
+        return prepareInlineDefine(
+            new SpringAppServiceBindingImpl(name, parent(), new BindingResourceInner().withProperties(properties)));
     }
 
     void prepareDelete(String name) {

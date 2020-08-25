@@ -143,7 +143,8 @@ public class SpringServiceImpl
     public SpringServiceImpl withoutTracing() {
         monitoringSettingTask =
             context -> manager().inner().getMonitoringSettings()
-                .updatePatchAsync(resourceGroupName(), name(), new MonitoringSettingProperties().withTraceEnabled(false))
+                .updatePatchAsync(
+                    resourceGroupName(), name(), new MonitoringSettingProperties().withTraceEnabled(false))
                 .then(context.voidMono());
         return this;
     }
@@ -232,9 +233,9 @@ public class SpringServiceImpl
     @Override
     public SpringServiceImpl withCertificate(String name, String keyVaultUri, String certNameInKeyVault) {
         certificates.prepareCreateOrUpdate(
-                name,
-                new CertificateProperties().withVaultUri(keyVaultUri).withKeyVaultCertName(certNameInKeyVault)
-            );
+            name,
+            new CertificateProperties().withVaultUri(keyVaultUri).withKeyVaultCertName(certNameInKeyVault)
+        );
         return this;
     }
 
@@ -242,12 +243,12 @@ public class SpringServiceImpl
     public SpringServiceImpl withCertificate(String name, String keyVaultUri,
                                              String certNameInKeyVault, String certVersion) {
         certificates.prepareCreateOrUpdate(
-                name,
-                new CertificateProperties()
-                    .withVaultUri(keyVaultUri)
-                    .withKeyVaultCertName(certNameInKeyVault)
-                    .withCertVersion(certVersion)
-            );
+            name,
+            new CertificateProperties()
+                .withVaultUri(keyVaultUri)
+                .withKeyVaultCertName(certNameInKeyVault)
+                .withCertVersion(certVersion)
+        );
         return this;
     }
 

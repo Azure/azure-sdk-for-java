@@ -21,7 +21,6 @@ import com.azure.resourcemanager.appplatform.models.TemporaryDisk;
 import com.azure.resourcemanager.appplatform.models.UserSourceType;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;

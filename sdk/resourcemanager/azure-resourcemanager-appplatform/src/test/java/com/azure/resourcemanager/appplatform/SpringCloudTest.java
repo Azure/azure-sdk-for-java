@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.appplatform;
 
 import com.azure.core.management.exception.ManagementException;
-import com.azure.resourcemanager.appplatform.fluent.inner.AppResourceInner;
 import com.azure.resourcemanager.appplatform.models.ConfigServerProperties;
 import com.azure.resourcemanager.appplatform.models.RuntimeVersion;
 import com.azure.resourcemanager.appplatform.models.SpringApp;

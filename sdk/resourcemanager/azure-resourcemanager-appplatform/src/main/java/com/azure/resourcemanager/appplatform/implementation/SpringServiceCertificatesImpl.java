@@ -95,7 +95,9 @@ public class SpringServiceCertificatesImpl
     }
 
     SpringServiceCertificate prepareCreateOrUpdate(String name, CertificateProperties properties) {
-        return prepareInlineDefine(new SpringServiceCertificateImpl(name, parent(), new CertificateResourceInner().withProperties(properties)));
+        return prepareInlineDefine(
+            new SpringServiceCertificateImpl(
+                name, parent(), new CertificateResourceInner().withProperties(properties)));
     }
 
     void prepareDelete(String name) {

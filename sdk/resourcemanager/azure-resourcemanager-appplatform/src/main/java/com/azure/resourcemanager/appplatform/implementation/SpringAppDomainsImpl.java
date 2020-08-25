@@ -109,7 +109,8 @@ public class SpringAppDomainsImpl
     }
 
     SpringAppDomain prepareCreateOrUpdate(String name, CustomDomainProperties properties) {
-        return prepareInlineDefine(new SpringAppDomainImpl(name, parent(), new CustomDomainResourceInner().withProperties(properties)));
+        return prepareInlineDefine(
+            new SpringAppDomainImpl(name, parent(), new CustomDomainResourceInner().withProperties(properties)));
     }
 
     void prepareDelete(String name) {
