@@ -10,6 +10,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -245,6 +246,8 @@ public class IdentityClient {
         }
         String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId;
         PublicClientApplication.Builder publicClientApplicationBuilder = PublicClientApplication.builder(clientId);
+        publicClientApplicationBuilder.validateAuthority(!isAdfsTenant(tenantId));
+
         try {
             publicClientApplicationBuilder = publicClientApplicationBuilder.authority(authorityUrl);
         } catch (MalformedURLException e) {
@@ -478,7 +481,7 @@ public class IdentityClient {
 
     private HttpPipeline setupPipeline(HttpClient httpClient) {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        HttpLogOptions httpLogOptions = new HttpLogOptions();
+        HttpLogOptions httpLogOptions = new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS);
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(new RetryPolicy());
         HttpPolicyProviders.addAfterRetryPolicies(policies);
@@ -578,7 +581,8 @@ public class IdentityClient {
                 DeviceCodeFlowParameters parameters = DeviceCodeFlowParameters.builder(
                     new HashSet<>(request.getScopes()), dc -> deviceCodeConsumer.accept(
                         new DeviceCodeInfo(dc.userCode(), dc.deviceCode(), dc.verificationUri(),
-                        OffsetDateTime.now().plusSeconds(dc.expiresIn()), dc.message()))).build();
+                        OffsetDateTime.now().plusSeconds(dc.expiresIn()), dc.message())))
+                                                          .build();
                 return pc.acquireToken(parameters);
             }).onErrorMap(t -> new ClientAuthenticationException("Failed to acquire token with device code", null, t))
                 .map(MsalToken::new));
@@ -648,7 +652,7 @@ public class IdentityClient {
                 try {
                     redirectUri = new URI(String.format("http://localhost:%s", port));
                     browserUri =
-                        String.format("%s/oauth2/v2.0/authorize?response_type=code&response_mode=query&prompt"
+                        String.format("%s/oauth2/authorize?response_type=code&response_mode=query&prompt"
                                 + "=select_account&client_id=%s&redirect_uri=%s&state=%s&scope=%s",
                             authorityUrl,
                             clientId,
@@ -984,5 +988,9 @@ public class IdentityClient {
      */
     public String getClientId() {
         return clientId;
+    }
+
+    private boolean isAdfsTenant(String tenantId) {
+        return tenantId.equalsIgnoreCase("adfs");
     }
 }
