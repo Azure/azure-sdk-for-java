@@ -7,9 +7,9 @@ import com.azure.data.schemaregistry.models.SerializationType;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-public class SampleSchemaRegistryCodec implements SchemaRegistrySerializationUtils {
+public class TestSchemaRegistryUtils implements SchemaRegistrySerializationUtils {
 
-    public SampleSchemaRegistryCodec() { }
+    public TestSchemaRegistryUtils() { }
 
     @Override
     public String getSchemaName(Object object) {

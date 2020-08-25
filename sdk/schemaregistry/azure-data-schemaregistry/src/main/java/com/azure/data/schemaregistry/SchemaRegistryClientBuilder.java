@@ -227,7 +227,7 @@ public class SchemaRegistryClientBuilder {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Serialization type cannot be null or empty."));
         }
-        if (this.typeParserMap.containsKey(utils.getSerializationType())) {
+        if (this.typeParserMap.containsKey(utils.getSerializationType().toString())) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Multiple parse methods for single serialization type may not be added."));
         }
@@ -302,7 +302,7 @@ public class SchemaRegistryClientBuilder {
      *
      * @return {@link SchemaRegistryClient} with the options set from the builder.
      */
-     public SchemaRegistryClient buildClient() {
+    public SchemaRegistryClient buildClient() {
         return new SchemaRegistryClient(this.buildAsyncClient());
-     }
+    }
 }

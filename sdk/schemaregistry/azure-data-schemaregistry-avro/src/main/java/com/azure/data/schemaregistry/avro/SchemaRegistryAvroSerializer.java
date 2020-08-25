@@ -6,8 +6,8 @@ package com.azure.data.schemaregistry.avro;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.data.schemaregistry.SchemaRegistrySerializer;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
+import com.azure.data.schemaregistry.SchemaRegistrySerializer;
 import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
@@ -18,9 +18,10 @@ import java.io.OutputStream;
  */
 public final class SchemaRegistryAvroSerializer extends SchemaRegistrySerializer implements ObjectSerializer {
     private final ClientLogger logger = new ClientLogger(SchemaRegistryAvroSerializer.class);
+    private static final Boolean AVRO_SPECIFIC_READER_DEFAULT = false;
+
 
     /**
-     *
      * @param registryClient
      * @param schemaGroup
      * @param avroUtils
@@ -47,13 +48,26 @@ public final class SchemaRegistryAvroSerializer extends SchemaRegistrySerializer
     }
 
     @Override
-    public <S extends OutputStream> Mono<S> serializeAsync(S stream, Object object) {
-        if (object == null) {
-            return Mono.empty();
-        }
-
-        return super.serializeAsync(stream, object);
+    public <S extends OutputStream> Mono<S> serializeAsync(S stream, Object value) {
+        return null;
     }
+
+//
+//    @Override
+//    @SuppressWarnings("unchecked")
+//    public OutputStream serialize(OutputStream stream, Object value) {
+//        return stream;
+//    }
+//
+//    @Override
+//    @SuppressWarnings("unchecked")
+//    public Mono<Void> serializeAsync(OutputStream stream, Object object) {
+//        if (object == null) {
+//            return Mono.empty();
+//        }
+//
+//        return super.serializeAsync(stream, object);
+//    }
 
 //    @Override
 //    public <T> Mono<T> deserialize(InputStream stream, Class<T> clazz) {
@@ -65,6 +79,5 @@ public final class SchemaRegistryAvroSerializer extends SchemaRegistrySerializer
 //                throw logger.logExceptionAsError(new IllegalStateException("Deserialized object not of class %s"));
 //            });
 //    }
-
 }
 

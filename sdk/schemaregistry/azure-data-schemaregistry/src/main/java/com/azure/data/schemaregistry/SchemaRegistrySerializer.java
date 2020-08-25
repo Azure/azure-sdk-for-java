@@ -3,20 +3,17 @@
 
 package com.azure.data.schemaregistry;
 
-import static com.azure.core.util.FluxUtil.monoError;
-
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.schemaregistry.models.SchemaRegistryObject;
 import com.azure.data.schemaregistry.models.SerializationType;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UncheckedIOException;
+import reactor.core.publisher.Mono;
+
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
-import reactor.core.publisher.Mono;
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * Common implementation for all registry-based serializers.
@@ -24,35 +21,43 @@ import reactor.core.publisher.Mono;
 public abstract class SchemaRegistrySerializer {
     private final ClientLogger logger = new ClientLogger(SchemaRegistrySerializer.class);
 
-    static final Boolean AUTO_REGISTER_SCHEMAS_DEFAULT = false;
-    static final String SCHEMA_GROUP_DEFAULT = "$default";
+    private static final Boolean AUTO_REGISTER_SCHEMAS_DEFAULT = false;
+    private static final String SCHEMA_GROUP_DEFAULT = "$default";
     static final int SCHEMA_ID_SIZE = 32;
 
     SchemaRegistryAsyncClient schemaRegistryClient;
     SchemaRegistrySerializationUtils serializationUtils;
 
-    Boolean autoRegisterSchemas = SchemaRegistrySerializer.AUTO_REGISTER_SCHEMAS_DEFAULT;
-    String schemaGroup = SchemaRegistrySerializer.SCHEMA_GROUP_DEFAULT;
+    private Boolean autoRegisterSchemas = SchemaRegistrySerializer.AUTO_REGISTER_SCHEMAS_DEFAULT;
+    private String schemaGroup = SchemaRegistrySerializer.SCHEMA_GROUP_DEFAULT;
 
     /**
      * Constructor for AbstractSchemaRegistrySerializer implementations.
      *
      * @param schemaRegistryClient client to be used for interfacing with Schema Registry service
-     * @param serializationUtils
+     * @param serializationUtils utils required for registry-based serialization and deserialization
      */
     public SchemaRegistrySerializer(SchemaRegistryAsyncClient schemaRegistryClient,
                                     SchemaRegistrySerializationUtils serializationUtils) {
         this(schemaRegistryClient, serializationUtils, null, null);
     }
 
+    /**
+     * Constructor4 for AbstractSchemaRegistrySerializer implementations.
+     *
+     * @param schemaRegistryClient SchemaRegistryAsyncClient instance for communicating with Azure Schema Registry
+     * @param serializationUtils Utils required for registry-based serialization and deserialization
+     * @param autoRegisterSchemas If true, serializer will always attempt to register schemas.
+     * @param schemaGroup Schema group where serializer will attempt to register or retrieve schemas.
+     */
     public SchemaRegistrySerializer(SchemaRegistryAsyncClient schemaRegistryClient,
                                     SchemaRegistrySerializationUtils serializationUtils,
                                     Boolean autoRegisterSchemas,
                                     String schemaGroup) {
 
         if (schemaRegistryClient == null) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("Schema registry client must be initialized and passed into builder."));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Schema registry client must be initialized and passed into builder."));
         }
 
         if (serializationUtils == null) {
@@ -80,10 +85,9 @@ public abstract class SchemaRegistrySerializer {
      *
      * @param s Output stream destination for encoded bytes
      * @param object object to be serialized
-     * @param <S> Type of the output stream parameter.
-     * @return byte array containing encoded bytes with prefixed schema ID
+     * @return Reactive stream that will indicate operation completion.
      */
-    protected <S extends OutputStream> Mono<S> serializeAsync(S s, Object object) {
+    protected Mono<Void> serializeAsync(ByteArrayOutputStream s, Object object) {
         if (object == null) {
             return monoError(logger, new NullPointerException(
                 "Null object, behavior should be defined in concrete serializer implementation."));
@@ -103,7 +107,6 @@ public abstract class SchemaRegistrySerializer {
                 } catch (IOException e) {
                     sink.error(new UncheckedIOException(e.getMessage(), e));
                 }
-                sink.next(s);
             });
     }
 

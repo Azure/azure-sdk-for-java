@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.data.schemaregistry;
 
 import com.azure.core.util.logging.ClientLogger;
@@ -6,7 +9,6 @@ import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.models.SerializationType;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
@@ -17,6 +19,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentSkipListMap;
 
+/**
+ * Serializer that enables deserialization on a single stream with multiple serialization types.
+ */
 public class AggregateSchemaRegistrySerializer implements ObjectSerializer {
     private final ClientLogger logger = new ClientLogger(AggregateSchemaRegistrySerializer.class);
 
@@ -25,14 +30,20 @@ public class AggregateSchemaRegistrySerializer implements ObjectSerializer {
     private Map<String, SchemaRegistrySerializer> deserializerMap =
         new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
 
+    /**
+     * Constructs an instance of AggregateSchemaRegistrySerializer.
+     *
+     * @param serializer SchemaRegistrySerializer implementation to be used for serialization
+     * @param deserializerList SchemaRegistrySerializer collection to be used for deserializing from a single stream
+     */
     public AggregateSchemaRegistrySerializer(SchemaRegistrySerializer serializer,
                                              List<SchemaRegistrySerializer> deserializerList) {
         this.serializer = serializer;
         this.schemaRegistryClient = serializer.schemaRegistryClient;
         for (SchemaRegistrySerializer d : deserializerList) {
-            if (this.deserializerMap.containsKey(d.serializationUtils.getSerializationType())) {
-                throw logger.logExceptionAsError(
-                    new IllegalArgumentException("Only one SR serializer can be provided per schema serialization type."));
+            if (this.deserializerMap.containsKey(d.serializationUtils.getSerializationType().toString())) {
+                throw logger.logExceptionAsError(new IllegalArgumentException(
+                    "Only one SR serializer can be provided per schema serialization type."));
             }
             this.deserializerMap.put(d.serializationUtils.getSerializationType().toString(), d);
         }
@@ -93,16 +104,35 @@ public class AggregateSchemaRegistrySerializer implements ObjectSerializer {
 
     @Override
     public <S extends OutputStream> S serialize(S stream, Object value) {
-        return serializer.serializeAsync(stream, value).block();
+        return null;
     }
 
     @Override
     public <S extends OutputStream> Mono<S> serializeAsync(S stream, Object value) {
-        return serializer.serializeAsync(stream, value);
+        return null;
     }
+//
+//    @Override
+//    public OutputStream serialize(OutputStream stream, Object value) {
+////        serializer.serializeAsync(stream, value).block();
+////        return stream;
+//        return null;
+//    }
+//
+//    @Override
+//    public Mono<Void> serializeAsync(OutputStream stream, Object value) {
+////        return serializer.serializeAsync(stream, value);
+//        return Mono.empty();
+//    }
 
+    /**
+     * Selects the required deserializer by serialization type.
+     *
+     * @param type payload serialization type
+     * @return SchemaRegistrySerializer instance for the required serialization type
+     */
     private SchemaRegistrySerializer getDeserializer(SerializationType type) {
-        SchemaRegistrySerializer serializer = deserializerMap.get(type);
+        SchemaRegistrySerializer serializer = deserializerMap.get(type.toString());
         if (serializer == null) {
             throw logger.logExceptionAsError(
                 new NullPointerException(

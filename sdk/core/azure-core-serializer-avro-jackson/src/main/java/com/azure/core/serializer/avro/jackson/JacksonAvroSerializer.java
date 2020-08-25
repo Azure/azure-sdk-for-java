@@ -3,8 +3,8 @@
 
 package com.azure.core.serializer.avro.jackson;
 
+import com.azure.core.experimental.serializer.AvroSerializer;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.dataformat.avro.AvroMapper;
@@ -17,9 +17,9 @@ import java.io.OutputStream;
 import java.io.UncheckedIOException;
 
 /**
- * Jackson Avro based implementation of the {@link ObjectSerializer} interface.
+ * Jackson Avro based implementation of the {@link AvroSerializer} interface.
  */
-public final class JacksonAvroSerializer implements ObjectSerializer {
+public final class JacksonAvroSerializer implements AvroSerializer {
     private final ClientLogger logger = new ClientLogger(JacksonAvroSerializer.class);
 
     private final AvroSchema avroSchema;
@@ -57,18 +57,16 @@ public final class JacksonAvroSerializer implements ObjectSerializer {
     }
 
     @Override
-    public <S extends OutputStream> S serialize(S stream, Object value) {
+    public void serialize(OutputStream stream, Object value) {
         try {
             avroMapper.writer().with(avroSchema).writeValue(stream, value);
         } catch (IOException ex) {
             throw logger.logExceptionAsError(new UncheckedIOException(ex));
         }
-
-        return stream;
     }
 
     @Override
-    public <S extends OutputStream> Mono<S> serializeAsync(S stream, Object value) {
-        return Mono.fromCallable(() -> serialize(stream, value));
+    public Mono<Void> serializeAsync(OutputStream stream, Object value) {
+        return Mono.fromRunnable(() -> serialize(stream, value));
     }
 }

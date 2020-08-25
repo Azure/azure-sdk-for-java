@@ -27,6 +27,8 @@ public final class SchemaRegistryObject {
      *
      * @param schemaId schema ID
      * @param serializationType type of schema, e.g. avro, json
+     * @param schemaName schema name
+     * @param schemaGroup group under which schema is registered
      * @param schemaByteArray byte payload representing schema, returned from Azure Schema Registry
      * @param parseMethod method to deserialize schema payload into Object
      */

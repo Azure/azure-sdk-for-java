@@ -33,15 +33,16 @@ public class SchemaRegistrySerializerTest {
     private static final String MOCK_AVRO_SCHEMA_STRING = "{\"namespace\":\"example2.avro\",\"type\":\"record\",\"name\":\"User\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"favorite_number\",\"type\": [\"int\", \"null\"]}]}";
     private final EncoderFactory encoderFactory = EncoderFactory.get();
     private static final Schema MOCK_AVRO_SCHEMA = (new Schema.Parser()).parse(MOCK_AVRO_SCHEMA_STRING);
+    private static final String MOCK_SCHEMA_GROUP = "mock-group";
 
     @Test
     public void testRegistryGuidPrefixedToPayload() {
         // manually add SchemaRegistryObject into mock registry client cache
-        SampleSchemaRegistryCodec encoder = new SampleSchemaRegistryCodec();
+        TestSchemaRegistryUtils encoder = new TestSchemaRegistryUtils();
         SchemaRegistryObject registered = new SchemaRegistryObject(MOCK_GUID,
             encoder.getSerializationType(),
             encoder.getSchemaName(null),
-            "schema-group",
+            MOCK_SCHEMA_GROUP,
             encoder.getSchemaString(null).getBytes(), // always returns same schema string
             encoder::parseSchemaString);
 
@@ -50,17 +51,19 @@ public class SchemaRegistrySerializerTest {
         SchemaRegistryAsyncClient mockRegistryClient = getMockClient();
         Mockito.when(mockRegistryClient.getSchemaId(anyString(), anyString(), anyString(),
             any(SerializationType.class)))
-            .thenReturn(Mono.just(encoder.getSchemaString(null)));
+            .thenReturn(Mono.just(MOCK_GUID));
 
         TestDummySerializer serializer = new TestDummySerializer(
-            mockRegistryClient, false);
+            mockRegistryClient, encoder,false, MOCK_SCHEMA_GROUP);
 
         try {
-            ByteArrayOutputStream payload = serializer.serializeAsync(new ByteArrayOutputStream(), 1).block();
+            ByteArrayOutputStream payload =  new ByteArrayOutputStream();
+            serializer.serializeAsync(payload, 1).block();
             ByteBuffer buffer = ByteBuffer.wrap(payload.toByteArray());
             byte[] schemaGuidByteArray = new byte[SchemaRegistrySerializer.SCHEMA_ID_SIZE];
             buffer.get(schemaGuidByteArray);
 
+            System.out.println(new String(schemaGuidByteArray));
             // guid should match preloaded SchemaRegistryObject guid
             assertEquals(MOCK_GUID, new String(schemaGuidByteArray));
 
@@ -78,7 +81,9 @@ public class SchemaRegistrySerializerTest {
     public void testNullPayloadThrowsSerializationException() {
         TestDummySerializer serializer = new TestDummySerializer(
             getMockClient(),
-            false);
+            new TestSchemaRegistryUtils(),
+            false,
+            MOCK_SCHEMA_GROUP);
 
         try {
             serializer.serializeAsync(new ByteArrayOutputStream(), null).block();
@@ -93,7 +98,7 @@ public class SchemaRegistrySerializerTest {
     public void testIfRegistryNullThenThrow() {
         try {
             TestDummySerializer serializer = new TestDummySerializer(
-                null, false);
+                null, new TestSchemaRegistryUtils(), false, MOCK_SCHEMA_GROUP);
             fail("Building serializer instance with null registry client failed to throw");
         } catch (IllegalArgumentException e) {
             assertTrue(true);
@@ -103,15 +108,14 @@ public class SchemaRegistrySerializerTest {
     }
 
     @Test
-    public void testAddDeserializerCodec() throws IOException {
-        // add sample codec impl and test that it is used for decoding payload
-        SampleSchemaRegistryCodec decoder = new SampleSchemaRegistryCodec();
+    public void testAddUtils() throws IOException {
+        TestSchemaRegistryUtils decoder = new TestSchemaRegistryUtils();
 
         // manually add SchemaRegistryObject to cache
         SchemaRegistryObject registered = new SchemaRegistryObject(MOCK_GUID,
             decoder.getSerializationType(),
             decoder.getSchemaName(null),
-            "schema-group",
+            MOCK_SCHEMA_GROUP,
             MOCK_AVRO_SCHEMA_STRING.getBytes(),
             decoder::parseSchemaString);
 
@@ -121,33 +125,26 @@ public class SchemaRegistrySerializerTest {
         Mockito.when(mockClient.getSchema(anyString()))
             .thenReturn(Mono.just(registered));
 
-        // constructor loads deserializer codec
-        TestDummySerializer serializer = new TestDummySerializer(mockClient, true);
+        TestDummySerializer serializer = new TestDummySerializer(mockClient, decoder, true, MOCK_SCHEMA_GROUP);
 
         assertEquals(MOCK_GUID,
             serializer.schemaRegistryClient.getSchema(MOCK_GUID).block().getSchemaId());
 
-            serializer.deserializeAsync(new ByteArrayInputStream(getPayload()))
-                .subscribe(unused -> {
-                        System.out.println(unused);
-                    },
-                    ex -> System.out.println(ex));
-
-        assertEquals(SampleSchemaRegistryCodec.CONSTANT_PAYLOAD,
+        assertEquals(TestSchemaRegistryUtils.CONSTANT_PAYLOAD,
             serializer.deserializeAsync(new ByteArrayInputStream(getPayload())).block());
     }
 
     @Test
     public void testNullPayload() {
         TestDummySerializer deserializer = new TestDummySerializer(
-            getMockClient(), true);
+            getMockClient(), new TestSchemaRegistryUtils(), true, MOCK_SCHEMA_GROUP);
         assertNull(deserializer.deserializeAsync(null).block());
     }
 
     @Test
     public void testIfTooShortPayloadThrow() {
         TestDummySerializer serializer = new TestDummySerializer(
-            getMockClient(), true);
+            getMockClient(), new TestSchemaRegistryUtils(), true, MOCK_SCHEMA_GROUP);
 
         try {
             serializer.deserializeAsync(new ByteArrayInputStream("bad payload".getBytes())).block();
@@ -162,7 +159,8 @@ public class SchemaRegistrySerializerTest {
     @Test
     public void testIfRegistryClientNullOnBuildThrow() {
         try {
-            TestDummySerializer deserializer = new TestDummySerializer(null, true);
+            TestDummySerializer deserializer = new TestDummySerializer(
+                null, new TestSchemaRegistryUtils(), true, MOCK_SCHEMA_GROUP);
             fail("should not get here.");
         } catch (IllegalArgumentException e) {
             // good
