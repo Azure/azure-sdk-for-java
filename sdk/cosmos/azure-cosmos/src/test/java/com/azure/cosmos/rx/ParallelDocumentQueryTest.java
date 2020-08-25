@@ -74,15 +74,19 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         return new Object[][]{
             {true},
             {false},
+            {null}
         };
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
-    public void queryDocuments(boolean qmEnabled) {
+    public void queryDocuments(Boolean qmEnabled) {
         String query = "SELECT * from c where c.prop = 99";
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
-        options.setQueryMetricsEnabled(qmEnabled);
+        if (qmEnabled != null) {
+            options.setQueryMetricsEnabled(qmEnabled);
+        }
+
         options.setMaxDegreeOfParallelism(2);
         CosmosPagedFlux<InternalObjectNode> queryObservable = createdCollection.queryItems(query, options, InternalObjectNode.class);
 

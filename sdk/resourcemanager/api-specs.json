@@ -15,7 +15,7 @@
     "dir": "azure-resourcemanager-appplatform",
     "source": "specification/appplatform/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.appplatform",
-    "args": "--payload-flattening-threshold=1 --tag=package-2019-05-01-preview --remove-inner=TestKeys,ResourceSku,ResourceUploadDefinition,CustomDomainValidateResult,NameAvailability"
+    "args": "--payload-flattening-threshold=1 --tag=package-2020-07 --remove-inner=TestKeys,ResourceSku,ResourceUploadDefinition,CustomDomainValidateResult,NameAvailability"
   },
   "appservice": {
     "dir": "azure-resourcemanager-appservice",
