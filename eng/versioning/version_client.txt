@@ -30,6 +30,7 @@ com.azure:azure-digitaltwins-core;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-e2e;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-identity;1.1.0;1.2.0-beta.1
 com.azure:azure-identity-perf;1.0.0-beta.1;1.0.0-beta.1
+com.azure:azure-messaging-eventgrid;2.0.0-beta.1;2.0.0-beta.1
 com.azure:azure-messaging-eventhubs;5.1.2;5.2.0-beta.3
 com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.1.2;1.2.0-beta.3
 com.azure:azure-messaging-servicebus;7.0.0-beta.5;7.0.0-beta.6
