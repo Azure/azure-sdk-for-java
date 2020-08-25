@@ -21,6 +21,13 @@ jobs:
       parameters:
         Directory: ""
 
+    # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
+    # reports. This means it is available as part of that, but also so that this is not documented in the project report.
+    - template: ../steps/install-reporting-tools.yml
+      parameters:
+        Options: --batch-mode
+        MavenOptions: $(MemoryOptions) $(LoggingOptions)
+
     - task: PowerShell@2
       # The root pom.xml contains both track 1, data, and track 2, client libraries.
       # This task calls a powershell script that will go through all of the pom files
