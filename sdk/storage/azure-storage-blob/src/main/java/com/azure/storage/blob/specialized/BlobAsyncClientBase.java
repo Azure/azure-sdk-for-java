@@ -1764,9 +1764,9 @@ public class BlobAsyncClientBase {
         BlobRequestConditions requestConditions = queryOptions.getRequestConditions() == null
             ? new BlobRequestConditions() : queryOptions.getRequestConditions();
 
-        QuerySerialization in = BlobQueryReader.transformSerialization(queryOptions.getInputSerialization(),
+        QuerySerialization in = BlobQueryReader.transformInputSerialization(queryOptions.getInputSerialization(),
             logger);
-        QuerySerialization out = BlobQueryReader.transformSerialization(queryOptions.getOutputSerialization(),
+        QuerySerialization out = BlobQueryReader.transformOutputSerialization(queryOptions.getOutputSerialization(),
             logger);
 
         QueryRequest qr = new QueryRequest()
