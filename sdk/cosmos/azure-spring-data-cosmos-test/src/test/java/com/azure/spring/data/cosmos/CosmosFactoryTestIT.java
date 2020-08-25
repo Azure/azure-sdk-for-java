@@ -31,22 +31,6 @@ public class CosmosFactoryTestIT {
     public void testNullKey() {
         CosmosAsyncClient ignored = null;
         try {
-            ignored = CosmosFactory.createCosmosAsyncClient(new CosmosClientBuilder()
-                .endpoint(cosmosDbUri)
-                .key(null));
-        } catch (Exception e) {
-            assertThat(e instanceof IllegalArgumentException).isTrue();
-        } finally {
-            if (ignored != null) {
-                ignored.close();
-            }
-        }
-    }
-
-    @Test
-    public void testNullEndpoint() {
-        CosmosAsyncClient ignored = null;
-        try {
             ignored = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
                 .key(null).buildAsyncClient();
@@ -65,6 +49,22 @@ public class CosmosFactoryTestIT {
                 .key("").buildAsyncClient();
         } catch (Exception e) {
             assertThat(e instanceof IllegalArgumentException).isTrue();
+        } finally {
+            if (ignored != null) {
+                ignored.close();
+            }
+        }
+    }
+
+    @Test
+    public void testNullEndpoint() {
+        CosmosAsyncClient ignored = null;
+        try {
+            ignored = CosmosFactory.createCosmosAsyncClient(new CosmosClientBuilder()
+                .endpoint(null)
+                .key(cosmosDbKey));
+        } catch (Exception e) {
+            assertThat(e instanceof NullPointerException).isTrue();
         } finally {
             if (ignored != null) {
                 ignored.close();
