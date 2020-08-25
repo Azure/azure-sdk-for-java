@@ -348,6 +348,26 @@ public final class Constants {
         public static final String SAS_SIGNED_KEY_VERSION = "skv";
 
         /**
+         * The SAS AAD object id parameter for user delegation SAS.
+         */
+        public static final String SAS_AAD_OBJECT_ID = "saoid";
+
+        /**
+         * The SAS unauthorized object id parameter for user delegation SAS.
+         */
+        public static final String SAS_UNAUTHORIZED_OBJECT_ID = "suoid";
+
+        /**
+         * The SAS correlation id parameter for user delegation SAS.
+         */
+        public static final String SAS_CORRELATION_ID = "scid";
+
+        /**
+         * The SAS directory depth parameter.
+         */
+        public static final String SAS_DIRECTORY_DEPTH = "sdd";
+
+        /**
          * The SAS queue constant.
          */
         public static final String SAS_QUEUE_CONSTANT = "q";

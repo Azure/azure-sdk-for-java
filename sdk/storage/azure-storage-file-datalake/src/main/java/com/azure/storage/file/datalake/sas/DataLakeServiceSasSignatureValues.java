@@ -6,6 +6,7 @@ package com.azure.storage.file.datalake.sas;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.SasIpRange;
 import com.azure.storage.common.sas.SasProtocol;
+import com.azure.storage.file.datalake.DataLakeServiceVersion;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 
 import java.time.OffsetDateTime;
@@ -24,7 +25,7 @@ import java.time.OffsetDateTime;
  */
 public final class DataLakeServiceSasSignatureValues {
 
-    private String version;
+    private String version = DataLakeServiceVersion.getLatest().getVersion();
 
     private SasProtocol protocol;
 
@@ -47,6 +48,12 @@ public final class DataLakeServiceSasSignatureValues {
     private String contentLanguage;
 
     private String contentType;
+
+    private String authorizedAADObjectId;
+
+    private String unknownAADObjectId;
+
+    private String correlationId;
 
     /**
      * Creates an object with the specified expiry time and permissions
@@ -99,9 +106,11 @@ public final class DataLakeServiceSasSignatureValues {
      *
      * @param version Version to target
      * @return the updated DataLakeServiceSasSignatureValues object
+     * @deprecated The version is set to the latest version of sas.
      */
+    @Deprecated
     public DataLakeServiceSasSignatureValues setVersion(String version) {
-        this.version = version;
+        /* No-op.*/
         return this;
     }
 
@@ -320,6 +329,64 @@ public final class DataLakeServiceSasSignatureValues {
      */
     public DataLakeServiceSasSignatureValues setContentType(String contentType) {
         this.contentType = contentType;
+        return this;
+    }
+
+    /**
+     * @return the authorized AAD object id value for the SAS.
+     */
+    public String getAuthorizedAADObjectId() {
+        return authorizedAADObjectId;
+    }
+
+    /**
+     * Sets the authorized AAD object id value for the SAS.
+     *
+     * @param authorizedAADObjectId The AAD object ID of a user authorized by the owner of the user delegation key
+     * to perform the action granted by the SAS token.
+     * @return the updated DataLakeServiceSasSignatureValues object
+     */
+    public DataLakeServiceSasSignatureValues setAuthorizedAADObjectId(String authorizedAADObjectId) {
+        this.authorizedAADObjectId = authorizedAADObjectId;
+        return this;
+    }
+
+    /**
+     * @return the unknown AAD object id value for the SAS.
+     */
+    public String getUnknownAADObjectId() {
+        return unknownAADObjectId;
+    }
+
+    /**
+     * Sets the unknown AAD object id value for the SAS.
+     *
+     * @param unknownAADObjectId The AAD object ID of a user assumed to be unauthorized by the owner of the user
+     * delegation key to perform the action granted by the SAS token. The service will perform an additional
+     *  POSIX ACL check to determine if the user is authorized.
+     * @return the updated DataLakeServiceSasSignatureValues object
+     */
+    public DataLakeServiceSasSignatureValues setUnknownAADObjectId(String unknownAADObjectId) {
+        this.unknownAADObjectId = unknownAADObjectId;
+        return this;
+    }
+
+    /**
+     * @return the correlation id value for the SAS.
+     */
+    public String getCorrelationId() {
+        return correlationId;
+    }
+
+    /**
+     * Sets the correlation id value for the SAS.
+     *
+     * @param correlationId A correlation ID used to correlate the storage audit logs with the audit logs used by the
+     * principal generating and distributing SAS.
+     * @return the updated DataLakeServiceSasSignatureValues object
+     */
+    public DataLakeServiceSasSignatureValues setCorrelationId(String correlationId) {
+        this.correlationId = correlationId;
         return this;
     }
 }

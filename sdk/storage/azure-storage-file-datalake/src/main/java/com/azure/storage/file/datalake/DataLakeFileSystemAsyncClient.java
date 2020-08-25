@@ -14,16 +14,19 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuilder;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsResponse;
 import com.azure.storage.file.datalake.implementation.models.Path;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
+import com.azure.storage.file.datalake.implementation.util.DataLakeSasImplUtil;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
 import com.azure.storage.file.datalake.models.FileSystemAccessPolicies;
@@ -798,9 +801,8 @@ public class DataLakeFileSystemAsyncClient {
      */
     public String generateUserDelegationSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues,
         UserDelegationKey userDelegationKey) {
-        return blobContainerAsyncClient.generateUserDelegationSas(
-            Transforms.toBlobSasValues(dataLakeServiceSasSignatureValues),
-            Transforms.toBlobUserDelegationKey(userDelegationKey));
+        return new DataLakeSasImplUtil(dataLakeServiceSasSignatureValues, getFileSystemName())
+            .generateUserDelegationSas(userDelegationKey, getAccountName());
     }
 
     /**
@@ -817,6 +819,7 @@ public class DataLakeFileSystemAsyncClient {
      * @return A {@code String} representing all SAS query parameters.
      */
     public String generateSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues) {
-        return blobContainerAsyncClient.generateSas(Transforms.toBlobSasValues(dataLakeServiceSasSignatureValues));
+        return new DataLakeSasImplUtil(dataLakeServiceSasSignatureValues, getFileSystemName())
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()));
     }
 }

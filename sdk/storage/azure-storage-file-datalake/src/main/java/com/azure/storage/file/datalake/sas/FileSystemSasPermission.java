@@ -3,7 +3,6 @@
 
 package com.azure.storage.file.datalake.sas;
 
-
 import com.azure.storage.common.implementation.Constants;
 
 import java.util.Locale;
@@ -27,6 +26,15 @@ public final class FileSystemSasPermission {
 
     private boolean listPermission;
 
+    private boolean movePermission;
+
+    private boolean executePermission;
+
+    private boolean ownershipPermission;
+
+    private boolean permissionPermission;
+
+
     /**
      * Initializes an {@code FileSystemSasPermission} object with all fields set to false.
      */
@@ -39,7 +47,8 @@ public final class FileSystemSasPermission {
      *
      * @param permString A {@code String} which represents the {@code FileSystemSasPermission}.
      * @return A {@code FileSystemSasPermission} generated from the given {@code String}.
-     * @throws IllegalArgumentException If {@code permString} contains a character other than r, a, c, w, d, or l.
+     * @throws IllegalArgumentException If {@code permString} contains a character other than r, a, c, w, d, l, m, e,
+     * o, or p.
      */
     public static FileSystemSasPermission parse(String permString) {
         FileSystemSasPermission permissions = new FileSystemSasPermission();
@@ -64,6 +73,18 @@ public final class FileSystemSasPermission {
                     break;
                 case 'l':
                     permissions.listPermission = true;
+                    break;
+                case 'm':
+                    permissions.movePermission = true;
+                    break;
+                case 'e':
+                    permissions.executePermission = true;
+                    break;
+                case 'o':
+                    permissions.ownershipPermission = true;
+                    break;
+                case 'p':
+                    permissions.permissionPermission = true;
                     break;
                 default:
                     throw new IllegalArgumentException(
@@ -183,6 +204,78 @@ public final class FileSystemSasPermission {
     }
 
     /**
+     * @return the move permission status.
+     */
+    public boolean hasMovePermission() {
+        return movePermission;
+    }
+
+    /**
+     * Sets the move permission status.
+     *
+     * @param hasMovePermission Permission status to set
+     * @return the updated FileSystemSasPermission object.
+     */
+    public FileSystemSasPermission setMovePermission(boolean hasMovePermission) {
+        this.movePermission = hasMovePermission;
+        return this;
+    }
+
+    /**
+     * @return the execute permission status.
+     */
+    public boolean hasExecutePermission() {
+        return executePermission;
+    }
+
+    /**
+     * Sets the execute permission status.
+     *
+     * @param hasExecutePermission Permission status to set
+     * @return the updated FileSystemSasPermission object.
+     */
+    public FileSystemSasPermission setExecutePermission(boolean hasExecutePermission) {
+        this.executePermission = hasExecutePermission;
+        return this;
+    }
+
+    /**
+     * @return the ownership permission status.
+     */
+    public boolean hasOwnershipPermission() {
+        return ownershipPermission;
+    }
+
+    /**
+     * Sets the ownership permission status.
+     *
+     * @param hasOwnershipPermission Permission status to set
+     * @return the updated FileSystemSasPermission object.
+     */
+    public FileSystemSasPermission setOwnershipPermission(boolean hasOwnershipPermission) {
+        this.ownershipPermission = hasOwnershipPermission;
+        return this;
+    }
+
+    /**
+     * @return the permission permission status.
+     */
+    public boolean hasPermissionPermission() {
+        return permissionPermission;
+    }
+
+    /**
+     * Sets the permission permission status.
+     *
+     * @param hasPermissionPermission Permission status to set
+     * @return the updated FileSystemSasPermission object.
+     */
+    public FileSystemSasPermission setPermissionPermission(boolean hasPermissionPermission) {
+        this.permissionPermission = hasPermissionPermission;
+        return this;
+    }
+
+    /**
      * Converts the given permissions to a {@code String}. Using this method will guarantee the permissions are in an
      * order accepted by the service.
      *
@@ -216,6 +309,22 @@ public final class FileSystemSasPermission {
 
         if (this.listPermission) {
             builder.append('l');
+        }
+
+        if (this.movePermission) {
+            builder.append('m');
+        }
+
+        if (this.executePermission) {
+            builder.append('e');
+        }
+
+        if (this.ownershipPermission) {
+            builder.append('o');
+        }
+
+        if (this.permissionPermission) {
+            builder.append('p');
         }
 
         return builder.toString();
