@@ -842,7 +842,7 @@ Sync APIs
      * @param dependenciesFor The model Ids to have dependencies retrieved.
      * @param includeModelDefinition Whether to include the model definition in the result. If false, only the model metadata will be returned.
      * @param options The options to follow when listing the models. For example, the page size hint can be specified.
-     * @return A {@link PagedFlux} of ModelData.
+     * @return A {@link PagedIterable} of ModelData.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ModelData> listModels(List<String> dependenciesFor, boolean includeModelDefinition, DigitalTwinModelsListOptions options, Context context) { }
