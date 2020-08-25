@@ -20,6 +20,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
@@ -237,6 +238,28 @@ public class AsyncSample
             createTwinsSemaphore::release);
 
         // Request is strongly typed object
+        String dtId_WithResponse_BasicDigitalTwin = "dt_WithResponse_BasicDigitalTwin_" + random.nextInt();
+        CustomDigitalTwin genericDigitalTwin1 = new CustomDigitalTwin()
+            .id(dtId_WithResponse_BasicDigitalTwin)
+            .metadata((CustomDigitalTwinMetadata) new CustomDigitalTwinMetadata().modelId(modelId))
+            .averageTemperature(random.nextInt(50))
+            .temperatureUnit("Celsius");
+
+        // Response is strongly typed object Response<BasicDigitalTwin>
+        Mono<Response<BasicDigitalTwin>> sourceTwinWithResponseBasicDigitalTwin = client.createDigitalTwinWithResponseBasicDigitalTwin(dtId_WithResponse_BasicDigitalTwin, genericDigitalTwin1);
+        sourceTwinWithResponseBasicDigitalTwin.subscribe(
+            result -> {
+                System.out.println(String.format("%s: Created twin, Status = %d, Etag = %s",
+                    dtId_WithResponse_BasicDigitalTwin, result.getStatusCode(), result.getHeaders().get("etag")));
+                BasicDigitalTwin twin = result.getValue();
+                System.out.println(
+                    String.format("%s: Deserialized BasicDigitalTwin, \n\tId=%s, \n\tEtag=%s, \n\tModelId=%s, \n\tCustomProperties=%s \n",
+                        dtId_WithResponse_BasicDigitalTwin, twin.getId(), twin.getEtag(), twin.getMetadata().getModelId(), Arrays.toString(twin.getCustomProperties().entrySet().toArray())));
+            },
+            throwable -> System.err.println("Failed to create source twin on digital twin with Id " + dtId_WithResponse_BasicDigitalTwin + " due to error message " + throwable.getMessage()),
+            createTwinsSemaphore::release);
+
+        // Request is strongly typed object
         String dtId_WithResponse_Generic = "dt_WithResponse_Generic_" + random.nextInt();
         CustomDigitalTwin genericDigitalTwin = new CustomDigitalTwin()
             .id(dtId_WithResponse_Generic)
@@ -258,7 +281,7 @@ public class AsyncSample
             throwable -> System.err.println("Failed to create source twin on digital twin with Id " + dtId_WithResponse_Generic + " due to error message " + throwable.getMessage()),
             createTwinsSemaphore::release);
 
-        boolean created = createTwinsSemaphore.tryAcquire(5, 20, TimeUnit.SECONDS);
+        boolean created = createTwinsSemaphore.tryAcquire(6, 20, TimeUnit.SECONDS);
         System.out.println("Source twins created: " + created);
 
     }

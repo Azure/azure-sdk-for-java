@@ -18,6 +18,7 @@ import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImplBuilde
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.digitaltwins.core.models.DigitalTwinsAddHeaders;
 import com.azure.digitaltwins.core.models.DigitalTwinsAddResponse;
+import com.azure.digitaltwins.core.serialization.BasicDigitalTwin;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -60,6 +61,7 @@ public class DigitalTwinsAsyncClient {
                 }
             }
         });
+
         JacksonAdapter jacksonAdapter = new JacksonAdapter();
         jacksonAdapter.serializer().registerModule(stringModule);
 
@@ -158,6 +160,19 @@ public class DigitalTwinsAsyncClient {
         return protocolLayer
             .getDigitalTwins()
             .addWithResponseAsync(digitalTwinId, digitalTwin);
+    }
+
+    // Input is Object and output is Response<BasicDigitalTwin>.
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BasicDigitalTwin>> createDigitalTwinWithResponseBasicDigitalTwin(String digitalTwinId, Object digitalTwin) {
+        return protocolLayer
+            .getDigitalTwins()
+            .addWithResponseAsync(digitalTwinId, digitalTwin)
+            .flatMap(
+                response -> {
+                    BasicDigitalTwin genericResponse = mapper.convertValue(response.getValue(), BasicDigitalTwin.class);
+                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), genericResponse));
+                });
     }
 
     // Input is T and output is Response<T>.
