@@ -3,6 +3,15 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
+import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
+import com.azure.messaging.servicebus.administration.models.EntityStatus;
+import com.azure.messaging.servicebus.administration.models.MessagingSku;
+import com.azure.messaging.servicebus.administration.models.NamespaceProperties;
+import com.azure.messaging.servicebus.administration.models.NamespaceType;
+import com.azure.messaging.servicebus.administration.models.QueueProperties;
+import com.azure.messaging.servicebus.administration.models.QueueRuntimeInfo;
+import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeInfo;
 import com.azure.messaging.servicebus.implementation.models.MessageCountDetails;
 import com.azure.messaging.servicebus.implementation.models.NamespacePropertiesEntry;
 import com.azure.messaging.servicebus.implementation.models.QueueDescription;
@@ -15,15 +24,6 @@ import com.azure.messaging.servicebus.implementation.models.SubscriptionDescript
 import com.azure.messaging.servicebus.implementation.models.SubscriptionDescriptionEntry;
 import com.azure.messaging.servicebus.implementation.models.SubscriptionDescriptionEntryContent;
 import com.azure.messaging.servicebus.implementation.models.SubscriptionDescriptionFeed;
-import com.azure.messaging.servicebus.models.CreateQueueOptions;
-import com.azure.messaging.servicebus.models.CreateSubscriptionOptions;
-import com.azure.messaging.servicebus.models.EntityStatus;
-import com.azure.messaging.servicebus.models.MessagingSku;
-import com.azure.messaging.servicebus.models.NamespaceProperties;
-import com.azure.messaging.servicebus.models.NamespaceType;
-import com.azure.messaging.servicebus.models.QueueProperties;
-import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
-import com.azure.messaging.servicebus.models.SubscriptionRuntimeInfo;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -59,7 +59,8 @@ class ServiceBusManagementSerializerTest {
     void deserializeQueueDescription() throws IOException {
         // Arrange
         final String contents = getContents("QueueDescriptionEntry.xml");
-        final CreateQueueOptions expected = new CreateQueueOptions("my-test-queue")
+        final String queueName = "my-test-queue";
+        final CreateQueueOptions expected = new CreateQueueOptions()
             .setLockDuration(Duration.ofMinutes(5))
             .setMaxSizeInMegabytes(1024)
             .setRequiresDuplicateDetection(true)
@@ -80,7 +81,7 @@ class ServiceBusManagementSerializerTest {
         assertNotNull(entry.getContent());
 
         // The entry title is the name of the queue.
-        assertTitle(expected.getName(), entry.getTitle());
+        assertTitle(queueName, entry.getTitle());
 
         final QueueDescription actual = entry.getContent().getQueueDescription();
         assertQueueEquals(expected, EntityStatus.DELETING, actual);
@@ -138,7 +139,8 @@ class ServiceBusManagementSerializerTest {
                 .setHref("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2017-04&enrich=false&%24skip=5&%24top=5")
         );
 
-        final CreateQueueOptions options = new CreateQueueOptions("q-0")
+        final String queueName = "q-0";
+        final CreateQueueOptions options = new CreateQueueOptions()
             .setLockDuration(Duration.ofMinutes(10))
             .setMaxSizeInMegabytes(102)
             .setRequiresDuplicateDetection(true)
@@ -299,8 +301,10 @@ class ServiceBusManagementSerializerTest {
     void deserializeCreateSubscription() throws IOException {
         // Arrange
         final String contents = getContents("CreateSubscriptionEntry.xml");
+        final String topicName = "topic";
+        final String subscriptionName = "sub46850f";
         final SubscriptionDescription expected = EntityHelper.getSubscriptionDescription(
-            new CreateSubscriptionOptions("topic", "sub46850f")
+            new CreateSubscriptionOptions()
                 .setAutoDeleteOnIdle(Duration.parse("P10675199DT2H48M5.477S"))
                 .setDefaultMessageTimeToLive(Duration.parse("P10675199DT2H48M5.477S"))
                 .setRequiresSession(false)
@@ -375,18 +379,18 @@ class ServiceBusManagementSerializerTest {
         final String subscriptionName3 = "subscription-session-1";
 
         final SubscriptionDescription subscription1 = EntityHelper.getSubscriptionDescription(
-            new CreateSubscriptionOptions(topicName, subscriptionName1)
+            new CreateSubscriptionOptions()
                 .setLockDuration(Duration.ofSeconds(15))
                 .setDefaultMessageTimeToLive(Duration.ofMinutes(5))
                 .setMaxDeliveryCount(5)
                 .setAutoDeleteOnIdle(Duration.ofDays(1)));
         final SubscriptionDescription subscription2 = EntityHelper.getSubscriptionDescription(
-            new CreateSubscriptionOptions(topicName, subscriptionName2)
+            new CreateSubscriptionOptions()
                 .setRequiresSession(true)
                 .setLockDuration(Duration.ofSeconds(15))
                 .setMaxDeliveryCount(5));
         final SubscriptionDescription subscription3 = EntityHelper.getSubscriptionDescription(
-            new CreateSubscriptionOptions(topicName, subscriptionName3)
+            new CreateSubscriptionOptions()
                 .setRequiresSession(true)
                 .setLockDuration(Duration.ofSeconds(15))
                 .setMaxDeliveryCount(5));

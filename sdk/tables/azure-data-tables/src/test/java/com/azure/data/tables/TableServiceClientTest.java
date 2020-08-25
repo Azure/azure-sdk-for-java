@@ -8,13 +8,10 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
-import com.azure.data.tables.models.Table;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 public class TableServiceClientTest extends TestBase {
-    private TableServiceClient client;
+    private TableServiceClient serviceClient;
 
     @Override
     protected void beforeTest() {
@@ -31,23 +28,20 @@ public class TableServiceClientTest extends TestBase {
                 .addPolicy(new RetryPolicy());
         }
 
-        client = builder.buildClient();
+        serviceClient = builder.buildClient();
     }
 
     @Test
-    void createTable() {
+    void serviceCreateTable() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
 
         // Act
-        Table table = client.createTable(tableName);
-
-        // Assert
-        assertEquals(tableName, table.getName());
+        serviceClient.createTable(tableName);
     }
 
     @Test
-    void deleteTableAsync() {
+    void serviceDeleteTable() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
 
@@ -55,7 +49,7 @@ public class TableServiceClientTest extends TestBase {
     }
 
     @Test
-    void deleteTableWithResponseAsync() {
+    void serviceDeleteTableWithResponse() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         int expectedStatusCode = 204;
