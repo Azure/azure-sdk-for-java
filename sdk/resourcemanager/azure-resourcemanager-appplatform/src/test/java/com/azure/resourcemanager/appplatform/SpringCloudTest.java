@@ -61,6 +61,7 @@ public class SpringCloudTest extends AppPlatformTest {
         String serviceName = generateRandomResourceName("springsvc", 15);
         String appName = "gateway";
         String deploymentName = generateRandomResourceName("deploy", 15);
+        String deploymentName1 = generateRandomResourceName("deploy", 15);
         Region region = Region.US_EAST;
 
         Assertions.assertTrue(appPlatformManager.springServices().checkNameAvailability(serviceName, region).nameAvailable());
@@ -101,6 +102,13 @@ public class SpringCloudTest extends AppPlatformTest {
         }
 
         SpringApp app = service.apps().define(appName)
+            .defineActiveDeployment(deploymentName)
+                .withJarFile(jarFile)
+                .withInstance(2)
+                .withCpu(2)
+                .withMemory(4)
+                .withRuntime(RuntimeVersion.JAVA_11)
+                .attach()
             .withDefaultPublicEndpoint()
             .create();
 
@@ -110,18 +118,6 @@ public class SpringCloudTest extends AppPlatformTest {
         Assertions.assertTrue(requestSuccess(app.url()));
 
         SpringAppDeployment deployment = app.getActiveDeployment();
-        deployment
-            .update()
-            .withInstance(2)
-            .withCpu(2)
-            .withMemory(4)
-            .withRuntime(RuntimeVersion.JAVA_11)
-            .apply();
-
-        // Deployment cannot be scaled and updated at the same time.
-        deployment.update()
-            .withJarFile(jarFile)
-            .apply();
 
         Assertions.assertNotNull(app.url());
         Assertions.assertEquals(1, app.deployments().list().stream().count());
@@ -143,14 +139,14 @@ public class SpringCloudTest extends AppPlatformTest {
             connection.disconnect();
         }
 
-        deployment = app.deployments().define(deploymentName)
+        deployment = app.deployments().define(deploymentName1)
             .withSourceCodeTarGzFile(gzFile)
             .withTargetModule("gateway")
             .withActivation()
             .create();
         app.refresh();
 
-        Assertions.assertEquals(deploymentName, app.activeDeploymentName());
+        Assertions.assertEquals(deploymentName1, app.activeDeploymentName());
         Assertions.assertEquals(1, deployment.settings().cpu());
         Assertions.assertNotNull(deployment.getLogFileUrl());
 
@@ -161,11 +157,7 @@ public class SpringCloudTest extends AppPlatformTest {
             .apply();
         Assertions.assertFalse(app.isPublic());
 
-        app.deployments().list().forEach(deploy -> {
-            if (!deploy.name().equals(deploymentName)) {
-                app.deployments().deleteById(deploy.id());
-            }
-        });
+        app.deployments().deleteByName(deploymentName);
         Assertions.assertEquals(1, app.deployments().list().stream().count());
 
         service.apps().deleteById(app.id());
@@ -273,7 +265,7 @@ public class SpringCloudTest extends AppPlatformTest {
             .withCertificate("test", vault.vaultUri(), certName)
             .create();
 
-        service.apps().define(appName).withDefaultPublicEndpoint().create();
+        service.apps().define(appName).withDefaultActiveDeployment().withDefaultPublicEndpoint().create();
         SpringApp app = service.apps().getByName(appName);
 
         dnsZone.update()

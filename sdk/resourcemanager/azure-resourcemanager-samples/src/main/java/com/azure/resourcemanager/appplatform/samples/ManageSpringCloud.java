@@ -112,14 +112,13 @@ public class ManageSpringCloud {
 
             System.out.printf("Creating spring cloud app gateway in resource group %s ...%n", rgName);
             SpringApp gateway = service.apps().define("gateway")
+                .defineActiveDeployment("default")
+                    .withSourceCodeTarGzFile(gzFile)
+                    .withTargetModule("gateway")
+                    .attach()
                 .withDefaultPublicEndpoint()
                 .withHttpsOnly()
                 .create();
-            gateway.getActiveDeployment()
-                .update()
-                .withSourceCodeTarGzFile(gzFile)
-                .withTargetModule("gateway")
-                .apply();
 
             System.out.println("Created spring cloud service gateway");
             Utils.print(gateway);
@@ -129,12 +128,11 @@ public class ManageSpringCloud {
 
             System.out.printf("Creating spring cloud app auth-service in resource group %s ...%n", rgName);
             SpringApp authService = service.apps().define("auth-service")
+                .defineActiveDeployment("default")
+                    .withSourceCodeTarGzFile(gzFile)
+                    .withTargetModule("auth-service")
+                    .attach()
                 .create();
-            authService.getActiveDeployment()
-                .update()
-                .withSourceCodeTarGzFile(gzFile)
-                .withTargetModule("auth-service")
-                .apply();
 
             System.out.println("Created spring cloud service auth-service");
             Utils.print(authService);
@@ -144,12 +142,11 @@ public class ManageSpringCloud {
 
             System.out.printf("Creating spring cloud app account-service in resource group %s ...%n", rgName);
             SpringApp accountService = service.apps().define("account-service")
+                .defineActiveDeployment("default")
+                    .withSourceCodeTarGzFile(gzFile)
+                    .withTargetModule("account-service")
+                    .attach()
                 .create();
-            accountService.getActiveDeployment()
-                .update()
-                .withSourceCodeTarGzFile(gzFile)
-                .withTargetModule("account-service")
-                .apply();
 
             System.out.println("Created spring cloud service account-service");
             Utils.print(accountService);
