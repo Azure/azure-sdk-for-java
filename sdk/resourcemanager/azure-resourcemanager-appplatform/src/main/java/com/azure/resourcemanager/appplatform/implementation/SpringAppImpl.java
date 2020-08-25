@@ -122,8 +122,8 @@ public class SpringAppImpl
 
     @Override
     @SuppressWarnings("unchecked")
-    public SpringAppDeployments<SpringAppDeploymentImpl> deployments() {
-        return deployments;
+    public <T extends SpringAppDeployment.DefinitionStages.WithCreate<T>> SpringAppDeployments<T> deployments() {
+        return (SpringAppDeployments<T>) deployments;
     }
 
     @Override
@@ -303,8 +303,10 @@ public class SpringAppImpl
 
     @Override
     @SuppressWarnings("unchecked")
-    public SpringAppDeploymentImpl defineActiveDeployment(String name) {
-        return deployments.define(name);
+    public <T extends 
+        SpringAppDeployment.DefinitionStages.WithAttach<? extends SpringApp.DefinitionStages.WithCreate, T>>
+    SpringAppDeployment.DefinitionStages.Blank<T> defineActiveDeployment(String name) {
+        return (SpringAppDeployment.Definition<T>) deployments.define(name);
     }
 
     SpringAppImpl addActiveDeployment(SpringAppDeploymentImpl deployment) {
