@@ -8,8 +8,8 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
-import com.azure.digitaltwins.core.models.DigitalTwinsAddHeaders;
-import com.azure.digitaltwins.core.models.DigitalTwinsAddResponse;
+import com.azure.digitaltwins.core.implementation.models.DigitalTwinsAddHeaders;
+import com.azure.digitaltwins.core.implementation.models.DigitalTwinsAddResponse;
 import com.azure.digitaltwins.core.serialization.BasicDigitalTwin;
 import com.azure.digitaltwins.core.serialization.DigitalTwinMetadata;
 import com.azure.identity.ClientSecretCredentialBuilder;
@@ -20,7 +20,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
