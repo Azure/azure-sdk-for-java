@@ -303,8 +303,7 @@ public class ManageSpringCloud {
         }
     }
 
-
-    private static void extraTarGzSource(File folder, URL url) throws IOException {
+    public static void extraTarGzSource(File folder, URL url) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.connect();
         try (TarArchiveInputStream inputStream = new TarArchiveInputStream(new GzipCompressorInputStream(connection.getInputStream()))) {
