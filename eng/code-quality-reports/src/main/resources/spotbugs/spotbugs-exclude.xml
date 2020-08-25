@@ -732,6 +732,7 @@
       <Class name="com.azure.core.implementation.http.UrlBuilder"/>
       <Class name="com.azure.storage.blob.implementation.models.AppendBlobAppendBlockFromUrlHeaders"/>
       <Class name="com.azure.storage.file.share.implementation.models.FileGetPropertiesHeaders"/>
+      <Class name="com.azure.storage.file.datalake.implementation.models.PathAppendDataHeaders"/>
     </Or>
     <Bug pattern="NM_CONFUSING"/>
   </Match>

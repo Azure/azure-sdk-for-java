@@ -59,6 +59,11 @@ public class DataLakePathAsyncClient {
     private final ClientLogger logger = new ClientLogger(DataLakePathAsyncClient.class);
 
     final DataLakeStorageClientImpl dataLakeStorage;
+    /**
+     * This {@link DataLakeStorageClientImpl} is pointing to blob endpoint instead of dfs
+     * in order to expose APIs that are on blob endpoint but are only functional for HNS enabled accounts.
+     */
+    final DataLakeStorageClientImpl blobDataLakeStorage;
     private final String accountName;
     private final String fileSystemName;
     final String pathName;
@@ -88,6 +93,13 @@ public class DataLakePathAsyncClient {
             .version(serviceVersion.getVersion())
             .build();
         this.serviceVersion = serviceVersion;
+
+        String blobUrl = DataLakeImplUtils.endpointToDesiredEndpoint(url, "blob", "dfs");
+        this.blobDataLakeStorage = new DataLakeStorageClientBuilder()
+            .pipeline(pipeline)
+            .url(blobUrl)
+            .version(serviceVersion.getVersion())
+            .build();
 
         this.accountName = accountName;
         this.fileSystemName = fileSystemName;

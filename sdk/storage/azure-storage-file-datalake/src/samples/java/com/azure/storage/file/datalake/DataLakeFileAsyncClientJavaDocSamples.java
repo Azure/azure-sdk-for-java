@@ -14,6 +14,7 @@ import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.models.FileQueryProgress;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
+import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions;
 import reactor.core.publisher.Flux;
 
 import java.io.ByteArrayOutputStream;
@@ -352,6 +353,30 @@ public class DataLakeFileAsyncClientJavaDocSamples {
                 });
             });
         // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.queryWithResponse#FileQueryOptions
+    }
+
+    /**
+     * Code snippet for {@link DataLakeFileAsyncClient#scheduleDeletion(FileScheduleDeletionOptions)}
+     */
+    public void scheduleDeletion() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.scheduleDeletion#FileScheduleDeletionOptions
+        FileScheduleDeletionOptions options = new FileScheduleDeletionOptions(OffsetDateTime.now().plusDays(1));
+
+        client.scheduleDeletion(options)
+            .subscribe(r -> System.out.println("File deletion has been scheduled"));
+        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.scheduleDeletion#FileScheduleDeletionOptions
+    }
+
+    /**
+     * Code snippet for {@link DataLakeFileAsyncClient#scheduleDeletionWithResponse(FileScheduleDeletionOptions)}
+     */
+    public void scheduleDeletionWithResponse() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.scheduleDeletionWithResponse#FileScheduleDeletionOptions
+        FileScheduleDeletionOptions options = new FileScheduleDeletionOptions(OffsetDateTime.now().plusDays(1));
+
+        client.scheduleDeletionWithResponse(options)
+            .subscribe(r -> System.out.println("File deletion has been scheduled"));
+        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.scheduleDeletionWithResponse#FileScheduleDeletionOptions
     }
 
 }

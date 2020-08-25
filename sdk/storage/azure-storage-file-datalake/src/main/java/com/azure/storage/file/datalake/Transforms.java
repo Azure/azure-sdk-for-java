@@ -244,7 +244,7 @@ class Transforms {
                 properties.isServerEncrypted(), properties.isIncrementalCopy(),
                 Transforms.toDataLakeAccessTier(properties.getAccessTier()),
                 Transforms.toDataLakeArchiveStatus(properties.getArchiveStatus()), properties.getEncryptionKeySha256(),
-                properties.getAccessTierChangeTime(), properties.getMetadata());
+                properties.getAccessTierChangeTime(), properties.getMetadata(), properties.getExpiresOn());
         }
     }
 

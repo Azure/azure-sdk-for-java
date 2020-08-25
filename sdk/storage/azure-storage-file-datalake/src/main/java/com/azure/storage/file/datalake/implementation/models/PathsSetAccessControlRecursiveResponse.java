@@ -9,19 +9,19 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
 /**
- * Contains all response data for the update operation.
+ * Contains all response data for the setAccessControlRecursive operation.
  */
-public final class PathsUpdateResponse extends ResponseBase<PathUpdateHeaders, SetAccessControlRecursiveResponse> {
+public final class PathsSetAccessControlRecursiveResponse extends ResponseBase<PathSetAccessControlRecursiveHeaders, SetAccessControlRecursiveResponse> {
     /**
-     * Creates an instance of PathsUpdateResponse.
+     * Creates an instance of PathsSetAccessControlRecursiveResponse.
      *
-     * @param request the request which resulted in this PathsUpdateResponse.
+     * @param request the request which resulted in this PathsSetAccessControlRecursiveResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public PathsUpdateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, SetAccessControlRecursiveResponse value, PathUpdateHeaders headers) {
+    public PathsSetAccessControlRecursiveResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, SetAccessControlRecursiveResponse value, PathSetAccessControlRecursiveHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
