@@ -20,11 +20,11 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 /** Entry point for Spring App Deployments API. */
 @Fluent
 @Beta
-public interface SpringAppDeployments
+public interface SpringAppDeployments<T>
     extends HasManager<AppPlatformManager>,
     HasInner<DeploymentsClient>,
     HasParent<SpringApp>,
-    SupportsCreating<SpringAppDeployment.DefinitionStages.Blank>,
+    SupportsCreating<SpringAppDeployment.DefinitionStages.Blank<T>>,
     SupportsGettingById<SpringAppDeployment>,
     SupportsGettingByName<SpringAppDeployment>,
     SupportsListing<SpringAppDeployment>,

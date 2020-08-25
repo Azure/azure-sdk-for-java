@@ -8,6 +8,7 @@ import com.azure.core.implementation.annotation.Beta;
 import com.azure.resourcemanager.appplatform.fluent.inner.DeploymentResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ExternalChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
+import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
@@ -75,26 +76,30 @@ public interface SpringAppDeployment
     /** @return the log file url of the deployment */
     Mono<String> getLogFileUrlAsync();
 
-    /** Container interface for all the definitions that need to be implemented. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithSource,
-            DefinitionStages.WithModule,
-            DefinitionStages.WithCreate { }
+    /**
+     * Container interface for all the definitions that need to be implemented.
+     * @param <T> The return type of final stage,
+     *            usually {@link DefinitionStages.WithCreate} or {@link DefinitionStages.WithAttach}
+     */
+    interface Definition<T>
+        extends DefinitionStages.Blank<T>,
+            DefinitionStages.WithSource<T>,
+            DefinitionStages.WithModule<T>,
+            DefinitionStages.Final<T> { }
 
     /** Grouping of all the deployment definition stages. */
     interface DefinitionStages {
         /** The first stage of the deployment definition. */
-        interface Blank extends WithSource { }
+        interface Blank<T> extends WithSource<T> { }
 
         /** The stage of a deployment definition allowing to specify the source code or package. */
-        interface WithSource {
+        interface WithSource<T> {
             /**
              * Specifies the jar package for the deployment.
              * @param jar the file of the jar
              * @return the next stage of deployment definition
              */
-            WithCreate withJarFile(File jar);
+            T withJarFile(File jar);
 
             // Remove compression first due to tar.gz needs extern dependency
             // /**
@@ -109,7 +114,7 @@ public interface SpringAppDeployment
              * @param sourceCodeTarGz a tar.gz file of the source code
              * @return the next stage of deployment definition
              */
-            WithModule withSourceCodeTarGzFile(File sourceCodeTarGz);
+            WithModule<T> withSourceCodeTarGzFile(File sourceCodeTarGz);
 
             /**
              * Specifies the a existing source in the cloud storage.
@@ -117,61 +122,61 @@ public interface SpringAppDeployment
              * @param relativePath the relative path gotten from getResourceUploadUrl
              * @return the next stage of deployment definition
              */
-            WithCreate withExistingSource(UserSourceType type, String relativePath);
+            T withExistingSource(UserSourceType type, String relativePath);
         }
 
         /** The stage of a deployment definition allowing to specify the module of the source code. */
-        interface WithModule {
+        interface WithModule<T> {
             /**
              * Specifies the module of the source code.
              * @param moduleName the target module of the multi-module source code
              * @return the next stage of deployment definition
              */
-            WithCreate withTargetModule(String moduleName);
+            T withTargetModule(String moduleName);
 
             /**
              * Specifies the only module of the source code.
              * @return the next stage of deployment definition
              */
-            WithCreate withSingleModule();
+            T withSingleModule();
         }
 
         /** The stage of a deployment definition allowing to specify deployment settings. */
-        interface WithSettings {
+        interface WithSettings<T> {
             /**
              * Specifies the instance number of the deployment.
              * @param count the number of the instance
              * @return the next stage of deployment definition
              */
-            WithCreate withInstance(int count);
+            T withInstance(int count);
 
             /**
              * Specifies the cpu number of the deployment.
              * @param cpuCount the number of the cpu
              * @return the next stage of deployment definition
              */
-            WithCreate withCpu(int cpuCount);
+            T withCpu(int cpuCount);
 
             /**
              * Specifies the memory of the deployment.
              * @param sizeInGB the size of the memory in GB
              * @return the next stage of deployment definition
              */
-            WithCreate withMemory(int sizeInGB);
+            T withMemory(int sizeInGB);
 
             /**
              * Specifies the runtime version of the deployment.
              * @param version the runtime version of Java
              * @return the next stage of deployment definition
              */
-            WithCreate withRuntime(RuntimeVersion version);
+            T withRuntime(RuntimeVersion version);
 
             /**
              * Specifies the jvm options of the deployment.
              * @param jvmOptions the argument of jvm
              * @return the next stage of deployment definition
              */
-            WithCreate withJvmOptions(String jvmOptions);
+            T withJvmOptions(String jvmOptions);
 
             /**
              * Specifies a environment variable of the deployment.
@@ -179,29 +184,36 @@ public interface SpringAppDeployment
              * @param value the value of the environment
              * @return the next stage of deployment definition
              */
-            WithCreate withEnvironment(String key, String value);
+            T withEnvironment(String key, String value);
 
             /**
              * Specifies the version of the deployment.
              * @param versionName the version name of the deployment
              * @return the next stage of deployment definition
              */
-            WithCreate withVersionName(String versionName);
+            T withVersionName(String versionName);
 
             /**
              * Activates of the deployment after definition.
              * @return the next stage of deployment definition
              */
-            WithCreate withActivation();
+            T withActivation();
         }
 
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
          */
-        interface WithCreate
-            extends Creatable<SpringAppDeployment>,
-                WithSettings { }
+        interface Final<T>
+            extends WithSettings<T> { }
+
+        /** The final stage of the definition allowing to create a deployment */
+        interface WithCreate<T>
+            extends Creatable<SpringAppDeployment>, Final<T> { }
+
+        /** The final stage of the definition allowing to attach a deployment to its parent */
+        interface WithAttach<ParentT, T>
+            extends Attachable<ParentT>, Final<T> { }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */

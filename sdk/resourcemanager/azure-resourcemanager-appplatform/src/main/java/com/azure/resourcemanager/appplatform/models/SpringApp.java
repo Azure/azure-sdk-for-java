@@ -6,6 +6,7 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.implementation.annotation.Beta;
 import com.azure.resourcemanager.appplatform.fluent.inner.AppResourceInner;
+import com.azure.resourcemanager.appplatform.implementation.SpringAppDeploymentImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ExternalChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
@@ -56,7 +57,8 @@ public interface SpringApp
     Mono<SpringAppDeployment> getActiveDeploymentAsync();
 
     /** @return the entry point of the spring app deployment */
-    SpringAppDeployments deployments();
+    <T extends SpringAppDeployment.DefinitionStages.WithCreate<T>>
+    SpringAppDeployments<T> deployments();
 
     /** @return the entry point of the spring app service binding */
     SpringAppServiceBindings serviceBindings();
@@ -72,12 +74,33 @@ public interface SpringApp
 
     /** Container interface for all the definitions that need to be implemented. */
     interface Definition
-        extends DefinitionStages.Blank { }
+        extends DefinitionStages.Blank,
+            DefinitionStages.WithCreate { }
 
     /** Grouping of all the spring app definition stages. */
     interface DefinitionStages {
         /** The first stage of the spring app definition. */
-        interface Blank extends WithCreate { }
+        interface Blank extends WithDeployment { }
+
+        /**
+         * The stage of a spring app definition allowing to specify an active deployment.
+         */
+        interface WithDeployment {
+            /**
+             * Deploys a default package for the spring app with default scale.
+             * @return the next stage of spring app definition
+             */
+            WithCreate withDefaultActiveDeployment();
+
+            /**
+             * Starts the definition of the active deployment for the spring app.
+             * @param name the name of the deployment
+             * @return the first stage of spring app deployment definition
+             */
+            <T extends SpringAppDeployment.DefinitionStages.WithAttach
+                <? extends SpringApp.DefinitionStages.WithCreate, T>>
+            SpringAppDeployment.DefinitionStages.Blank<T> defineActiveDeployment(String name);
+        }
 
         /** The stage of a spring app definition allowing to specify the endpoint. */
         interface WithEndpoint {
@@ -126,13 +149,6 @@ public interface SpringApp
              * @return the next stage of spring app definition
              */
             WithCreate withPersistentDisk(int sizeInGB, String mountPath);
-        }
-
-        /**
-         * The stage of a spring app definition allowing to specify an simple active deployment.
-         * for more operations, use {@link #deployments()}
-         */
-        interface WithDeployment {
         }
 
         /** The stage of a spring app update allowing to specify the service binding. */

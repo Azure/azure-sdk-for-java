@@ -121,7 +121,8 @@ public class SpringAppImpl
     }
 
     @Override
-    public SpringAppDeployments deployments() {
+    @SuppressWarnings("unchecked")
+    public SpringAppDeployments<SpringAppDeploymentImpl> deployments() {
         return deployments;
     }
 
@@ -291,10 +292,23 @@ public class SpringAppImpl
         return this;
     }
 
-    public void withDefaultActiveDeployment() {
+    @Override
+    public SpringAppImpl withDefaultActiveDeployment() {
         String defaultDeploymentName = "default";
         withActiveDeployment(defaultDeploymentName);
         springAppDeploymentToCreate = deployments().define(defaultDeploymentName)
             .withExistingSource(UserSourceType.JAR, String.format("<%s>", defaultDeploymentName));
+        return this;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public SpringAppDeploymentImpl defineActiveDeployment(String name) {
+        return deployments.define(name);
+    }
+
+    SpringAppImpl addActiveDeployment(SpringAppDeploymentImpl deployment) {
+        springAppDeploymentToCreate = deployment;
+        return this;
     }
 }
