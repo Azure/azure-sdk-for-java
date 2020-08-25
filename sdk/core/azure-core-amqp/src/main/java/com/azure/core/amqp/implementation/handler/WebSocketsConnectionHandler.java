@@ -29,10 +29,11 @@ public class WebSocketsConnectionHandler extends ConnectionHandler {
      * @param hostname Hostname to use for socket creation.
      * @param product The name of the product this connection handler is created for.
      * @param clientVersion The version of the client library creating the connection handler.
+     * @param applicationId applicationId to be used in user agent while making connection.
      */
     public WebSocketsConnectionHandler(final String connectionId, final String hostname, final String product,
-        final String clientVersion) {
-        super(connectionId, hostname, product, clientVersion, null);
+        final String clientVersion, final String applicationId) {
+        super(connectionId, hostname, product, clientVersion, applicationId);
     }
 
     @Override

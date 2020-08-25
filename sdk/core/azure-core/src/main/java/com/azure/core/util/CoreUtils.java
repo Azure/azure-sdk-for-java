@@ -3,7 +3,6 @@
 
 package com.azure.core.util;
 
-import com.azure.core.ClientOptions;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.logging.ClientLogger;
@@ -31,6 +30,7 @@ import java.util.stream.Collectors;
  * This class contains utility methods useful for building client libraries.
  */
 public final class CoreUtils {
+    private static final ClientLogger LOGGER = new ClientLogger(CoreUtils.class);
     private static final String COMMA = ",";
     private static final Charset UTF_32BE = Charset.forName("UTF-32BE");
     private static final Charset UTF_32LE = Charset.forName("UTF-32LE");
@@ -285,8 +285,7 @@ public final class CoreUtils {
         // Check applicationId in both location , if present, should be same.
         if (runtimeException != null && logApplicationId != null && clientApplicationId != null
             && !clientApplicationId.equalsIgnoreCase(logApplicationId)) {
-            ClientLogger logger = new ClientLogger(CoreUtils.class);
-            throw logger.logExceptionAsError(runtimeException);
+            throw LOGGER.logExceptionAsError(runtimeException);
         }
         // We prioritize application id sent in ClientOptions.
         applicationId = clientApplicationId != null ? clientApplicationId : logApplicationId;

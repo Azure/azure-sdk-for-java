@@ -3,6 +3,7 @@
 
 package com.azure.core.util;
 
+import com.azure.core.http.policy.HttpLogOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,6 +17,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CoreUtilsTests {
@@ -75,6 +77,30 @@ public class CoreUtilsTests {
         assertEquals(expected, CoreUtils.bomAwareToString(bytes, contentType));
     }
 
+    @ParameterizedTest
+    @MethodSource("validApplicationId")
+    public void testValidApplicationId(String logOptionsId, String clientOptionsId, String expected) {
+        HttpLogOptions logOptions = new HttpLogOptions().setApplicationId(logOptionsId);
+        ClientOptions clientOptions = new ClientOptions();
+
+        if (clientOptionsId !=  null) {
+            clientOptions.setApplicationId(clientOptionsId);
+        }
+
+        String actual = CoreUtils.validateApplicationId(logOptions, clientOptions, null);
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testValidateApplicationIdRuntimeException() {
+        String expected = "application-id1";
+        HttpLogOptions logOptions = new HttpLogOptions().setApplicationId("application-id2");
+        ClientOptions clientOptions = new ClientOptions().setApplicationId(expected);
+        RuntimeException runtimeException = new RuntimeException("aplicationId must be same.");
+
+        assertThrows(RuntimeException.class, () -> CoreUtils.validateApplicationId(logOptions, clientOptions, runtimeException));
+    }
+
     private static Stream<Arguments> bomAwareToStringSupplier() {
         return Stream.of(
             Arguments.arguments(null, null, null),
@@ -88,6 +114,16 @@ public class CoreUtilsTests {
             Arguments.arguments(addBom(UTF_32LE_BOM), null, new String(BYTES, Charset.forName("UTF-32LE"))),
             Arguments.arguments(addBom(UTF_8_BOM), "charset=UTF-8", new String(BYTES, StandardCharsets.UTF_8)),
             Arguments.arguments(addBom(UTF_8_BOM), "charset=UTF-16BE", new String(BYTES, StandardCharsets.UTF_8))
+        );
+    }
+
+    private static Stream<Arguments> validApplicationId() {
+        return Stream.of(
+            //                 logOptions, clientOptions, expected
+            Arguments.arguments("a", "b", "b"),
+            Arguments.arguments("a", "a", "a"),
+            Arguments.arguments("a", null, "a"),
+            Arguments.arguments(null, "a", "a")
         );
     }
 

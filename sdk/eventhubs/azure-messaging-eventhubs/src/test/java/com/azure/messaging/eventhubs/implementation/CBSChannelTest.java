@@ -46,6 +46,7 @@ import static com.azure.core.amqp.implementation.CbsAuthorizationType.SHARED_ACC
  */
 @Tag(TestUtils.INTEGRATION)
 class CBSChannelTest extends IntegrationTestBase {
+    private static final String APPLICATION_ID = "";
     private static final String CONNECTION_ID = "CbsChannelTest-Connection";
     private static String product;
     private static String clientVersion;
@@ -105,7 +106,7 @@ class CBSChannelTest extends IntegrationTestBase {
             connectionProperties.getSharedAccessKeyName(), connectionProperties.getSharedAccessKey());
         ConnectionOptions connectionOptions = new ConnectionOptions(connectionProperties.getEndpoint().getHost(),
             tokenCredential, SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP,
-            RETRY_OPTIONS, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.elastic());
+            RETRY_OPTIONS, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.elastic(), APPLICATION_ID);
         connection = new TestReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, handlerProvider,
             azureTokenManagerProvider, messageSerializer, product, clientVersion);
 
@@ -127,7 +128,7 @@ class CBSChannelTest extends IntegrationTestBase {
 
         final ConnectionOptions connectionOptions = new ConnectionOptions(connectionProperties.getEndpoint().getHost(),
             invalidToken, SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, RETRY_OPTIONS, ProxyOptions.SYSTEM_DEFAULTS,
-            Schedulers.elastic());
+            Schedulers.elastic(), APPLICATION_ID);
         connection = new TestReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, handlerProvider,
             azureTokenManagerProvider, messageSerializer, product, clientVersion);
 

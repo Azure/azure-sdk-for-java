@@ -14,7 +14,6 @@ module com.azure.core {
     requires transitive com.fasterxml.jackson.datatype.jsr310;
 
     // public API surface area
-    exports com.azure.core;
     exports com.azure.core.annotation;
     exports com.azure.core.credential;
     exports com.azure.core.cryptography;

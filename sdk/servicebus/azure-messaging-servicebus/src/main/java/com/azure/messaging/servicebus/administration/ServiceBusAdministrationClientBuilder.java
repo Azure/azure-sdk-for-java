@@ -3,7 +3,6 @@
 
 package com.azure.messaging.servicebus.administration;
 
-import com.azure.core.ClientOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
@@ -19,6 +18,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -264,9 +264,9 @@ public class ServiceBusAdministrationClientBuilder {
      *
      * @param clientOptions to be set on the client.
      *
-     * @return The updated {@link ServiceBusManagementClientBuilder} object.
+     * @return The updated {@link ServiceBusAdministrationClientBuilder} object.
      */
-    public ServiceBusManagementClientBuilder clientOptions(ClientOptions clientOptions) {
+    public ServiceBusAdministrationClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
     }

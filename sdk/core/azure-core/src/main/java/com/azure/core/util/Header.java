@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core;
+package com.azure.core.util;
 
 /**
  * A single header within for a request.
@@ -15,7 +15,7 @@ public class Header {
     private String value;
 
     /**
-     * Create a HttpHeader instance using the provided name and value.
+     * Create a Header instance using the provided name and value.
      *
      * @param name the name
      * @param value the value
@@ -64,7 +64,7 @@ public class Header {
     /**
      * Get the String representation of the header.
      *
-     * @return the String representation of this HttpHeader
+     * @return the String representation of this Header.
      */
     @Override
     public String toString() {

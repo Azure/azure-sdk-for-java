@@ -72,6 +72,7 @@ import static reactor.core.publisher.Mono.just;
  * Unit tests for {@link ServiceBusSenderAsyncClient}.
  */
 class ServiceBusSenderAsyncClientTest {
+    private static final String APPLICATION_ID = "ID";
     private static final String NAMESPACE = "my-namespace";
     private static final String ENTITY_NAME = "my-servicebus-entity";
     private static final String LINK_NAME = "my-link-name";
@@ -134,7 +135,7 @@ class ServiceBusSenderAsyncClientTest {
 
         connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, retryOptions,
-            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
+            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), APPLICATION_ID);
 
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
         endpointSink.next(AmqpEndpointState.ACTIVE);

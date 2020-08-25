@@ -3,7 +3,7 @@
 
 package com.azure.core.http;
 
-import com.azure.core.Header;
+import com.azure.core.util.Header;
 
 /**
  * A single header within a HTTP request or response.

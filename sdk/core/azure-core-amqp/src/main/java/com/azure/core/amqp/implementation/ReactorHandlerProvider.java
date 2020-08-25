@@ -55,13 +55,14 @@ public class ReactorHandlerProvider {
             case AMQP_WEB_SOCKETS:
                 if (proxyOptions != null && proxyOptions.isProxyAddressConfigured()) {
                     return new WebSocketsProxyConnectionHandler(connectionId, hostname, proxyOptions, product,
-                        clientVersion);
+                        clientVersion, applicationId);
                 } else if (WebSocketsProxyConnectionHandler.shouldUseProxy(hostname)) {
                     logger.info("System default proxy configured for hostname '{}'. Using proxy.", hostname);
                     return new WebSocketsProxyConnectionHandler(connectionId, hostname,
-                        ProxyOptions.SYSTEM_DEFAULTS, product, clientVersion);
+                        ProxyOptions.SYSTEM_DEFAULTS, product, clientVersion, applicationId);
                 } else {
-                    return new WebSocketsConnectionHandler(connectionId, hostname, product, clientVersion);
+                    return new WebSocketsConnectionHandler(connectionId, hostname, product, clientVersion,
+                        applicationId);
                 }
             default:
                 throw logger.logExceptionAsWarning(new IllegalArgumentException(String.format(Locale.US,
