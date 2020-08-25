@@ -32,6 +32,7 @@ import com.microsoft.azure.management.applicationinsights.v2015_05_01.WebTestLoc
 import com.microsoft.azure.management.applicationinsights.v2015_05_01.WebTests;
 import com.microsoft.azure.management.applicationinsights.v2015_05_01.AnalyticsItems;
 import com.microsoft.azure.management.applicationinsights.v2015_05_01.Workbooks;
+import com.microsoft.azure.management.applicationinsights.v2015_05_01.MyWorkbooks;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -55,6 +56,7 @@ public final class InsightsManager extends ManagerCore<InsightsManager, Applicat
     private WebTests webTests;
     private AnalyticsItems analyticsItems;
     private Workbooks workbooks;
+    private MyWorkbooks myWorkbooks;
     /**
     * Get a Configurable instance that can be used to create InsightsManager with optional configuration.
     *
@@ -260,6 +262,16 @@ public final class InsightsManager extends ManagerCore<InsightsManager, Applicat
             this.workbooks = new WorkbooksImpl(this);
         }
         return this.workbooks;
+    }
+
+    /**
+     * @return Entry point to manage MyWorkbooks.
+     */
+    public MyWorkbooks myWorkbooks() {
+        if (this.myWorkbooks == null) {
+            this.myWorkbooks = new MyWorkbooksImpl(this);
+        }
+        return this.myWorkbooks;
     }
 
     /**
