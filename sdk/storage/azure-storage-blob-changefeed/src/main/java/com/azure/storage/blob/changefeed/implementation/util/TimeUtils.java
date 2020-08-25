@@ -78,7 +78,7 @@ public class TimeUtils {
     /**
      * Rounds a time up to the nearest hour.
      */
-    private static OffsetDateTime roundUpToNearestHour(OffsetDateTime time) {
+    public static OffsetDateTime roundUpToNearestHour(OffsetDateTime time) {
         if (time == null) {
             return null;
         }
@@ -95,7 +95,7 @@ public class TimeUtils {
     /**
      * Rounds a time down to the nearest hour.
      */
-    private static OffsetDateTime roundDownToNearestHour(OffsetDateTime time) {
+    public static OffsetDateTime roundDownToNearestHour(OffsetDateTime time) {
         if (time == null) {
             return null;
         }

@@ -38,8 +38,8 @@ public final class SubscriptionsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     SubscriptionsImpl(ServiceBusManagementClientImpl client) {
-        this.service = RestProxy.create(SubscriptionsService.class, client.getHttpPipeline(),
-            client.getSerializerAdapter());
+        this.service =
+                RestProxy.create(SubscriptionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -70,7 +70,7 @@ public final class SubscriptionsImpl {
                 @PathParam("subscriptionName") String subscriptionName,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("If-Match") String ifMatch,
-                @BodyParam("application/xml") Object requestBody,
+                @BodyParam("application/atom+xml") Object requestBody,
                 Context context);
 
         @Delete("/{topicName}/subscriptions/{subscriptionName}")

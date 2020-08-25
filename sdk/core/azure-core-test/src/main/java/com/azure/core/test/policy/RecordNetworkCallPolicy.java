@@ -24,7 +24,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -165,7 +165,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
                     return responseData;
                 }
 
-                responseData.put(BODY, Arrays.toString(bytes));
+                responseData.put(BODY, Base64.getEncoder().encodeToString(bytes));
                 return responseData;
             });
         } else if (contentType.contains("json") || response.getHeaderValue(CONTENT_ENCODING) == null) {
@@ -193,7 +193,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
                             bytesRead = gis.read(buffer, position, buffer.length);
                         }
 
-                        content = new String(output.toByteArray(), StandardCharsets.UTF_8);
+                        content = output.toString("UTF-8");
                     } catch (IOException e) {
                         throw logger.logExceptionAsWarning(Exceptions.propagate(e));
                     }

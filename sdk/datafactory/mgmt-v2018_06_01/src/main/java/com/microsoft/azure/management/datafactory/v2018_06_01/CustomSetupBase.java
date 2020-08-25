@@ -18,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = CustomSetupBase.class)
 @JsonTypeName("CustomSetupBase")
 @JsonSubTypes({
+    @JsonSubTypes.Type(name = "AzPowerShellSetup", value = AzPowerShellSetup.class),
     @JsonSubTypes.Type(name = "ComponentSetup", value = ComponentSetup.class),
     @JsonSubTypes.Type(name = "EnvironmentVariableSetup", value = EnvironmentVariableSetup.class),
     @JsonSubTypes.Type(name = "CmdkeySetup", value = CmdkeySetup.class)

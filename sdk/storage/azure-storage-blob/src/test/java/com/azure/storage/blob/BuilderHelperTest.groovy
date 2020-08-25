@@ -16,6 +16,7 @@ import com.azure.storage.blob.implementation.util.BuilderHelper
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.policy.RequestRetryOptions
+import com.azure.storage.common.policy.RetryPolicyType
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
@@ -24,6 +25,7 @@ import spock.lang.Specification
 class BuilderHelperTest extends Specification {
     static def credentials = new StorageSharedKeyCredential("accountName", "accountKey")
     static def endpoint = "https://account.blob.core.windows.net/"
+    static def requestRetryOptions = new RequestRetryOptions(RetryPolicyType.FIXED, 2, 2, 1000, 4000, null)
 
     static HttpRequest request(String url) {
         return new HttpRequest(HttpMethod.HEAD, new URL(url), new HttpHeaders().put("Content-Length", "0"),
@@ -35,7 +37,7 @@ class BuilderHelperTest extends Specification {
      */
     def "Fresh date applied on retry"() {
         when:
-        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, endpoint, new RequestRetryOptions(), null,
+        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, endpoint, requestRetryOptions, null,
             new FreshDateTestClient(), new ArrayList<>(), null, new ClientLogger(BuilderHelperTest.class))
 
         then:
@@ -53,6 +55,7 @@ class BuilderHelperTest extends Specification {
             .endpoint(endpoint)
             .credential(credentials)
             .httpClient(new FreshDateTestClient())
+            .retryOptions(requestRetryOptions)
             .buildClient()
 
         then:
@@ -71,6 +74,7 @@ class BuilderHelperTest extends Specification {
             .containerName("container")
             .credential(credentials)
             .httpClient(new FreshDateTestClient())
+            .retryOptions(requestRetryOptions)
             .buildClient()
 
         then:
@@ -90,6 +94,7 @@ class BuilderHelperTest extends Specification {
             .blobName("blob")
             .credential(credentials)
             .httpClient(new FreshDateTestClient())
+            .retryOptions(requestRetryOptions)
             .buildClient()
 
         then:
@@ -109,6 +114,7 @@ class BuilderHelperTest extends Specification {
             .containerName("container")
             .blobName("blob")
             .credential(credentials)
+            .retryOptions(requestRetryOptions)
 
         when:
         def appendBlobClient = specializedBlobClientBuilder.httpClient(new FreshDateTestClient())

@@ -12,15 +12,24 @@ import com.azure.core.util.Context;
 import com.azure.search.documents.SearchClient;
 import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
+import com.azure.search.documents.indexes.models.FieldBuilderOptions;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.LexicalTokenizerName;
+import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexStatistics;
 import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import com.azure.search.documents.indexes.models.SynonymMap;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.List;
+
 /**
- * Synchronous Client to manage and query indexes, as well as manage Synonym Map, on a Cognitive Search service
+ * This class provides a client that contains the operations for creating, getting, listing, updating, or deleting
+ * indexes or synonym map and analyzing text in an Azure Cognitive Search service.
+ *
+ * @see SearchIndexClientBuilder
  */
 @ServiceClient(builder = SearchIndexClientBuilder.class)
 public final class SearchIndexClient {
@@ -81,7 +90,7 @@ public final class SearchIndexClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Create search index named "searchIndex" with response. </p>
+     * <p> Create search index named "searchIndex". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.createIndexWithResponse#SearchIndex-Context}
      *
@@ -116,7 +125,7 @@ public final class SearchIndexClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Get search index response with "searchIndex. </p>
+     * <p> Get search index with "searchIndex. </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.getIndexWithResponse#String-Context}
      *
@@ -151,7 +160,7 @@ public final class SearchIndexClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Get search index "searchIndex" statistics with response. </p>
+     * <p> Get search index "searchIndex" statistics. </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.getIndexStatisticsWithResponse#String-Context}
      *
@@ -185,7 +194,7 @@ public final class SearchIndexClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> List all search indexes with response. </p>
+     * <p> List all search indexes. </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.listIndexesWithResponse#Context}
      *
@@ -218,7 +227,7 @@ public final class SearchIndexClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> List all search indexes names with response. </p>
+     * <p> List all search indexes names. </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.listIndexNames#Context}
      *
@@ -252,7 +261,7 @@ public final class SearchIndexClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Create or update search index named "searchIndex" with response. </p>
+     * <p> Create or update search index named "searchIndex". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateIndexWithResponse#SearchIndex-boolean-boolean-Context}
      *
@@ -293,7 +302,7 @@ public final class SearchIndexClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Delete search index response with name "searchIndex". </p>
+     * <p> Delete search index with name "searchIndex". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.deleteIndexWithResponse#SearchIndex-boolean-Context}
      *
@@ -371,7 +380,7 @@ public final class SearchIndexClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Create synonym map response named "synonymMap". </p>
+     * <p> Create synonym map named "synonymMap". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.createSynonymMapWithResponse#SynonymMap-Context}
      *
@@ -406,7 +415,7 @@ public final class SearchIndexClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Get synonym map response with name "synonymMap". </p>
+     * <p> Get synonym map with name "synonymMap". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.getSynonymMapWithResponse#String-Context}
      *
@@ -440,7 +449,7 @@ public final class SearchIndexClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> List all synonym maps response. </p>
+     * <p> List all synonym maps. </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.listSynonymMapsWithResponse#Context}
      *
@@ -473,7 +482,7 @@ public final class SearchIndexClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> List all synonym map names response. </p>
+     * <p> List all synonym map names. </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.listSynonymMapNamesWithResponse#Context}
      *
@@ -507,7 +516,7 @@ public final class SearchIndexClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Create or update synonym map response named "synonymMap". </p>
+     * <p> Create or update synonym map named "synonymMap". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateSynonymMapWithResponse#SynonymMap-boolean-Context}
      *
@@ -545,7 +554,7 @@ public final class SearchIndexClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Delete synonym map response with name "synonymMap". </p>
+     * <p> Delete synonym map with name "synonymMap". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.deleteSynonymMapWithResponse#SynonymMap-boolean-Context}
      *
@@ -583,7 +592,7 @@ public final class SearchIndexClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Get service statistics with response. </p>
+     * <p> Get service statistics. </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.getServiceStatisticsWithResponse#Context}
      *
@@ -594,4 +603,18 @@ public final class SearchIndexClient {
     public Response<SearchServiceStatistics> getServiceStatisticsWithResponse(Context context) {
         return asyncClient.getServiceStatisticsWithResponse(context).block();
     }
+
+    /**
+     * Convenience method to convert a {@link Class Class's} {@link Field Fields} and {@link Method Methods} into {@link
+     * SearchField SearchFields} to help aid the creation of a {@link SearchField} which represents the {@link Class}.
+     *
+     * @param model The model {@link Class} that will have {@link SearchField SearchFields} generated from its
+     * structure.
+     * @param options Configuration used to determine generation of the {@link SearchField SearchFields}.
+     * @return A list {@link SearchField SearchFields} which represent the model {@link Class}.
+     */
+    public static List<SearchField> buildSearchFields(Class<?> model, FieldBuilderOptions options) {
+        return SearchIndexAsyncClient.buildSearchFields(model, options);
+    }
+
 }

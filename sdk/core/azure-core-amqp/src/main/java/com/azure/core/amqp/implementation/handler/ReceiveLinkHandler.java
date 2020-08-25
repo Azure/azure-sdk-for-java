@@ -4,6 +4,10 @@
 package com.azure.core.amqp.implementation.handler;
 
 import com.azure.core.util.logging.ClientLogger;
+import java.util.Collections;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import org.apache.qpid.proton.amqp.messaging.Modified;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
@@ -20,6 +24,7 @@ public class ReceiveLinkHandler extends LinkHandler {
     private AtomicBoolean isFirstResponse = new AtomicBoolean(true);
     private final DirectProcessor<Delivery> deliveries;
     private FluxSink<Delivery> deliverySink;
+    private Set<Delivery> queuedDeliveries = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
     public ReceiveLinkHandler(String connectionId, String hostname, String linkName, String entityPath) {
         super(connectionId, hostname, entityPath, new ClientLogger(ReceiveLinkHandler.class));
@@ -33,13 +38,22 @@ public class ReceiveLinkHandler extends LinkHandler {
     }
 
     public Flux<Delivery> getDeliveredMessages() {
-        return deliveries;
+        return deliveries
+            .doOnNext(this::removeQueuedDelivery);
     }
+
 
     @Override
     public void close() {
         deliverySink.complete();
         super.close();
+
+        queuedDeliveries.forEach(delivery -> {
+            // abandon the queued deliveries as the receive link handler is closed
+            delivery.disposition(new Modified());
+            delivery.settle();
+        });
+        queuedDeliveries.clear();
     }
 
     @Override
@@ -96,7 +110,18 @@ public class ReceiveLinkHandler extends LinkHandler {
                     logger.warning("connectionId[{}], delivery.isSettled[{}]", getConnectionId(), delivery.isSettled());
                 }
             } else {
-                deliverySink.next(delivery);
+                if (link.getLocalState() == EndpointState.CLOSED) {
+                    // onDelivery() method may get called even after the local and remote link states are CLOSED.
+                    // So, when the local link is CLOSED, we just abandon the delivery.
+                    // Not settling every delivery will result in `TransportSession` storing all unsettled deliveries
+                    // in the session leading to a memory leak when multiple links are opened and closed in the same
+                    // session.
+                    delivery.disposition(new Modified());
+                    delivery.settle();
+                } else {
+                    queuedDeliveries.add(delivery);
+                    deliverySink.next(delivery);
+                }
             }
         }
 
@@ -106,5 +131,15 @@ public class ReceiveLinkHandler extends LinkHandler {
                 getConnectionId(), link.getName(), link.getCredit(), link.getRemoteCredit(), link.getRemoteCondition(),
                 delivery.isPartial());
         }
+    }
+
+    @Override
+    public void onLinkRemoteClose(Event event) {
+        super.onLinkRemoteClose(event);
+        deliverySink.complete();
+    }
+
+    private void removeQueuedDelivery(Delivery delivery) {
+        queuedDeliveries.remove(delivery);
     }
 }

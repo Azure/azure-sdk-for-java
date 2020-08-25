@@ -247,20 +247,24 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         if (isCommit) {
             StepVerifier.create(sender.commitTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
                 .verifyComplete();
-            StepVerifier.create(receiver.receiveMessages().take(total).timeout(shortTimeout))
+            StepVerifier.create(receiver.receiveMessages().take(total))
                 .assertNext(receivedMessage -> {
+                    System.out.println("1");
                     assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                     messagesPending.decrementAndGet();
                 })
                 .assertNext(receivedMessage -> {
+                    System.out.println("2");
                     assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                     messagesPending.decrementAndGet();
                 })
                 .assertNext(receivedMessage -> {
+                    System.out.println("3");
                     assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                     messagesPending.decrementAndGet();
                 })
-                .verifyComplete();
+                .expectComplete()
+                .verify(shortTimeout);
         } else {
             StepVerifier.create(sender.rollbackTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
                 .verifyComplete();

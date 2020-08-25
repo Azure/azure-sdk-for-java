@@ -10,7 +10,6 @@ import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import java.util.concurrent.atomic.AtomicBoolean;
 import reactor.core.Exceptions;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
 
@@ -22,7 +21,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -123,12 +121,6 @@ final class PartitionBasedLoadBalancer {
         final Mono<List<String>> partitionsMono = eventHubAsyncClient
             .getPartitionIds()
             .timeout(Duration.ofMinutes(1))
-            .onErrorResume(TimeoutException.class, error -> {
-                // In the subsequent step where it tries to balance the load, it'll propagate an error to the user.
-                // So it is okay to return an empty Flux.
-                logger.warning("Unable to get partitionIds from eventHubAsyncClient.");
-                return Flux.empty();
-            })
             .collectList();
 
         Mono.zip(partitionOwnershipMono, partitionsMono)
@@ -226,17 +218,7 @@ final class PartitionBasedLoadBalancer {
                 // If the partitions are evenly distributed among all active event processors, no change required.
                 logger.info("Load is balanced with this event processor owning {} partitions",
                     ownerPartitionMap.get(ownerId).size());
-                // renew ownership of already owned partitions
-                checkpointStore.claimOwnership(partitionPumpManager.getPartitionPumps().keySet()
-                    .stream()
-                    .map(partitionId -> createPartitionOwnershipRequest(partitionOwnershipMap, partitionId))
-                    .collect(Collectors.toList()))
-                    .subscribe(ignored -> { },
-                        ex -> {
-                            logger.error("Error renewing partition ownership", ex);
-                            isLoadBalancerRunning.set(false);
-                        },
-                        () -> isLoadBalancerRunning.set(false));
+                renewOwnership(partitionOwnershipMap);
                 return;
             }
 
@@ -244,17 +226,7 @@ final class PartitionBasedLoadBalancer {
                 // This event processor already has enough partitions and shouldn't own more.
                 logger.info("This event processor owns {} partitions and shouldn't own more",
                     ownerPartitionMap.get(ownerId).size());
-                // renew ownership of already owned partitions
-                checkpointStore.claimOwnership(partitionPumpManager.getPartitionPumps().keySet()
-                    .stream()
-                    .map(partitionId -> createPartitionOwnershipRequest(partitionOwnershipMap, partitionId))
-                    .collect(Collectors.toList()))
-                    .subscribe(ignored -> { },
-                        ex -> {
-                            logger.error("Error renewing partition ownership", ex);
-                            isLoadBalancerRunning.set(false);
-                        },
-                        () -> isLoadBalancerRunning.set(false));
+                renewOwnership(partitionOwnershipMap);
                 return;
             }
 
@@ -284,6 +256,23 @@ final class PartitionBasedLoadBalancer {
 
             claimOwnership(partitionOwnershipMap, ownerPartitionMap, partitionToClaim);
         });
+    }
+
+    private void renewOwnership(Map<String, PartitionOwnership> partitionOwnershipMap) {
+        // renew ownership of already owned partitions
+        checkpointStore.claimOwnership(partitionPumpManager.getPartitionPumps().keySet()
+            .stream()
+            .filter(
+                partitionId -> partitionOwnershipMap.containsKey(partitionId) && partitionOwnershipMap.get(partitionId)
+                    .getOwnerId().equals(this.ownerId))
+            .map(partitionId -> createPartitionOwnershipRequest(partitionOwnershipMap, partitionId))
+            .collect(Collectors.toList()))
+            .subscribe(ignored -> { },
+                ex -> {
+                    logger.error("Error renewing partition ownership", ex);
+                    isLoadBalancerRunning.set(false);
+                },
+                () -> isLoadBalancerRunning.set(false));
     }
 
     private String format(Map<String, List<PartitionOwnership>> ownerPartitionMap) {
@@ -401,6 +390,9 @@ final class PartitionBasedLoadBalancer {
         partitionsToClaim.addAll(partitionPumpManager.getPartitionPumps()
             .keySet()
             .stream()
+            .filter(
+                partitionId -> partitionOwnershipMap.containsKey(partitionId) && partitionOwnershipMap.get(partitionId)
+                    .getOwnerId().equals(this.ownerId))
             .map(partitionId -> createPartitionOwnershipRequest(partitionOwnershipMap, partitionId))
             .collect(Collectors.toList()));
 

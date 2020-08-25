@@ -4,6 +4,9 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
+import com.azure.ai.textanalytics.models.PiiEntity;
+import com.azure.ai.textanalytics.models.PiiEntityCollection;
+import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
@@ -29,6 +32,7 @@ import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.ai.textanalytics.models.TextSentiment;
+import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.Configuration;
@@ -63,6 +67,10 @@ final class TestUtils {
 
     static final List<String> CATEGORIZED_ENTITY_INPUTS = Arrays.asList(
         "I had a wonderful trip to Seattle last week.", "I work at Microsoft.");
+
+    static final List<String> PII_ENTITY_INPUTS = Arrays.asList(
+        "Microsoft employee with ssn 859-98-0987 is using our awesome API's.",
+        "Your ABA number - 111000025 - is the first 9 digits in the lower left hand corner of your personal check.");
 
     static final List<String> LINKED_ENTITY_INPUTS = Arrays.asList(
         "I had a wonderful trip to Seattle last week.",
@@ -144,22 +152,24 @@ final class TestUtils {
      * @return A {@link DetectLanguageResultCollection}.
      */
     static DetectLanguageResultCollection getExpectedBatchDetectedLanguages() {
-        DetectedLanguage detectedLanguage1 = new DetectedLanguage("English", "en", 0.0, null);
-        DetectedLanguage detectedLanguage2 = new DetectedLanguage("Spanish", "es", 0.0, null);
-        DetectedLanguage detectedLanguage3 = new DetectedLanguage("(Unknown)", "(Unknown)", 0.0, null);
-
-        TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(26, 1);
-        TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(40, 1);
-        TextDocumentStatistics textDocumentStatistics3 = new TextDocumentStatistics(6, 1);
-
-        DetectLanguageResult detectLanguageResult1 = new DetectLanguageResult("0", textDocumentStatistics1, null, detectedLanguage1);
-        DetectLanguageResult detectLanguageResult2 = new DetectLanguageResult("1", textDocumentStatistics2, null, detectedLanguage2);
-        DetectLanguageResult detectLanguageResult3 = new DetectLanguageResult("2", textDocumentStatistics3, null, detectedLanguage3);
-
-        TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(3, 3, 0, 3);
-        List<DetectLanguageResult> detectLanguageResultList = Arrays.asList(detectLanguageResult1, detectLanguageResult2, detectLanguageResult3);
-
+        final TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(3, 3, 0, 3);
+        final List<DetectLanguageResult> detectLanguageResultList = Arrays.asList(
+            new DetectLanguageResult("0", new TextDocumentStatistics(26, 1), null, getDetectedLanguageEnglish()),
+            new DetectLanguageResult("1", new TextDocumentStatistics(40, 1), null, getDetectedLanguageSpanish()),
+            new DetectLanguageResult("2", new TextDocumentStatistics(6, 1), null, getUnknownDetectedLanguage()));
         return new DetectLanguageResultCollection(detectLanguageResultList, DEFAULT_MODEL_VERSION, textDocumentBatchStatistics);
+    }
+
+    static DetectedLanguage getDetectedLanguageEnglish() {
+        return new DetectedLanguage("English", "en", 0.0, null);
+    }
+
+    static DetectedLanguage getDetectedLanguageSpanish() {
+        return new DetectedLanguage("Spanish", "es", 0.0, null);
+    }
+
+    static DetectedLanguage getUnknownDetectedLanguage() {
+        return new DetectedLanguage("(Unknown)", "(Unknown)", 0.0, null);
     }
 
     /**
@@ -178,9 +188,9 @@ final class TestUtils {
      * Helper method to get the expected Categorized Entities List 1
      */
     static List<CategorizedEntity> getCategorizedEntitiesList1() {
-        CategorizedEntity categorizedEntity1 = new CategorizedEntity("trip", EntityCategory.EVENT, null, 0.0);
-        CategorizedEntity categorizedEntity2 = new CategorizedEntity("Seattle", EntityCategory.LOCATION, "GPE", 0.0);
-        CategorizedEntity categorizedEntity3 = new CategorizedEntity("last week", EntityCategory.DATE_TIME, "DateRange", 0.0);
+        CategorizedEntity categorizedEntity1 = new CategorizedEntity("trip", EntityCategory.EVENT, null, 0.0, 18, 4);
+        CategorizedEntity categorizedEntity2 = new CategorizedEntity("Seattle", EntityCategory.LOCATION, "GPE", 0.0, 26, 7);
+        CategorizedEntity categorizedEntity3 = new CategorizedEntity("last week", EntityCategory.DATE_TIME, "DateRange", 0.0, 34, 9);
         return Arrays.asList(categorizedEntity1, categorizedEntity2, categorizedEntity3);
     }
 
@@ -188,8 +198,7 @@ final class TestUtils {
      * Helper method to get the expected Categorized Entities List 2
      */
     static List<CategorizedEntity> getCategorizedEntitiesList2() {
-        CategorizedEntity categorizedEntity3 = new CategorizedEntity("Microsoft", EntityCategory.ORGANIZATION, null, 0.0);
-        return Arrays.asList(categorizedEntity3);
+        return Arrays.asList(new CategorizedEntity("Microsoft", EntityCategory.ORGANIZATION, null, 0.0, 10, 9));
     }
 
     /**
@@ -213,36 +222,81 @@ final class TestUtils {
     }
 
     /**
+     * Helper method to get the expected batch of Personally Identifiable Information entities
+     */
+    static RecognizePiiEntitiesResultCollection getExpectedBatchPiiEntities() {
+        PiiEntityCollection piiEntityCollection = new PiiEntityCollection(new IterableStream<>(getPiiEntitiesList1()), null);
+        PiiEntityCollection piiEntityCollection2 = new PiiEntityCollection(new IterableStream<>(getPiiEntitiesList2()), null);
+        TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(67, 1);
+        TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(105, 1);
+        RecognizePiiEntitiesResult recognizeEntitiesResult1 = new RecognizePiiEntitiesResult("0", textDocumentStatistics1, null, piiEntityCollection);
+        RecognizePiiEntitiesResult recognizeEntitiesResult2 = new RecognizePiiEntitiesResult("1", textDocumentStatistics2, null, piiEntityCollection2);
+
+        return new RecognizePiiEntitiesResultCollection(
+            Arrays.asList(recognizeEntitiesResult1, recognizeEntitiesResult2),
+            DEFAULT_MODEL_VERSION,
+            new TextDocumentBatchStatistics(2, 2, 0, 2));
+    }
+
+    /**
+     * Helper method to get the expected Categorized Entities List 1
+     */
+    static List<PiiEntity> getPiiEntitiesList1() {
+        PiiEntity piiEntity0 = new PiiEntity("Microsoft", EntityCategory.ORGANIZATION, null, 1.0, 0, 9);
+        PiiEntity piiEntity1 = new PiiEntity("859-98-0987", EntityCategory.fromString("U.S. Social Security Number (SSN)"), null, 0.65, 28, 11);
+        return Arrays.asList(piiEntity0, piiEntity1);
+    }
+
+    /**
+     * Helper method to get the expected Categorized Entities List 2
+     */
+    static List<PiiEntity> getPiiEntitiesList2() {
+        PiiEntity piiEntity2 = new PiiEntity("111000025", EntityCategory.fromString("Phone Number"), null, 0.8, 18, 9);
+        PiiEntity piiEntity3 = new PiiEntity("111000025", EntityCategory.fromString("ABA Routing Number"), null, 0.75, 18, 9);
+        PiiEntity piiEntity4 = new PiiEntity("111000025", EntityCategory.fromString("New Zealand Social Welfare Number"), null, 0.65, 18, 9);
+        PiiEntity piiEntity5 = new PiiEntity("111000025", EntityCategory.fromString("Portugal Tax Identification Number"), null, 0.65, 18, 9);
+        return Arrays.asList(piiEntity2, piiEntity3, piiEntity4, piiEntity5);
+    }
+
+    /**
      * Helper method to get the expected Batch Linked Entities
      * @return A {@link RecognizeLinkedEntitiesResultCollection}.
      */
     static RecognizeLinkedEntitiesResultCollection getExpectedBatchLinkedEntities() {
-        LinkedEntityMatch linkedEntityMatch1 = new LinkedEntityMatch("Seattle", 0.0);
-        LinkedEntityMatch linkedEntityMatch2 = new LinkedEntityMatch("Microsoft", 0.0);
+        final TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(2, 2, 0, 2);
+        final List<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesResultList =
+            Arrays.asList(
+                new RecognizeLinkedEntitiesResult(
+                    "0", new TextDocumentStatistics(44, 1), null,
+                    new LinkedEntityCollection(new IterableStream<>(getLinkedEntitiesList1()), null)),
+                new RecognizeLinkedEntitiesResult(
+                    "1", new TextDocumentStatistics(20, 1), null,
+                    new LinkedEntityCollection(new IterableStream<>(getLinkedEntitiesList2()), null)));
+        return new RecognizeLinkedEntitiesResultCollection(recognizeLinkedEntitiesResultList, DEFAULT_MODEL_VERSION, textDocumentBatchStatistics);
+    }
 
-        LinkedEntity linkedEntity1 = new LinkedEntity(
-            "Seattle", new IterableStream<>(Collections.singletonList(linkedEntityMatch1)),
+    /**
+     * Helper method to get the expected linked Entities List 1
+     */
+    static List<LinkedEntity> getLinkedEntitiesList1() {
+        final LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatch("Seattle", 26, 7, 0.0);
+        LinkedEntity linkedEntity = new LinkedEntity(
+            "Seattle", new IterableStream<>(Collections.singletonList(linkedEntityMatch)),
             "en", "Seattle", "https://en.wikipedia.org/wiki/Seattle",
             "Wikipedia");
+        return Arrays.asList(linkedEntity);
+    }
 
-        LinkedEntity linkedEntity2 = new LinkedEntity(
-            "Microsoft", new IterableStream<>(Collections.singletonList(linkedEntityMatch2)),
+    /**
+     * Helper method to get the expected linked Entities List 2
+     */
+    static List<LinkedEntity> getLinkedEntitiesList2() {
+        LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatch("Microsoft", 10, 9, 0.0);
+        LinkedEntity linkedEntity = new LinkedEntity(
+            "Microsoft", new IterableStream<>(Collections.singletonList(linkedEntityMatch)),
             "en", "Microsoft", "https://en.wikipedia.org/wiki/Microsoft",
             "Wikipedia");
-
-        IterableStream<LinkedEntity> linkedEntityList1 = new IterableStream<>(Collections.singletonList(linkedEntity1));
-        IterableStream<LinkedEntity> linkedEntityList2 = new IterableStream<>(Collections.singletonList(linkedEntity2));
-
-        TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(44, 1);
-        TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(20, 1);
-
-        RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult1 = new RecognizeLinkedEntitiesResult("0", textDocumentStatistics1, null, new LinkedEntityCollection(linkedEntityList1, null));
-        RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult2 = new RecognizeLinkedEntitiesResult("1", textDocumentStatistics2, null, new LinkedEntityCollection(linkedEntityList2, null));
-
-        TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(2, 2, 0, 2);
-        List<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesResultList = Arrays.asList(recognizeLinkedEntitiesResult1, recognizeLinkedEntitiesResult2);
-
-        return new RecognizeLinkedEntitiesResultCollection(recognizeLinkedEntitiesResultList, DEFAULT_MODEL_VERSION, textDocumentBatchStatistics);
+        return Arrays.asList(linkedEntity);
     }
 
     /**
