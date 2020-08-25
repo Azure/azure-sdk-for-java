@@ -11,6 +11,7 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
@@ -43,27 +44,19 @@ public class AadAuthorizationTests extends TestSuiteBase {
     private final static Logger log = LoggerFactory.getLogger(AadAuthorizationTests.class);
     private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
 
-    protected AadAuthorizationTests() {
-    }
-
-    private static Properties properties = System.getProperties();
-
-    private final static String EMULATOR_KEY = "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==";
-    private final static String HOST = "https://localhost:8081/";
-
     private final static String PARTITION_KEY_PATH = "/mypk";
     private final String databaseId = CosmosDatabaseForTest.generateId();
 
+    protected AadAuthorizationTests() {
+    }
 
-    @Test(groups = { "emulator" }, timeOut = 2 * TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = 10 * TIMEOUT)
     public void createAadTokenCredential() throws InterruptedException {
-        TokenCredential emulatorCredential = new AadSimpleEmulatorTokenCredential(EMULATOR_KEY);
-
         CosmosAsyncDatabase db = null;
 
         CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
-            .endpoint(HOST)
-            .key(EMULATOR_KEY)
+            .endpoint(TestConfigurations.COSMOS_EMULATOR_HOST)
+            .key(TestConfigurations.COSMOS_EMULATOR_KEY)
             .buildAsyncClient();
 
         String containerName = UUID.randomUUID().toString();
@@ -80,10 +73,11 @@ public class AadAuthorizationTests extends TestSuiteBase {
             }
         }
 
-        Thread.sleep(5000);
+        Thread.sleep(TIMEOUT);
 
+        TokenCredential emulatorCredential = new AadSimpleEmulatorTokenCredential(TestConfigurations.COSMOS_EMULATOR_KEY);
         CosmosAsyncClient cosmosAadClient = new CosmosClientBuilder()
-            .endpoint(HOST)
+            .endpoint(TestConfigurations.COSMOS_EMULATOR_HOST)
             .credential(emulatorCredential)
             .buildAsyncClient();
 
@@ -150,7 +144,7 @@ public class AadAuthorizationTests extends TestSuiteBase {
             }
         }
 
-        Thread.sleep(5000);
+        Thread.sleep(SHUTDOWN_TIMEOUT);
     }
 
     private ItemSample getDocumentDefinition(String itemId, String partitionKeyValue) {

@@ -140,6 +140,12 @@ Licensed under the MIT License.
       <artifactId>azure-core-http-netty</artifactId>
       <version>1.5.4</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <optional>true</optional>
+      <exclusions>
+        <exclusion>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-core</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
