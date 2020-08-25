@@ -1,19 +1,15 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.eventhubs.implementation;
 
+import com.azure.resourcemanager.eventhubs.fluent.inner.AccessKeysInner;
 import com.azure.resourcemanager.eventhubs.models.EventHubAuthorizationKey;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 
 /**
  * Implementation for AuthorizationKeys.
  */
-@LangDefinition
 class EventHubAuthorizationKeyImpl
         extends WrapperImpl<AccessKeysInner>
         implements EventHubAuthorizationKey {

@@ -1,20 +1,17 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.eventhubs.implementation;
 
 import com.azure.resourcemanager.eventhubs.EventHubManager;
+import com.azure.resourcemanager.eventhubs.fluent.inner.AccessKeysInner;
+import com.azure.resourcemanager.eventhubs.fluent.inner.AuthorizationRuleInner;
 import com.azure.resourcemanager.eventhubs.models.AccessRights;
 import com.azure.resourcemanager.eventhubs.models.AuthorizationRule;
 import com.azure.resourcemanager.eventhubs.models.EventHubAuthorizationKey;
 import com.azure.resourcemanager.eventhubs.models.KeyType;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
-import rx.Observable;
-import rx.functions.Func1;
+import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,50 +24,40 @@ import java.util.List;
  * @param <RuleT> rule fluent model
  * @param <RuleImpl> implementation of rule fluent model
  */
-@LangDefinition
-abstract class AuthorizationRuleBaseImpl<RuleT extends AuthorizationRule<RuleT>, RuleImpl extends IndexableRefreshableWrapperImpl<RuleT, AuthorizationRuleInner>>
-        extends NestedResourceImpl<RuleT, AuthorizationRuleInner, RuleImpl> implements AuthorizationRule<RuleT> {
+abstract class AuthorizationRuleBaseImpl<RuleT extends AuthorizationRule<RuleT>,
+    RuleImpl extends IndexableRefreshableWrapperImpl<RuleT, AuthorizationRuleInner>>
+    extends NestedResourceImpl<RuleT, AuthorizationRuleInner, RuleImpl> implements AuthorizationRule<RuleT> {
 
     protected AuthorizationRuleBaseImpl(String name, AuthorizationRuleInner inner, EventHubManager manager) {
         super(name, inner, manager);
     }
 
     @Override
-    public Observable<EventHubAuthorizationKey> getKeysAsync() {
+    public Mono<EventHubAuthorizationKey> getKeysAsync() {
         return this.getKeysInnerAsync()
-                .map(new Func1<AccessKeysInner, EventHubAuthorizationKey>() {
-                    @Override
-                    public EventHubAuthorizationKey call(AccessKeysInner inner) {
-                        return new EventHubAuthorizationKeyImpl(inner);
-                    }
-                });
+            .map(EventHubAuthorizationKeyImpl::new);
     }
 
     @Override
     public EventHubAuthorizationKey getKeys() {
-        return getKeysAsync().toBlocking().last();
+        return getKeysAsync().block();
     }
 
     @Override
-    public Observable<EventHubAuthorizationKey> regenerateKeyAsync(KeyType keyType) {
+    public Mono<EventHubAuthorizationKey> regenerateKeyAsync(KeyType keyType) {
         return this.regenerateKeysInnerAsync(keyType)
-                .map(new Func1<AccessKeysInner, EventHubAuthorizationKey>() {
-                    @Override
-                    public EventHubAuthorizationKey call(AccessKeysInner inner) {
-                        return new EventHubAuthorizationKeyImpl(inner);
-                    }
-                });
+            .map(EventHubAuthorizationKeyImpl::new);
     }
 
     @Override
     public EventHubAuthorizationKey regenerateKey(KeyType keyType) {
-        return regenerateKeyAsync(keyType).toBlocking().last();
+        return regenerateKeyAsync(keyType).block();
     }
 
     @Override
     public List<AccessRights> rights() {
         if (this.inner().rights() == null) {
-            return Collections.unmodifiableList(new ArrayList<AccessRights>());
+            return Collections.unmodifiableList(new ArrayList<>());
         }
         return Collections.unmodifiableList(this.inner().rights());
     }
@@ -79,7 +66,7 @@ abstract class AuthorizationRuleBaseImpl<RuleT extends AuthorizationRule<RuleT>,
     @SuppressWarnings("unchecked")
     public RuleImpl withListenAccess() {
         if (this.inner().rights() == null) {
-            this.inner().withRights(new ArrayList<AccessRights>());
+            this.inner().withRights(new ArrayList<>());
         }
         if (!this.inner().rights().contains(AccessRights.LISTEN)) {
             this.inner().rights().add(AccessRights.LISTEN);
@@ -90,7 +77,7 @@ abstract class AuthorizationRuleBaseImpl<RuleT extends AuthorizationRule<RuleT>,
     @SuppressWarnings("unchecked")
     public RuleImpl withSendAccess() {
         if (this.inner().rights() == null) {
-            this.inner().withRights(new ArrayList<AccessRights>());
+            this.inner().withRights(new ArrayList<>());
         }
         if (!this.inner().rights().contains(AccessRights.SEND)) {
             this.inner().rights().add(AccessRights.SEND);
@@ -115,8 +102,8 @@ abstract class AuthorizationRuleBaseImpl<RuleT extends AuthorizationRule<RuleT>,
         return (RuleImpl) this;
     }
 
-    protected abstract Observable<AccessKeysInner> getKeysInnerAsync();
-    protected abstract Observable<AccessKeysInner> regenerateKeysInnerAsync(KeyType keyType);
-    protected abstract Observable<AuthorizationRuleInner> getInnerAsync();
-    public abstract Observable<RuleT> createResourceAsync();
+    protected abstract Mono<AccessKeysInner> getKeysInnerAsync();
+    protected abstract Mono<AccessKeysInner> regenerateKeysInnerAsync(KeyType keyType);
+    protected abstract Mono<AuthorizationRuleInner> getInnerAsync();
+    public abstract Mono<RuleT> createResourceAsync();
 }

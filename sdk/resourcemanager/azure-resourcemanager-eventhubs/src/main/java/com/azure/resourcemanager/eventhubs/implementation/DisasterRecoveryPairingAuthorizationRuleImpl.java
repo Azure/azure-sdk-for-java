@@ -1,19 +1,15 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.eventhubs.implementation;
 
 import com.azure.resourcemanager.eventhubs.EventHubManager;
+import com.azure.resourcemanager.eventhubs.fluent.inner.AuthorizationRuleInner;
 import com.azure.resourcemanager.eventhubs.models.AccessRights;
 import com.azure.resourcemanager.eventhubs.models.DisasterRecoveryPairingAuthorizationKey;
 import com.azure.resourcemanager.eventhubs.models.DisasterRecoveryPairingAuthorizationRule;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
-import rx.Observable;
-import rx.functions.Func1;
+import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Objects;
@@ -21,7 +17,6 @@ import java.util.Objects;
 /**
  * Implementation for {@link DisasterRecoveryPairingAuthorizationRule}.
  */
-@LangDefinition
 class DisasterRecoveryPairingAuthorizationRuleImpl
         extends WrapperImpl<AuthorizationRuleInner>
         implements DisasterRecoveryPairingAuthorizationRule {
@@ -46,20 +41,18 @@ class DisasterRecoveryPairingAuthorizationRuleImpl
     }
 
     @Override
-    public Observable<DisasterRecoveryPairingAuthorizationKey> getKeysAsync() {
-        return this.manager.inner().disasterRecoveryConfigs()
-                .listKeysAsync(this.ancestor().resourceGroupName(), this.ancestor.ancestor2Name(), this.ancestor().ancestor1Name(), this.name())
-                .map(new Func1<AccessKeysInner, DisasterRecoveryPairingAuthorizationKey>() {
-                    @Override
-                    public DisasterRecoveryPairingAuthorizationKey call(AccessKeysInner accessKeysInner) {
-                        return new DisasterRecoveryPairingAuthorizationKeyImpl(accessKeysInner);
-                    }
-                });
+    public Mono<DisasterRecoveryPairingAuthorizationKey> getKeysAsync() {
+        return this.manager.inner().getDisasterRecoveryConfigs()
+            .listKeysAsync(this.ancestor().resourceGroupName(),
+                this.ancestor.ancestor2Name(),
+                this.ancestor().ancestor1Name(),
+                this.name())
+            .map(DisasterRecoveryPairingAuthorizationKeyImpl::new);
     }
 
     @Override
     public DisasterRecoveryPairingAuthorizationKey getKeys() {
-        return this.getKeysAsync().toBlocking().last();
+        return this.getKeysAsync().block();
     }
 
     @Override

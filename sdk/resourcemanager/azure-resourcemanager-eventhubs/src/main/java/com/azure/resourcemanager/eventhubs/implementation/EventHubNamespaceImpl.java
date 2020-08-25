@@ -1,31 +1,27 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.eventhubs.implementation;
 
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.eventhubs.EventHubManager;
-import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.azure.resourcemanager.eventhubs.fluent.inner.EHNamespaceInner;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.resourcemanager.eventhubs.models.EventHub;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceAuthorizationRule;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceSkuType;
 import com.azure.resourcemanager.eventhubs.models.Sku;
 import com.azure.resourcemanager.eventhubs.models.SkuName;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.azure.management.resources.fluentcore.dag.FunctionalTaskItem;
-import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
-import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
-import org.joda.time.DateTime;
-import rx.Observable;
+import reactor.core.publisher.Mono;
+
+import java.time.OffsetDateTime;
 
 /**
  * Implementation for {@link EventHubNamespace}.
  */
-@LangDefinition
 class EventHubNamespaceImpl
         extends GroupableResourceImpl<EventHubNamespace, EHNamespaceInner, EventHubNamespaceImpl, EventHubManager>
         implements
@@ -53,12 +49,12 @@ class EventHubNamespaceImpl
     }
 
     @Override
-    public DateTime createdAt() {
+    public OffsetDateTime createdAt() {
         return this.inner().createdAt();
     }
 
     @Override
-    public DateTime updatedAt() {
+    public OffsetDateTime updatedAt() {
         return this.inner().updatedAt();
     }
 
@@ -84,119 +80,84 @@ class EventHubNamespaceImpl
 
     @Override
     public EventHubNamespaceImpl withNewEventHub(final String eventHubName) {
-        addPostRunDependent(new FunctionalTaskItem() {
-            @Override
-            public Observable<Indexable> call(final Context context) {
-                return manager().eventHubs()
-                        .define(eventHubName)
-                        .withExistingNamespace(resourceGroupName(), name())
-                        .createAsync();
-            }
-        });
+        addPostRunDependent(context -> manager().eventHubs()
+            .define(eventHubName)
+            .withExistingNamespace(resourceGroupName(), name())
+            .createAsync()
+            .last());
         return this;
     }
 
     @Override
     public EventHubNamespaceImpl withNewEventHub(final String eventHubName, final int partitionCount) {
-        addPostRunDependent(new FunctionalTaskItem() {
-            @Override
-            public Observable<Indexable> call(final Context context) {
-               return  manager().eventHubs()
-                        .define(eventHubName)
-                        .withExistingNamespace(resourceGroupName(), name())
-                        .withPartitionCount(partitionCount)
-                        .createAsync();
-            }
-        });
+        addPostRunDependent(context ->  manager().eventHubs()
+            .define(eventHubName)
+            .withExistingNamespace(resourceGroupName(), name())
+            .withPartitionCount(partitionCount)
+            .createAsync()
+            .last());
         return this;
     }
 
     @Override
-    public EventHubNamespaceImpl withNewEventHub(final String eventHubName, final int partitionCount, final int retentionPeriodInDays) {
-        addPostRunDependent(new FunctionalTaskItem() {
-            @Override
-            public Observable<Indexable> call(final Context context) {
-                return  manager().eventHubs()
-                        .define(eventHubName)
-                        .withExistingNamespace(resourceGroupName(), name())
-                        .withPartitionCount(partitionCount)
-                        .withRetentionPeriodInDays(retentionPeriodInDays)
-                        .createAsync();
-            }
-        });
+    public EventHubNamespaceImpl withNewEventHub(
+        final String eventHubName, final int partitionCount, final int retentionPeriodInDays) {
+        addPostRunDependent(context -> manager().eventHubs()
+            .define(eventHubName)
+            .withExistingNamespace(resourceGroupName(), name())
+            .withPartitionCount(partitionCount)
+            .withRetentionPeriodInDays(retentionPeriodInDays)
+            .createAsync()
+            .last());
         return this;
     }
 
     @Override
     public Update withoutEventHub(final String eventHubName) {
-        addPostRunDependent(new FunctionalTaskItem() {
-            @Override
-            public Observable<Indexable> call(Context context) {
-                return manager().eventHubs()
-                        .deleteByNameAsync(resourceGroupName(), name(), eventHubName)
-                        .<Indexable>toObservable()
-                        .concatWith(context.voidObservable());
-            }
-        });
+        addPostRunDependent(context -> manager().eventHubs()
+            .deleteByNameAsync(resourceGroupName(), name(), eventHubName)
+            .then(context.voidMono()));
         return this;
     }
 
     @Override
     public EventHubNamespaceImpl withNewSendRule(final String ruleName) {
-        addPostRunDependent(new FunctionalTaskItem() {
-            @Override
-            public Observable<Indexable> call(Context context) {
-                return manager().namespaceAuthorizationRules()
-                        .define(ruleName)
-                        .withExistingNamespace(resourceGroupName(), name())
-                        .withSendAccess()
-                        .createAsync();
-            }
-        });
+        addPostRunDependent(context -> manager().namespaceAuthorizationRules()
+            .define(ruleName)
+            .withExistingNamespace(resourceGroupName(), name())
+            .withSendAccess()
+            .createAsync()
+            .last());
         return this;
     }
 
     @Override
     public EventHubNamespaceImpl withNewListenRule(final String ruleName) {
-        addPostRunDependent(new FunctionalTaskItem() {
-            @Override
-            public Observable<Indexable> call(Context context) {
-                return manager().namespaceAuthorizationRules()
-                        .define(ruleName)
-                        .withExistingNamespace(resourceGroupName(), name())
-                        .withListenAccess()
-                        .createAsync();
-            }
-        });
+        addPostRunDependent(context -> manager().namespaceAuthorizationRules()
+            .define(ruleName)
+            .withExistingNamespace(resourceGroupName(), name())
+            .withListenAccess()
+            .createAsync()
+            .last());
         return this;
     }
 
     @Override
     public EventHubNamespaceImpl withNewManageRule(final String ruleName) {
-        addPostRunDependent(new FunctionalTaskItem() {
-            @Override
-            public Observable<Indexable> call(Context context) {
-                return manager().namespaceAuthorizationRules()
-                        .define(ruleName)
-                        .withExistingNamespace(resourceGroupName(), name())
-                        .withManageAccess()
-                        .createAsync();
-            }
-        });
+        addPostRunDependent(context -> manager().namespaceAuthorizationRules()
+            .define(ruleName)
+            .withExistingNamespace(resourceGroupName(), name())
+            .withManageAccess()
+            .createAsync()
+            .last());
         return this;
     }
 
     @Override
     public EventHubNamespaceImpl withoutAuthorizationRule(final String ruleName) {
-        addPostRunDependent(new FunctionalTaskItem() {
-            @Override
-            public Observable<Indexable> call(Context context) {
-                return manager().namespaceAuthorizationRules()
-                        .deleteByNameAsync(resourceGroupName(), name(), ruleName)
-                        .<Indexable>toObservable()
-                        .concatWith(context.voidObservable());
-            }
-        });
+        addPostRunDependent(context -> manager().namespaceAuthorizationRules()
+            .deleteByNameAsync(resourceGroupName(), name(), ruleName)
+            .then(context.voidMono()));
         return this;
     }
 
@@ -244,36 +205,37 @@ class EventHubNamespaceImpl
     }
 
     @Override
-    public Observable<EventHubNamespace> createResourceAsync() {
-        return this.manager().inner().namespaces()
+    public Mono<EventHubNamespace> createResourceAsync() {
+        return this.manager().inner().getNamespaces()
                 .createOrUpdateAsync(resourceGroupName(), name(), this.inner())
                 .map(innerToFluentMap(this));
     }
 
     @Override
-    public Observable<EventHub> listEventHubsAsync() {
+    public PagedFlux<EventHub> listEventHubsAsync() {
         return this.manager().eventHubs().listByNamespaceAsync(resourceGroupName(), name());
     }
 
     @Override
-    public Observable<EventHubNamespaceAuthorizationRule> listAuthorizationRulesAsync() {
-        return this.manager().namespaceAuthorizationRules().listByNamespaceAsync(this.resourceGroupName(), this.name());
+    public PagedFlux<EventHubNamespaceAuthorizationRule> listAuthorizationRulesAsync() {
+        return this.manager().namespaceAuthorizationRules()
+            .listByNamespaceAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
-    public PagedList<EventHub> listEventHubs() {
+    public PagedIterable<EventHub> listEventHubs() {
         return this.manager().eventHubs().listByNamespace(resourceGroupName(), name());
     }
 
     @Override
-    public PagedList<EventHubNamespaceAuthorizationRule> listAuthorizationRules() {
+    public PagedIterable<EventHubNamespaceAuthorizationRule> listAuthorizationRules() {
         return this.manager().namespaceAuthorizationRules()
                 .listByNamespace(this.resourceGroupName(), this.name());
     }
 
     @Override
-    protected Observable<EHNamespaceInner> getInnerAsync() {
-        return this.manager().inner().namespaces().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+    protected Mono<EHNamespaceInner> getInnerAsync() {
+        return this.manager().inner().getNamespaces().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     private void setDefaultSkuIfNotSet() {

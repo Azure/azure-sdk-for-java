@@ -1,12 +1,13 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.eventhubs.implementation;
 
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.EventHubManager;
+import com.azure.resourcemanager.eventhubs.fluent.inner.EventhubInner;
 import com.azure.resourcemanager.eventhubs.models.CaptureDescription;
 import com.azure.resourcemanager.eventhubs.models.Destination;
 import com.azure.resourcemanager.eventhubs.models.EncodingCaptureDescription;
@@ -14,46 +15,31 @@ import com.azure.resourcemanager.eventhubs.models.EventHub;
 import com.azure.resourcemanager.eventhubs.models.EventHubAuthorizationRule;
 import com.azure.resourcemanager.eventhubs.models.EventHubConsumerGroup;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
-import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.dag.FunctionalTaskItem;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
-import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
-import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
-import com.microsoft.azure.management.storage.StorageAccount;
-import com.microsoft.azure.management.storage.StorageAccountKey;
-import com.microsoft.azure.management.storage.implementation.StorageManager;
-import com.microsoft.azure.storage.CloudStorageAccount;
-import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.blob.CloudBlobClient;
-import rx.Observable;
-import rx.exceptions.Exceptions;
-import rx.functions.Func1;
+import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.storage.StorageManager;
+import com.azure.resourcemanager.storage.models.StorageAccount;
+import com.azure.storage.blob.BlobServiceAsyncClient;
+import com.azure.storage.blob.BlobServiceClientBuilder;
+import reactor.core.publisher.Mono;
 
-import java.net.URISyntaxException;
-import java.security.InvalidKeyException;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.Callable;
 
 /**
  * Implementation for {@link EventHub}.
  */
-@LangDefinition
 class EventHubImpl
-        extends NestedResourceImpl<EventHub, EventhubInner, EventHubImpl>
-        implements
-        EventHub,
-        EventHub.Definition,
-        EventHub.Update {
+    extends NestedResourceImpl<EventHub, EventhubInner, EventHubImpl>
+    implements EventHub, EventHub.Definition, EventHub.Update {
 
     private Ancestors.OneAncestor ancestor;
     private CaptureSettings captureSettings;
     private StorageManager storageManager;
+
+    private final ClientLogger logger = new ClientLogger(EventHubImpl.class);
 
     EventHubImpl(String name, EventhubInner inner, EventHubManager manager, StorageManager storageManager) {
         super(name, inner, manager);
@@ -153,8 +139,10 @@ class EventHubImpl
     @Override
     public EventHubImpl withNewNamespace(Creatable<EventHubNamespace> namespaceCreatable) {
         this.addDependency(namespaceCreatable);
-        EventHubNamespaceImpl namespace = ((EventHubNamespaceImpl) namespaceCreatable);
-        this.ancestor = new Ancestors().new OneAncestor(namespace.resourceGroupName(), namespaceCreatable.name());
+        if (namespaceCreatable instanceof EventHubNamespaceImpl) {
+            EventHubNamespaceImpl namespace = ((EventHubNamespaceImpl) namespaceCreatable);
+            this.ancestor = new Ancestors().new OneAncestor(namespace.resourceGroupName(), namespaceCreatable.name());
+        }
         return this;
     }
 
@@ -177,19 +165,22 @@ class EventHubImpl
     }
 
     @Override
-    public EventHubImpl withNewStorageAccountForCapturedData(Creatable<StorageAccount> storageAccountCreatable, String containerName) {
+    public EventHubImpl withNewStorageAccountForCapturedData(
+        Creatable<StorageAccount> storageAccountCreatable, String containerName) {
         this.captureSettings.withNewStorageAccountForCapturedData(storageAccountCreatable, containerName);
         return this;
     }
 
     @Override
-    public EventHubImpl withExistingStorageAccountForCapturedData(StorageAccount storageAccount, String containerName) {
+    public EventHubImpl withExistingStorageAccountForCapturedData(
+        StorageAccount storageAccount, String containerName) {
         this.captureSettings.withExistingStorageAccountForCapturedData(storageAccount, containerName);
         return this;
     }
 
     @Override
-    public EventHubImpl withExistingStorageAccountForCapturedData(String storageAccountId, String containerName) {
+    public EventHubImpl withExistingStorageAccountForCapturedData(
+        String storageAccountId, String containerName) {
         this.captureSettings.withExistingStorageAccountForCapturedData(storageAccountId, containerName);
         return this;
     }
@@ -232,103 +223,71 @@ class EventHubImpl
 
     @Override
     public EventHubImpl withNewSendRule(final String ruleName) {
-        addPostRunDependent(new FunctionalTaskItem() {
-            @Override
-            public Observable<Indexable> call(final Context context) {
-                return manager.eventHubAuthorizationRules()
-                        .define(ruleName)
-                        .withExistingEventHub(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name())
-                        .withSendAccess()
-                        .createAsync();
-            }
-        });
+        addPostRunDependent(context -> manager().eventHubAuthorizationRules()
+            .define(ruleName)
+            .withExistingEventHub(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name())
+            .withSendAccess()
+            .createAsync()
+            .last());
         return this;
     }
 
     @Override
     public EventHubImpl withNewListenRule(final String ruleName) {
-        addPostRunDependent(new FunctionalTaskItem() {
-            @Override
-            public Observable<Indexable> call(final Context context) {
-                return manager.eventHubAuthorizationRules()
-                        .define(ruleName)
-                        .withExistingEventHub(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name())
-                        .withListenAccess()
-                        .createAsync();
-            }
-        });
+        addPostRunDependent(context -> manager().eventHubAuthorizationRules()
+            .define(ruleName)
+            .withExistingEventHub(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name())
+            .withListenAccess()
+            .createAsync()
+            .last());
         return this;
     }
 
     @Override
     public EventHubImpl withNewManageRule(final String ruleName) {
-        addPostRunDependent(new FunctionalTaskItem() {
-            @Override
-            public Observable<Indexable> call(final Context context) {
-                return manager.eventHubAuthorizationRules()
-                        .define(ruleName)
-                        .withExistingEventHub(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name())
-                        .withManageAccess()
-                        .createAsync();
-            }
-        });
+        addPostRunDependent(context -> manager().eventHubAuthorizationRules()
+            .define(ruleName)
+            .withExistingEventHub(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name())
+            .withManageAccess()
+            .createAsync()
+            .last());
         return this;
     }
 
     @Override
     public EventHubImpl withoutAuthorizationRule(final String ruleName) {
-        addPostRunDependent(new FunctionalTaskItem() {
-            @Override
-            public Observable<Indexable> call(final Context context) {
-                return manager.eventHubAuthorizationRules()
-                        .deleteByNameAsync(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name(), ruleName)
-                        .<Indexable>toObservable()
-                        .concatWith(context.voidObservable());
-            }
-        });
+        addPostRunDependent(context -> manager().eventHubAuthorizationRules()
+            .deleteByNameAsync(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name(), ruleName)
+            .then(context.voidMono()));
         return this;
     }
 
     @Override
     public EventHubImpl withNewConsumerGroup(final String name) {
-        addPostRunDependent(new FunctionalTaskItem() {
-            @Override
-            public Observable<Indexable> call(final Context context) {
-                return manager.consumerGroups()
-                        .define(name)
-                        .withExistingEventHub(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name())
-                        .createAsync();
-            }
-        });
+        addPostRunDependent(context -> manager().consumerGroups()
+            .define(name)
+            .withExistingEventHub(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name())
+            .createAsync()
+            .last());
         return this;
     }
 
     @Override
     public EventHubImpl withNewConsumerGroup(final String name, final String metadata) {
-        addPostRunDependent(new FunctionalTaskItem() {
-            @Override
-            public Observable<Indexable> call(final Context context) {
-                return manager.consumerGroups()
-                        .define(name)
-                        .withExistingEventHub(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name())
-                        .withUserMetadata(metadata)
-                        .createAsync();
-            }
-        });
+        addPostRunDependent(context -> manager().consumerGroups()
+            .define(name)
+            .withExistingEventHub(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name())
+            .withUserMetadata(metadata)
+            .createAsync()
+            .last());
         return this;
     }
 
     @Override
     public EventHubImpl withoutConsumerGroup(final String name) {
-        addPostRunDependent(new FunctionalTaskItem() {
-            @Override
-            public Observable<Indexable> call(final Context context) {
-                return manager.consumerGroups()
-                        .deleteByNameAsync(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name(), name)
-                        .<Indexable>toObservable()
-                        .concatWith(context.voidObservable());
-            }
-        });
+        addPostRunDependent(context -> manager().consumerGroups()
+            .deleteByNameAsync(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name(), name)
+            .then(context.voidMono()));
         return this;
     }
 
@@ -356,39 +315,39 @@ class EventHubImpl
     }
 
     @Override
-    public Observable<EventHub> createResourceAsync() {
-        return this.manager.inner().eventHubs()
+    public Mono<EventHub> createResourceAsync() {
+        return this.manager.inner().getEventHubs()
                 .createOrUpdateAsync(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name(), this.inner())
                 .map(innerToFluentMap(this));
     }
 
     @Override
-    protected Observable<EventhubInner> getInnerAsync() {
-        return this.manager.inner().eventHubs().getAsync(this.ancestor().resourceGroupName(),
+    protected Mono<EventhubInner> getInnerAsync() {
+        return this.manager.inner().getEventHubs().getAsync(this.ancestor().resourceGroupName(),
                 this.ancestor().ancestor1Name(),
                 this.name());
     }
 
     @Override
-    public Observable<EventHubConsumerGroup> listConsumerGroupsAsync() {
+    public PagedFlux<EventHubConsumerGroup> listConsumerGroupsAsync() {
         return this.manager.consumerGroups()
                 .listByEventHubAsync(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name());
     }
 
     @Override
-    public Observable<EventHubAuthorizationRule> listAuthorizationRulesAsync() {
+    public PagedFlux<EventHubAuthorizationRule> listAuthorizationRulesAsync() {
         return this.manager.eventHubAuthorizationRules()
                 .listByEventHubAsync(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name());
     }
 
     @Override
-    public PagedList<EventHubConsumerGroup> listConsumerGroups() {
+    public PagedIterable<EventHubConsumerGroup> listConsumerGroups() {
         return this.manager.consumerGroups()
                 .listByEventHub(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name());
     }
 
     @Override
-    public PagedList<EventHubAuthorizationRule> listAuthorizationRules() {
+    public PagedIterable<EventHubAuthorizationRule> listAuthorizationRules() {
         return this.manager.eventHubAuthorizationRules()
                 .listByEventHub(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name());
     }
@@ -410,88 +369,51 @@ class EventHubImpl
             this.currentSettings = eventhubInner.captureDescription();
         }
 
-        public CaptureSettings withNewStorageAccountForCapturedData(final Creatable<StorageAccount> creatableStorageAccount, final String containerName) {
+        public CaptureSettings withNewStorageAccountForCapturedData(
+            final Creatable<StorageAccount> creatableStorageAccount, final String containerName) {
             this.ensureSettings().destination().withStorageAccountResourceId("temp-id");
             this.ensureSettings().destination().withBlobContainer(containerName);
             //
             // Schedule task to create storage account and container.
             //
-            addDependency(new FunctionalTaskItem() {
-                @Override
-                public Observable<Indexable> call(final Context context) {
-                    return creatableStorageAccount.createAsync()
-                            .last()
-                            .flatMap(new Func1<Indexable, Observable<Indexable>>() {
-                                @Override
-                                public Observable<Indexable> call(Indexable indexable) {
-                                    StorageAccount storageAccount = (StorageAccount) indexable;
-                                    ensureSettings().destination().withStorageAccountResourceId(storageAccount.id());
-                                    return createContainerIfNotExistsAsync(storageAccount, containerName)
-                                            .flatMap(new Func1<Boolean, Observable<Indexable>>() {
-                                                @Override
-                                                public Observable<Indexable> call(Boolean aBoolean) {
-                                                    return context.voidObservable();
-                                                }
-                                            });
-
-                                }
-                            });
-                }
-            });
+            addDependency(context -> creatableStorageAccount
+                .createAsync()
+                .last()
+                .flatMap(indexable -> {
+                    StorageAccount storageAccount = (StorageAccount) indexable;
+                    ensureSettings().destination().withStorageAccountResourceId(storageAccount.id());
+                    return createContainerIfNotExistsAsync(storageAccount, containerName)
+                        .flatMap(aVoid -> context.voidMono());
+                }));
             return this;
         }
 
-        public CaptureSettings withExistingStorageAccountForCapturedData(final StorageAccount storageAccount, final String containerName) {
+        public CaptureSettings withExistingStorageAccountForCapturedData(
+            final StorageAccount storageAccount, final String containerName) {
             this.ensureSettings().destination().withStorageAccountResourceId(storageAccount.id());
             this.ensureSettings().destination().withBlobContainer(containerName);
             //
             // Schedule task to create container if not exists.
             //
-            addDependency(new FunctionalTaskItem() {
-                @Override
-                public Observable<Indexable> call(final Context context) {
-                    return  createContainerIfNotExistsAsync(storageAccount, containerName)
-                            .flatMap(new Func1<Boolean, Observable<Indexable>>() {
-                                @Override
-                                public Observable<Indexable> call(Boolean aBoolean) {
-                                    return context.voidObservable();
-                                }
-                            });
-                }
-            });
+            addDependency(context -> createContainerIfNotExistsAsync(storageAccount, containerName)
+                .flatMap(aVoid -> context.voidMono()));
             return this;
         }
 
-        public CaptureSettings withExistingStorageAccountForCapturedData(final String storageAccountId, final String containerName) {
+        public CaptureSettings withExistingStorageAccountForCapturedData(
+            final String storageAccountId, final String containerName) {
             this.ensureSettings().destination().withStorageAccountResourceId(storageAccountId);
             this.ensureSettings().destination().withBlobContainer(containerName);
             //
             // Schedule task to create container if not exists.
             //
-            addDependency(new FunctionalTaskItem() {
-                @Override
-                public Observable<Indexable> call(final Context context) {
-                    return storageManager.storageAccounts().getByIdAsync(storageAccountId)
-                            .last()
-                            .flatMap(new Func1<StorageAccount, Observable<Indexable>>() {
-                                @Override
-                                public Observable<Indexable> call(StorageAccount storageAccount) {
-                                    if (storageAccount == null) {
-                                        return Observable.error(new Throwable(String.format("Storage account with id: %s not found (storing captured data)", storageAccountId)));
-                                    }
-                                    ensureSettings().destination().withStorageAccountResourceId(storageAccount.id());
-                                    return createContainerIfNotExistsAsync(storageAccount, containerName)
-                                            .flatMap(new Func1<Boolean, Observable<Indexable>>() {
-                                                @Override
-                                                public Observable<Indexable> call(Boolean aBoolean) {
-                                                    return context.voidObservable();
-                                                }
-                                            });
-
-                                }
-                            });
-                }
-            });
+            addDependency(context -> storageManager.storageAccounts()
+                .getByIdAsync(storageAccountId)
+                .flatMap(storageAccount -> {
+                    ensureSettings().destination().withStorageAccountResourceId(storageAccount.id());
+                    return createContainerIfNotExistsAsync(storageAccount, containerName)
+                        .flatMap(aVoid -> context.voidMono());
+                }));
             return this;
         }
 
@@ -531,7 +453,9 @@ class EventHubImpl
             } else if (this.newSettings.destination() == null
                     || this.newSettings.destination().storageAccountResourceId() == null
                     || this.newSettings.destination().blobContainer() == null) {
-                throw new IllegalStateException("Setting any of the capture properties requires capture destination [StorageAccount, DataLake] to be specified");
+                throw logger.logExceptionAsError(new IllegalStateException(
+                    "Setting any of the capture properties requires "
+                        + "capture destination [StorageAccount, DataLake] to be specified"));
             }
             if (this.newSettings.destination().name() == null) {
                 this.newSettings.destination().withName("EventHubArchive.AzureBlockBlob");
@@ -556,50 +480,32 @@ class EventHubImpl
             }
         }
 
-        private Observable<Boolean> createContainerIfNotExistsAsync(final StorageAccount storageAccount,
+        private Mono<Void> createContainerIfNotExistsAsync(final StorageAccount storageAccount,
                                                                     final String containerName) {
-            return getCloudStorageAsync(storageAccount)
-                    .flatMap(new Func1<CloudStorageAccount, Observable<Boolean>>() {
-                        @Override
-                        public Observable<Boolean> call(final CloudStorageAccount cloudStorageAccount) {
-                            return Observable.fromCallable(new Callable<Boolean>() {
-                                @Override
-                                public Boolean call() {
-                                    CloudBlobClient blobClient = cloudStorageAccount.createCloudBlobClient();
-                                    try {
-                                        return blobClient.getContainerReference(containerName).createIfNotExists();
-                                    } catch (StorageException stgException) {
-                                        throw Exceptions.propagate(stgException);
-                                    } catch (URISyntaxException syntaxException) {
-                                        throw Exceptions.propagate(syntaxException);
-                                    }
-                                }
-                            }).subscribeOn(SdkContext.getRxScheduler());
+            return getBlobClientAsync(storageAccount)
+                .flatMap(blobServiceAsyncClient -> blobServiceAsyncClient
+                    .getBlobContainerAsyncClient(containerName)
+                    .exists()
+                    .flatMap(aBoolean -> {
+                        if (aBoolean) {
+                            return Mono.empty();
                         }
-                    });
+                        return blobServiceAsyncClient.getBlobContainerAsyncClient(containerName).create();
+                    }));
         }
 
-        private Observable<CloudStorageAccount> getCloudStorageAsync(final StorageAccount storageAccount) {
+        private Mono<BlobServiceAsyncClient> getBlobClientAsync(final StorageAccount storageAccount) {
             return storageAccount.getKeysAsync()
-                    .flatMapIterable(new Func1<List<StorageAccountKey>, Iterable<StorageAccountKey>>() {
-                        @Override
-                        public Iterable<StorageAccountKey> call(List<StorageAccountKey> storageAccountKeys) {
-                            return storageAccountKeys;
-                        }
-                    })
-                    .last()
-                    .map(new Func1<StorageAccountKey, CloudStorageAccount>() {
-                        @Override
-                        public CloudStorageAccount call(StorageAccountKey storageAccountKey) {
-                            try {
-                            return CloudStorageAccount.parse(Utils.getStorageConnectionString(storageAccount.name(), storageAccountKey.value(), manager().inner().restClient()));
-                            } catch (URISyntaxException syntaxException) {
-                                throw Exceptions.propagate(syntaxException);
-                            } catch (InvalidKeyException keyException) {
-                                throw Exceptions.propagate(keyException);
-                            }
-                        }
-                    });
+                .flatMapIterable(storageAccountKeys -> storageAccountKeys)
+                .last()
+                .map(storageAccountKey -> {
+                    BlobServiceAsyncClient blobServiceAsyncClient = new BlobServiceClientBuilder()
+                        .connectionString(Utils.getStorageConnectionString(
+                            storageAccount.name(), storageAccountKey.value(), manager().environment()))
+                        .pipeline(manager().httpPipeline())
+                        .buildAsyncClient();
+                    return blobServiceAsyncClient;
+                });
         }
 
         private CaptureDescription cloneCurrentSettings() {
@@ -615,7 +521,8 @@ class EventHubImpl
                 clone.destination().withArchiveNameFormat(this.currentSettings.destination().archiveNameFormat());
                 clone.destination().withBlobContainer(this.currentSettings.destination().blobContainer());
                 clone.destination().withName(this.currentSettings.destination().name());
-                clone.destination().withStorageAccountResourceId(this.currentSettings.destination().storageAccountResourceId());
+                clone.destination().withStorageAccountResourceId(
+                    this.currentSettings.destination().storageAccountResourceId());
             } else {
                 clone.withDestination(new Destination());
             }

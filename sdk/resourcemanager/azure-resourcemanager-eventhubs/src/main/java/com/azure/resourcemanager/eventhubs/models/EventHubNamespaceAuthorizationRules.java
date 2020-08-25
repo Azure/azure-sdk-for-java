@@ -1,36 +1,29 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
-
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.resourcemanager.eventhubs.models;
 
-import com.azure.resourcemanager.eventhubs.implementation.NamespacesInner;
-import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.apigeneration.Beta;
-import com.microsoft.azure.management.apigeneration.Fluent;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.resourcemanager.eventhubs.fluent.NamespacesClient;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.eventhubs.EventHubManager;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
-import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
-import rx.Completable;
-import rx.Observable;
+import reactor.core.publisher.Mono;
 
 /**
  * Entry point to manage event hub namespace authorization rules.
  */
 @Fluent
-@Beta(Beta.SinceVersion.V1_7_0)
-public interface EventHubNamespaceAuthorizationRules
-        extends
-        SupportsCreating<EventHubNamespaceAuthorizationRule.DefinitionStages.Blank>,
-        SupportsDeletingById,
-        SupportsGettingById<EventHubNamespaceAuthorizationRule>,
-        HasInner<NamespacesInner>,
-        HasManager<EventHubManager> {
+public interface EventHubNamespaceAuthorizationRules extends
+    SupportsCreating<EventHubNamespaceAuthorizationRule.DefinitionStages.Blank>,
+    SupportsDeletingById,
+    SupportsGettingById<EventHubNamespaceAuthorizationRule>,
+    HasInner<NamespacesClient>,
+    HasManager<EventHubManager> {
     /**
      * Lists the authorization rules under a namespace in a resource group.
      *
@@ -38,8 +31,8 @@ public interface EventHubNamespaceAuthorizationRules
      * @param namespaceName namespace name
      * @return list of authorization rules
      */
-    @Beta(Beta.SinceVersion.V1_7_0)
-    PagedList<EventHubNamespaceAuthorizationRule> listByNamespace(String resourceGroupName, String namespaceName);
+    PagedIterable<EventHubNamespaceAuthorizationRule> listByNamespace(String resourceGroupName, String namespaceName);
+
     /**
      * Lists the authorization rules under a namespace in a resource group.
      *
@@ -47,8 +40,8 @@ public interface EventHubNamespaceAuthorizationRules
      * @param namespaceName namespace name
      * @return observable that emits the authorization rules
      */
-    @Beta(Beta.SinceVersion.V1_7_0)
-    Observable<EventHubNamespaceAuthorizationRule> listByNamespaceAsync(String resourceGroupName, String namespaceName);
+    PagedFlux<EventHubNamespaceAuthorizationRule> listByNamespaceAsync(String resourceGroupName, String namespaceName);
+
     /**
      * Gets an authorization rule under a namespace in a resource group.
      *
@@ -57,8 +50,9 @@ public interface EventHubNamespaceAuthorizationRules
      * @param name authorization rule name
      * @return observable that emits the authorization rule
      */
-    @Beta(Beta.SinceVersion.V1_7_0)
-    Observable<EventHubNamespaceAuthorizationRule> getByNameAsync(String resourceGroupName, String namespaceName, String name);
+    Mono<EventHubNamespaceAuthorizationRule> getByNameAsync(
+        String resourceGroupName, String namespaceName, String name);
+
     /**
      * Gets an authorization rule under a namespace in a resource group.
      *
@@ -67,8 +61,8 @@ public interface EventHubNamespaceAuthorizationRules
      * @param name authorization rule name
      * @return the authorization rule
      */
-    @Beta(Beta.SinceVersion.V1_7_0)
     EventHubNamespaceAuthorizationRule getByName(String resourceGroupName, String namespaceName, String name);
+
     /**
      * Deletes an authorization rule under a namespace in a resource group.
      *
@@ -77,8 +71,8 @@ public interface EventHubNamespaceAuthorizationRules
      * @param name authorization rule name
      * @return the completable representing the task
      */
-    @Beta(Beta.SinceVersion.V1_7_0)
-    Completable deleteByNameAsync(String resourceGroupName, String namespaceName, String name);
+    Mono<Void> deleteByNameAsync(String resourceGroupName, String namespaceName, String name);
+
     /**
      * Deletes an authorization rule under a namespace in a resource group.
      *
@@ -86,6 +80,5 @@ public interface EventHubNamespaceAuthorizationRules
      * @param namespaceName namespace name
      * @param name authorization rule name
      */
-    @Beta(Beta.SinceVersion.V1_7_0)
     void deleteByName(String resourceGroupName, String namespaceName, String name);
 }

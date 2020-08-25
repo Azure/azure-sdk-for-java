@@ -1,25 +1,22 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.eventhubs.implementation;
 
 import com.azure.resourcemanager.eventhubs.EventHubManager;
+import com.azure.resourcemanager.eventhubs.fluent.inner.AccessKeysInner;
+import com.azure.resourcemanager.eventhubs.fluent.inner.AuthorizationRuleInner;
 import com.azure.resourcemanager.eventhubs.models.EventHub;
 import com.azure.resourcemanager.eventhubs.models.EventHubAuthorizationRule;
 import com.azure.resourcemanager.eventhubs.models.KeyType;
 import com.azure.resourcemanager.eventhubs.models.RegenerateAccessKeyParameters;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import rx.Observable;
+import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 
 /**
  * Implementation for {@link EventHubAuthorizationRule}.
  */
-@LangDefinition
 class EventHubAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<EventHubAuthorizationRule,
         EventHubAuthorizationRuleImpl>
         implements
@@ -60,7 +57,8 @@ class EventHubAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<EventHubAu
     }
 
     @Override
-    public EventHubAuthorizationRuleImpl withExistingEventHub(String resourceGroupName, String namespaceName, String eventHubName) {
+    public EventHubAuthorizationRuleImpl withExistingEventHub(
+        String resourceGroupName, String namespaceName, String eventHubName) {
         this.ancestor = new Ancestors().new TwoAncestor(resourceGroupName, eventHubName, namespaceName);
         return this;
     }
@@ -72,8 +70,8 @@ class EventHubAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<EventHubAu
     }
 
     @Override
-    protected Observable<AuthorizationRuleInner> getInnerAsync() {
-        return this.manager.inner().eventHubs()
+    protected Mono<AuthorizationRuleInner> getInnerAsync() {
+        return this.manager.inner().getEventHubs()
                 .getAuthorizationRuleAsync(this.ancestor().resourceGroupName(),
                         this.ancestor().ancestor2Name(),
                         this.ancestor().ancestor1Name(),
@@ -81,8 +79,8 @@ class EventHubAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<EventHubAu
     }
 
     @Override
-    public Observable<EventHubAuthorizationRule> createResourceAsync() {
-        return this.manager.inner().eventHubs()
+    public Mono<EventHubAuthorizationRule> createResourceAsync() {
+        return this.manager.inner().getEventHubs()
                 .createOrUpdateAuthorizationRuleAsync(this.ancestor().resourceGroupName(),
                         this.ancestor().ancestor2Name(),
                         this.ancestor().ancestor1Name(),
@@ -92,8 +90,8 @@ class EventHubAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<EventHubAu
     }
 
     @Override
-    protected Observable<AccessKeysInner> getKeysInnerAsync() {
-        return this.manager.inner().eventHubs()
+    protected Mono<AccessKeysInner> getKeysInnerAsync() {
+        return this.manager.inner().getEventHubs()
                 .listKeysAsync(this.ancestor().resourceGroupName(),
                         this.ancestor().ancestor2Name(),
                         this.ancestor().ancestor1Name(),
@@ -101,10 +99,10 @@ class EventHubAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<EventHubAu
     }
 
     @Override
-    protected Observable<AccessKeysInner> regenerateKeysInnerAsync(KeyType keyType) {
+    protected Mono<AccessKeysInner> regenerateKeysInnerAsync(KeyType keyType) {
         final RegenerateAccessKeyParameters regenKeyInner = new RegenerateAccessKeyParameters()
                 .withKeyType(keyType);
-        return this.manager.inner().eventHubs()
+        return this.manager.inner().getEventHubs()
                 .regenerateKeysAsync(this.ancestor().resourceGroupName(),
                         this.ancestor().ancestor2Name(),
                         this.ancestor().ancestor1Name(),

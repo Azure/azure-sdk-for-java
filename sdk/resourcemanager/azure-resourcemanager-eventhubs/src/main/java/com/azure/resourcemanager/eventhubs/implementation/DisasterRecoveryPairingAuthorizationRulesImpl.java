@@ -1,105 +1,78 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.eventhubs.implementation;
 
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.eventhubs.EventHubManager;
+import com.azure.resourcemanager.eventhubs.fluent.DisasterRecoveryConfigsClient;
+import com.azure.resourcemanager.eventhubs.fluent.inner.AuthorizationRuleInner;
 import com.azure.resourcemanager.eventhubs.models.DisasterRecoveryPairingAuthorizationRule;
 import com.azure.resourcemanager.eventhubs.models.DisasterRecoveryPairingAuthorizationRules;
-import com.microsoft.azure.Page;
-import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.ResourceId;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
-import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import rx.Observable;
-import rx.functions.Func1;
+import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import reactor.core.publisher.Mono;
 
 /**
  * Implementation for {@link DisasterRecoveryPairingAuthorizationRules}.
  */
-@LangDefinition
-class DisasterRecoveryPairingAuthorizationRulesImpl
-        extends ReadableWrappersImpl<DisasterRecoveryPairingAuthorizationRule, DisasterRecoveryPairingAuthorizationRuleImpl, AuthorizationRuleInner>
-        implements DisasterRecoveryPairingAuthorizationRules {
+public final class DisasterRecoveryPairingAuthorizationRulesImpl
+    extends ReadableWrappersImpl<DisasterRecoveryPairingAuthorizationRule,
+        DisasterRecoveryPairingAuthorizationRuleImpl,
+        AuthorizationRuleInner>
+    implements DisasterRecoveryPairingAuthorizationRules {
 
     private final EventHubManager manager;
 
-    DisasterRecoveryPairingAuthorizationRulesImpl(EventHubManager manager) {
+    public DisasterRecoveryPairingAuthorizationRulesImpl(EventHubManager manager) {
         this.manager = manager;
     }
 
     @Override
-    public PagedList<DisasterRecoveryPairingAuthorizationRule> listByDisasterRecoveryPairing(String resourceGroupName, String namespaceName, String pairingName) {
-        return (new PagedListConverter<AuthorizationRuleInner, DisasterRecoveryPairingAuthorizationRule>() {
-            @Override
-            public Observable<DisasterRecoveryPairingAuthorizationRule> typeConvertAsync(final AuthorizationRuleInner inner) {
-                return Observable.<DisasterRecoveryPairingAuthorizationRule>just(wrapModel(inner));
-            }
-        }).convert(inner().listAuthorizationRules(resourceGroupName, namespaceName, pairingName));
+    public PagedIterable<DisasterRecoveryPairingAuthorizationRule> listByDisasterRecoveryPairing(
+        String resourceGroupName, String namespaceName, String pairingName) {
+        return inner()
+            .listAuthorizationRules(resourceGroupName, namespaceName, pairingName)
+            .mapPage(this::wrapModel);
     }
 
     @Override
-    public Observable<DisasterRecoveryPairingAuthorizationRule> listByDisasterRecoveryPairingAsync(String resourceGroupName, String namespaceName, String pairingName) {
-         return this.manager.inner().disasterRecoveryConfigs().listAuthorizationRulesAsync(resourceGroupName, namespaceName, pairingName)
-                .flatMapIterable(new Func1<Page<AuthorizationRuleInner>, Iterable<AuthorizationRuleInner>>() {
-                    @Override
-                    public Iterable<AuthorizationRuleInner> call(Page<AuthorizationRuleInner> page) {
-                        return page.items();
-                    }
-                })
-                .map(new Func1<AuthorizationRuleInner, DisasterRecoveryPairingAuthorizationRule>() {
-                    @Override
-                    public DisasterRecoveryPairingAuthorizationRule call(AuthorizationRuleInner inner) {
-                        return  wrapModel(inner);
-                    }
-                });
+    public PagedFlux<DisasterRecoveryPairingAuthorizationRule> listByDisasterRecoveryPairingAsync(
+        String resourceGroupName, String namespaceName, String pairingName) {
+        return inner()
+             .listAuthorizationRulesAsync(resourceGroupName, namespaceName, pairingName)
+             .mapPage(this::wrapModel);
     }
 
     @Override
-    public Observable<DisasterRecoveryPairingAuthorizationRule> getByNameAsync(String resourceGroupName, String namespaceName, String pairingName, String name) {
-        return this.manager.inner().disasterRecoveryConfigs().getAuthorizationRuleAsync(resourceGroupName,
-                namespaceName,
-                pairingName,
-                name)
-                .map(new Func1<AuthorizationRuleInner, DisasterRecoveryPairingAuthorizationRule>() {
-                    @Override
-                    public DisasterRecoveryPairingAuthorizationRule call(AuthorizationRuleInner inner) {
-                        if (inner == null) {
-                            return null;
-                        }
-                        return  wrapModel(inner);
-                    }
-                });
+    public Mono<DisasterRecoveryPairingAuthorizationRule> getByNameAsync(
+        String resourceGroupName, String namespaceName, String pairingName, String name) {
+        return this.manager.inner().getDisasterRecoveryConfigs().getAuthorizationRuleAsync(resourceGroupName,
+            namespaceName,
+            pairingName,
+            name)
+            .map(this::wrapModel);
     }
 
     @Override
-    public DisasterRecoveryPairingAuthorizationRule getByName(String resourceGroupName, String namespaceName, String pairingName, String name) {
-        return getByNameAsync(resourceGroupName, namespaceName, pairingName, name).toBlocking().last();
+    public DisasterRecoveryPairingAuthorizationRule getByName(
+        String resourceGroupName, String namespaceName, String pairingName, String name) {
+        return getByNameAsync(resourceGroupName, namespaceName, pairingName, name).block();
     }
 
     @Override
     public DisasterRecoveryPairingAuthorizationRule getById(String id) {
-        return getByIdAsync(id).toBlocking().last();
+        return getByIdAsync(id).block();
     }
 
     @Override
-    public Observable<DisasterRecoveryPairingAuthorizationRule> getByIdAsync(String id) {
+    public Mono<DisasterRecoveryPairingAuthorizationRule> getByIdAsync(String id) {
         ResourceId resourceId = ResourceId.fromString(id);
         return this.getByNameAsync(resourceId.resourceGroupName(),
-                resourceId.parent().name(),
-                resourceId.parent().parent().name(),
-                resourceId.name());
-    }
-
-    @Override
-    public ServiceFuture<DisasterRecoveryPairingAuthorizationRule> getByIdAsync(String id, ServiceCallback<DisasterRecoveryPairingAuthorizationRule> callback) {
-        return ServiceFuture.fromBody(getByIdAsync(id), callback);
+            resourceId.parent().name(),
+            resourceId.parent().parent().name(),
+            resourceId.name());
     }
 
     @Override
@@ -108,8 +81,8 @@ class DisasterRecoveryPairingAuthorizationRulesImpl
     }
 
     @Override
-    public DisasterRecoveryConfigsInner inner() {
-        return this.manager.inner().disasterRecoveryConfigs();
+    public DisasterRecoveryConfigsClient inner() {
+        return this.manager.inner().getDisasterRecoveryConfigs();
     }
 
     @Override

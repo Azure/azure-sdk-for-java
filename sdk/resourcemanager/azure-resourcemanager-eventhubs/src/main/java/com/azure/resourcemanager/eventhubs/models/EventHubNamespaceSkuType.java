@@ -1,26 +1,21 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.eventhubs.models;
 
-import com.microsoft.azure.management.apigeneration.Beta;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
-import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 
 /**
  * Defines values for EventHubNamespaceSkuType.
  */
-@LangDefinition
-@Beta(Beta.SinceVersion.V1_7_0)
 public class EventHubNamespaceSkuType implements HasInner<Sku> {
     /** Static value NamespaceSku for BASIC. */
-    public static final EventHubNamespaceSkuType BASIC = new EventHubNamespaceSkuType(new Sku().withName(SkuName.BASIC).withTier(SkuTier.BASIC));
+    public static final EventHubNamespaceSkuType BASIC =
+        new EventHubNamespaceSkuType(new Sku().withName(SkuName.BASIC).withTier(SkuTier.BASIC));
     /** Static value NamespaceSku for STANDARD. */
-    public static final EventHubNamespaceSkuType STANDARD = new EventHubNamespaceSkuType(new Sku().withName(SkuName.STANDARD).withTier(SkuTier.STANDARD));
+    public static final EventHubNamespaceSkuType STANDARD =
+        new EventHubNamespaceSkuType(new Sku().withName(SkuName.STANDARD).withTier(SkuTier.STANDARD));
 
     private final Sku sku;
 

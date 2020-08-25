@@ -1,35 +1,29 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
-
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.resourcemanager.eventhubs.models;
 
-import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.apigeneration.Beta;
-import com.microsoft.azure.management.apigeneration.Fluent;
-import com.azure.resourcemanager.eventhubs.implementation.ConsumerGroupsInner;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.resourcemanager.eventhubs.fluent.ConsumerGroupsClient;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.eventhubs.EventHubManager;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
-import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
-import rx.Completable;
-import rx.Observable;
+import reactor.core.publisher.Mono;
 
 /**
  * Entry point to manage event hub consumer groups.
  */
 @Fluent
-@Beta(Beta.SinceVersion.V1_7_0)
 public interface EventHubConsumerGroups extends
-        SupportsCreating<EventHubConsumerGroup.DefinitionStages.Blank>,
-        SupportsDeletingById,
-        SupportsGettingById<EventHubConsumerGroup>,
-        HasInner<ConsumerGroupsInner>,
-        HasManager<EventHubManager> {
+    SupportsCreating<EventHubConsumerGroup.DefinitionStages.Blank>,
+    SupportsDeletingById,
+    SupportsGettingById<EventHubConsumerGroup>,
+    HasInner<ConsumerGroupsClient>,
+    HasManager<EventHubManager> {
     /**
      * Lists the consumer groups of an event hub in a namespace under a resource group.
      *
@@ -38,8 +32,9 @@ public interface EventHubConsumerGroups extends
      * @param eventHubName event hub name
      * @return list of consumer groups
      */
-    @Beta(Beta.SinceVersion.V1_7_0)
-    PagedList<EventHubConsumerGroup> listByEventHub(String resourceGroupName, String namespaceName, String eventHubName);
+    PagedIterable<EventHubConsumerGroup> listByEventHub(
+        String resourceGroupName, String namespaceName, String eventHubName);
+
     /**
      * Lists the consumer groups of an event hub in a namespace under a resource group.
      *
@@ -48,8 +43,9 @@ public interface EventHubConsumerGroups extends
      * @param eventHubName event hub name
      * @return observable that emits the consumer groups
      */
-    @Beta(Beta.SinceVersion.V1_7_0)
-    Observable<EventHubConsumerGroup> listByEventHubAsync(String resourceGroupName, String namespaceName, String eventHubName);
+    PagedFlux<EventHubConsumerGroup> listByEventHubAsync(
+        String resourceGroupName, String namespaceName, String eventHubName);
+
     /**
      * Gets a consumer group of an event hub in a namespace in a resource group.
      *
@@ -59,8 +55,9 @@ public interface EventHubConsumerGroups extends
      * @param name consumer group name
      * @return observable that emits the consumer group
      */
-    @Beta(Beta.SinceVersion.V1_7_0)
-    Observable<EventHubConsumerGroup> getByNameAsync(String resourceGroupName, String namespaceName, String eventHubName, String name);
+    Mono<EventHubConsumerGroup> getByNameAsync(
+        String resourceGroupName, String namespaceName, String eventHubName, String name);
+
     /**
      * Gets a consumer group of an event hub in a namespace under a resource group.
      *
@@ -70,8 +67,9 @@ public interface EventHubConsumerGroups extends
      * @param name consumer group name
      * @return the consumer group
      */
-    @Beta(Beta.SinceVersion.V1_7_0)
-    EventHubConsumerGroup getByName(String resourceGroupName, String namespaceName, String eventHubName, String name);
+    EventHubConsumerGroup getByName(
+        String resourceGroupName, String namespaceName, String eventHubName, String name);
+
     /**
      * Deletes a consumer group of an event hub in a namespace under a resource group.
      *
@@ -81,8 +79,9 @@ public interface EventHubConsumerGroups extends
      * @param name consumer group name
      * @return the completable representing the task
      */
-    @Beta(Beta.SinceVersion.V1_7_0)
-    Completable deleteByNameAsync(String resourceGroupName, String namespaceName, String eventHubName, String name);
+    Mono<Void> deleteByNameAsync(
+        String resourceGroupName, String namespaceName, String eventHubName, String name);
+
     /**
      * Deletes a consumer group of an event hub in a namespace under a resource group.
      *
@@ -91,6 +90,6 @@ public interface EventHubConsumerGroups extends
      * @param eventHubName event hub name
      * @param name consumer group name
      */
-    @Beta(Beta.SinceVersion.V1_7_0)
-    void deleteByName(String resourceGroupName, String namespaceName, String eventHubName, String name);
+    void deleteByName(
+        String resourceGroupName, String namespaceName, String eventHubName, String name);
 }

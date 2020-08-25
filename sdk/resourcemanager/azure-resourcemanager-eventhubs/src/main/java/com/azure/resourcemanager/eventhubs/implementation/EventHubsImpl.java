@@ -1,41 +1,33 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.eventhubs.implementation;
 
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.eventhubs.EventHubManager;
-import com.microsoft.azure.Page;
-import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.azure.resourcemanager.eventhubs.fluent.EventHubsClient;
+import com.azure.resourcemanager.eventhubs.fluent.inner.EventhubInner;
+import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
+import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.eventhubs.models.EventHub;
 import com.azure.resourcemanager.eventhubs.models.EventHubAuthorizationRules;
 import com.azure.resourcemanager.eventhubs.models.EventHubConsumerGroups;
 import com.azure.resourcemanager.eventhubs.models.EventHubs;
-import com.microsoft.azure.management.resources.fluentcore.arm.ResourceId;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
-import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
-import com.microsoft.azure.management.storage.implementation.StorageManager;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import rx.Completable;
-import rx.Observable;
-import rx.functions.Func1;
+import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 
 /**
  * Implementation for {@link EventHubs}.
  */
-@LangDefinition
-class EventHubsImpl extends WrapperImpl<EventHubsInner> implements EventHubs {
+public final class EventHubsImpl extends WrapperImpl<EventHubsClient> implements EventHubs {
     private final EventHubManager manager;
     private final StorageManager storageManager;
 
-    protected EventHubsImpl(EventHubManager manager, StorageManager storageManager) {
-        super(manager.inner().eventHubs());
+    public EventHubsImpl(EventHubManager manager, StorageManager storageManager) {
+        super(manager.inner().getEventHubs());
         this.manager = manager;
         this.storageManager = storageManager;
     }
@@ -60,103 +52,69 @@ class EventHubsImpl extends WrapperImpl<EventHubsInner> implements EventHubs {
 
     @Override
     public EventHub getById(String id) {
-        return getByIdAsync(id).toBlocking().last();
+        return getByIdAsync(id).block();
     }
 
     @Override
-    public Observable<EventHub> getByIdAsync(String id) {
+    public Mono<EventHub> getByIdAsync(String id) {
         Objects.requireNonNull(id);
         ResourceId resourceId = ResourceId.fromString(id);
-
         return getByNameAsync(resourceId.resourceGroupName(),
                 resourceId.parent().name(),
                 resourceId.name());
     }
 
     @Override
-    public ServiceFuture<EventHub> getByIdAsync(String id, ServiceCallback<EventHub> callback) {
-        return ServiceFuture.fromBody(getByIdAsync(id), callback);
-    }
-
-    @Override
-    public Observable<EventHub> getByNameAsync(String resourceGroupName, String namespaceName, String name) {
+    public Mono<EventHub> getByNameAsync(String resourceGroupName, String namespaceName, String name) {
         return this.inner().getAsync(resourceGroupName,
-                namespaceName,
-                name)
-                .map(new Func1<EventhubInner, EventHub>() {
-                    @Override
-                    public EventHub call(EventhubInner inner) {
-                        if (inner == null) {
-                            return null;
-                        } else {
-                            return wrapModel(inner);
-                        }
-                    }
-                });
+            namespaceName,
+            name)
+            .map(this::wrapModel);
     }
 
     @Override
     public EventHub getByName(String resourceGroupName, String namespaceName, String name) {
-        return getByNameAsync(resourceGroupName, namespaceName, name).toBlocking().last();
+        return getByNameAsync(resourceGroupName, namespaceName, name).block();
     }
 
     @Override
-    public PagedList<EventHub> listByNamespace(String resourceGroupName, String namespaceName) {
-        return (new PagedListConverter<EventhubInner, EventHub>() {
-            @Override
-            public Observable<EventHub> typeConvertAsync(final EventhubInner inner) {
-                return Observable.<EventHub>just(wrapModel(inner));
-            }
-        }).convert(inner().listByNamespace(resourceGroupName, namespaceName));
+    public PagedIterable<EventHub> listByNamespace(String resourceGroupName, String namespaceName) {
+        return inner()
+            .listByNamespace(resourceGroupName, namespaceName)
+            .mapPage(this::wrapModel);
     }
 
     @Override
-    public Observable<EventHub> listByNamespaceAsync(String resourceGroupName, String namespaceName) {
-        return this.inner().listByNamespaceAsync(resourceGroupName, namespaceName)
-                .flatMapIterable(new Func1<Page<EventhubInner>, Iterable<EventhubInner>>() {
-                    @Override
-                    public Iterable<EventhubInner> call(Page<EventhubInner> page) {
-                        return page.items();
-                    }
-                })
-                .map(new Func1<EventhubInner, EventHub>() {
-                    @Override
-                    public EventHub call(EventhubInner inner) {
-                        return wrapModel(inner);
-                    }
-                });
+    public PagedFlux<EventHub> listByNamespaceAsync(String resourceGroupName, String namespaceName) {
+        return inner()
+            .listByNamespaceAsync(resourceGroupName, namespaceName)
+            .mapPage(this::wrapModel);
     }
 
     @Override
     public void deleteById(String id) {
-        deleteByIdAsync(id).await();
+        deleteByIdAsync(id).block();
     }
 
     @Override
-    public ServiceFuture<Void> deleteByIdAsync(String id, ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(deleteByIdAsync(id), callback);
-    }
-
-    @Override
-    public Completable deleteByIdAsync(String id) {
+    public Mono<Void> deleteByIdAsync(String id) {
         Objects.requireNonNull(id);
         ResourceId resourceId = ResourceId.fromString(id);
-
         return deleteByNameAsync(resourceId.resourceGroupName(),
                 resourceId.parent().name(),
                 resourceId.name());
     }
 
     @Override
-    public Completable deleteByNameAsync(String resourceGroupName, String namespaceName, String name) {
+    public Mono<Void> deleteByNameAsync(String resourceGroupName, String namespaceName, String name) {
         return this.inner().deleteAsync(resourceGroupName,
-                namespaceName,
-                name).toCompletable();
+            namespaceName,
+            name);
     }
 
     @Override
     public void deleteByName(String resourceGroupName, String namespaceName, String name) {
-        deleteByNameAsync(resourceGroupName, namespaceName, name).await();
+        deleteByNameAsync(resourceGroupName, namespaceName, name).block();
     }
 
     private EventHubImpl wrapModel(EventhubInner innerModel) {

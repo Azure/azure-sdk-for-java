@@ -1,11 +1,10 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.eventhubs;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.eventhubs.implementation.DisasterRecoveryPairingAuthorizationRulesImpl;
 import com.azure.resourcemanager.eventhubs.implementation.EventHubAuthorizationRulesImpl;
 import com.azure.resourcemanager.eventhubs.implementation.EventHubConsumerGroupsImpl;
@@ -20,25 +19,18 @@ import com.azure.resourcemanager.eventhubs.models.EventHubDisasterRecoveryPairin
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceAuthorizationRules;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaces;
 import com.azure.resourcemanager.eventhubs.models.EventHubs;
-import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.AzureResponseBuilder;
-import com.microsoft.azure.credentials.AzureTokenCredentials;
-import com.microsoft.azure.management.apigeneration.Beta;
-import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
-import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
-import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
-import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingInterceptor;
-import com.microsoft.azure.management.storage.implementation.StorageManager;
-import com.microsoft.azure.serializer.AzureJacksonAdapter;
-import com.microsoft.rest.RestClient;
+import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
+import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.implementation.Manager;
+import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.storage.StorageManager;
 
 /**
  * Entry point to Azure EventHub resource management.
  */
-@Beta(SinceVersion.V1_2_0)
-public final class EventHubManager extends Manager<EventHubManager, EventHubManagementClientImpl> {
+public final class EventHubManager extends Manager<EventHubManager, EventHubManagementClient> {
     private EventHubNamespaces namespaces;
     private EventHubs eventHubs;
     private EventHubConsumerGroups consumerGroups;
@@ -47,7 +39,8 @@ public final class EventHubManager extends Manager<EventHubManager, EventHubMana
     private EventHubDisasterRecoveryPairings eventHubDisasterRecoveryPairings;
     private DisasterRecoveryPairingAuthorizationRules disasterRecoveryPairingAuthorizationRules;
 
-    private StorageManager storageManager;
+    private final StorageManager storageManager;
+
     /**
      * Get a Configurable instance that can be used to create EventHubManager with optional configuration.
      *
@@ -56,33 +49,41 @@ public final class EventHubManager extends Manager<EventHubManager, EventHubMana
     public static Configurable configure() {
         return new EventHubManager.ConfigurableImpl();
     }
+
     /**
      * Creates an instance of EventHubManager that exposes EventHub resource management API entry points.
      *
-     * @param credentials the credentials to use
-     * @param subscriptionId the subscription UUID
+     * @param credential the credential to use
+     * @param profile the profile to use
      * @return the EventHubManager
      */
-    public static EventHubManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
-        return new EventHubManager(new RestClient.Builder()
-                .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
-                .withCredentials(credentials)
-                .withSerializerAdapter(new AzureJacksonAdapter())
-                .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
-                .withInterceptor(new ProviderRegistrationInterceptor(credentials))
-                .withInterceptor(new ResourceManagerThrottlingInterceptor())
-                .build(), subscriptionId);
+    public static EventHubManager authenticate(TokenCredential credential, AzureProfile profile) {
+        return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
+
     /**
      * Creates an instance of EventHubManager that exposes EventHub resource management API entry points.
      *
-     * @param restClient the RestClient to be used for API calls.
-     * @param subscriptionId the subscription UUID
+     * @param httpPipeline the HttpPipeline to be used for API calls.
+     * @param profile the profile to use
      * @return the EventHubManager
      */
-    public static EventHubManager authenticate(RestClient restClient, String subscriptionId) {
-        return new EventHubManager(restClient, subscriptionId);
+    public static EventHubManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        return authenticate(httpPipeline, profile, new SdkContext());
     }
+
+    /**
+     * Creates an instance of EventHubManager that exposes EventHub resource management API entry points.
+     *
+     * @param httpPipeline the HttpPipeline to be used for API calls.
+     * @param profile the profile to use
+     * @param sdkContext the sdk context
+     * @return the EventHubManager
+     */
+    public static EventHubManager authenticate(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+        return new EventHubManager(httpPipeline, profile, sdkContext);
+    }
+
     /**
      * The interface allowing configurations to be set.
      */
@@ -90,33 +91,37 @@ public final class EventHubManager extends Manager<EventHubManager, EventHubMana
         /**
          * Creates an instance of EventHubManager that exposes EventHub management API entry points.
          *
-         * @param credentials the credentials to use
-         * @param subscriptionId the subscription UUID
+         * @param credential the credential to use
+         * @param profile the profile to use
          * @return the interface exposing EventHub management API entry points that work across subscriptions
          */
-        EventHubManager authenticate(AzureTokenCredentials credentials, String subscriptionId);
+        EventHubManager authenticate(TokenCredential credential, AzureProfile profile);
     }
     /**
      * The implementation for Configurable interface.
      */
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
-        public EventHubManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
-            return EventHubManager.authenticate(buildRestClient(credentials), subscriptionId);
+        public EventHubManager authenticate(TokenCredential credential, AzureProfile profile) {
+            return EventHubManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
     }
-    private EventHubManager(RestClient restClient, String subscriptionId) {
+    private EventHubManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
         super(
-                restClient,
-                subscriptionId,
-                new EventHubManagementClientImpl(restClient).withSubscriptionId(subscriptionId));
-        storageManager = StorageManager.authenticate(restClient, subscriptionId);
-
+            httpPipeline,
+            profile,
+            new EventHubManagementClientBuilder()
+                .pipeline(httpPipeline)
+                .endpoint(profile.environment().getResourceManagerEndpoint())
+                .subscriptionId(profile.subscriptionId())
+                .buildClient(),
+            sdkContext
+        );
+        storageManager = StorageManager.authenticate(httpPipeline, profile, sdkContext);
     }
 
     /**
      * @return entry point to manage EventHub namespaces
      */
-    @Beta(SinceVersion.V2_0_0)
     public EventHubNamespaces namespaces() {
         if (this.namespaces == null) {
             this.namespaces = new EventHubNamespacesImpl(this);
@@ -127,7 +132,6 @@ public final class EventHubManager extends Manager<EventHubManager, EventHubMana
     /**
      * @return entry point to manage event hubs
      */
-    @Beta(SinceVersion.V2_0_0)
     public EventHubs eventHubs() {
         if (this.eventHubs == null) {
             this.eventHubs = new EventHubsImpl(this, this.storageManager);
@@ -138,7 +142,6 @@ public final class EventHubManager extends Manager<EventHubManager, EventHubMana
     /**
      * @return entry point to manage event hub consumer groups
      */
-    @Beta(SinceVersion.V2_0_0)
     public EventHubConsumerGroups consumerGroups() {
         if (this.consumerGroups == null) {
             this.consumerGroups = new EventHubConsumerGroupsImpl(this);
@@ -149,7 +152,6 @@ public final class EventHubManager extends Manager<EventHubManager, EventHubMana
     /**
      * @return entry point to manage disaster recovery pairing of event hub namespaces.
      */
-    @Beta(SinceVersion.V2_0_0)
     public EventHubDisasterRecoveryPairings eventHubDisasterRecoveryPairings() {
         if (this.eventHubDisasterRecoveryPairings == null) {
             this.eventHubDisasterRecoveryPairings = new EventHubDisasterRecoveryPairingsImpl(this);
@@ -160,7 +162,6 @@ public final class EventHubManager extends Manager<EventHubManager, EventHubMana
     /**
      * @return entry point to manage event hub authorization rules.
      */
-    @Beta(SinceVersion.V2_0_0)
     public EventHubAuthorizationRules eventHubAuthorizationRules() {
         if (this.eventHubAuthorizationRules == null) {
             this.eventHubAuthorizationRules = new EventHubAuthorizationRulesImpl(this);
@@ -171,7 +172,6 @@ public final class EventHubManager extends Manager<EventHubManager, EventHubMana
     /**
      * @return entry point to manage event hub namespace authorization rules.
      */
-    @Beta(SinceVersion.V2_0_0)
     public EventHubNamespaceAuthorizationRules namespaceAuthorizationRules() {
         if (this.namespaceAuthorizationRules == null) {
             this.namespaceAuthorizationRules = new EventHubNamespaceAuthorizationRulesImpl(this);
@@ -182,7 +182,6 @@ public final class EventHubManager extends Manager<EventHubManager, EventHubMana
     /**
      * @return entry point to manage disaster recovery pairing authorization rules.
      */
-    @Beta(SinceVersion.V2_0_0)
     public DisasterRecoveryPairingAuthorizationRules disasterRecoveryPairingAuthorizationRules() {
         if (this.disasterRecoveryPairingAuthorizationRules == null) {
             this.disasterRecoveryPairingAuthorizationRules = new DisasterRecoveryPairingAuthorizationRulesImpl(this);

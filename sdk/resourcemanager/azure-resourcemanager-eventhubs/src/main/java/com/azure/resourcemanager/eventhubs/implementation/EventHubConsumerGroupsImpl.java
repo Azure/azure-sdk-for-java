@@ -1,37 +1,31 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.eventhubs.implementation;
 
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.eventhubs.EventHubManager;
+import com.azure.resourcemanager.eventhubs.fluent.ConsumerGroupsClient;
+import com.azure.resourcemanager.eventhubs.fluent.inner.ConsumerGroupInner;
 import com.azure.resourcemanager.eventhubs.models.EventHubConsumerGroup;
 import com.azure.resourcemanager.eventhubs.models.EventHubConsumerGroups;
-import com.microsoft.azure.Page;
-import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.ResourceId;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
-import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import rx.Completable;
-import rx.Observable;
-import rx.functions.Func1;
+import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
+import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
+import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 
 /**
  * Implementation for {@link EventHubConsumerGroups}.
  */
-@LangDefinition
-class EventHubConsumerGroupsImpl extends WrapperImpl<ConsumerGroupsInner> implements EventHubConsumerGroups {
+public final class EventHubConsumerGroupsImpl
+    extends WrapperImpl<ConsumerGroupsClient>
+    implements EventHubConsumerGroups {
     private final EventHubManager manager;
 
-    protected EventHubConsumerGroupsImpl(EventHubManager manager) {
-        super(manager.inner().consumerGroups());
+    public EventHubConsumerGroupsImpl(EventHubManager manager) {
+        super(manager.inner().getConsumerGroups());
         this.manager = manager;
     }
 
@@ -47,11 +41,11 @@ class EventHubConsumerGroupsImpl extends WrapperImpl<ConsumerGroupsInner> implem
 
     @Override
     public EventHubConsumerGroup getById(String id) {
-        return getByIdAsync(id).toBlocking().last();
+        return getByIdAsync(id).block();
     }
 
     @Override
-    public Observable<EventHubConsumerGroup> getByIdAsync(String id) {
+    public Mono<EventHubConsumerGroup> getByIdAsync(String id) {
         Objects.requireNonNull(id);
         ResourceId resourceId = ResourceId.fromString(id);
 
@@ -62,72 +56,40 @@ class EventHubConsumerGroupsImpl extends WrapperImpl<ConsumerGroupsInner> implem
     }
 
     @Override
-    public ServiceFuture<EventHubConsumerGroup> getByIdAsync(String id, ServiceCallback<EventHubConsumerGroup> callback) {
-        return ServiceFuture.fromBody(getByIdAsync(id), callback);
+    public Mono<EventHubConsumerGroup> getByNameAsync(
+        String resourceGroupName, String namespaceName, String eventHubName, String name) {
+        return this.inner().getAsync(resourceGroupName, namespaceName, eventHubName, name).map(this::wrapModel);
     }
 
     @Override
-    public Observable<EventHubConsumerGroup> getByNameAsync(String resourceGroupName, String namespaceName, String eventHubName, String name) {
-        return this.inner().getAsync(resourceGroupName,
-                namespaceName,
-                eventHubName,
-                name)
-                .map(new Func1<ConsumerGroupInner, EventHubConsumerGroup>() {
-                    @Override
-                    public EventHubConsumerGroup call(ConsumerGroupInner inner) {
-                        if (inner == null) {
-                            return null;
-                        } else {
-                            return wrapModel(inner);
-                        }
-                    }
-                });
+    public EventHubConsumerGroup getByName(
+        String resourceGroupName, String namespaceName, String eventHubName, String name) {
+        return getByNameAsync(resourceGroupName, namespaceName, eventHubName, name).block();
     }
 
     @Override
-    public EventHubConsumerGroup getByName(String resourceGroupName, String namespaceName, String eventHubName, String name) {
-        return getByNameAsync(resourceGroupName, namespaceName, eventHubName, name).toBlocking().last();
+    public PagedIterable<EventHubConsumerGroup> listByEventHub(
+        String resourceGroupName, String namespaceName, String eventHubName) {
+        return inner()
+            .listByEventHub(resourceGroupName, namespaceName, eventHubName)
+            .mapPage(this::wrapModel);
     }
 
     @Override
-    public PagedList<EventHubConsumerGroup> listByEventHub(String resourceGroupName, String namespaceName, String eventHubName) {
-        return (new PagedListConverter<ConsumerGroupInner, EventHubConsumerGroup>() {
-            @Override
-            public Observable<EventHubConsumerGroup> typeConvertAsync(final ConsumerGroupInner inner) {
-                return Observable.<EventHubConsumerGroup>just(wrapModel(inner));
-            }
-        }).convert(inner().listByEventHub(resourceGroupName, namespaceName, eventHubName));
-    }
-
-    @Override
-    public Observable<EventHubConsumerGroup> listByEventHubAsync(String resourceGroupName, String namespaceName, String eventHubName) {
-        return this.inner().listByEventHubAsync(resourceGroupName, namespaceName, eventHubName)
-                .flatMapIterable(new Func1<Page<ConsumerGroupInner>, Iterable<ConsumerGroupInner>>() {
-                    @Override
-                    public Iterable<ConsumerGroupInner> call(Page<ConsumerGroupInner> page) {
-                        return page.items();
-                    }
-                })
-                .map(new Func1<ConsumerGroupInner, EventHubConsumerGroup>() {
-                    @Override
-                    public EventHubConsumerGroup call(ConsumerGroupInner inner) {
-                        return wrapModel(inner);
-                    }
-                });
+    public PagedFlux<EventHubConsumerGroup> listByEventHubAsync(
+        String resourceGroupName, String namespaceName, String eventHubName) {
+        return inner()
+            .listByEventHubAsync(resourceGroupName, namespaceName, eventHubName)
+            .mapPage(this::wrapModel);
     }
 
     @Override
     public void deleteById(String id) {
-        deleteByIdAsync(id).await();
+        deleteByIdAsync(id).block();
     }
 
     @Override
-    public ServiceFuture<Void> deleteByIdAsync(String id, ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(deleteByIdAsync(id), callback);
-    }
-
-    @Override
-    public Completable deleteByIdAsync(String id) {
+    public Mono<Void> deleteByIdAsync(String id) {
         Objects.requireNonNull(id);
         ResourceId resourceId = ResourceId.fromString(id);
 
@@ -138,16 +100,17 @@ class EventHubConsumerGroupsImpl extends WrapperImpl<ConsumerGroupsInner> implem
     }
 
     @Override
-    public Completable deleteByNameAsync(String resourceGroupName, String namespaceName, String eventHubName, String name) {
+    public Mono<Void> deleteByNameAsync(
+        String resourceGroupName, String namespaceName, String eventHubName, String name) {
         return this.inner().deleteAsync(resourceGroupName,
                 namespaceName,
                 eventHubName,
-                name).toCompletable();
+                name);
     }
 
     @Override
     public void deleteByName(String resourceGroupName, String namespaceName, String eventHubName, String name) {
-        deleteByNameAsync(resourceGroupName, namespaceName, eventHubName, name).await();
+        deleteByNameAsync(resourceGroupName, namespaceName, eventHubName, name).block();
     }
 
     private EventHubConsumerGroupImpl wrapModel(ConsumerGroupInner innerModel) {

@@ -1,25 +1,22 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.eventhubs.implementation;
 
 import com.azure.resourcemanager.eventhubs.EventHubManager;
+import com.azure.resourcemanager.eventhubs.fluent.inner.AccessKeysInner;
+import com.azure.resourcemanager.eventhubs.fluent.inner.AuthorizationRuleInner;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceAuthorizationRule;
 import com.azure.resourcemanager.eventhubs.models.KeyType;
 import com.azure.resourcemanager.eventhubs.models.RegenerateAccessKeyParameters;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import rx.Observable;
+import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 
 /**
  * Implementation for {@link EventHubNamespaceAuthorizationRule}.
  */
-@LangDefinition
 class EventHubNamespaceAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<EventHubNamespaceAuthorizationRule,
         EventHubNamespaceAuthorizationRuleImpl>
         implements
@@ -55,7 +52,8 @@ class EventHubNamespaceAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<E
     }
 
     @Override
-    public EventHubNamespaceAuthorizationRuleImpl withExistingNamespace(String resourceGroupName, String namespaceName) {
+    public EventHubNamespaceAuthorizationRuleImpl withExistingNamespace(
+        String resourceGroupName, String namespaceName) {
         this.ancestor = new Ancestors().new OneAncestor(resourceGroupName, namespaceName);
         return this;
     }
@@ -67,16 +65,16 @@ class EventHubNamespaceAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<E
     }
 
     @Override
-    protected Observable<AuthorizationRuleInner> getInnerAsync() {
-        return this.manager.inner().namespaces()
+    protected Mono<AuthorizationRuleInner> getInnerAsync() {
+        return this.manager.inner().getNamespaces()
                 .getAuthorizationRuleAsync(this.ancestor().resourceGroupName(),
                         this.ancestor().ancestor1Name(),
                         this.name());
     }
 
     @Override
-    public Observable<EventHubNamespaceAuthorizationRule> createResourceAsync() {
-        return this.manager.inner().namespaces()
+    public Mono<EventHubNamespaceAuthorizationRule> createResourceAsync() {
+        return this.manager.inner().getNamespaces()
                 .createOrUpdateAuthorizationRuleAsync(this.ancestor().resourceGroupName(),
                         this.ancestor().ancestor1Name(),
                         this.name(),
@@ -85,18 +83,18 @@ class EventHubNamespaceAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<E
     }
 
     @Override
-    protected Observable<AccessKeysInner> getKeysInnerAsync() {
-        return this.manager.inner().namespaces()
+    protected Mono<AccessKeysInner> getKeysInnerAsync() {
+        return this.manager.inner().getNamespaces()
                 .listKeysAsync(this.ancestor().resourceGroupName(),
                         this.ancestor().ancestor1Name(),
                         this.name());
     }
 
     @Override
-    protected Observable<AccessKeysInner> regenerateKeysInnerAsync(KeyType keyType) {
+    protected Mono<AccessKeysInner> regenerateKeysInnerAsync(KeyType keyType) {
         final RegenerateAccessKeyParameters regenKeyInner = new RegenerateAccessKeyParameters()
                 .withKeyType(keyType);
-        return this.manager.inner().namespaces()
+        return this.manager.inner().getNamespaces()
                 .regenerateKeysAsync(this.ancestor().resourceGroupName(),
                         this.ancestor().ancestor1Name(),
                         this.name(),

@@ -1,19 +1,14 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
-
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.resourcemanager.eventhubs.models;
 
-import com.microsoft.azure.management.apigeneration.Beta;
-import com.microsoft.azure.management.apigeneration.Fluent;
-import com.azure.resourcemanager.eventhubs.implementation.AuthorizationRuleInner;
+import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.eventhubs.fluent.inner.AuthorizationRuleInner;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.eventhubs.EventHubManager;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
-import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
-import rx.Observable;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -21,25 +16,19 @@ import java.util.List;
  * Type representing authorization rule of {@link EventHubDisasterRecoveryPairing}.
  */
 @Fluent
-@Beta(Beta.SinceVersion.V1_7_0)
 public interface DisasterRecoveryPairingAuthorizationRule
-        extends
-        HasName,
-        HasInner<AuthorizationRuleInner>,
-        HasManager<EventHubManager> {
+    extends HasName, HasInner<AuthorizationRuleInner>, HasManager<EventHubManager> {
     /**
      * @return rights associated with the rule
      */
-    @Beta(Beta.SinceVersion.V1_7_0)
     List<AccessRights> rights();
+
     /**
      * @return an observable that emits a single entity containing access keys (primary and secondary)
      */
-    @Beta(Beta.SinceVersion.V1_7_0)
-    Observable<DisasterRecoveryPairingAuthorizationKey> getKeysAsync();
+    Mono<DisasterRecoveryPairingAuthorizationKey> getKeysAsync();
     /**
      * @return entity containing access keys (primary and secondary)
      */
-    @Beta(Beta.SinceVersion.V1_7_0)
     DisasterRecoveryPairingAuthorizationKey getKeys();
 }

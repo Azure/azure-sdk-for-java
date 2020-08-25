@@ -1,30 +1,25 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.eventhubs.implementation;
 
 import com.azure.resourcemanager.eventhubs.EventHubManager;
+import com.azure.resourcemanager.eventhubs.fluent.inner.ConsumerGroupInner;
 import com.azure.resourcemanager.eventhubs.models.EventHub;
 import com.azure.resourcemanager.eventhubs.models.EventHubConsumerGroup;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import org.joda.time.DateTime;
-import rx.Observable;
+import reactor.core.publisher.Mono;
 
+import java.time.OffsetDateTime;
 import java.util.Objects;
 
 /**
  * Implementation for {@link EventHubConsumerGroup}.
  */
-@LangDefinition
 class EventHubConsumerGroupImpl
-        extends NestedResourceImpl<EventHubConsumerGroup,
+    extends NestedResourceImpl<EventHubConsumerGroup,
         ConsumerGroupInner,
         EventHubConsumerGroupImpl>
-        implements
-        EventHubConsumerGroup,
+    implements EventHubConsumerGroup,
         EventHubConsumerGroup.Definition,
         EventHubConsumerGroup.Update {
 
@@ -55,12 +50,12 @@ class EventHubConsumerGroupImpl
     }
 
     @Override
-    public DateTime createdAt() {
+    public OffsetDateTime createdAt() {
         return this.inner().createdAt();
     }
 
     @Override
-    public DateTime updatedAt() {
+    public OffsetDateTime updatedAt() {
         return this.inner().updatedAt();
     }
 
@@ -82,7 +77,8 @@ class EventHubConsumerGroupImpl
     }
 
     @Override
-    public EventHubConsumerGroupImpl withExistingEventHub(String resourceGroupName, String namespaceName, String eventHubName) {
+    public EventHubConsumerGroupImpl withExistingEventHub(
+        String resourceGroupName, String namespaceName, String eventHubName) {
         this.ancestor = new Ancestors().new TwoAncestor(resourceGroupName, eventHubName, namespaceName);
         return this;
     }
@@ -94,8 +90,8 @@ class EventHubConsumerGroupImpl
     }
 
     @Override
-    public Observable<EventHubConsumerGroup> createResourceAsync() {
-        return this.manager.inner().consumerGroups()
+    public Mono<EventHubConsumerGroup> createResourceAsync() {
+        return this.manager.inner().getConsumerGroups()
                 .createOrUpdateAsync(this.ancestor().resourceGroupName(),
                         this.ancestor().ancestor2Name(),
                         this.ancestor().ancestor1Name(),
@@ -105,8 +101,8 @@ class EventHubConsumerGroupImpl
     }
 
     @Override
-    protected Observable<ConsumerGroupInner> getInnerAsync() {
-        return this.manager.inner().consumerGroups()
+    protected Mono<ConsumerGroupInner> getInnerAsync() {
+        return this.manager.inner().getConsumerGroups()
                 .getAsync(this.ancestor().resourceGroupName(),
                         this.ancestor().ancestor2Name(),
                         this.ancestor().ancestor1Name(),

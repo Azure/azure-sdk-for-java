@@ -1,35 +1,31 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.eventhubs.implementation;
 
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.eventhubs.EventHubManager;
+import com.azure.resourcemanager.eventhubs.fluent.inner.ArmDisasterRecoveryInner;
 import com.azure.resourcemanager.eventhubs.models.DisasterRecoveryPairingAuthorizationRule;
 import com.azure.resourcemanager.eventhubs.models.EventHubDisasterRecoveryPairing;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.resourcemanager.eventhubs.models.ProvisioningStateDR;
 import com.azure.resourcemanager.eventhubs.models.RoleDisasterRecovery;
-import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.ResourceId;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import rx.Completable;
-import rx.Observable;
+import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
+import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 
 /**
  * Implementation for {@link EventHubDisasterRecoveryPairing}.
  */
-@LangDefinition
 class EventHubDisasterRecoveryPairingImpl
-        extends
-        NestedResourceImpl<EventHubDisasterRecoveryPairing, ArmDisasterRecoveryInner, EventHubDisasterRecoveryPairingImpl>
-        implements
-        EventHubDisasterRecoveryPairing,
+    extends NestedResourceImpl<EventHubDisasterRecoveryPairing,
+        ArmDisasterRecoveryInner,
+        EventHubDisasterRecoveryPairingImpl>
+    implements EventHubDisasterRecoveryPairing,
         EventHubDisasterRecoveryPairing.Definition,
         EventHubDisasterRecoveryPairing.Update {
 
@@ -70,10 +66,13 @@ class EventHubDisasterRecoveryPairingImpl
     }
 
     @Override
-    public EventHubDisasterRecoveryPairingImpl withNewPrimaryNamespace(Creatable<EventHubNamespace> namespaceCreatable) {
+    public EventHubDisasterRecoveryPairingImpl withNewPrimaryNamespace(
+        Creatable<EventHubNamespace> namespaceCreatable) {
         this.addDependency(namespaceCreatable);
-        EventHubNamespaceImpl namespace = ((EventHubNamespaceImpl) namespaceCreatable);
-        this.ancestor = new Ancestors().new OneAncestor(namespace.resourceGroupName(), namespaceCreatable.name());
+        if (namespaceCreatable instanceof EventHubNamespaceImpl) {
+            EventHubNamespaceImpl namespace = ((EventHubNamespaceImpl) namespaceCreatable);
+            this.ancestor = new Ancestors().new OneAncestor(namespace.resourceGroupName(), namespaceCreatable.name());
+        }
         return this;
     }
 
@@ -84,7 +83,8 @@ class EventHubDisasterRecoveryPairingImpl
     }
 
     @Override
-    public EventHubDisasterRecoveryPairingImpl withExistingPrimaryNamespace(String resourceGroupName, String primaryNamespaceName) {
+    public EventHubDisasterRecoveryPairingImpl withExistingPrimaryNamespace(
+        String resourceGroupName, String primaryNamespaceName) {
         this.ancestor = new Ancestors().new OneAncestor(resourceGroupName, primaryNamespaceName);
         return this;
     }
@@ -96,10 +96,13 @@ class EventHubDisasterRecoveryPairingImpl
     }
 
     @Override
-    public EventHubDisasterRecoveryPairingImpl withNewSecondaryNamespace(Creatable<EventHubNamespace> namespaceCreatable) {
+    public EventHubDisasterRecoveryPairingImpl withNewSecondaryNamespace(
+        Creatable<EventHubNamespace> namespaceCreatable) {
         this.addDependency(namespaceCreatable);
-        EventHubNamespaceImpl namespace = ((EventHubNamespaceImpl) namespaceCreatable);
-        this.inner().withPartnerNamespace(namespace.name());
+        if (namespaceCreatable instanceof EventHubNamespaceImpl) {
+            EventHubNamespaceImpl namespace = ((EventHubNamespaceImpl) namespaceCreatable);
+            this.inner().withPartnerNamespace(namespace.name());
+        }
         return this;
     }
 
@@ -118,8 +121,9 @@ class EventHubDisasterRecoveryPairingImpl
     }
 
     @Override
-    public Observable<EventHubDisasterRecoveryPairing> createResourceAsync() {
-        return this.manager().inner().disasterRecoveryConfigs().createOrUpdateAsync(this.ancestor().resourceGroupName(),
+    public Mono<EventHubDisasterRecoveryPairing> createResourceAsync() {
+        return this.manager().inner().getDisasterRecoveryConfigs()
+            .createOrUpdateAsync(this.ancestor().resourceGroupName(),
                 this.ancestor().ancestor1Name(),
                 this.name(),
                 this.inner())
@@ -127,53 +131,56 @@ class EventHubDisasterRecoveryPairingImpl
     }
 
     @Override
-    public Completable breakPairingAsync() {
-        return this.manager().inner().disasterRecoveryConfigs().breakPairingAsync(this.ancestor().resourceGroupName(),
+    public Mono<Void> breakPairingAsync() {
+        return this.manager().inner().getDisasterRecoveryConfigs()
+            .breakPairingAsync(this.ancestor().resourceGroupName(),
                     this.ancestor().ancestor1Name(),
                     this.name())
-                .toCompletable()
-                .concatWith(this.refreshAsync().toCompletable());
+                .then(refreshAsync())
+            .then();
     }
 
     @Override
     public void breakPairing() {
-        this.breakPairingAsync().await();
+        this.breakPairingAsync().block();
     }
 
     @Override
-    public Completable failOverAsync() {
+    public Mono<Void> failOverAsync() {
         // Fail over is run against secondary namespace (because primary might be down at time of failover)
         //
         ResourceId secondaryNs = ResourceId.fromString(this.inner().partnerNamespace());
-        return this.manager().inner().disasterRecoveryConfigs().failOverAsync(secondaryNs.resourceGroupName(),
-                secondaryNs.name(),
-                this.name())
-                .toCompletable()
-                .concatWith(this.refreshAsync().toCompletable());
+        return this.manager().inner().getDisasterRecoveryConfigs().failOverAsync(secondaryNs.resourceGroupName(),
+            secondaryNs.name(),
+            this.name())
+            .then(refreshAsync())
+            .then();
     }
 
     @Override
     public void failOver() {
-        this.failOverAsync().await();
+        this.failOverAsync().block();
     }
 
     @Override
-    public Observable<DisasterRecoveryPairingAuthorizationRule> listAuthorizationRulesAsync() {
-        return this.manager().disasterRecoveryPairingAuthorizationRules().listByDisasterRecoveryPairingAsync(this.ancestor().resourceGroupName(),
+    public PagedFlux<DisasterRecoveryPairingAuthorizationRule> listAuthorizationRulesAsync() {
+        return this.manager().disasterRecoveryPairingAuthorizationRules()
+            .listByDisasterRecoveryPairingAsync(this.ancestor().resourceGroupName(),
                 this.ancestor().ancestor1Name(),
                 this.name());
     }
 
     @Override
-    public PagedList<DisasterRecoveryPairingAuthorizationRule> listAuthorizationRules() {
-        return this.manager().disasterRecoveryPairingAuthorizationRules().listByDisasterRecoveryPairing(this.ancestor().resourceGroupName(),
+    public PagedIterable<DisasterRecoveryPairingAuthorizationRule> listAuthorizationRules() {
+        return this.manager().disasterRecoveryPairingAuthorizationRules()
+            .listByDisasterRecoveryPairing(this.ancestor().resourceGroupName(),
                 this.ancestor().ancestor1Name(),
                 this.name());
     }
 
     @Override
-    protected Observable<ArmDisasterRecoveryInner> getInnerAsync() {
-        return this.manager().inner().disasterRecoveryConfigs().getAsync(this.ancestor().resourceGroupName(),
+    protected Mono<ArmDisasterRecoveryInner> getInnerAsync() {
+        return this.manager().inner().getDisasterRecoveryConfigs().getAsync(this.ancestor().resourceGroupName(),
                 this.ancestor().ancestor1Name(),
                 this.name());
     }
