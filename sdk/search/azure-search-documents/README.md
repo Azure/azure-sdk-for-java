@@ -62,7 +62,7 @@ az search service create --name <mysearch> --resource-group <mysearch-rg> --sku 
 
 In order to interact with the Azure Cognitive Search service you'll need to create an instance of the Search Client class. 
 To make this possible you will need, 
-1. [URL endpoint](https://docs.microsoft.com/en-us/azure/search/search-create-service-portal#get-a-key-and-url-endpoint)
+1. [URL endpoint](https://docs.microsoft.com/azure/search/search-create-service-portal#get-a-key-and-url-endpoint)
 1. All requests to a search service need an api-key that was generated specifically
 for your service. [The api-key is the sole mechanism for authenticating access to
 your search service endpoint.](https://docs.microsoft.com/azure/search/search-security-api-keys)
@@ -196,7 +196,7 @@ for (SearchResult searchResult: searchResultsIterable) {
 
 An Azure Cognitive Search service contains one or more indexes that provide persistent storage of searchable data in 
 the form of JSON documents. _(If you're new to search, you can make a very rough analogy between indexes and database 
-tables.)_ The Azure.Search.Documents client library exposes operations on these resources through two main client types.
+tables.)_ The `azure-search-documents` client library exposes operations on these resources through two main client types.
 
 * `SearchClient` helps with:
   * [Searching](https://docs.microsoft.com/azure/search/search-lucene-query-architecture)
