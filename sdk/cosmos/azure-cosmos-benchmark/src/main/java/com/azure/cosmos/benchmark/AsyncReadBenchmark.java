@@ -54,37 +54,54 @@ class AsyncReadBenchmark extends AsyncBenchmark<PojoizedJson> {
 
     @Override
     protected void performWorkload(BaseSubscriber<PojoizedJson> baseSubscriber, long i) throws InterruptedException {
-        Mono sparsitySleepMono = sparsityMono();
-
         int index = (int) (i % docsToRead.size());
         PojoizedJson doc = docsToRead.get(index);
-
         String partitionKeyValue = doc.getId();
 
         Mono<PojoizedJson> result = cosmosAsyncContainer.readItem(doc.getId(),
             new PartitionKey(partitionKeyValue),
             PojoizedJson.class).map(CosmosItemResponse::getItem);
 
+        concurrencyControlSemaphore.acquire();
+
+        switch (configuration.getOperationType()) {
+            case ReadThroughput:
+                readThroughput(result, baseSubscriber);
+                break;
+            case ReadLatency:
+                readLatency(result, baseSubscriber);
+                break;
+            default:
+                throw new IllegalArgumentException("invalid workload type " + configuration.getOperationType());
+        }
+    }
+
+    private void readLatency(Mono<PojoizedJson> readItem, BaseSubscriber<PojoizedJson> baseSubscriber) {
+        Mono sparsitySleepMono = sparsityMono();
+        Mono<PojoizedJson> result = readItem;
+        LatencySubscriber<PojoizedJson> latencySubscriber = new LatencySubscriber<>(baseSubscriber);
+        if (sparsitySleepMono != null) {
+            result = sparsitySleepMono.flux().flatMap(
+                null,
+                null,
+                () -> {
+                    latencySubscriber.context = latency.time();
+                    return readItem;
+                }).single();
+        } else {
+            latencySubscriber.context = latency.time();
+        }
+
+        result.subscribeOn(Schedulers.parallel()).subscribe(latencySubscriber);
+    }
+
+    private void readThroughput(Mono<PojoizedJson> result, BaseSubscriber<PojoizedJson> baseSubscriber) {
+        Mono sparsitySleepMono = sparsityMono();
+
         if (sparsitySleepMono != null) {
             result = Mono.from(Flux.concat(sparsitySleepMono, result));
         }
 
-        concurrencyControlSemaphore.acquire();
-
-        if (configuration.getOperationType() == Configuration.Operation.ReadThroughput) {
-            result.subscribeOn(Schedulers.parallel()).subscribe(baseSubscriber);
-        } else {
-            LatencySubscriber<PojoizedJson> latencySubscriber = new LatencySubscriber<>(baseSubscriber);
-
-            if (sparsitySleepMono != null) {
-                sparsitySleepMono.doFinally(signalType -> {
-                    latencySubscriber.context = latency.time();
-                });
-            } else {
-                latencySubscriber.context = latency.time();
-            }
-
-            result.subscribeOn(Schedulers.parallel()).subscribe(latencySubscriber);
-        }
+        result.subscribeOn(Schedulers.parallel()).subscribe(baseSubscriber);
     }
 }
