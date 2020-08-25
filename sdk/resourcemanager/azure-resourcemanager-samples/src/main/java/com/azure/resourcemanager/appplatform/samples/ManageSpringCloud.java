@@ -247,12 +247,12 @@ public class ManageSpringCloud {
                 .withCertificate(certName, vault.vaultUri(), certName)
                 .apply();
 
-            System.out.printf("Updating Spring Cloud App with domain ssl.%s ...", domainName);
+            System.out.printf("Updating Spring Cloud App with domain ssl.%s ...%n", domainName);
             gateway.update()
                 .withCustomDomain(String.format("ssl.%s", domainName), thumbprint)
                 .apply();
 
-            System.out.printf("Successfully expose domain ssl.%s", domainName);
+            System.out.printf("Successfully expose domain ssl.%s%n", domainName);
 
             return true;
         } catch (Exception e) {
