@@ -4,6 +4,7 @@
 package com.azure.search.perf.core;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -19,6 +20,7 @@ import com.azure.search.documents.indexes.models.SearchSuggester;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.net.InetSocketAddress;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
@@ -59,17 +61,17 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
         SearchIndexClientBuilder builder = new SearchIndexClientBuilder()
             .endpoint(searchEndpoint)
             .credential(new AzureKeyCredential(searchApiKey))
-            .httpClient(new NettyAsyncHttpClientBuilder().build());
+            .httpClient(new NettyAsyncHttpClientBuilder()
+                .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
+                .build());
+            //.httpClient(PerfStressHttpClient.create(options));
 
         this.searchIndexAsyncClient = builder.buildAsyncClient();
 
-        Random random = new Random();
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < INDEX_NAME_LENGTH; i++) {
-            stringBuilder.append(ALLOWED_INDEX_CHARACTERS.charAt(random.nextInt(ALLOWED_INDEX_CHARACTERS.length())));
-        }
-
-        this.indexName = stringBuilder.toString();
+        this.indexName = new Random().ints(INDEX_NAME_LENGTH, 0, ALLOWED_INDEX_CHARACTERS.length())
+            .mapToObj(ALLOWED_INDEX_CHARACTERS::charAt)
+            .collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
+            .toString();
 
         this.searchClient = builder.buildClient().getSearchClient(this.indexName);
         this.searchAsyncClient = this.searchIndexAsyncClient.getSearchAsyncClient(this.indexName);

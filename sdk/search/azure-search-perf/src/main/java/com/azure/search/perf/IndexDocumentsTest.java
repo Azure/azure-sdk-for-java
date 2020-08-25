@@ -18,11 +18,11 @@ import java.util.stream.Collectors;
 /**
  * Performs document indexing operations.
  */
-public class IndexDocuments extends ServiceTest<SearchPerfStressOptions> {
+public class IndexDocumentsTest extends ServiceTest<SearchPerfStressOptions> {
     private static volatile AtomicInteger ID_COUNT = new AtomicInteger();
     private final List<Hotel> hotels;
 
-    public IndexDocuments(SearchPerfStressOptions options) {
+    public IndexDocumentsTest(SearchPerfStressOptions options) {
         super(options);
 
         this.hotels = DocumentGenerator.generateHotels(options.getCount(),
