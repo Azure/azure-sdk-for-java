@@ -5,32 +5,29 @@ package com.azure.perf.test.core;
 
 import reactor.core.publisher.Flux;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.SequenceInputStream;
 import java.nio.ByteBuffer;
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 /**
  * Utility class to help with data creation for perf testing.
  */
 public class TestDataCreationHelper {
+    private static final int RANDOM_BYTES_LENGTH = 1024 * 1024; // 1MB
     private static final byte[] RANDOM_BYTES;
     private static final ByteBuffer RANDOM_BYTE_BUFFER;
     private static final int SIZE = (1024 * 1024 * 1024) + 1;
 
     static {
         Random random = new Random();
-        RANDOM_BYTES = new byte[1024 * 1024];
+        RANDOM_BYTES = new byte[RANDOM_BYTES_LENGTH];
         random.nextBytes(RANDOM_BYTES);
         RANDOM_BYTE_BUFFER = ByteBuffer.wrap(TestDataCreationHelper.RANDOM_BYTES).asReadOnlyBuffer();
+
+//        SIZE_BYTES = new byte[SIZE];
+//        random.nextBytes(SIZE_BYTES);
     }
 
     /**
@@ -74,28 +71,16 @@ public class TestDataCreationHelper {
             throw new IllegalArgumentException("size must be <= " + SIZE);
         }
 
-        return createCircularInputStream(RANDOM_BYTES, size);
+        return new RepeatingInputStream((int) size);
     }
 
     /**
-     * Creates a stream of {@code size}with repeated values of {@code byteArray}.
-     * @param byteArray the array to create stream from.
-     * @param size the size of the stream to create.
-     * @return The created {@link InputStream}
+     * Writes the size of bytes into the OutputStream.
+     *
+     * @param outputStream Stream to write into.
+     * @param size Number of bytes to write.
+     * @throws IOException If an IO error occurs.
      */
-    public static InputStream createCircularInputStream(byte[] byteArray, long size) {
-        int remaining = byteArray.length;
-        int quotient = (int) size / remaining;
-        int remainder = (int) size % remaining;
-
-        List<InputStream> list = Stream.concat(IntStream.range(0, quotient)
-                .mapToObj(i -> new ByteArrayInputStream(byteArray)),
-            Stream.of(new ByteArrayInputStream(byteArray, 0, remainder)))
-            .collect(Collectors.toList());
-
-        return new SequenceInputStream(Collections.enumeration(list));
-    }
-
     public static void writeBytesToOutputStream(OutputStream outputStream, long size) throws IOException {
         int quotient = (int) size / RANDOM_BYTES.length;
         int remainder = (int) size % RANDOM_BYTES.length;
@@ -105,5 +90,54 @@ public class TestDataCreationHelper {
         }
 
         outputStream.write(RANDOM_BYTES, 0, remainder);
+    }
+
+    private static final class RepeatingInputStream extends InputStream {
+        private final int size;
+
+        private int mark = 0;
+        private int pos = 0;
+
+        private RepeatingInputStream(int size) {
+            this.size = size;
+        }
+
+        @Override
+        public synchronized int read() {
+            return (pos < size) ? (RANDOM_BYTES[pos++ % RANDOM_BYTES_LENGTH] & 0xFF) : -1;
+        }
+
+        @Override
+        public synchronized int read(byte[] b) {
+            return read(b, 0, b.length);
+        }
+
+        @Override
+        public synchronized int read(byte[] b, int off, int len) {
+            if (pos >= size) {
+                return -1;
+            }
+
+            int readCount = Math.min(len, RANDOM_BYTES_LENGTH);
+            System.arraycopy(RANDOM_BYTES, 0, b, off, len);
+            pos += readCount;
+
+            return readCount;
+        }
+
+        @Override
+        public synchronized void reset() {
+            this.pos = this.mark;
+        }
+
+        @Override
+        public synchronized void mark(int readlimit) {
+            this.mark = readlimit;
+        }
+
+        @Override
+        public boolean markSupported() {
+            return true;
+        }
     }
 }

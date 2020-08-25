@@ -58,7 +58,7 @@ public class DownloadBlobTest extends ContainerTest<PerfStressOptions> {
     @Override
     public Mono<Void> runAsync() {
         return blobAsyncClient.download()
-            .flatMap(b -> {
+            .map(b -> {
                 int readCount = 0;
                 int remaining = b.remaining();
                 while (readCount < remaining) {
@@ -67,7 +67,7 @@ public class DownloadBlobTest extends ContainerTest<PerfStressOptions> {
                     readCount += expectedReadCount;
                 }
 
-                return Mono.just(1);
+                return 1;
             }).then();
     }
 }
