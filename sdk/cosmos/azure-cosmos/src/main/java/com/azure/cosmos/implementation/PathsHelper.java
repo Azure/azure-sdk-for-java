@@ -459,7 +459,11 @@ public class PathsHelper {
         return null;
     }
 
-    private static String unescapeJavaAndTrim(String resourceUrl) {
+    public static String unescapeJavaAndTrim(String resourceUrl) {
+        if (resourceUrl == null) {
+            return null;
+        }
+
         int startInclusiveIndex = 0;
 
         while (startInclusiveIndex < resourceUrl.length() && resourceUrl.charAt(startInclusiveIndex) == Paths.ROOT_CHAR) {
