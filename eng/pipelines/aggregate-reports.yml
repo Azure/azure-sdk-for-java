@@ -107,6 +107,7 @@ jobs:
       displayName: Generate Interdependency Report Data
 
     - pwsh: |
+        Copy-Item target/staging $(Build.ArtifactStagingDirectory) -Recurse
         Copy-Item eng/jacoco-test-coverage/target/staging $(Build.ArtifactStagingDirectory) -Recurse
         Copy-Item eng/jacoco-test-coverage/target/dependency-allowlist.json $(Build.ArtifactStagingDirectory)/staging
         Copy-Item eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
