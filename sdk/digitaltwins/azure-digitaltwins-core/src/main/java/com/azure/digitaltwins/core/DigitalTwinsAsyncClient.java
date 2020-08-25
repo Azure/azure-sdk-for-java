@@ -51,16 +51,19 @@ public class DigitalTwinsAsyncClient {
 
     DigitalTwinsAsyncClient(HttpPipeline pipeline, DigitalTwinsServiceVersion serviceVersion, String host) {
         final SimpleModule stringModule = new SimpleModule("String Serializer");
-        stringModule.addSerializer(new StdSerializer<String>(String.class, false) {
-            @Override public void serialize(String value, JsonGenerator gen, SerializerProvider provider)
-                throws IOException {
-                if (isValidJson(value)) {
-                    gen.writeRawValue(value);
+
+        StdSerializer<String> adtStringSerializer = new StdSerializer<>(String.class, false) {
+            @Override
+            public void serialize(String s, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
+                if (isValidJson(s)) {
+                    jsonGenerator.writeRawValue(s);
                 } else {
-                    gen.writeString(value);
+                    jsonGenerator.writeString(s);
                 }
             }
-        });
+        };
+
+        stringModule.addSerializer(adtStringSerializer);
 
         JacksonAdapter jacksonAdapter = new JacksonAdapter();
         jacksonAdapter.serializer().registerModule(stringModule);

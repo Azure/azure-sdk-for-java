@@ -67,7 +67,7 @@ public class DigitalTwinMetadata {
      * @return The DigitalTwinMetadata object itself.
      */
     @JsonAnySetter
-    private DigitalTwinMetadata setWritableProperties(String key, Object value) {
+    public DigitalTwinMetadata setWritableProperties(String key, Object value) {
         this.writeableProperties.put(key, value);
         return this;
     }
