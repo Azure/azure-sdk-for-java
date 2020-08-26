@@ -19,7 +19,6 @@ import com.azure.cosmos.util.Beta;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import com.azure.cosmos.util.UtilBridgeInternal;
-import io.micrometer.core.instrument.util.StringUtils;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
