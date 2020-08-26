@@ -1,4 +1,4 @@
-# Azure Storage Performance test client library for Java
+# Azure ServiceBus Performance test client library for Java
 
 Represents Performance tests for Azure Service Bus SDK for Java.
 

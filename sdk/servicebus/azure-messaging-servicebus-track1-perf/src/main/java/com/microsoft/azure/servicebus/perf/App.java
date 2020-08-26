@@ -6,7 +6,7 @@ package com.microsoft.azure.servicebus.perf;
 import com.azure.perf.test.core.PerfStressProgram;
 
 /**
- * Runs the Storage performance test.
+ * Runs the ServiceBus performance test.
  *
  * <p>To run from command line. Package the project into a jar with dependencies via mvn clean package.
  * Then run the program via java -jar 'compiled-jar-with-dependencies-path' </p>
@@ -25,16 +25,12 @@ public class App {
     public static void main(String[] args) {
         Class<?>[] testClasses;
 
-        try {
-            testClasses = new Class<?>[]{
-                Class.forName(ReceiveAndDeleteMessageTest.class.getName()),
-                Class.forName(ReceiveAndLockMessageTest.class.getName()),
-                Class.forName(SendMessageTest.class.getName()),
-                Class.forName(SendMessagesTest.class.getName())
-            };
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        testClasses = new Class<?>[]{
+            ReceiveAndDeleteMessageTest.class,
+            ReceiveAndLockMessageTest.class,
+            SendMessageTest.class,
+            SendMessagesTest.class
+        };
 
         PerfStressProgram.run(testClasses, args);
     }

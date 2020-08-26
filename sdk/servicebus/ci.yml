@@ -46,5 +46,3 @@ extends:
           groupId: com.azure
         - name: azure-messaging-servicebus-track2-perf
           groupId: com.azure
-        - name: azure-storage-perf
-          groupId: com.azure
