@@ -15,6 +15,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
+import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
 import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
 import com.azure.messaging.servicebus.administration.models.CreateTopicOptions;
 import com.azure.messaging.servicebus.administration.models.NamespaceProperties;
@@ -38,6 +39,7 @@ import java.util.function.Function;
 @ServiceClient(builder = ServiceBusAdministrationClientBuilder.class)
 public final class ServiceBusAdministrationClient {
     private final ServiceBusAdministrationAsyncClient asyncClient;
+    private final CreateRuleOptions defaultRuleOptions = new CreateRuleOptions();
 
     /**
      * Creates a new instance with the given client.
@@ -164,9 +166,31 @@ public final class ServiceBusAdministrationClient {
      * @param topicName Name of the topic associated with subscription.
      * @param subscriptionName Name of the subscription.
      * @param subscriptionOptions Information about the subscription to create.
+     *
+     * @return The created subscription.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
+     *     processing the request.
+     * @throws NullPointerException if {@code subscription} is null.
+     * @throws ResourceExistsException if a subscription exists with the same topic and subscription name.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SubscriptionProperties createSubscription(String topicName, String subscriptionName,
+        CreateSubscriptionOptions subscriptionOptions, CreateRuleOptions ruleOptions) {
+        return asyncClient.createSubscription(topicName, subscriptionName, subscriptionOptions, ruleOptions).block();
+    }
+
+    /**
+     * Creates a queue and returns the created queue in addition to the HTTP response.
+     *
+     * @param topicName Name of the topic associated with subscription.
+     * @param subscriptionName Name of the subscription.
+     * @param subscriptionOptions Information about the subscription to create.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
-     * @return The created queue in addition to the HTTP response.
+     * @return The created subscription in addition to the HTTP response.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
@@ -177,9 +201,9 @@ public final class ServiceBusAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SubscriptionProperties> createSubscriptionWithResponse(String topicName, String subscriptionName,
-        CreateSubscriptionOptions subscriptionOptions, Context context) {
+        CreateSubscriptionOptions subscriptionOptions, CreateRuleOptions ruleOptions, Context context) {
         return asyncClient.createSubscriptionWithResponse(topicName, subscriptionName, subscriptionOptions,
-            context != null ? context : Context.NONE).block();
+            ruleOptions, context != null ? context : Context.NONE).block();
     }
 
     /**
