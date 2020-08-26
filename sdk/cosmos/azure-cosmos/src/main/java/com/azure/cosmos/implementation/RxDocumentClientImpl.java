@@ -1894,7 +1894,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             ModelBridgeInternal.createQueryRequestOptions(options),
                             range.getId());
 
-                    return createQuery(collectionLink, querySpec, options, Document.class, ResourceType.Document);
+                    return createQuery(collectionLink, querySpec, effectiveOptions, Document.class, ResourceType.Document);
                 });
             });
     }

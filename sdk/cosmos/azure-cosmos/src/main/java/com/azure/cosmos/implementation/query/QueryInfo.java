@@ -128,6 +128,11 @@ public final class QueryInfo extends JsonSerializable {
             return distinctQueryType;
         } else {
             final String distinctType = super.getString("distinctType");
+
+            if (distinctType == null) {
+                return DistinctQueryType.NONE;
+            }
+
             switch (distinctType) {
                 case "Ordered":
                     distinctQueryType = DistinctQueryType.ORDERED;
