@@ -6,7 +6,6 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.implementation.annotation.Beta;
 import com.azure.resourcemanager.appplatform.fluent.inner.AppResourceInner;
-import com.azure.resourcemanager.appplatform.implementation.SpringAppDeploymentImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ExternalChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
@@ -56,7 +55,10 @@ public interface SpringApp
     /** @return the active deployment */
     Mono<SpringAppDeployment> getActiveDeploymentAsync();
 
-    /** @return the entry point of the spring app deployment */
+    /**
+     * @param <T> derived type of {@link SpringAppDeployment.DefinitionStages.WithCreate}
+     * @return the entry point of the spring app deployment
+     */
     <T extends SpringAppDeployment.DefinitionStages.WithCreate<T>> SpringAppDeployments<T> deployments();
 
     /** @return the entry point of the spring app service binding */
@@ -94,11 +96,12 @@ public interface SpringApp
             /**
              * Starts the definition of the active deployment for the spring app.
              * @param name the name of the deployment
+             * @param <T> derived type of {@link SpringAppDeployment.DefinitionStages.WithAttach}
              * @return the first stage of spring app deployment definition
              */
             <T extends SpringAppDeployment.DefinitionStages.WithAttach
                 <? extends SpringApp.DefinitionStages.WithCreate, T>>
-            SpringAppDeployment.DefinitionStages.Blank<T> defineActiveDeployment(String name);
+                SpringAppDeployment.DefinitionStages.Blank<T> defineActiveDeployment(String name);
         }
 
         /** The stage of a spring app definition allowing to specify the endpoint. */

@@ -305,7 +305,7 @@ public class SpringAppImpl
     @SuppressWarnings("unchecked")
     public <T extends
         SpringAppDeployment.DefinitionStages.WithAttach<? extends SpringApp.DefinitionStages.WithCreate, T>>
-    SpringAppDeployment.DefinitionStages.Blank<T> defineActiveDeployment(String name) {
+        SpringAppDeployment.DefinitionStages.Blank<T> defineActiveDeployment(String name) {
         return (SpringAppDeployment.Definition<T>) deployments.define(name);
     }
 
