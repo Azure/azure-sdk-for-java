@@ -6,6 +6,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -17,6 +18,9 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.util.CosmosPagedIterable;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -30,6 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class CosmosItemTest extends TestSuiteBase {
 
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private CosmosClient client;
     private CosmosContainer container;
 
@@ -203,24 +208,24 @@ public class CosmosItemTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readAllItemsOfLogicalPartition() throws Exception{
         String pkValue = UUID.randomUUID().toString();
-        InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString(), pkValue);
-        CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);
+        ObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString(), pkValue);
+        CosmosItemResponse<ObjectNode> itemResponse = container.createItem(properties);
 
         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
 
-        CosmosPagedIterable<InternalObjectNode> feedResponseIterator1 =
+        CosmosPagedIterable<ObjectNode> feedResponseIterator1 =
             container.readAllItems(
                 new PartitionKey(pkValue),
                 cosmosQueryRequestOptions,
-                InternalObjectNode.class);
+                ObjectNode.class);
         // Very basic validation
         assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
 
-        CosmosPagedIterable<InternalObjectNode> feedResponseIterator3 =
+        CosmosPagedIterable<ObjectNode> feedResponseIterator3 =
             container.readAllItems(
                 new PartitionKey(pkValue),
                 cosmosQueryRequestOptions,
-                InternalObjectNode.class);
+                ObjectNode.class);
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
     }
 
@@ -228,15 +233,14 @@ public class CosmosItemTest extends TestSuiteBase {
     public void readAllItemsOfLogicalPartitionWithContinuationTokenAndPageSize() throws Exception{
         String pkValue = UUID.randomUUID().toString();
         List<String> actualIds = new ArrayList<>();
-        InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString(), pkValue);
+        ObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString(), pkValue);
         container.createItem(properties);
-        actualIds.add(properties.getId());
+
         properties = getDocumentDefinition(UUID.randomUUID().toString(), pkValue);
         container.createItem(properties);
-        actualIds.add(properties.getId());
+
         properties = getDocumentDefinition(UUID.randomUUID().toString(), pkValue);
         container.createItem(properties);
-        actualIds.add(properties.getId());
 
         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
         String continuationToken = null;
@@ -277,15 +281,16 @@ public class CosmosItemTest extends TestSuiteBase {
         return properties;
     }
 
-    private InternalObjectNode getDocumentDefinition(String documentId, String pkId) {
-        final InternalObjectNode properties =
-            new InternalObjectNode(String.format("{ "
-                    + "\"id\": \"%s\", "
-                    + "\"mypk\": \"%s\", "
-                    + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671440]]"
-                    + "}"
-                , documentId, pkId));
-        return properties;
+    private ObjectNode getDocumentDefinition(String documentId, String pkId) throws JsonProcessingException {
+
+        String json = String.format("{ "
+                + "\"id\": \"%s\", "
+                + "\"mypk\": \"%s\", "
+                + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671440]]"
+                + "}"
+            , documentId, pkId);
+        return
+            OBJECT_MAPPER.readValue(json, ObjectNode.class);
     }
 
     private void validateItemResponse(InternalObjectNode containerProperties,
