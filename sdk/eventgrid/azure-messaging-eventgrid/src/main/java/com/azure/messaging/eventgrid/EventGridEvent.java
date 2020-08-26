@@ -62,6 +62,13 @@ public final class EventGridEvent {
             .setDataVersion(dataVersion);
     }
 
+    /**
+     * Parse the EventGrid Event from a JSON string. This can be used to interpret the event at the event destination
+     * from raw JSON into rich event(s).
+     * @param json the JSON payload containing one or more events.
+     *
+     * @return all of the events in the payload parsed as CloudEvents.
+     */
     public static List<EventGridEvent> parse(String json) {
         return Flux.fromArray(deserializer
             .deserialize(new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8)),
@@ -238,21 +245,11 @@ public final class EventGridEvent {
         return this.event.getMetadataVersion();
     }
 
-    /**
-     * This overload is for internal use only. Please use the
-     * {@link EventGridEvent#EventGridEvent(String, String, String)} method to create an EventGridEvent.
-     * @param impl the internal implementation model to construct the event.
-     */
     private EventGridEvent(com.azure.messaging.eventgrid.implementation.models.EventGridEvent impl) {
         this.event = impl;
         parsed = true;
     }
 
-    /**
-     * This is meant for internal use only. Please access the properties of this event using
-     * the given access methods.
-     * @return the implementation model of this event.
-     */
     com.azure.messaging.eventgrid.implementation.models.EventGridEvent toImpl() {
         return this.event;
     }

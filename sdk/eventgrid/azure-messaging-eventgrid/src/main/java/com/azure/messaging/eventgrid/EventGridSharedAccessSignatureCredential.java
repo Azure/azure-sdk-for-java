@@ -27,6 +27,16 @@ public final class EventGridSharedAccessSignatureCredential {
 
     private String accessToken;
 
+    /**
+     * Generate a shared access signature to provide time-limited authentication for requests to the Event Grid
+     * service.
+     * @param endpoint   the endpoint of the Event Grid topic or domain.
+     * @param expiration the time in which the signature should expire, no longer providing authentication.
+     * @param key        the access key obtained from the Event Grid topic or domain.
+     *
+     * @return the shared access signature string which can be used to construct an instance of
+     * {@link EventGridSharedAccessSignatureCredential}.
+     */
     public static String createSharedAccessSignature(String endpoint, OffsetDateTime expiration,
                                                      AzureKeyCredential key) {
         try {
@@ -71,7 +81,7 @@ public final class EventGridSharedAccessSignatureCredential {
 
     /**
      * Get the token string to authenticate service calls
-     * @return the SharedAccessSignature token as a string
+     * @return the Shared Access Signature as a string
      */
     public String getSignature() {
         return accessToken;

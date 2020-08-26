@@ -58,6 +58,13 @@ public final class CloudEvent {
             .setSpecversion(SPEC_VERSION);
     }
 
+    /**
+     * Parse the Cloud Event from a JSON string. This can be used to interpret the event at the event destination
+     * from raw JSON into rich event(s).
+     * @param json the JSON payload containing one or more events.
+     *
+     * @return all of the events in the payload parsed as CloudEvents.
+     */
     public static List<CloudEvent> parse(String json) {
         return Flux.fromArray(deserializer
             .deserialize(new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8)),
@@ -267,7 +274,7 @@ public final class CloudEvent {
     }
 
     /**
-     * Get the content type that the data is in. A null value indicates that the data is either nonexistent or in the
+     * Get the content MIME type that the data is in. A null value indicates that the data is either nonexistent or in the
      * "application/json" type. Note that "application/json" is still a possible value for this field.
      * @return the content type the data is in, or null if the data is nonexistent or in "application/json" format.
      */
@@ -342,20 +349,11 @@ public final class CloudEvent {
         return this;
     }
 
-    /**
-     * This constructor is for internal use only. Please use {@link CloudEvent#CloudEvent(String, String)} to construct
-     * an instance of this method.
-     * @param impl the implementation model to construct this event.
-     */
     private CloudEvent(com.azure.messaging.eventgrid.implementation.models.CloudEvent impl) {
         this.cloudEvent = impl;
         this.parsed = true;
     }
 
-    /**
-     * This is for internal use only. Please use the provided get methods to access properties of this event.
-     * @return the implementation model of this event.
-     */
     com.azure.messaging.eventgrid.implementation.models.CloudEvent toImpl() {
         return this.cloudEvent;
     }
