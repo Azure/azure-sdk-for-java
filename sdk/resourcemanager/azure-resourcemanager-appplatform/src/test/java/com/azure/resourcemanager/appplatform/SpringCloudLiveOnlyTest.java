@@ -3,8 +3,6 @@
 
 package com.azure.resourcemanager.appplatform;
 
-import com.azure.core.management.exception.ManagementException;
-import com.azure.resourcemanager.appplatform.models.ConfigServerProperties;
 import com.azure.resourcemanager.appplatform.models.RuntimeVersion;
 import com.azure.resourcemanager.appplatform.models.SpringApp;
 import com.azure.resourcemanager.appplatform.models.SpringAppDeployment;
@@ -19,7 +17,6 @@ import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryPhoneCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.security.keyvault.certificates.CertificateClient;
 import com.azure.security.keyvault.certificates.CertificateClientBuilder;
 import com.azure.security.keyvault.certificates.models.ImportCertificateOptions;
@@ -29,7 +26,6 @@ import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.compress.utils.IOUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
 
 import javax.xml.bind.DatatypeConverter;
 import java.io.ByteArrayInputStream;
