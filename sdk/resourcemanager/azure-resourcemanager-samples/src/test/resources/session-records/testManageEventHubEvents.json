@@ -1220,7 +1220,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-store, no-cache",
       "x-ms-request-id" : "64d549a8-072b-4139-81d3-df5ed17d6dc3",
-      "Body" : "{\"primaryMasterKey\":\"uGpcvf5pVavS2TGDKdMzdhUP32gNES09fPIgNHdLX1whM9Disjhys4OWzZxuN3pPhMFNUgTeoWbTxHpsOWcgwQ==\",\"secondaryMasterKey\":\"wmuuShYTqINgCaBBI1DMhABcFqc1JwHpqBJz2PSvUXAYMjbqzddsTu5KEN3qMV6Jb7ngVYoEbP4O4cIJ3x8lKg==\",\"primaryReadonlyMasterKey\":\"6TvLqrwmgkvUy6xJsApQgv66aW4NAtX6gAexdhRWDwOG2PVhudI6rmX62MF8Q4dFUBCFKplbpsTIxJTNLgRihQ==\",\"secondaryReadonlyMasterKey\":\"FQLoLC4QC0vFzDevd1L3BoFIJllXgHqP9U6rNxSUwEJQJWfb7JsyTF6NqKR3Zkb6k7Pz2Tu9pNtrXFdc8TAlpQ==\"}"
+      "Body" : "{\"primaryMasterKey\":\"***REMOVED***\",\"secondaryMasterKey\":\"***REMOVED***\",\"primaryReadonlyMasterKey\":\"***REMOVED***\",\"secondaryReadonlyMasterKey\":\"***REMOVED***\"}"
     }
   }, {
     "Method" : "POST",
@@ -1245,7 +1245,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-store, no-cache",
       "x-ms-request-id" : "a557cda9-f5c7-47e1-b9f7-7ac81b3adde0",
-      "Body" : "{\"primaryReadonlyMasterKey\":\"6TvLqrwmgkvUy6xJsApQgv66aW4NAtX6gAexdhRWDwOG2PVhudI6rmX62MF8Q4dFUBCFKplbpsTIxJTNLgRihQ==\",\"secondaryReadonlyMasterKey\":\"FQLoLC4QC0vFzDevd1L3BoFIJllXgHqP9U6rNxSUwEJQJWfb7JsyTF6NqKR3Zkb6k7Pz2Tu9pNtrXFdc8TAlpQ==\"}"
+      "Body" : "{\"primaryReadonlyMasterKey\":\"***REMOVED***\",\"secondaryReadonlyMasterKey\":\"***REMOVED***\"}"
     }
   }, {
     "Method" : "PUT",
