@@ -49,7 +49,7 @@ public class DigitalTwinsAsyncClient {
 
     DigitalTwinsAsyncClient(HttpPipeline pipeline, DigitalTwinsServiceVersion serviceVersion, String host) {
         final SimpleModule stringModule = new SimpleModule("String Serializer");
-        stringModule.addSerializer(new DigitalTwinsStringSerializer(String.class, false));
+        stringModule.addSerializer(new DigitalTwinsStringSerializer(String.class, false, mapper));
 
         JacksonAdapter jacksonAdapter = new JacksonAdapter();
         jacksonAdapter.serializer().registerModule(stringModule);

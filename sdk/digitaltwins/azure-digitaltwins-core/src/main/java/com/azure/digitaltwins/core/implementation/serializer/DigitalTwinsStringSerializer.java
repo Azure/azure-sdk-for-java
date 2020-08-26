@@ -14,10 +14,11 @@ import java.io.IOException;
  * Configures the {@link StdSerializer<String>} with custom behavior needed to work with Digital Twins REST API.
  */
 public class DigitalTwinsStringSerializer extends StdSerializer<String> {
-    private static final ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper;
 
-    public DigitalTwinsStringSerializer(Class<?> t, boolean dummy) {
+    public DigitalTwinsStringSerializer(Class<?> t, boolean dummy, ObjectMapper mapper) {
         super(t, dummy);
+        this.mapper = mapper;
     }
 
     @Override
@@ -29,7 +30,7 @@ public class DigitalTwinsStringSerializer extends StdSerializer<String> {
         }
     }
 
-    private static boolean isValidJson(String jsonInString ) {
+    private boolean isValidJson(String jsonInString ) {
         try {
             mapper.readTree(jsonInString);
             return true;
