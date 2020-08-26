@@ -79,7 +79,7 @@ jobs:
       displayName: 'Generate site'
       inputs:
         mavenPomFile: ClientAggregatePom.xml
-        options: '$(DefaultOptions) -DskipTests'
+        options: '$(DefaultOptions) -T 1C -DskipTests -Ddependency-checker -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -Dmaven.main.skip=true -Dmaven.test.skip=true'
         mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: $(JavaBuildVersion)
@@ -92,7 +92,7 @@ jobs:
       displayName: 'Generate Jacoco Code Coverage'
       inputs:
         mavenPomFile: pom.xml
-        options: '$(DefaultOptions) -Ddependency-checker -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -Dmaven.main.skip=true -Dmaven.test.skip=true -pl com.azure:jacoco-test-coverage -am'
+        options: '$(DefaultOptions) -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -Dmaven.main.skip=true -Dmaven.test.skip=true -pl com.azure:jacoco-test-coverage -am'
         mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: $(JavaBuildVersion)
