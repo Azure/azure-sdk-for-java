@@ -27,6 +27,7 @@ com.microsoft.azure:qpid-proton-j-extensions;1.2.3
 com.microsoft.rest:client-runtime;1.7.4
 com.microsoft.rest.v2:client-runtime;2.1.1
 com.microsoft.sqlserver:mssql-jdbc;7.4.1.jre8
+com.microsoft.azure:azure-cosmosdb-spring-boot-starter;2.3.3
 com.microsoft.azure:spring-data-cosmosdb;2.3.0
 com.microsoft.spring.data.gremlin:spring-data-gremlin;2.3.0
 com.squareup.okhttp3:okhttp;4.8.1
@@ -318,14 +319,14 @@ storage_com.microsoft.azure:azure-storage;8.4.0
 # sdk\spring\azure-spring-boot\pom.xml
 spring_com.microsoft.azure:azure;1.34.0
 
-# sdk\spring\azure-spring-boot-starter-2-2-cosmosdb\pom.xml
-cosmos22_com.microsoft.azure:spring-data-cosmosdb;2.2.2.M2
-cosmos22_org.springframework.boot:spring-boot-starter;2.2.9.RELEASE
-cosmos22_org.springframework.boot:spring-boot;2.2.9.RELEASE
-cosmos22_org.springframework.boot:spring-boot-starter-validation;2.2.9.RELEASE
-cosmos22_org.springframework.boot:spring-boot-starter-test;2.2.9.RELEASE
-cosmos22_org.springframework.boot:spring-boot-starter-actuator;2.2.9.RELEASE
-cosmos22_org.springframework.boot:spring-boot-starter-web;2.2.9.RELEASE
+# sdk\spring\azure-spring-boot-2-2-starter-cosmosdb\pom.xml
+springboot22_com.microsoft.azure:spring-data-cosmosdb;2.2.2.M2
+springboot22_org.springframework.boot:spring-boot-starter;2.2.9.RELEASE
+springboot22_org.springframework.boot:spring-boot;2.2.9.RELEASE
+springboot22_org.springframework.boot:spring-boot-starter-validation;2.2.9.RELEASE
+springboot22_org.springframework.boot:spring-boot-starter-test;2.2.9.RELEASE
+springboot22_org.springframework.boot:spring-boot-starter-actuator;2.2.9.RELEASE
+springboot22_org.springframework.boot:spring-boot-starter-web;2.2.9.RELEASE
 
 # sdk\cosmos
 springdata22_org.springframework.data:spring-data-commons;2.2.9.RELEASE

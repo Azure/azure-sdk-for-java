@@ -11,11 +11,11 @@
 - [Maven](http://maven.apache.org/) 3.0 and above
 
 ### Include the package
-[//]: # ({x-version-update-start;com.microsoft.azure:azure-cosmosdb-spring-boot-starter;current})
+[//]: # ({x-version-update-start;com.microsoft.azure:azure-cosmosdb-spring-boot-2-3-starter;current})
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure-cosmosdb-spring-boot-starter</artifactId>
+    <artifactId>azure-cosmosdb-spring-boot-2-3-starter</artifactId>
     <version>2.3.3</version>
 </dependency>
 ```
