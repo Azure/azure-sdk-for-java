@@ -3,21 +3,29 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
+import com.azure.cosmos.util.Beta;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import com.azure.cosmos.util.UtilBridgeInternal;
+import io.micrometer.core.instrument.util.StringUtils;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
+
+import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
 
 /**
  * Provides synchronous methods for reading, deleting, and replacing existing Containers
@@ -231,6 +239,25 @@ public class CosmosContainer {
         }
     }
 
+    /**
+     * Block cosmos item response.
+     *
+     * @param itemMono the item mono.
+     * @return the cosmos item response.
+     */
+    <T> FeedResponse<T> blockFeedResponse(Mono<FeedResponse<T>> itemMono) {
+        try {
+            return itemMono.block();
+        } catch (Exception ex) {
+            final Throwable throwable = Exceptions.unwrap(ex);
+            if (throwable instanceof CosmosException) {
+                throw (CosmosException) throwable;
+            } else {
+                throw ex;
+            }
+        }
+    }
+
     private CosmosItemResponse<Object> blockDeleteItemResponse(Mono<CosmosItemResponse<Object>> deleteItemMono) {
         try {
             return deleteItemMono.block();
@@ -280,6 +307,79 @@ public class CosmosContainer {
      */
     public <T> CosmosPagedIterable<T> queryItems(SqlQuerySpec querySpec, CosmosQueryRequestOptions options, Class<T> classType) {
         return getCosmosPagedIterable(this.asyncContainer.queryItems(querySpec, options, classType));
+    }
+
+    /**
+     * Reads many documents.
+     *
+     * @param <T> the type parameter
+     * @param itemKeyList document id and partition key pair that needs to be read
+     * @param classType   class type
+     * @return a Mono with feed response of cosmos items
+     */
+    @Beta(Beta.SinceVersion.V4_4_0)
+    public <T> FeedResponse<T> readMany(
+        List<Pair<String, PartitionKey>> itemKeyList,
+        Class<T> classType) {
+
+        return this.readMany(itemKeyList, null, classType);
+    }
+
+    /**
+     * Reads many documents.
+     *
+     * @param <T> the type parameter
+     * @param itemKeyList document id and partition key pair that needs to be read
+     * @param sessionToken the optional Session token - null if the read can be made without specific session token
+     * @param classType   class type
+     * @return a Mono with feed response of cosmos items
+     */
+    @Beta(Beta.SinceVersion.V4_4_0)
+    public <T> FeedResponse<T> readMany(
+        List<Pair<String, PartitionKey>> itemKeyList,
+        String sessionToken,
+        Class<T> classType) {
+
+        return this.blockFeedResponse(
+            this.asyncContainer.readMany(
+                itemKeyList,
+                sessionToken,
+                classType));
+    }
+
+    /**
+     * Reads all the items of a logical partition returning the results as {@link CosmosPagedIterable}.
+     *
+     * @param <T> the type parameter.
+     * @param partitionKey the partition key value of the documents that need to be read
+     * @param classType the class type.
+     * @return the {@link CosmosPagedIterable}.
+     */
+    @Beta(Beta.SinceVersion.V4_4_0)
+    public <T> CosmosPagedIterable<T> readAllItems(
+        PartitionKey partitionKey,
+        Class<T> classType) {
+
+        return this.readAllItems(partitionKey, new CosmosQueryRequestOptions(), classType);
+    }
+
+    /**
+     * Reads all the items of a logical partition returning the results as {@link CosmosPagedIterable}.
+     * <p>
+     *
+     * @param <T> the type parameter.
+     * @param partitionKey the partition key value of the documents that need to be read
+     * @param options the feed options.
+     * @param classType the class type.
+     * @return the {@link CosmosPagedIterable}.
+     */
+    @Beta(Beta.SinceVersion.V4_4_0)
+    public <T> CosmosPagedIterable<T> readAllItems(
+        PartitionKey partitionKey,
+        CosmosQueryRequestOptions options,
+        Class<T> classType) {
+
+        return getCosmosPagedIterable(this.asyncContainer.readAllItems(partitionKey, options, classType));
     }
 
     /**

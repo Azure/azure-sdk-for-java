@@ -555,6 +555,7 @@ public class CosmosAsyncContainer {
      *
      * @param <T> the type parameter
      * @param itemKeyList document id and partition key pair that needs to be read
+     * @param sessionToken the optional Session token - null if the read can be made without specific session token
      * @param classType   class type
      * @return a Mono with feed response of cosmos items
      */
@@ -574,6 +575,27 @@ public class CosmosAsyncContainer {
         return CosmosBridgeInternal
             .getAsyncDocumentClient(this.getDatabase())
             .readMany(itemKeyList, BridgeInternal.getLink(this), options, classType);
+    }
+
+    /**
+     * Reads all the items of a logical partition
+     * <p>
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
+     * contain one or several feed responses of the read Cosmos items. In case of
+     * failure the {@link CosmosPagedFlux} will error.
+     *
+     * @param <T> the type parameter.
+     * @param partitionKey the partition key value of the documents that need to be read
+     * @param classType the class type.
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages
+     * of the read Cosmos items or an error.
+     */
+    @Beta(Beta.SinceVersion.V4_4_0)
+    public <T> CosmosPagedFlux<T> readAllItems(
+        PartitionKey partitionKey,
+        Class<T> classType) {
+
+        return this.readAllItems(partitionKey, new CosmosQueryRequestOptions(), classType);
     }
 
     /**

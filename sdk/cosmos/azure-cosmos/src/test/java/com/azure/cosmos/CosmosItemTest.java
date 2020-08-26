@@ -200,6 +200,70 @@ public class CosmosItemTest extends TestSuiteBase {
 
     }
 
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void readAllItemsOfLogicalPartition() throws Exception{
+        String pkValue = UUID.randomUUID().toString();
+        InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString(), pkValue);
+        CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);
+
+        CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
+
+        CosmosPagedIterable<InternalObjectNode> feedResponseIterator1 =
+            container.readAllItems(
+                new PartitionKey(pkValue),
+                cosmosQueryRequestOptions,
+                InternalObjectNode.class);
+        // Very basic validation
+        assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
+
+        CosmosPagedIterable<InternalObjectNode> feedResponseIterator3 =
+            container.readAllItems(
+                new PartitionKey(pkValue),
+                cosmosQueryRequestOptions,
+                InternalObjectNode.class);
+        assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void readAllItemsOfLogicalPartitionWithContinuationTokenAndPageSize() throws Exception{
+        String pkValue = UUID.randomUUID().toString();
+        List<String> actualIds = new ArrayList<>();
+        InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString(), pkValue);
+        container.createItem(properties);
+        actualIds.add(properties.getId());
+        properties = getDocumentDefinition(UUID.randomUUID().toString(), pkValue);
+        container.createItem(properties);
+        actualIds.add(properties.getId());
+        properties = getDocumentDefinition(UUID.randomUUID().toString(), pkValue);
+        container.createItem(properties);
+        actualIds.add(properties.getId());
+
+        CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
+        String continuationToken = null;
+        int pageSize = 1;
+
+        int initialDocumentCount = 3;
+        int finalDocumentCount = 0;
+
+        CosmosPagedIterable<InternalObjectNode> feedResponseIterator1 =
+            container.readAllItems(
+                new PartitionKey(pkValue),
+                cosmosQueryRequestOptions,
+                InternalObjectNode.class);
+
+        do {
+            Iterable<FeedResponse<InternalObjectNode>> feedResponseIterable =
+                feedResponseIterator1.iterableByPage(continuationToken, pageSize);
+            for (FeedResponse<InternalObjectNode> fr : feedResponseIterable) {
+                int resultSize = fr.getResults().size();
+                assertThat(resultSize).isEqualTo(pageSize);
+                finalDocumentCount += fr.getResults().size();
+                continuationToken = fr.getContinuationToken();
+            }
+        } while(continuationToken != null);
+
+        assertThat(finalDocumentCount).isEqualTo(initialDocumentCount);
+    }
 
     private InternalObjectNode getDocumentDefinition(String documentId) {
         final String uuid = UUID.randomUUID().toString();
@@ -210,6 +274,17 @@ public class CosmosItemTest extends TestSuiteBase {
                                                        + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671440]]"
                                                        + "}"
                 , documentId, uuid));
+        return properties;
+    }
+
+    private InternalObjectNode getDocumentDefinition(String documentId, String pkId) {
+        final InternalObjectNode properties =
+            new InternalObjectNode(String.format("{ "
+                    + "\"id\": \"%s\", "
+                    + "\"mypk\": \"%s\", "
+                    + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671440]]"
+                    + "}"
+                , documentId, pkId));
         return properties;
     }
 
