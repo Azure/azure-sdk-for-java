@@ -1855,48 +1855,70 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         Flux<Utils.ValueHolder<DocumentCollection>> collectionObs =
             collectionCache.resolveCollectionAsync(null, request).flux();
 
-        return collectionObs
-            .flatMap(documentCollectionResourceResponse -> {
+        return collectionObs.flatMap(documentCollectionResourceResponse -> {
 
-                DocumentCollection collection = documentCollectionResourceResponse.v;
-                if (collection == null) {
-                    throw new IllegalStateException("Collection cannot be null");
-                }
+            DocumentCollection collection = documentCollectionResourceResponse.v;
+            if (collection == null) {
+                throw new IllegalStateException("Collection cannot be null");
+            }
 
-                PartitionKeyDefinition pkDefinition = collection.getPartitionKey();
-                String pkSelector = createPkSelector(pkDefinition);
-                SqlQuerySpec querySpec = createLogicalPartitionScanQuerySpec(partitionKey, pkSelector);
+            PartitionKeyDefinition pkDefinition = collection.getPartitionKey();
+            String pkSelector = createPkSelector(pkDefinition);
+            SqlQuerySpec querySpec = createLogicalPartitionScanQuerySpec(partitionKey, pkSelector);
 
-                Flux<Utils.ValueHolder<CollectionRoutingMap>> valueHolderMono = this.partitionKeyRangeCache
-                    .tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
-                        collection.getResourceId(),
-                        null,
-                        null).flux();
-                return valueHolderMono.flatMap(collectionRoutingMapValueHolder -> {
+            String resourceLink = parentResourceLinkToQueryLink(collectionLink, ResourceType.Document);
+            UUID activityId = Utils.randomUUID();
+            IDocumentQueryClient queryClient = documentQueryClientImpl(RxDocumentClientImpl.this);
 
-                    CollectionRoutingMap routingMap = collectionRoutingMapValueHolder.v;
-                    if (routingMap == null) {
-                        throw new IllegalStateException("Failed to get routing map.");
-                    }
+            final CosmosQueryRequestOptions effectiveOptions =
+                ModelBridgeInternal.createQueryRequestOptions(options);
 
-                    String effectivePartitionKeyString = PartitionKeyInternalHelper
-                        .getEffectivePartitionKeyString(
-                            BridgeInternal.getPartitionKeyInternal(partitionKey),
-                            pkDefinition);
+            // Trying to put this logic as low as the query pipeline
+            // Since for parallelQuery, each partition will have its own request, so at this point, there will be no request associate with this retry policy.
+            // For default document context, it already wired up InvalidPartitionExceptionRetry, but there is no harm to wire it again here
+            InvalidPartitionExceptionRetryPolicy invalidPartitionExceptionRetryPolicy = new InvalidPartitionExceptionRetryPolicy(
+                this.collectionCache,
+                null,
+                resourceLink,
+                effectiveOptions);
 
-                    //use routing map to find the partitionKeyRangeId of each
-                    // effectivePartitionKey
-                    PartitionKeyRange range =
-                        routingMap.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
+            return ObservableHelper.fluxInlineIfPossibleAsObs(
+                () -> {
+                    Flux<Utils.ValueHolder<CollectionRoutingMap>> valueHolderMono = this.partitionKeyRangeCache
+                        .tryLookupAsync(
+                            BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
+                            collection.getResourceId(),
+                            null,
+                            null).flux();
+                    return valueHolderMono.flatMap(collectionRoutingMapValueHolder -> {
 
-                    final CosmosQueryRequestOptions effectiveOptions =
-                        ModelBridgeInternal.partitionKeyRangeIdInternal(
-                            ModelBridgeInternal.createQueryRequestOptions(options),
-                            range.getId());
+                        CollectionRoutingMap routingMap = collectionRoutingMapValueHolder.v;
+                        if (routingMap == null) {
+                            throw new IllegalStateException("Failed to get routing map.");
+                        }
 
-                    return createQuery(collectionLink, querySpec, effectiveOptions, Document.class, ResourceType.Document);
-                });
-            });
+                        String effectivePartitionKeyString = PartitionKeyInternalHelper
+                            .getEffectivePartitionKeyString(
+                                BridgeInternal.getPartitionKeyInternal(partitionKey),
+                                pkDefinition);
+
+                        //use routing map to find the partitionKeyRangeId of each
+                        // effectivePartitionKey
+                        PartitionKeyRange range =
+                            routingMap.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
+
+                        return createQueryInternal(
+                            resourceLink,
+                            querySpec,
+                            ModelBridgeInternal.partitionKeyRangeIdInternal(effectiveOptions, range.getId()),
+                            Document.class,
+                            ResourceType.Document,
+                            queryClient,
+                            activityId);
+                    });
+                },
+                invalidPartitionExceptionRetryPolicy);
+        });
     }
 
     @Override
