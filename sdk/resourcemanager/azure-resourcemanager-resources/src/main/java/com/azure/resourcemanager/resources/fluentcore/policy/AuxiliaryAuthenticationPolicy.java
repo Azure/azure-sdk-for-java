@@ -10,16 +10,10 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.management.exception.ManagementError;
-import com.azure.core.management.serializer.AzureJacksonAdapter;
-import com.azure.core.util.FluxUtil;
-import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 /**
@@ -28,7 +22,6 @@ import java.util.Arrays;
 public class AuxiliaryAuthenticationPolicy implements HttpPipelinePolicy {
 
     private static final String AUTHORIZATION_AUXILIARY_HEADER = "x-ms-authorization-auxiliary";
-    private static final String LINKED_AUTHORIZATION_FAILED = "LinkedAuthorizationFailed";
     private static final String SCHEMA_FORMAT = "Bearer %s";
 
     private final TokenCredential[] tokenCredentials;
@@ -45,61 +38,22 @@ public class AuxiliaryAuthenticationPolicy implements HttpPipelinePolicy {
         this.tokenCredentials = credentials;
     }
 
-    private boolean isResponseSuccessful(HttpResponse response) {
-        return response.getStatusCode() >= 200 && response.getStatusCode() < 300;
-    }
-
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return next.clone().process().flatMap(
-            response -> {
-                if (!isResponseSuccessful(response)
-                    && this.tokenCredentials != null && this.tokenCredentials.length > 0) {
-
-                    HttpResponse bufferedResponse = response.buffer();
-                    return FluxUtil.collectBytesInByteBufferStream(bufferedResponse.getBody()).flatMap(
-                        body -> {
-                            String bodyStr = new String(body, StandardCharsets.UTF_8);
-
-                            AzureJacksonAdapter jacksonAdapter = new AzureJacksonAdapter();
-                            ManagementError cloudError;
-                            try {
-                                cloudError = jacksonAdapter.deserialize(
-                                    bodyStr, ManagementError.class, SerializerEncoding.JSON);
-                            } catch (IOException e) {
-                                return Mono.just(bufferedResponse);
-                            }
-
-                            if (cloudError != null && LINKED_AUTHORIZATION_FAILED.equals(cloudError.getCode())
-                                && context.getHttpRequest().getHeaders()
-                                    .getValue(AUTHORIZATION_AUXILIARY_HEADER) == null) {
-                                Flux<String> tokens = Flux.fromIterable(Arrays.asList(tokenCredentials))
-                                    .flatMap(
-                                        credential -> {
-                                            String defaultScope = Utils.getDefaultScopeFromRequest(
-                                                context.getHttpRequest(), this.environment);
-                                            return credential.getToken(
-                                                new TokenRequestContext().addScopes(defaultScope))
-                                                    .map(accessToken ->
-                                                        String.format(SCHEMA_FORMAT, accessToken.getToken()));
-                                        });
-
-                                // Retry
-                                return tokens.collectList().flatMap(
-                                    tokenList -> {
-                                        context.getHttpRequest()
-                                            .setHeader(AUTHORIZATION_AUXILIARY_HEADER, String.join(",", tokenList));
-                                        return next.process();
-                                    }
-                                );
-                            }
-
-                            return Mono.just(bufferedResponse);
-                        }
-                    );
-                }
-                return Mono.just(response);
-            }
-        );
+        if (tokenCredentials == null || tokenCredentials.length == 0) {
+            return next.process();
+        }
+        return Flux.fromIterable(Arrays.asList(tokenCredentials))
+            .flatMap(credential -> {
+                String defaultScope = Utils.getDefaultScopeFromRequest(context.getHttpRequest(), environment);
+                return credential.getToken(new TokenRequestContext().addScopes(defaultScope))
+                    .map(token -> String.format(SCHEMA_FORMAT, token.getToken()));
+            })
+            .collectList()
+            .flatMap(tokenList -> {
+                context.getHttpRequest()
+                    .setHeader(AUTHORIZATION_AUXILIARY_HEADER, String.join(",", tokenList));
+                return next.process();
+            });
     }
 }

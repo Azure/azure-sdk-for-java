@@ -4,7 +4,6 @@ package com.azure.search.documents.models;
 
 import com.azure.search.documents.indexes.SearchableFieldProperty;
 import com.azure.search.documents.indexes.SimpleFieldProperty;
-import com.azure.search.documents.test.environment.models.ModelComparer;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
@@ -12,18 +11,15 @@ import java.util.List;
 import java.util.Objects;
 
 public class Hotel {
-    @JsonProperty(value = "HotelId")
-    @SimpleFieldProperty(isKey = true)
     private String hotelId;
-
-    @JsonProperty(value = "Tags")
-    @SearchableFieldProperty(isFilterable = true, analyzerName = "en.lucene")
     private List<String> tags;
 
     public Hotel() {
         this.tags = new ArrayList<>();
     }
 
+    @JsonProperty(value = "HotelId")
+    @SimpleFieldProperty(isKey = true)
     public String getHotelId() {
         return this.hotelId;
     }
@@ -33,6 +29,8 @@ public class Hotel {
         return this;
     }
 
+    @JsonProperty(value = "Tags")
+    @SearchableFieldProperty(isFilterable = true, analyzerName = "en.lucene")
     public List<String> getTags() {
         return this.tags;
     }
@@ -51,8 +49,7 @@ public class Hotel {
             return false;
         }
         Hotel hotel = (Hotel) o;
-        return Objects.equals(hotelId, hotel.hotelId)
-            && ModelComparer.collectionEquals(tags, hotel.tags);
+        return Objects.equals(hotelId, hotel.hotelId) && Objects.equals(tags, hotel.tags);
     }
 
     @Override
