@@ -1119,7 +1119,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 return this;
             }
 
-            this.acquired = true;
+            this.acquired = value;
             return this;
         }
 

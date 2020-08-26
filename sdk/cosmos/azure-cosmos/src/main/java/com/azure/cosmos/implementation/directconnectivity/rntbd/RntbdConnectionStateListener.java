@@ -8,7 +8,6 @@ import com.azure.cosmos.implementation.apachecommons.collections.list.Unmodifiab
 import com.azure.cosmos.implementation.directconnectivity.AddressResolverExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 

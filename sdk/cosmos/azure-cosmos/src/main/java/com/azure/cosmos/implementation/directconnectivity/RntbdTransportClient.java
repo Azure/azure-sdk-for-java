@@ -47,7 +47,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssue;
-import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssueUnless;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
@@ -240,7 +239,7 @@ public final class RntbdTransportClient extends TransportClient {
                     address.toString());
             }
 
-            if (error instanceof GoneException) {
+            if (this.connectionStateListener != null && error instanceof GoneException) {
 
                 final Throwable cause = error.getCause();
 
@@ -254,9 +253,7 @@ public final class RntbdTransportClient extends TransportClient {
                     } else if (type == IOException.class) {
                         event = RntbdConnectionEvent.READ_FAILURE;
                     } else {
-                        reportIssueUnless(logger, cause instanceof IOException, endpoint,
-                            "expected ClosedChannelException or IOException, not ",
-                            cause);
+                        reportIssue(logger, endpoint, "expected ClosedChannelException or IOException, not ", cause);
                         event = null;
                     }
 
@@ -268,13 +265,26 @@ public final class RntbdTransportClient extends TransportClient {
                             RntbdObjectMapper.toString(cause));
                     }
 
-                    if (this.connectionStateListener != null && event != null) {
-                        this.connectionStateListener.onConnectionEvent(event, Instant.now(), endpoint);
-                    } else {
-                        logger.warn("connection to {} lost due to {} event caused by ",
-                            endpoint.remoteURI(),
-                            event,
-                            cause);
+                    logger.warn("connection to {} lost due to {} event caused by ",
+                        endpoint.remoteURI(),
+                        event,
+                        cause);
+
+                    this.connectionStateListener.onConnectionEvent(event, Instant.now(), endpoint);
+
+                } else {
+
+                    final GoneException exception = (GoneException) error;
+
+                    if (exception.getSubStatusCode() == 0) {
+
+                        logger.warn("dropping connection to {} because the service is being reconfigured",
+                            endpoint.remoteURI());
+
+                        this.connectionStateListener.onConnectionEvent(
+                            RntbdConnectionEvent.READ_FAILURE,
+                            Instant.now(),
+                            endpoint);
                     }
                 }
             }
@@ -740,7 +750,7 @@ public final class RntbdTransportClient extends TransportClient {
 
             public Builder connectionAcquisitionTimeout(final Duration value) {
                 checkNotNull(value, "expected non-null value");
-                this.connectTimeout = value.compareTo(Duration.ZERO) < 0 ? Duration.ZERO : value;
+                this.connectionAcquisitionTimeout = value.compareTo(Duration.ZERO) < 0 ? Duration.ZERO : value;
                 return this;
             }
 
