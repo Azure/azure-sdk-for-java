@@ -63,7 +63,7 @@ public final class ClientOptions {
      * @return updated {@link ClientOptions}.
      * @throws NullPointerException if {@code headers} is null.
      */
-    public ClientOptions headers(Iterable<Header> headers) {
+    public ClientOptions setHeaders(Iterable<Header> headers) {
         this.headers = Objects.requireNonNull(headers, "'headers' cannot be null.");
         return this;
     }
@@ -75,5 +75,4 @@ public final class ClientOptions {
     public Iterable<Header> getHeaders() {
         return headers;
     }
-
 }
