@@ -36,6 +36,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -95,12 +96,15 @@ public class ManageSpringCloud {
             Utils.print(service);
 
             // get source code of a sample project
-            File sourceCodeFolder = new File("piggymetrics");
-            if (!sourceCodeFolder.exists() || sourceCodeFolder.isFile()) {
-                if (sourceCodeFolder.isFile() && !sourceCodeFolder.delete()) {
-                    throw new IllegalStateException("could not delete piggymetrics file");
+            File gzFile = new File("piggymetrics.tar.gz");
+            if (!gzFile.exists()) {
+                HttpURLConnection connection = (HttpURLConnection) new URL(PIGGYMETRICS_TAR_GZ_URL).openConnection();
+                connection.connect();
+                try (InputStream inputStream = connection.getInputStream();
+                     OutputStream outputStream = new FileOutputStream(gzFile)) {
+                    IOUtils.copy(inputStream, outputStream);
                 }
-                extraTarGzSource(sourceCodeFolder, new URL(PIGGYMETRICS_TAR_GZ_URL));
+                connection.disconnect();
             }
 
             //============================================================
@@ -110,8 +114,12 @@ public class ManageSpringCloud {
             SpringApp gateway = service.apps().define("gateway")
                 .withDefaultPublicEndpoint()
                 .withHttpsOnly()
-                .deploySource("default", sourceCodeFolder, "gateway")
                 .create();
+            gateway.getActiveDeployment()
+                .update()
+                .withSourceCodeTarGzFile(gzFile)
+                .withTargetModule("gateway")
+                .apply();
 
             System.out.println("Created spring cloud service gateway");
             Utils.print(gateway);
@@ -121,8 +129,12 @@ public class ManageSpringCloud {
 
             System.out.printf("Creating spring cloud app auth-service in resource group %s ...%n", rgName);
             SpringApp authService = service.apps().define("auth-service")
-                .deploySource("default", sourceCodeFolder, "auth-service")
                 .create();
+            authService.getActiveDeployment()
+                .update()
+                .withSourceCodeTarGzFile(gzFile)
+                .withTargetModule("auth-service")
+                .apply();
 
             System.out.println("Created spring cloud service auth-service");
             Utils.print(authService);
@@ -132,8 +144,12 @@ public class ManageSpringCloud {
 
             System.out.printf("Creating spring cloud app account-service in resource group %s ...%n", rgName);
             SpringApp accountService = service.apps().define("account-service")
-                .deploySource("default", sourceCodeFolder, "account-service")
                 .create();
+            accountService.getActiveDeployment()
+                .update()
+                .withSourceCodeTarGzFile(gzFile)
+                .withTargetModule("account-service")
+                .apply();
 
             System.out.println("Created spring cloud service account-service");
             Utils.print(accountService);
@@ -287,8 +303,7 @@ public class ManageSpringCloud {
         }
     }
 
-
-    private static void extraTarGzSource(File folder, URL url) throws IOException {
+    public static void extraTarGzSource(File folder, URL url) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.connect();
         try (TarArchiveInputStream inputStream = new TarArchiveInputStream(new GzipCompressorInputStream(connection.getInputStream()))) {

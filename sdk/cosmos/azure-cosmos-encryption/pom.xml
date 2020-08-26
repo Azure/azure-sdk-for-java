@@ -46,6 +46,44 @@ Licensed under the MIT License.
       <version>4.4.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
 
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-security-keyvault-keys</artifactId>
+      <version>4.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
+
+      <!-- Due to a bug in RNTBD (https://github.com/Azure/azure-sdk-for-java/issues/7829),
+           transitive dependency on netty-tcnative* cause problem.
+
+           Excluding transitive dependencies and forcing azure-core to be imported from azure-cosmos.
+           We can remove this once the bug is fixed.
+      -->
+      <exclusions>
+        <exclusion>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-core</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
+
+      <!-- Due to a bug in RNTBD (https://github.com/Azure/azure-sdk-for-java/issues/7829),
+           transitive dependency on netty-tcnative* cause problem.
+
+           Excluding transitive dependencies and forcing azure-core to be imported from azure-cosmos.
+           We can remove this once the bug is fixed.
+      -->
+      <exclusions>
+        <exclusion>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-core</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
     <!-- Added this provided dependency to include necessary annotations used by "reactor-core".
          Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
          which is used in @Nullable annotation in reactor core classes.
@@ -132,7 +170,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>1.10.19</version> <!-- {x-version-update;cosmos_org.mockito:mockito-core;external_dependency} -->
+      <version>3.3.3</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
 

@@ -11,7 +11,7 @@
 
   <artifactId>servicebus-queue-multibinders-sample</artifactId>
   <groupId>com.microsoft.azure</groupId>
-  <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:servicebus-queue-multibinders-sample;current} -->
+  <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:servicebus-queue-multibinders-sample;dependency} -->
   <name>Azure Spring Cloud Service Bus Queue Multiple Binders Sample</name>
 
   <dependencyManagement>
@@ -34,7 +34,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>spring-cloud-azure-servicebus-queue-stream-binder</artifactId>
-      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-servicebus-queue-stream-binder;current} -->
+      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-servicebus-queue-stream-binder;dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
