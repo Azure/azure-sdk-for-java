@@ -42,7 +42,7 @@ extends:
     AdditionalModules:
         - name: perf-test-core
           groupId: com.azure
-        - name: azure-messaging-servicebus-track1-perf
+        - name: azure-messaging-servicebus-perf
           groupId: com.microsoft.azure
         - name: azure-messaging-servicebus-perf
           groupId: com.azure
