@@ -15,5 +15,9 @@ import com.azure.messaging.servicebus.ServiceBusMessage;
  * @see TrueRuleFilter
  * @see FalseRuleFilter
  */
-public class RuleFilter {
+public abstract class RuleFilter {
+    RuleFilter() {
+        // This is intentionally left blank. This constructor exists
+        // only to prevent external assemblies inheriting from it.
+    }
 }

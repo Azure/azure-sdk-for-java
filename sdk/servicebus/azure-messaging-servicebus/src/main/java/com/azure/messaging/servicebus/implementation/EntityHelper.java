@@ -8,9 +8,11 @@ import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
 import com.azure.messaging.servicebus.administration.models.CreateTopicOptions;
 import com.azure.messaging.servicebus.administration.models.QueueProperties;
+import com.azure.messaging.servicebus.administration.models.RuleProperties;
 import com.azure.messaging.servicebus.administration.models.SubscriptionProperties;
 import com.azure.messaging.servicebus.administration.models.TopicProperties;
 import com.azure.messaging.servicebus.implementation.models.QueueDescription;
+import com.azure.messaging.servicebus.implementation.models.RuleDescription;
 import com.azure.messaging.servicebus.implementation.models.SubscriptionDescription;
 import com.azure.messaging.servicebus.implementation.models.TopicDescription;
 
@@ -23,6 +25,7 @@ public final class EntityHelper {
     private static QueueAccessor queueAccessor;
     private static SubscriptionAccessor subscriptionAccessor;
     private static TopicAccessor topicAccessor;
+    private static RuleAccessor ruleAccessor;
 
     static {
         try {
@@ -30,27 +33,10 @@ public final class EntityHelper {
             Class.forName(SubscriptionProperties.class.getName(), true,
                 SubscriptionProperties.class.getClassLoader());
             Class.forName(TopicProperties.class.getName(), true, TopicProperties.class.getClassLoader());
+            Class.forName(RuleProperties.class.getName(), true, RuleProperties.class.getClassLoader());
         } catch (ClassNotFoundException e) {
             throw new ClientLogger(EntityHelper.class).logExceptionAsError(new IllegalStateException(e));
         }
-    }
-
-    /**
-     * Creates a new topic given the options.
-     *
-     * @param description Options to create topic with.
-     *
-     * @return A new {@link TopicProperties} with the set options.
-     */
-    public static TopicProperties toModel(TopicDescription description) {
-        Objects.requireNonNull(description, "'description' cannot be null.");
-
-        if (topicAccessor == null) {
-            throw new ClientLogger(EntityHelper.class).logExceptionAsError(
-                new IllegalStateException("'topicAccessor' should not be null."));
-        }
-
-        return topicAccessor.toModel(description);
     }
 
     /**
@@ -179,6 +165,17 @@ public final class EntityHelper {
         return queueAccessor.toModel(description);
     }
 
+    public static RuleProperties toModel(RuleDescription description) {
+        Objects.requireNonNull(description, "'description' cannot be null.");
+
+        if (ruleAccessor == null) {
+            throw new ClientLogger(EntityHelper.class).logExceptionAsError(
+                new IllegalStateException("'ruleAccessor' should not be null."));
+        }
+
+        return ruleAccessor.toModel(description);
+    }
+
     /**
      * Creates a new subscription given the options.
      *
@@ -195,6 +192,24 @@ public final class EntityHelper {
         }
 
         return subscriptionAccessor.toModel(options);
+    }
+
+    /**
+     * Creates a new topic given the options.
+     *
+     * @param description Options to create topic with.
+     *
+     * @return A new {@link TopicProperties} with the set options.
+     */
+    public static TopicProperties toModel(TopicDescription description) {
+        Objects.requireNonNull(description, "'description' cannot be null.");
+
+        if (topicAccessor == null) {
+            throw new ClientLogger(EntityHelper.class).logExceptionAsError(
+                new IllegalStateException("'topicAccessor' should not be null."));
+        }
+
+        return topicAccessor.toModel(description);
     }
 
     /**
@@ -229,6 +244,22 @@ public final class EntityHelper {
     }
 
     /**
+     * Sets the rule accessor.
+     *
+     * @param accessor The rule accessor.
+     */
+    public static void setRuleAccessor(RuleAccessor accessor) {
+        Objects.requireNonNull(accessor, "'accessor' cannot be null.");
+
+        if (EntityHelper.ruleAccessor != null) {
+            throw new ClientLogger(EntityHelper.class).logExceptionAsError(new IllegalStateException(
+                "'ruleAccessor' is already set."));
+        }
+
+        EntityHelper.ruleAccessor = accessor;
+    }
+
+    /**
      * Sets the subscription accessor.
      *
      * @param accessor The subscription accessor.
@@ -257,10 +288,6 @@ public final class EntityHelper {
         }
 
         subscriptionAccessor.setSubscriptionName(subscription, subscriptionName);
-    }
-
-    public static void setRuleAccessor(RuleAccessor accessor) {
-
     }
 
     /**
@@ -338,7 +365,8 @@ public final class EntityHelper {
         void setName(QueueProperties queueProperties, String name);
     }
 
-    public interface  RuleAccessor {
+    public interface RuleAccessor {
+        RuleProperties toModel(RuleDescription description);
     }
 
     /**
