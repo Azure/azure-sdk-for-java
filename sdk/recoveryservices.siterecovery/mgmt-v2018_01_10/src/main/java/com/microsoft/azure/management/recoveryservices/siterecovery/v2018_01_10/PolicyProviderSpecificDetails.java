@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Base class for Provider specific details for policies.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = PolicyProviderSpecificDetails.class)
 @JsonTypeName("PolicyProviderSpecificDetails")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "A2A", value = A2APolicyDetails.class),

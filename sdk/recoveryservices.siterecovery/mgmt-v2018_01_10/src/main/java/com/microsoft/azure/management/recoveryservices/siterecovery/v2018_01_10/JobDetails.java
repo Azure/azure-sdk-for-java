@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Job details based on specific job type.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = JobDetails.class)
 @JsonTypeName("JobDetails")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AsrJobDetails", value = AsrJobDetails.class),

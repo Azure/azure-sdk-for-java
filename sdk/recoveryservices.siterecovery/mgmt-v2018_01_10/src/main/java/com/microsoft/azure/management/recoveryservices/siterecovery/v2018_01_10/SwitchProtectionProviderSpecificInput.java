@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Provider specific switch protection input.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = SwitchProtectionProviderSpecificInput.class)
 @JsonTypeName("SwitchProtectionProviderSpecificInput")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "A2A", value = A2ASwitchProtectionInput.class)

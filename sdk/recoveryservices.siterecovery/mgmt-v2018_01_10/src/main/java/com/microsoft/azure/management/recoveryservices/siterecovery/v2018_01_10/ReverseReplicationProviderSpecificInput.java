@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Provider specific reverse replication input.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = ReverseReplicationProviderSpecificInput.class)
 @JsonTypeName("ReverseReplicationProviderSpecificInput")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "A2A", value = A2AReprotectInput.class),

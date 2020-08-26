@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * VMwareCbt specific update migration item input.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = VMwareCbtUpdateMigrationItemInput.class)
 @JsonTypeName("VMwareCbt")
 public class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItemProviderSpecificInput {
     /**
@@ -44,6 +44,12 @@ public class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItemProvid
     private String targetAvailabilitySetId;
 
     /**
+     * The target availability zone.
+     */
+    @JsonProperty(value = "targetAvailabilityZone")
+    private String targetAvailabilityZone;
+
+    /**
      * The target boot diagnostics storage account ARM Id.
      */
     @JsonProperty(value = "targetBootDiagnosticsStorageAccountId")
@@ -67,6 +73,12 @@ public class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItemProvid
      */
     @JsonProperty(value = "licenseType")
     private LicenseType licenseType;
+
+    /**
+     * A value indicating whether auto resync is to be done.
+     */
+    @JsonProperty(value = "performAutoResync")
+    private String performAutoResync;
 
     /**
      * Get the target VM name.
@@ -149,6 +161,26 @@ public class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItemProvid
     }
 
     /**
+     * Get the target availability zone.
+     *
+     * @return the targetAvailabilityZone value
+     */
+    public String targetAvailabilityZone() {
+        return this.targetAvailabilityZone;
+    }
+
+    /**
+     * Set the target availability zone.
+     *
+     * @param targetAvailabilityZone the targetAvailabilityZone value to set
+     * @return the VMwareCbtUpdateMigrationItemInput object itself.
+     */
+    public VMwareCbtUpdateMigrationItemInput withTargetAvailabilityZone(String targetAvailabilityZone) {
+        this.targetAvailabilityZone = targetAvailabilityZone;
+        return this;
+    }
+
+    /**
      * Get the target boot diagnostics storage account ARM Id.
      *
      * @return the targetBootDiagnosticsStorageAccountId value
@@ -225,6 +257,26 @@ public class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItemProvid
      */
     public VMwareCbtUpdateMigrationItemInput withLicenseType(LicenseType licenseType) {
         this.licenseType = licenseType;
+        return this;
+    }
+
+    /**
+     * Get a value indicating whether auto resync is to be done.
+     *
+     * @return the performAutoResync value
+     */
+    public String performAutoResync() {
+        return this.performAutoResync;
+    }
+
+    /**
+     * Set a value indicating whether auto resync is to be done.
+     *
+     * @param performAutoResync the performAutoResync value to set
+     * @return the VMwareCbtUpdateMigrationItemInput object itself.
+     */
+    public VMwareCbtUpdateMigrationItemInput withPerformAutoResync(String performAutoResync) {
+        this.performAutoResync = performAutoResync;
         return this;
     }
 

@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Enable protection provider specific input.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = EnableProtectionProviderSpecificInput.class)
 @JsonTypeName("EnableProtectionProviderSpecificInput")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "A2A", value = A2AEnableProtectionInput.class),

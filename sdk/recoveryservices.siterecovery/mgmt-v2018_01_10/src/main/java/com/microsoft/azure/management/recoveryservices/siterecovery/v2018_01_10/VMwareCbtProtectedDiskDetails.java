@@ -57,6 +57,12 @@ public class VMwareCbtProtectedDiskDetails {
     private String logStorageAccountSasSecretName;
 
     /**
+     * The DiskEncryptionSet ARM Id.
+     */
+    @JsonProperty(value = "diskEncryptionSetId", access = JsonProperty.Access.WRITE_ONLY)
+    private String diskEncryptionSetId;
+
+    /**
      * The ARM Id of the seed managed disk.
      */
     @JsonProperty(value = "seedManagedDiskId", access = JsonProperty.Access.WRITE_ONLY)
@@ -73,7 +79,7 @@ public class VMwareCbtProtectedDiskDetails {
      * 'StandardSSD_LRS'.
      */
     @JsonProperty(value = "diskType")
-    private DiskType diskType;
+    private DiskAccountType diskType;
 
     /**
      * Get the disk id.
@@ -139,6 +145,15 @@ public class VMwareCbtProtectedDiskDetails {
     }
 
     /**
+     * Get the DiskEncryptionSet ARM Id.
+     *
+     * @return the diskEncryptionSetId value
+     */
+    public String diskEncryptionSetId() {
+        return this.diskEncryptionSetId;
+    }
+
+    /**
      * Get the ARM Id of the seed managed disk.
      *
      * @return the seedManagedDiskId value
@@ -161,7 +176,7 @@ public class VMwareCbtProtectedDiskDetails {
      *
      * @return the diskType value
      */
-    public DiskType diskType() {
+    public DiskAccountType diskType() {
         return this.diskType;
     }
 
@@ -171,7 +186,7 @@ public class VMwareCbtProtectedDiskDetails {
      * @param diskType the diskType value to set
      * @return the VMwareCbtProtectedDiskDetails object itself.
      */
-    public VMwareCbtProtectedDiskDetails withDiskType(DiskType diskType) {
+    public VMwareCbtProtectedDiskDetails withDiskType(DiskAccountType diskType) {
         this.diskType = diskType;
         return this;
     }

@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * This class represents a task which is actually a workflow so that one can
  * navigate to its individual drill down.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = JobTaskDetails.class)
 @JsonTypeName("JobTaskDetails")
 public class JobTaskDetails extends TaskTypeDetails {
     /**

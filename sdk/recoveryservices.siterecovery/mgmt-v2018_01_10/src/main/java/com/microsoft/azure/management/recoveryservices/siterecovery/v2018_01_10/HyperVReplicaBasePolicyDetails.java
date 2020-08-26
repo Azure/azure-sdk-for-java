@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Base class for HyperVReplica policy details.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = HyperVReplicaBasePolicyDetails.class)
 @JsonTypeName("HyperVReplicaBasePolicyDetails")
 public class HyperVReplicaBasePolicyDetails extends PolicyProviderSpecificDetails {
     /**

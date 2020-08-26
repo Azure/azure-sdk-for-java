@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * Create network mappings input properties/behavior specific to Azure to Azure
  * Network mapping.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = AzureToAzureCreateNetworkMappingInput.class)
 @JsonTypeName("AzureToAzure")
 public class AzureToAzureCreateNetworkMappingInput extends FabricSpecificCreateNetworkMappingInput {
     /**

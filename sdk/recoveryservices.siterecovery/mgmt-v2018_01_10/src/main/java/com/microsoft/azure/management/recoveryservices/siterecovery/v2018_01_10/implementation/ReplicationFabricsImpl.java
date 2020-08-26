@@ -112,10 +112,14 @@ class ReplicationFabricsImpl extends WrapperImpl<ReplicationFabricsInner> implem
     public Observable<Fabric> getAsync(String fabricName) {
         ReplicationFabricsInner client = this.inner();
         return client.getAsync(fabricName)
-        .map(new Func1<FabricInner, Fabric>() {
+        .flatMap(new Func1<FabricInner, Observable<Fabric>>() {
             @Override
-            public Fabric call(FabricInner inner) {
-                return wrapModel(inner);
+            public Observable<Fabric> call(FabricInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((Fabric)wrapModel(inner));
+                }
             }
        });
     }

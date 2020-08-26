@@ -82,10 +82,14 @@ class ReplicationNetworkMappingsImpl extends WrapperImpl<ReplicationNetworkMappi
     public Observable<NetworkMapping> getAsync(String fabricName, String networkName, String networkMappingName) {
         ReplicationNetworkMappingsInner client = this.inner();
         return client.getAsync(fabricName, networkName, networkMappingName)
-        .map(new Func1<NetworkMappingInner, NetworkMapping>() {
+        .flatMap(new Func1<NetworkMappingInner, Observable<NetworkMapping>>() {
             @Override
-            public NetworkMapping call(NetworkMappingInner inner) {
-                return wrapModel(inner);
+            public Observable<NetworkMapping> call(NetworkMappingInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((NetworkMapping)wrapModel(inner));
+                }
             }
        });
     }
