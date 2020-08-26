@@ -65,8 +65,8 @@ jobs:
     - task: Maven@3
       displayName: 'Generate Jacoco Code Coverage'
       inputs:
-        mavenPomFile: ClientAggregatePom.xml
-        options: '$(DefaultOptions)'
+        mavenPomFile: pom.xml
+        options: '$(DefaultOptions) -pl com.azure:jacoco-test-coverage -am'
         mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: $(JavaBuildVersion)
@@ -104,7 +104,7 @@ jobs:
     - task: Maven@3
       displayName: 'Generate site'
       inputs:
-        mavenPomFile: eng/jacoco-test-coverage/pom.xml
+        mavenPomFile: ClientAggregatePom.xml
         options: '$(DefaultOptions) -DskipTests'
         mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
         javaHomeOption: 'JDKVersion'
