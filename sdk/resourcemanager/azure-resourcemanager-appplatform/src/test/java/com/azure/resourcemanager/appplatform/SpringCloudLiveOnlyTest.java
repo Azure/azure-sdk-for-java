@@ -57,38 +57,17 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
     }
 
     @Test
-    public void canCRUDSpringAppWithDeployment() throws IOException {
+    public void canCRUDDeployment() throws Exception {
         String serviceName = generateRandomResourceName("springsvc", 15);
         String appName = "gateway";
         String deploymentName = generateRandomResourceName("deploy", 15);
         String deploymentName1 = generateRandomResourceName("deploy", 15);
         Region region = Region.US_EAST;
 
-        Assertions.assertTrue(appPlatformManager.springServices().checkNameAvailability(serviceName, region).nameAvailable());
-
         SpringService service = appPlatformManager.springServices().define(serviceName)
-            .withRegion(Region.US_EAST)
+            .withRegion(region)
             .withNewResourceGroup(rgName)
-            .withSku("B0")
-            .withGitUri(PIGGYMETRICS_CONFIG_URL)
             .create();
-
-        Assertions.assertEquals("B0", service.sku().name());
-        Assertions.assertEquals(PIGGYMETRICS_CONFIG_URL, service.getServerProperties().configServer().gitProperty().uri());
-
-        service.update()
-            .withSku("S0", 2)
-            .withoutGitConfig()
-            .apply();
-
-        Assertions.assertEquals("S0", service.sku().name());
-
-        ConfigServerProperties serverProperties = service.getServerProperties();
-        Assertions.assertTrue(serverProperties == null
-            || serverProperties.configServer() == null
-            || serverProperties.configServer().gitProperty() == null
-            || serverProperties.configServer().gitProperty().uri() == null
-            || serverProperties.configServer().gitProperty().uri().isEmpty());
 
         File jarFile = new File("gateway.jar");
         if (!jarFile.exists()) {
@@ -103,25 +82,22 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
 
         SpringApp app = service.apps().define(appName)
             .defineActiveDeployment(deploymentName)
-                .withJarFile(jarFile)
-                .withInstance(2)
-                .withCpu(2)
-                .withMemory(4)
-                .withRuntime(RuntimeVersion.JAVA_11)
-                .attach()
+            .withJarFile(jarFile)
+            .withInstance(2)
+            .withCpu(2)
+            .withMemory(4)
+            .withRuntime(RuntimeVersion.JAVA_11)
+            .attach()
             .withDefaultPublicEndpoint()
             .create();
 
         Assertions.assertNotNull(app.url());
         Assertions.assertNotNull(app.activeDeploymentName());
+        Assertions.assertEquals(1, app.deployments().list().stream().count());
 
         Assertions.assertTrue(requestSuccess(app.url()));
 
         SpringAppDeployment deployment = app.getActiveDeployment();
-
-        Assertions.assertNotNull(app.url());
-        Assertions.assertEquals(1, app.deployments().list().stream().count());
-        Assertions.assertTrue(requestSuccess(app.url()));
 
         Assertions.assertEquals(2, deployment.settings().cpu());
         Assertions.assertEquals(4, deployment.settings().memoryInGB());
@@ -159,20 +135,6 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
 
         app.deployments().deleteByName(deploymentName);
         Assertions.assertEquals(1, app.deployments().list().stream().count());
-
-        service.apps().deleteById(app.id());
-        Assertions.assertEquals(404,
-            service.apps().getByIdAsync(app.id()).map(o -> 200)
-                .onErrorResume(e ->
-                    Mono.just(e instanceof ManagementException ? ((ManagementException) e).getResponse().getStatusCode() : 400))
-                .block());
-
-        appPlatformManager.springServices().deleteById(service.id());
-        Assertions.assertEquals(404,
-            appPlatformManager.springServices().getByIdAsync(service.id()).map(o -> 200)
-                .onErrorResume(e ->
-                    Mono.just(e instanceof ManagementException ? ((ManagementException) e).getResponse().getStatusCode() : 400))
-                .block());
     }
 
     @Test
@@ -257,8 +219,6 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
         String alias = Collections.list(store.aliases()).get(0);
         String thumbprint = DatatypeConverter.printHexBinary(MessageDigest.getInstance("SHA-1").digest(store.getCertificate(alias).getEncoded()));
 
-        Assertions.assertTrue(appPlatformManager.springServices().checkNameAvailability(serviceName, region).nameAvailable());
-
         SpringService service = appPlatformManager.springServices().define(serviceName)
             .withRegion(region)
             .withExistingResourceGroup(rgName)
@@ -287,49 +247,6 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
             .withHttpsOnly()
             .apply();
         Assertions.assertTrue(checkRedirect(String.format("http://ssl.%s", domainName)));
-    }
-
-    private boolean checkRedirect(String url) throws IOException {
-        for (int i = 0; i < 60; ++i) {
-            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-            connection.setInstanceFollowRedirects(false);
-            try {
-                connection.connect();
-                if (200 <= connection.getResponseCode() && connection.getResponseCode() < 400) {
-                    connection.getInputStream().close();
-                    if (connection.getResponseCode() / 100 == 3) {
-                        return true;
-                    }
-                    System.out.printf("Do request to %s with response code %d%n", url, connection.getResponseCode());
-                }
-            } catch (Exception e) {
-                System.err.printf("Do request to %s with error %s%n", url, e.getMessage());
-            } finally {
-                connection.disconnect();
-            }
-            SdkContext.sleep(5000);
-        }
-        return false;
-    }
-
-    private boolean requestSuccess(String url) throws IOException {
-        for (int i = 0; i < 60; ++i) {
-            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-            try {
-                connection.connect();
-                if (connection.getResponseCode() == 200) {
-                    connection.getInputStream().close();
-                    return true;
-                }
-                System.out.printf("Do request to %s with response code %d%n", url, connection.getResponseCode());
-            } catch (Exception e) {
-                System.err.printf("Do request to %s with error %s%n", url, e.getMessage());
-            } finally {
-                connection.disconnect();
-            }
-            SdkContext.sleep(5000);
-        }
-        return false;
     }
 
     private void extraTarGzSource(File folder, URL url) throws IOException {
