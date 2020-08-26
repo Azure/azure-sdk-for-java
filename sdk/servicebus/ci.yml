@@ -44,5 +44,5 @@ extends:
           groupId: com.azure
         - name: azure-messaging-servicebus-track1-perf
           groupId: com.microsoft.azure
-        - name: azure-messaging-servicebus-track2-perf
+        - name: azure-messaging-servicebus-perf
           groupId: com.azure
