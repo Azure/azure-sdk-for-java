@@ -773,26 +773,26 @@ public final class Azure {
         return this.monitorManager.autoscaleSettings();
     }
 
-        /**
-         * @return entry point to managing event hub namespaces.
-         */
-        public EventHubNamespaces eventHubNamespaces() {
-            return this.eventHubManager.namespaces();
-        }
+    /**
+     * @return entry point to managing event hub namespaces.
+     */
+    public EventHubNamespaces eventHubNamespaces() {
+        return this.eventHubManager.namespaces();
+    }
 
-        /**
-         * @return entry point to managing event hubs.
-         */
-        public EventHubs eventHubs() {
-            return this.eventHubManager.eventHubs();
-        }
+    /**
+     * @return entry point to managing event hubs.
+     */
+    public EventHubs eventHubs() {
+        return this.eventHubManager.eventHubs();
+    }
 
-        /**
-         * @return entry point to managing event hub namespace geo disaster recovery.
-         */
-        public EventHubDisasterRecoveryPairings eventHubDisasterRecoveryPairings() {
-            return this.eventHubManager.eventHubDisasterRecoveryPairings();
-        }
+    /**
+     * @return entry point to managing event hub namespace geo disaster recovery.
+     */
+    public EventHubDisasterRecoveryPairings eventHubDisasterRecoveryPairings() {
+        return this.eventHubManager.eventHubDisasterRecoveryPairings();
+    }
 
     /** @return entry point to manage compute galleries. */
     public Galleries galleries() {
