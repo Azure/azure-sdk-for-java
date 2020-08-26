@@ -53,6 +53,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     private final Field partitionKeyField;
     private final Field versionField;
     private final String containerName;
+    private final String partitionKeyPath;
     private final Integer requestUnit;
     private final Integer timeToLive;
     private final IndexingPolicy indexingPolicy;
@@ -74,6 +75,8 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         this.autoGenerateId = isIdFieldAnnotatedWithGeneratedValue(this.id);
 
         this.containerName = getContainerName(domainType);
+        this.partitionKeyPath = getPartitionKeyPathAnnotationValue(domainType);
+
         this.partitionKeyField = getPartitionKeyField(domainType);
         if (this.partitionKeyField != null) {
             ReflectionUtils.makeAccessible(this.partitionKeyField);
@@ -195,16 +198,16 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     }
 
     /**
-     * Get the field name represented by the supplied partitionKeyField object
+     * Get the computed partition key path for container
      *
-     * @return partition key field name
+     * @return partition key path
      */
-    public String getPartitionKeyFieldName() {
+    public String getPartitionKeyPath() {
         if (partitionKeyField == null) {
-            return null;
+            return partitionKeyPath == null ? "/null" : partitionKeyPath;
         } else {
             final PartitionKey partitionKey = partitionKeyField.getAnnotation(PartitionKey.class);
-            return partitionKey.value().equals("") ? partitionKeyField.getName() : partitionKey.value();
+            return partitionKey.value().equals("") ? "/" + partitionKeyField.getName() : "/" + partitionKey.value();
         }
     }
 
@@ -291,13 +294,20 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
 
         final Container annotation = domainType.getAnnotation(Container.class);
 
-        if (annotation != null
-                && annotation.containerName() != null
-                && !annotation.containerName().isEmpty()) {
+        if (annotation != null && !annotation.containerName().isEmpty()) {
             customContainerName = resolveExpression(annotation.containerName());
         }
 
         return customContainerName;
+    }
+
+    private String getPartitionKeyPathAnnotationValue(Class<?> domainType) {
+        final Container annotation = domainType.getAnnotation(Container.class);
+
+        if (annotation != null && !annotation.partitionKeyPath().isEmpty()) {
+            return annotation.partitionKeyPath();
+        }
+        return null;
     }
 
     private Field getPartitionKeyField(Class<?> domainType) {

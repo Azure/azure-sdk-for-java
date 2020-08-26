@@ -91,11 +91,11 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             new Object[] { "Select * from c where c.id = 'wrongId' order by c.id", false },
             new Object[] { "Select count(1) from c where c.id = 'wrongId' group by c.pk", false },
             new Object[] { "Select distinct c.pk from c where c.id = 'wrongId'", false },
-            new Object[] { "Select * from c where c.id = 'wrongId'", null },
-            new Object[] { "Select top 1 * from c where c.id = 'wrongId'", null },
-            new Object[] { "Select * from c where c.id = 'wrongId' order by c.id", null },
-            new Object[] { "Select count(1) from c where c.id = 'wrongId' group by c.pk", null },
-            new Object[] { "Select distinct c.pk from c where c.id = 'wrongId'", null },
+            new Object[] { "Select * from c where c.id = 'wrongId'", false },
+            new Object[] { "Select top 1 * from c where c.id = 'wrongId'", false },
+            new Object[] { "Select * from c where c.id = 'wrongId' order by c.id", false },
+            new Object[] { "Select count(1) from c where c.id = 'wrongId' group by c.pk", false },
+            new Object[] { "Select distinct c.pk from c where c.id = 'wrongId'", false },
         };
     }
 

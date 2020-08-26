@@ -12,6 +12,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImpl;
+import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImplBuilder;
 import reactor.core.publisher.Mono;
 
 
@@ -31,10 +33,10 @@ import reactor.core.publisher.Mono;
 public class DigitalTwinsAsyncClient {
     private final ClientLogger logger = new ClientLogger(DigitalTwinsAsyncClient.class);
     private final DigitalTwinsServiceVersion serviceVersion;
-    private final AzureDigitalTwinsAPI protocolLayer;
+    private final AzureDigitalTwinsAPIImpl protocolLayer;
 
     DigitalTwinsAsyncClient(HttpPipeline pipeline, DigitalTwinsServiceVersion serviceVersion, String host) {
-        this.protocolLayer = new AzureDigitalTwinsAPIBuilder().host(host).pipeline(pipeline).buildClient();
+        this.protocolLayer = new AzureDigitalTwinsAPIImplBuilder().host(host).pipeline(pipeline).buildClient();
         this.serviceVersion = serviceVersion;
     }
 
