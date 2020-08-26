@@ -17,9 +17,9 @@ import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.digitaltwins.core.models.ErrorResponseException;
-import com.azure.digitaltwins.core.models.QueriesQueryTwinsResponse;
-import com.azure.digitaltwins.core.models.QuerySpecification;
+import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
+import com.azure.digitaltwins.core.implementation.models.QueriesQueryTwinsResponse;
+import com.azure.digitaltwins.core.implementation.models.QuerySpecification;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Queries. */

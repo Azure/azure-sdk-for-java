@@ -27,10 +27,10 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.digitaltwins.core.models.DigitalTwinModelsListOptions;
-import com.azure.digitaltwins.core.models.ErrorResponseException;
+import com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions;
+import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
+import com.azure.digitaltwins.core.implementation.models.PagedModelDataCollection;
 import com.azure.digitaltwins.core.models.ModelData;
-import com.azure.digitaltwins.core.models.PagedModelDataCollection;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
