@@ -11,7 +11,7 @@
 
   <artifactId>servicebus-integration-sample</artifactId>
   <groupId>com.microsoft.azure</groupId>
-  <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:servicebus-integration-sample;current} -->
+  <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:servicebus-integration-sample;dependency} -->
   <name>Azure Spring Cloud Service Bus Integration Sample</name>
 
   <dependencyManagement>
@@ -34,7 +34,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>spring-cloud-starter-azure-servicebus</artifactId>
-      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-starter-azure-servicebus;current} -->
+      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-starter-azure-servicebus;dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
