@@ -345,6 +345,18 @@ public class CosmosContainer {
     }
 
     /**
+     * Deletes an item in the current container.
+     *
+     * @param <T> the type parameter.
+     * @param item the item to be deleted.
+     * @param options the options.
+     * @return the Cosmos item response.
+     */
+    public <T> CosmosItemResponse<Object> deleteItem(T item, CosmosItemRequestOptions options) {
+        return  this.blockDeleteItemResponse(asyncContainer.deleteItem(item, options));
+    }
+
+    /**
      * Gets the Cosmos scripts using the current container as context.
      *
      * @return the Cosmos sync scripts.

@@ -176,7 +176,7 @@ public class GatewayAddressCache implements IAddressCache {
                             }
                         });
                 logger.debug("newValue is {}", newValue);
-                if (!newValue.equals(suboptimalServerPartitionTimestamp)) {
+                if (!suboptimalServerPartitionTimestamp.equals(newValue)) {
                     logger.debug("setting forceRefreshPartitionAddresses to true");
                     // the value was replaced;
                     forceRefreshPartitionAddresses = true;

@@ -9,12 +9,12 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.monitor.fluent.inner.MetadataValueInner;
 import com.azure.resourcemanager.monitor.models.Metric;
 import com.azure.resourcemanager.monitor.models.MetricCollection;
 import com.azure.resourcemanager.monitor.models.MetricDefinition;
 import com.azure.resourcemanager.monitor.models.MetricValue;
 import com.azure.resourcemanager.monitor.models.TimeSeriesElement;
-import com.azure.resourcemanager.monitor.fluent.inner.MetadataValueInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
@@ -23,7 +23,6 @@ import com.azure.resourcemanager.sql.models.SampleName;
 import com.azure.resourcemanager.sql.models.SqlDatabase;
 import com.azure.resourcemanager.sql.models.SqlDatabaseMetric;
 import com.azure.resourcemanager.sql.models.SqlDatabaseUsageMetric;
-import com.azure.resourcemanager.sql.models.SqlElasticPool;
 import com.azure.resourcemanager.sql.models.SqlServer;
 import com.azure.resourcemanager.sql.models.SqlSubscriptionUsageMetric;
 
@@ -193,8 +192,7 @@ public class GettingSqlServerMetrics {
             System.out.println("Listing the SQL database CPU metrics for the sample database");
 
             OffsetDateTime endTime = OffsetDateTime.now();
-            String filter = String.format("name/value eq 'cpu_percent' and startTime eq '%s' and endTime eq '%s'", startTime, endTime);
-
+            String filter = String.format("name/value eq 'cpu_percent' and startTime eq '%s' and endTime eq '%s'", startTime.toInstant(), endTime.toInstant());
 
             List<SqlDatabaseMetric> dbMetrics = db.listMetrics(filter);
             for (SqlDatabaseMetric metric : dbMetrics) {
@@ -206,8 +204,7 @@ public class GettingSqlServerMetrics {
             System.out.println("Listing the SQL database metrics for the sample database");
 
             endTime = OffsetDateTime.now();
-            filter = String.format("startTime eq '%s' and endTime eq '%s'", startTime, endTime);
-
+            filter = String.format("startTime eq '%s' and endTime eq '%s'", startTime.toInstant(), endTime.toInstant());
 
             dbMetrics = db.listMetrics(filter);
             for (SqlDatabaseMetric metric : dbMetrics) {
@@ -220,8 +217,6 @@ public class GettingSqlServerMetrics {
             System.out.println("Using Monitor Service to list the SQL server metrics");
             PagedIterable<MetricDefinition> metricDefinitions = azure.metricDefinitions().listByResource(sqlServer.id());
 
-            SqlElasticPool ep = sqlServer.elasticPools().get(epName);
-
             for (MetricDefinition metricDefinition : metricDefinitions) {
                 // find metric definition for "DTU used" and "Storage used"
                 if (metricDefinition.name().localizedValue().equalsIgnoreCase("dtu used")
@@ -232,7 +227,7 @@ public class GettingSqlServerMetrics {
                         .endsBefore(endTime)
                         .withAggregation("Average")
                         .withInterval(Duration.ofMinutes(5))
-                        .withOdataFilter(String.format("ElasticPoolResourceId eq '%s'", ep.id()))
+                        .withOdataFilter(String.format("DatabaseResourceId eq '%s'", db.id()))
                         .execute();
 
                     System.out.format("SQL server \"%s\" %s metrics%n", sqlServer.name(), metricDefinition.name().localizedValue());

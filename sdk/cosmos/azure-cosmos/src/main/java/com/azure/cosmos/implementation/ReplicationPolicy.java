@@ -13,6 +13,14 @@ public class ReplicationPolicy extends JsonSerializable {
     private static final int DEFAULT_MAX_REPLICA_SET_SIZE = 4;
     private static final int DEFAULT_MIN_REPLICA_SET_SIZE = 3;
 
+
+    /**
+     * Assumption: all consistency mutations are through setDefaultConsistencyLevel only.
+     * NOTE: If the underlying ObjectNode is mutated cache might be stale
+     */
+    private int maxReplicaSetSize;
+    private int minReplicaSetSize;
+
     public ReplicationPolicy() {
     }
 
@@ -36,23 +44,31 @@ public class ReplicationPolicy extends JsonSerializable {
     }
 
     public int getMaxReplicaSetSize() {
-        Integer maxReplicaSetSize = super.getInt(Constants.Properties.MAX_REPLICA_SET_SIZE);
-        if (maxReplicaSetSize == null) {
-            return DEFAULT_MAX_REPLICA_SET_SIZE;
+        if (maxReplicaSetSize == 0) {
+            Integer maxReplicaSetSizeFromJsonPayload = super.getInt(Constants.Properties.MAX_REPLICA_SET_SIZE);
+            if (maxReplicaSetSizeFromJsonPayload == null) {
+                maxReplicaSetSizeFromJsonPayload = DEFAULT_MAX_REPLICA_SET_SIZE;
+            }
+
+            maxReplicaSetSize = maxReplicaSetSizeFromJsonPayload;
         }
 
         return maxReplicaSetSize;
     }
 
     public void setMaxReplicaSetSize(int value) {
-        Integer maxReplicaSetSize = super.getInt(Constants.Properties.MAX_REPLICA_SET_SIZE);
         BridgeInternal.setProperty(this, Constants.Properties.MAX_REPLICA_SET_SIZE, value);
+        this.maxReplicaSetSize = value;
     }
 
     public int getMinReplicaSetSize() {
-        Integer minReplicaSetSize = super.getInt(Constants.Properties.MIN_REPLICA_SET_SIZE);
-        if (minReplicaSetSize == null) {
-            return DEFAULT_MIN_REPLICA_SET_SIZE;
+        if (minReplicaSetSize == 0) {
+            Integer minReplicaSetSizeFromJsonPayload = super.getInt(Constants.Properties.MIN_REPLICA_SET_SIZE);
+            if (minReplicaSetSizeFromJsonPayload == null) {
+                minReplicaSetSizeFromJsonPayload = DEFAULT_MIN_REPLICA_SET_SIZE;
+            }
+
+            minReplicaSetSize = minReplicaSetSizeFromJsonPayload;
         }
 
         return minReplicaSetSize;

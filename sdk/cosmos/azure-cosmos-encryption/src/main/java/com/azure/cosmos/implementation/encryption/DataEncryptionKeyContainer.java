@@ -10,11 +10,12 @@ import reactor.core.publisher.Mono;
 
 
 /**
+ * TODO: change the interface to package private? moderakh
  * TODO: moderakh add read-feed/query apis for data encryption key
  * Container for data encryption keys. Provides methods to create, re-wrap, read and enumerate data encryption keys.
  * See https://aka.ms/CosmosClientEncryption for more information on client-side encryption support in Azure Cosmos DB.
  */
-interface DataEncryptionKeyContainer {
+public interface DataEncryptionKeyContainer {
     /**
      * Generates a data encryption key, wraps it using the key wrap metadata provided
      * with the key wrapping provider in the EncryptionSerializer configured on the client via <see cref="CosmosClientBuilder.WithCustomSerializer"/>,

@@ -13,19 +13,16 @@ import com.microsoft.azure.arm.resources.models.Resource;
 import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasResourceGroup;
 import com.microsoft.azure.arm.model.Refreshable;
-import com.microsoft.azure.arm.model.Updatable;
-import com.microsoft.azure.arm.model.Appliable;
-import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.hybridcompute.v2019_12_12.implementation.HybridComputeManager;
-import org.joda.time.DateTime;
 import java.util.List;
+import org.joda.time.DateTime;
 import com.microsoft.azure.management.hybridcompute.v2019_12_12.implementation.MachineInner;
 
 /**
  * Type representing Machine.
  */
-public interface Machine extends HasInner<MachineInner>, Resource, GroupableResourceCore<HybridComputeManager, MachineInner>, HasResourceGroup, Refreshable<Machine>, Updatable<Machine.Update>, HasManager<HybridComputeManager> {
+public interface Machine extends HasInner<MachineInner>, Resource, GroupableResourceCore<HybridComputeManager, MachineInner>, HasResourceGroup, Refreshable<Machine>, HasManager<HybridComputeManager> {
     /**
      * @return the agentVersion value.
      */
@@ -101,129 +98,4 @@ public interface Machine extends HasInner<MachineInner>, Resource, GroupableReso
      */
     String vmId();
 
-    /**
-     * The entirety of the Machine definition.
-     */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithCreate {
-    }
-
-    /**
-     * Grouping of Machine definition stages.
-     */
-    interface DefinitionStages {
-        /**
-         * The first stage of a Machine definition.
-         */
-        interface Blank extends GroupableResourceCore.DefinitionWithRegion<WithGroup> {
-        }
-
-        /**
-         * The stage of the Machine definition allowing to specify the resource group.
-         */
-        interface WithGroup extends GroupableResourceCore.DefinitionStages.WithGroup<WithCreate> {
-        }
-
-        /**
-         * The stage of the machine definition allowing to specify ClientPublicKey.
-         */
-        interface WithClientPublicKey {
-            /**
-             * Specifies clientPublicKey.
-             * @param clientPublicKey Public Key that the client provides to be used during initial resource onboarding
-             * @return the next definition stage
-             */
-            WithCreate withClientPublicKey(String clientPublicKey);
-        }
-
-        /**
-         * The stage of the machine definition allowing to specify Extensions.
-         */
-        interface WithExtensions {
-            /**
-             * Specifies extensions.
-             * @param extensions Machine Extensions information
-             * @return the next definition stage
-             */
-            WithCreate withExtensions(List<MachineExtensionInstanceView> extensions);
-        }
-
-        /**
-         * The stage of the machine definition allowing to specify Identity.
-         */
-        interface WithIdentity {
-            /**
-             * Specifies identity.
-             * @param identity the identity parameter value
-             * @return the next definition stage
-             */
-            WithCreate withIdentity(MachineIdentity identity);
-        }
-
-        /**
-         * The stage of the machine definition allowing to specify LocationData.
-         */
-        interface WithLocationData {
-            /**
-             * Specifies locationData.
-             * @param locationData the locationData parameter value
-             * @return the next definition stage
-             */
-            WithCreate withLocationData(LocationData locationData);
-        }
-
-        /**
-         * The stage of the machine definition allowing to specify OsProfile.
-         */
-        interface WithOsProfile {
-            /**
-             * Specifies osProfile.
-             * @param osProfile Specifies the operating system settings for the hybrid machine
-             * @return the next definition stage
-             */
-            WithCreate withOsProfile(MachinePropertiesOsProfile osProfile);
-        }
-
-        /**
-         * The stage of the machine definition allowing to specify VmId.
-         */
-        interface WithVmId {
-            /**
-             * Specifies vmId.
-             * @param vmId Specifies the hybrid machine unique ID
-             * @return the next definition stage
-             */
-            WithCreate withVmId(String vmId);
-        }
-
-        /**
-         * The stage of the definition which contains all the minimum required inputs for
-         * the resource to be created (via {@link WithCreate#create()}), but also allows
-         * for any other optional settings to be specified.
-         */
-        interface WithCreate extends Creatable<Machine>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithClientPublicKey, DefinitionStages.WithExtensions, DefinitionStages.WithIdentity, DefinitionStages.WithLocationData, DefinitionStages.WithOsProfile, DefinitionStages.WithVmId {
-        }
-    }
-    /**
-     * The template for a Machine update operation, containing all the settings that can be modified.
-     */
-    interface Update extends Appliable<Machine>, Resource.UpdateWithTags<Update>, UpdateStages.WithLocationData {
-    }
-
-    /**
-     * Grouping of Machine update stages.
-     */
-    interface UpdateStages {
-        /**
-         * The stage of the machine update allowing to specify LocationData.
-         */
-        interface WithLocationData {
-            /**
-             * Specifies locationData.
-             * @param locationData the locationData parameter value
-             * @return the next update stage
-             */
-            Update withLocationData(LocationData locationData);
-        }
-
-    }
 }
