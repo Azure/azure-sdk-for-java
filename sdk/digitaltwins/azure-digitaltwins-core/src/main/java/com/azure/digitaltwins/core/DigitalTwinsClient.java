@@ -72,10 +72,9 @@ public final class DigitalTwinsClient {
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipName The name of a relationship to filter to.
      * @return A {@link PagedIterable} of application/json relationships belonging to the specified digital twin and the http response.
-     * TODO: Impl here returns an Object and not a String.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Object> listRelationships(String digitalTwinId, String relationshipName) {
+    public PagedIterable<String> listRelationships(String digitalTwinId, String relationshipName) {
         return new PagedIterable<>(digitalTwinsAsyncClient.listRelationships(digitalTwinId, relationshipName));
     }
 }

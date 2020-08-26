@@ -6,11 +6,9 @@ package com.azure.digitaltwins.core;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
-import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.http.rest.*;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -26,6 +24,12 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Objects;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 
 /**
@@ -187,23 +191,18 @@ public class DigitalTwinsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> createRelationshipWithResponse(String digitalTwinId, String relationshipId, String relationship) {
-        try {
-            return protocolLayer
-                .getDigitalTwins()
-                .addRelationshipWithResponseAsync(digitalTwinId, relationshipId, relationship)
-                .flatMap(
-                    response -> {
-                        try {
-                            String jsonResponse = mapper.writeValueAsString(response.getValue());
-                            return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), jsonResponse));
-                        } catch (JsonProcessingException e) {
-                            return Mono.error(e);
-                        }
-                    });
-        } catch (RuntimeException ex) {
-            // TODO: Ensure that exceptions are handled in a reactive way
-            return FluxUtil.monoError(logger, ex);
-        }
+        return protocolLayer
+            .getDigitalTwins()
+            .addRelationshipWithResponseAsync(digitalTwinId, relationshipId, relationship)
+            .flatMap(
+                response -> {
+                    try {
+                        String jsonResponse = mapper.writeValueAsString(response.getValue());
+                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), jsonResponse));
+                    } catch (JsonProcessingException e) {
+                        return Mono.error(e);
+                    }
+                });
     }
 
     /**
@@ -212,13 +211,59 @@ public class DigitalTwinsAsyncClient {
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipName The name of a relationship to filter to.
      * @return A {@link PagedFlux} of application/json relationships belonging to the specified digital twin and the http response.
-     * TODO: Impl here returns an Object and not a String.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Object> listRelationships(String digitalTwinId, String relationshipName) {
-        return new PagedFlux<>(
-            () -> protocolLayer.getDigitalTwins().listRelationshipsSinglePageAsync(digitalTwinId, relationshipName),
-            nextLink -> protocolLayer.getDigitalTwins().listRelationshipsNextSinglePageAsync(nextLink));
+    public PagedFlux<String> listRelationships(String digitalTwinId, String relationshipName) {
+
+        Supplier<Mono<PagedResponse<String>>> firstPage = () -> protocolLayer.getDigitalTwins().listRelationshipsSinglePageAsync(digitalTwinId, relationshipName)
+            .map(
+                objectPagedResponse -> {
+                    List<String> stringList = objectPagedResponse.getValue().stream()
+                        .map(object -> {
+                            try {
+                                return mapper.writeValueAsString(object);
+                            } catch (JsonProcessingException e) {
+                                logger.error("Could not parse the returned relationship [%s]: %s", object, e);
+                                return null;
+                            }
+                        })
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toList());
+                    return new PagedResponseBase<>(
+                        objectPagedResponse.getRequest(),
+                        objectPagedResponse.getStatusCode(),
+                        objectPagedResponse.getHeaders(),
+                        stringList,
+                        objectPagedResponse.getContinuationToken(),
+                        ((PagedResponseBase) objectPagedResponse).getDeserializedHeaders());
+
+                }
+            );
+
+        Function<String, Mono<PagedResponse<String>>> nextPage = nextLink -> protocolLayer.getDigitalTwins().listRelationshipsNextSinglePageAsync(nextLink)
+            .map(objectPagedResponse -> {
+                List<String> stringList = objectPagedResponse.getValue().stream()
+                    .map(object -> {
+                        try {
+                            return mapper.writeValueAsString(object);
+                        } catch (JsonProcessingException e) {
+                            logger.error("Could not parse the returned relationship [%s]: %s", object, e);
+                            return null;
+                        }
+                    })
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+                return new PagedResponseBase<>(
+                    objectPagedResponse.getRequest(),
+                    objectPagedResponse.getStatusCode(),
+                    objectPagedResponse.getHeaders(),
+                    stringList,
+                    objectPagedResponse.getContinuationToken(),
+                    ((PagedResponseBase)objectPagedResponse).getDeserializedHeaders());
+            });
+
+        return new PagedFlux<>(firstPage, nextPage);
+
     }
 
 }

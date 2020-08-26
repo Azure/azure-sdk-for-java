@@ -6,6 +6,7 @@ package com.azure.digitaltwins.core;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsAddHeaders;
@@ -282,6 +283,36 @@ public class AsyncSample
 
         boolean created = createTwinsSemaphore.tryAcquire(6, 20, TimeUnit.SECONDS);
         System.out.println("Source twins created: " + created);
+
+        String targetTwin1_Id = "targetTwin_1_" + random.nextInt();
+        String targetTwin_1 = "{\"$metadata\": {\"$model\": \"dtmi:samples:HVAC;1\"}, \"Efficiency\": 10, \"TargetTemperature\": 10, \"TargetHumidity\": 10}";
+
+        String targetTwin2_Id = "targetTwin_2_" + random.nextInt();
+        String targetTwin_2 = "{\"$metadata\": {\"$model\": \"dtmi:samples:HVAC;1\"}, \"Efficiency\": 50, \"TargetTemperature\": 50, \"TargetHumidity\": 50}";
+
+        client.createDigitalTwinWithResponseString(targetTwin1_Id, targetTwin_1).block();
+        client.createDigitalTwinWithResponseString(targetTwin2_Id, targetTwin_2).block();
+
+        String relationship1 = "{\"$relationshipName\": \"isEquippedWith\", \"$targetId\": \"" + targetTwin1_Id + "\"}";
+        String relationship2 = "{\"$relationshipName\": \"isEquippedWith\", \"$targetId\": \"" + targetTwin2_Id + "\"}";
+
+        client.createRelationshipWithResponse(dtId_Response_String, "rid_1", relationship1).block();
+        client.createRelationshipWithResponse(dtId_Response_String, "rid_2", relationship2).block();
+
+        final Semaphore listSemaphore = new Semaphore(0);
+        PagedFlux<String> relationships = client.listRelationships(dtId_Response_String, "isEquippedWith");
+
+        relationships.subscribe(
+            item -> System.out.println("Relationship retrieved: " + item),
+            throwable -> System.err.println("Error: " + throwable),
+            listSemaphore::release
+        );
+
+        if (listSemaphore.tryAcquire(1, 5, TimeUnit.SECONDS)) {
+            System.out.println("Successfully retrieved all relationships");
+        } else {
+            System.err.println("Could not retrieve relationships");
+        }
 
     }
 }

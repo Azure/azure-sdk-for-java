@@ -38,7 +38,7 @@ public class SyncSample
         System.out.println("Created relationship: " + createdRelationship);
 
         // List all relationships on a digital twin
-        PagedIterable<Object> relationships = client.listRelationships(sourceDigitalTwinId, relationshipId);
+        PagedIterable<String> relationships = client.listRelationships(sourceDigitalTwinId, relationshipId);
 
         // Process using the Stream interface by iterating over each page
         relationships
