@@ -32,7 +32,7 @@ jobs:
         EnvVars:
           AZURE_TEST_MODE: LIVE
 
-      PostRunSteps:
+        PostRunSteps:
           - script: |
                 python --version
                 python -m pip install setuptools termcolor in_place
