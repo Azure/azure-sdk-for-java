@@ -18,7 +18,7 @@ import java.util.List;
 final public class ItemOperations {
 
     /**
-     * Note: although this method is public, this API may change in future.
+     * Note: this method is deprecated - please use CosmosContainer.readMany instead
      * <p>
      * Reads many documents.
      *
@@ -35,7 +35,7 @@ final public class ItemOperations {
     }
 
     /**
-     * Note: although this method is public, this API may change in future.
+     * Note: this method is deprecated - please use CosmosAsyncContainer.readMany instead
      * <p>
      * Reads many documents.
      *
