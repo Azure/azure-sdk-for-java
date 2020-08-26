@@ -28,7 +28,6 @@ import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.Exceptions;
 
@@ -123,7 +122,7 @@ public class EventHubTests extends TestBase {
     }
 
     @Test
-    public void canManageEventHubNamespaceEventHubs() throws Exception {
+    public void canManageEventHubNamespaceEventHubs() {
         rgName = generateRandomResourceName("javacsmrg", 15);
         final String namespaceName = generateRandomResourceName("ns", 14);
         final String eventHubName1 = generateRandomResourceName("eh", 14);
@@ -179,7 +178,7 @@ public class EventHubTests extends TestBase {
     }
 
     @Test
-    public void canManageEventHubNamespaceAuthorizationRules() throws Exception {
+    public void canManageEventHubNamespaceAuthorizationRules() {
         rgName = generateRandomResourceName("javacsmrg", 15);
         final String namespaceName = generateRandomResourceName("ns", 14);
 
@@ -248,7 +247,7 @@ public class EventHubTests extends TestBase {
     }
 
     @Test
-    public void canManageEventHubConsumerGroups() throws Exception {
+    public void canManageEventHubConsumerGroups() {
         rgName = generateRandomResourceName("javacsmrg", 15);
         final String namespaceName = generateRandomResourceName("ns", 14);
         final String eventHubName = generateRandomResourceName("eh", 14);
@@ -305,7 +304,7 @@ public class EventHubTests extends TestBase {
     }
 
     @Test
-    public void canManageEventHubAuthorizationRules() throws Exception {
+    public void canManageEventHubAuthorizationRules() {
         rgName = generateRandomResourceName("javacsmrg", 15);
         final String namespaceName = generateRandomResourceName("ns", 14);
         final String eventHubName = generateRandomResourceName("eh", 14);
@@ -362,8 +361,12 @@ public class EventHubTests extends TestBase {
     }
 
     @Test
-    @Disabled("Test uses data plane storage api")
-    public void canConfigureEventHubDataCapturing() throws Exception {
+    public void canConfigureEventHubDataCapturing() {
+        if (isPlaybackMode()) {
+            // contains data plane storage requests
+            return;
+        }
+
         rgName = generateRandomResourceName("javacsmrg", 15);
         final String stgName = generateRandomResourceName("stg", 14);
         final String namespaceName = generateRandomResourceName("ns", 14);
@@ -436,8 +439,11 @@ public class EventHubTests extends TestBase {
     }
 
     @Test
-    @Disabled("Test uses data plane storage api")
     public void canEnableEventHubDataCaptureOnUpdate() {
+        if (isPlaybackMode()) {
+            // contains data plane storage requests
+            return;
+        }
 
         rgName = generateRandomResourceName("javacsmrg", 15);
         final String stgName = generateRandomResourceName("stg", 14);
@@ -485,7 +491,6 @@ public class EventHubTests extends TestBase {
     }
 
     @Test
-    @Disabled("Server side: resource group delete operation (final clean up) keep running for hours when contains pairing")
     public void canManageGeoDisasterRecoveryPairing() throws Throwable {
         rgName = generateRandomResourceName("javacsmrg", 15);
         final String geodrName = generateRandomResourceName("geodr", 14);

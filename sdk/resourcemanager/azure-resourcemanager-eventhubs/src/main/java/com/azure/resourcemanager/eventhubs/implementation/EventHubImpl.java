@@ -502,7 +502,7 @@ class EventHubImpl
                     BlobServiceAsyncClient blobServiceAsyncClient = new BlobServiceClientBuilder()
                         .connectionString(Utils.getStorageConnectionString(
                             storageAccount.name(), storageAccountKey.value(), manager().environment()))
-                        .pipeline(manager().httpPipeline())
+                        .httpClient(manager().httpPipeline().getHttpClient())
                         .buildAsyncClient();
                     return blobServiceAsyncClient;
                 });
