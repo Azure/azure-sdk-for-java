@@ -262,17 +262,13 @@ public final class CoreUtils {
      */
     public static String getApplicationId(HttpLogOptions logOptions, ClientOptions clientOptions) {
 
-        String logApplicationId = null;
         String clientApplicationId = null;
 
-        if (logOptions != null) {
-            logApplicationId = logOptions.getApplicationId();
-        }
         if (clientOptions != null) {
             clientApplicationId = clientOptions.getApplicationId();
         }
 
         // We prioritize application id sent in ClientOptions.
-        return clientApplicationId != null ? clientApplicationId : logApplicationId;
+        return clientApplicationId != null ? clientApplicationId : logOptions.getApplicationId();
     }
 }
