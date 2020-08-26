@@ -28,6 +28,19 @@ jobs:
         Options: --batch-mode
         MavenOptions: $(MemoryOptions) $(LoggingOptions)
 
+    - task: Maven@3
+      displayName: 'Install azure-client-sdk-parent'
+      inputs:
+        mavenPomFile: sdk/parents/azure-client-sdk-parent/pom.xml
+        goals: install
+        options: '$(DefaultOptions)'
+        mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: $(JavaBuildVersion)
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: false
+      condition: succeeded()
+
     - task: PowerShell@2
       # The root pom.xml contains both track 1, data, and track 2, client libraries.
       # This task calls a powershell script that will go through all of the pom files
