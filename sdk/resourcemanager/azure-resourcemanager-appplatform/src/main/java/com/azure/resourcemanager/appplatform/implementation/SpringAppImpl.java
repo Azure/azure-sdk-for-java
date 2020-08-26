@@ -207,23 +207,9 @@ public class SpringAppImpl
     }
 
     @Override
-    public SpringAppImpl withoutTemporaryDisk() {
-        ensureProperty();
-        inner().properties().withTemporaryDisk(null);
-        return this;
-    }
-
-    @Override
     public SpringAppImpl withPersistentDisk(int sizeInGB, String mountPath) {
         ensureProperty();
         inner().properties().withPersistentDisk(new PersistentDisk().withSizeInGB(sizeInGB).withMountPath(mountPath));
-        return this;
-    }
-
-    @Override
-    public SpringAppImpl withoutPersistentDisk() {
-        ensureProperty();
-        inner().properties().withPersistentDisk(null);
         return this;
     }
 

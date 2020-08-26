@@ -91,7 +91,6 @@ public class SpringCloudTest extends AppPlatformTest {
         app.update()
             .withoutDefaultPublicEndpoint()
             .withoutHttpsOnly()
-            .withoutPersistentDisk()
             .apply();
 
         Assertions.assertFalse(app.isPublic());

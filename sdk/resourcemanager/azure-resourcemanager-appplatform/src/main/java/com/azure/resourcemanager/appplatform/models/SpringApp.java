@@ -253,24 +253,12 @@ public interface SpringApp
             Update withTemporaryDisk(int sizeInGB, String mountPath);
 
             /**
-             * Removes the temporary disk for the spring app.
-             * @return the next stage of spring app update
-             */
-            Update withoutTemporaryDisk();
-
-            /**
              * Specifies the persistent disk for the spring app.
              * @param sizeInGB the size of the disk
              * @param mountPath the mount path of the disk
              * @return the next stage of spring app update
              */
             Update withPersistentDisk(int sizeInGB, String mountPath);
-
-            /**
-             * Removes the persistent disk for the spring app.
-             * @return the next stage of spring app update
-             */
-            Update withoutPersistentDisk();
         }
 
         /**
