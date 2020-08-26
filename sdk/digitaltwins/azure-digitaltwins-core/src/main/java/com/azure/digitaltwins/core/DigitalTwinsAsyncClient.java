@@ -218,7 +218,7 @@ public class DigitalTwinsAsyncClient {
         Supplier<Mono<PagedResponse<String>>> firstPage = () -> protocolLayer.getDigitalTwins().listRelationshipsSinglePageAsync(digitalTwinId, relationshipName)
             .map(
                 objectPagedResponse -> {
-                    List<String> stringValue = objectPagedResponse.getValue().stream()
+                    List<String> stringList = objectPagedResponse.getValue().stream()
                         .map(object -> {
                             try {
                                 return mapper.writeValueAsString(object);
@@ -233,16 +233,16 @@ public class DigitalTwinsAsyncClient {
                         objectPagedResponse.getRequest(),
                         objectPagedResponse.getStatusCode(),
                         objectPagedResponse.getHeaders(),
-                        stringValue,
+                        stringList,
                         objectPagedResponse.getContinuationToken(),
                         ((PagedResponseBase) objectPagedResponse).getDeserializedHeaders());
 
                 }
             );
 
-        Function<String, Mono<PagedResponse<String>>> nextPage = s -> protocolLayer.getDigitalTwins().listRelationshipsNextSinglePageAsync(s)
+        Function<String, Mono<PagedResponse<String>>> nextPage = nextLink -> protocolLayer.getDigitalTwins().listRelationshipsNextSinglePageAsync(nextLink)
             .map(objectPagedResponse -> {
-                List<String> stringValue = objectPagedResponse.getValue().stream()
+                List<String> stringList = objectPagedResponse.getValue().stream()
                     .map(object -> {
                         try {
                             return mapper.writeValueAsString(object);
@@ -257,7 +257,7 @@ public class DigitalTwinsAsyncClient {
                     objectPagedResponse.getRequest(),
                     objectPagedResponse.getStatusCode(),
                     objectPagedResponse.getHeaders(),
-                    stringValue,
+                    stringList,
                     objectPagedResponse.getContinuationToken(),
                     ((PagedResponseBase)objectPagedResponse).getDeserializedHeaders());
             });
