@@ -1,0 +1,50 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.8; Mac OS X; 10.15.6)",
+      "x-ms-client-request-id" : "63bd9cda-1007-4dd3-b12b-05ed807449a5",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Fri, 21 Aug 2020 21:00:49 GMT",
+      "Cache-Control" : "no-cache",
+      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/Tables('tablename37298d4b')",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "fdb1e029-d002-005c-6cfe-779f04000000",
+      "Preference-Applied" : "return-no-content",
+      "x-ms-client-request-id" : "63bd9cda-1007-4dd3-b12b-05ed807449a5",
+      "Location" : "https://brsiegelsample.table.core.windows.net/Tables('tablename37298d4b')"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables('tablename37298d4b')",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.8; Mac OS X; 10.15.6)",
+      "x-ms-client-request-id" : "e8567332-1ae4-498c-9dba-59a3399528b8"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "Cache-Control" : "no-cache",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "fdb1e033-d002-005c-72fe-779f04000000",
+      "Date" : "Fri, 21 Aug 2020 21:00:49 GMT",
+      "x-ms-client-request-id" : "e8567332-1ae4-498c-9dba-59a3399528b8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "tablename37298d4b" ]
+}

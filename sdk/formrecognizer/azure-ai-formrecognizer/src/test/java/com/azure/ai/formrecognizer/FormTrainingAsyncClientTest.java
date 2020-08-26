@@ -32,7 +32,6 @@ import java.time.Duration;
 import java.util.List;
 
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.EXPECTED_MODEL_ID_NOT_FOUND_ERROR_CODE;
-import static com.azure.ai.formrecognizer.TestUtils.BLANK_FORM_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID_ERROR;
@@ -71,9 +70,9 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     void getFormRecognizerClientAndValidate(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         FormRecognizerAsyncClient formRecognizerClient = getFormTrainingAsyncClient(httpClient, serviceVersion)
             .getFormRecognizerAsyncClient();
-        blankPdfDataRunner(data -> {
+        blankPdfDataRunner((data, dataLength) -> {
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                formRecognizerClient.beginRecognizeReceipts(toFluxByteBuffer(data), BLANK_FORM_FILE_LENGTH,
+                formRecognizerClient.beginRecognizeReceipts(toFluxByteBuffer(data), dataLength,
                     new RecognizeReceiptsOptions()
                         .setContentType(FormContentType.APPLICATION_PDF)
                         .setPollInterval(durationTestMode))
@@ -257,8 +256,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     public void listCustomModels(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.listCustomModels())
-            .thenConsumeWhile(customFormModelInfo ->
-                customFormModelInfo.getModelId() != null && customFormModelInfo.getTrainingStartedOn() != null
+            .thenConsumeWhile(customFormModelInfo -> customFormModelInfo.getModelId() != null && customFormModelInfo.getTrainingStartedOn() != null
                     && customFormModelInfo.getTrainingCompletedOn() != null && customFormModelInfo.getStatus() != null)
             .verifyComplete();
     }
@@ -301,7 +299,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
                 }
 
                 PollerFlux<FormRecognizerOperationResult, CustomFormModelInfo> copyPoller =
-                    client.beginCopyModel(actualModel.getModelId(), target);
+                    client.beginCopyModel(actualModel.getModelId(), target, durationTestMode);
                 CustomFormModelInfo copyModel = copyPoller.getSyncPoller().getFinalResult();
                 assertNotNull(target.getModelId(), copyModel.getModelId());
                 assertNotNull(actualModel.getTrainingStartedOn());
@@ -367,10 +365,11 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
                     return;
                 }
                 FormRecognizerException formRecognizerException = assertThrows(FormRecognizerException.class,
-                    () -> client.beginCopyModel(actualModel.getModelId(), target)
+                    () -> client.beginCopyModel(actualModel.getModelId(), target, durationTestMode)
                         .getSyncPoller().getFinalResult());
                 FormRecognizerErrorInformation errorInformation = formRecognizerException.getErrorInformation().get(0);
                 // TODO: Service bug https://github.com/Azure/azure-sdk-for-java/issues/12046
+                // Should return resource resolve error instead locally returning Authorization error
                 // assertEquals(RESOURCE_RESOLVER_ERROR, errorInformation.getCode());
                 // assertTrue(formRecognizerException.getMessage().startsWith(COPY_OPERATION_FAILED_STATUS_MESSAGE));
             });
@@ -401,7 +400,10 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
         client = getFormTrainingAsyncClient(httpClient, serviceVersion);
         beginTrainingInvalidModelStatusRunner((invalidTrainingFilesUrl, useTrainingLabels) -> {
             FormRecognizerException formRecognizerException = assertThrows(FormRecognizerException.class,
-                () -> client.beginTraining(invalidTrainingFilesUrl, useTrainingLabels).getSyncPoller().getFinalResult());
+                () -> client.beginTraining(invalidTrainingFilesUrl, useTrainingLabels,
+                    new TrainingOptions().setPollInterval(durationTestMode))
+                    .getSyncPoller().getFinalResult());
+
             FormRecognizerErrorInformation errorInformation = formRecognizerException.getErrorInformation().get(0);
             assertEquals(EXPECTED_INVALID_MODEL_STATUS_ERROR_CODE, errorInformation.getErrorCode());
             assertTrue(formRecognizerException.getMessage().contains(EXPECTED_INVALID_MODEL_STATUS_MESSAGE));
