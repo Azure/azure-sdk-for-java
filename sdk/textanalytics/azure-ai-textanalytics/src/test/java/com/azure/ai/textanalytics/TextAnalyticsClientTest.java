@@ -215,24 +215,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             validatePrimaryLanguage(getDetectedLanguageSpanish(), client.detectLanguage(input, countryHint)));
     }
 
-//    /**
-//     * Verifies that an InvalidDocumentBatch exception is returned for input documents with too many documents.
-//     */
-//    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-//    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-//    public void detectLanguageBatchTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-//        client = getTextAnalyticsClient(httpClient, serviceVersion);
-//        tooManyDocumentsRunner(inputs -> {
-//            HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-//                () -> client.detectLanguageBatch(inputs, null, null).stream().findFirst().get());
-//            assertEquals(400, httpResponseException.getResponse().getStatusCode());
-//            TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
-//            // TODO: TextAnalyticsError has null values for all properties,
-//            //       https://github.com/Azure/azure-sdk-for-java/issues/13960
-//            // assertEquals(InvalidDocumentBatch, textAnalyticsError.getErrorCode());
-//        });
-//    }
-
     // Recognize Entity
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

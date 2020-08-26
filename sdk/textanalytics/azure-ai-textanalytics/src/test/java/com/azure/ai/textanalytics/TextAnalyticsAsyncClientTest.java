@@ -243,25 +243,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 .verifyComplete());
     }
 
-//    /**
-//     * Verifies that an InvalidDocumentBatch exception is returned for input documents with too many documents.
-//     */
-//    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-//    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-//    public void detectLanguageBatchTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-//        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-//        tooManyDocumentsRunner(inputs ->
-//            StepVerifier.create(client.detectLanguageBatch(inputs, null, null))
-//                .verifyErrorSatisfies(ex -> {
-//                    HttpResponseException httpResponseException = (HttpResponseException) ex;
-//                    assertEquals(400, httpResponseException.getResponse().getStatusCode());
-//                    TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
-//                    // TODO: TextAnalyticsError has null values for all properties,
-//                    //       https://github.com/Azure/azure-sdk-for-java/issues/13960
-//                    // assertEquals(InvalidDocumentBatch, textAnalyticsError.getErrorCode());
-//                }));
-//    }
-
     // Entities
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
