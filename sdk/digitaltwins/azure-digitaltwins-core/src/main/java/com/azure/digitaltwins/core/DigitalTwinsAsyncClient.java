@@ -6,10 +6,8 @@ package com.azure.digitaltwins.core;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.*;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImpl;
@@ -23,11 +21,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -45,7 +41,7 @@ import java.util.stream.Collectors;
  * </p>
  */
 @ServiceClient(builder = DigitalTwinsClientBuilder.class)
-public class DigitalTwinsAsyncClient {
+public final class DigitalTwinsAsyncClient {
     private static final ClientLogger logger = new ClientLogger(DigitalTwinsAsyncClient.class);
     private static final ObjectMapper mapper = new ObjectMapper();
     private final DigitalTwinsServiceVersion serviceVersion;
