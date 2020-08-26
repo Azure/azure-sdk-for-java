@@ -1,6 +1,6 @@
 
 
-package com.azure.digitaltwins.core.serialization;
+package com.azure.digitaltwins.core.implementation.serialization;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -25,7 +25,7 @@ public class BasicDigitalTwin {
     private String id;
 
     @JsonProperty(value = "$etag", required = true)
-    private String etag;
+    private String twinETag;
 
     @JsonProperty(value = "$metadata", required = true)
     private DigitalTwinMetadata metadata;
@@ -54,17 +54,17 @@ public class BasicDigitalTwin {
      * Gets a string representing a weak ETag for the entity that this request performs an operation against, as per RFC7232.
      * @return A string representing a weak ETag for the entity that this request performs an operation against, as per RFC7232.
      */
-    public String getEtag() {
-        return etag;
+    public String getTwinETag() {
+        return twinETag;
     }
 
     /**
      * Sets a string representing a weak ETag for the entity that this request performs an operation against, as per RFC7232.
-     * @param etag A string representing a weak ETag for the entity that this request performs an operation against, as per RFC7232.
+     * @param twinETag A string representing a weak ETag for the entity that this request performs an operation against, as per RFC7232.
      * @return The BasicDigitalTwin object itself.
      */
-    public BasicDigitalTwin setEtag(String etag) {
-        this.etag = etag;
+    public BasicDigitalTwin setTwinETag(String twinETag) {
+        this.twinETag = twinETag;
         return this;
     }
 

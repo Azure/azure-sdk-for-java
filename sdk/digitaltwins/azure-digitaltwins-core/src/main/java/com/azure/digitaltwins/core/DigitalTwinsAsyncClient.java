@@ -18,13 +18,11 @@ import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImpl;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImplBuilder;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsAddHeaders;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsAddResponse;
-import com.azure.digitaltwins.core.serialization.BasicDigitalTwin;
-import com.fasterxml.jackson.core.JsonGenerator;
+import com.azure.digitaltwins.core.implementation.serialization.BasicDigitalTwin;
+import com.azure.digitaltwins.core.implementation.serializer.DigitalTwinsStringSerializer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -51,19 +49,7 @@ public class DigitalTwinsAsyncClient {
 
     DigitalTwinsAsyncClient(HttpPipeline pipeline, DigitalTwinsServiceVersion serviceVersion, String host) {
         final SimpleModule stringModule = new SimpleModule("String Serializer");
-
-        StdSerializer<String> adtStringSerializer = new StdSerializer<String>(String.class, false) {
-            @Override
-            public void serialize(String s, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
-                if (isValidJson(s)) {
-                    jsonGenerator.writeRawValue(s);
-                } else {
-                    jsonGenerator.writeString(s);
-                }
-            }
-        };
-
-        stringModule.addSerializer(adtStringSerializer);
+        stringModule.addSerializer(new DigitalTwinsStringSerializer(String.class, false));
 
         JacksonAdapter jacksonAdapter = new JacksonAdapter();
         jacksonAdapter.serializer().registerModule(stringModule);

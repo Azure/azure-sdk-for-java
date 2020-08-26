@@ -10,8 +10,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsAddHeaders;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsAddResponse;
-import com.azure.digitaltwins.core.serialization.BasicDigitalTwin;
-import com.azure.digitaltwins.core.serialization.DigitalTwinMetadata;
+import com.azure.digitaltwins.core.implementation.serialization.BasicDigitalTwin;
+import com.azure.digitaltwins.core.implementation.serialization.DigitalTwinMetadata;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -90,7 +90,7 @@ public class AsyncSample
                             BasicDigitalTwin twin = mapper.treeToValue(jsonNode, BasicDigitalTwin.class);
                             System.out.println(
                                 String.format("%s: Deserialized BasicDigitalTwin, \n\tId=%s, \n\tEtag=%s, \n\tModelId=%s, \n\tCustomProperties=%s \n",
-                                    dtId_Response_String, twin.getId(), twin.getEtag(), twin.getMetadata().getModelId(), Arrays.toString(twin.getCustomProperties().entrySet().toArray())));
+                                    dtId_Response_String, twin.getId(), twin.getTwinETag(), twin.getMetadata().getModelId(), Arrays.toString(twin.getCustomProperties().entrySet().toArray())));
                         }
                     }
                 } catch (JsonProcessingException e) {
@@ -134,7 +134,7 @@ public class AsyncSample
                             BasicDigitalTwin twin = mapper.treeToValue(jsonNode, BasicDigitalTwin.class);
                             System.out.println(
                                 String.format("%s: Deserialized BasicDigitalTwin, \n\tId=%s, \n\tEtag=%s, \n\tModelId=%s, \n\tCustomProperties=%s \n",
-                                    dtId_ResponseBase_String, twin.getId(), twin.getEtag(), twin.getMetadata().getModelId(), Arrays.toString(twin.getCustomProperties().entrySet().toArray())));
+                                    dtId_ResponseBase_String, twin.getId(), twin.getTwinETag(), twin.getMetadata().getModelId(), Arrays.toString(twin.getCustomProperties().entrySet().toArray())));
                         }
                     }
                 } catch (JsonProcessingException e) {
@@ -178,7 +178,7 @@ public class AsyncSample
                             BasicDigitalTwin twin = mapper.treeToValue(jsonNode, BasicDigitalTwin.class);
                             System.out.println(
                                 String.format("%s: Deserialized BasicDigitalTwin, \n\tId=%s, \n\tEtag=%s, \n\tModelId=%s, \n\tCustomProperties=%s \n",
-                                    dtId_DigitalTwinsAddResponse_String, twin.getId(), twin.getEtag(), twin.getMetadata().getModelId(), Arrays.toString(twin.getCustomProperties().entrySet().toArray())));
+                                    dtId_DigitalTwinsAddResponse_String, twin.getId(), twin.getTwinETag(), twin.getMetadata().getModelId(), Arrays.toString(twin.getCustomProperties().entrySet().toArray())));
                         }
                     }
                 } catch (JsonProcessingException e) {
@@ -225,7 +225,7 @@ public class AsyncSample
                             BasicDigitalTwin twin = mapper.treeToValue(jsonNode, BasicDigitalTwin.class);
                             System.out.println(
                                 String.format("%s: Deserialized BasicDigitalTwin, \n\tId=%s, \n\tEtag=%s, \n\tModelId=%s, \n\tCustomProperties=%s \n",
-                                    dtId_WithResponse_Object, twin.getId(), twin.getEtag(), twin.getMetadata().getModelId(), Arrays.toString(twin.getCustomProperties().entrySet().toArray())));
+                                    dtId_WithResponse_Object, twin.getId(), twin.getTwinETag(), twin.getMetadata().getModelId(), Arrays.toString(twin.getCustomProperties().entrySet().toArray())));
                         }
                     }
                 } catch (JsonProcessingException e) {
@@ -253,7 +253,7 @@ public class AsyncSample
                 BasicDigitalTwin twin = result.getValue();
                 System.out.println(
                     String.format("%s: Deserialized BasicDigitalTwin, \n\tId=%s, \n\tEtag=%s, \n\tModelId=%s, \n\tCustomProperties=%s \n",
-                        dtId_WithResponse_BasicDigitalTwin, twin.getId(), twin.getEtag(), twin.getMetadata().getModelId(), Arrays.toString(twin.getCustomProperties().entrySet().toArray())));
+                        dtId_WithResponse_BasicDigitalTwin, twin.getId(), twin.getTwinETag(), twin.getMetadata().getModelId(), Arrays.toString(twin.getCustomProperties().entrySet().toArray())));
             },
             throwable -> System.err.println("Failed to create source twin on digital twin with Id " + dtId_WithResponse_BasicDigitalTwin + " due to error message " + throwable.getMessage()),
             createTwinsSemaphore::release);
