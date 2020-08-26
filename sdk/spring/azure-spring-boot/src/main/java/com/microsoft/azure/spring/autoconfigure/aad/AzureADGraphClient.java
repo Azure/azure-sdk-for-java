@@ -33,7 +33,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -77,8 +76,8 @@ public class AzureADGraphClient {
         this.aadMicrosoftGraphApiBool = endpointEnv.contains(V2_VERSION_ENV_FLAG);
     }
 
-    private String getUserMemberships(String accessToken, Optional<String> odataNextLink) throws IOException {
-        final URL url = new URL(serviceEndpoints.getAadMembershipRestUri());
+    private String getUserMemberships(String accessToken, String odataNextLink) throws IOException {
+        final URL url = buildUrl(odataNextLink);
         final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         // Set the appropriate header fields in the request header.
 
@@ -103,6 +102,26 @@ public class AzureADGraphClient {
         }
     }
 
+    private String getSkipTokenFromLink(String odataNextLink) {
+        String[] parts = odataNextLink.split("/memberOf\\?");
+        return parts[1];
+    }
+
+    private URL buildUrl(String odataNextLink) throws MalformedURLException {
+        URL url;
+        if (odataNextLink != null) {
+            if (this.aadMicrosoftGraphApiBool) {
+                url = new URL(odataNextLink);
+            } else {
+                String skipToken = getSkipTokenFromLink(odataNextLink);
+                url = new URL(serviceEndpoints.getAadMembershipRestUri() + "&" + skipToken);
+            }
+        } else {
+            url = new URL(serviceEndpoints.getAadMembershipRestUri());
+        }
+        return url;
+    }
+
     private static String getResponseStringFromConn(HttpURLConnection conn) throws IOException {
 
         try (BufferedReader reader = new BufferedReader(
@@ -121,17 +140,16 @@ public class AzureADGraphClient {
     }
 
     private List<UserGroup> loadUserGroups(String graphApiToken) throws IOException {
-        String responseInJson = getUserMemberships(graphApiToken, Optional.empty());
+        String responseInJson = getUserMemberships(graphApiToken, null);
         final List<UserGroup> lUserGroups = new ArrayList<>();
         final ObjectMapper objectMapper = JacksonObjectMapperFactory.getInstance();
-        objectMapper.registerModule(new Jdk8Module());
         UserGroups groupsFromJson = objectMapper.readValue(responseInJson, UserGroups.class);
 
         if (groupsFromJson.getValue() != null) {
             lUserGroups.addAll(groupsFromJson.getValue().stream().filter(this::isMatchingUserGroupKey)
                 .collect(Collectors.toList()));
         }
-        while (groupsFromJson.getOdataNextLink().isPresent()) {
+        while (groupsFromJson.getOdataNextLink() != null) {
             responseInJson = getUserMemberships(graphApiToken, groupsFromJson.getOdataNextLink());
             groupsFromJson = objectMapper.readValue(responseInJson, UserGroups.class);
             lUserGroups.addAll(groupsFromJson.getValue().stream().filter(this::isMatchingUserGroupKey)
@@ -142,7 +160,7 @@ public class AzureADGraphClient {
     }
 
     /**
-     * Checks that the JSON Node is a valid User Group to extract User Groups from
+     * Checks that the UserGroup has a Group object type.
      *
      * @param node - json node to look for a key/value to equate against the
      *             {@link AADAuthenticationProperties.UserGroupProperties}

@@ -5,29 +5,26 @@ package com.microsoft.azure.spring.autoconfigure.aad;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserGroups {
 
-    @JsonProperty("odata.nextLink")
-    private Optional<String> odataNextLink;
-
-    @JsonProperty("value")
+    private String odataNextLink;
     private List<UserGroup> value;
 
-    public UserGroups(Optional<String> odataNextLink, List<UserGroup> value) {
+    @JsonCreator
+    public UserGroups(
+            @JsonProperty("odata.nextLink") String odataNextLink,
+            @JsonProperty("value") List<UserGroup> value) {
         this.odataNextLink = odataNextLink;
         this.value = value;
     }
 
-    public UserGroups() {
-    }
-
-    public Optional<String> getOdataNextLink() {
+    public String getOdataNextLink() {
         return odataNextLink;
     }
 
