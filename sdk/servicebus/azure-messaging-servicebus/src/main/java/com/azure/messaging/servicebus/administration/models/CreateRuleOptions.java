@@ -12,51 +12,53 @@ import java.util.Objects;
  */
 @Fluent
 public class CreateRuleOptions {
-    public static final String DEFAULT_RULE_NAME = "$Default";
-
-    private final String name;
     private RuleFilter filter;
     private RuleAction action;
 
     /**
-     * Initializes a new instance with the default rule name, '$Default' and the {@link TrueRuleFilter}.
+     * Initializes a new instance with the {@link TrueRuleFilter}.
      */
     public CreateRuleOptions() {
-        this(DEFAULT_RULE_NAME, TrueRuleFilter.getInstance());
-    }
-
-    /**
-     * Initializes a new instance with the given rule name and {@link TrueRuleFilter}.
-     *
-     * @param name Name of the rule.
-     *
-     * @throws IllegalArgumentException if the length of name is over 50 characters.
-     */
-    public CreateRuleOptions(String name) {
-        this(name, TrueRuleFilter.getInstance());
+        this(TrueRuleFilter.getInstance());
     }
 
     /**
      * Initializes a new instance with the given rule {@code name} and {@code filter}.
      *
-     * @param name Name of the rule.
      * @param filter Filter expression used to match messages.
+     * @throws NullPointerException if {@code filter} is null.
      */
-    public CreateRuleOptions(String name, RuleFilter filter) {
-        this.name = name;
-        this.filter = filter;
+    public CreateRuleOptions(RuleFilter filter) {
+        this.filter = Objects.requireNonNull(filter, "'filter' cannot be null.");
     }
 
+    /**
+     * Initializes a new instance with the given rule properties.
+     *
+     * @param ruleProperties Rule properties to create new rule from.
+     * @throws NullPointerException if {@code ruleProperties} is null.
+     */
     public CreateRuleOptions(RuleProperties ruleProperties) {
+        Objects.requireNonNull(ruleProperties, "'ruleProperties' cannot be null.");
+
         this.filter = ruleProperties.getFilter();
-        this.name = ruleProperties.getName();
         this.action = ruleProperties.getAction();
     }
 
+    /**
+     * Gets the action to perform if the message satisfies the filtering expression.
+     *
+     * @return The action to perform if the message satisfies the filtering expression.
+     */
     public RuleAction getAction() {
         return action;
     }
 
+    /**
+     * Sets the action to perform if the message satisfies the filtering expression.
+     *
+     * @param action The action to perform if the message satisfies the filtering expression.
+     */
     public void setAction(RuleAction action) {
         this.action = action;
     }
@@ -77,14 +79,5 @@ public class CreateRuleOptions {
      */
     public void setFilter(RuleFilter filter) {
         this.filter = Objects.requireNonNull(filter, "'filter' cannot be null.");
-    }
-
-    /**
-     * Gets the name of the rule.
-     *
-     * @return The name of the rule.
-     */
-    public String getName() {
-        return name;
     }
 }
