@@ -1280,7 +1280,7 @@ public class AzureTests extends TestBase {
     //    }
 
     @Test
-    //@Disabled("Util to generate missing regions")
+    @Disabled("Util to generate missing regions")
     public void generateMissingRegion() {
         // Please double check generated code and make adjustment e.g. GERMANY_WEST_CENTRAL -> GERMANY_WESTCENTRAL
 
