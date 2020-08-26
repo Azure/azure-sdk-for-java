@@ -3,7 +3,10 @@
 
 package com.azure.storage.blob.changefeed;
 
+import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.UserAgentUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.paging.ContinuablePage;
 import com.azure.core.util.paging.ContinuablePagedFlux;
@@ -31,6 +34,8 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
 
     private static final Integer DEFAULT_PAGE_SIZE = 5000;
 
+    private Context context;
+
     /**
      * Creates an instance of {@link BlobChangefeedPagedFlux}.
      */
@@ -45,6 +50,14 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
     BlobChangefeedPagedFlux(ChangefeedFactory changefeedFactory, String cursor) {
         StorageImplUtils.assertNotNull("changefeedFactory", changefeedFactory);
         this.changefeed = changefeedFactory.getChangefeed(cursor);
+    }
+
+    /**
+     * Package-private method used only by "BlobChangeFeedPagedIterable" to set context
+     */
+    BlobChangefeedPagedFlux setSubscriberContext(Context context) {
+        this.context = context;
+        return this;
     }
 
     @Override
@@ -118,7 +131,8 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
                 return Mono.zip(e, c);
             })
             /* Construct the BlobChangefeedPagedResponse. */
-            .map(tuple2 -> new BlobChangefeedPagedResponse(tuple2.getT1(), tuple2.getT2()));
+            .map(tuple2 -> new BlobChangefeedPagedResponse(tuple2.getT1(), tuple2.getT2()))
+            .subscriberContext(FluxUtil.toReactorContext(this.context));
     }
 
     @Override
