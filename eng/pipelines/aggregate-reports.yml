@@ -53,6 +53,8 @@ jobs:
         pwsh: true
         workingDirectory: $(Agent.BuildDirectory)
         filePath: eng/scripts/Generate-Client-Aggregate-Pom.ps1
+        arguments: >
+          -ExcludeSpringParented $true
       condition: succeeded()
 
     - task: Maven@3

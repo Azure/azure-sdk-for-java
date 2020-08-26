@@ -14,7 +14,16 @@
 
 # azure-client-sdk-parent is the client track 2 parent, spring-boot-starter-parent is necessary because the
 # samples use it and they're part of the spring/ci.yml
-$ValidTrack2Parents = ("azure-client-sdk-parent", "spring-boot-starter-parent")
+param(
+  [Parameter(Mandatory=$false,HelpMessage="Specifies whether libraries using spring-boot-starter-parent will be excluded.")]
+  [System.Boolean]$ExcludeSpringParented
+)
+
+$ValidTrack2Parents = @("azure-client-sdk-parent", "spring-boot-starter-parent")
+
+if ($ExcludeSpringParented) {
+    $ValidTrack2Parents = $ValidTrack2Parents[0]
+}
 
 $RootPath = Resolve-Path ($PSScriptRoot + "/../../")
 $ClientAggregatePom = Join-Path $RootPath "ClientAggregatePom.xml"
