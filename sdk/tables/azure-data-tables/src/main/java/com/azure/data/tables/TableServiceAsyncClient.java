@@ -41,12 +41,14 @@ import static com.azure.core.util.FluxUtil.withContext;
 public class TableServiceAsyncClient {
     private final ClientLogger logger = new ClientLogger(TableServiceAsyncClient.class);
     private final AzureTableImpl implementation;
+    private final String accountName;
 
     TableServiceAsyncClient(HttpPipeline pipeline, String url, TablesServiceVersion serviceVersion,
         SerializerAdapter serializerAdapter) {
 
         try {
             final URI uri = URI.create(url);
+            this.accountName = uri.getHost().split("\\.", 2)[0];
             logger.verbose("Table Service URI: {}", uri);
         } catch (IllegalArgumentException ex) {
             throw logger.logExceptionAsError(ex);
@@ -58,6 +60,33 @@ public class TableServiceAsyncClient {
             .pipeline(pipeline)
             .version(serviceVersion.getVersion())
             .buildClient();
+    }
+
+    /**
+     * returns the account for this service
+     *
+     * @return returns the account name
+     */
+    public String getAccountName() {
+        return accountName;
+    }
+
+    /**
+     * returns Url of this service
+     *
+     * @return Url
+     */
+    public String getServiceUrl() {
+        return implementation.getUrl();
+    }
+
+    /**
+     * returns the version
+     *
+     * @return the version
+     */
+    public TablesServiceVersion getApiVersion() {
+        return TablesServiceVersion.valueOf(implementation.getVersion());
     }
 
     /**
