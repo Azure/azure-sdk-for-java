@@ -80,7 +80,8 @@ public final class EventHubsManager extends Manager<EventHubsManager, EventHubMa
      * @param sdkContext the sdk context
      * @return the EventHubsManager
      */
-    public static EventHubsManager authenticate(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+    public static EventHubsManager authenticate(
+        HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
         return new EventHubsManager(httpPipeline, profile, sdkContext);
     }
 

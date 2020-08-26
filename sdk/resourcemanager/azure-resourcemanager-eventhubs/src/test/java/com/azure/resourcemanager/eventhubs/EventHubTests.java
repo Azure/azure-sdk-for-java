@@ -362,11 +362,6 @@ public class EventHubTests extends TestBase {
 
     @Test
     public void canConfigureEventHubDataCapturing() {
-        if (isPlaybackMode()) {
-            // contains data plane storage requests
-            return;
-        }
-
         rgName = generateRandomResourceName("javacsmrg", 15);
         final String stgName = generateRandomResourceName("stg", 14);
         final String namespaceName = generateRandomResourceName("ns", 14);
@@ -440,11 +435,6 @@ public class EventHubTests extends TestBase {
 
     @Test
     public void canEnableEventHubDataCaptureOnUpdate() {
-        if (isPlaybackMode()) {
-            // contains data plane storage requests
-            return;
-        }
-
         rgName = generateRandomResourceName("javacsmrg", 15);
         final String stgName = generateRandomResourceName("stg", 14);
         final String namespaceName = generateRandomResourceName("ns", 14);

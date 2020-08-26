@@ -18,9 +18,9 @@ import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.resourcemanager.storage.StorageManager;
+import com.azure.resourcemanager.storage.models.BlobContainer;
+import com.azure.resourcemanager.storage.models.PublicAccess;
 import com.azure.resourcemanager.storage.models.StorageAccount;
-import com.azure.storage.blob.BlobServiceAsyncClient;
-import com.azure.storage.blob.BlobServiceClientBuilder;
 import reactor.core.publisher.Mono;
 
 import java.util.Collections;
@@ -383,7 +383,7 @@ class EventHubImpl
                     StorageAccount storageAccount = (StorageAccount) indexable;
                     ensureSettings().destination().withStorageAccountResourceId(storageAccount.id());
                     return createContainerIfNotExistsAsync(storageAccount, containerName)
-                        .flatMap(aVoid -> context.voidMono());
+                        .flatMap(blobContainer -> context.voidMono());
                 }));
             return this;
         }
@@ -396,7 +396,7 @@ class EventHubImpl
             // Schedule task to create container if not exists.
             //
             addDependency(context -> createContainerIfNotExistsAsync(storageAccount, containerName)
-                .flatMap(aVoid -> context.voidMono()));
+                .flatMap(blobContainer -> context.voidMono()));
             return this;
         }
 
@@ -412,7 +412,7 @@ class EventHubImpl
                 .flatMap(storageAccount -> {
                     ensureSettings().destination().withStorageAccountResourceId(storageAccount.id());
                     return createContainerIfNotExistsAsync(storageAccount, containerName)
-                        .flatMap(aVoid -> context.voidMono());
+                        .flatMap(blobContainer -> context.voidMono());
                 }));
             return this;
         }
@@ -480,32 +480,17 @@ class EventHubImpl
             }
         }
 
-        private Mono<Void> createContainerIfNotExistsAsync(final StorageAccount storageAccount,
+        private Mono<BlobContainer> createContainerIfNotExistsAsync(final StorageAccount storageAccount,
                                                                     final String containerName) {
-            return getBlobClientAsync(storageAccount)
-                .flatMap(blobServiceAsyncClient -> blobServiceAsyncClient
-                    .getBlobContainerAsyncClient(containerName)
-                    .exists()
-                    .flatMap(aBoolean -> {
-                        if (aBoolean) {
-                            return Mono.empty();
-                        }
-                        return blobServiceAsyncClient.getBlobContainerAsyncClient(containerName).create();
-                    }));
-        }
-
-        private Mono<BlobServiceAsyncClient> getBlobClientAsync(final StorageAccount storageAccount) {
-            return storageAccount.getKeysAsync()
-                .flatMapIterable(storageAccountKeys -> storageAccountKeys)
-                .last()
-                .map(storageAccountKey -> {
-                    BlobServiceAsyncClient blobServiceAsyncClient = new BlobServiceClientBuilder()
-                        .connectionString(Utils.getStorageConnectionString(
-                            storageAccount.name(), storageAccountKey.value(), manager().environment()))
-                        .httpClient(manager().httpPipeline().getHttpClient())
-                        .buildAsyncClient();
-                    return blobServiceAsyncClient;
-                });
+            return storageManager.blobContainers()
+                .getAsync(storageAccount.resourceGroupName(), storageAccount.name(), containerName)
+                .onErrorResume(throwable -> storageManager.blobContainers()
+                    .defineContainer(containerName)
+                    .withExistingBlobService(storageAccount.resourceGroupName(), storageAccount.name())
+                    .withPublicAccess(PublicAccess.CONTAINER)
+                    .createAsync()
+                    .last()
+                    .map(indexable -> (BlobContainer) indexable));
         }
 
         private CaptureDescription cloneCurrentSettings() {
