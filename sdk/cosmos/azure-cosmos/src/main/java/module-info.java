@@ -32,7 +32,7 @@ module com.azure.cosmos {
     exports com.azure.cosmos.util;
 
     // exporting some packages specifically for Jackson
-    opens com.azure.cosmos to com.fasterxml.jackson.databind;
+    opens com.azure.cosmos to com.fasterxml.jackson.databind, org.apache.commons.lang3;
     opens com.azure.cosmos.implementation to com.fasterxml.jackson.databind, java.logging;
     opens com.azure.cosmos.implementation.caches to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.changefeed to com.fasterxml.jackson.databind;
