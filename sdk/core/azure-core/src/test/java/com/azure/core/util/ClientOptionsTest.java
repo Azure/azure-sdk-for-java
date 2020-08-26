@@ -19,6 +19,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  */
 public class ClientOptionsTest {
 
+    @Test
+    public void testNullHeaders() {
+        // Arrange, Act & Assert
+        assertThrows(NullPointerException.class, () -> new ClientOptions().setHeaders(null));
+    }
+
     @ParameterizedTest
     @MethodSource("invalidApplicationId")
     public void testMaxApplicationId(String applicationId) {
@@ -46,21 +52,5 @@ public class ClientOptionsTest {
             Arguments.arguments("AppId-0123456789012345678912345"),
             Arguments.arguments("AppId 78912345")
         );
-    }
-
-    @Test
-    public void testAddHeader() {
-        // Arrange
-        String expected = "key:a,b";
-        String name = "key";
-        String value1 = "a";
-        String value2 = "b";
-
-        // Act & Assert
-        ClientOptions clientOptions = new ClientOptions();
-        clientOptions.addHeader(name, value1);
-        clientOptions.addHeader(name, value2);
-
-        assertEquals(expected, clientOptions.getHeader(name).toString());
     }
 }
