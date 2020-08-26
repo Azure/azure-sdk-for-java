@@ -12,9 +12,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImpl;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImplBuilder;
-import com.azure.digitaltwins.core.implementation.models.DigitalTwinsAddHeaders;
-import com.azure.digitaltwins.core.implementation.models.DigitalTwinsAddResponse;
-import com.azure.digitaltwins.core.implementation.serialization.BasicDigitalTwin;
+import com.azure.digitaltwins.core.implementation.serialization.DigitalTwinsResponse;
+import com.azure.digitaltwins.core.implementation.serialization.DigitalTwinsResponseHeaders;
 import com.azure.digitaltwins.core.implementation.serializer.DigitalTwinsStringSerializer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -83,11 +82,10 @@ public final class DigitalTwinsAsyncClient {
         return this.protocolLayer.getHttpPipeline();
     }
 
+    // TODO: This is a temporary implementation for sample purposes. This should be spruced up/replaced once this API is actually designed.
     // Input is String and output is Response<String>.
-    // String etag = result.getHeaders().get("etag").getValue();
-    // String jsonData = result.getValue();
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<String>> createDigitalTwinWithResponseString(String digitalTwinId, String digitalTwin) {
+    public Mono<DigitalTwinsResponse<String>> createDigitalTwinWithResponse(String digitalTwinId, String digitalTwin) {
         return protocolLayer
             .getDigitalTwins()
             .addWithResponseAsync(digitalTwinId, digitalTwin)
@@ -95,85 +93,26 @@ public final class DigitalTwinsAsyncClient {
                 response -> {
                     try {
                         String jsonResponse = mapper.writeValueAsString(response.getValue());
-                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), jsonResponse));
+                        DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
+                        return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), jsonResponse, twinHeaders));
                     } catch (JsonProcessingException e) {
                         return Mono.error(e);
                     }
                 });
     }
 
-    // Input is String and output is Response<String> -> ResponseBase<DigitalTwinsAddHeaders, String>.
-    // String etag = result.getDeserializedHeaders().getETag();
-    // String jsonData = result.getValue();
+    // TODO: This is a temporary implementation for sample purposes. This should be spruced up/replaced once this API is actually designed.
+    // Input is Object and output is Response<T>.
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DigitalTwinsAddHeaders, String>> createDigitalTwinWithResponseBaseString(String digitalTwinId, String digitalTwin) {
-        return protocolLayer
-            .getDigitalTwins()
-            .addWithResponseAsync(digitalTwinId, digitalTwin)
-            .flatMap(
-                response -> {
-                    try {
-                        String jsonResponse = mapper.writeValueAsString(response.getValue());
-                        return Mono.just(new ResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), jsonResponse, response.getDeserializedHeaders()));
-                    } catch (JsonProcessingException e) {
-                        return Mono.error(e);
-                    }
-                });
-    }
-
-    // Input is String and output is Response<String> -> DigitalTwinsAddResponse (json string).
-    // String etag = result.getDeserializedHeaders().getETag();
-    // String jsonData = result.getValue().toString();
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DigitalTwinsAddResponse> createDigitalTwinWithDigitalTwinAddResponseString(String digitalTwinId, String digitalTwin) {
-        return protocolLayer
-            .getDigitalTwins()
-            .addWithResponseAsync(digitalTwinId, digitalTwin)
-            .flatMap(
-                response -> {
-                    try {
-                        String jsonResponse = mapper.writeValueAsString(response.getValue());
-                        DigitalTwinsAddResponse addResponse = new DigitalTwinsAddResponse(response.getRequest(), response.getStatusCode(), response.getHeaders(), jsonResponse, response.getDeserializedHeaders());
-                        return Mono.just(addResponse);
-                    } catch (JsonProcessingException e) {
-                        return Mono.error(e);
-                    }
-                });
-    }
-
-    // Input is Object and output is Response<Object> -> DigitalTwinsAddResponse.
-    // String etag = result.getDeserializedHeaders().getETag();
-    // Object jsonData = result.getValue(); [This Object can be cast to a LinkedHashMap].
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DigitalTwinsAddResponse> createDigitalTwinWithDigitalTwinsAddResponseObject(String digitalTwinId, Object digitalTwin) {
-        return protocolLayer
-            .getDigitalTwins()
-            .addWithResponseAsync(digitalTwinId, digitalTwin);
-    }
-
-    // Input is Object and output is Response<BasicDigitalTwin>.
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BasicDigitalTwin>> createDigitalTwinWithResponseBasicDigitalTwin(String digitalTwinId, Object digitalTwin) {
-        return protocolLayer
-            .getDigitalTwins()
-            .addWithResponseAsync(digitalTwinId, digitalTwin)
-            .flatMap(
-                response -> {
-                    BasicDigitalTwin genericResponse = mapper.convertValue(response.getValue(), BasicDigitalTwin.class);
-                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), genericResponse));
-                });
-    }
-
-    // Input is T and output is Response<T>.
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<Response<T>> createDigitalTwinWithResponseGeneric(String digitalTwinId, T digitalTwin, Class<T> klazz) {
+    public <T> Mono<DigitalTwinsResponse<T>> createDigitalTwinWithResponse(String digitalTwinId, Object digitalTwin, Class<T> klazz) {
         return protocolLayer
             .getDigitalTwins()
             .addWithResponseAsync(digitalTwinId, digitalTwin)
             .flatMap(
                 response -> {
                     T genericResponse = mapper.convertValue(response.getValue(), klazz);
-                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), genericResponse));
+                    DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
+                    return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), genericResponse, twinHeaders));
                 });
     }
 
