@@ -221,12 +221,4 @@ public class DigitalTwinsAsyncClient {
             nextLink -> protocolLayer.getDigitalTwins().listRelationshipsNextSinglePageAsync(nextLink));
     }
 
-    private static boolean isValidJson(String jsonInString ) {
-        try {
-            mapper.readTree(jsonInString);
-            return true;
-        } catch (IOException e) {
-            return false;
-        }
-    }
 }
