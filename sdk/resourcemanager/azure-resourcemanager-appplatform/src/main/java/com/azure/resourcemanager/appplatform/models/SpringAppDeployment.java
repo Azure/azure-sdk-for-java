@@ -78,14 +78,16 @@ public interface SpringAppDeployment
 
     /**
      * Container interface for all the definitions that need to be implemented.
+     * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      * @param <T> The return type of final stage,
      *            usually {@link DefinitionStages.WithCreate} or {@link DefinitionStages.WithAttach}
      */
-    interface Definition<T>
+    interface Definition<ParentT, T>
         extends DefinitionStages.Blank<T>,
             DefinitionStages.WithSource<T>,
             DefinitionStages.WithModule<T>,
-            DefinitionStages.Final<T> { }
+            DefinitionStages.WithCreate<T>,
+            DefinitionStages.WithAttach<ParentT, T> { }
 
     /** Grouping of all the deployment definition stages. */
     interface DefinitionStages {

@@ -30,9 +30,9 @@ import java.util.List;
 
 public class SpringAppDeploymentImpl
     extends ExternalChildResourceImpl<SpringAppDeployment, DeploymentResourceInner, SpringAppImpl, SpringApp>
-    implements SpringAppDeployment, SpringAppDeployment.Definition<SpringAppDeploymentImpl>, SpringAppDeployment.Update,
-        SpringAppDeployment.DefinitionStages.WithCreate<SpringAppDeploymentImpl>,
-        SpringAppDeployment.DefinitionStages.WithAttach<SpringAppImpl, SpringAppDeploymentImpl> {
+    implements SpringAppDeployment,
+        SpringAppDeployment.Definition<SpringAppImpl, SpringAppDeploymentImpl>,
+        SpringAppDeployment.Update {
 
     SpringAppDeploymentImpl(String name, SpringAppImpl parent, DeploymentResourceInner innerObject) {
         super(name, parent, innerObject);

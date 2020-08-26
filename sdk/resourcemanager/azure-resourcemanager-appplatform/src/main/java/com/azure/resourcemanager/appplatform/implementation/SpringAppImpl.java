@@ -306,7 +306,7 @@ public class SpringAppImpl
     public <T extends
         SpringAppDeployment.DefinitionStages.WithAttach<? extends SpringApp.DefinitionStages.WithCreate, T>>
         SpringAppDeployment.DefinitionStages.Blank<T> defineActiveDeployment(String name) {
-        return (SpringAppDeployment.Definition<T>) deployments.define(name);
+        return (SpringAppDeployment.DefinitionStages.Blank<T>) deployments.define(name);
     }
 
     SpringAppImpl addActiveDeployment(SpringAppDeploymentImpl deployment) {
