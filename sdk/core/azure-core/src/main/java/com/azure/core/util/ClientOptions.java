@@ -152,11 +152,10 @@ public final class ClientOptions {
     }
 
     /**
-     * Gets a {@link Map} representation of the {@link Header} collection. The keys are {@link Header#getName()} in the
-     * given {@link Header}.
-     * @return the headers as map
+     * Gets a {@link Iterable} representation of the {@link Header}.
+     * @return the headers.
      */
-    public Collection<Header> getHeaders() {
+    public Iterable<Header> getHeaders() {
         return headers.values();
     }
 
