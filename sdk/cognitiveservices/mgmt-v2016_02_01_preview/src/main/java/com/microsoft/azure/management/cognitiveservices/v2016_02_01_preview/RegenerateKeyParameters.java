@@ -22,7 +22,7 @@ public class RegenerateKeyParameters {
     private KeyName keyName;
 
     /**
-     * Get the keyName value.
+     * Get key name to generate (Key1|Key2). Possible values include: 'Key1', 'Key2'.
      *
      * @return the keyName value
      */
@@ -31,7 +31,7 @@ public class RegenerateKeyParameters {
     }
 
     /**
-     * Set the keyName value.
+     * Set key name to generate (Key1|Key2). Possible values include: 'Key1', 'Key2'.
      *
      * @param keyName the keyName value to set
      * @return the RegenerateKeyParameters object itself.
