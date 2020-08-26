@@ -28,11 +28,23 @@ public class MySQLManagementClientImpl extends AzureServiceClient {
         return this.azureClient;
     }
 
-    /** The subscription ID that identifies an Azure subscription. */
+    /** The API version to use for this operation. */
+    private String apiVersion;
+
+    /**
+     * Gets The API version to use for this operation.
+     *
+     * @return the apiVersion value.
+     */
+    public String apiVersion() {
+        return this.apiVersion;
+    }
+
+    /** The ID of the target subscription. */
     private String subscriptionId;
 
     /**
-     * Gets The subscription ID that identifies an Azure subscription.
+     * Gets The ID of the target subscription.
      *
      * @return the subscriptionId value.
      */
@@ -41,7 +53,7 @@ public class MySQLManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets The subscription ID that identifies an Azure subscription.
+     * Sets The ID of the target subscription.
      *
      * @param subscriptionId the subscriptionId value.
      * @return the service client itself
@@ -49,18 +61,6 @@ public class MySQLManagementClientImpl extends AzureServiceClient {
     public MySQLManagementClientImpl withSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
-    }
-
-    /** The API version to use for the request. */
-    private String apiVersion;
-
-    /**
-     * Gets The API version to use for the request.
-     *
-     * @return the apiVersion value.
-     */
-    public String apiVersion() {
-        return this.apiVersion;
     }
 
     /** The preferred language for the response. */
@@ -224,6 +224,19 @@ public class MySQLManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The ServerAdministratorsInner object to access its operations.
+     */
+    private ServerAdministratorsInner serverAdministrators;
+
+    /**
+     * Gets the ServerAdministratorsInner object to access its operations.
+     * @return the ServerAdministratorsInner object.
+     */
+    public ServerAdministratorsInner serverAdministrators() {
+        return this.serverAdministrators;
+    }
+
+    /**
      * The LocationBasedPerformanceTiersInner object to access its operations.
      */
     private LocationBasedPerformanceTiersInner locationBasedPerformanceTiers;
@@ -250,19 +263,6 @@ public class MySQLManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The ServerSecurityAlertPoliciesInner object to access its operations.
-     */
-    private ServerSecurityAlertPoliciesInner serverSecurityAlertPolicies;
-
-    /**
-     * Gets the ServerSecurityAlertPoliciesInner object to access its operations.
-     * @return the ServerSecurityAlertPoliciesInner object.
-     */
-    public ServerSecurityAlertPoliciesInner serverSecurityAlertPolicies() {
-        return this.serverSecurityAlertPolicies;
-    }
-
-    /**
      * The OperationsInner object to access its operations.
      */
     private OperationsInner operations;
@@ -273,6 +273,19 @@ public class MySQLManagementClientImpl extends AzureServiceClient {
      */
     public OperationsInner operations() {
         return this.operations;
+    }
+
+    /**
+     * The ServerSecurityAlertPoliciesInner object to access its operations.
+     */
+    private ServerSecurityAlertPoliciesInner serverSecurityAlertPolicies;
+
+    /**
+     * Gets the ServerSecurityAlertPoliciesInner object to access its operations.
+     * @return the ServerSecurityAlertPoliciesInner object.
+     */
+    public ServerSecurityAlertPoliciesInner serverSecurityAlertPolicies() {
+        return this.serverSecurityAlertPolicies;
     }
 
     /**
@@ -317,10 +330,11 @@ public class MySQLManagementClientImpl extends AzureServiceClient {
         this.databases = new DatabasesInner(restClient().retrofit(), this);
         this.configurations = new ConfigurationsInner(restClient().retrofit(), this);
         this.logFiles = new LogFilesInner(restClient().retrofit(), this);
+        this.serverAdministrators = new ServerAdministratorsInner(restClient().retrofit(), this);
         this.locationBasedPerformanceTiers = new LocationBasedPerformanceTiersInner(restClient().retrofit(), this);
         this.checkNameAvailabilitys = new CheckNameAvailabilitysInner(restClient().retrofit(), this);
-        this.serverSecurityAlertPolicies = new ServerSecurityAlertPoliciesInner(restClient().retrofit(), this);
         this.operations = new OperationsInner(restClient().retrofit(), this);
+        this.serverSecurityAlertPolicies = new ServerSecurityAlertPoliciesInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 
