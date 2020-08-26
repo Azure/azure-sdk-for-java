@@ -77,7 +77,7 @@ public class CoreUtilsTests {
     }
 
     @ParameterizedTest
-    @MethodSource("validApplicationId")
+    @MethodSource
     public void testValidApplicationId(String logOptionsId, String clientOptionsId, String expected) {
         HttpLogOptions logOptions = new HttpLogOptions().setApplicationId(logOptionsId);
         ClientOptions clientOptions = new ClientOptions();
@@ -106,7 +106,7 @@ public class CoreUtilsTests {
         );
     }
 
-    private static Stream<Arguments> validApplicationId() {
+    private static Stream<Arguments> testValidApplicationId() {
         return Stream.of(
             //                 logOptions, clientOptions, expected
             Arguments.arguments("a", "b", "b"),
