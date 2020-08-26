@@ -119,6 +119,8 @@ public final class SchemaRegistryAsyncClient {
     }
 
     /**
+     * Registers schema in registry service.  If the schema already exists, the existing schema ID is returned.
+     * Otherwise, the schema is registered with a new schema ID.
      *
      * @param schemaGroup group under which schema is registered
      * @param schemaName schema name
@@ -169,9 +171,10 @@ public final class SchemaRegistryAsyncClient {
     }
 
     /**
+     * Retrieve schema from registry by ID.
      *
-     * @param schemaId
-     * @return
+     * @param schemaId schema ID
+     * @return SchemaRegistryObject containing schema and associated metadata
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SchemaRegistryObject> getSchema(String schemaId) {
@@ -185,7 +188,7 @@ public final class SchemaRegistryAsyncClient {
     /**
      * Get schema by schema ID
      * @param schemaId schema ID
-     * @return Response containing SchemaRegistryObject
+     * @return Response with SchemaRegistryObject containing schema and associated metadata
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SchemaRegistryObject>> getSchemaWithResponse(String schemaId) {
