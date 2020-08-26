@@ -101,8 +101,7 @@ public class GlobalAddressResolver implements AddressResolverExtension {
     @Override
     public Mono<Void> updateAsync(final List<RntbdAddressCacheToken> tokens) {
 
-        final CompletableFuture<?>[] updates = new CompletableFuture<?>[tokens.size()];
-        int i = 0;
+        final List<CompletableFuture<?>> updates = new ArrayList<>(tokens.size());
 
         for (RntbdAddressCacheToken token : tokens) {
 
@@ -113,12 +112,12 @@ public class GlobalAddressResolver implements AddressResolverExtension {
             if (partitionKeyRangeIdentity != null) {
                 EndpointCache endpointCache = this.addressCacheByEndpoint.get(token.getAddressResolverURI());
                 if (endpointCache != null) {
-                    updates[i++] = endpointCache.addressCache.updateAsync(partitionKeyRangeIdentity).toFuture();
+                    updates.add(endpointCache.addressCache.updateAsync(partitionKeyRangeIdentity).toFuture());
                 }
             }
         }
 
-        return Mono.fromFuture(CompletableFuture.allOf(updates));
+        return Mono.fromFuture(CompletableFuture.allOf((CompletableFuture<?>[]) updates.toArray()));
     }
 
     Mono<Void> openAsync(DocumentCollection collection) {
