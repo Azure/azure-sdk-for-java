@@ -4,6 +4,7 @@
 package com.azure.core.util;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Locale;
 import java.util.Map;
@@ -17,7 +18,10 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Fluent
 public final class ClientOptions {
+    private final ClientLogger logger = new ClientLogger(ClientOptions.class);
     private final Map<String, Header> headers = new ConcurrentHashMap<>();
+
+    private static final int MAX_APPLICATION_ID_LENGTH = 24;
     private String applicationId;
 
     /**
@@ -37,7 +41,18 @@ public final class ClientOptions {
      *
      */
     public ClientOptions setApplicationId(String applicationId) {
-        this.applicationId = applicationId;
+        if (!CoreUtils.isNullOrEmpty(applicationId)) {
+            if (applicationId.length() > MAX_APPLICATION_ID_LENGTH) {
+                throw logger
+                    .logExceptionAsError(new IllegalArgumentException("'applicationId' length cannot be greater than "
+                        + MAX_APPLICATION_ID_LENGTH));
+            } else if (applicationId.contains(" ")) {
+                throw logger
+                    .logExceptionAsError(new IllegalArgumentException("'applicationId' must not contain a space."));
+            } else {
+                this.applicationId = applicationId;
+            }
+        }
         return this;
     }
 
@@ -135,6 +150,16 @@ public final class ClientOptions {
     public String[] getValues(String name) {
         final Header header = get(name);
         return header == null ? null : header.getValues();
+    }
+
+    /**
+     * Gets a {@link Map} representation of the {@link Header} collection. The keys are {@link Header#getName()} in the
+     * given {@link Header}.
+     *
+     * @return the headers as map
+     */
+    public Map<String, Header> toMap() {
+        return headers;
     }
 
     private String formatKey(final String key) {
