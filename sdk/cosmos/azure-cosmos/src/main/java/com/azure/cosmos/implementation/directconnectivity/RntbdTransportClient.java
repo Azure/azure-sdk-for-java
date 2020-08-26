@@ -47,6 +47,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssue;
+import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssueUnless;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
@@ -278,7 +279,15 @@ public final class RntbdTransportClient extends TransportClient {
 
                     if (exception.getSubStatusCode() == 0) {
 
-                        logger.warn("dropping connection to {} because the service is being reconfigured",
+                        if (cause != null) {
+                            reportIssue(logger, endpoint,
+                                "expected a null cause for GoneException with sub-status code zero, not a {}: ",
+                                cause.getClass().getSimpleName(),
+                                exception);
+                        }
+
+                        logger.warn(
+                            "dropping connection to {} because the service is being discontinued or reconfigured",
                             endpoint.remoteURI());
 
                         this.connectionStateListener.onConnectionEvent(
