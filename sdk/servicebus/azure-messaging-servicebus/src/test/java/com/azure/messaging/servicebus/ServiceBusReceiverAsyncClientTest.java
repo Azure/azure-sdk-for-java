@@ -12,6 +12,7 @@ import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
 import com.azure.messaging.servicebus.administration.models.DeadLetterOptions;
@@ -79,7 +80,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class ServiceBusReceiverAsyncClientTest {
-    private static final String APPLICATION_ID = "ID";
+    private static final ClientOptions CLIENT_OPTIONS = new ClientOptions();
     private static final String PAYLOAD = "hello";
     private static final byte[] PAYLOAD_BYTES = PAYLOAD.getBytes(UTF_8);
     private static final int PREFETCH = 5;
@@ -150,7 +151,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         ConnectionOptions connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, new AmqpRetryOptions(),
-            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.boundedElastic(), APPLICATION_ID);
+            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.boundedElastic(), CLIENT_OPTIONS);
 
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
         endpointSink.next(AmqpEndpointState.ACTIVE);

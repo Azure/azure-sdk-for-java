@@ -358,9 +358,8 @@ public final class ServiceBusClientBuilder {
             ? CbsAuthorizationType.SHARED_ACCESS_SIGNATURE
             : CbsAuthorizationType.JSON_WEB_TOKEN;
 
-        final String applicationId = clientOptions != null ? clientOptions.getApplicationId() : null;
         return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType, transport, retryOptions,
-            proxyOptions, scheduler, applicationId);
+            proxyOptions, scheduler, clientOptions);
     }
 
     private ProxyOptions getDefaultProxyConfiguration(Configuration configuration) {

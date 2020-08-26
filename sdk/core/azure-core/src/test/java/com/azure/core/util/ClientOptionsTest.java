@@ -61,6 +61,6 @@ public class ClientOptionsTest {
         clientOptions.addHeader(name, value1);
         clientOptions.addHeader(name, value2);
 
-        assertEquals(expected, clientOptions.get(name).toString());
+        assertEquals(expected, clientOptions.getHeader(name).toString());
     }
 }

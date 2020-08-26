@@ -3,6 +3,7 @@
 
 package com.azure.core.amqp.implementation.handler;
 
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.microsoft.azure.proton.transport.ws.impl.WebSocketImpl;
 import org.apache.qpid.proton.engine.Event;
@@ -29,11 +30,11 @@ public class WebSocketsConnectionHandler extends ConnectionHandler {
      * @param hostname Hostname to use for socket creation.
      * @param product The name of the product this connection handler is created for.
      * @param clientVersion The version of the client library creating the connection handler.
-     * @param applicationId applicationId to be used in user agent while making connection.
+     * @param clientOptions provided by the user.
      */
     public WebSocketsConnectionHandler(final String connectionId, final String hostname, final String product,
-        final String clientVersion, final String applicationId) {
-        super(connectionId, hostname, product, clientVersion, applicationId);
+        final String clientVersion, final ClientOptions clientOptions) {
+        super(connectionId, hostname, product, clientVersion, clientOptions);
     }
 
     @Override

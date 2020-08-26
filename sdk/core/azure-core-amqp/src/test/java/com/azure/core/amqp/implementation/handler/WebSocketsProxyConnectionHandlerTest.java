@@ -5,6 +5,7 @@ package com.azure.core.amqp.implementation.handler;
 
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.util.ClientOptions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,7 +27,7 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 public class WebSocketsProxyConnectionHandlerTest {
-    private static final String APPLICATION_ID = "some-id";
+    private static final ClientOptions CLIENT_OPTIONS = new ClientOptions();
     private static final String CONNECTION_ID = "some-connection-id";
     private static final String HOSTNAME = "event-hubs.windows.core.net";
     private static final InetSocketAddress PROXY_ADDRESS = InetSocketAddress.createUnresolved("foo.proxy.com", 3138);
@@ -60,13 +61,13 @@ public class WebSocketsProxyConnectionHandlerTest {
     @Test
     public void nullProxyConfiguration() {
         assertThrows(NullPointerException.class, () -> new WebSocketsProxyConnectionHandler(CONNECTION_ID, HOSTNAME,
-            null, PRODUCT, CLIENT_VERSION, APPLICATION_ID));
+            null, PRODUCT, CLIENT_VERSION, CLIENT_OPTIONS));
     }
 
     @Test
     public void nullHostname() {
         assertThrows(NullPointerException.class, () -> new WebSocketsProxyConnectionHandler(CONNECTION_ID, null,
-            PROXY_CONFIGURATION, PRODUCT, CLIENT_VERSION, APPLICATION_ID));
+            PROXY_CONFIGURATION, PRODUCT, CLIENT_VERSION, CLIENT_OPTIONS));
     }
 
     /**
@@ -79,7 +80,7 @@ public class WebSocketsProxyConnectionHandlerTest {
             .thenReturn(Collections.singletonList(PROXY));
 
         final WebSocketsProxyConnectionHandler handler = new WebSocketsProxyConnectionHandler(CONNECTION_ID, HOSTNAME,
-            PROXY_CONFIGURATION, PRODUCT, CLIENT_VERSION, APPLICATION_ID);
+            PROXY_CONFIGURATION, PRODUCT, CLIENT_VERSION, CLIENT_OPTIONS);
 
         // Act and Assert
         Assertions.assertEquals(PROXY_ADDRESS.getHostName(), handler.getHostname());
@@ -96,7 +97,7 @@ public class WebSocketsProxyConnectionHandlerTest {
             .thenReturn(Collections.singletonList(PROXY));
 
         final WebSocketsProxyConnectionHandler handler = new WebSocketsProxyConnectionHandler(CONNECTION_ID, HOSTNAME,
-            ProxyOptions.SYSTEM_DEFAULTS, PRODUCT, CLIENT_VERSION, APPLICATION_ID);
+            ProxyOptions.SYSTEM_DEFAULTS, PRODUCT, CLIENT_VERSION, CLIENT_OPTIONS);
 
         // Act and Assert
         Assertions.assertEquals(PROXY_ADDRESS.getHostName(), handler.getHostname());
@@ -120,7 +121,7 @@ public class WebSocketsProxyConnectionHandlerTest {
         when(proxySelector.select(any())).thenReturn(Collections.singletonList(PROXY));
 
         final WebSocketsProxyConnectionHandler handler = new WebSocketsProxyConnectionHandler(CONNECTION_ID, host,
-            configuration, PRODUCT, CLIENT_VERSION, APPLICATION_ID);
+            configuration, PRODUCT, CLIENT_VERSION, CLIENT_OPTIONS);
 
         // Act and Assert
         Assertions.assertEquals(address.getHostName(), handler.getHostname());

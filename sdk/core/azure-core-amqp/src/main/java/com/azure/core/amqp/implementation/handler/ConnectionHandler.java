@@ -6,6 +6,7 @@ package com.azure.core.amqp.implementation.handler;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.implementation.ClientConstants;
 import com.azure.core.amqp.implementation.ExceptionUtil;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.UserAgentUtil;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
@@ -46,10 +47,10 @@ public class ConnectionHandler extends Handler {
      * @param hostname Hostname of the AMQP message broker to create a connection to.
      * @param product The name of the product this connection handler is created for.
      * @param clientVersion The version of the client library creating the connection handler.
-     * @param applicationId applicationId to be used in user agent while making connection.
+     * @param clientOptions provided by user.
      */
     public ConnectionHandler(final String connectionId, final String hostname,
-        String product, String clientVersion, final String applicationId) {
+        String product, String clientVersion, final ClientOptions clientOptions) {
         super(connectionId, hostname);
 
         add(new Handshaker());
@@ -60,6 +61,7 @@ public class ConnectionHandler extends Handler {
         this.connectionProperties.put(PLATFORM.toString(), ClientConstants.PLATFORM_INFO);
         this.connectionProperties.put(FRAMEWORK.toString(), ClientConstants.FRAMEWORK_INFO);
 
+        final String applicationId = clientOptions != null ? clientOptions.getApplicationId() : null;
         String userAgent = UserAgentUtil.toUserAgentString(applicationId, product, clientVersion, null);
         this.connectionProperties.put(USER_AGENT.toString(), userAgent);
     }
