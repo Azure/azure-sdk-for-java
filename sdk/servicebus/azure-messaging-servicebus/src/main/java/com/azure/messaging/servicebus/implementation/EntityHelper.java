@@ -259,6 +259,10 @@ public final class EntityHelper {
         subscriptionAccessor.setSubscriptionName(subscription, subscriptionName);
     }
 
+    public static void setRuleAccessor(RuleAccessor accessor) {
+
+    }
+
     /**
      * Sets the queue accessor.
      *
@@ -332,6 +336,9 @@ public final class EntityHelper {
          * @param name Name of the queue.
          */
         void setName(QueueProperties queueProperties, String name);
+    }
+
+    public interface  RuleAccessor {
     }
 
     /**
