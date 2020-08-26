@@ -50,6 +50,7 @@ import com.azure.resourcemanager.resources.models.Deployment;
 import com.azure.resourcemanager.resources.models.DeploymentMode;
 import com.azure.resourcemanager.resources.models.GenericResource;
 import com.azure.resourcemanager.resources.models.Location;
+import com.azure.resourcemanager.resources.models.RegionCategory;
 import com.azure.resourcemanager.resources.models.RegionType;
 import com.azure.resourcemanager.resources.models.Subscription;
 import com.azure.resourcemanager.storage.models.SkuName;
@@ -1279,7 +1280,7 @@ public class AzureTests extends TestBase {
     //    }
 
     @Test
-    @Disabled("Util to generate missing regions")
+    //@Disabled("Util to generate missing regions")
     public void generateMissingRegion() {
         // Please double check generated code and make adjustment e.g. GERMANY_WEST_CENTRAL -> GERMANY_WESTCENTRAL
 
@@ -1289,23 +1290,85 @@ public class AzureTests extends TestBase {
             azure
                 .getCurrentSubscription()
                 .listLocations(); // note the region is not complete since it depends on current subscription
+
+        List<Location> locationGroupByGeography = new ArrayList<>();
+        List<String> geographies = Arrays.asList(
+            "US", "Canada", "South America", "Europe", "Asia Pacific", "Middle East", "Africa");
+        for (String geography : geographies) {
+            for (Location location : locations) {
+                if (location.regionType() == RegionType.PHYSICAL) {
+                    if (geography.equals(location.inner().metadata().geographyGroup())) {
+                        locationGroupByGeography.add(location);
+                    }
+                }
+            }
+        }
         for (Location location : locations) {
+            if (location.regionType() == RegionType.PHYSICAL) {
+                if (!geographies.contains(location.inner().metadata().geographyGroup())) {
+                    locationGroupByGeography.add(location);
+                }
+            }
+        }
+
+        for (Location location : locationGroupByGeography) {
             if (location.regionType() == RegionType.PHYSICAL) {
                 Region region = Region.findByLabelOrName(location.name());
                 if (region == null) {
                     sb
-                        .append("\n")
-                        .append(
-                            MessageFormat
-                                .format(
-                                    "public static final Region {0} = new Region(\"{1}\", \"{2}\");",
-                                    location.displayName().toUpperCase().replace(" ", "_"),
-                                    location.name(),
-                                    location.displayName()));
+                        .append("\n").append("/**")
+                        .append("\n").append(MessageFormat.format(
+                            " * {0} ({1})",
+                            location.displayName(),
+                            location.inner().metadata().geographyGroup()))
+                        .append(location.inner().metadata().regionCategory() == RegionCategory.RECOMMENDED
+                            ? " (recommended)" : "")
+                        .append("\n").append(" */")
+                        .append("\n").append(MessageFormat.format(
+                            "public static final Region {0} = new Region(\"{1}\", \"{2}\");",
+                            getLocationVariableName(location),
+                            location.name(),
+                            location.displayName()));
                 }
             }
         }
 
         Assertions.assertTrue(sb.length() == 0, sb.toString());
+    }
+
+    private static String getLocationVariableName(Location location) {
+        final String geographyGroup = location.inner().metadata().geographyGroup();
+        String displayName = location.displayName();
+        if ("US".equals(geographyGroup)) {
+            if (displayName.contains(" US")) {
+                displayName = displayName.replace(" US", "");
+                displayName = "US " + displayName;
+            }
+        } else if ("Europe".equals(geographyGroup)) {
+            if (displayName.contains(" Europe")) {
+                displayName = displayName.replace(" Europe", "");
+                displayName = "Europe " + displayName;
+            }
+        } else if ("Asia Pacific".equals(geographyGroup)) {
+            if (displayName.contains(" Asia")) {
+                displayName = displayName.replace(" Asia", "");
+                displayName = "Asia " + displayName;
+            } else if (displayName.contains(" India")) {
+                displayName = displayName.replace(" India", "");
+                displayName = "India " + displayName;
+            }
+
+        } else if ("Africa".equals(geographyGroup)) {
+            if (displayName.startsWith("South Africa")) {
+                displayName = displayName.replace("South Africa", "SouthAfrica");
+            }
+        }
+        if (displayName.length() > 2 && displayName.charAt(displayName.length() - 1) >= '0'
+            && displayName.charAt(displayName.length() - 1) <= '9'
+            && displayName.charAt(displayName.length() - 2) == ' ') {
+            displayName = displayName.replace(displayName.substring(displayName.length() - 2),
+                displayName.substring(displayName.length() - 1));
+        }
+        return displayName.toUpperCase().replace(" ", "_");
     }
 }
