@@ -6,6 +6,7 @@ and includes six main functions:
 - Language Detection
 - Key Phrase Extraction
 - Named Entity Recognition
+- Personally Identifiable Information Entity Recognition 
 - Linked Entity Recognition
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][samples_readme]
@@ -186,6 +187,7 @@ The following sections provide several code snippets covering some of the most c
 * [Detect Language](#detect-language "Detect language")
 * [Extract Key Phrases](#extract-key-phrases "Extract key phrases")
 * [Recognize Entities](#recognize-entities "Recognize entities")
+* [Recognize Personally Identifiable Information Entities](#recognize-personally-identifiable-information-entities "Recognize Personally Identifiable Information entities")
 * [Recognize Linked Entities](#recognize-linked-entities "Recognize linked entities")
 
 ### Text Analytics Client
@@ -209,7 +211,7 @@ TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
 
 ### Analyze sentiment
 Run a Text Analytics predictive model to identify the positive, negative, neutral or mixed sentiment contained in the 
-passed-in document or batch of documents.
+provided document or batch of documents.
 
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L104-L108 -->
 ```java
@@ -236,7 +238,7 @@ For samples on using the production recommended option `DetectLanguageBatch` see
 Please refer to the service documentation for a conceptual discussion of [language detection][language_detection].
 
 ### Extract key phrases
-Run a model to identify a collection of significant phrases found in the passed-in document or batch of documents.
+Run a model to identify a collection of significant phrases found in the provided document or batch of documents.
 
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L149-L151 -->
 ```java
@@ -248,7 +250,7 @@ For samples on using the production recommended option `ExtractKeyPhrasesBatch` 
 Please refer to the service documentation for a conceptual discussion of [key phrase extraction][key_phrase_extraction].
 
 ### Recognize entities
-Run a predictive model to identify a collection of named entities in the passed-in document or batch of documents and 
+Run a predictive model to identify a collection of named entities in the provided document or batch of documents and 
 categorize those entities into categories such as person, location, or organization.  For more information on available
 categories, see [Text Analytics Named Entity Categories][named_entities_categories].
 
@@ -262,8 +264,24 @@ textAnalyticsClient.recognizeEntities(document).forEach(entity ->
 For samples on using the production recommended option `RecognizeEntitiesBatch` see [here][recognize_entities_sample].
 Please refer to the service documentation for a conceptual discussion of [named entity recognition][named_entity_recognition].
 
+### Recognize Personally Identifiable Information entities
+Run a predictive model to identify a collection of Personally Identifiable Information(PII) entities in the provided 
+document. It recognizes and categorizes PII entities in its input text, such as
+Social Security Numbers, bank account information, credit card numbers, and more. This endpoint is only supported for
+API versions v3.1-preview.1 and above.
+
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L158-L161 -->
+```java
+String document = "My SSN is 859-98-0987";
+textAnalyticsClient.recognizePiiEntities(document).forEach(entity -> System.out.printf(
+    "Recognized Personally Identifiable Information entity: %s, entity category: %s, entity subcategory: %s,"
+        + " confidence score: %f.%n",
+```
+
+Please refer to the service documentation for [supported PII entity types][pii_entity_recognition].
+
 ### Recognize linked entities
-Run a predictive model to identify a collection of entities found in the passed-in document or batch of documents, 
+Run a predictive model to identify a collection of entities found in the provided document or batch of documents, 
 and include information linking the entities to their corresponding entries in a well-known knowledge base.
 
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L135-L142 -->
@@ -357,6 +375,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [named_entity_recognition]: https://docs.microsoft.com/azure/cognitive-services/text-analytics/how-tos/text-analytics-how-to-entity-linking
 [named_entity_recognition_types]: https://docs.microsoft.com/azure/cognitive-services/text-analytics/named-entity-types?tabs=personal
 [named_entities_categories]: https://docs.microsoft.com/azure/cognitive-services/Text-Analytics/named-entity-types
+[pii_entity_recognition]: https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/named-entity-types?tabs=personal
 [package]: https://mvnrepository.com/artifact/com.azure/azure-ai-textanalytics
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [product_documentation]: https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview

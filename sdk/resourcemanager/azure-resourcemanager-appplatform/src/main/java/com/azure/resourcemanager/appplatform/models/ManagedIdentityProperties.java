@@ -15,25 +15,25 @@ public final class ManagedIdentityProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedIdentityProperties.class);
 
     /*
-     * The type property.
+     * Type of the managed identity
      */
     @JsonProperty(value = "type")
     private ManagedIdentityType type;
 
     /*
-     * The principalId property.
+     * Principal Id
      */
     @JsonProperty(value = "principalId")
     private String principalId;
 
     /*
-     * The tenantId property.
+     * Tenant Id
      */
     @JsonProperty(value = "tenantId")
     private String tenantId;
 
     /**
-     * Get the type property: The type property.
+     * Get the type property: Type of the managed identity.
      *
      * @return the type value.
      */
@@ -42,7 +42,7 @@ public final class ManagedIdentityProperties {
     }
 
     /**
-     * Set the type property: The type property.
+     * Set the type property: Type of the managed identity.
      *
      * @param type the type value to set.
      * @return the ManagedIdentityProperties object itself.
@@ -53,7 +53,7 @@ public final class ManagedIdentityProperties {
     }
 
     /**
-     * Get the principalId property: The principalId property.
+     * Get the principalId property: Principal Id.
      *
      * @return the principalId value.
      */
@@ -62,7 +62,7 @@ public final class ManagedIdentityProperties {
     }
 
     /**
-     * Set the principalId property: The principalId property.
+     * Set the principalId property: Principal Id.
      *
      * @param principalId the principalId value to set.
      * @return the ManagedIdentityProperties object itself.
@@ -73,7 +73,7 @@ public final class ManagedIdentityProperties {
     }
 
     /**
-     * Get the tenantId property: The tenantId property.
+     * Get the tenantId property: Tenant Id.
      *
      * @return the tenantId value.
      */
@@ -82,7 +82,7 @@ public final class ManagedIdentityProperties {
     }
 
     /**
-     * Set the tenantId property: The tenantId property.
+     * Set the tenantId property: Tenant Id.
      *
      * @param tenantId the tenantId value to set.
      * @return the ManagedIdentityProperties object itself.

@@ -16,7 +16,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.nio.charset.StandardCharsets;
+import java.io.UnsupportedEncodingException;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
@@ -67,7 +67,8 @@ public class ClientLoggerTests {
     @ParameterizedTest
     @MethodSource("singleLevelCheckSupplier")
     @ResourceLock("SYSTEM_OUT")
-    public void logSimpleMessage(LogLevel logLevelToConfigure, LogLevel logLevelToUse, boolean logContainsMessage) {
+    public void logSimpleMessage(LogLevel logLevelToConfigure, LogLevel logLevelToUse, boolean logContainsMessage)
+        throws UnsupportedEncodingException {
         String logMessage = "This is a test";
 
         String originalLogLevel = setupLogLevel(logLevelToConfigure.getLogLevel());
@@ -75,14 +76,15 @@ public class ClientLoggerTests {
 
         setPropertyToOriginalOrClear(originalLogLevel);
 
-        String logValues = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
+        String logValues = logCaptureStream.toString("UTF-8");
         assertEquals(logContainsMessage, logValues.contains(logMessage));
     }
 
     @ParameterizedTest
     @MethodSource("singleLevelCheckSupplier")
     @ResourceLock("SYSTEM_OUT")
-    public void logFormattedMessage(LogLevel logLevelToConfigure, LogLevel logLevelToUse, boolean logContainsMessage) {
+    public void logFormattedMessage(LogLevel logLevelToConfigure, LogLevel logLevelToUse, boolean logContainsMessage)
+        throws UnsupportedEncodingException {
         String logMessage = "This is a test";
         String logFormat = "{} is a {}";
 
@@ -91,7 +93,7 @@ public class ClientLoggerTests {
 
         setPropertyToOriginalOrClear(originalLogLevel);
 
-        String logValues = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
+        String logValues = logCaptureStream.toString("UTF-8");
         assertEquals(logContainsMessage, logValues.contains(logMessage));
     }
 
@@ -103,7 +105,7 @@ public class ClientLoggerTests {
     @MethodSource("multiLevelCheckSupplier")
     @ResourceLock("SYSTEM_OUT")
     public void logException(LogLevel logLevelToConfigure, LogLevel logLevelToUse, boolean logContainsMessage,
-        boolean logContainsStackTrace) {
+        boolean logContainsStackTrace) throws UnsupportedEncodingException {
         String logMessage = "This is an exception";
         String exceptionMessage = "An exception message";
         RuntimeException runtimeException = createIllegalStateException(exceptionMessage);
@@ -112,7 +114,7 @@ public class ClientLoggerTests {
         logMessage(new ClientLogger(ClientLoggerTests.class), logLevelToUse, logMessage, runtimeException);
         setPropertyToOriginalOrClear(originalLogLevel);
 
-        String logValues = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
+        String logValues = logCaptureStream.toString("UTF-8");
         assertEquals(logContainsMessage, logValues.contains(logMessage + System.lineSeparator() + runtimeException.getMessage()));
         assertEquals(logContainsStackTrace, logValues.contains(runtimeException.getStackTrace()[0].toString()));
     }
@@ -125,7 +127,7 @@ public class ClientLoggerTests {
     @MethodSource("logExceptionAsWarningSupplier")
     @ResourceLock("SYSTEM_OUT")
     public void logExceptionAsWarning(LogLevel logLevelToConfigure, boolean logContainsMessage,
-        boolean logContainsStackTrace) {
+        boolean logContainsStackTrace) throws UnsupportedEncodingException {
         String exceptionMessage = "An exception message";
         IllegalStateException illegalStateException = createIllegalStateException(exceptionMessage);
 
@@ -137,7 +139,7 @@ public class ClientLoggerTests {
         }
         setPropertyToOriginalOrClear(originalLogLevel);
 
-        String logValues = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
+        String logValues = logCaptureStream.toString("UTF-8");
         assertEquals(logContainsMessage, logValues.contains(exceptionMessage + System.lineSeparator()));
         assertEquals(logContainsStackTrace, logValues.contains(illegalStateException.getStackTrace()[0].toString()));
     }
@@ -150,7 +152,7 @@ public class ClientLoggerTests {
     @MethodSource("logExceptionAsWarningSupplier")
     @ResourceLock("SYSTEM_OUT")
     public void logCheckedExceptionAsWarning(LogLevel logLevelToConfigure, boolean logContainsMessage,
-        boolean logContainsStackTrace) {
+        boolean logContainsStackTrace) throws UnsupportedEncodingException {
         String exceptionMessage = "An exception message";
         IOException ioException = createIOException(exceptionMessage);
 
@@ -162,7 +164,7 @@ public class ClientLoggerTests {
         }
         setPropertyToOriginalOrClear(originalLogLevel);
 
-        String logValues = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
+        String logValues = logCaptureStream.toString("UTF-8");
         assertEquals(logContainsMessage, logValues.contains(exceptionMessage + System.lineSeparator()));
         assertEquals(logContainsStackTrace, logValues.contains(ioException.getStackTrace()[0].toString()));
     }
@@ -175,7 +177,7 @@ public class ClientLoggerTests {
     @MethodSource("logExceptionAsErrorSupplier")
     @ResourceLock("SYSTEM_OUT")
     public void logExceptionAsError(LogLevel logLevelToConfigure, boolean logContainsMessage,
-        boolean logContainsStackTrace) {
+        boolean logContainsStackTrace) throws UnsupportedEncodingException {
         String exceptionMessage = "An exception message";
         IllegalStateException illegalStateException = createIllegalStateException(exceptionMessage);
 
@@ -187,7 +189,7 @@ public class ClientLoggerTests {
         }
         setPropertyToOriginalOrClear(originalLogLevel);
 
-        String logValues = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
+        String logValues = logCaptureStream.toString("UTF-8");
         assertEquals(logContainsMessage, logValues.contains(exceptionMessage + System.lineSeparator()));
         assertEquals(logContainsStackTrace, logValues.contains(illegalStateException.getStackTrace()[0].toString()));
     }
@@ -200,7 +202,7 @@ public class ClientLoggerTests {
     @MethodSource("logExceptionAsErrorSupplier")
     @ResourceLock("SYSTEM_OUT")
     public void logCheckedExceptionAsError(LogLevel logLevelToConfigure, boolean logContainsMessage,
-        boolean logContainsStackTrace) {
+        boolean logContainsStackTrace) throws UnsupportedEncodingException {
         String exceptionMessage = "An exception message";
         IOException ioException = createIOException(exceptionMessage);
 
@@ -212,7 +214,7 @@ public class ClientLoggerTests {
         }
         setPropertyToOriginalOrClear(originalLogLevel);
 
-        String logValues = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
+        String logValues = logCaptureStream.toString("UTF-8");
         assertEquals(logContainsMessage, logValues.contains(exceptionMessage + System.lineSeparator()));
         assertEquals(logContainsStackTrace, logValues.contains(ioException.getStackTrace()[0].toString()));
     }

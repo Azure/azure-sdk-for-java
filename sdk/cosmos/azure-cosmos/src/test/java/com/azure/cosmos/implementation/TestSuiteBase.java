@@ -954,6 +954,7 @@ public class TestSuiteBase extends DocumentClientTest {
         return new Object[][]{
                 {true},
                 {false},
+                {null}
         };
     }
 }

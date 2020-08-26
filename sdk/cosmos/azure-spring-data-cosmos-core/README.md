@@ -1,6 +1,6 @@
 # Azure Spring Data Cosmos Core client library for Java
 
-**Azure Spring Data Cosmos** provides core Spring Data support for Azure Cosmos DB using the [SQL API][sql_api_query], based on Spring Data framework. 
+**Azure Spring Data Cosmos** provides core Spring Data support for Azure Cosmos DB using the [SQL API][sql_api_query], based on Spring Data framework.
 [Azure Cosmos DB][cosmos_introduction] is a globally-distributed database service which allows developers to work with data using a variety of standard APIs, such as SQL, MongoDB, Cassandra, Graph, and Table.
 
 ## Spring data version support
@@ -19,14 +19,14 @@ Please refer to [azure-spring-data-2-2-cosmos readme][azure_spring_data_2_2_cosm
 - (Optional) [SLF4J binding](http://www.slf4j.org/manual.html) is used to associate a specific logging framework with SLF4J.
 - (Optional) Maven
 
-SLF4J is only needed if you plan to use logging, please also download an SLF4J binding which will link the SLF4J API with the logging implementation of your choice. See the [SLF4J user manual](http://www.slf4j.org/manual.html) for more information.  
- 
+SLF4J is only needed if you plan to use logging, please also download an SLF4J binding which will link the SLF4J API with the logging implementation of your choice. See the [SLF4J user manual](http://www.slf4j.org/manual.html) for more information.
+
 ### Setup Configuration Class
 - In order to set up configuration class, you'll need to extend `AbstractCosmosConfiguration`
 
-- Azure-spring-data-cosmos also supports `Response Diagnostics String` and `Query Metrics`. 
+- Azure-spring-data-cosmos also supports `Response Diagnostics String` and `Query Metrics`.
 Set `queryMetricsEnabled` flag to true in application.properties to enable query metrics.
-In addition to setting the flag, implement `ResponseDiagnosticsProcessor` to log diagnostics information. 
+In addition to setting the flag, implement `ResponseDiagnosticsProcessor` to log diagnostics information.
 <!-- embedme src/samples/java/com/azure/cosmos/AppConfiguration.java#L23-L82 -->
 
 ```java
@@ -115,17 +115,17 @@ public CosmosConfig cosmosConfig() {
 }
 ```
 
-By default, `@EnableCosmosRepositories` will scan the current package for any interfaces that extend one of Spring Data's repository interfaces. 
+By default, `@EnableCosmosRepositories` will scan the current package for any interfaces that extend one of Spring Data's repository interfaces.
 Use it to annotate your Configuration class to scan a different root package by `@EnableCosmosRepositories(basePackageClass=UserRepository.class)` if your project layout has multiple projects.
 
 ### Define an entity
 - Define a simple entity as item in Azure Cosmos DB.
 
-- You can define entities by adding the `@Container` annotation and specifying properties related to the container, such as the container name, request units (RUs), time to live, and auto-create container. 
+- You can define entities by adding the `@Container` annotation and specifying properties related to the container, such as the container name, request units (RUs), time to live, and auto-create container.
 
-- Containers will be created automatically unless you don't want them to. Set `autoCreateContainer` to false in `@Container` annotation to disable auto creation of containers. 
+- Containers will be created automatically unless you don't want them to. Set `autoCreateContainer` to false in `@Container` annotation to disable auto creation of containers.
 
-- Note: By default request units assigned to newly created containers is 400. Specify different ru value to customize request units for the container created by the SDK (minimum RU value is 400). 
+- Note: By default request units assigned to newly created containers is 400. Specify different ru value to customize request units for the container created by the SDK (minimum RU value is 400).
 <!-- embedme src/samples/java/com/azure/cosmos/User.java#L14-L62 -->
 ```java
 @Container(containerName = "myContainer", ru = "400")
@@ -245,8 +245,8 @@ public class SampleApplication implements CommandLineRunner {
     }
 }
 ```
-- Autowire UserRepository interface, to perform operations like save, delete, find, etc. 
-- Spring Data Azure Cosmos DB uses the `CosmosTemplate` and `ReactiveCosmosTemplate` to execute the queries behind *find*, *save* methods. You can use the template yourself for more complex queries. 
+- Autowire UserRepository interface, to perform operations like save, delete, find, etc.
+- Spring Data Azure Cosmos DB uses the `CosmosTemplate` and `ReactiveCosmosTemplate` to execute the queries behind *find*, *save* methods. You can use the template yourself for more complex queries.
 
 ## Key concepts
 
@@ -258,13 +258,13 @@ public class SampleApplication implements CommandLineRunner {
     - deleteAll
     - delete by Id
     - delete entity
-    
+
 ### Spring Data Annotations
 - Spring Data [@Id annotation][spring_data_commons_id_annotation].
   There are 2 ways to map a field in domain class to `id` field of Azure Cosmos DB Item.
-  - annotate a field in domain class with `@Id`, this field will be mapped to Item `id` in Cosmos DB. 
+  - annotate a field in domain class with `@Id`, this field will be mapped to Item `id` in Cosmos DB.
   - set name of this field to `id`, this field will be mapped to Item `id` in Azure Cosmos DB.
-- Supports auto generation of string type UUIDs using the @GeneratedValue annotation. The id field of an entity with a string 
+- Supports auto generation of string type UUIDs using the @GeneratedValue annotation. The id field of an entity with a string
  type id can be annotated with `@GeneratedValue` to automatically generate a random UUID prior to insertion.
  <!-- embedme src/samples/java/com/azure/cosmos/GeneratedIdEntity.java#L8-L14 -->
  ```java
@@ -296,14 +296,14 @@ String[] includePaths() default {};
 String[] excludePaths() default {};
 ```
 
-### Azure Cosmos DB Partition 
-- Azure-spring-data-cosmos supports [Azure Cosmos DB partition][azure_cosmos_db_partition]. 
-- To specify a field of domain class to be partition key field, just annotate it with `@PartitionKey`. 
-- When you perform CRUD operation, specify your partition value. 
+### Azure Cosmos DB Partition
+- Azure-spring-data-cosmos supports [Azure Cosmos DB partition][azure_cosmos_db_partition].
+- To specify a field of domain class to be partition key field, just annotate it with `@PartitionKey`.
+- When you perform CRUD operation, specify your partition value.
 - For more sample on partition CRUD, please refer [test here][address_repository_it_test]
 
 ### Optimistic Locking
-- Azure-spring-data-cosmos supports Optimistic Locking for specific containers, which means upserts/deletes by item will fail with an exception in case the item is modified by another process in the meanwhile. 
+- Azure-spring-data-cosmos supports Optimistic Locking for specific containers, which means upserts/deletes by item will fail with an exception in case the item is modified by another process in the meanwhile.
 - To enable Optimistic Locking for a container, just create a string `_etag` field and mark it with the `@Version` annotation. See the following:
 
 <!-- embedme src/samples/java/com/azure/cosmos/MyItem.java#L14-L20 -->
@@ -321,7 +321,7 @@ public class MyItem {
 - Example, find operation, e.g., `findByAFieldAndBField`
 - Supports [Spring Data pageable and sort](https://docs.spring.io/spring-data/commons/docs/current/reference/html/#repositories.special-parameters).
   - Based on available RUs on the database account, cosmosDB can return items less than or equal to the requested size.
-  - Due to this variable number of returned items in every iteration, user should not rely on the totalPageSize, and instead iterating over pageable should be done in this way.  
+  - Due to this variable number of returned items in every iteration, user should not rely on the totalPageSize, and instead iterating over pageable should be done in this way.
 <!-- embedme src/samples/java/com/azure/cosmos/PageableRepositoryCodeSnippet.java#L24-L35 -->
 ```java
 private List<T> findAllWithPageSize(int pageSize) {
@@ -351,8 +351,8 @@ public ObjectMapper objectMapper() {
 ```
 
 ### Auditing
-- Azure-spring-data-cosmos supports auditing fields on database entities using standard spring-data annotations. 
-- This feature can be enabled by adding `@EnableCosmosAuditing` annotation to your application configuration. 
+- Azure-spring-data-cosmos supports auditing fields on database entities using standard spring-data annotations.
+- This feature can be enabled by adding `@EnableCosmosAuditing` annotation to your application configuration.
 - Entities can annotate fields using `@CreatedBy`, `@CreatedDate`, `@LastModifiedBy` and `@LastModifiedDate`. These fields will be updated automatically.
 <!-- embedme src/samples/java/com/azure/cosmos/AuditableUser.java#L13-L25 -->
 ```java
@@ -372,7 +372,7 @@ public class AuditableUser {
 ```
 
 ### Multi-database configuration
-- Azure-spring-data-cosmos supports multi-database configuration, including "multiple database accounts" and "single account, with multiple databases". 
+- Azure-spring-data-cosmos supports multi-database configuration, including "multiple database accounts" and "single account, with multiple databases".
 
 The example uses the `application.properties` file
 ```properties
@@ -575,15 +575,15 @@ Beta version built from `master` branch are available, you can refer to the [ins
 
 ## Troubleshooting
 
-### General 
+### General
 
 If you encounter any bug, please file an issue [here](https://github.com/Azure/azure-sdk-for-java/issues/new).
 
 To suggest a new feature or changes that could be made, file an issue the same way you would for a bug.
 
 ### Enable Client Logging
-- Azure-spring-data-cosmos uses SLF4j as the logging facade that supports logging into popular logging frameworks such as log4j and logback. 
-For example, if you want to use spring logback as logging framework, add the following xml to resources folder. 
+- Azure-spring-data-cosmos uses SLF4j as the logging facade that supports logging into popular logging frameworks such as log4j and logback.
+For example, if you want to use spring logback as logging framework, add the following xml to resources folder.
 
 ```xml
 <configuration>
@@ -612,21 +612,21 @@ For example, if you want to use spring logback as logging framework, add the fol
 
 ## Contributing
 
-This project welcomes contributions and suggestions. Most contributions require you to agree to a 
-[Contributor License Agreement (CLA)][cla] declaring that you have the right to, and actually do, grant us the rights 
+This project welcomes contributions and suggestions. Most contributions require you to agree to a
+[Contributor License Agreement (CLA)][cla] declaring that you have the right to, and actually do, grant us the rights
 to use your contribution.
 
-When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate 
-the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to 
+When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate
+the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to
 do this once across all repos using our CLA.
 
-This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] 
+This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq]
 or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
 [source_code]: src
-[cosmos_introduction]: https://docs.microsoft.com/en-us/azure/cosmos-db/
-[cosmos_docs]: https://docs.microsoft.com/en-us/azure/cosmos-db/introduction
+[cosmos_introduction]: https://docs.microsoft.com/azure/cosmos-db/
+[cosmos_docs]: https://docs.microsoft.com/azure/cosmos-db/introduction
 [jdk]: https://docs.microsoft.com/java/azure/java-supported-jdk-runtime?view=azure-java-stable
 [maven]: https://maven.apache.org/
 [cla]: https://cla.microsoft.com
@@ -635,9 +635,9 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [coc_contact]: mailto:opencode@microsoft.com
 [azure_subscription]: https://azure.microsoft.com/free/
 [samples]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos-core/src/samples/java/com/azure/cosmos
-[sql_api_query]: https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-sql-query
-[local_emulator]: https://docs.microsoft.com/en-us/azure/cosmos-db/local-emulator
-[local_emulator_export_ssl_certificates]: https://docs.microsoft.com/en-us/azure/cosmos-db/local-emulator-export-ssl-certificates
+[sql_api_query]: https://docs.microsoft.com/azure/cosmos-db/sql-api-sql-query
+[local_emulator]: https://docs.microsoft.com/azure/cosmos-db/local-emulator
+[local_emulator_export_ssl_certificates]: https://docs.microsoft.com/azure/cosmos-db/local-emulator-export-ssl-certificates
 [azure_spring_data_2_2_cosmos]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-2-2-cosmos
 [azure_spring_data_2_3_cosmos]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-2-3-cosmos
 [azure_spring_data_2_2_cosmos_readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/cosmos/azure-spring-data-2-2-cosmos/README.md
@@ -645,7 +645,7 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [spring_data_commons_id_annotation]: https://github.com/spring-projects/spring-data-commons/blob/master/src/main/java/org/springframework/data/annotation/Id.java
 [azure_cosmos_db_partition]: https://docs.microsoft.com/azure/cosmos-db/partition-data
 [address_repository_it_test]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/cosmos/azure-spring-data-cosmos-test/src/test/java/com/azure/spring/data/cosmos/repository/integration/AddressRepositoryIT.java
-[azure_spring_data_cosmos_docs]: https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-sdk-java-spring-v3?tabs=explore
+[azure_spring_data_cosmos_docs]: https://docs.microsoft.com/azure/cosmos-db/sql-api-sdk-java-spring-v3
 [spring_data_custom_query]: https://docs.spring.io/spring-data/commons/docs/current/reference/html/#repositories.query-methods.details
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2F%2Fazure-spring-data-cosmos-core%2FREADME.png)
