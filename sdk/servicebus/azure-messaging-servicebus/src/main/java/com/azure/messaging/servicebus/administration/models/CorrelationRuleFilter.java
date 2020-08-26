@@ -255,9 +255,8 @@ public class CorrelationRuleFilter extends RuleFilter {
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder("CorrelationRuleFilter: ");
-        boolean isFirstExpression = true;
 
-        isFirstExpression = appendPropertyExpression(isFirstExpression, builder, "sys.CorrelationId",
+        boolean isFirstExpression = appendPropertyExpression(true, builder, "sys.CorrelationId",
             correlationId);
         isFirstExpression = appendPropertyExpression(isFirstExpression, builder, "sys.MessageId",
             messageId);
@@ -269,7 +268,6 @@ public class CorrelationRuleFilter extends RuleFilter {
             replyToSessionId);
         isFirstExpression = appendPropertyExpression(isFirstExpression, builder, "sys.ContentType",
             contentType);
-
 
         for (Map.Entry<String, Object> entry : properties.entrySet()) {
             isFirstExpression = appendPropertyExpression(isFirstExpression, builder, entry.getKey(),

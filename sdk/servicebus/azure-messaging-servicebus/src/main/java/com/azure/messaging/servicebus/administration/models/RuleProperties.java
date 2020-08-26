@@ -3,10 +3,81 @@
 
 package com.azure.messaging.servicebus.administration.models;
 
-import com.azure.messaging.servicebus.implementation.models.RuleDescription;
+import com.azure.core.annotation.Fluent;
 
+import java.util.Objects;
+
+/**
+ * Represents the properties of a rule.
+ */
+@Fluent
 public class RuleProperties {
+    private final String name;
+    private RuleFilter filter;
+    private RuleAction action;
 
-    RuleProperties(RuleDescription ruleDescription) {
+    /**
+     * Initializes a new instance with the given rule {@code name}, {@code filter}, and {@code action}.
+     *
+     * @param name Name of the rule.
+     * @param filter Filter expression used to match messages.
+     * @param action Action to perform when rule matches.
+     */
+    RuleProperties(String name, RuleFilter filter, RuleAction action) {
+        this.name = name;
+        this.filter = filter;
+        this.action = action;
+    }
+
+    /**
+     * Gets the filter expression used to match messages.
+     *
+     * @return The filter expression used to match messages.
+     */
+    public RuleFilter getFilter() {
+        return filter;
+    }
+
+    /**
+     * Sets the filter expression used to match messages.
+     *
+     * @param filter the filter expression used to match messages.
+     *
+     * @return The updated {@link RuleProperties} object itself.
+     * @throws NullPointerException if {@code filter} is null.
+     */
+    public RuleProperties setFilter(RuleFilter filter) {
+        this.filter = Objects.requireNonNull(filter, "'filter' cannot be null.");
+        return this;
+    }
+
+    /**
+     * Gets the name of the rule.
+     *
+     * @return The name of the rule.
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Gets the action to perform if the message satisfies the filtering expression.
+     *
+     * @return The action to perform if the message satisfies the filtering expression.
+     */
+    public RuleAction getAction() {
+        return action;
+    }
+
+    /**
+     * Sets the action to perform if the message satisfies the filtering expression.
+     *
+     * @param action The action to perform if the message satisfies the filtering expression.
+     *
+     * @return The updated {@link RuleProperties} object itself.
+     */
+    public RuleProperties setAction(RuleAction action) {
+        this.action = action;
+        return this;
     }
 }

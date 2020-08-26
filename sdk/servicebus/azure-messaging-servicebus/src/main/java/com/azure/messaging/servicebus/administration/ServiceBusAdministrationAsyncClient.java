@@ -23,6 +23,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
+import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
 import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
 import com.azure.messaging.servicebus.administration.models.CreateTopicOptions;
 import com.azure.messaging.servicebus.administration.models.NamespaceProperties;
@@ -98,6 +99,7 @@ public final class ServiceBusAdministrationAsyncClient {
 
     private static final int NUMBER_OF_ELEMENTS = 100;
 
+    private final CreateRuleOptions defaultRuleOptions = new CreateRuleOptions();
     private final ServiceBusManagementClientImpl managementClient;
     private final EntitiesImpl entityClient;
     private final ClientLogger logger = new ClientLogger(ServiceBusAdministrationAsyncClient.class);
@@ -228,7 +230,34 @@ public final class ServiceBusAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SubscriptionProperties> createSubscription(String topicName, String subscriptionName,
         CreateSubscriptionOptions subscriptionOptions) {
-        return createSubscriptionWithResponse(topicName, subscriptionName, subscriptionOptions).map(Response::getValue);
+
+        return createSubscriptionWithResponse(topicName, subscriptionName, subscriptionOptions, defaultRuleOptions)
+            .map(Response::getValue);
+    }
+
+    /**
+     * Creates a subscription with the {@link SubscriptionProperties}.
+     *
+     * @param topicName Name of the topic associated with subscription.
+     * @param subscriptionName Name of the subscription.
+     * @param subscriptionOptions Information about the subscription to create.
+     *
+     * @return A Mono that completes with information about the created subscription.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
+     *     processing the request.
+     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are are empty strings.
+     * @throws NullPointerException if {@code topicName}, {@code subscriptionName}, or {@code subscriptionOptions}
+     *     are are null.
+     * @throws ResourceExistsException if a subscription exists with the same topic and subscription name.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SubscriptionProperties> createSubscription(String topicName, String subscriptionName,
+        CreateSubscriptionOptions subscriptionOptions, CreateRuleOptions ruleOptions) {
+        return createSubscriptionWithResponse(topicName, subscriptionName, subscriptionOptions, ruleOptions)
+            .map(Response::getValue);
     }
 
     /**
@@ -251,9 +280,9 @@ public final class ServiceBusAdministrationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SubscriptionProperties>> createSubscriptionWithResponse(String topicName,
-        String subscriptionName, CreateSubscriptionOptions subscriptionOptions) {
+        String subscriptionName, CreateSubscriptionOptions subscriptionOptions, CreateRuleOptions ruleOptions) {
         return withContext(context -> createSubscriptionWithResponse(topicName, subscriptionName, subscriptionOptions,
-            context));
+            ruleOptions, context));
     }
 
     /**
@@ -1137,14 +1166,13 @@ public final class ServiceBusAdministrationAsyncClient {
     /**
      * Creates a subscription with its context.
      *
-     * @param options Subscription to create.
+     * @param subscriptionOptions Subscription to create.
      * @param context Context to pass into request.
      *
      * @return A Mono that completes with the created {@link SubscriptionProperties}.
      */
     Mono<Response<SubscriptionProperties>> createSubscriptionWithResponse(String topicName, String subscriptionName,
-        CreateSubscriptionOptions options,
-        Context context) {
+        CreateSubscriptionOptions subscriptionOptions, CreateRuleOptions ruleOptions, Context context) {
         if (topicName == null) {
             return monoError(logger, new NullPointerException("'topicName' cannot be null."));
         } else if (topicName.isEmpty()) {
@@ -1157,11 +1185,11 @@ public final class ServiceBusAdministrationAsyncClient {
             return monoError(logger, new IllegalArgumentException("'subscriptionName' cannot be empty."));
         }
 
-        if (options == null) {
+        if (subscriptionOptions == null) {
             return monoError(logger, new NullPointerException("'subscription' cannot be null."));
         }
 
-        final SubscriptionDescription subscription = EntityHelper.getSubscriptionDescription(options);
+        final SubscriptionDescription subscription = EntityHelper.getSubscriptionDescription(subscriptionOptions);
         final CreateSubscriptionBodyContent content = new CreateSubscriptionBodyContent()
             .setType(CONTENT_TYPE)
             .setSubscriptionDescription(subscription);
