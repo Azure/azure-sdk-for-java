@@ -45,14 +45,14 @@ import java.security.MessageDigest;
 import java.util.Base64;
 import java.util.Collections;
 
-public class SpringCloudTest extends AppPlatformTest {
+public class SpringCloudLiveOnlyTest extends AppPlatformTest {
     private static final String PIGGYMETRICS_CONFIG_URL = "https://github.com/Azure-Samples/piggymetrics-config";
     private static final String GATEWAY_JAR_URL = "https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/raw/master/spring-cloud/gateway.jar";
     private static final String PIGGYMETRICS_TAR_GZ_URL = "https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/raw/master/spring-cloud/piggymetrics.tar.gz";
 
     private static final String SPRING_CLOUD_SERVICE_PRINCIPAL = "03b39d0f-4213-4864-a245-b1476ec03169";
 
-    SpringCloudTest() {
+    SpringCloudLiveOnlyTest() {
         super(RunCondition.LIVE_ONLY); // need storage data-plane and url check
     }
 
