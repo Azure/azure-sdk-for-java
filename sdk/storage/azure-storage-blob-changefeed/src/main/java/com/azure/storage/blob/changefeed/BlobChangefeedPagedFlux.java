@@ -3,15 +3,13 @@
 
 package com.azure.storage.blob.changefeed;
 
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.UserAgentUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.paging.ContinuablePage;
 import com.azure.core.util.paging.ContinuablePagedFlux;
-import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper;
+import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEvent;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.CoreSubscriber;
