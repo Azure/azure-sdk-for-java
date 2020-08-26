@@ -117,26 +117,23 @@ public class AsyncSample
                 System.out.println(String.format("%s: Created twin, Status = %d, Etag = %s",
                     dtId_ResponseBase_String, result.getStatusCode(), result.getDeserializedHeaders().getETag()));
                 try {
-                    // Convert to Jackson's tree model, which is useful to parse json string when you are not sure what the json string looks like
-                    JsonNode jsonNode = mapper.readTree(result.getValue());
+                    String jsonResponse = result.getValue();
 
-                    // Verify that the returned json string conforms to digital twin format -> has a root element $metadata and child-element $model in it.
-                    if (!jsonNode.path("$metadata").path("$model").isNull()) {
+                    // Deserialize the String output to a BasicDigitalTwin so that the metadata fields are easily accessible.
+                    BasicDigitalTwin twin = mapper.readValue(jsonResponse, BasicDigitalTwin.class);
 
-                        // Verify if the returned json string is CustomDigitalTwin
-                        if (jsonNode.path("$metadata").path("$model").textValue().equals(modelId)) {
-                            // Parse it as CustomDigitalTwin
-                            CustomDigitalTwin twin = mapper.treeToValue(jsonNode, CustomDigitalTwin.class);
-                            System.out.println(
-                                String.format("%s: Deserialized CustomDigitalTwin, \n\tId=%s, \n\tEtag=%s, \n\tModelId=%s, \n\tAverageTemperature=%d, \n\tTemperatureUnit=%s \n",
-                                    dtId_ResponseBase_String, twin.getId(), twin.getEtag(), twin.getMetadata().getModelId(), twin.getAverageTemperature(), twin.getTemperatureUnit()));
-                        } else {
-                            // Parse it as BasicDigitalTwin
-                            BasicDigitalTwin twin = mapper.treeToValue(jsonNode, BasicDigitalTwin.class);
-                            System.out.println(
-                                String.format("%s: Deserialized BasicDigitalTwin, \n\tId=%s, \n\tEtag=%s, \n\tModelId=%s, \n\tCustomProperties=%s \n",
-                                    dtId_ResponseBase_String, twin.getId(), twin.getTwinETag(), twin.getMetadata().getModelId(), Arrays.toString(twin.getCustomProperties().entrySet().toArray())));
-                        }
+                    // Check if the returned digital twin follows CustomDigitalTwin's model definition.
+                    if (twin.getMetadata().getModelId().equals(modelId)) {
+                        // Parse it as CustomDigitalTwin
+                        CustomDigitalTwin customDigitalTwin = mapper.readValue(jsonResponse, CustomDigitalTwin.class);
+                        System.out.println(
+                            String.format("%s: Deserialized CustomDigitalTwin, \n\tId=%s, \n\tEtag=%s, \n\tModelId=%s, \n\tAverageTemperature=%d, \n\tTemperatureUnit=%s \n",
+                                dtId_ResponseBase_String, customDigitalTwin.getId(), customDigitalTwin.getEtag(), customDigitalTwin.getMetadata().getModelId(), customDigitalTwin.getAverageTemperature(), customDigitalTwin.getTemperatureUnit()));
+                    } else {
+                    // Parse it as BasicDigitalTwin
+                    System.out.println(
+                        String.format("%s: Deserialized BasicDigitalTwin, \n\tId=%s, \n\tEtag=%s, \n\tModelId=%s, \n\tCustomProperties=%s \n",
+                            dtId_ResponseBase_String, twin.getId(), twin.getTwinETag(), twin.getMetadata().getModelId(), Arrays.toString(twin.getCustomProperties().entrySet().toArray())));
                     }
                 } catch (JsonProcessingException e) {
                     System.err.println("Reading response into DigitalTwin failed: ");
