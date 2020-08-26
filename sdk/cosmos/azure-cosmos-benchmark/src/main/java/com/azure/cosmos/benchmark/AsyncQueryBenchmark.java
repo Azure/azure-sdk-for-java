@@ -123,6 +123,11 @@ class AsyncQueryBenchmark extends AsyncBenchmark<FeedResponse<PojoizedJson>> {
 
             SqlQuerySpec query = queryBuilder.toSqlQuerySpec();
             obs = cosmosAsyncContainer.queryItems(query, options, PojoizedJson.class).byPage();
+        } else if (configuration.getOperationType() == Configuration.Operation.ReadAllItemsOfLogicalPartition) {
+
+            int index = r.nextInt(1000);
+            String pk = docsToRead.get(index).getProperty(partitionKey);
+            obs = cosmosAsyncContainer.readAllItems(new PartitionKey(pk), options, PojoizedJson.class).byPage();
         } else {
             throw new IllegalArgumentException("Unsupported Operation: " + configuration.getOperationType());
         }

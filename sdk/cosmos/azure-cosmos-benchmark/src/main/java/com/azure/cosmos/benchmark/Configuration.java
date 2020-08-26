@@ -163,7 +163,8 @@ public class Configuration {
         Mixed,
         ReadMyWrites,
         ReadThroughputWithMultipleClients,
-        CtlWorkload;
+        CtlWorkload,
+        ReadAllItemsOfLogicalPartition;
 
         static Operation fromString(String code) {
 
