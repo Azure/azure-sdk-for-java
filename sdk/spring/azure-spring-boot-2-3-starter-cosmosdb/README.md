@@ -1,4 +1,4 @@
-# Azure Cosmos DB Spring Boot Starter client library for Java
+# Azure Cosmos DB Spring Boot 2.3 Starter client library for Java
 
 [Azure Cosmos DB](https://azure.microsoft.com/services/cosmos-db/) is a globally-distributed database service that allows developers to work with data using a variety of standard APIs, such as SQL, MongoDB, Graph, and Azure Table storage. 
 
