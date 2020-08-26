@@ -257,13 +257,11 @@ public final class CoreUtils {
      *
      * @param logOptions provided {@link HttpLogOptions}.
      * @param clientOptions provided {@link ClientOptions}.
-     * {@code applicationId} is different in {@link HttpLogOptions} and {@link ClientOptions}.
      * @return applicationId based on rule explained above.
      *
      */
     public static String getApplicationId(HttpLogOptions logOptions, ClientOptions clientOptions) {
 
-        String applicationId;
         String logApplicationId = null;
         String clientApplicationId = null;
 
@@ -275,8 +273,6 @@ public final class CoreUtils {
         }
 
         // We prioritize application id sent in ClientOptions.
-        applicationId = clientApplicationId != null ? clientApplicationId : logApplicationId;
-
-        return applicationId;
+        return clientApplicationId != null ? clientApplicationId : logApplicationId;
     }
 }

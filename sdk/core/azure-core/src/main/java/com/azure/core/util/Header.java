@@ -3,6 +3,8 @@
 
 package com.azure.core.util;
 
+import java.util.Objects;
+
 /**
  * A single header within for a request.
  *
@@ -19,8 +21,12 @@ public class Header {
      *
      * @param name the name
      * @param value the value
+     * @throws NullPointerException if {@code name} or {@code value} is null.
      */
     public Header(String name, String value) {
+        Objects.requireNonNull(name, "'name' cannot be null.");
+        Objects.requireNonNull(value, "'value' cannot be null.");
+
         this.name = name;
         this.value = value;
     }
@@ -56,8 +62,10 @@ public class Header {
      * Add a new value to the end of the Header.
      *
      * @param value the value to add
+     * @throws NullPointerException if {@code value} is null.
      */
     public void addValue(String value) {
+        Objects.requireNonNull(value, "'value' cannot be null.");
         this.value += "," + value;
     }
 

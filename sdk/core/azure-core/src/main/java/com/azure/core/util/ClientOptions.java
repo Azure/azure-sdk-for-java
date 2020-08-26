@@ -6,6 +6,8 @@ package com.azure.core.util;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -18,15 +20,14 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Fluent
 public final class ClientOptions {
-    private final ClientLogger logger = new ClientLogger(ClientOptions.class);
-    private final Map<String, Header> headers = new ConcurrentHashMap<>();
-
     private static final int MAX_APPLICATION_ID_LENGTH = 24;
+    private final ClientLogger logger = new ClientLogger(ClientOptions.class);
+    private final Map<String, Header> headers = new HashMap<>();
+
     private String applicationId;
 
     /**
      * Gets the applicationId.
-     *
      * @return The applicationId.
      */
     public String getApplicationId() {
@@ -35,33 +36,35 @@ public final class ClientOptions {
 
     /**
      * Sets the applicationId provided.
-     *
      * @param applicationId to be set.
-     * @return updated {@link ClientOptions}.
      *
+     * @return updated {@link ClientOptions}.
      */
     public ClientOptions setApplicationId(String applicationId) {
-        if (!CoreUtils.isNullOrEmpty(applicationId)) {
-            if (applicationId.length() > MAX_APPLICATION_ID_LENGTH) {
-                throw logger
-                    .logExceptionAsError(new IllegalArgumentException("'applicationId' length cannot be greater than "
-                        + MAX_APPLICATION_ID_LENGTH));
-            } else if (applicationId.contains(" ")) {
-                throw logger
-                    .logExceptionAsError(new IllegalArgumentException("'applicationId' must not contain a space."));
-            } else {
-                this.applicationId = applicationId;
-            }
+
+        if (CoreUtils.isNullOrEmpty(applicationId)) {
+            return this;
         }
+
+        if (applicationId.length() > MAX_APPLICATION_ID_LENGTH) {
+            throw logger
+                .logExceptionAsError(new IllegalArgumentException("'applicationId' length cannot be greater than "
+                    + MAX_APPLICATION_ID_LENGTH));
+        } else if (applicationId.contains(" ")) {
+            throw logger
+                .logExceptionAsError(new IllegalArgumentException("'applicationId' must not contain a space."));
+        } else {
+            this.applicationId = applicationId;
+        }
+
         return this;
     }
 
     /**
      * Sets the provided headers.
-     *
      * @param headers headers to be set.
-     * @return updated {@link ClientOptions}.
      *
+     * @return updated {@link ClientOptions}.
      * @throws NullPointerException if {@code headers} is null.
      */
     public ClientOptions headers(Iterable<Header> headers) {
@@ -76,11 +79,10 @@ public final class ClientOptions {
     /**
      * Sets a {@link Header header} with the given name and value or append the {@code value} separated by {@code comma}
      * if the {@link Header} exists for given {@code name}.
-     *
-     * @param name the name
+     * @param name  the name
      * @param value the value
-     * @return The updated ClientOptions object
      *
+     * @return The updated ClientOptions object
      * @throws NullPointerException if {@code name} or {@code value} is null.
      */
     public ClientOptions addHeader(String name, String value) {
@@ -99,10 +101,9 @@ public final class ClientOptions {
     /**
      * Gets the {@link Header header} for the provided header name. {@code Null} is returned if the header isn't
      * found.
-     *
      * @param name the name of the header to find.
-     * @return the header if found, null otherwise.
      *
+     * @return the header if found, null otherwise.
      * @throws NullPointerException if {@code name} is null.
      */
     public Header get(String name) {
@@ -114,10 +115,9 @@ public final class ClientOptions {
     /**
      * Removes the {@link Header header} with the provided header name. {@code Null} is returned if the header
      * isn't found.
-     *
      * @param name the name of the header to remove.
-     * @return the header if removed, null otherwise.
      *
+     * @return the header if removed, null otherwise.
      * @throws NullPointerException if {@code name} is null.
      */
     public Header remove(String name) {
@@ -128,10 +128,9 @@ public final class ClientOptions {
 
     /**
      * Get the value for the provided header name. {@code Null} is returned if the header name isn't found.
-     *
      * @param name the name of the header whose value is being retrieved.
-     * @return the value of the header, or null if the header isn't found
      *
+     * @return the value of the header, or null if the header isn't found
      * @throws NullPointerException if {@code name} is null.
      */
     public String getValue(String name) {
@@ -143,8 +142,8 @@ public final class ClientOptions {
      * Get the values for the provided header name. {@code Null} is returned if the header name isn't found.
      *
      * <p>This returns {@link #getValue(String) getValue} split by {@code comma}.</p>
-     *
      * @param name the name of the header whose value is being retrieved.
+     *
      * @return the values of the header, or null if the header isn't found
      */
     public String[] getValues(String name) {
@@ -155,11 +154,10 @@ public final class ClientOptions {
     /**
      * Gets a {@link Map} representation of the {@link Header} collection. The keys are {@link Header#getName()} in the
      * given {@link Header}.
-     *
      * @return the headers as map
      */
-    public Map<String, Header> toMap() {
-        return headers;
+    public Collection<Header> getHeaders() {
+        return headers.values();
     }
 
     private String formatKey(final String key) {
