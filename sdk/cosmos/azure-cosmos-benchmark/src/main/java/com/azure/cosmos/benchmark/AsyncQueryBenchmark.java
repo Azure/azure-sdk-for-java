@@ -76,12 +76,12 @@ class AsyncQueryBenchmark extends AsyncBenchmark<FeedResponse<PojoizedJson>> {
 
         if (configuration.getOperationType() == Configuration.Operation.QueryCross) {
 
-            int index = r.nextInt(1000);
+            int index = r.nextInt(this.configuration.getNumberOfPreCreatedDocuments());
             String sqlQuery = "Select * from c where c.id = \"" + docsToRead.get(index).getId() + "\"";
             obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage();
         } else if (configuration.getOperationType() == Configuration.Operation.QuerySingle) {
 
-            int index = r.nextInt(1000);
+            int index = r.nextInt(this.configuration.getNumberOfPreCreatedDocuments());
             String pk = docsToRead.get(index).getProperty(partitionKey);
             options.setPartitionKey(new PartitionKey(pk));
             String sqlQuery = "Select * from c where c." + partitionKey + " = \"" + pk + "\"";
@@ -125,7 +125,7 @@ class AsyncQueryBenchmark extends AsyncBenchmark<FeedResponse<PojoizedJson>> {
             obs = cosmosAsyncContainer.queryItems(query, options, PojoizedJson.class).byPage();
         } else if (configuration.getOperationType() == Configuration.Operation.ReadAllItemsOfLogicalPartition) {
 
-            int index = r.nextInt(1000);
+            int index = r.nextInt(this.configuration.getNumberOfPreCreatedDocuments());
             String pk = docsToRead.get(index).getProperty(partitionKey);
             obs = cosmosAsyncContainer.readAllItems(new PartitionKey(pk), options, PojoizedJson.class).byPage();
         } else {
