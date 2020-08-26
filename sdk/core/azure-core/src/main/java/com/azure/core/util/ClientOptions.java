@@ -35,10 +35,9 @@ public final class ClientOptions {
      * @param applicationId to be set.
      * @return updated {@link ClientOptions}.
      *
-     * @throws NullPointerException if {@code applicationId} is null.
      */
     public ClientOptions setApplicationId(String applicationId) {
-        this.applicationId = Objects.requireNonNull(applicationId, "'applicationId' cannot be null.");
+        this.applicationId = applicationId;
         return this;
     }
 
@@ -60,9 +59,8 @@ public final class ClientOptions {
     }
 
     /**
-     * Sets a {@link Header header} with the given name and value.
-     *
-     * <p>If header with same name already exists then the value will be overwritten.</p>
+     * Sets a {@link Header header} with the given name and value or append the {@code value} separated by {@code comma}
+     * if the {@link Header} exists for given {@code name}.
      *
      * @param name the name
      * @param value the value
@@ -74,7 +72,12 @@ public final class ClientOptions {
         Objects.requireNonNull(name, "'name' cannot be null.");
         Objects.requireNonNull(value, "'value' cannot be null.");
 
-        this.headers.put(formatKey(name), new Header(name, value));
+        Header existing = get(name);
+        if (existing == null) {
+            this.headers.put(formatKey(name), new Header(name, value));
+        } else {
+            existing.addValue(value);
+        }
         return this;
     }
 
@@ -119,6 +122,19 @@ public final class ClientOptions {
     public String getValue(String name) {
         final Header header = get(name);
         return header == null ? null : header.getValue();
+    }
+
+    /**
+     * Get the values for the provided header name. {@code Null} is returned if the header name isn't found.
+     *
+     * <p>This returns {@link #getValue(String) getValue} split by {@code comma}.</p>
+     *
+     * @param name the name of the header whose value is being retrieved.
+     * @return the values of the header, or null if the header isn't found
+     */
+    public String[] getValues(String name) {
+        final Header header = get(name);
+        return header == null ? null : header.getValues();
     }
 
     private String formatKey(final String key) {

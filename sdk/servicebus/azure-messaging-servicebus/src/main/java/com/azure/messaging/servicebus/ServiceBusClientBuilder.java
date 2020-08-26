@@ -96,8 +96,7 @@ public final class ServiceBusClientBuilder {
     }
 
     /**
-     * Sets various options on the client. For example application-id which will be used in user-agent while creating
-     * connection with Azure Service Bus.
+     * Sets various options on the client for example applicationId.
      *
      * @param clientOptions to be set on the client.
      *

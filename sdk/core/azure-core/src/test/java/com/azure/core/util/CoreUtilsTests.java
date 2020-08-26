@@ -17,7 +17,6 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CoreUtilsTests {
@@ -87,18 +86,8 @@ public class CoreUtilsTests {
             clientOptions.setApplicationId(clientOptionsId);
         }
 
-        String actual = CoreUtils.validateApplicationId(logOptions, clientOptions, null);
+        String actual = CoreUtils.getApplicationId(logOptions, clientOptions);
         Assertions.assertEquals(expected, actual);
-    }
-
-    @Test
-    public void testValidateApplicationIdRuntimeException() {
-        String expected = "application-id1";
-        HttpLogOptions logOptions = new HttpLogOptions().setApplicationId("application-id2");
-        ClientOptions clientOptions = new ClientOptions().setApplicationId(expected);
-        RuntimeException runtimeException = new RuntimeException("aplicationId must be same.");
-
-        assertThrows(RuntimeException.class, () -> CoreUtils.validateApplicationId(logOptions, clientOptions, runtimeException));
     }
 
     private static Stream<Arguments> bomAwareToStringSupplier() {

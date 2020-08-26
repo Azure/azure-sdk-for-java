@@ -338,8 +338,7 @@ public class ServiceBusAdministrationClientBuilder {
         final String clientName = properties.getOrDefault("name", "UnknownName");
         final String clientVersion = properties.getOrDefault("version", "UnknownVersion");
 
-        final String applicationId = CoreUtils.validateApplicationId(httpLogOptions, clientOptions,
-            new IllegalStateException("applicationId should be same in httpLogOptions and clientOptions."));
+        final String applicationId = CoreUtils.getApplicationId(httpLogOptions, clientOptions);
 
         httpPolicies.add(new UserAgentPolicy(applicationId, clientName, clientVersion,
             buildConfiguration));

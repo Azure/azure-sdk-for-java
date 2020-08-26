@@ -253,23 +253,15 @@ public final class CoreUtils {
     }
 
     /**
-     * Validate applicationId and return it based on following rule.
-     *
-     * 1.If {@code runtimeException} is not {@code null} and {@code  applicationId} has different value in
-     * {@link HttpLogOptions} and {@link ClientOptions}, It will log and throw this exception.
-     * 2. Prioritize {@code applicationId} set in ClientOptions over {@link HttpLogOptions}.
+     * Prioritize {@code applicationId} set in ClientOptions over {@link HttpLogOptions}.
      *
      * @param logOptions provided {@link HttpLogOptions}.
      * @param clientOptions provided {@link ClientOptions}.
-     * @param runtimeException if this function need to throw. The {@code null} value represent: It will not throw if
      * {@code applicationId} is different in {@link HttpLogOptions} and {@link ClientOptions}.
      * @return applicationId based on rule explained above.
      *
-     * @throws RuntimeException If {@code runtimeException} is not {@code null} and {@code  applicationId} is different
-     * in {@link HttpLogOptions} and {@link ClientOptions}
      */
-    public static String validateApplicationId(HttpLogOptions logOptions, ClientOptions clientOptions,
-        RuntimeException runtimeException) {
+    public static String getApplicationId(HttpLogOptions logOptions, ClientOptions clientOptions) {
 
         String applicationId;
         String logApplicationId = null;
@@ -282,11 +274,6 @@ public final class CoreUtils {
             clientApplicationId = clientOptions.getApplicationId();
         }
 
-        // Check applicationId in both location , if present, should be same.
-        if (runtimeException != null && logApplicationId != null && clientApplicationId != null
-            && !clientApplicationId.equalsIgnoreCase(logApplicationId)) {
-            throw LOGGER.logExceptionAsError(runtimeException);
-        }
         // We prioritize application id sent in ClientOptions.
         applicationId = clientApplicationId != null ? clientApplicationId : logApplicationId;
 
