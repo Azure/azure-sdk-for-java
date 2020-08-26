@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.eventhubs.implementation;
 
-import com.azure.resourcemanager.eventhubs.EventHubManager;
+import com.azure.resourcemanager.eventhubs.EventHubsManager;
 import com.azure.resourcemanager.eventhubs.fluent.inner.ConsumerGroupInner;
 import com.azure.resourcemanager.eventhubs.models.EventHub;
 import com.azure.resourcemanager.eventhubs.models.EventHubConsumerGroup;
@@ -25,12 +25,12 @@ class EventHubConsumerGroupImpl
 
     private Ancestors.TwoAncestor ancestor;
 
-    EventHubConsumerGroupImpl(String name, ConsumerGroupInner inner, EventHubManager manager) {
+    EventHubConsumerGroupImpl(String name, ConsumerGroupInner inner, EventHubsManager manager) {
         super(name, inner, manager);
         this.ancestor =  new Ancestors().new TwoAncestor(inner.id());
     }
 
-    EventHubConsumerGroupImpl(String name, EventHubManager manager) {
+    EventHubConsumerGroupImpl(String name, EventHubsManager manager) {
         super(name, new ConsumerGroupInner(), manager);
     }
 

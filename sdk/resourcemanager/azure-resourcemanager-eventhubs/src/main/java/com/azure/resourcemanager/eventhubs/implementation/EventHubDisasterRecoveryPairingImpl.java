@@ -5,7 +5,7 @@ package com.azure.resourcemanager.eventhubs.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.eventhubs.EventHubManager;
+import com.azure.resourcemanager.eventhubs.EventHubsManager;
 import com.azure.resourcemanager.eventhubs.fluent.inner.ArmDisasterRecoveryInner;
 import com.azure.resourcemanager.eventhubs.models.DisasterRecoveryPairingAuthorizationRule;
 import com.azure.resourcemanager.eventhubs.models.EventHubDisasterRecoveryPairing;
@@ -31,12 +31,12 @@ class EventHubDisasterRecoveryPairingImpl
 
     private Ancestors.OneAncestor ancestor;
 
-    EventHubDisasterRecoveryPairingImpl(String name, ArmDisasterRecoveryInner inner, EventHubManager manager) {
+    EventHubDisasterRecoveryPairingImpl(String name, ArmDisasterRecoveryInner inner, EventHubsManager manager) {
         super(name, inner, manager);
         this.ancestor = new Ancestors().new OneAncestor(inner.id());
     }
 
-    EventHubDisasterRecoveryPairingImpl(String name, EventHubManager manager) {
+    EventHubDisasterRecoveryPairingImpl(String name, EventHubsManager manager) {
         super(name, new ArmDisasterRecoveryInner(), manager);
     }
 

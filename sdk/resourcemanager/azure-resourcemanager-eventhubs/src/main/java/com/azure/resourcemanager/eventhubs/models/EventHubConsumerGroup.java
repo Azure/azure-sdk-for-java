@@ -3,6 +3,7 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.eventhubs.EventHubsManager;
 import com.azure.resourcemanager.eventhubs.fluent.inner.ConsumerGroupInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
@@ -10,7 +11,6 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
-import com.azure.resourcemanager.eventhubs.EventHubManager;
 
 import java.time.OffsetDateTime;
 
@@ -20,7 +20,7 @@ import java.time.OffsetDateTime;
 @Fluent
 public interface EventHubConsumerGroup extends
     NestedResource,
-    HasManager<EventHubManager>,
+    HasManager<EventHubsManager>,
     Refreshable<EventHubConsumerGroup>,
     HasInner<ConsumerGroupInner>,
     Updatable<EventHubConsumerGroup.Update> {

@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.eventhubs.implementation;
 
-import com.azure.resourcemanager.eventhubs.EventHubManager;
+import com.azure.resourcemanager.eventhubs.EventHubsManager;
 import com.azure.resourcemanager.eventhubs.fluent.inner.AccessKeysInner;
 import com.azure.resourcemanager.eventhubs.fluent.inner.AuthorizationRuleInner;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
@@ -26,12 +26,12 @@ class EventHubNamespaceAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<E
 
     private Ancestors.OneAncestor ancestor;
 
-    EventHubNamespaceAuthorizationRuleImpl(String name, AuthorizationRuleInner inner, EventHubManager manager) {
+    EventHubNamespaceAuthorizationRuleImpl(String name, AuthorizationRuleInner inner, EventHubsManager manager) {
         super(name, inner, manager);
         this.ancestor = new Ancestors().new OneAncestor(inner.id());
     }
 
-    EventHubNamespaceAuthorizationRuleImpl(String name, EventHubManager manager) {
+    EventHubNamespaceAuthorizationRuleImpl(String name, EventHubsManager manager) {
         super(name, new AuthorizationRuleInner(), manager);
     }
 

@@ -16,7 +16,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreatin
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.eventhubs.EventHubManager;
+import com.azure.resourcemanager.eventhubs.EventHubsManager;
 
 /**
  * Entry point to manage EventHub namespaces.
@@ -32,7 +32,7 @@ public interface EventHubNamespaces extends
     SupportsDeletingByResourceGroup,
     SupportsBatchCreation<EventHubNamespace>,
     SupportsBatchDeletion,
-    HasManager<EventHubManager>,
+    HasManager<EventHubsManager>,
     HasInner<NamespacesClient> {
     /**
      * @return entry point to manage authorization rules of event hub namespaces.

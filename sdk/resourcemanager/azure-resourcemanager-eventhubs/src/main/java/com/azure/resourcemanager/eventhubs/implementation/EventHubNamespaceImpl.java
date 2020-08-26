@@ -5,7 +5,7 @@ package com.azure.resourcemanager.eventhubs.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.eventhubs.EventHubManager;
+import com.azure.resourcemanager.eventhubs.EventHubsManager;
 import com.azure.resourcemanager.eventhubs.fluent.inner.EHNamespaceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
@@ -23,13 +23,13 @@ import java.time.OffsetDateTime;
  * Implementation for {@link EventHubNamespace}.
  */
 class EventHubNamespaceImpl
-        extends GroupableResourceImpl<EventHubNamespace, EHNamespaceInner, EventHubNamespaceImpl, EventHubManager>
+        extends GroupableResourceImpl<EventHubNamespace, EHNamespaceInner, EventHubNamespaceImpl, EventHubsManager>
         implements
         EventHubNamespace,
         EventHubNamespace.Definition,
         EventHubNamespace.Update {
 
-    protected EventHubNamespaceImpl(String name, EHNamespaceInner innerObject, EventHubManager manager) {
+    protected EventHubNamespaceImpl(String name, EHNamespaceInner innerObject, EventHubsManager manager) {
         super(name, innerObject, manager);
     }
 

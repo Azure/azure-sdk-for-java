@@ -5,7 +5,7 @@ package com.azure.resourcemanager.eventhubs.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.eventhubs.EventHubManager;
+import com.azure.resourcemanager.eventhubs.EventHubsManager;
 import com.azure.resourcemanager.eventhubs.fluent.EventHubsClient;
 import com.azure.resourcemanager.eventhubs.fluent.inner.EventhubInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
@@ -23,17 +23,17 @@ import java.util.Objects;
  * Implementation for {@link EventHubs}.
  */
 public final class EventHubsImpl extends WrapperImpl<EventHubsClient> implements EventHubs {
-    private final EventHubManager manager;
+    private final EventHubsManager manager;
     private final StorageManager storageManager;
 
-    public EventHubsImpl(EventHubManager manager, StorageManager storageManager) {
+    public EventHubsImpl(EventHubsManager manager, StorageManager storageManager) {
         super(manager.inner().getEventHubs());
         this.manager = manager;
         this.storageManager = storageManager;
     }
 
     @Override
-    public EventHubManager manager() {
+    public EventHubsManager manager() {
         return this.manager;
     }
 

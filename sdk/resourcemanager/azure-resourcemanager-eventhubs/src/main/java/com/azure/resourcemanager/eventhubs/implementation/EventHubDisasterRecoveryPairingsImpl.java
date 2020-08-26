@@ -5,7 +5,7 @@ package com.azure.resourcemanager.eventhubs.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.eventhubs.EventHubManager;
+import com.azure.resourcemanager.eventhubs.EventHubsManager;
 import com.azure.resourcemanager.eventhubs.fluent.DisasterRecoveryConfigsClient;
 import com.azure.resourcemanager.eventhubs.fluent.inner.ArmDisasterRecoveryInner;
 import com.azure.resourcemanager.eventhubs.models.DisasterRecoveryPairingAuthorizationRules;
@@ -23,15 +23,15 @@ import java.util.Objects;
 public final class EventHubDisasterRecoveryPairingsImpl
     extends WrapperImpl<DisasterRecoveryConfigsClient>
     implements EventHubDisasterRecoveryPairings {
-    private EventHubManager manager;
+    private EventHubsManager manager;
 
-    public EventHubDisasterRecoveryPairingsImpl(EventHubManager manager) {
+    public EventHubDisasterRecoveryPairingsImpl(EventHubsManager manager) {
         super(manager.inner().getDisasterRecoveryConfigs());
         this.manager = manager;
     }
 
     @Override
-    public EventHubManager manager() {
+    public EventHubsManager manager() {
         return this.manager;
     }
 

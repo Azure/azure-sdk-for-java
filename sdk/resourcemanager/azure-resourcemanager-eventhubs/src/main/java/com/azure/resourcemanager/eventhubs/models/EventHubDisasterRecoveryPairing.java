@@ -12,7 +12,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
-import com.azure.resourcemanager.eventhubs.EventHubManager;
+import com.azure.resourcemanager.eventhubs.EventHubsManager;
 import reactor.core.publisher.Mono;
 
 /**
@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
 @Fluent
 public interface EventHubDisasterRecoveryPairing extends
     NestedResource,
-    HasManager<EventHubManager>,
+    HasManager<EventHubsManager>,
     Refreshable<EventHubDisasterRecoveryPairing>,
     Updatable<EventHubDisasterRecoveryPairing.Update>,
     HasInner<ArmDisasterRecoveryInner> {

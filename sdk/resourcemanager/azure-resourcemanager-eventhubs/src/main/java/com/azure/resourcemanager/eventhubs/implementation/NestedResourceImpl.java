@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.eventhubs.implementation;
 
 import com.azure.core.management.ProxyResource;
-import com.azure.resourcemanager.eventhubs.EventHubManager;
+import com.azure.resourcemanager.eventhubs.EventHubsManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
@@ -24,10 +24,10 @@ public abstract class NestedResourceImpl<
     InnerModelT extends ProxyResource,
     FluentModelImplT extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>>
     extends CreatableUpdatableImpl<FluentModelT, InnerModelT, FluentModelImplT>
-    implements HasManager<EventHubManager>, NestedResource {
-    protected final EventHubManager manager;
+    implements HasManager<EventHubsManager>, NestedResource {
+    protected final EventHubsManager manager;
 
-    NestedResourceImpl(final String name, final InnerModelT inner, EventHubManager manager) {
+    NestedResourceImpl(final String name, final InnerModelT inner, EventHubsManager manager) {
         super(name, inner);
         this.manager = manager;
     }
@@ -57,7 +57,7 @@ public abstract class NestedResourceImpl<
     }
 
     @Override
-    public EventHubManager manager() {
+    public EventHubsManager manager() {
         return this.manager;
     }
 }

@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.eventhubs.implementation;
 
-import com.azure.resourcemanager.eventhubs.EventHubManager;
+import com.azure.resourcemanager.eventhubs.EventHubsManager;
 import com.azure.resourcemanager.eventhubs.fluent.inner.AuthorizationRuleInner;
 import com.azure.resourcemanager.eventhubs.models.AccessRights;
 import com.azure.resourcemanager.eventhubs.models.DisasterRecoveryPairingAuthorizationKey;
@@ -21,10 +21,10 @@ class DisasterRecoveryPairingAuthorizationRuleImpl
         extends WrapperImpl<AuthorizationRuleInner>
         implements DisasterRecoveryPairingAuthorizationRule {
 
-    private final EventHubManager manager;
+    private final EventHubsManager manager;
     private final Ancestors.TwoAncestor ancestor;
 
-    protected DisasterRecoveryPairingAuthorizationRuleImpl(AuthorizationRuleInner inner, EventHubManager manager) {
+    protected DisasterRecoveryPairingAuthorizationRuleImpl(AuthorizationRuleInner inner, EventHubsManager manager) {
         super(inner);
         this.manager = manager;
         this.ancestor =  new Ancestors().new TwoAncestor(inner.id());
@@ -56,7 +56,7 @@ class DisasterRecoveryPairingAuthorizationRuleImpl
     }
 
     @Override
-    public EventHubManager manager() {
+    public EventHubsManager manager() {
         return this.manager;
     }
 

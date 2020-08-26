@@ -47,7 +47,7 @@ import com.azure.resourcemanager.cosmos.CosmosManager;
 import com.azure.resourcemanager.cosmos.models.CosmosDBAccounts;
 import com.azure.resourcemanager.dns.DnsZoneManager;
 import com.azure.resourcemanager.dns.models.DnsZones;
-import com.azure.resourcemanager.eventhubs.EventHubManager;
+import com.azure.resourcemanager.eventhubs.EventHubsManager;
 import com.azure.resourcemanager.eventhubs.models.EventHubDisasterRecoveryPairings;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaces;
 import com.azure.resourcemanager.eventhubs.models.EventHubs;
@@ -136,7 +136,7 @@ public final class Azure {
     //    private final AuthorizationManager authorizationManager;
     private final MSIManager msiManager;
     private final MonitorManager monitorManager;
-    private final EventHubManager eventHubManager;
+    private final EventHubsManager eventHubsManager;
     private final AppPlatformManager appPlatformManager;
     private final PrivateDnsZoneManager privateDnsZoneManager;
     private final Authenticated authenticated;
@@ -385,7 +385,7 @@ public final class Azure {
         //        this.authorizationManager = AuthorizationManager.authenticate(restClient, subscriptionId, sdkContext);
         this.msiManager = MSIManager.authenticate(httpPipeline, profile, sdkContext);
         this.monitorManager = MonitorManager.authenticate(httpPipeline, profile, sdkContext);
-        this.eventHubManager = EventHubManager.authenticate(httpPipeline, profile, sdkContext);
+        this.eventHubsManager = EventHubsManager.authenticate(httpPipeline, profile, sdkContext);
         this.appPlatformManager = AppPlatformManager.authenticate(httpPipeline, profile, sdkContext);
         this.privateDnsZoneManager = PrivateDnsZoneManager.authenticate(httpPipeline, profile, sdkContext);
         this.authenticated = authenticated;
@@ -777,21 +777,21 @@ public final class Azure {
      * @return entry point to managing event hub namespaces.
      */
     public EventHubNamespaces eventHubNamespaces() {
-        return this.eventHubManager.namespaces();
+        return this.eventHubsManager.namespaces();
     }
 
     /**
      * @return entry point to managing event hubs.
      */
     public EventHubs eventHubs() {
-        return this.eventHubManager.eventHubs();
+        return this.eventHubsManager.eventHubs();
     }
 
     /**
      * @return entry point to managing event hub namespace geo disaster recovery.
      */
     public EventHubDisasterRecoveryPairings eventHubDisasterRecoveryPairings() {
-        return this.eventHubManager.eventHubDisasterRecoveryPairings();
+        return this.eventHubsManager.eventHubDisasterRecoveryPairings();
     }
 
     /** @return entry point to manage compute galleries. */

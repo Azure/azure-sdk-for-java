@@ -3,11 +3,11 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.eventhubs.EventHubsManager;
 import com.azure.resourcemanager.eventhubs.fluent.inner.AuthorizationRuleInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.eventhubs.EventHubManager;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Fluent
 public interface DisasterRecoveryPairingAuthorizationRule
-    extends HasName, HasInner<AuthorizationRuleInner>, HasManager<EventHubManager> {
+    extends HasName, HasInner<AuthorizationRuleInner>, HasManager<EventHubsManager> {
     /**
      * @return rights associated with the rule
      */

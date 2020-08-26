@@ -12,7 +12,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
-import com.azure.resourcemanager.eventhubs.EventHubManager;
+import com.azure.resourcemanager.eventhubs.EventHubsManager;
 
 import java.time.OffsetDateTime;
 
@@ -21,7 +21,7 @@ import java.time.OffsetDateTime;
  */
 @Fluent
 public interface EventHubNamespace extends
-    GroupableResource<EventHubManager, EHNamespaceInner>,
+    GroupableResource<EventHubsManager, EHNamespaceInner>,
     Refreshable<EventHubNamespace>,
     Updatable<EventHubNamespace.Update> {
     /**

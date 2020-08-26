@@ -5,7 +5,7 @@ package com.azure.resourcemanager.eventhubs.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.eventhubs.EventHubManager;
+import com.azure.resourcemanager.eventhubs.EventHubsManager;
 import com.azure.resourcemanager.eventhubs.fluent.EventHubsClient;
 import com.azure.resourcemanager.eventhubs.fluent.inner.AuthorizationRuleInner;
 import com.azure.resourcemanager.eventhubs.models.EventHubAuthorizationRule;
@@ -24,7 +24,7 @@ public final class EventHubAuthorizationRulesImpl
         EventHubAuthorizationRuleImpl>
     implements EventHubAuthorizationRules {
 
-    public EventHubAuthorizationRulesImpl(EventHubManager manager) {
+    public EventHubAuthorizationRulesImpl(EventHubsManager manager) {
         super(manager, manager.inner().getEventHubs());
     }
 

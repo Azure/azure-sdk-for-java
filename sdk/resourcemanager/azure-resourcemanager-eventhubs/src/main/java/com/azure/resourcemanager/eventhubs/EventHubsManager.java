@@ -30,7 +30,7 @@ import com.azure.resourcemanager.storage.StorageManager;
 /**
  * Entry point to Azure EventHub resource management.
  */
-public final class EventHubManager extends Manager<EventHubManager, EventHubManagementClient> {
+public final class EventHubsManager extends Manager<EventHubsManager, EventHubManagementClient> {
     private EventHubNamespaces namespaces;
     private EventHubs eventHubs;
     private EventHubConsumerGroups consumerGroups;
@@ -42,46 +42,46 @@ public final class EventHubManager extends Manager<EventHubManager, EventHubMana
     private final StorageManager storageManager;
 
     /**
-     * Get a Configurable instance that can be used to create EventHubManager with optional configuration.
+     * Get a Configurable instance that can be used to create EventHubsManager with optional configuration.
      *
      * @return the instance allowing configurations
      */
     public static Configurable configure() {
-        return new EventHubManager.ConfigurableImpl();
+        return new EventHubsManager.ConfigurableImpl();
     }
 
     /**
-     * Creates an instance of EventHubManager that exposes EventHub resource management API entry points.
+     * Creates an instance of EventHubsManager that exposes EventHub resource management API entry points.
      *
      * @param credential the credential to use
      * @param profile the profile to use
-     * @return the EventHubManager
+     * @return the EventHubsManager
      */
-    public static EventHubManager authenticate(TokenCredential credential, AzureProfile profile) {
+    public static EventHubsManager authenticate(TokenCredential credential, AzureProfile profile) {
         return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
     /**
-     * Creates an instance of EventHubManager that exposes EventHub resource management API entry points.
+     * Creates an instance of EventHubsManager that exposes EventHub resource management API entry points.
      *
      * @param httpPipeline the HttpPipeline to be used for API calls.
      * @param profile the profile to use
-     * @return the EventHubManager
+     * @return the EventHubsManager
      */
-    public static EventHubManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static EventHubsManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         return authenticate(httpPipeline, profile, new SdkContext());
     }
 
     /**
-     * Creates an instance of EventHubManager that exposes EventHub resource management API entry points.
+     * Creates an instance of EventHubsManager that exposes EventHub resource management API entry points.
      *
      * @param httpPipeline the HttpPipeline to be used for API calls.
      * @param profile the profile to use
      * @param sdkContext the sdk context
-     * @return the EventHubManager
+     * @return the EventHubsManager
      */
-    public static EventHubManager authenticate(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
-        return new EventHubManager(httpPipeline, profile, sdkContext);
+    public static EventHubsManager authenticate(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+        return new EventHubsManager(httpPipeline, profile, sdkContext);
     }
 
     /**
@@ -89,23 +89,23 @@ public final class EventHubManager extends Manager<EventHubManager, EventHubMana
      */
     public interface Configurable extends AzureConfigurable<Configurable> {
         /**
-         * Creates an instance of EventHubManager that exposes EventHub management API entry points.
+         * Creates an instance of EventHubsManager that exposes EventHub management API entry points.
          *
          * @param credential the credential to use
          * @param profile the profile to use
          * @return the interface exposing EventHub management API entry points that work across subscriptions
          */
-        EventHubManager authenticate(TokenCredential credential, AzureProfile profile);
+        EventHubsManager authenticate(TokenCredential credential, AzureProfile profile);
     }
     /**
      * The implementation for Configurable interface.
      */
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
-        public EventHubManager authenticate(TokenCredential credential, AzureProfile profile) {
-            return EventHubManager.authenticate(buildHttpPipeline(credential, profile), profile);
+        public EventHubsManager authenticate(TokenCredential credential, AzureProfile profile) {
+            return EventHubsManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
     }
-    private EventHubManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+    private EventHubsManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
         super(
             httpPipeline,
             profile,

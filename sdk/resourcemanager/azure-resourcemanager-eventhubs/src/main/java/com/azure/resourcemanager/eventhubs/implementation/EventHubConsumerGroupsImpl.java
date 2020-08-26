@@ -5,7 +5,7 @@ package com.azure.resourcemanager.eventhubs.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.eventhubs.EventHubManager;
+import com.azure.resourcemanager.eventhubs.EventHubsManager;
 import com.azure.resourcemanager.eventhubs.fluent.ConsumerGroupsClient;
 import com.azure.resourcemanager.eventhubs.fluent.inner.ConsumerGroupInner;
 import com.azure.resourcemanager.eventhubs.models.EventHubConsumerGroup;
@@ -22,15 +22,15 @@ import java.util.Objects;
 public final class EventHubConsumerGroupsImpl
     extends WrapperImpl<ConsumerGroupsClient>
     implements EventHubConsumerGroups {
-    private final EventHubManager manager;
+    private final EventHubsManager manager;
 
-    public EventHubConsumerGroupsImpl(EventHubManager manager) {
+    public EventHubConsumerGroupsImpl(EventHubsManager manager) {
         super(manager.inner().getConsumerGroups());
         this.manager = manager;
     }
 
     @Override
-    public EventHubManager manager() {
+    public EventHubsManager manager() {
         return this.manager;
     }
 

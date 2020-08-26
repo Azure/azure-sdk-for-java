@@ -11,7 +11,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.eventhubs.EventHubManager;
+import com.azure.resourcemanager.eventhubs.EventHubsManager;
 import reactor.core.publisher.Mono;
 
 /**
@@ -23,7 +23,7 @@ public interface EventHubNamespaceAuthorizationRules extends
     SupportsDeletingById,
     SupportsGettingById<EventHubNamespaceAuthorizationRule>,
     HasInner<NamespacesClient>,
-    HasManager<EventHubManager> {
+    HasManager<EventHubsManager> {
     /**
      * Lists the authorization rules under a namespace in a resource group.
      *

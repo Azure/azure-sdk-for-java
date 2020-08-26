@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.eventhubs.implementation;
 
-import com.azure.resourcemanager.eventhubs.EventHubManager;
+import com.azure.resourcemanager.eventhubs.EventHubsManager;
 import com.azure.resourcemanager.eventhubs.fluent.inner.AccessKeysInner;
 import com.azure.resourcemanager.eventhubs.fluent.inner.AuthorizationRuleInner;
 import com.azure.resourcemanager.eventhubs.models.AccessRights;
@@ -28,7 +28,7 @@ abstract class AuthorizationRuleBaseImpl<RuleT extends AuthorizationRule<RuleT>,
     RuleImpl extends IndexableRefreshableWrapperImpl<RuleT, AuthorizationRuleInner>>
     extends NestedResourceImpl<RuleT, AuthorizationRuleInner, RuleImpl> implements AuthorizationRule<RuleT> {
 
-    protected AuthorizationRuleBaseImpl(String name, AuthorizationRuleInner inner, EventHubManager manager) {
+    protected AuthorizationRuleBaseImpl(String name, AuthorizationRuleInner inner, EventHubsManager manager) {
         super(name, inner, manager);
     }
 

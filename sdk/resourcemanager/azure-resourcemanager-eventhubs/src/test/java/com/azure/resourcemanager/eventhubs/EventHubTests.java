@@ -37,7 +37,7 @@ import java.util.HashSet;
 import java.util.Map;
 
 public class EventHubTests extends TestBase {
-    protected EventHubManager eventHubManager;
+    protected EventHubsManager eventHubsManager;
     protected StorageManager storageManager;
     protected ResourceManager resourceManager;
     private String rgName = "";
@@ -45,7 +45,7 @@ public class EventHubTests extends TestBase {
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
-        eventHubManager = EventHubManager.authenticate(httpPipeline, profile);
+        eventHubsManager = EventHubsManager.authenticate(httpPipeline, profile);
         storageManager = StorageManager.authenticate(httpPipeline, profile);
         resourceManager = ResourceManager
                 .authenticate(httpPipeline, profile)
@@ -66,7 +66,7 @@ public class EventHubTests extends TestBase {
         final String namespaceName2 = generateRandomResourceName("ns", 14);
         final String namespaceName3 = generateRandomResourceName("ns", 14);
 
-        EventHubNamespace namespace1 = eventHubManager.namespaces()
+        EventHubNamespace namespace1 = eventHubsManager.namespaces()
                 .define(namespaceName1)
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
@@ -82,7 +82,7 @@ public class EventHubTests extends TestBase {
         Assertions.assertNotNull(namespace1.inner().maximumThroughputUnits());
         Assertions.assertNotNull(namespace1.inner().sku().capacity());
 
-        EventHubNamespace namespace2 = eventHubManager.namespaces()
+        EventHubNamespace namespace2 = eventHubsManager.namespaces()
                 .define(namespaceName2)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
@@ -98,7 +98,7 @@ public class EventHubTests extends TestBase {
         Assertions.assertNotNull(namespace2.inner().sku().capacity());
         Assertions.assertEquals(11, namespace2.currentThroughputUnits());
 
-        EventHubNamespace namespace3 = eventHubManager.namespaces()
+        EventHubNamespace namespace3 = eventHubsManager.namespaces()
                 .define(namespaceName3)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
@@ -129,7 +129,7 @@ public class EventHubTests extends TestBase {
         final String eventHubName2 = generateRandomResourceName("eh", 14);
         final String eventHubName3 = generateRandomResourceName("eh", 14);
 
-        EventHubNamespace namespace = eventHubManager.namespaces()
+        EventHubNamespace namespace = eventHubsManager.namespaces()
                 .define(namespaceName)
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
@@ -148,7 +148,7 @@ public class EventHubTests extends TestBase {
         Assertions.assertTrue(set.contains(eventHubName1));
         Assertions.assertTrue(set.contains(eventHubName2));
 
-        hubs = eventHubManager.namespaces()
+        hubs = eventHubsManager.namespaces()
                 .eventHubs()
                 .listByNamespace(namespace.resourceGroupName(), namespace.name());
 
@@ -159,7 +159,7 @@ public class EventHubTests extends TestBase {
         Assertions.assertTrue(set.contains(eventHubName1));
         Assertions.assertTrue(set.contains(eventHubName2));
 
-        eventHubManager.namespaces()
+        eventHubsManager.namespaces()
                 .eventHubs()
                     .define(eventHubName3)
                     .withExistingNamespaceId(namespace.id())
@@ -182,7 +182,7 @@ public class EventHubTests extends TestBase {
         rgName = generateRandomResourceName("javacsmrg", 15);
         final String namespaceName = generateRandomResourceName("ns", 14);
 
-        EventHubNamespace namespace = eventHubManager.namespaces()
+        EventHubNamespace namespace = eventHubsManager.namespaces()
                 .define(namespaceName)
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
@@ -201,7 +201,7 @@ public class EventHubTests extends TestBase {
         Assertions.assertTrue(set.contains("mngRule1"));
         Assertions.assertTrue(set.contains("sndRule1"));
 
-        rules = eventHubManager.namespaces()
+        rules = eventHubsManager.namespaces()
                 .authorizationRules()
                 .listByNamespace(namespace.resourceGroupName(), namespace.name());
 
@@ -212,7 +212,7 @@ public class EventHubTests extends TestBase {
         Assertions.assertTrue(set.contains("mngRule1"));
         Assertions.assertTrue(set.contains("sndRule1"));
 
-        eventHubManager.namespaces()
+        eventHubsManager.namespaces()
                 .authorizationRules()
                     .define("sndRule2")
                     .withExistingNamespaceId(namespace.id())
@@ -228,7 +228,7 @@ public class EventHubTests extends TestBase {
         Assertions.assertTrue(set.contains("sndRule1"));
         Assertions.assertTrue(set.contains("sndRule2"));
 
-        eventHubManager.namespaces()
+        eventHubsManager.namespaces()
                 .authorizationRules()
                 .define("sndLsnRule3")
                 .withExistingNamespaceId(namespace.id())
@@ -252,12 +252,12 @@ public class EventHubTests extends TestBase {
         final String namespaceName = generateRandomResourceName("ns", 14);
         final String eventHubName = generateRandomResourceName("eh", 14);
 
-        Creatable<EventHubNamespace> namespaceCreatable = eventHubManager.namespaces()
+        Creatable<EventHubNamespace> namespaceCreatable = eventHubsManager.namespaces()
                 .define(namespaceName)
                     .withRegion(region)
                     .withNewResourceGroup(rgName);
 
-        EventHub eventHub = eventHubManager.eventHubs()
+        EventHub eventHub = eventHubsManager.eventHubs()
                 .define(eventHubName)
                     .withNewNamespace(namespaceCreatable)
                     .withNewConsumerGroup("grp1")
@@ -275,7 +275,7 @@ public class EventHubTests extends TestBase {
         Assertions.assertTrue(set.contains("grp1"));
         Assertions.assertTrue(set.contains("grp2"));
 
-        cGroups = eventHubManager.eventHubs()
+        cGroups = eventHubsManager.eventHubs()
                 .consumerGroups()
                 .listByEventHub(eventHub.namespaceResourceGroupName(), eventHub.namespaceName(), eventHub.name());
 
@@ -286,7 +286,7 @@ public class EventHubTests extends TestBase {
         Assertions.assertTrue(set.contains("grp1"));
         Assertions.assertTrue(set.contains("grp2"));
 
-        eventHubManager.eventHubs()
+        eventHubsManager.eventHubs()
                 .consumerGroups()
                     .define("grp3")
                     .withExistingEventHubId(eventHub.id())
@@ -309,12 +309,12 @@ public class EventHubTests extends TestBase {
         final String namespaceName = generateRandomResourceName("ns", 14);
         final String eventHubName = generateRandomResourceName("eh", 14);
 
-        Creatable<EventHubNamespace> namespaceCreatable = eventHubManager.namespaces()
+        Creatable<EventHubNamespace> namespaceCreatable = eventHubsManager.namespaces()
                 .define(namespaceName)
                     .withRegion(region)
                     .withNewResourceGroup(rgName);
 
-        EventHub eventHub = eventHubManager.eventHubs()
+        EventHub eventHub = eventHubsManager.eventHubs()
                 .define(eventHubName)
                     .withNewNamespace(namespaceCreatable)
                     .withNewManageRule("mngRule1")
@@ -332,7 +332,7 @@ public class EventHubTests extends TestBase {
         Assertions.assertTrue(set.contains("mngRule1"));
         Assertions.assertTrue(set.contains("sndRule1"));
 
-        rules = eventHubManager.eventHubs()
+        rules = eventHubsManager.eventHubs()
                 .authorizationRules()
                 .listByEventHub(eventHub.namespaceResourceGroupName(), eventHub.namespaceName(), eventHub.name());
 
@@ -343,7 +343,7 @@ public class EventHubTests extends TestBase {
         Assertions.assertTrue(set.contains("mngRule1"));
         Assertions.assertTrue(set.contains("sndRule1"));
 
-        eventHubManager.eventHubs()
+        eventHubsManager.eventHubs()
                 .authorizationRules()
                 .define("sndRule2")
                     .withExistingEventHubId(eventHub.id())
@@ -379,14 +379,14 @@ public class EventHubTests extends TestBase {
                     .withNewResourceGroup(rgName)
                     .withSku(StorageAccountSkuType.STANDARD_LRS);
 
-        Creatable<EventHubNamespace> namespaceCreatable = eventHubManager.namespaces()
+        Creatable<EventHubNamespace> namespaceCreatable = eventHubsManager.namespaces()
                 .define(namespaceName)
                     .withRegion(region)
                     .withNewResourceGroup(rgName);
 
         final String containerName1 = "eventsctr1";
 
-        EventHub eventHub1 = eventHubManager.eventHubs()
+        EventHub eventHub1 = eventHubsManager.eventHubs()
                 .define(eventHubName1)
                     .withNewNamespace(namespaceCreatable)
                     .withNewStorageAccountForCapturedData(storageAccountCreatable, containerName1)
@@ -418,7 +418,7 @@ public class EventHubTests extends TestBase {
         String stgAccountId = eventHub1.captureDestination().storageAccountResourceId();
         final String containerName2 = "eventsctr2";
 
-        EventHub eventHub2 = eventHubManager.eventHubs()
+        EventHub eventHub2 = eventHubsManager.eventHubs()
                 .define(eventHubName2)
                     .withNewNamespace(namespaceCreatable)
                     .withExistingStorageAccountForCapturedData(stgAccountId, containerName2)
@@ -450,12 +450,12 @@ public class EventHubTests extends TestBase {
         final String namespaceName = generateRandomResourceName("ns", 14);
         final String eventHubName = generateRandomResourceName("eh", 14);
 
-        Creatable<EventHubNamespace> namespaceCreatable = eventHubManager.namespaces()
+        Creatable<EventHubNamespace> namespaceCreatable = eventHubsManager.namespaces()
                 .define(namespaceName)
                     .withRegion(region)
                     .withNewResourceGroup(rgName);
 
-        EventHub eventHub = eventHubManager.eventHubs()
+        EventHub eventHub = eventHubsManager.eventHubs()
                 .define(eventHubName)
                     .withNewNamespace(namespaceCreatable)
                     .create();
@@ -497,13 +497,13 @@ public class EventHubTests extends TestBase {
         final String namespaceName1 = generateRandomResourceName("ns", 14);
         final String namespaceName2 = generateRandomResourceName("ns", 14);
 
-        EventHubNamespace primaryNamespace = eventHubManager.namespaces()
+        EventHubNamespace primaryNamespace = eventHubsManager.namespaces()
                 .define(namespaceName1)
                 .withRegion(Region.US_SOUTH_CENTRAL)
                 .withNewResourceGroup(rgName)
                 .create();
 
-        EventHubNamespace secondaryNamespace = eventHubManager.namespaces()
+        EventHubNamespace secondaryNamespace = eventHubsManager.namespaces()
                 .define(namespaceName2)
                 .withRegion(Region.US_NORTH_CENTRAL)
                 .withExistingResourceGroup(rgName)
@@ -513,7 +513,7 @@ public class EventHubTests extends TestBase {
         Exception breakingFailed = null;
         EventHubDisasterRecoveryPairing pairing = null;
         try {
-            pairing = eventHubManager.eventHubDisasterRecoveryPairings()
+            pairing = eventHubsManager.eventHubDisasterRecoveryPairings()
                     .define(geodrName)
                     .withExistingPrimaryNamespace(primaryNamespace)
                     .withExistingSecondaryNamespace(secondaryNamespace)
@@ -543,7 +543,7 @@ public class EventHubTests extends TestBase {
                 Assertions.assertNotNull(keys.secondaryKey());
             }
 
-            EventHubDisasterRecoveryPairings pairingsCol = eventHubManager.eventHubDisasterRecoveryPairings();
+            EventHubDisasterRecoveryPairings pairingsCol = eventHubsManager.eventHubDisasterRecoveryPairings();
             PagedIterable<EventHubDisasterRecoveryPairing> pairings = pairingsCol
                     .listByNamespace(primaryNamespace.resourceGroupName(), primaryNamespace.name());
 

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.eventhubs.EventHubManager;
+import com.azure.resourcemanager.eventhubs.EventHubsManager;
 import reactor.core.publisher.Mono;
 
 /**
@@ -23,7 +23,7 @@ public interface EventHubDisasterRecoveryPairings extends
     SupportsDeletingById,
     SupportsGettingById<EventHubDisasterRecoveryPairing>,
     HasInner<DisasterRecoveryConfigsClient>,
-    HasManager<EventHubManager> {
+    HasManager<EventHubsManager> {
     /**
      * @return entry point to manage authorization rules of a disaster recovery pairing.
      */

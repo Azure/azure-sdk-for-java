@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.eventhubs.implementation;
 
-import com.azure.resourcemanager.eventhubs.EventHubManager;
+import com.azure.resourcemanager.eventhubs.EventHubsManager;
 import com.azure.resourcemanager.eventhubs.fluent.inner.AuthorizationRuleInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
@@ -13,19 +13,19 @@ import reactor.core.publisher.Mono;
 
 abstract class AuthorizationRulesBaseImpl<InnerT, RuleT, RuleImpl>
     extends WrapperImpl<InnerT>
-    implements HasManager<EventHubManager>,
+    implements HasManager<EventHubsManager>,
         SupportsGettingById<RuleT>,
         SupportsDeletingById {
 
-    protected final EventHubManager manager;
+    protected final EventHubsManager manager;
 
-    protected AuthorizationRulesBaseImpl(EventHubManager manager, InnerT inner) {
+    protected AuthorizationRulesBaseImpl(EventHubsManager manager, InnerT inner) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public EventHubManager manager() {
+    public EventHubsManager manager() {
         return this.manager;
     }
 

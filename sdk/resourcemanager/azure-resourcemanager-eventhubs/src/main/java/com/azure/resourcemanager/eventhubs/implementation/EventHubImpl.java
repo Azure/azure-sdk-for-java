@@ -6,7 +6,7 @@ package com.azure.resourcemanager.eventhubs.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.eventhubs.EventHubManager;
+import com.azure.resourcemanager.eventhubs.EventHubsManager;
 import com.azure.resourcemanager.eventhubs.fluent.inner.EventhubInner;
 import com.azure.resourcemanager.eventhubs.models.CaptureDescription;
 import com.azure.resourcemanager.eventhubs.models.Destination;
@@ -41,14 +41,14 @@ class EventHubImpl
 
     private final ClientLogger logger = new ClientLogger(EventHubImpl.class);
 
-    EventHubImpl(String name, EventhubInner inner, EventHubManager manager, StorageManager storageManager) {
+    EventHubImpl(String name, EventhubInner inner, EventHubsManager manager, StorageManager storageManager) {
         super(name, inner, manager);
         this.ancestor = new Ancestors().new OneAncestor(inner.id());
         this.captureSettings = new CaptureSettings(this.inner());
         this.storageManager = storageManager;
     }
 
-    EventHubImpl(String name, EventHubManager manager, StorageManager storageManager) {
+    EventHubImpl(String name, EventHubsManager manager, StorageManager storageManager) {
         super(name, new EventhubInner(), manager);
         this.storageManager = storageManager;
         this.captureSettings = new CaptureSettings(this.inner());
