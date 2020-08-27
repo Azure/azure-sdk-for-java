@@ -539,7 +539,7 @@ These APIs are invoked via DigitalTwinsAsyncClient.
 /**
  * Gets a digital twin.
  *
- * @param digitalTwinId The id of the digital twin. The id is unique within the service and case sensitive.
+ * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
  * @return The application/json digital twin
  */
 @ServiceMethod(returns = ReturnType.SINGLE)
@@ -548,11 +548,21 @@ public Mono<string> getDigitalTwin(String digitalTwinId)
 /**
  * Gets a digital twin.
  *
- * @param digitalTwinId The id of the digital twin. The id is unique within the service and case sensitive.
- * @return A REST response containing application/json digital twin
+ * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
+ * @param modelClass The model class to convert the response to.
+ * @return A Http response containing the application/json digital twin
  */
 @ServiceMethod(returns = ReturnType.SINGLE)
-public Mono<Response<String>> getDigitalTwin(String digitalTwinId)
+public <T> Mono<T> getDigitalTwinWithResponse(String digitalTwinId, Class<T> modelClass)
+
+/**
+ * Gets a digital twin.
+ *
+ * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
+ * @return A Http response containing the application/json digital twin
+ */
+@ServiceMethod(returns = ReturnType.SINGLE)
+public Mono<Response<String>> getDigitalTwinWithResponse(String digitalTwinId)
 
  /**
  * Creates a digital twin.
@@ -564,15 +574,34 @@ public Mono<Response<String>> getDigitalTwin(String digitalTwinId)
 @ServiceMethod(returns = ReturnType.SINGLE)
 public Mono<String> createDigitalTwin(String digitalTwinId, String digitalTwin)
 
+ /**
+ * Creates a digital twin.
+ *
+ * @param digitalTwinId The Id of the digital twin.
+ * @param digitalTwin The application/json digital twin to create.
+ * @param modelClass The model class to convert the response to.
+ * @return The application/json digital twin created.
+ */
+@ServiceMethod(returns = ReturnType.SINGLE)
+public <T> Mono<Response<T>> createDigitalTwinWithResponse(String digitalTwinId, String digitalTwin, Class<T> modelClass)
+
 /**
  * Creates a digital twin.
  *
  * @param digitalTwinId The Id of the digital twin.
  * @param digitalTwin The application/json digital twin to create.
- * @return A REST response containing application/json digital twin created.
+ * @return A Http response containing application/json digital twin created.
  */
 @ServiceMethod(returns = ReturnType.SINGLE)
-public Mono<Response<String>> createDigitalTwin(String digitalTwinId, String digitalTwin)
+public Mono<Response<String>> createDigitalTwinWithResponse(String digitalTwinId, String digitalTwin)
+
+/**
+ * Deletes a digital twin. All relationships referencing the digital twin must already be deleted.
+ *
+ * @param digitalTwinId The id of the digital twin. The id is unique within the service and case sensitive.
+ */
+@ServiceMethod(returns = ReturnType.SINGLE)
+public Mono<Void> deleteDigitalTwin(String digitalTwinId)
 
 /**
  * Deletes a digital twin. All relationships referencing the digital twin must already be deleted.
@@ -582,6 +611,15 @@ public Mono<Response<String>> createDigitalTwin(String digitalTwinId, String dig
  */
 @ServiceMethod(returns = ReturnType.SINGLE)
 public Mono<Void> deleteDigitalTwin(String digitalTwinId, RequestOptions options)
+
+/**
+ * Deletes a digital twin. All relationships referencing the digital twin must already be deleted.
+ *
+ * @param digitalTwinId The id of the digital twin. The id is unique within the service and case sensitive.
+ * @return The Http response
+ */
+@ServiceMethod(returns = ReturnType.SINGLE)
+public Mono<Response> deleteDigitalTwinWithResponse(String digitalTwinId)
 
 /**
  * Deletes a digital twin. All relationships referencing the digital twin must already be deleted.
@@ -598,11 +636,54 @@ public Mono<Response> deleteDigitalTwinWithResponse(String digitalTwinId, Reques
  *
  * @param digitalTwinId The Id of the digital twin.
  * @param digitalTwinUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin
+ * @return The updated application/json digital twin.
+ */
+@ServiceMethod(returns = ReturnType.SINGLE)
+public Mono<String> updateDigitalTwin(String digitalTwinId, String digitalTwinUpdateOperations)
+
+ /**
+ * Updates a digital twin.
+ *
+ * @param digitalTwinId The Id of the digital twin.
+ * @param digitalTwinUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin
  * @param options The optional settings for this request
  * @return The updated application/json digital twin.
  */
 @ServiceMethod(returns = ReturnType.SINGLE)
 public Mono<String> updateDigitalTwin(String digitalTwinId, String digitalTwinUpdateOperations, RequestOptions options)
+
+ /**
+ * Updates a digital twin.
+ *
+ * @param digitalTwinId The Id of the digital twin.
+ * @param digitalTwinUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin
+ * @param modelClass The model class to convert the response to.
+ * @return The application/json digital twin created.
+ */
+@ServiceMethod(returns = ReturnType.SINGLE)
+public <T> Mono<Response<T>> updateDigitalTwinWithResponse(String digitalTwinId, String digitalTwinUpdateOperations, Class<T> modelClass)
+
+ /**
+ * Updates a digital twin.
+ *
+ * @param digitalTwinId The Id of the digital twin.
+ * @param digitalTwinUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin
+ * @param modelClass The model class to convert the response to.
+ * @param options The optional settings for this request
+ * @return The application/json digital twin created.
+ */
+@ServiceMethod(returns = ReturnType.SINGLE)
+public <T> Mono<Response<T>> updateDigitalTwinWithResponse(String digitalTwinId, String digitalTwinUpdateOperations, RequestOptions options, Class<T> modelClass)
+
+/**
+ * Updates a digital twin.
+ *
+ * @param digitalTwinId The Id of the digital twin.
+ * @param digitalTwinUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin
+ * @return A Http response containing updated application/json digital twin.
+ */
+@ServiceMethod(returns = ReturnType.SINGLE)
+public Mono<Response<String> updateDigitalTwinWithResponse(String digitalTwinId, String digitalTwinUpdateOperations)
 
 /**
  * Updates a digital twin.
@@ -610,7 +691,7 @@ public Mono<String> updateDigitalTwin(String digitalTwinId, String digitalTwinUp
  * @param digitalTwinId The Id of the digital twin.
  * @param digitalTwinUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin
  * @param options The optional settings for this request
- * @return A REST response containing updated application/json digital twin.
+ * @return A Http response containing updated application/json digital twin.
  */
 @ServiceMethod(returns = ReturnType.SINGLE)
 public Mono<Response<String> updateDigitalTwinWithResponse(String digitalTwinId, String digitalTwinUpdateOperations, RequestOptions options)
@@ -626,7 +707,7 @@ These APIs are invoked via DigitalTwinsClient.
 /**
  * Gets a digital twin.
  *
- * @param digitalTwinId The id of the digital twin. The id is unique within the service and case sensitive.
+ * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
  * @return The application/json digital twin
  */
 @ServiceMethod(returns = ReturnType.SINGLE)
@@ -635,12 +716,23 @@ public String getDigitalTwin(String digitalTwinId)
 /**
  * Gets a digital twin.
  *
- * @param digitalTwinId The id of the digital twin. The id is unique within the service and case sensitive.
- * @return A REST response containing application/json digital twin
+ * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
  * @param context Additional context that is passed through the Http pipeline during the service call.
+ * @return A Http response containing application/json digital twin
  */
 @ServiceMethod(returns = ReturnType.SINGLE)
-public Response<String> getDigitalTwin(String digitalTwinId, Context context)
+public Response<String> getDigitalTwinWithResponse(String digitalTwinId, Context context)
+
+/**
+ * Gets a digital twin.
+ *
+ * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
+ * @param modelClass The model class to convert the response to.
+ * @param context Additional context that is passed through the Http pipeline during the service call.
+ * @return A Http response containing application/json digital twin
+ */
+@ServiceMethod(returns = ReturnType.SINGLE)
+public <T> Response<T> getDigitalTwinWithResponse(String digitalTwinId, Class<T> modelClass, Context context)
 
  /**
  * Creates a digital twin.
@@ -657,11 +749,31 @@ public String createDigitalTwin(String digitalTwinId, String digitalTwin)
  *
  * @param digitalTwinId The Id of the digital twin.
  * @param digitalTwin The application/json digital twin to create.
+ * @param modelClass The model class to convert the response to.
  * @param context Additional context that is passed through the Http pipeline during the service call.
- * @return A REST response containing application/json digital twin created.
+ * @return A Http response containing application/json digital twin created.
  */
 @ServiceMethod(returns = ReturnType.SINGLE)
-public Response<String> createDigitalTwin(String digitalTwinId, String digitalTwin, Context context)
+public <T> Response<T> createDigitalTwinWithResponse(String digitalTwinId, String digitalTwin, Class<T> modelClass, Context context)
+
+/**
+ * Creates a digital twin.
+ *
+ * @param digitalTwinId The Id of the digital twin.
+ * @param digitalTwin The application/json digital twin to create.
+ * @param context Additional context that is passed through the Http pipeline during the service call.
+ * @return A Http response containing application/json digital twin created.
+ */
+@ServiceMethod(returns = ReturnType.SINGLE)
+public Response<String> createDigitalTwinWithResponse(String digitalTwinId, String digitalTwin, Context context)
+
+/**
+ * Deletes a digital twin. All relationships referencing the digital twin must already be deleted.
+ *
+ * @param digitalTwinId The id of the digital twin. The id is unique within the service and case sensitive.
+ */
+@ServiceMethod(returns = ReturnType.SINGLE)
+public Void deleteDigitalTwin(String digitalTwinId)
 
 /**
  * Deletes a digital twin. All relationships referencing the digital twin must already be deleted.
@@ -671,6 +783,16 @@ public Response<String> createDigitalTwin(String digitalTwinId, String digitalTw
  */
 @ServiceMethod(returns = ReturnType.SINGLE)
 public Void deleteDigitalTwin(String digitalTwinId, RequestOptions options)
+
+/**
+ * Deletes a digital twin. All relationships referencing the digital twin must already be deleted.
+ *
+ * @param digitalTwinId The id of the digital twin. The id is unique within the service and case sensitive.
+ * @param context Additional context that is passed through the Http pipeline during the service call.
+ * @return The Http response
+ */
+@ServiceMethod(returns = ReturnType.SINGLE)
+public Response deleteDigitalTwinWithResponse(String digitalTwinId, Context context)
 
 /**
  * Deletes a digital twin. All relationships referencing the digital twin must already be deleted.
@@ -688,6 +810,16 @@ public Response deleteDigitalTwinWithResponse(String digitalTwinId, RequestOptio
  *
  * @param digitalTwinId The Id of the digital twin.
  * @param digitalTwinUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin
+ * @return The updated application/json digital twin.
+ */
+@ServiceMethod(returns = ReturnType.SINGLE)
+public String updateDigitalTwin(String digitalTwinId, String digitalTwinUpdateOperations)
+
+ /**
+ * Updates a digital twin.
+ *
+ * @param digitalTwinId The Id of the digital twin.
+ * @param digitalTwinUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin
  * @param options The optional settings for this request
  * @return The updated application/json digital twin.
  */
@@ -699,9 +831,45 @@ public String updateDigitalTwin(String digitalTwinId, String digitalTwinUpdateOp
  *
  * @param digitalTwinId The Id of the digital twin.
  * @param digitalTwinUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin
+ * @param modelClass The model class to convert the response to.
+ * @param context Additional context that is passed through the Http pipeline during the service call.
+ * @return A Http response containing updated application/json digital twin.
+ */
+@ServiceMethod(returns = ReturnType.SINGLE)
+public <T> Response<T> updateDigitalTwinWithResponse(String digitalTwinId, String digitalTwinUpdateOperations, Class<T> modelClass, Context context)
+
+/**
+ * Updates a digital twin.
+ *
+ * @param digitalTwinId The Id of the digital twin.
+ * @param digitalTwinUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin
+ * @param options The optional settings for this request
+ * @param modelClass The model class to convert the response to.
+ * @param context Additional context that is passed through the Http pipeline during the service call.
+ * @return A Http response containing updated application/json digital twin.
+ */
+@ServiceMethod(returns = ReturnType.SINGLE)
+public <T> Response<T> updateDigitalTwinWithResponse(String digitalTwinId, String digitalTwinUpdateOperations, RequestOptions options, Class<T> modelClass, Context context)
+
+/**
+ * Updates a digital twin.
+ *
+ * @param digitalTwinId The Id of the digital twin.
+ * @param digitalTwinUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin
+ * @param context Additional context that is passed through the Http pipeline during the service call.
+ * @return A Http response containing updated application/json digital twin.
+ */
+@ServiceMethod(returns = ReturnType.SINGLE)
+public Response<String> updateDigitalTwinWithResponse(String digitalTwinId, String digitalTwinUpdateOperations, Context context)
+
+/**
+ * Updates a digital twin.
+ *
+ * @param digitalTwinId The Id of the digital twin.
+ * @param digitalTwinUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin
  * @param options The optional settings for this request
  * @param context Additional context that is passed through the Http pipeline during the service call.
- * @return A REST response containing updated application/json digital twin.
+ * @return A Http response containing updated application/json digital twin.
  */
 @ServiceMethod(returns = ReturnType.SINGLE)
 public Response<String> updateDigitalTwinWithResponse(String digitalTwinId, String digitalTwinUpdateOperations, RequestOptions options, Context context)
