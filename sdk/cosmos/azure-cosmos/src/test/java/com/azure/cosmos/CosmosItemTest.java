@@ -132,9 +132,19 @@ public class CosmosItemTest extends TestSuiteBase {
         assertThat(deleteResponse.getStatusCode()).isEqualTo(204);
     }
 
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void deleteItemUsingEntity() throws Exception {
+        InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
+        CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);
+        CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+
+        CosmosItemResponse<?> deleteResponse = container.deleteItem(itemResponse.getItem(), options);
+        assertThat(deleteResponse.getStatusCode()).isEqualTo(204);
+    }
+
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void readAllItems() throws Exception{
+    public void readAllItems() throws Exception {
         InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);
 

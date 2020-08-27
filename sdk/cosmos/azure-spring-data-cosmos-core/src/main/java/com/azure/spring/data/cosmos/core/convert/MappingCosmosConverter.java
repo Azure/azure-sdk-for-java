@@ -122,7 +122,8 @@ public class MappingCosmosConverter
         final ObjectNode cosmosObjectNode;
 
         try {
-            cosmosObjectNode = (ObjectNode) objectMapper.readTree(objectMapper.writeValueAsString(sourceEntity));
+            final String valueAsString = objectMapper.writeValueAsString(sourceEntity);
+            cosmosObjectNode = (ObjectNode) objectMapper.readTree(valueAsString);
         } catch (JsonProcessingException e) {
             throw new CosmosAccessException("Failed to map document value.", e);
         }
