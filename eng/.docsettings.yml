@@ -112,6 +112,7 @@ known_presence_issues:
 
 known_content_issues:
   - ['README.md', '#3113']
+  - ['sdk/anomalydetector/azure-ai-anomalydetector/swagger/README.md', '#3113']
   - ['sdk/applicationinsights/microsoft-azure-applicationinsights-query/README.md', '#3113']
   - ['sdk/authorization/microsoft-azure-authentication-msi-token-provider/README.md', '#3113']
   - ['sdk/batch/microsoft-azure-batch/README.md', '#3113']

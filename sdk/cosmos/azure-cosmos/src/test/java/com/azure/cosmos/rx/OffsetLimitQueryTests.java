@@ -54,12 +54,16 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
-    public void queryDocuments(boolean qmEnabled) {
+    public void queryDocuments(Boolean qmEnabled) {
         int skipCount = 4;
         int takeCount = 10;
         String query = "SELECT * from c OFFSET " + skipCount + " LIMIT " + takeCount;
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-        options.setQueryMetricsEnabled(qmEnabled);
+
+        if (qmEnabled != null) {
+            options.setQueryMetricsEnabled(qmEnabled);
+        }
+
         options.setMaxDegreeOfParallelism(2);
         CosmosPagedFlux<InternalObjectNode> queryObservable = createdCollection.queryItems(query, options,
                                                                                                 InternalObjectNode.class);
@@ -136,13 +140,17 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
-    public void queryDocumentsWithDistinct(boolean qmEnabled) {
+    public void queryDocumentsWithDistinct(Boolean qmEnabled) {
         int skipCount = 4;
         int takeCount = 10;
         String query =
             String.format("SELECT DISTINCT c.id from c OFFSET %s LIMIT %s", skipCount, takeCount);
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-        options.setQueryMetricsEnabled(qmEnabled);
+
+        if (qmEnabled != null) {
+            options.setQueryMetricsEnabled(qmEnabled);
+        }
+
         options.setMaxDegreeOfParallelism(2);
         CosmosPagedFlux<InternalObjectNode> queryObservable = createdCollection.queryItems(query, options, InternalObjectNode.class);
 
@@ -160,13 +168,17 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
-    public void queryDocumentsWithAggregate(boolean qmEnabled) {
+    public void queryDocumentsWithAggregate(Boolean qmEnabled) {
         int skipCount = 0;
         int takeCount = 10;
         String query =
             String.format("SELECT VALUE MAX(c.%s) from c OFFSET %s LIMIT %s", field, skipCount, takeCount);
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-        options.setQueryMetricsEnabled(qmEnabled);
+
+        if (qmEnabled != null) {
+            options.setQueryMetricsEnabled(qmEnabled);
+        }
+
         CosmosPagedFlux<JsonNode> queryObservable = createdCollection.queryItems(query, options, JsonNode.class);
 
         // The pipeline execution sequence is Aggregrate, skip, and top/limit, hence finding the max from among the docs
