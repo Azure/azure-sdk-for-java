@@ -7,6 +7,7 @@
 ### Key Bug Fixes
 * Fixed NPE in `GatewayAddressCache`
 * Fixing query metric issue for zero item response
+* Improved performance (reduced CPU usage) for address parsing and Master-Key authentication
 
 ## 4.3.2-beta.2 (2020-08-17)
 ### Key Bug Fixes
