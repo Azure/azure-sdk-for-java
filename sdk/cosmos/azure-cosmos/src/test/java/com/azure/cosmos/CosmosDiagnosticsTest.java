@@ -99,6 +99,18 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         };
     }
 
+    @DataProvider(name = "readAllItemsOfLogicalPartition")
+    private Object[][] readAllItemsOfLogicalPartition() {
+        return new Object[][]{
+            new Object[] { 1, true },
+            new Object[] { 5, null },
+            new Object[] { 20, null },
+            new Object[] { 1, false },
+            new Object[] { 5, false },
+            new Object[] { 20, false },
+        };
+    }
+
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void gatewayDiagnostics() {
         CosmosClient testGatewayClient = null;
@@ -269,25 +281,75 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             String queryDiagnostics = feedResponse.getCosmosDiagnostics().toString();
             assertThat(feedResponse.getResults().size()).isEqualTo(0);
             if (!query.contains("group by") || qroupByFirstResponse) { // TODO https://github
-                if (qmEnabled != false) {
-                    // .com/Azure/azure-sdk-for-java/issues/14142
-                    assertThat(queryDiagnostics).contains("Retrieved Document Count");
-                    assertThat(queryDiagnostics).contains("Query Preparation Times");
-                    assertThat(queryDiagnostics).contains("Runtime Execution Times");
-                    assertThat(queryDiagnostics).contains("Partition Execution Timeline");
-                } else {
-                    // .com/Azure/azure-sdk-for-java/issues/14142
-                    assertThat(queryDiagnostics).doesNotContain("Retrieved Document Count");
-                    assertThat(queryDiagnostics).doesNotContain("Query Preparation Times");
-                    assertThat(queryDiagnostics).doesNotContain("Runtime Execution Times");
-                    assertThat(queryDiagnostics).doesNotContain("Partition Execution Timeline");
-                }
+                validateQueryDiagnostics(queryDiagnostics, qmEnabled, true);
 
                 if (query.contains("group by")) {
                     qroupByFirstResponse = false;
                 }
             }
         }
+    }
+
+    private static void validateQueryDiagnostics(
+        String queryDiagnostics,
+        Boolean qmEnabled,
+        boolean expectQueryPlanDiagnostics) {
+        if (qmEnabled == null || qmEnabled == true) {
+            assertThat(queryDiagnostics).contains("Retrieved Document Count");
+            assertThat(queryDiagnostics).contains("Query Preparation Times");
+            assertThat(queryDiagnostics).contains("Runtime Execution Times");
+            assertThat(queryDiagnostics).contains("Partition Execution Timeline");
+        } else {
+            assertThat(queryDiagnostics).doesNotContain("Retrieved Document Count");
+            assertThat(queryDiagnostics).doesNotContain("Query Preparation Times");
+            assertThat(queryDiagnostics).doesNotContain("Runtime Execution Times");
+            assertThat(queryDiagnostics).doesNotContain("Partition Execution Timeline");
+        }
+
+        if (expectQueryPlanDiagnostics) {
+            assertThat(queryDiagnostics).contains("QueryPlan Start Time (UTC)=");
+            assertThat(queryDiagnostics).contains("QueryPlan End Time (UTC)=");
+            assertThat(queryDiagnostics).contains("QueryPlan Duration (ms)=");
+        } else {
+            assertThat(queryDiagnostics).doesNotContain("QueryPlan Start Time (UTC)=");
+            assertThat(queryDiagnostics).doesNotContain("QueryPlan End Time (UTC)=");
+            assertThat(queryDiagnostics).doesNotContain("QueryPlan Duration (ms)=");
+        }
+    }
+
+    @Test(groups = {"simple"}, dataProvider = "readAllItemsOfLogicalPartition", timeOut = TIMEOUT)
+    public void queryMetricsForReadAllItemsOfLogicalPartition(Integer expectedItemCount, Boolean qmEnabled) {
+        String pkValue = UUID.randomUUID().toString();
+
+        for (int i = 0; i < expectedItemCount; i++) {
+            InternalObjectNode internalObjectNode = getInternalObjectNode(pkValue);
+            CosmosItemResponse<InternalObjectNode> createResponse = container.createItem(internalObjectNode);
+        }
+
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        if (qmEnabled != null) {
+            options = options.setQueryMetricsEnabled(qmEnabled);
+        }
+        ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 5);
+
+        Iterator<FeedResponse<InternalObjectNode>> iterator =
+            this.container
+                .readAllItems(
+                    new PartitionKey(pkValue),
+                    options,
+                    InternalObjectNode.class)
+                .iterableByPage().iterator();
+        assertThat(iterator.hasNext()).isTrue();
+
+        int actualItemCount = 0;
+        while (iterator.hasNext()) {
+            FeedResponse<InternalObjectNode> feedResponse = iterator.next();
+            String queryDiagnostics = feedResponse.getCosmosDiagnostics().toString();
+            actualItemCount += feedResponse.getResults().size();
+
+            validateQueryDiagnostics(queryDiagnostics, qmEnabled, false);
+        }
+        assertThat(actualItemCount).isEqualTo(expectedItemCount);
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
@@ -421,6 +483,14 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         String uuid = UUID.randomUUID().toString();
         internalObjectNode.setId(uuid);
         BridgeInternal.setProperty(internalObjectNode, "mypk", uuid);
+        return internalObjectNode;
+    }
+
+    private InternalObjectNode getInternalObjectNode(String pkValue) {
+        InternalObjectNode internalObjectNode = new InternalObjectNode();
+        String uuid = UUID.randomUUID().toString();
+        internalObjectNode.setId(uuid);
+        BridgeInternal.setProperty(internalObjectNode, "mypk", pkValue);
         return internalObjectNode;
     }
 

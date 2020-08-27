@@ -7,7 +7,6 @@ import com.microsoft.azure.spring.autoconfigure.aad.AADAuthenticationFilter;
 import com.microsoft.azure.test.utils.AppRunner;
 import com.microsoft.azure.test.oauth.OAuthResponse;
 import com.microsoft.azure.test.oauth.OAuthUtils;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,16 +34,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-import static com.microsoft.azure.test.oauth.OAuthUtils.AAD_CLIENT_ID;
-import static com.microsoft.azure.test.oauth.OAuthUtils.AAD_CLIENT_SECRET;
-import static com.microsoft.azure.test.oauth.OAuthUtils.SINGLE_TENANT_AAD_CLIENT_ID;
-import static com.microsoft.azure.test.oauth.OAuthUtils.SINGLE_TENANT_AAD_CLIENT_SECRET;
+import static com.microsoft.azure.test.oauth.OAuthUtils.AAD_MULTI_TENANT_CLIENT_ID;
+import static com.microsoft.azure.test.oauth.OAuthUtils.AAD_MULTI_TENANT_CLIENT_SECRET;
+import static com.microsoft.azure.test.oauth.OAuthUtils.AAD_SINGLE_TENANT_CLIENT_ID;
+import static com.microsoft.azure.test.oauth.OAuthUtils.AAD_SINGLE_TENANT_CLIENT_SECRET;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.http.HttpHeaders.COOKIE;
 import static org.springframework.http.HttpHeaders.SET_COOKIE;
 
-@Ignore
 public class AADAuthenticationFilterIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADAuthenticationFilterIT.class);
@@ -52,8 +50,8 @@ public class AADAuthenticationFilterIT {
 
     @Test
     public void testAADAuthenticationFilterWithSingleTenantApp() {
-        final String clientId = System.getenv(SINGLE_TENANT_AAD_CLIENT_ID);
-        final String clientSecret = System.getenv(SINGLE_TENANT_AAD_CLIENT_SECRET);
+        final String clientId = System.getenv(AAD_SINGLE_TENANT_CLIENT_ID);
+        final String clientSecret = System.getenv(AAD_SINGLE_TENANT_CLIENT_SECRET);
 
         final OAuthResponse authResponse = OAuthUtils.executeOAuth2ROPCFlow(clientId, clientSecret);
         assertNotNull(authResponse);
@@ -63,8 +61,8 @@ public class AADAuthenticationFilterIT {
 
     @Test
     public void testAADAuthenticationFilterWithMultiTenantApp() {
-        final String clientId = System.getenv(AAD_CLIENT_ID);
-        final String clientSecret = System.getenv(AAD_CLIENT_SECRET);
+        final String clientId = System.getenv(AAD_MULTI_TENANT_CLIENT_ID);
+        final String clientSecret = System.getenv(AAD_MULTI_TENANT_CLIENT_SECRET);
 
         final OAuthResponse authResponse = OAuthUtils.executeOAuth2ROPCFlow(clientId, clientSecret);
         assertNotNull(authResponse);
