@@ -13,14 +13,18 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImpl;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImplBuilder;
+import com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions;
+import com.azure.digitaltwins.core.models.ModelData;
 import com.azure.digitaltwins.core.util.DigitalTwinsResponse;
 import com.azure.digitaltwins.core.util.DigitalTwinsResponseHeaders;
 import com.azure.digitaltwins.core.implementation.serializer.DigitalTwinsStringSerializer;
+import com.azure.digitaltwins.core.util.ListModelOptions;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -226,6 +230,58 @@ public final class DigitalTwinsAsyncClient {
                     objectPagedResponse.getContinuationToken(),
                     ((PagedResponseBase)objectPagedResponse).getDeserializedHeaders());
             });
+    }
+
+    /**
+     * Gets the list of models by iterating through a collection.
+     * @param listModelOptions The options for the list operation.
+     * @return A {@link PagedFlux} of ModelData.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ModelData> listModels(ListModelOptions listModelOptions) {
+        Supplier<Mono<PagedResponse<ModelData>>> firstPage = () -> protocolLayer.getDigitalTwinModels().listSinglePageAsync(
+                (List<String>) listModelOptions.getDependenciesFor(),
+                listModelOptions.getIncludeModelDefinition(),
+                new DigitalTwinModelsListOptions().setMaxItemCount(listModelOptions.getMaxItemCount()))
+            .map(
+                objectPagedResponse -> {
+                    List<ModelData> modelList = objectPagedResponse.getValue().stream()
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toList());
+                    return new PagedResponseBase<>(
+                        objectPagedResponse.getRequest(),
+                        objectPagedResponse.getStatusCode(),
+                        objectPagedResponse.getHeaders(),
+                        modelList,
+                        objectPagedResponse.getContinuationToken(),
+                        ((PagedResponseBase) objectPagedResponse).getDeserializedHeaders());
+                }
+            );
+
+        Function<String, Mono<PagedResponse<ModelData>>> nextPage = nextLink -> protocolLayer.getDigitalTwinModels().listNextSinglePageAsync(nextLink)
+            .map(objectPagedResponse -> {
+                List<ModelData> modelList = objectPagedResponse.getValue().stream()
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+                return new PagedResponseBase<>(
+                    objectPagedResponse.getRequest(),
+                    objectPagedResponse.getStatusCode(),
+                    objectPagedResponse.getHeaders(),
+                    modelList,
+                    objectPagedResponse.getContinuationToken(),
+                    ((PagedResponseBase)objectPagedResponse).getDeserializedHeaders());
+            });
+
+        return new PagedFlux<>(firstPage, nextPage);
+    }
+
+    /**
+     * Gets the list of models by iterating through a collection.
+     * @return A {@link PagedFlux} of ModelData.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ModelData> listModels() {
+        return listModels(new ListModelOptions());
     }
 
 }

@@ -1178,18 +1178,10 @@ Async APIs
     /**
      * Creates one or many models.
      * @param models The list of models to create. Each string corresponds to exactly one model.
-     * @return The list of created models
+     * @return A {@link PagedFlux} of created models.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<List<ModelData>> createModels(List<String> models) { }
-
-    /**
-     * Creates one or many models.
-     * @param models The list of models to create. Each string corresponds to exactly one model.
-     * @return A REST response containing the list of created models.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<Response<List<ModelData>>> createModelsWithResponse(List<String> models) { }
+    public PagedFlux<ModelData> createModels(Iterable<String> models) { }
 
     /**
      * Gets a model, including the model metadata and the model definition.
@@ -1206,16 +1198,22 @@ Async APIs
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ModelData>> getModelWithResponse(String modelId) { }
-
+   
+    // TODO: all 3 optional parameters need to wrapped in a listOptions class and the input of this method will be a single wrapper object.
     /**
      * Gets the list of models by iterating through a collection.
-     * @param dependenciesFor The model Ids to have dependencies retrieved.
-     * @param includeModelDefinition Whether to include the model definition in the result. If false, only the model metadata will be returned.
-     * @param options The options to follow when listing the models. For example, the page size hint can be specified.
      * @return A {@link PagedFlux} of ModelData.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ModelData> listModels(List<String> dependenciesFor, boolean includeModelDefinition, DigitalTwinModelsListOptions options) { }
+    public PagedFlux<ModelData> listModels() { }
+    
+    /**
+     * Gets the list of models by iterating through a collection.
+     * @param listModelOptions The options to follow when listing the models. For example, the page size hint can be specified.
+     * @return A {@link PagedFlux} of ModelData.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ModelData> listModels(ListModelOptions listModelOptions) { }
 
     /**
      * Deletes a model.
@@ -1254,18 +1252,10 @@ Sync APIs
  /**
      * Creates one or many models.
      * @param models The list of models to create. Each string corresponds to exactly one model.
-     * @return The list of created models
+     * @return A {@link PagedIterable} of created ModelData.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public List<ModelData> createModels(List<String> models) { }
-
-    /**
-     * Creates one or many models.
-     * @param models The list of models to create. Each string corresponds to exactly one model.
-     * @return A REST response containing the list of created models.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Response<List<ModelData>> createModelsWithResponse(List<String> models, Context context) { }
+    public PagedIterable<ModelData> createModels(Iterable<String> models, Context context) { }
 
     /**
      * Gets a model, including the model metadata and the model definition.
@@ -1291,7 +1281,7 @@ Sync APIs
      * @return A {@link PagedIterable} of ModelData.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ModelData> listModels(List<String> dependenciesFor, boolean includeModelDefinition, DigitalTwinModelsListOptions options, Context context) { }
+    public PagedIterable<ModelData> listModels(Iterable<String> dependenciesFor, boolean includeModelDefinition, DigitalTwinModelsListOptions options, Context context) { }
     
     /**
      * Deletes a model.
