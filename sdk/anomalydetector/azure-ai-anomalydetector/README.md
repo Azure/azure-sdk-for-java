@@ -2,7 +2,7 @@
 
 Microsoft Azure Cognitive Services Anomaly Detector API enables you to monitor and detect abnormalities in your time series data with machine learning.
 
-[Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][sample_readme]
+[Source code][source_code] | Package (Maven) | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][sample_readme]
 
 ## Getting started
 
@@ -127,7 +127,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [source_code]: src
 [samples_code]: src/samples/
 [azure_subscription]: https://azure.microsoft.com/free/
-[package]: https://mvnrepository.com/artifact/com.azure/azure-ai-anomalydetector
 [api_reference_doc]: https://aka.ms/azsdk/net/docs/ref/anomalydetector
 [product_documentation]: https://docs.microsoft.com/en-us/azure/cognitive-services/anomaly-detector/
 [cognitive_resource_cli]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli
