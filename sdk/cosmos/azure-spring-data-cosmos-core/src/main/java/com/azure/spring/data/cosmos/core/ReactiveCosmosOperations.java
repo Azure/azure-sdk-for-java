@@ -115,6 +115,16 @@ public interface ReactiveCosmosOperations {
     <T> Mono<T> insert(String containerName, Object objectToSave, PartitionKey partitionKey);
 
     /**
+     * Insert
+     *
+     * @param containerName must not be {@literal null}
+     * @param objectToSave must not be {@literal null}
+     * @param <T> type class of domain type
+     * @return Mono of result
+     */
+    <T> Mono<T> insert(String containerName, T objectToSave);
+
+    /**
      * Upsert an item with partition key
      *
      * @param object the object to upsert
@@ -146,13 +156,12 @@ public interface ReactiveCosmosOperations {
     /**
      * Delete using entity
      *
+     * @param <T> type class of domain type
      * @param containerName the container name
      * @param entity the entity object
-     * @param id the id
-     * @param partitionKey the partition key
      * @return void Mono
      */
-    Mono<Void> deleteEntityById(String containerName, Object entity, Object id, PartitionKey partitionKey);
+    <T> Mono<Void> deleteEntity(String containerName, T entity);
 
     /**
      * Delete all items in a container
