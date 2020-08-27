@@ -232,10 +232,10 @@ class DataLakeServiceSasModelsTest extends Specification {
         container    | blob              | isDirectory | permission                                                                       || resource | permissionString | directoryDepth
         "container"  |  null             | false       | new FileSystemSasPermission().setReadPermission(true).setListPermission(true)    || "c"      | "rl"             | null
         "container"  | "blob"            | false       | new PathSasPermission().setReadPermission(true)                                  || "b"      | "r"              | null
-        "container"  | "blob"            | true        | new PathSasPermission().setReadPermission(true)                                  || "d"      | "r"              | 0
-        "container"  | "blob/"           | true        | new PathSasPermission().setReadPermission(true)                                  || "d"      | "r"              | 0
-        "container"  | "blob/dir1"       | true        | new PathSasPermission().setReadPermission(true)                                  || "d"      | "r"              | 1
-        "container"  | "blob/dire1/dir2" | true        | new PathSasPermission().setReadPermission(true)                                  || "d"      | "r"              | 2
+        "container"  | "/"               | true        | new PathSasPermission().setReadPermission(true)                                  || "d"      | "r"              | 0
+        "container"  | "blob/"           | true        | new PathSasPermission().setReadPermission(true)                                  || "d"      | "r"              | 1
+        "container"  | "blob/dir1"       | true        | new PathSasPermission().setReadPermission(true)                                  || "d"      | "r"              | 2
+        "container"  | "blob/dir1/dir2"  | true        | new PathSasPermission().setReadPermission(true)                                  || "d"      | "r"              | 3
 
     }
 

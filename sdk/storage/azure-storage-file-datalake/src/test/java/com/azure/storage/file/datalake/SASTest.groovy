@@ -12,10 +12,14 @@ import com.azure.storage.common.sas.AccountSasSignatureValues
 import com.azure.storage.common.sas.SasIpRange
 import com.azure.storage.common.sas.SasProtocol
 import com.azure.storage.file.datalake.implementation.util.DataLakeSasImplUtil
+import com.azure.storage.file.datalake.models.AccessControlType
 import com.azure.storage.file.datalake.models.DataLakeAccessPolicy
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier
 import com.azure.storage.file.datalake.models.DataLakeStorageException
+import com.azure.storage.file.datalake.models.ListPathsOptions
+import com.azure.storage.file.datalake.models.PathAccessControlEntry
 import com.azure.storage.file.datalake.models.PathProperties
+import com.azure.storage.file.datalake.models.RolePermissions
 import com.azure.storage.file.datalake.models.UserDelegationKey
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues
 import com.azure.storage.file.datalake.sas.FileSystemSasPermission
@@ -131,6 +135,35 @@ class SASTest extends APISpec {
         then:
         notThrown(DataLakeStorageException)
         validateSasProperties(properties)
+
+        when:
+        client.createSubdirectory(generatePathName())
+
+        then:
+        notThrown(DataLakeStorageException)
+    }
+
+    def "serviceSASSignatureValues network test directory fail"() {
+        setup:
+        def pathName = generatePathName()
+        DataLakeDirectoryClient sasClient = getDirectoryClient(primaryCredential, fsc.getFileSystemUrl(), pathName)
+        sasClient.create()
+        def permissions = new PathSasPermission() /* No read permission. */
+            .setWritePermission(true)
+            .setDeletePermission(true)
+            .setCreatePermission(true)
+
+        def sasValues = generateValues(permissions)
+
+        when:
+        def sas = sasClient.generateSas(sasValues)
+
+        def client = getDirectoryClient(sas, fsc.getFileSystemUrl(), pathName)
+
+        client.getProperties()
+
+        then:
+        thrown(DataLakeStorageException)
     }
 
     def "serviceSASSignatureValues network test file system"() {
@@ -145,11 +178,14 @@ class SASTest extends APISpec {
         def permissions = new FileSystemSasPermission()
             .setReadPermission(true)
             .setWritePermission(true)
-            .setListPermission(true)
-            .setCreatePermission(true)
             .setDeletePermission(true)
+            .setCreatePermission(true)
             .setAddPermission(true)
             .setListPermission(true)
+            .setMovePermission(true)
+            .setExecutePermission(true)
+            .setOwnershipPermission(true)
+            .setPermissionPermission(true)
 
         def expiryTime = getUTCNow().plusDays(1)
 
@@ -179,9 +215,14 @@ class SASTest extends APISpec {
         def permissions = new PathSasPermission()
             .setReadPermission(true)
             .setWritePermission(true)
-            .setCreatePermission(true)
             .setDeletePermission(true)
+            .setCreatePermission(true)
             .setAddPermission(true)
+            .setListPermission(true)
+            .setMovePermission(true)
+            .setExecutePermission(true)
+            .setOwnershipPermission(true)
+            .setPermissionPermission(true)
 
         def sasValues = generateValues(permissions)
 
@@ -200,15 +241,65 @@ class SASTest extends APISpec {
         notThrown(DataLakeStorageException)
     }
 
+    def "serviceSASSignatureValues network test directory user delegation"() {
+        setup:
+        def pathName = generatePathName()
+        DataLakeDirectoryClient sasClient = getDirectoryClient(primaryCredential, fsc.getFileSystemUrl(), pathName)
+        sasClient.create()
+        def permissions = new PathSasPermission()
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setDeletePermission(true)
+            .setCreatePermission(true)
+            .setAddPermission(true)
+            .setListPermission(true)
+            .setMovePermission(true)
+            .setExecutePermission(true)
+            .setOwnershipPermission(true)
+            .setPermissionPermission(true)
+
+        def sasValues = generateValues(permissions)
+
+        when:
+        def sas = sasClient.generateUserDelegationSas(sasValues, getUserDelegationInfo())
+
+        def client = getDirectoryClient(sas, fsc.getFileSystemUrl(), pathName)
+
+        def properties = client.getProperties()
+
+        then:
+        notThrown(DataLakeStorageException)
+        validateSasProperties(properties)
+
+        when:
+        client.createSubdirectory(generatePathName())
+
+        then:
+        notThrown(DataLakeStorageException)
+
+        when:
+        fsc = getFileSystemClient(sas, fsc.getFileSystemUrl())
+        def it = fsc.listPaths(new ListPathsOptions().setPath(pathName), null).iterator()
+
+        then:
+        it.next()
+        !it.hasNext()
+        notThrown(DataLakeStorageException)
+    }
+
     def "serviceSASSignatureValues network test file system user delegation"() {
         setup:
         def permissions = new FileSystemSasPermission()
             .setReadPermission(true)
             .setWritePermission(true)
-            .setCreatePermission(true)
             .setDeletePermission(true)
+            .setCreatePermission(true)
             .setAddPermission(true)
             .setListPermission(true)
+            .setMovePermission(true)
+            .setExecutePermission(true)
+            .setOwnershipPermission(true)
+            .setPermissionPermission(true)
 
         def expiryTime = getUTCNow().plusDays(1)
 
@@ -229,6 +320,203 @@ class SASTest extends APISpec {
 
         then:
         notThrown(DataLakeStorageException)
+    }
+
+    def "user delegation file saoid"() {
+        setup:
+        def saoid = getRandomUUID()
+        def pathName = generatePathName()
+
+        def permissions = new PathSasPermission()
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setDeletePermission(true)
+            .setCreatePermission(true)
+            .setAddPermission(true)
+            .setListPermission(true)
+            .setMovePermission(true)
+            .setExecutePermission(true)
+            .setOwnershipPermission(true)
+            .setPermissionPermission(true)
+        def expiryTime = getUTCNow().plusDays(1)
+
+        def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
+        def keyOid = getConfigValue(key.getSignedObjectId())
+        key.setSignedObjectId(keyOid)
+        def keyTid = getConfigValue(key.getSignedTenantId())
+        key.setSignedTenantId(keyTid)
+
+        when:
+        /* Grant userOID on root folder. */
+        def rootClient = getDirectoryClient(primaryCredential, fsc.getFileSystemUrl(), "")
+        ArrayList<PathAccessControlEntry> acl = new ArrayList<>();
+        PathAccessControlEntry ace = new PathAccessControlEntry()
+            .setAccessControlType(AccessControlType.USER)
+            .setEntityId(saoid.toString())
+            .setPermissions(RolePermissions.parseSymbolic("rwx", false))
+        acl.add(ace)
+        rootClient.setAccessControlList(acl, null, null)
+
+        def sasValues = new DataLakeServiceSasSignatureValues(expiryTime, permissions)
+            .setAuthorizedAadObjectId(saoid)
+        def sasWithPermissions = rootClient.generateUserDelegationSas(sasValues, key)
+
+        def client = getFileClient(sasWithPermissions, fsc.getFileSystemUrl(), pathName)
+
+        client.create(true)
+        client.append(defaultInputStream.get(), 0, defaultDataSize)
+        client.flush(defaultDataSize)
+
+        then:
+        notThrown(DataLakeStorageException)
+        sasWithPermissions.contains("saoid=" + saoid)
+
+        when:
+        client = getFileClient(primaryCredential, fsc.getFileSystemUrl(), pathName)
+        def accessControl = client.getAccessControl()
+
+        then:
+        notThrown(DataLakeStorageException)
+        accessControl.getOwner() == saoid
+    }
+
+    def "user delegation file suoid"() {
+        setup:
+        def suoid = getRandomUUID()
+        def pathName = generatePathName()
+
+        def permissions = new PathSasPermission()
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setDeletePermission(true)
+            .setCreatePermission(true)
+            .setAddPermission(true)
+            .setListPermission(true)
+            .setMovePermission(true)
+            .setExecutePermission(true)
+            .setOwnershipPermission(true)
+            .setPermissionPermission(true)
+        def expiryTime = getUTCNow().plusDays(1)
+
+        def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
+        def keyOid = getConfigValue(key.getSignedObjectId())
+        key.setSignedObjectId(keyOid)
+        def keyTid = getConfigValue(key.getSignedTenantId())
+        key.setSignedTenantId(keyTid)
+
+        when: "User is not authorized yet."
+        def sasValues = new DataLakeServiceSasSignatureValues(expiryTime, permissions)
+            .setUnauthorizedAadObjectId(suoid)
+        def sasWithPermissions = sasClient.generateUserDelegationSas(sasValues, key)
+
+        def client = getFileClient(sasWithPermissions, fsc.getFileSystemUrl(), pathName)
+        client.create(true)
+        client.append(defaultInputStream.get(), 0, defaultDataSize)
+        client.flush(defaultDataSize)
+
+        then:
+        thrown(DataLakeStorageException)
+        sasWithPermissions.contains("suoid=" + suoid)
+
+        when: "User is now authorized."
+        /* Grant userOID on root folder. */
+        def rootClient = getDirectoryClient(primaryCredential, fsc.getFileSystemUrl(), "")
+        ArrayList<PathAccessControlEntry> acl = new ArrayList<>();
+        PathAccessControlEntry ace = new PathAccessControlEntry()
+            .setAccessControlType(AccessControlType.USER)
+            .setEntityId(suoid.toString())
+            .setPermissions(RolePermissions.parseSymbolic("rwx", false))
+        acl.add(ace)
+        rootClient.setAccessControlList(acl, null, null)
+
+        sasValues = new DataLakeServiceSasSignatureValues(expiryTime, permissions)
+            .setUnauthorizedAadObjectId(suoid)
+        sasWithPermissions = rootClient.generateUserDelegationSas(sasValues, key)
+
+        client = getFileClient(sasWithPermissions, fsc.getFileSystemUrl(), pathName)
+
+        client.create(true)
+        client.append(defaultInputStream.get(), 0, defaultDataSize)
+        client.flush(defaultDataSize)
+
+        client = getFileClient(primaryCredential, fsc.getFileSystemUrl(), pathName)
+
+        then:
+        notThrown(DataLakeStorageException)
+        sasWithPermissions.contains("suoid=" + suoid)
+        client.getAccessControl().getOwner() == suoid
+
+        when: "Use random other suoid. User should not be authorized."
+        sasValues = new DataLakeServiceSasSignatureValues(expiryTime, permissions)
+            .setUnauthorizedAadObjectId(getRandomUUID())
+        sasWithPermissions = rootClient.generateUserDelegationSas(sasValues, key)
+
+        client = getFileClient(sasWithPermissions, fsc.getFileSystemUrl(), pathName)
+
+        client.getProperties()
+
+        then:
+        thrown(DataLakeStorageException)
+    }
+
+    def "user delegation file system correlation id"() {
+        setup:
+        def permissions = new FileSystemSasPermission()
+            .setListPermission(true)
+
+        def expiryTime = getUTCNow().plusDays(1)
+
+        def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
+
+        def keyOid = getConfigValue(key.getSignedObjectId())
+        key.setSignedObjectId(keyOid)
+
+        def keyTid = getConfigValue(key.getSignedTenantId())
+        key.setSignedTenantId(keyTid)
+
+        def cid = getRandomUUID()
+
+        when:
+        def sasValues = new DataLakeServiceSasSignatureValues(expiryTime, permissions)
+            .setCorrelationId(cid)
+        def sasWithPermissions = fsc.generateUserDelegationSas(sasValues, key)
+
+        def client = getFileSystemClient(sasWithPermissions, fsc.getFileSystemUrl())
+        client.listPaths().iterator().hasNext()
+
+        then:
+        sasWithPermissions.contains("scid=" + cid)
+        notThrown(DataLakeStorageException)
+    }
+
+    def "user delegation file system correlation id error"() {
+        setup:
+        def permissions = new FileSystemSasPermission()
+            .setListPermission(true)
+
+        def expiryTime = getUTCNow().plusDays(1)
+
+        def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
+
+        def keyOid = getConfigValue(key.getSignedObjectId())
+        key.setSignedObjectId(keyOid)
+
+        def keyTid = getConfigValue(key.getSignedTenantId())
+        key.setSignedTenantId(keyTid)
+
+        def cid = "invalidcid"
+
+        when:
+        def sasValues = new DataLakeServiceSasSignatureValues(expiryTime, permissions)
+            .setCorrelationId(cid)
+        def sasWithPermissions = fsc.generateUserDelegationSas(sasValues, key)
+
+        def client = getFileSystemClient(sasWithPermissions, fsc.getFileSystemUrl())
+        client.listPaths().iterator().hasNext()
+
+        then:
+        sasWithPermissions.contains("scid=" + cid)
+        thrown(DataLakeStorageException)
     }
 
     def "accountSAS network test file read"() {

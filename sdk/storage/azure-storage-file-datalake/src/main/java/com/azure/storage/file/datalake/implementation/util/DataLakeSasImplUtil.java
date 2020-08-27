@@ -251,7 +251,7 @@ public class DataLakeSasImplUtil {
         } else {
             if (isDirectory) {
                 resource = SAS_DIRECTORY_CONSTANT;
-                this.directoryDepth = pathName.split("/").length - 1;
+                this.directoryDepth = pathName.split("/").length;
             } else {
                 resource = SAS_BLOB_CONSTANT;
             }

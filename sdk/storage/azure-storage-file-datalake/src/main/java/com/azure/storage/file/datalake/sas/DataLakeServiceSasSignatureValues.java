@@ -342,6 +342,8 @@ public final class DataLakeServiceSasSignatureValues {
     /**
      * Sets the authorized AAD object id value for the SAS.
      *
+     * <p>Note: This parameter is only valid for user delegation SAS. </p>
+     *
      * @param authorizedAadObjectId The AAD object ID of a user authorized by the owner of the user delegation key
      * to perform the action granted by the SAS token.
      * @return the updated DataLakeServiceSasSignatureValues object
@@ -352,18 +354,20 @@ public final class DataLakeServiceSasSignatureValues {
     }
 
     /**
-     * @return the unknown AAD object id value for the SAS.
+     * @return the unauthorized AAD object id value for the SAS.
      */
     public String getUnauthorizedAadObjectId() {
         return unauthorizedAadObjectId;
     }
 
     /**
-     * Sets the unknown AAD object id value for the SAS.
+     * Sets the unauthorized AAD object id value for the SAS.
+     *
+     * <p>Note: This parameter is only valid for user delegation SAS. </p>
      *
      * @param unauthorizedAadObjectId The AAD object ID of a user assumed to be unauthorized by the owner of the user
      * delegation key to perform the action granted by the SAS token. The service will perform an additional
-     *  POSIX ACL check to determine if the user is authorized.
+     * POSIX ACL check to determine if the user is authorized.
      * @return the updated DataLakeServiceSasSignatureValues object
      */
     public DataLakeServiceSasSignatureValues setUnauthorizedAadObjectId(String unauthorizedAadObjectId) {
@@ -380,6 +384,8 @@ public final class DataLakeServiceSasSignatureValues {
 
     /**
      * Sets the correlation id value for the SAS.
+     *
+     * <p>Note: This parameter is only valid for user delegation SAS. </p>
      *
      * @param correlationId A correlation ID used to correlate the storage audit logs with the audit logs used by the
      * principal generating and distributing SAS.
