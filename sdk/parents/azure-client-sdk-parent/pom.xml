@@ -585,6 +585,10 @@
                 <packages>com.azure.core.serializer.json.jackson*</packages>
               </group>
               <group>
+                <title>Azure Anomaly Detector</title>
+                <packages>com.azure.ai.anomalydetector*</packages>
+              </group>
+              <group>
                 <title>Azure App Configuration</title>
                 <packages>com.azure.data.appconfiguration*</packages>
               </group>
