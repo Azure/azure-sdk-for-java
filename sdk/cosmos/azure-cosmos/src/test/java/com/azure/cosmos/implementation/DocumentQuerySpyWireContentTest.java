@@ -52,21 +52,21 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
 
         CosmosQueryRequestOptions options1 = new CosmosQueryRequestOptions();
         ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options1, 1);
-        options1.getResponseContinuationTokenLimitInKb(5);
+        options1.setResponseContinuationTokenLimitInKb(5);
         options1.setPartitionKey(new PartitionKey("99"));
         String query1 = "Select * from r";
         boolean multiPartitionCollection1 = true;
 
         CosmosQueryRequestOptions options2 = new CosmosQueryRequestOptions();
         ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options2, 1);
-        options2.getResponseContinuationTokenLimitInKb(5);
+        options2.setResponseContinuationTokenLimitInKb(5);
         options2.setPartitionKey(new PartitionKey("99"));
         String query2 = "Select * from r order by r.prop";
         boolean multiPartitionCollection2 = false;
 
         CosmosQueryRequestOptions options3 = new CosmosQueryRequestOptions();
         ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options3, 1);
-        options3.getResponseContinuationTokenLimitInKb(5);
+        options3.setResponseContinuationTokenLimitInKb(5);
         options3.setPartitionKey(new PartitionKey("99"));
         String query3 = "Select * from r";
         boolean multiPartitionCollection3 = false;
@@ -106,7 +106,7 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
         List<HttpRequest> requests = client.getCapturedRequests();
 
         for(HttpRequest req: requests) {
-            validateRequestHasContinuationTokenLimit(req, options.setResponseContinuationTokenLimitInKb());
+            validateRequestHasContinuationTokenLimit(req, options.getResponseContinuationTokenLimitInKb());
         }
     }
 

@@ -41,7 +41,7 @@ public class SendMessageAsyncSample {
         // Send that message. This call returns a Mono<Void>, which we subscribe to. It completes successfully when the
         // event has been delivered to the Service queue or topic. It completes with an error if an exception occurred
         // while sending the message.
-        sender.send(message).subscribe(
+        sender.sendMessage(message).subscribe(
             unused -> System.out.println("Sent."),
             error -> System.err.println("Error occurred while publishing message: " + error),
             () -> System.out.println("Send complete."));

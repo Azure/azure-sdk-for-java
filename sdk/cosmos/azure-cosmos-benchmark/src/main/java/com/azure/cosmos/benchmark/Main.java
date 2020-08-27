@@ -3,11 +3,13 @@
 
 package com.azure.cosmos.benchmark;
 
+import com.azure.cosmos.benchmark.ctl.AsyncCtlWorkload;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.azure.cosmos.benchmark.Configuration.Operation.CtlWorkload;
 import static com.azure.cosmos.benchmark.Configuration.Operation.ReadThroughputWithMultipleClients;
 
 public class Main {
@@ -34,7 +36,10 @@ public class Main {
             } else {
                 if(cfg.getOperationType().equals(ReadThroughputWithMultipleClients)) {
                     asyncMultiClientBenchmark(cfg);
-                } else {
+                } else if(cfg.getOperationType().equals(CtlWorkload)) {
+                    asyncCtlWorkload(cfg);
+                }
+                else {
                     asyncBenchmark(cfg);
                 }
             }
@@ -55,6 +60,16 @@ public class Main {
                 if (!Boolean.parseBoolean(cfg.isContentResponseOnWriteEnabled())) {
                     throw new IllegalArgumentException("contentResponseOnWriteEnabled parameter can only be set to false " +
                         "for write latency and write throughput operations");
+                }
+        }
+
+        switch (cfg.getOperationType()) {
+            case ReadLatency:
+            case ReadThroughput:
+                break;
+            default:
+                if (cfg.getSparsityWaitTime() != null) {
+                    throw new IllegalArgumentException("sparsityWaitTime is not supported for " + cfg.getOperationType());
                 }
         }
     }
@@ -138,6 +153,20 @@ public class Main {
         AsynReadWithMultipleClients<?> benchmark = null;
         try {
             benchmark = new AsynReadWithMultipleClients<>(cfg);
+            LOGGER.info("Starting {}", cfg.getOperationType());
+            benchmark.run();
+        } finally {
+            if (benchmark != null) {
+                benchmark.shutdown();
+            }
+        }
+    }
+
+    private static void asyncCtlWorkload(Configuration cfg) throws Exception {
+        LOGGER.info("Async ctl workload");
+        AsyncCtlWorkload benchmark = null;
+        try {
+            benchmark = new AsyncCtlWorkload(cfg);
             LOGGER.info("Starting {}", cfg.getOperationType());
             benchmark.run();
         } finally {

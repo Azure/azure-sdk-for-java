@@ -136,7 +136,7 @@ public final class AzureFileStorageImpl {
      * Initializes an instance of AzureFileStorage client.
      */
     public AzureFileStorageImpl() {
-        new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build();
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build());
     }
 
     /**

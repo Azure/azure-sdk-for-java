@@ -74,7 +74,7 @@ public class ServiceBusSenderAsyncClientJavaDocCodeSamples {
         sender.createBatch().flatMap(batch -> {
             batch.tryAdd(new ServiceBusMessage("test-1".getBytes(UTF_8)));
             batch.tryAdd(new ServiceBusMessage("test-2".getBytes(UTF_8)));
-            return sender.send(batch);
+            return sender.sendMessages(batch);
         }).subscribe(unused -> {
         },
             error -> System.err.println("Error occurred while sending batch:" + error),
@@ -116,7 +116,7 @@ public class ServiceBusSenderAsyncClientJavaDocCodeSamples {
             }
 
             return Mono.when(
-                sender.send(batch),
+                sender.sendMessages(batch),
                 sender.createBatch(options).map(newBatch -> {
                     currentBatch.set(newBatch);
 
@@ -132,7 +132,7 @@ public class ServiceBusSenderAsyncClientJavaDocCodeSamples {
             .doFinally(signal -> {
                 final ServiceBusMessageBatch batch = currentBatch.getAndSet(null);
                 if (batch != null && batch.getCount() > 0) {
-                    sender.send(batch).block();
+                    sender.sendMessages(batch).block();
                 }
             });
         // END: com.azure.messaging.servicebus.servicebusasyncsenderclient.createBatch#CreateBatchOptionsLimitedSize

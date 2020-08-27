@@ -33,7 +33,7 @@ public final class ServiceBusManagementClientImpl {
     private final ServiceBusManagementClientService service;
 
     /** The Service Bus fully qualified domain name. */
-    private String endpoint;
+    private final String endpoint;
 
     /**
      * Gets The Service Bus fully qualified domain name.
@@ -44,19 +44,8 @@ public final class ServiceBusManagementClientImpl {
         return this.endpoint;
     }
 
-    /**
-     * Sets The Service Bus fully qualified domain name.
-     *
-     * @param endpoint the endpoint value.
-     * @return the service client itself.
-     */
-    ServiceBusManagementClientImpl setEndpoint(String endpoint) {
-        this.endpoint = endpoint;
-        return this;
-    }
-
     /** Api Version. */
-    private String apiVersion;
+    private final String apiVersion;
 
     /**
      * Gets Api Version.
@@ -65,17 +54,6 @@ public final class ServiceBusManagementClientImpl {
      */
     public String getApiVersion() {
         return this.apiVersion;
-    }
-
-    /**
-     * Sets Api Version.
-     *
-     * @param apiVersion the apiVersion value.
-     * @return the service client itself.
-     */
-    ServiceBusManagementClientImpl setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
-        return this;
     }
 
     /** The HTTP pipeline to send requests through. */
@@ -90,27 +68,72 @@ public final class ServiceBusManagementClientImpl {
         return this.httpPipeline;
     }
 
+    /** The serializer to serialize an object into a string. */
     private final SerializerAdapter serializerAdapter;
 
+    /**
+     * Gets The serializer to serialize an object into a string.
+     *
+     * @return the serializerAdapter value.
+     */
     public SerializerAdapter getSerializerAdapter() {
-        return serializerAdapter;
+        return this.serializerAdapter;
     }
 
-    /** The QueuesImpl object to access its operations. */
-    private final QueuesImpl queues;
+    /** The EntitiesImpl object to access its operations. */
+    private final EntitiesImpl entities;
 
     /**
-     * Gets the QueuesImpl object to access its operations.
+     * Gets the EntitiesImpl object to access its operations.
      *
-     * @return the QueuesImpl object.
+     * @return the EntitiesImpl object.
      */
-    public QueuesImpl getQueues() {
-        return this.queues;
+    public EntitiesImpl getEntities() {
+        return this.entities;
+    }
+
+    /** The SubscriptionsImpl object to access its operations. */
+    private final SubscriptionsImpl subscriptions;
+
+    /**
+     * Gets the SubscriptionsImpl object to access its operations.
+     *
+     * @return the SubscriptionsImpl object.
+     */
+    public SubscriptionsImpl getSubscriptions() {
+        return this.subscriptions;
+    }
+
+    /** The RulesImpl object to access its operations. */
+    private final RulesImpl rules;
+
+    /**
+     * Gets the RulesImpl object to access its operations.
+     *
+     * @return the RulesImpl object.
+     */
+    public RulesImpl getRules() {
+        return this.rules;
+    }
+
+    /** The NamespacesImpl object to access its operations. */
+    private final NamespacesImpl namespaces;
+
+    /**
+     * Gets the NamespacesImpl object to access its operations.
+     *
+     * @return the NamespacesImpl object.
+     */
+    public NamespacesImpl getNamespaces() {
+        return this.namespaces;
     }
 
     /** Initializes an instance of ServiceBusManagementClient client. */
-    ServiceBusManagementClientImpl() {
-        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build());
+    ServiceBusManagementClientImpl(String endpoint, String apiVersion) {
+        this(
+                new HttpPipelineBuilder()
+                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
+                        .build(), JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
     }
 
     /**
@@ -118,20 +141,19 @@ public final class ServiceBusManagementClientImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
-    ServiceBusManagementClientImpl(HttpPipeline httpPipeline) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter());
-    }
-
-    /**
-     * Initializes an instance of ServiceBusManagementClient client.
-     *
-     * @param httpPipeline The HTTP pipeline to send requests through.
-     */
-    ServiceBusManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter) {
+    ServiceBusManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
+        String apiVersion) {
         this.httpPipeline = httpPipeline;
+        this.endpoint = endpoint;
+        this.apiVersion = apiVersion;
         this.serializerAdapter = serializerAdapter;
-        this.queues = new QueuesImpl(this);
-        this.service = RestProxy.create(ServiceBusManagementClientService.class, this.httpPipeline, serializerAdapter);
+        this.entities = new EntitiesImpl(this);
+        this.subscriptions = new SubscriptionsImpl(this);
+        this.rules = new RulesImpl(this);
+        this.namespaces = new NamespacesImpl(this);
+        this.service =
+                RestProxy.create(
+                        ServiceBusManagementClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
 
     /**
@@ -141,6 +163,29 @@ public final class ServiceBusManagementClientImpl {
     @Host("https://{endpoint}")
     @ServiceInterface(name = "ServiceBusManagement")
     private interface ServiceBusManagementClientService {
+        @Get("/{topicName}/subscriptions")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
+        Mono<Response<Object>> listSubscriptions(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("topicName") String topicName,
+                @QueryParam("$skip") Integer skip,
+                @QueryParam("$top") Integer top,
+                @QueryParam("api-version") String apiVersion,
+                Context context);
+
+        @Get("/{topicName}/subscriptions/{subscriptionName}/rules")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
+        Mono<Response<Object>> listRules(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("topicName") String topicName,
+                @PathParam("subscriptionName") String subscriptionName,
+                @QueryParam("$skip") Integer skip,
+                @QueryParam("$top") Integer top,
+                @QueryParam("api-version") String apiVersion,
+                Context context);
+
         @Get("/$Resources/{entityType}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
@@ -151,6 +196,44 @@ public final class ServiceBusManagementClientImpl {
                 @QueryParam("$top") Integer top,
                 @QueryParam("api-version") String apiVersion,
                 Context context);
+    }
+
+    /**
+     * Get the details about the subscriptions of the given topic.
+     *
+     * @param topicName name of the topic.
+     * @param skip The skip parameter.
+     * @param top The top parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details about the subscriptions of the given topic.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Object>> listSubscriptionsWithResponseAsync(
+            String topicName, Integer skip, Integer top, Context context) {
+        return service.listSubscriptions(this.getEndpoint(), topicName, skip, top, this.getApiVersion(), context);
+    }
+
+    /**
+     * Get the details about the rules of the given topic subscription.
+     *
+     * @param topicName name of the topic.
+     * @param subscriptionName name of the subscription.
+     * @param skip The skip parameter.
+     * @param top The top parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details about the rules of the given topic subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Object>> listRulesWithResponseAsync(
+            String topicName, String subscriptionName, Integer skip, Integer top, Context context) {
+        return service.listRules(
+                this.getEndpoint(), topicName, subscriptionName, skip, top, this.getApiVersion(), context);
     }
 
     /**

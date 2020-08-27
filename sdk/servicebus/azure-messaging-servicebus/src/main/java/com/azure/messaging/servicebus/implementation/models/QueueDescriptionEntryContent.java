@@ -5,12 +5,11 @@
 package com.azure.messaging.servicebus.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.messaging.servicebus.models.QueueDescription;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** The QueueDescriptionEntryContent model. */
-@JacksonXmlRootElement(localName = "QueueDescriptionEntryContent")
+@JacksonXmlRootElement(localName = "null", namespace = "http://www.w3.org/2005/Atom")
 @Fluent
 public final class QueueDescriptionEntryContent {
     /*

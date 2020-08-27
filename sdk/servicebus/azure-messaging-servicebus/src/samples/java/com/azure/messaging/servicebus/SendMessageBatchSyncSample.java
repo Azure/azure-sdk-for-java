@@ -54,7 +54,7 @@ public class SendMessageBatchSyncSample {
             }
 
             // The batch is full, so we create a new batch and send the batch.
-            senderClient.send(currentBatch);
+            senderClient.sendMessages(currentBatch);
             currentBatch = senderClient.createBatch();
 
             // Add that message that we couldn't before.
@@ -64,7 +64,7 @@ public class SendMessageBatchSyncSample {
             }
         }
 
-        senderClient.send(currentBatch);
+        senderClient.sendMessages(currentBatch);
 
         //close the client
         senderClient.close();

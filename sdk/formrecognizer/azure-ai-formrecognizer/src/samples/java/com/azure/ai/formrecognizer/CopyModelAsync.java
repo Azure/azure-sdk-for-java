@@ -6,6 +6,7 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.training.FormTrainingAsyncClient;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.polling.AsyncPollResponse;
 
 import java.util.concurrent.TimeUnit;
 
@@ -42,24 +43,25 @@ public class CopyModelAsync {
             // Start copy operation from the source client
             // The Id of the model that needs to be copied to the target resource
             .subscribe(copyAuthorization -> sourceClient.beginCopyModel(copyModelId, copyAuthorization)
-                .subscribe(copyPoller -> copyPoller.getFinalResult()
+                .filter(pollResponse -> pollResponse.getStatus().isComplete())
+                .flatMap(AsyncPollResponse::getFinalResult)
                     .subscribe(customFormModelInfo -> {
-                        System.out.printf("Original model has model Id: %s, model status: %s, was created on: %s,"
-                                + " last updated on: %s.%n",
+                        System.out.printf("Original model has model Id: %s, model status: %s, training started on: %s,"
+                                + " training completed on: %s.%n",
                             customFormModelInfo.getModelId(),
                             customFormModelInfo.getStatus(),
-                            customFormModelInfo.getRequestedOn(),
-                            customFormModelInfo.getCompletedOn());
+                            customFormModelInfo.getTrainingStartedOn(),
+                            customFormModelInfo.getTrainingCompletedOn());
 
                         // Get the copied model from the target resource
                         targetClient.getCustomModel(copyAuthorization.getModelId()).subscribe(customFormModel ->
-                            System.out.printf("Copied model has model Id: %s, model status: %s, was created on: %s,"
-                                    + " last updated on: %s.%n",
+                            System.out.printf("Copied model has model Id: %s, model status: %s, training started on: %s,"
+                                    + " training completed on: %s.%n",
                                 customFormModel.getModelId(),
                                 customFormModel.getModelStatus(),
-                                customFormModel.getRequestedOn(),
-                                customFormModel.getCompletedOn()));
-                    })));
+                                customFormModel.getTrainingStartedOn(),
+                                customFormModel.getTrainingCompletedOn()));
+                    }));
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
         // the thread so the program does not end before the send operation is complete. Using .block() instead of

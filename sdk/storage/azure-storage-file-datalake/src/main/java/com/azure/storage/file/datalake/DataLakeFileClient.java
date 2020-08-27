@@ -4,21 +4,27 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobProperties;
+import com.azure.storage.blob.models.BlobQueryResponse;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.FluxInputStream;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadUtils;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
+import com.azure.storage.file.datalake.models.FileQueryAsyncResponse;
+import com.azure.storage.file.datalake.options.FileQueryOptions;
+import com.azure.storage.file.datalake.models.FileQueryResponse;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.FileReadResponse;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
@@ -27,6 +33,7 @@ import com.azure.storage.file.datalake.models.PathProperties;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
@@ -61,7 +68,7 @@ public class DataLakeFileClient extends DataLakePathClient {
     /**
      * Indicates the maximum number of bytes that can be sent in a call to upload.
      */
-    private static final int MAX_APPEND_FILE_BYTES = DataLakeFileAsyncClient.MAX_APPEND_FILE_BYTES;
+    private static final long MAX_APPEND_FILE_BYTES = DataLakeFileAsyncClient.MAX_APPEND_FILE_BYTES;
 
     private final ClientLogger logger = new ClientLogger(DataLakeFileClient.class);
 
@@ -546,5 +553,94 @@ public class DataLakeFileClient extends DataLakePathClient {
 
         Response<DataLakePathClient> resp = StorageImplUtils.blockWithOptionalTimeout(response, timeout);
         return new SimpleResponse<>(resp, new DataLakeFileClient(resp.getValue()));
+    }
+
+    /**
+     * Opens an input stream to query the file.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.openQueryInputStream#String}
+     *
+     * @param expression The query expression.
+     * @return An <code>InputStream</code> object that represents the stream to use for reading the query response.
+     */
+    public InputStream openQueryInputStream(String expression) {
+        return openQueryInputStreamWithResponse(new FileQueryOptions(expression)).getValue();
+    }
+
+    /**
+     * Opens an input stream to query the file.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.openQueryInputStream#FileQueryOptions}
+     *
+     * @param queryOptions {@link FileQueryOptions The query options}.
+     * @return A response containing status code and HTTP headers including an <code>InputStream</code> object
+     * that represents the stream to use for reading the query response.
+     */
+    public Response<InputStream> openQueryInputStreamWithResponse(FileQueryOptions queryOptions) {
+
+        // Data to subscribe to and read from.
+        FileQueryAsyncResponse response = dataLakeFileAsyncClient.queryWithResponse(queryOptions)
+            .block();
+
+        // Create input stream from the data.
+        if (response == null) {
+            throw logger.logExceptionAsError(new IllegalStateException("Query response cannot be null"));
+        }
+        return new ResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            new FluxInputStream(response.getValue()), response.getDeserializedHeaders());
+    }
+
+    /**
+     * Queries an entire file into an output stream.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.query#OutputStream-String}
+     *
+     * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @param expression The query expression.
+     * @throws UncheckedIOException If an I/O error occurs.
+     * @throws NullPointerException if {@code stream} is null.
+     */
+    public void query(OutputStream stream, String expression) {
+        queryWithResponse(new FileQueryOptions(expression, stream), null, Context.NONE);
+    }
+
+    /**
+     * Queries an entire file into an output stream.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.queryWithResponse#FileQueryOptions-Duration-Context}
+     *
+     * @param queryOptions {@link FileQueryOptions The query options}.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers.
+     * @throws UncheckedIOException If an I/O error occurs.
+     * @throws NullPointerException if {@code stream} is null.
+     */
+    public FileQueryResponse queryWithResponse(FileQueryOptions queryOptions, Duration timeout, Context context) {
+        return DataLakeImplUtils.returnOrConvertException(() -> {
+            BlobQueryResponse response = blockBlobClient.queryWithResponse(
+                Transforms.toBlobQueryOptions(queryOptions), timeout, context);
+            return Transforms.toFileQueryResponse(response);
+        }, logger);
     }
 }

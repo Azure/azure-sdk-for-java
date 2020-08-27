@@ -1,7 +1,18 @@
 # Release History
 
-## 5.2.0-beta.1 (Unreleased)
+## 5.2.0-beta.3 (Unreleased)
 
+## 5.2.0-beta.2 (2020-08-14)
+- Support for object serializer to send and receive strongly-typed objects.
+
+## 5.2.0-beta.1 (2020-07-08)
+- Add option to control the load balancing cycle interval.
+- Add option to control the partition ownership expiration duration.
+- Add option to configure the load balancing strategy to either use balanced or greedy approach.
+
+## 5.1.2 (2020-07-08)
+- Updated dependency version of `azure-core-amqp` which has a bug fix for updating User Agent string format.
+- Fix bug where batch receive handler runs on non-blocking thread and fails on blocking calls. 
 
 ## 5.1.1 (2020-06-12)
 - Fix bug where receiver link fails to add credits to new links created after an existing link is closed.

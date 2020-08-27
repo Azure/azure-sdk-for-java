@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import java.time.OffsetDateTime;
@@ -19,19 +20,19 @@ public final class QueueDescriptionFeed {
     /*
      * URL of the list queues query.
      */
-    @JsonProperty(value = "id")
+    @JacksonXmlProperty(localName = "id", namespace = "http://www.w3.org/2005/Atom")
     private String id;
 
     /*
      * The entity type for the feed.
      */
     @JsonProperty(value = "title")
-    private String title;
+    private Object title;
 
     /*
      * Datetime of the query.
      */
-    @JsonProperty(value = "updated")
+    @JacksonXmlProperty(localName = "updated", namespace = "http://www.w3.org/2005/Atom")
     private OffsetDateTime updated;
 
     /*
@@ -71,7 +72,7 @@ public final class QueueDescriptionFeed {
      *
      * @return the title value.
      */
-    public String getTitle() {
+    public Object getTitle() {
         return this.title;
     }
 
@@ -81,7 +82,7 @@ public final class QueueDescriptionFeed {
      * @param title the title value to set.
      * @return the QueueDescriptionFeed object itself.
      */
-    public QueueDescriptionFeed setTitle(String title) {
+    public QueueDescriptionFeed setTitle(Object title) {
         this.title = title;
         return this;
     }

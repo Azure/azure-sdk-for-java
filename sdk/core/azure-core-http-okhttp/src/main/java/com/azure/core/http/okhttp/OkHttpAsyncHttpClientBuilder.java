@@ -19,17 +19,19 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Builder to configure and build an implementation of {@link HttpClient} for OkHttp.
+ * Builder class responsible for creating instances of {@link com.azure.core.http.HttpClient} backed by OkHttp.
  */
 public class OkHttpAsyncHttpClientBuilder {
 
     private final okhttp3.OkHttpClient okHttpClient;
 
-    private static final Duration DEFAULT_READ_TIMEOUT = Duration.ofSeconds(120);
-    private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(60);
+    private static final Duration MINIMUM_TIMEOUT = Duration.ofMillis(1);
+    private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(10);
+    private static final Duration DEFAULT_IO_TIMEOUT = Duration.ofSeconds(60);
 
     private List<Interceptor> networkInterceptors = new ArrayList<>();
     private Duration readTimeout;
+    private Duration writeTimeout;
     private Duration connectionTimeout;
     private ConnectionPool connectionPool;
     private Dispatcher dispatcher;
@@ -66,11 +68,11 @@ public class OkHttpAsyncHttpClientBuilder {
 
     /**
      * Add network layer interceptors to Http request pipeline.
-     *
+     * <p>
      * This replaces all previously-set interceptors.
      *
-     * @param networkInterceptors the interceptors to add
-     * @return the updated OkHttpAsyncHttpClientBuilder object
+     * @param networkInterceptors The interceptors to add.
+     * @return The updated OkHttpAsyncHttpClientBuilder object.
      */
     public OkHttpAsyncHttpClientBuilder networkInterceptors(List<Interceptor> networkInterceptors) {
         this.networkInterceptors = Objects.requireNonNull(networkInterceptors, "'networkInterceptors' cannot be null.");
@@ -79,11 +81,13 @@ public class OkHttpAsyncHttpClientBuilder {
 
     /**
      * Sets the read timeout.
+     * <p>
+     * If {@code readTimeout} is {@code null} a default timeout of 60 seconds will be used. If the timeout is less than
+     * or equal to zero then no timeout will be used. Otherwise, the maximum of one millisecond and the passed timeout
+     * will be used.
      *
-     * The default read timeout is 120 seconds.
-     *
-     * @param readTimeout the read timeout
-     * @return the updated OkHttpAsyncHttpClientBuilder object
+     * @param readTimeout The read timeout.
+     * @return The updated OkHttpAsyncHttpClientBuilder object.
      */
     public OkHttpAsyncHttpClientBuilder readTimeout(Duration readTimeout) {
         // setReadTimeout can be null
@@ -92,12 +96,28 @@ public class OkHttpAsyncHttpClientBuilder {
     }
 
     /**
+     * Sets the write timeout.
+     * <p>
+     * If {@code writeTimeout} is {@code null} a default timeout of 60 seconds will be used. If the timeout is less than
+     * or equal to zero then no timeout will be used. Otherwise, the maximum of one millisecond and the passed timeout
+     * will be used.
+     *
+     * @param writeTimeout The write timeout.
+     * @return The updated OkHttpAsyncHttpClientBuilder object.
+     */
+    public OkHttpAsyncHttpClientBuilder writeTimeout(Duration writeTimeout) {
+        this.writeTimeout = writeTimeout;
+        return this;
+    }
+
+    /**
      * Sets the connection timeout.
+     * <p>
+     * If {@code connectionTimeout} is {@code null} or less than or equal to zero a default timeout of 10 seconds will
+     * be used. Otherwise, the maximum of one millisecond and the passed timeout will be used.
      *
-     * The default connection timeout is 60 seconds.
-     *
-     * @param connectionTimeout the connection timeout
-     * @return the updated OkHttpAsyncHttpClientBuilder object
+     * @param connectionTimeout The connection timeout.
+     * @return The updated OkHttpAsyncHttpClientBuilder object.
      */
     public OkHttpAsyncHttpClientBuilder connectionTimeout(Duration connectionTimeout) {
         // setConnectionTimeout can be null
@@ -108,8 +128,8 @@ public class OkHttpAsyncHttpClientBuilder {
     /**
      * Sets the Http connection pool.
      *
-     * @param connectionPool the OkHttp connection pool to use
-     * @return the updated OkHttpAsyncHttpClientBuilder object
+     * @param connectionPool The OkHttp connection pool to use.
+     * @return The updated OkHttpAsyncHttpClientBuilder object.
      */
     public OkHttpAsyncHttpClientBuilder connectionPool(ConnectionPool connectionPool) {
         // Null ConnectionPool is not allowed
@@ -120,8 +140,8 @@ public class OkHttpAsyncHttpClientBuilder {
     /**
      * Sets the dispatcher that also composes the thread pool for executing HTTP requests.
      *
-     * @param dispatcher the dispatcher to use
-     * @return the updated OkHttpAsyncHttpClientBuilder object
+     * @param dispatcher The dispatcher to use.
+     * @return The updated OkHttpAsyncHttpClientBuilder object.
      */
     public OkHttpAsyncHttpClientBuilder dispatcher(Dispatcher dispatcher) {
         // Null Dispatcher is not allowed
@@ -133,7 +153,7 @@ public class OkHttpAsyncHttpClientBuilder {
      * Sets the proxy.
      *
      * @param proxyOptions The proxy configuration to use.
-     * @return the updated {@link OkHttpAsyncHttpClientBuilder} object
+     * @return The updated OkHttpAsyncHttpClientBuilder object.
      */
     public OkHttpAsyncHttpClientBuilder proxy(ProxyOptions proxyOptions) {
         // proxyOptions can be null
@@ -147,7 +167,7 @@ public class OkHttpAsyncHttpClientBuilder {
      * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
      * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
      *
-     * @param configuration The configuration store used to
+     * @param configuration The configuration store.
      * @return The updated OkHttpAsyncHttpClientBuilder object.
      */
     public OkHttpAsyncHttpClientBuilder configuration(Configuration configuration) {
@@ -156,9 +176,10 @@ public class OkHttpAsyncHttpClientBuilder {
     }
 
     /**
-     * Build a HttpClient with current configurations.
+     * Creates a new OkHttp-backed {@link com.azure.core.http.HttpClient} instance on every call, using the
+     * configuration set in the builder at the time of the build method call.
      *
-     * @return a {@link HttpClient}.
+     * @return A new OkHttp-backed {@link com.azure.core.http.HttpClient} instance.
      */
     public HttpClient build() {
         OkHttpClient.Builder httpClientBuilder = this.okHttpClient == null
@@ -170,13 +191,10 @@ public class OkHttpAsyncHttpClientBuilder {
             httpClientBuilder = httpClientBuilder.addNetworkInterceptor(interceptor);
         }
 
-        // Use the configured read timeout if set, otherwise use the default (120s).
-        httpClientBuilder = httpClientBuilder.readTimeout((readTimeout != null) ? readTimeout : DEFAULT_READ_TIMEOUT);
-
-        // Use the configured connection timeout if set, otherwise use the default (60s).
-        httpClientBuilder = (this.connectionTimeout != null)
-            ? httpClientBuilder.connectTimeout(this.connectionTimeout)
-            : httpClientBuilder.connectTimeout(DEFAULT_CONNECT_TIMEOUT);
+        // Configure operation timeouts.
+        httpClientBuilder = httpClientBuilder.connectTimeout(convertConnectTimeout(connectionTimeout))
+            .writeTimeout(convertIoTimeout(writeTimeout))
+            .readTimeout(convertIoTimeout(readTimeout));
 
         // If set use the configured connection pool.
         if (this.connectionPool != null) {
@@ -203,8 +221,8 @@ public class OkHttpAsyncHttpClientBuilder {
                 buildProxyOptions.getNonProxyHosts()));
 
             if (buildProxyOptions.getUsername() != null) {
-                ProxyAuthenticator proxyAuthenticator = new ProxyAuthenticator(proxyOptions.getUsername(),
-                    proxyOptions.getPassword());
+                ProxyAuthenticator proxyAuthenticator = new ProxyAuthenticator(buildProxyOptions.getUsername(),
+                    buildProxyOptions.getPassword());
 
                 httpClientBuilder = httpClientBuilder.proxyAuthenticator(proxyAuthenticator)
                     .addInterceptor(proxyAuthenticator.getProxyAuthenticationInfoInterceptor());
@@ -212,5 +230,37 @@ public class OkHttpAsyncHttpClientBuilder {
         }
 
         return new OkHttpAsyncHttpClient(httpClientBuilder.build());
+    }
+
+    /*
+     * Convert the connect timeout configured in the builder. If the timeout is null or less than or equal to zero a
+     * default timeout of 10 seconds will be used. Otherwise, the maximum of the configured timeout and one millisecond
+     * is used.
+     */
+    private static Duration convertConnectTimeout(Duration timeout) {
+        return convertTimeout(timeout, DEFAULT_CONNECT_TIMEOUT, true);
+    }
+
+    /*
+     * Convert the IO timeout configured in the builder. If the timeout is null a default timeout of 60 seconds will be
+     * used. If the timeout is less than or equal to zero a zero duration timeout will be used it indicate no timeout.
+     * Finally, if neither of the cases above are true then the maximum of the configured timeout and one millisecond is
+     * used.
+     */
+    private static Duration convertIoTimeout(Duration timeout) {
+        return convertTimeout(timeout, DEFAULT_IO_TIMEOUT, false);
+    }
+
+    private static Duration convertTimeout(Duration timeout, Duration defaultTimeout,
+        boolean useDefaultWhenLessThanZero) {
+        if (timeout == null) {
+            return defaultTimeout;
+        }
+
+        if (timeout.isNegative() || timeout.isZero()) {
+            return useDefaultWhenLessThanZero ? defaultTimeout : Duration.ZERO;
+        }
+
+        return (timeout.compareTo(MINIMUM_TIMEOUT) < 0) ? MINIMUM_TIMEOUT : timeout;
     }
 }

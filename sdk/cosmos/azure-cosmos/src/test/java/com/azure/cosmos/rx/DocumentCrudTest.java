@@ -5,15 +5,16 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.TestObject;
+import com.azure.cosmos.implementation.FailureValidator;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.implementation.InternalObjectNode;
-import com.azure.cosmos.implementation.FailureValidator;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -247,6 +248,35 @@ public class DocumentCrudTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
+    public void deleteDocumentUsingEntity(String documentId) throws InterruptedException {
+        InternalObjectNode docDefinition = getDocumentDefinition(documentId);
+
+        CosmosItemResponse<InternalObjectNode> documentResponse = container.createItem(docDefinition,
+            new CosmosItemRequestOptions()).block();
+
+        CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+        Mono<CosmosItemResponse<Object>> deleteObservable = container.deleteItem(documentResponse.getItem(), options);
+
+        CosmosItemResponseValidator validator =
+            new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
+                .nullResource()
+                .build();
+        this.validateItemSuccess(deleteObservable, validator);
+
+        // attempt to read document which was deleted
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
+
+        Mono<CosmosItemResponse<InternalObjectNode>> readObservable = container.readItem(documentId,
+            new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(docDefinition, "mypk")),
+            options, InternalObjectNode.class);
+        FailureValidator notFoundValidator = new FailureValidator.Builder()
+            .resourceNotFound()
+            .documentClientExceptionToStringExcludesHeader(HttpConstants.HttpHeaders.AUTHORIZATION)
+            .build();
+        validateItemFailure(readObservable, notFoundValidator);
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
     public void deleteDocument_undefinedPK(String documentId) throws InterruptedException {
         InternalObjectNode docDefinition = new InternalObjectNode();
         docDefinition.setId(documentId);
@@ -363,6 +393,19 @@ public class DocumentCrudTest extends TestSuiteBase {
         this.validateItemSuccess(readObservable, validator);
     }
 
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void upsertDocument_ReplaceDocumentWithPartitionKey() throws Throwable {
+        TestObject item = TestObject.create();
+        CosmosItemResponse<TestObject> response = container.createItem(item,  new PartitionKey(item.getMypk()), new CosmosItemRequestOptions()).block();
+
+        item.setStringProp( UUID.randomUUID().toString());
+
+        CosmosItemResponse<TestObject> replaceResponse = container.upsertItem(item,  new CosmosItemRequestOptions()).block();
+
+        // Validate result
+        assertThat(replaceResponse.getItem()).isEqualTo(item);
+    }
+
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void typedItems() throws Throwable {
         String docId = "1234";
@@ -384,7 +427,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         TestObject resultObject = itemResponseMono.block().getItem();
         compareTestObjs(newTestObject, resultObject);
 
-        Mono<CosmosItemResponse<TestObject>> readResponseMono = container.readItem(newTestObject.id,
+        Mono<CosmosItemResponse<TestObject>> readResponseMono = container.readItem(newTestObject.getId(),
                                                                                         new PartitionKey(newTestObject
                                                                                                              .getMypk()),
                                                                                         TestObject.class);
@@ -405,65 +448,6 @@ public class DocumentCrudTest extends TestSuiteBase {
         assertThat(newTestObject.getMypk()).isEqualTo(resultObject.getMypk());
         assertThat(newTestObject.getSgmts().equals(resultObject.getSgmts())).isTrue();
         assertThat(newTestObject.getStringProp()).isEqualTo(resultObject.getStringProp());
-    }
-
-    static class TestObject {
-        private String id;
-        private String mypk;
-        private List<List<Integer>> sgmts;
-        private String stringProp;
-
-        public TestObject() {
-        }
-
-        public TestObject(String id, String mypk, List<List<Integer>> sgmts, String stringProp) {
-            this.id = id;
-            this.mypk = mypk;
-            this.sgmts = sgmts;
-            this.stringProp = stringProp;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getMypk() {
-            return mypk;
-        }
-
-        public void setMypk(String mypk) {
-            this.mypk = mypk;
-        }
-
-        public List<List<Integer>> getSgmts() {
-            return sgmts;
-        }
-
-        public void setSgmts(List<List<Integer>> sgmts) {
-            this.sgmts = sgmts;
-        }
-
-        /**
-         * Getter for property 'stringProp'.
-         *
-         * @return Value for property 'stringProp'.
-         */
-        public String getStringProp() {
-            return stringProp;
-        }
-
-        /**
-         * Setter for property 'stringProp'.
-         *
-         * @param stringProp Value to set for property 'stringProp'.
-         */
-        public void setStringProp(String stringProp) {
-            this.stringProp = stringProp;
-        }
     }
 
 

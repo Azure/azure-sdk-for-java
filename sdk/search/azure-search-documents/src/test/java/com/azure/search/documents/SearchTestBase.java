@@ -8,7 +8,9 @@ import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexerDataSources;
@@ -44,6 +46,7 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -55,12 +58,14 @@ import static com.azure.search.documents.TestHelpers.SQL_DATASOURCE_NAME;
  * Abstract base class for all Search API tests
  */
 public abstract class SearchTestBase extends TestBase {
-    private static final String HOTELS_TESTS_INDEX_DATA_JSON = "HotelsTestsIndexData.json";
+    protected static final String HOTELS_TESTS_INDEX_DATA_JSON = "HotelsTestsIndexData.json";
     protected static final String ENDPOINT = Configuration.getGlobalConfiguration()
         .get("SEARCH_SERVICE_ENDPOINT", "https://playback.search.windows.net");
 
     protected static final String API_KEY = Configuration.getGlobalConfiguration()
         .get("SEARCH_SERVICE_API_KEY", "apiKey");
+
+    protected static final TestMode TEST_MODE = initializeTestMode();
 
     // The connection string we use here, as well as table name and target index schema, use the USGS database
     // that we set up to support our code samples.
@@ -138,10 +143,8 @@ public abstract class SearchTestBase extends TestBase {
             addPolicies(builder, policies);
             return builder;
         }
-//        builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(
-//            new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
         addPolicies(builder, policies);
-
+        //builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
         builder.retryPolicy(new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30))));
 
         if (!interceptorManager.isLiveMode()) {
@@ -181,7 +184,7 @@ public abstract class SearchTestBase extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             return builder.httpClient(interceptorManager.getPlaybackClient());
         }
-
+        //builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
         builder.retryPolicy(new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30))));
 
         if (!interceptorManager.isLiveMode()) {
@@ -197,187 +200,168 @@ public abstract class SearchTestBase extends TestBase {
         weights.put("Category", 2.0);
         String searchIndexName = indexName == null ? randomIndexName(HOTEL_INDEX_NAME) : indexName;
         return new SearchIndex(searchIndexName, Arrays.asList(
-                new SearchField("HotelId", SearchFieldDataType.STRING)
-                    .setKey(Boolean.TRUE)
-                    .setFilterable(Boolean.TRUE)
-                    .setSortable(Boolean.TRUE)
-                    .setFacetable(Boolean.TRUE)
-                    .setHidden(Boolean.FALSE),
-                new SearchField("HotelName", SearchFieldDataType.STRING)
-                    .setSearchable(Boolean.TRUE)
-                    .setFilterable(Boolean.TRUE)
-                    .setSortable(Boolean.TRUE)
-                    .setHidden(Boolean.FALSE),
-                new SearchField("Description", SearchFieldDataType.STRING)
-                    .setSearchable(Boolean.TRUE)
-                    .setAnalyzerName(LexicalAnalyzerName.EN_LUCENE)
-                    .setHidden(Boolean.FALSE),
-                new SearchField("DescriptionFr", SearchFieldDataType.STRING)
-                    .setSearchable(Boolean.TRUE)
-                    .setAnalyzerName(LexicalAnalyzerName.FR_LUCENE)
-                    .setHidden(Boolean.FALSE),
-                new SearchField("Description_Custom", SearchFieldDataType.STRING)
-                    .setSearchable(Boolean.TRUE)
-                    .setSearchAnalyzerName(LexicalAnalyzerName.STOP)
-                    .setIndexAnalyzerName(LexicalAnalyzerName.STOP)
-                    .setHidden(Boolean.FALSE),
-                new SearchField("Category", SearchFieldDataType.STRING)
-                    .setSearchable(Boolean.TRUE)
-                    .setFilterable(Boolean.TRUE)
-                    .setSortable(Boolean.TRUE)
-                    .setFacetable(Boolean.TRUE)
-                    .setHidden(Boolean.FALSE),
-                new SearchField("Tags", SearchFieldDataType.collection(SearchFieldDataType.STRING))
-                    .setSearchable(Boolean.TRUE)
-                    .setFilterable(Boolean.TRUE)
-                    .setFacetable(Boolean.TRUE)
-                    .setHidden(Boolean.FALSE),
-                new SearchField("ParkingIncluded", SearchFieldDataType.BOOLEAN)
-                    .setFilterable(Boolean.TRUE)
-                    .setSortable(Boolean.TRUE)
-                    .setFacetable(Boolean.TRUE)
-                    .setHidden(Boolean.FALSE),
-                new SearchField("SmokingAllowed", SearchFieldDataType.BOOLEAN)
-                    .setFilterable(Boolean.TRUE)
-                    .setSortable(Boolean.TRUE)
-                    .setFacetable(Boolean.TRUE)
-                    .setHidden(Boolean.FALSE),
-                new SearchField("LastRenovationDate", SearchFieldDataType.DATE_TIME_OFFSET)
-                    .setFilterable(Boolean.TRUE)
-                    .setSortable(Boolean.TRUE)
-                    .setFacetable(Boolean.TRUE)
-                    .setHidden(Boolean.FALSE),
-                new SearchField("Rating", SearchFieldDataType.INT32)
-                    .setFilterable(Boolean.TRUE)
-                    .setSortable(Boolean.TRUE)
-                    .setFacetable(Boolean.TRUE)
-                    .setHidden(Boolean.FALSE),
-                new SearchField("Address", SearchFieldDataType.COMPLEX)
-                    .setFields(Arrays.asList(
-                        new SearchField("StreetAddress", SearchFieldDataType.STRING)
-                            .setSearchable(Boolean.TRUE)
-                            .setHidden(Boolean.FALSE),
-                        new SearchField("City", SearchFieldDataType.STRING)
-                            .setSearchable(Boolean.TRUE)
-                            .setFilterable(Boolean.TRUE)
-                            .setSortable(Boolean.TRUE)
-                            .setFacetable(Boolean.TRUE)
-                            .setHidden(Boolean.FALSE),
-                        new SearchField("StateProvince", SearchFieldDataType.STRING)
-                            .setSearchable(Boolean.TRUE)
-                            .setFilterable(Boolean.TRUE)
-                            .setSortable(Boolean.TRUE)
-                            .setFacetable(Boolean.TRUE)
-                            .setHidden(Boolean.FALSE),
-                        new SearchField("Country", SearchFieldDataType.STRING)
-                            .setSearchable(Boolean.TRUE)
-                            .setFilterable(Boolean.TRUE)
-                            .setSortable(Boolean.TRUE)
-                            .setFacetable(Boolean.TRUE)
-                            .setHidden(Boolean.FALSE),
-                        new SearchField("PostalCode", SearchFieldDataType.STRING)
-                            .setSearchable(Boolean.TRUE)
-                            .setFilterable(Boolean.TRUE)
-                            .setSortable(Boolean.TRUE)
-                            .setFacetable(Boolean.TRUE)
-                            .setHidden(Boolean.FALSE)
-                        )
-                    ),
-                new SearchField("Location", SearchFieldDataType.GEOGRAPHY_POINT)
-                    .setFilterable(Boolean.TRUE)
-                    .setSortable(Boolean.TRUE)
-                    .setHidden(Boolean.FALSE),
-                new SearchField("Rooms", SearchFieldDataType.collection(SearchFieldDataType.COMPLEX))
-                    .setFields(Arrays.asList(
-                        new SearchField("Description", SearchFieldDataType.STRING)
-                            .setSearchable(Boolean.TRUE)
-                            .setAnalyzerName(LexicalAnalyzerName.EN_LUCENE),
-                        new SearchField("DescriptionFr", SearchFieldDataType.STRING)
-                            .setSearchable(Boolean.TRUE)
-                            .setAnalyzerName(LexicalAnalyzerName.FR_LUCENE)
-                            .setHidden(Boolean.FALSE),
-                        new SearchField("Type", SearchFieldDataType.STRING)
-                            .setSearchable(Boolean.TRUE)
-                            .setFilterable(Boolean.TRUE)
-                            .setFacetable(Boolean.TRUE)
-                            .setHidden(Boolean.FALSE),
-                        new SearchField("BaseRate", SearchFieldDataType.DOUBLE)
-                            .setKey(Boolean.FALSE)
-                            .setFilterable(Boolean.TRUE)
-                            .setFacetable(Boolean.TRUE)
-                            .setHidden(Boolean.FALSE),
-                        new SearchField("BedOptions", SearchFieldDataType.STRING)
-                            .setSearchable(Boolean.TRUE)
-                            .setFilterable(Boolean.TRUE)
-                            .setFacetable(Boolean.TRUE)
-                            .setHidden(Boolean.FALSE),
-                        new SearchField("SleepsCount", SearchFieldDataType.INT32)
-                            .setFilterable(Boolean.TRUE)
-                            .setFacetable(Boolean.TRUE)
-                            .setHidden(Boolean.FALSE),
-                        new SearchField("SmokingAllowed", SearchFieldDataType.BOOLEAN)
-                            .setFilterable(Boolean.TRUE)
-                            .setFacetable(Boolean.TRUE)
-                            .setHidden(Boolean.FALSE),
-                        new SearchField("Tags", SearchFieldDataType.collection(SearchFieldDataType.STRING))
-                            .setSearchable(Boolean.TRUE)
-                            .setFilterable(Boolean.TRUE)
-                            .setFacetable(Boolean.TRUE)
-                            .setHidden(Boolean.FALSE)
-                        )
-                    ),
-                new SearchField("TotalGuests", SearchFieldDataType.INT64)
-                    .setFilterable(Boolean.TRUE)
-                    .setSortable(Boolean.TRUE)
-                    .setFacetable(Boolean.TRUE),
-                new SearchField("ProfitMargin", SearchFieldDataType.DOUBLE)
-                )
-            )
-            .setScoringProfiles(Arrays.asList(
-                new ScoringProfile("MyProfile")
-                    .setFunctionAggregation(ScoringFunctionAggregation.AVERAGE)
-                    .setFunctions(Arrays.asList(
-                        new MagnitudeScoringFunction("Rating", 2.0,
-                            new MagnitudeScoringParameters(1, 4)
-                                .setShouldBoostBeyondRangeByConstant(true))
-                            .setInterpolation(ScoringFunctionInterpolation.CONSTANT),
-                        new DistanceScoringFunction("Location", 1.5,
-                            new DistanceScoringParameters("Loc", 5))
-                            .setInterpolation(ScoringFunctionInterpolation.LINEAR),
-                        new FreshnessScoringFunction("LastRenovationDate", 1.1,
-                            new FreshnessScoringParameters(Duration.ofDays(365)))
-                            .setInterpolation(ScoringFunctionInterpolation.LOGARITHMIC)
-                    ))
-                    .setTextWeights(new TextWeights(weights)),
-                new ScoringProfile("ProfileTwo")
-                    .setFunctionAggregation(ScoringFunctionAggregation.MAXIMUM)
-                    .setFunctions(Collections.singletonList(
-                        new TagScoringFunction("Tags", 1.5,
-                            new TagScoringParameters("MyTags"))
-                            .setInterpolation(ScoringFunctionInterpolation.LINEAR)
-                    )),
-                new ScoringProfile("ProfileThree")
-                    .setFunctionAggregation(ScoringFunctionAggregation.MINIMUM)
-                    .setFunctions(Collections.singletonList(
-                        new MagnitudeScoringFunction("Rating", 3.0,
-                            new MagnitudeScoringParameters(0, 10)
-                                .setShouldBoostBeyondRangeByConstant(false))
-                            .setInterpolation(ScoringFunctionInterpolation.QUADRATIC)
-                    )),
-                new ScoringProfile("ProfileFour")
-                    .setFunctionAggregation(ScoringFunctionAggregation.FIRST_MATCHING)
-                    .setFunctions(Collections.singletonList(
-                        new MagnitudeScoringFunction("Rating", 3.14,
-                            new MagnitudeScoringParameters(1, 5)
-                                .setShouldBoostBeyondRangeByConstant(false))
-                            .setInterpolation(ScoringFunctionInterpolation.CONSTANT)
-                    ))
-            ))
-            .setDefaultScoringProfile("MyProfile")
+            new SearchField("HotelId", SearchFieldDataType.STRING)
+                .setKey(Boolean.TRUE)
+                .setFilterable(Boolean.TRUE)
+                .setSortable(Boolean.TRUE)
+                .setFacetable(Boolean.TRUE)
+                .setHidden(Boolean.FALSE),
+            new SearchField("HotelName", SearchFieldDataType.STRING)
+                .setSearchable(Boolean.TRUE)
+                .setFilterable(Boolean.TRUE)
+                .setSortable(Boolean.TRUE)
+                .setHidden(Boolean.FALSE),
+            new SearchField("Description", SearchFieldDataType.STRING)
+                .setSearchable(Boolean.TRUE)
+                .setAnalyzerName(LexicalAnalyzerName.EN_LUCENE)
+                .setHidden(Boolean.FALSE),
+            new SearchField("DescriptionFr", SearchFieldDataType.STRING)
+                .setSearchable(Boolean.TRUE)
+                .setAnalyzerName(LexicalAnalyzerName.FR_LUCENE)
+                .setHidden(Boolean.FALSE),
+            new SearchField("Description_Custom", SearchFieldDataType.STRING)
+                .setSearchable(Boolean.TRUE)
+                .setSearchAnalyzerName(LexicalAnalyzerName.STOP)
+                .setIndexAnalyzerName(LexicalAnalyzerName.STOP)
+                .setHidden(Boolean.FALSE),
+            new SearchField("Category", SearchFieldDataType.STRING)
+                .setSearchable(Boolean.TRUE)
+                .setFilterable(Boolean.TRUE)
+                .setSortable(Boolean.TRUE)
+                .setFacetable(Boolean.TRUE)
+                .setHidden(Boolean.FALSE),
+            new SearchField("Tags", SearchFieldDataType.collection(SearchFieldDataType.STRING))
+                .setSearchable(Boolean.TRUE)
+                .setFilterable(Boolean.TRUE)
+                .setFacetable(Boolean.TRUE)
+                .setHidden(Boolean.FALSE),
+            new SearchField("ParkingIncluded", SearchFieldDataType.BOOLEAN)
+                .setFilterable(Boolean.TRUE)
+                .setSortable(Boolean.TRUE)
+                .setFacetable(Boolean.TRUE)
+                .setHidden(Boolean.FALSE),
+            new SearchField("SmokingAllowed", SearchFieldDataType.BOOLEAN)
+                .setFilterable(Boolean.TRUE)
+                .setSortable(Boolean.TRUE)
+                .setFacetable(Boolean.TRUE)
+                .setHidden(Boolean.FALSE),
+            new SearchField("LastRenovationDate", SearchFieldDataType.DATE_TIME_OFFSET)
+                .setFilterable(Boolean.TRUE)
+                .setSortable(Boolean.TRUE)
+                .setFacetable(Boolean.TRUE)
+                .setHidden(Boolean.FALSE),
+            new SearchField("Rating", SearchFieldDataType.INT32)
+                .setFilterable(Boolean.TRUE)
+                .setSortable(Boolean.TRUE)
+                .setFacetable(Boolean.TRUE)
+                .setHidden(Boolean.FALSE),
+            new SearchField("Address", SearchFieldDataType.COMPLEX)
+                .setFields(new SearchField("StreetAddress", SearchFieldDataType.STRING)
+                        .setSearchable(Boolean.TRUE)
+                        .setHidden(Boolean.FALSE),
+                    new SearchField("City", SearchFieldDataType.STRING)
+                        .setSearchable(Boolean.TRUE)
+                        .setFilterable(Boolean.TRUE)
+                        .setSortable(Boolean.TRUE)
+                        .setFacetable(Boolean.TRUE)
+                        .setHidden(Boolean.FALSE),
+                    new SearchField("StateProvince", SearchFieldDataType.STRING)
+                        .setSearchable(Boolean.TRUE)
+                        .setFilterable(Boolean.TRUE)
+                        .setSortable(Boolean.TRUE)
+                        .setFacetable(Boolean.TRUE)
+                        .setHidden(Boolean.FALSE),
+                    new SearchField("Country", SearchFieldDataType.STRING)
+                        .setSearchable(Boolean.TRUE)
+                        .setFilterable(Boolean.TRUE)
+                        .setSortable(Boolean.TRUE)
+                        .setFacetable(Boolean.TRUE)
+                        .setHidden(Boolean.FALSE),
+                    new SearchField("PostalCode", SearchFieldDataType.STRING)
+                        .setSearchable(Boolean.TRUE)
+                        .setFilterable(Boolean.TRUE)
+                        .setSortable(Boolean.TRUE)
+                        .setFacetable(Boolean.TRUE)
+                        .setHidden(Boolean.FALSE)),
+            new SearchField("Location", SearchFieldDataType.GEOGRAPHY_POINT)
+                .setFilterable(Boolean.TRUE)
+                .setSortable(Boolean.TRUE)
+                .setHidden(Boolean.FALSE),
+            new SearchField("Rooms", SearchFieldDataType.collection(SearchFieldDataType.COMPLEX))
+                .setFields(new SearchField("Description", SearchFieldDataType.STRING)
+                        .setSearchable(Boolean.TRUE)
+                        .setAnalyzerName(LexicalAnalyzerName.EN_LUCENE),
+                    new SearchField("DescriptionFr", SearchFieldDataType.STRING)
+                        .setSearchable(Boolean.TRUE)
+                        .setAnalyzerName(LexicalAnalyzerName.FR_LUCENE)
+                        .setHidden(Boolean.FALSE),
+                    new SearchField("Type", SearchFieldDataType.STRING)
+                        .setSearchable(Boolean.TRUE)
+                        .setFilterable(Boolean.TRUE)
+                        .setFacetable(Boolean.TRUE)
+                        .setHidden(Boolean.FALSE),
+                    new SearchField("BaseRate", SearchFieldDataType.DOUBLE)
+                        .setKey(Boolean.FALSE)
+                        .setFilterable(Boolean.TRUE)
+                        .setFacetable(Boolean.TRUE)
+                        .setHidden(Boolean.FALSE),
+                    new SearchField("BedOptions", SearchFieldDataType.STRING)
+                        .setSearchable(Boolean.TRUE)
+                        .setFilterable(Boolean.TRUE)
+                        .setFacetable(Boolean.TRUE)
+                        .setHidden(Boolean.FALSE),
+                    new SearchField("SleepsCount", SearchFieldDataType.INT32)
+                        .setFilterable(Boolean.TRUE)
+                        .setFacetable(Boolean.TRUE)
+                        .setHidden(Boolean.FALSE),
+                    new SearchField("SmokingAllowed", SearchFieldDataType.BOOLEAN)
+                        .setFilterable(Boolean.TRUE)
+                        .setFacetable(Boolean.TRUE)
+                        .setHidden(Boolean.FALSE),
+                    new SearchField("Tags", SearchFieldDataType.collection(SearchFieldDataType.STRING))
+                        .setSearchable(Boolean.TRUE)
+                        .setFilterable(Boolean.TRUE)
+                        .setFacetable(Boolean.TRUE)
+                        .setHidden(Boolean.FALSE)),
+            new SearchField("TotalGuests", SearchFieldDataType.INT64)
+                .setFilterable(Boolean.TRUE)
+                .setSortable(Boolean.TRUE)
+                .setFacetable(Boolean.TRUE),
+            new SearchField("ProfitMargin", SearchFieldDataType.DOUBLE)
+        )).setScoringProfiles(new ScoringProfile("MyProfile")
+                .setFunctionAggregation(ScoringFunctionAggregation.AVERAGE)
+                .setFunctions(new MagnitudeScoringFunction("Rating", 2.0,
+                        new MagnitudeScoringParameters(1, 4)
+                            .setShouldBoostBeyondRangeByConstant(true))
+                        .setInterpolation(ScoringFunctionInterpolation.CONSTANT),
+                    new DistanceScoringFunction("Location", 1.5,
+                        new DistanceScoringParameters("Loc", 5))
+                        .setInterpolation(ScoringFunctionInterpolation.LINEAR),
+                    new FreshnessScoringFunction("LastRenovationDate", 1.1,
+                        new FreshnessScoringParameters(Duration.ofDays(365)))
+                        .setInterpolation(ScoringFunctionInterpolation.LOGARITHMIC))
+                .setTextWeights(new TextWeights(weights)),
+            new ScoringProfile("ProfileTwo")
+                .setFunctionAggregation(ScoringFunctionAggregation.MAXIMUM)
+                .setFunctions(new TagScoringFunction("Tags", 1.5,
+                    new TagScoringParameters("MyTags"))
+                    .setInterpolation(ScoringFunctionInterpolation.LINEAR)),
+            new ScoringProfile("ProfileThree")
+                .setFunctionAggregation(ScoringFunctionAggregation.MINIMUM)
+                .setFunctions(new MagnitudeScoringFunction("Rating", 3.0,
+                    new MagnitudeScoringParameters(0, 10)
+                        .setShouldBoostBeyondRangeByConstant(false))
+                    .setInterpolation(ScoringFunctionInterpolation.QUADRATIC)),
+            new ScoringProfile("ProfileFour")
+                .setFunctionAggregation(ScoringFunctionAggregation.FIRST_MATCHING)
+                .setFunctions(new MagnitudeScoringFunction("Rating", 3.14,
+                    new MagnitudeScoringParameters(1, 5)
+                        .setShouldBoostBeyondRangeByConstant(false))
+                    .setInterpolation(ScoringFunctionInterpolation.CONSTANT))
+        ).setDefaultScoringProfile("MyProfile")
             .setCorsOptions(new CorsOptions(Arrays.asList("http://tempuri.org", "http://localhost:80"))
                 .setMaxAgeInSeconds(60L))
-            .setSuggesters(Collections.singletonList(new SearchSuggester("FancySuggester",
-                Collections.singletonList("HotelName"))));
+            .setSuggesters(new SearchSuggester("FancySuggester", Collections.singletonList("HotelName")));
     }
 
     protected SearchIndexerDataSourceConnection createTestSqlDataSourceObject() {
@@ -407,5 +391,21 @@ public abstract class SearchTestBase extends TestBase {
 
     protected String randomIndexName(String indexNameBase) {
         return testResourceNamer.randomName(indexNameBase, 64);
+    }
+
+    private static TestMode initializeTestMode() {
+        ClientLogger logger = new ClientLogger(SearchTestBase.class);
+        String azureTestMode = Configuration.getGlobalConfiguration().get("AZURE_TEST_MODE");
+        if (azureTestMode != null) {
+            try {
+                return TestMode.valueOf(azureTestMode.toUpperCase(Locale.US));
+            } catch (IllegalArgumentException var3) {
+                logger.error("Could not parse '{}' into TestEnum. Using 'Playback' mode.", azureTestMode);
+                return TestMode.PLAYBACK;
+            }
+        } else {
+            logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", "AZURE_TEST_MODE");
+            return TestMode.PLAYBACK;
+        }
     }
 }

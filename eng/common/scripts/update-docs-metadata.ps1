@@ -14,27 +14,25 @@ param (
   $DocRepoContentLocation = "docs-ref-services/" # within the doc repo, where does our readme go?
 )
 
-
-# import artifact parsing and semver handling
 . (Join-Path $PSScriptRoot artifact-metadata-parsing.ps1)
 . (Join-Path $PSScriptRoot SemVer.ps1)
 
 function GetMetaData($lang){
   switch ($lang) {
     "java" {
-      $metadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/allpackages/java-packages.csv"
+      $metadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/releases/latest/java-packages.csv"
       break
     }
     ".net" {
-      $metadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/allpackages/dotnet-packages.csv"
+      $metadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/releases/latest/dotnet-packages.csv"
       break
     }
     "python" {
-      $metadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/allpackages/python-packages.csv"
+      $metadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/releases/latest/python-packages.csv"
       break
     }
     "javascript" {
-      $metadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/allpackages/js-packages.csv"
+      $metadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/releases/latest/js-packages.csv"
       break
     }
     default {
@@ -43,7 +41,7 @@ function GetMetaData($lang){
     }
   }
 
-  $metadataResponse = Invoke-WebRequest-WithHandling -url $metadataUri -method "GET" | ConvertFrom-Csv
+  $metadataResponse = Invoke-RestMethod -Uri $metadataUri -method "GET" -MaximumRetryCount 3 -RetryIntervalSec 10 | ConvertFrom-Csv
 
   return $metadataResponse
 }
@@ -61,7 +59,7 @@ function GetAdjustedReadmeContent($pkgInfo, $lang){
       $service = $metadata | ? { $_.Package -eq $pkgId }
 
       if ($service) {
-        $service = "$($service.Service)"
+        $service = "$($service.ServiceName)".ToLower().Replace(" ", "")
       }
     }
     catch {
@@ -70,14 +68,16 @@ function GetAdjustedReadmeContent($pkgInfo, $lang){
     }
 
     $fileContent = $pkgInfo.ReadmeContent
+    $foundTitle = ""
 
     # only replace the version if the formatted header can be found
     $headerContentMatches = (Select-String -InputObject $pkgInfo.ReadmeContent -Pattern 'Azure .+? (client|plugin|shared) library for (JavaScript|Java|Python|\.NET|C)')
     if ($headerContentMatches) {
-      $headerContentMatch = $headerContentMatches.Matches[0]
-      $header = "---`ntitle: $headerContentMatch`nkeywords: Azure, $lang, SDK, API, $($pkgInfo.PackageId), $service`nauthor: maggiepint`nms.author: magpint`nms.date: $date`nms.topic: article`nms.prod: azure`nms.technology: azure`nms.devlang: $lang`nms.service: $service`n---`n"
-      $fileContent = $pkgInfo.ReadmeContent -replace $headerContentMatch, "$headerContentMatch - Version $($pkgInfo.PackageVersion) `n"
+      $foundTitle = $headerContentMatches.Matches[0]
+      $fileContent = $pkgInfo.ReadmeContent -replace $foundTitle, "$foundTitle - Version $($pkgInfo.PackageVersion) `n"
     }
+
+    $header = "---`ntitle: $foundTitle`nkeywords: Azure, $lang, SDK, API, $($pkgInfo.PackageId), $service`nauthor: maggiepint`nms.author: magpint`nms.date: $date`nms.topic: article`nms.prod: azure`nms.technology: azure`nms.devlang: $lang`nms.service: $service`n---`n"
 
     if ($fileContent) {
       return "$header`n$fileContent"

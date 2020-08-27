@@ -1,42 +1,57 @@
 # Azure AD Spring Boot Starter client library for Java
 
-## Overview
 With Spring Starter for Azure Active Directory, now you can get started quickly to build the authentication workflow for a web application that uses Azure AD and OAuth 2.0 to secure its back end. It also enables developers to create a role based authorization workflow for a Web API secured by Azure AD, with the power of the Spring Security Filter Chain. 
+
+[Package (Maven)][package] | [API reference documentation][refdocs] | [Product documentation][docs] | [Samples][sample]
+
+## Getting started
+### Prerequisites
+- Java Development Kit (JDK) with version 8 or above
+- [Azure Subscription][azure_subscription]
+- [Maven](http://maven.apache.org/) 3.0 and above
+
+### Register the Application in Azure AD
+* **Register a new application**: Go to Azure Portal - Azure Active Directory - App registrations - New application registration to register the application in Azure Active Directory.  `Application ID` is `client-id` in `application.properties`.
+* **Grant permissions to the application**: After application registration succeeded, go to API ACCESS - Required permissions - DELEGATED PERMISSIONS, tick `Access the directory as the signed-in user` and `Sign in and read user profile`. Click `Grant Permissions` (Note: you will need administrator privilege to grant permission).
+* **Create a client secret key for the application**: Go to API ACCESS - Keys to create a secret key (`client-secret`).
+
+### Include the package
+[//]: # "{x-version-update-start;com.microsoft.azure:azure-active-directory-spring-boot-starter;current}"
+```xml
+<dependency>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>azure-active-directory-spring-boot-starter</artifactId>
+    <version>2.3.3</version>
+</dependency>
+```
+[//]: # "{x-version-update-end}"
 
 ## Key concepts
 This package provides 2 ways to integrate with Spring Security and authenticate with Azure Active Directory.
-* Authenticate in backend, auto configuration for common Azure Active Directory OAuth2 properties and `OAuth2UserService` to map authorities are provided.
-* Authenticate in frontend, sends bearer authorization code to backend, in backend a Spring Security filter validates the Jwt token from Azure AD and save authentication. The Jwt token is also used to acquire a On-Behalf-Of token for Azure AD Graph API so that authenticated user's membership information is available for authorization of access of API resources. Below is a diagram that shows the layers and typical flow for Single Page Application with Spring Boot web API backend that uses the filter for Authentication and Authorization.
-![Single Page Application + Spring Boot Web API + Azure AD](resource/spring-aad.png)
 
 The authorization flow is composed of 3 phrases:
 * Login with credentials and validate id_token from Azure AD 
 * Get On-Behalf-Of token and membership info from Azure AD Graph API
 * Evaluate the permission based on membership info to grant or deny access
 
-## Getting started
-#### Register the Application in Azure AD
-* **Register a new application**: Go to Azure Portal - Azure Active Directory - App registrations - New application registration to register the application in Azure Active Directory.  `Application ID` is `client-id` in `application.properties`.
-* **Grant permissions to the application**: After application registration succeeded, go to API ACCESS - Required permissions - DELEGATED PERMISSIONS, tick `Access the directory as the signed-in user` and `Sign in and read user profile`. Click `Grant Permissions` (Note: you will need administrator privilege to grant permission).
-* **Create a client secret key for the application**: Go to API ACCESS - Keys to create a secret key (`client-secret`).
+### Authenticate in frontend
+Sends bearer authorization code to backend, in backend a Spring Security filter `AADAuthenticationFilter` validates the Jwt token from Azure AD and save authentication. The Jwt token is also used to acquire a On-Behalf-Of token for Azure AD Graph API so that authenticated user's membership information is available for authorization of access of API resources. 
+Below is a diagram that shows the layers and typical flow for Single Page Application with Spring Boot web API backend that uses the filter for Authentication and Authorization.
+![Single Page Application + Spring Boot Web API + Azure AD](resource/auth-in-frontend-with-aad-filter.png)
 
-#### Add Maven Dependency
 
-`azure-active-directory-spring-boot-starter` is published on Maven Central Repository.
-If you are using Maven, add the following dependency.
+### Authenticate in backend
+Auto configuration for common Azure Active Directory OAuth2 properties and `OAuth2UserService` to map authorities are provided.
 
-[//]: # "{x-version-update-start;com.azure:azure-active-directory-spring-boot-starter;current}"
-```xml
-<dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-active-directory-spring-boot-starter</artifactId>
-    <version>2.3.3-beta.1</version>
-</dependency>
-```
-[//]: # "{x-version-update-end}"
+#### Authorization Code mode usage
+![Single Page Application + Spring Boot Web API + Azure AD](resource/auth-in-backend-code-mode.png)
+
+#### ID Token mode usage(Stateless implicit)
+
+![Single Page Application + Spring Boot Web API + Azure AD](resource/auth-in-backend-id-token-mode.png)
+When the session is stateless, use `AADAppRoleStatelessAuthenticationFilter` as a Spring Security filter to validate the Jwt token from Azure AD and save authentication
 
 ## Examples
-### Configure application.properties and autowire beans
 
 Refer to different samples for different authentication ways. 
 
@@ -49,7 +64,7 @@ Please refer to [azure-spring-boot-sample-active-directory-backend](../azure-spr
 spring.security.oauth2.client.registration.azure.client-id=xxxxxx-your-client-id-xxxxxx
 spring.security.oauth2.client.registration.azure.client-secret=xxxxxx-your-client-secret-xxxxxx
 azure.activedirectory.tenant-id=xxxxxx-your-tenant-id-xxxxxx
-azure.activedirectory.active-directory-groups=group1, group2
+azure.activedirectory.user-group.allowed-groups=group1, group2
 ```
 
 #### Autowire `OAuth2UserService` bean in `WebSecurityConfigurerAdapter`:
@@ -82,7 +97,7 @@ Please refer to [azure-active-directory-spring-boot-sample](../azure-spring-boot
 ```properties
 azure.activedirectory.client-id=Application-ID-in-AAD-App-registrations
 azure.activedirectory.client-secret=Key-in-AAD-API-ACCESS
-azure.activedirectory.active-directory-groups=Aad-groups e.g. group1,group2,group3
+azure.activedirectory.user-group.allowed-groups=Aad-groups e.g. group1,group2,group3
 ```
 
 If you're using [Azure China](https://docs.microsoft.com/azure/china/china-welcome), please append an extra line to the `application.properties` file:
@@ -224,18 +239,41 @@ public class AADOAuth2LoginConditionalPolicyConfigSample extends WebSecurityConf
     }
 }
 ```
-## Next steps
-### Allow telemetry
-Microsoft would like to collect data about how users use this Spring boot starter.
-Microsoft uses this information to improve our tooling experience. Participation is voluntary.
-If you don't want to participate, just simply disable it by setting below configuration in `application.properties`.
-```properties
-azure.activedirectory.allow-telemetry=false
-```
-When telemetry is enabled, an HTTP request will be sent to URL `https://dc.services.visualstudio.com/v2/track`. So please make sure it's not blocked by your firewall.  
-Find more information about Azure Service Privacy Statement, please check [Microsoft Online Services Privacy Statement](https://www.microsoft.com/privacystatement/OnlineServices/Default.aspx). 
 
 ## Troubleshooting
+### Enable client logging
+Azure SDKs for Java offer a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
+
+### Enable Spring logging
+Spring allow all the supported logging systems to set logger levels set in the Spring Environment (for example, in application.properties) by using `logging.level.<logger-name>=<level>` where level is one of TRACE, DEBUG, INFO, WARN, ERROR, FATAL, or OFF. The root logger can be configured by using logging.level.root.
+
+The following example shows potential logging settings in `application.properties`:
+
+```properties
+logging.level.root=WARN
+logging.level.org.springframework.web=DEBUG
+logging.level.org.hibernate=ERROR
+```
+
+For more information about setting loging in pring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging).
+ 
+
+## Next steps
+The following section provides sample projects illustrating how to use the starter in different cases.
+### More sample code
+- [Azure Active Directory for Frontend](../azure-spring-boot-samples/azure-spring-boot-sample-active-directory)
+- [Azure Active Directory for Backend](../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend)
+- [Azure Active Directory for Backend with Microsoft Graph API](../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend-v2)
 
 ## Contributing
+This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
 
+Please follow [instructions here](../CONTRIBUTING.md) to build from source or contribute.
+
+<!-- LINKS -->
+[docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-active-directory
+[refdocs]: https://azure.github.io/azure-sdk-for-java/spring.html#azure-active-directory-spring-boot-starter
+[package]: https://mvnrepository.com/artifact/com.microsoft.azure/azure-active-directory-spring-boot-starter
+[sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
+[azure_subscription]: https://azure.microsoft.com/free

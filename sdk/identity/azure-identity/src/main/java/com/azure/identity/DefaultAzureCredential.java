@@ -6,7 +6,7 @@ package com.azure.identity;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.TokenCredential;
 
-import java.util.ArrayDeque;
+import java.util.List;
 
 /**
  * Creates a credential using environment variables or the shared token cache. It tries to create a valid credential in
@@ -22,7 +22,6 @@ import java.util.ArrayDeque;
  */
 @Immutable
 public final class DefaultAzureCredential extends ChainedTokenCredential {
-
     /**
      * Creates default DefaultAzureCredential instance to use. This will use AZURE_CLIENT_ID,
      * AZURE_CLIENT_SECRET, and AZURE_TENANT_ID environment variables to create a
@@ -33,7 +32,7 @@ public final class DefaultAzureCredential extends ChainedTokenCredential {
      *
      * @param tokenCredentials the list of credentials to execute for authentication.
      */
-    DefaultAzureCredential(ArrayDeque<TokenCredential> tokenCredentials) {
+    DefaultAzureCredential(List<TokenCredential> tokenCredentials) {
         super(tokenCredentials);
     }
 }

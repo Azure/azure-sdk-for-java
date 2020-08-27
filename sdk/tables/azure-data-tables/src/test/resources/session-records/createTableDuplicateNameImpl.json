@@ -1,0 +1,94 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-client-request-id" : "362e7a8c-2750-49e6-ae60-96422ed8ce23",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Fri, 21 Aug 2020 21:09:28 GMT",
+      "Cache-Control" : "no-cache",
+      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/Tables('test0361686a77')",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "d6bccdd1-d002-0063-57ff-7757a7000000",
+      "Preference-Applied" : "return-no-content",
+      "x-ms-client-request-id" : "362e7a8c-2750-49e6-ae60-96422ed8ce23",
+      "Location" : "https://brsiegelsample.table.core.windows.net/Tables('test0361686a77')"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables?$format=application/json%3Bodata%3Dfullmetadata",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-client-request-id" : "4bb38982-774c-46a9-8965-b53d22b544c0",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "409",
+      "Date" : "Fri, 21 Aug 2020 21:09:28 GMT",
+      "Cache-Control" : "no-cache",
+      "x-ms-request-id" : "d6bccde3-d002-0063-62ff-7757a7000000",
+      "Body" : "{\"odata.error\":{\"code\":\"TableAlreadyExists\",\"message\":{\"lang\":\"en-US\",\"value\":\"The table specified already exists.\\nRequestId:d6bccde3-d002-0063-62ff-7757a7000000\\nTime:2020-08-21T21:09:29.0517520Z\"}}}",
+      "Preference-Applied" : "return-no-content",
+      "x-ms-client-request-id" : "4bb38982-774c-46a9-8965-b53d22b544c0",
+      "Content-Type" : "application/json;odata=fullmetadata;streaming=true;charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables?$format=application/json%3Bodata%3Dminimalmetadata",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-client-request-id" : "75263029-9bea-413c-bc8c-a2862001743a"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "Cache-Control" : "no-cache",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "d6bccdf0-d002-0063-6dff-7757a7000000",
+      "Body" : "{\"odata.metadata\":\"https://brsiegelsample.table.core.windows.net/$metadata#Tables\",\"value\":[{\"TableName\":\"test0361686a77\"}]}",
+      "Date" : "Fri, 21 Aug 2020 21:09:28 GMT",
+      "x-ms-client-request-id" : "75263029-9bea-413c-bc8c-a2862001743a",
+      "Content-Type" : "application/json;odata=minimalmetadata;streaming=true;charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables('test0361686a77')",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-client-request-id" : "40d2b018-213f-495c-88b7-6b24b53b6d70"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "Cache-Control" : "no-cache",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "0704a116-2002-0077-04ff-771fc8000000",
+      "Date" : "Fri, 21 Aug 2020 21:09:28 GMT",
+      "x-ms-client-request-id" : "40d2b018-213f-495c-88b7-6b24b53b6d70"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "test0361686a77", "362e7a8c-2750-49e6-ae60-96422ed8ce23", "4bb38982-774c-46a9-8965-b53d22b544c0", "75263029-9bea-413c-bc8c-a2862001743a", "40d2b018-213f-495c-88b7-6b24b53b6d70" ]
+}

@@ -1,81 +1,84 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Fluent;
-import reactor.core.publisher.Flux;
 
-import java.io.InputStream;
-import java.nio.ByteBuffer;
 import java.time.Duration;
 
 /**
- * Extended options that may be passed when recognizing custom form on Form Recognizer client.
+ * Options that may be passed when using recognize custom form APIs on Form Recognizer client.
  */
 @Fluent
-public class RecognizeCustomFormsOptions extends RecognizeOptions {
-    private final String modelId;
+public final class RecognizeCustomFormsOptions {
+    private static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
+    private FormContentType contentType;
+    private boolean includeFieldElements;
+    private Duration pollInterval = DEFAULT_POLL_INTERVAL;
 
     /**
-     * Create a {@code RecognizeCustomFormsOptions option} object
+     * Get the type of the form. Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
      *
-     * @param form The {@code InputStream data} of the form to recognize form information from.
-     * @param length the exact length of the provided form data.
-     * @param modelId The UUID string format custom trained model Id to be used.
+     * @return the {@code contentType} value.
      */
-    public RecognizeCustomFormsOptions(final InputStream form, final long length, final String modelId) {
-        super(form, length);
-        this.modelId = modelId;
+    public FormContentType getContentType() {
+        return contentType;
     }
 
     /**
-     * Create a {@code RecognizeCustomFormsOptions option} object
+     * Get the boolean which specifies if to include form element references in the result.
      *
-     * @param formData The {@code ByteBuffer data} of the form to recognize form information from.
-     * @param length The exact length of the provided form data
-     * @param modelId The UUID string format custom trained model Id to be used.
+     * @return the {@code includeFieldElements} value.
      */
-    public RecognizeCustomFormsOptions(final Flux<ByteBuffer> formData, final long length, final String modelId) {
-        super(formData, length);
-        this.modelId = modelId;
+    public boolean isFieldElementsIncluded() {
+        return includeFieldElements;
     }
 
     /**
-     * Create a {@code RecognizeCustomFormsOptions option} object
+     * Get the duration between each poll for the operation status. If none is specified, a default of
+     * 5 seconds is used.
      *
-     * @param formUrl The source URL to the input form.
-     * @param modelId The UUID string format custom trained model Id to be used.
+     * @return the {@code pollInterval} value.
      */
-    public RecognizeCustomFormsOptions(final String formUrl, final String modelId) {
-        super(formUrl);
-        this.modelId = modelId;
+    public Duration getPollInterval() {
+        return pollInterval;
     }
 
     /**
-     * Get the UUID string format custom trained model Id to be used.
+     * Set the type of the form. Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
      *
-     * @return the {@code modelId} value
+     * @param contentType the provided form content type.
+     *
+     * @return the updated {@code RecognizeCustomFormsOptions} value.
      */
-    public String getModelId() {
-        return modelId;
-    }
-
-
-    @Override
-    public RecognizeCustomFormsOptions setFormContentType(FormContentType formContentType) {
-        super.setFormContentType(formContentType);
+    public RecognizeCustomFormsOptions setContentType(final FormContentType contentType) {
+        this.contentType = contentType;
         return this;
     }
 
-    @Override
-    public RecognizeCustomFormsOptions setIncludeTextContent(boolean includeTextContent) {
-        super.setIncludeTextContent(includeTextContent);
+    /**
+     * Set the boolean which specifies if to include form element references in the result.
+     *
+     * @param includeFieldElements the boolean to specify if to include form element references in the result.
+     *
+     * @return the updated {@code RecognizeCustomFormsOptions} value.
+     */
+    public RecognizeCustomFormsOptions setFieldElementsIncluded(final boolean includeFieldElements) {
+        this.includeFieldElements = includeFieldElements;
         return this;
     }
 
-    @Override
-    public RecognizeCustomFormsOptions setPollInterval(Duration pollInterval) {
-        super.setPollInterval(pollInterval);
+    /**
+     * Set the duration between each poll for the operation status. If none is specified, a default of
+     * 5 seconds is used.
+     *
+     * @param pollInterval the duration to specify between each poll for the operation status.
+     *
+     * @return the updated {@code RecognizeCustomFormsOptions} value.
+     */
+    public RecognizeCustomFormsOptions setPollInterval(final Duration pollInterval) {
+        this.pollInterval = pollInterval == null ? DEFAULT_POLL_INTERVAL : pollInterval;
         return this;
     }
 }

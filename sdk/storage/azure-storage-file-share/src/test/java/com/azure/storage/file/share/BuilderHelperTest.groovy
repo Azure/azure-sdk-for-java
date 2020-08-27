@@ -15,6 +15,7 @@ import com.azure.core.util.CoreUtils
 import com.azure.core.util.DateTimeRfc1123
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.policy.RequestRetryOptions
+import com.azure.storage.common.policy.RetryPolicyType
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy
 import com.azure.storage.file.share.implementation.util.BuilderHelper
 import reactor.core.publisher.Flux
@@ -27,6 +28,7 @@ import java.util.function.Supplier
 class BuilderHelperTest extends Specification {
     static def credentials = new StorageSharedKeyCredential("accountName", "accountKey")
     static def endpoint = "https://account.file.core.windows.net/"
+    static def requestRetryOptions = new RequestRetryOptions(RetryPolicyType.FIXED, 2, 2, 1000, 4000, null)
 
     static HttpRequest request(String url) {
         return new HttpRequest(HttpMethod.HEAD, new URL(url), new HttpHeaders().put("Content-Length", "0"),
@@ -45,7 +47,7 @@ class BuilderHelperTest extends Specification {
             }
         }
 
-        def pipeline = BuilderHelper.buildPipeline(credentialPolicySupplier, new RequestRetryOptions(), null,
+        def pipeline = BuilderHelper.buildPipeline(credentialPolicySupplier, requestRetryOptions, null,
             new FreshDateTestClient(), new ArrayList<>(), Configuration.NONE)
 
         then:
@@ -63,6 +65,7 @@ class BuilderHelperTest extends Specification {
             .endpoint(endpoint)
             .credential(credentials)
             .httpClient(new FreshDateTestClient())
+            .retryOptions(requestRetryOptions)
             .buildClient()
 
         then:
@@ -81,6 +84,7 @@ class BuilderHelperTest extends Specification {
             .shareName("share")
             .credential(credentials)
             .httpClient(new FreshDateTestClient())
+            .retryOptions(requestRetryOptions)
             .buildClient()
 
         then:
@@ -99,6 +103,7 @@ class BuilderHelperTest extends Specification {
             .shareName("fileSystem")
             .resourcePath("path")
             .credential(credentials)
+            .retryOptions(requestRetryOptions)
 
         when:
         def directoryClient = fileClientBuilder.httpClient(new FreshDateTestClient()).buildDirectoryClient()

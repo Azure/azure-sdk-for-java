@@ -96,7 +96,7 @@ public final class PollingState {
             case 204:
                 return pollingState.initializeDataFor204StatusCode();
             default:
-                return pollingState.initializeDataForUnknownStatusCode(lroResponseBody);
+                return pollingState.initializeDataForUnknownStatusCode(lroResponseHeaders, lroResponseBody);
         }
     }
 
@@ -289,6 +289,7 @@ public final class PollingState {
                 break;
             case PROVISIONING_STATE_POLL:
                 this.provisioningStateData.update(pollResponseStatusCode,
+                    pollResponseHeaders,
                     pollResponseBody,
                     this.serializerAdapter);
                 break;
@@ -324,6 +325,12 @@ public final class PollingState {
             || ProvisioningState.CANCELED.equalsIgnoreCase(value);
         if (isCompleted && ProvisioningState.SUCCEEDED.equalsIgnoreCase(value)) {
             return LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+        } else if (isCompleted && ProvisioningState.FAILED.equalsIgnoreCase(value)) {
+            return LongRunningOperationStatus.FAILED;
+        } else if (isCompleted && ProvisioningState.CANCELED.equalsIgnoreCase(value)) {
+            return LongRunningOperationStatus.USER_CANCELLED;
+        } else if (ProvisioningState.IN_PROGRESS.equalsIgnoreCase(value)) {
+            return LongRunningOperationStatus.IN_PROGRESS;
         }
         return LongRunningOperationStatus.fromString(value, isCompleted);
     }
@@ -485,7 +492,7 @@ public final class PollingState {
             return this.setData(new LocationData(locationUrl));
         }
         return this.setData(new SynchronouslyFailedLroData("Response with status code 202 does not contain "
-            + "an Azure-AsyncOperation or Location header", 202, lroResponseBody));
+            + "an Azure-AsyncOperation or Location header", 202, lroResponseHeaders.toMap(), lroResponseBody));
     }
 
     /**
@@ -503,9 +510,10 @@ public final class PollingState {
      *
      * @return updated PollingState
      */
-    private PollingState initializeDataForUnknownStatusCode(String lroResponseBody) {
+    private PollingState initializeDataForUnknownStatusCode(HttpHeaders lroResponseHeaders, String lroResponseBody) {
         return this.setData(new SynchronouslyFailedLroData("Response StatusCode: " + this.lroResponseStatusCode,
             this.lroResponseStatusCode,
+            lroResponseHeaders.toMap(),
             lroResponseBody));
     }
 

@@ -18,25 +18,28 @@ public final class DataLakeStorageError {
      * The service error response object.
      */
     @JsonProperty(value = "error")
-    private DataLakeStorageErrorError error;
+    private DataLakeStorageErrorError dataLakeStorageErrorDetails;
 
     /**
-     * Get the error property: The service error response object.
+     * Get the dataLakeStorageErrorDetails property: The service error response
+     * object.
      *
-     * @return the error value.
+     * @return the dataLakeStorageErrorDetails value.
      */
-    public DataLakeStorageErrorError getError() {
-        return this.error;
+    public DataLakeStorageErrorError getDataLakeStorageErrorDetails() {
+        return this.dataLakeStorageErrorDetails;
     }
 
     /**
-     * Set the error property: The service error response object.
+     * Set the dataLakeStorageErrorDetails property: The service error response
+     * object.
      *
-     * @param error the error value to set.
+     * @param dataLakeStorageErrorDetails the dataLakeStorageErrorDetails value
+     * to set.
      * @return the DataLakeStorageError object itself.
      */
-    public DataLakeStorageError setError(DataLakeStorageErrorError error) {
-        this.error = error;
+    public DataLakeStorageError setDataLakeStorageErrorDetails(DataLakeStorageErrorError dataLakeStorageErrorDetails) {
+        this.dataLakeStorageErrorDetails = dataLakeStorageErrorDetails;
         return this;
     }
 }

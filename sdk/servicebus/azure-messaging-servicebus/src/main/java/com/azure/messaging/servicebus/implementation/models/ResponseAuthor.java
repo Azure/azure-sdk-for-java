@@ -5,17 +5,17 @@
 package com.azure.messaging.servicebus.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** The ResponseAuthor model. */
-@JacksonXmlRootElement(localName = "ResponseAuthor")
+@JacksonXmlRootElement(localName = "author", namespace = "http://www.w3.org/2005/Atom")
 @Fluent
 public final class ResponseAuthor {
     /*
      * The Service Bus namespace
      */
-    @JsonProperty(value = "name")
+    @JacksonXmlProperty(localName = "name", namespace = "http://www.w3.org/2005/Atom")
     private String name;
 
     /**

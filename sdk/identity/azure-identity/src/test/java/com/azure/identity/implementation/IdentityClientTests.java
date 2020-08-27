@@ -37,6 +37,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.time.OffsetDateTime;
@@ -57,8 +58,8 @@ import static org.powermock.api.mockito.PowerMockito.whenNew;
 @PrepareForTest({CertificateUtil.class, ClientCredentialFactory.class, AuthorizationCodeListener.class, Runtime.class, URL.class, ConfidentialClientApplication.class, ConfidentialClientApplication.Builder.class, PublicClientApplication.class, PublicClientApplication.Builder.class, IdentityClient.class})
 public class IdentityClientTests {
 
-    private final String tenantId = "contoso.com";
-    private final String clientId = UUID.randomUUID().toString();
+    private static final String TENANT_ID = "contoso.com";
+    private static final String CLIENT_ID = UUID.randomUUID().toString();
 
     @Test
     public void testValidSecret() throws Exception {
@@ -73,7 +74,7 @@ public class IdentityClientTests {
 
         // test
         IdentityClient client = new IdentityClientBuilder()
-            .tenantId(tenantId).clientId(clientId).clientSecret(secret).build();
+            .tenantId(TENANT_ID).clientId(CLIENT_ID).clientSecret(secret).build();
         AccessToken token = client.authenticateWithConfidentialClient(request).block();
         Assert.assertEquals(accessToken, token.getToken());
         Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
@@ -93,7 +94,7 @@ public class IdentityClientTests {
         // test
         try {
             IdentityClient client = new IdentityClientBuilder()
-                .tenantId(tenantId).clientId(clientId).clientSecret("bad secret").build();
+                .tenantId(TENANT_ID).clientId(CLIENT_ID).clientSecret("bad secret").build();
             client.authenticateWithConfidentialClient(request).block();
             fail();
         } catch (MsalServiceException e) {
@@ -113,7 +114,7 @@ public class IdentityClientTests {
         mockForClientCertificate(request, accessToken, expiresOn);
 
         // test
-        IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId)
+        IdentityClient client = new IdentityClientBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID)
             .certificatePath(pfxPath).certificatePassword("StrongPass!123").build();
         AccessToken token = client.authenticateWithConfidentialClient(request).block();
         Assert.assertEquals(accessToken, token.getToken());
@@ -135,7 +136,7 @@ public class IdentityClientTests {
         mockForClientPemCertificate(accessToken, request, expiresOn);
         // test
         IdentityClient client = new IdentityClientBuilder()
-            .tenantId(tenantId).clientId(clientId).certificatePath(pemPath).build();
+            .tenantId(TENANT_ID).clientId(CLIENT_ID).certificatePath(pemPath).build();
         AccessToken token = client.authenticateWithConfidentialClient(request).block();
         Assert.assertEquals(accessToken, token.getToken());
         Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
@@ -154,7 +155,7 @@ public class IdentityClientTests {
 
         // test
         try {
-            IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId)
+            IdentityClient client = new IdentityClientBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID)
                 .certificatePath(pfxPath).certificatePassword("BadPassword").build();
             client.authenticateWithConfidentialClient(request).block();
             fail();
@@ -175,7 +176,7 @@ public class IdentityClientTests {
 
         // test
         IdentityClientOptions options = new IdentityClientOptions();
-        IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).identityClientOptions(options).build();
+        IdentityClient client = new IdentityClientBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).identityClientOptions(options).build();
         AccessToken token = client.authenticateWithDeviceCode(request, deviceCodeChallenge -> { /* do nothing */ }).block();
         Assert.assertEquals(accessToken, token.getToken());
         Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
@@ -244,10 +245,10 @@ public class IdentityClientTests {
 
         // test
         IdentityClientOptions options = new IdentityClientOptions();
-        IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).identityClientOptions(options).build();
+        IdentityClient client = new IdentityClientBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).identityClientOptions(options).build();
         StepVerifier.create(client.authenticateWithAuthorizationCode(request, authCode1, redirectUri))
             .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
-                                                  && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
+                && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
             .verifyComplete();
     }
 
@@ -264,10 +265,10 @@ public class IdentityClientTests {
 
         // test
         IdentityClientOptions options = new IdentityClientOptions();
-        IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).identityClientOptions(options).build();
+        IdentityClient client = new IdentityClientBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).identityClientOptions(options).build();
         StepVerifier.create(client.authenticateWithPublicClientCache(request2, TestUtils.getMockMsalAccount(token1, expiresAt).block()))
             .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
-                                                  && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
+                && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
             .verifyComplete();
     }
 
@@ -285,10 +286,10 @@ public class IdentityClientTests {
 
         // test
         IdentityClientOptions options = new IdentityClientOptions();
-        IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).identityClientOptions(options).build();
+        IdentityClient client = new IdentityClientBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).identityClientOptions(options).build();
         StepVerifier.create(client.authenticateWithUsernamePassword(request, username, password))
             .expectNextMatches(accessToken -> token.equals(accessToken.getToken())
-                                                  && expiresOn.getSecond() == accessToken.getExpiresAt().getSecond())
+                && expiresOn.getSecond() == accessToken.getExpiresAt().getSecond())
             .verifyComplete();
     }
 
@@ -307,10 +308,10 @@ public class IdentityClientTests {
 
         // test
         IdentityClientOptions options = new IdentityClientOptions();
-        IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).identityClientOptions(options).build();
+        IdentityClient client = new IdentityClientBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).identityClientOptions(options).build();
         StepVerifier.create(client.authenticateWithBrowserInteraction(request, 4567))
             .expectNextMatches(accessToken -> token.equals(accessToken.getToken())
-                                                  && expiresOn.getSecond() == accessToken.getExpiresAt().getSecond())
+                && expiresOn.getSecond() == accessToken.getExpiresAt().getSecond())
             .verifyComplete();
     }
 
@@ -350,8 +351,8 @@ public class IdentityClientTests {
         whenNew(ConfidentialClientApplication.Builder.class).withAnyArguments().thenAnswer(invocation -> {
             String cid = (String) invocation.getArguments()[0];
             IClientSecret clientSecret = (IClientSecret) invocation.getArguments()[1];
-            if (!clientId.equals(cid)) {
-                throw new MsalServiceException("Invalid clientId", "InvalidClientId");
+            if (!CLIENT_ID.equals(cid)) {
+                throw new MsalServiceException("Invalid CLIENT_ID", "InvalidClientId");
             }
             if (!secret.equals(clientSecret.clientSecret())) {
                 throw new MsalServiceException("Invalid clientSecret", "InvalidClientSecret");
@@ -379,8 +380,8 @@ public class IdentityClientTests {
         whenNew(ConfidentialClientApplication.Builder.class).withAnyArguments().thenAnswer(invocation -> {
             String cid = (String) invocation.getArguments()[0];
             IClientCredential keyCredential = (IClientCredential) invocation.getArguments()[1];
-            if (!clientId.equals(cid)) {
-                throw new MsalServiceException("Invalid clientId", "InvalidClientId");
+            if (!CLIENT_ID.equals(cid)) {
+                throw new MsalServiceException("Invalid CLIENT_ID", "InvalidClientId");
             }
             if (keyCredential == null) {
                 throw new MsalServiceException("Invalid clientCertificate", "InvalidClientCertificate");
@@ -411,7 +412,7 @@ public class IdentityClientTests {
         when(builder.build()).thenReturn(application);
         when(builder.authority(any())).thenReturn(builder);
         when(builder.httpClient(any())).thenReturn(builder);
-        whenNew(PublicClientApplication.Builder.class).withArguments(clientId).thenReturn(builder);
+        whenNew(PublicClientApplication.Builder.class).withArguments(CLIENT_ID).thenReturn(builder);
     }
 
     private void mockForClientPemCertificate(String accessToken, TokenRequestContext request, OffsetDateTime expiresOn) throws Exception {
@@ -432,8 +433,8 @@ public class IdentityClientTests {
         when(builder.httpClient(any())).thenReturn(builder);
         whenNew(ConfidentialClientApplication.Builder.class).withAnyArguments().thenAnswer(invocation -> {
             String cid = (String) invocation.getArguments()[0];
-            if (!clientId.equals(cid)) {
-                throw new MsalServiceException("Invalid clientId", "InvalidClientId");
+            if (!CLIENT_ID.equals(cid)) {
+                throw new MsalServiceException("Invalid CLIENT_ID", "InvalidClientId");
             }
             return builder;
         });
@@ -454,7 +455,7 @@ public class IdentityClientTests {
         PowerMockito.doNothing().when(huc).setRequestMethod(anyString());
         PowerMockito.doNothing().when(huc).setRequestMethod(anyString());
         PowerMockito.doNothing().when(huc).setRequestMethod(anyString());
-        InputStream inputStream = new ByteArrayInputStream(tokenJson.getBytes());
+        InputStream inputStream = new ByteArrayInputStream(tokenJson.getBytes(Charset.defaultCharset()));
         when(huc.getInputStream()).thenReturn(inputStream);
     }
 
@@ -465,7 +466,7 @@ public class IdentityClientTests {
         when(u.openConnection()).thenReturn(huc);
         PowerMockito.doNothing().when(huc).setRequestMethod(anyString());
         PowerMockito.doNothing().when(huc).setConnectTimeout(ArgumentMatchers.anyInt());
-        InputStream inputStream = new ByteArrayInputStream(tokenJson.getBytes());
+        InputStream inputStream = new ByteArrayInputStream(tokenJson.getBytes(Charset.defaultCharset()));
         when(huc.getInputStream()).thenReturn(inputStream);
     }
 
@@ -504,7 +505,7 @@ public class IdentityClientTests {
         when(builder.build()).thenReturn(application);
         when(builder.authority(any())).thenReturn(builder);
         when(builder.httpClient(any())).thenReturn(builder);
-        whenNew(PublicClientApplication.Builder.class).withArguments(clientId).thenReturn(builder);
+        whenNew(PublicClientApplication.Builder.class).withArguments(CLIENT_ID).thenReturn(builder);
     }
 
     private void mockForUsernamePasswordCodeFlow(String token, TokenRequestContext request, OffsetDateTime expiresOn) throws Exception {
@@ -522,7 +523,7 @@ public class IdentityClientTests {
         when(builder.build()).thenReturn(application);
         when(builder.authority(any())).thenReturn(builder);
         when(builder.httpClient(any())).thenReturn(builder);
-        whenNew(PublicClientApplication.Builder.class).withArguments(clientId).thenReturn(builder);
+        whenNew(PublicClientApplication.Builder.class).withArguments(CLIENT_ID).thenReturn(builder);
     }
 
     private void mockForUserRefreshTokenFlow(String token2, TokenRequestContext request2, OffsetDateTime expiresAt) throws Exception {
@@ -540,6 +541,6 @@ public class IdentityClientTests {
         when(builder.build()).thenReturn(application);
         when(builder.authority(any())).thenReturn(builder);
         when(builder.httpClient(any())).thenReturn(builder);
-        whenNew(PublicClientApplication.Builder.class).withArguments(clientId).thenReturn(builder);
+        whenNew(PublicClientApplication.Builder.class).withArguments(CLIENT_ID).thenReturn(builder);
     }
 }

@@ -47,14 +47,14 @@ public class ReceiveMessageAzureIdentityAsyncSample {
             .subscriptionName("<<subscription-name>>")
             .buildAsyncClient();
 
-        Disposable subscription = receiverAsyncClient.receive()
+        Disposable subscription = receiverAsyncClient.receiveMessages()
             .flatMap(context -> {
                 ServiceBusReceivedMessage message = context.getMessage();
 
                 System.out.println("Received Message Id:" + message.getMessageId());
                 System.out.println("Received Message:" + new String(message.getBody()));
 
-                return receiverAsyncClient.complete(message);
+                return receiverAsyncClient.complete(message.getLockToken());
             })
             .subscribe(aVoid -> System.out.println("Processed message."),
                 error -> System.err.println("Error occurred while receiving message: " + error),

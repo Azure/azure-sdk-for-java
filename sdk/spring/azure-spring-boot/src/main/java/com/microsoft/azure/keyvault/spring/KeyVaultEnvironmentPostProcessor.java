@@ -34,9 +34,6 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
         final KeyVaultEnvironmentPostProcessorHelper helper
             = new KeyVaultEnvironmentPostProcessorHelper(environment);
-        if (isKeyVaultEnabled(environment, "")) {
-            helper.addKeyVaultPropertySource("");
-        }
         if (hasMultipleKeyVaultsEnabled(environment)) {
             final String property = environment.getProperty(KeyVaultProperties.getPropertyName(Property.ORDER), "");
             final String[] keyVaultNames = property.split(",");
@@ -46,6 +43,8 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
                     helper.addKeyVaultPropertySource(normalizedName);
                 }
             }
+        } else if (isKeyVaultEnabled(environment, "")) {
+            helper.addKeyVaultPropertySource("");
         }
     }
 
@@ -73,11 +72,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
      * @return true if enabled, false otherwise.
      */
     private boolean hasMultipleKeyVaultsEnabled(ConfigurableEnvironment environment) {
-        boolean result = false;
-        if (environment.getProperty(KeyVaultProperties.getPropertyName(Property.ORDER)) != null) {
-            result = true;
-        }
-        return result;
+        return environment.getProperty(KeyVaultProperties.getPropertyName(Property.ORDER)) != null;
     }
 
     private boolean isKeyVaultClientAvailable() {

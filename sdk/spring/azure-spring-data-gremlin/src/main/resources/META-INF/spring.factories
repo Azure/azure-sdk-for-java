@@ -1,0 +1,2 @@
+org.springframework.data.repository.core.support.RepositoryFactorySupport=com.microsoft.spring.data.gremlin.repository.support.GremlinRepositoryFactory
+

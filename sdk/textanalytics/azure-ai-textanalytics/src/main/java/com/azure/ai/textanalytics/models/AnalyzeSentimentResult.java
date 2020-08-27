@@ -30,6 +30,9 @@ public final class AnalyzeSentimentResult extends TextAnalyticsResult {
      * Get the document sentiment.
      *
      * @return The document sentiment.
+     *
+     * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
+     * was accessed.
      */
     public DocumentSentiment getDocumentSentiment() {
         throwExceptionIfError();
