@@ -641,7 +641,7 @@ public Mono<Void> deleteDigitalTwin(String digitalTwinId, RequestOptions options
  * @return The Http response
  */
 @ServiceMethod(returns = ReturnType.SINGLE)
-public Mono<Response> deleteDigitalTwinWithResponse(String digitalTwinId, RequestOptions options)
+public Mono<Response<Void>> deleteDigitalTwinWithResponse(String digitalTwinId, RequestOptions options)
 
  /**
  * Updates a digital twin.
@@ -651,28 +651,7 @@ public Mono<Response> deleteDigitalTwinWithResponse(String digitalTwinId, Reques
  * @return The updated application/json digital twin.
  */
 @ServiceMethod(returns = ReturnType.SINGLE)
-public Mono<String> updateDigitalTwin(String digitalTwinId, String digitalTwinUpdateOperations)
-
-/**
- * Updates a digital twin.
- *
- * @param digitalTwinId The Id of the digital twin.
- * @param digitalTwinUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin
- * @param classType The model class to convert the response to.
- * @return The updated application/json digital twin.
- */
-@ServiceMethod(returns = ReturnType.SINGLE)
-public <T> Mono<T> updateDigitalTwin(String digitalTwinId, List<Object> digitalTwinUpdateOperations, Class<T> classType)
-
-/**
- * Updates a digital twin.
- *
- * @param digitalTwinId The Id of the digital twin.
- * @param digitalTwinUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin
- * @return A Http response containing updated application/json digital twin.
- */
-@ServiceMethod(returns = ReturnType.SINGLE)
-public Mono<Response<String>> updateDigitalTwinWithResponse(String digitalTwinId, List<Object> digitalTwinUpdateOperations)
+public Mono<String> updateDigitalTwin(String digitalTwinId, List<Object> digitalTwinUpdateOperations)
 
 /**
  * Updates a digital twin.
@@ -849,7 +828,7 @@ public Void deleteDigitalTwin(String digitalTwinId, RequestOptions options)
  * @return The Http response
  */
 @ServiceMethod(returns = ReturnType.SINGLE)
-public Response deleteDigitalTwinWithResponse(String digitalTwinId, RequestOptions options, Context context)
+public Response<Void> deleteDigitalTwinWithResponse(String digitalTwinId, RequestOptions options, Context context)
 
  /**
  * Updates a digital twin.
@@ -859,7 +838,7 @@ public Response deleteDigitalTwinWithResponse(String digitalTwinId, RequestOptio
  * @return The updated application/json digital twin.
  */
 @ServiceMethod(returns = ReturnType.SINGLE)
-public String updateDigitalTwin(String digitalTwinId, String digitalTwinUpdateOperations)
+public String updateDigitalTwin(String digitalTwinId, List<Object> digitalTwinUpdateOperations)
 
  /**
  * Updates a digital twin.
@@ -870,30 +849,7 @@ public String updateDigitalTwin(String digitalTwinId, String digitalTwinUpdateOp
  * @return The updated application/json digital twin.
  */
 @ServiceMethod(returns = ReturnType.SINGLE)
-public <T> updateDigitalTwin(String digitalTwinId, String digitalTwinUpdateOperations, Class<T> classType)
-
-/**
- * Updates a digital twin.
- *
- * @param digitalTwinId The Id of the digital twin.
- * @param digitalTwinUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin
- * @param context Additional context that is passed through the Http pipeline during the service call.
- * @return A Http response containing updated application/json digital twin.
- */
-@ServiceMethod(returns = ReturnType.SINGLE)
-public Response<String> updateDigitalTwinWithResponse(String digitalTwinId, String digitalTwinUpdateOperations, Context context)
-
-/**
- * Updates a digital twin.
- *
- * @param digitalTwinId The Id of the digital twin.
- * @param digitalTwinUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin
- * @param classType The model class to convert the response to.
- * @param context Additional context that is passed through the Http pipeline during the service call.
- * @return A Http response containing updated application/json digital twin.
- */
-@ServiceMethod(returns = ReturnType.SINGLE)
-public <T> Response<T> updateDigitalTwinWithResponse(String digitalTwinId, String digitalTwinUpdateOperations, Class<T> classType, Context context)
+public <T> updateDigitalTwin(String digitalTwinId, List<Object> digitalTwinUpdateOperations, Class<T> classType)
 
  /**
  * Updates a digital twin.
@@ -904,7 +860,7 @@ public <T> Response<T> updateDigitalTwinWithResponse(String digitalTwinId, Strin
  * @return The updated application/json digital twin.
  */
 @ServiceMethod(returns = ReturnType.SINGLE)
-public String updateDigitalTwin(String digitalTwinId, String digitalTwinUpdateOperations, RequestOptions options)
+public String updateDigitalTwin(String digitalTwinId, List<Object> digitalTwinUpdateOperations, RequestOptions options)
 
  /**
  * Updates a digital twin.
@@ -916,7 +872,7 @@ public String updateDigitalTwin(String digitalTwinId, String digitalTwinUpdateOp
  * @return The updated application/json digital twin.
  */
 @ServiceMethod(returns = ReturnType.SINGLE)
-public <T> updateDigitalTwin(String digitalTwinId, String digitalTwinUpdateOperations, RequestOptions options, Class<T> classType)
+public <T> updateDigitalTwin(String digitalTwinId, List<Object> digitalTwinUpdateOperations, RequestOptions options, Class<T> classType)
 
 /**
  * Updates a digital twin.
@@ -928,7 +884,7 @@ public <T> updateDigitalTwin(String digitalTwinId, String digitalTwinUpdateOpera
  * @return A Http response containing updated application/json digital twin.
  */
 @ServiceMethod(returns = ReturnType.SINGLE)
-public Response<String> updateDigitalTwinWithResponse(String digitalTwinId, String digitalTwinUpdateOperations, RequestOptions options, Context context)
+public Response<String> updateDigitalTwinWithResponse(String digitalTwinId, List<Object> digitalTwinUpdateOperations, RequestOptions options, Context context)
 
 /**
  * Updates a digital twin.
@@ -941,7 +897,7 @@ public Response<String> updateDigitalTwinWithResponse(String digitalTwinId, Stri
  * @return A Http response containing updated application/json digital twin.
  */
 @ServiceMethod(returns = ReturnType.SINGLE)
-public <T> Response<T> updateDigitalTwinWithResponse(String digitalTwinId, String digitalTwinUpdateOperations, RequestOptions options, Class<T> classType, Context context)
+public <T> Response<T> updateDigitalTwinWithResponse(String digitalTwinId, List<Object> digitalTwinUpdateOperations, RequestOptions options, Class<T> classType, Context context)
 ```
 </details>
 
