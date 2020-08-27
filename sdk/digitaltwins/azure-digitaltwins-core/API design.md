@@ -593,7 +593,7 @@ public Mono<String> createDigitalTwin(String digitalTwinId, String digitalTwin)
  * @return The application/json digital twin created.
  */
 @ServiceMethod(returns = ReturnType.SINGLE)
-public <T> Mono<T> createDigitalTwin(String digitalTwinId, String digitalTwin, Class<T> classType)
+public <T> Mono<T> createDigitalTwin(String digitalTwinId, Object digitalTwin, Class<T> classType)
 
 /**
  * Creates a digital twin.
@@ -614,7 +614,7 @@ public Mono<Response<String>> createDigitalTwinWithResponse(String digitalTwinId
  * @return A Http response containing application/json digital twin created.
  */
 @ServiceMethod(returns = ReturnType.SINGLE)
-public <T> Mono<Response<T>> createDigitalTwinWithResponse(String digitalTwinId, String digitalTwin, Class<T> classType)
+public <T> Mono<Response<T>> createDigitalTwinWithResponse(String digitalTwinId, Object digitalTwin, Class<T> classType)
 
 /**
  * Deletes a digital twin. All relationships referencing the digital twin must already be deleted.
@@ -632,15 +632,6 @@ public Mono<Void> deleteDigitalTwin(String digitalTwinId)
  */
 @ServiceMethod(returns = ReturnType.SINGLE)
 public Mono<Void> deleteDigitalTwin(String digitalTwinId, RequestOptions options)
-
-/**
- * Deletes a digital twin. All relationships referencing the digital twin must already be deleted.
- *
- * @param digitalTwinId The id of the digital twin. The id is unique within the service and case sensitive.
- * @return The Http response
- */
-@ServiceMethod(returns = ReturnType.SINGLE)
-public Mono<Response> deleteDigitalTwinWithResponse(String digitalTwinId)
 
 /**
  * Deletes a digital twin. All relationships referencing the digital twin must already be deleted.
@@ -671,7 +662,7 @@ public Mono<String> updateDigitalTwin(String digitalTwinId, String digitalTwinUp
  * @return The updated application/json digital twin.
  */
 @ServiceMethod(returns = ReturnType.SINGLE)
-public <T> Mono<T> updateDigitalTwin(String digitalTwinId, String digitalTwinUpdateOperations, Class<T> classType)
+public <T> Mono<T> updateDigitalTwin(String digitalTwinId, List<Object> digitalTwinUpdateOperations, Class<T> classType)
 
 /**
  * Updates a digital twin.
@@ -681,7 +672,7 @@ public <T> Mono<T> updateDigitalTwin(String digitalTwinId, String digitalTwinUpd
  * @return A Http response containing updated application/json digital twin.
  */
 @ServiceMethod(returns = ReturnType.SINGLE)
-public Mono<Response<String>> updateDigitalTwinWithResponse(String digitalTwinId, String digitalTwinUpdateOperations)
+public Mono<Response<String>> updateDigitalTwinWithResponse(String digitalTwinId, List<Object> digitalTwinUpdateOperations)
 
 /**
  * Updates a digital twin.
@@ -692,7 +683,7 @@ public Mono<Response<String>> updateDigitalTwinWithResponse(String digitalTwinId
  * @return A Http response containing updated application/json digital twin.
  */
 @ServiceMethod(returns = ReturnType.SINGLE)
-public Mono<Response<T> updateDigitalTwinWithResponse(String digitalTwinId, String digitalTwinUpdateOperations, Class<T> classType)
+public <T> Mono<Response<T>> updateDigitalTwinWithResponse(String digitalTwinId, List<Object> digitalTwinUpdateOperations, Class<T> classType)
 
  /**
  * Updates a digital twin.
@@ -703,7 +694,7 @@ public Mono<Response<T> updateDigitalTwinWithResponse(String digitalTwinId, Stri
  * @return The updated application/json digital twin.
  */
 @ServiceMethod(returns = ReturnType.SINGLE)
-public Mono<String> updateDigitalTwin(String digitalTwinId, String digitalTwinUpdateOperations, RequestOptions options)
+public Mono<String> updateDigitalTwin(String digitalTwinId, List<Object> digitalTwinUpdateOperations, RequestOptions options)
 
 /**
  * Updates a digital twin.
@@ -715,7 +706,7 @@ public Mono<String> updateDigitalTwin(String digitalTwinId, String digitalTwinUp
  * @return The updated application/json digital twin.
  */
 @ServiceMethod(returns = ReturnType.SINGLE)
-public <T> Mono<T> updateDigitalTwin(String digitalTwinId, String digitalTwinUpdateOperations, RequestOptions options, Class<T> classType)
+public <T> Mono<T> updateDigitalTwin(String digitalTwinId, List<Object> digitalTwinUpdateOperations, RequestOptions options, Class<T> classType)
 
 /**
  * Updates a digital twin.
@@ -726,7 +717,7 @@ public <T> Mono<T> updateDigitalTwin(String digitalTwinId, String digitalTwinUpd
  * @return A Http response containing updated application/json digital twin.
  */
 @ServiceMethod(returns = ReturnType.SINGLE)
-public Mono<Response<String>> updateDigitalTwinWithResponse(String digitalTwinId, String digitalTwinUpdateOperations, RequestOptions options)
+public Mono<Response<String>> updateDigitalTwinWithResponse(String digitalTwinId, List<Object> digitalTwinUpdateOperations, RequestOptions options)
 
  /**
  * Updates a digital twin.
@@ -738,7 +729,7 @@ public Mono<Response<String>> updateDigitalTwinWithResponse(String digitalTwinId
  * @return A Http response containing updated application/json digital twin.
  */
 @ServiceMethod(returns = ReturnType.SINGLE)
-public <T> Mono<Response<T>> updateDigitalTwinWithResponse(String digitalTwinId, String digitalTwinUpdateOperations, RequestOptions options, Class<T> classType)
+public <T> Mono<Response<T>> updateDigitalTwinWithResponse(String digitalTwinId, List<Object> digitalTwinUpdateOperations, RequestOptions options, Class<T> classType)
 ```
 
 </details>
@@ -839,16 +830,6 @@ public <T> Response<T> createDigitalTwinWithResponse(String digitalTwinId, Strin
  */
 @ServiceMethod(returns = ReturnType.SINGLE)
 public Void deleteDigitalTwin(String digitalTwinId)
-
-/**
- * Deletes a digital twin. All relationships referencing the digital twin must already be deleted.
- *
- * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
- * @param context Additional context that is passed through the Http pipeline during the service call.
- * @return The Http response
- */
-@ServiceMethod(returns = ReturnType.SINGLE)
-public Response deleteDigitalTwinWithResponse(String digitalTwinId, Context context)
 
 /**
  * Deletes a digital twin. All relationships referencing the digital twin must already be deleted.
