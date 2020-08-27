@@ -9,6 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
@@ -62,8 +63,8 @@ public final class DigitalTwinsClient {
      * @return A REST response containing the application/json relationship created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<String> createRelationshipWithResponse(String digitalTwinId, String relationshipId, String relationship) {
-        return digitalTwinsAsyncClient.createRelationshipWithResponse(digitalTwinId, relationshipId, relationship).block();
+    public Response<String> createRelationshipWithResponse(String digitalTwinId, String relationshipId, String relationship, Context context) {
+        return digitalTwinsAsyncClient.createRelationshipWithResponse(digitalTwinId, relationshipId, relationship, context).block();
     }
 
     /**
@@ -74,7 +75,7 @@ public final class DigitalTwinsClient {
      * @return A {@link PagedIterable} of application/json relationships belonging to the specified digital twin and the http response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> listRelationships(String digitalTwinId, String relationshipName) {
-        return new PagedIterable<>(digitalTwinsAsyncClient.listRelationships(digitalTwinId, relationshipName));
+    public PagedIterable<String> listRelationships(String digitalTwinId, String relationshipName, Context context) {
+        return new PagedIterable<>(digitalTwinsAsyncClient.listRelationships(digitalTwinId, relationshipName, context));
     }
 }
