@@ -1199,7 +1199,6 @@ Async APIs
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ModelData>> getModelWithResponse(String modelId) { }
    
-    // TODO: all 3 optional parameters need to wrapped in a listOptions class and the input of this method will be a single wrapper object.
     /**
      * Gets the list of models by iterating through a collection.
      * @return A {@link PagedFlux} of ModelData.
