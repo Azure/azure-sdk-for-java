@@ -232,6 +232,23 @@ public final class DigitalTwinsAsyncClient {
             });
     }
 
+
+    //==================================================================================================================================================
+    // Models APIs
+    //==================================================================================================================================================
+
+/*    *//**
+     * Creates one or many models.
+     * @param models The list of models to create. Each string corresponds to exactly one model.
+     * @return A {@link PagedFlux} of created models.
+     *//*
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ModelData> createModels(List<String> models)
+    {
+        protocolLayer.getDigitalTwinModels().addWithResponseAsync(()
+        .map()
+    }*/
+
     /**
      * Gets the list of models by iterating through a collection.
      * @param listModelOptions The options for the list operation.
@@ -242,35 +259,9 @@ public final class DigitalTwinsAsyncClient {
         Supplier<Mono<PagedResponse<ModelData>>> firstPage = () -> protocolLayer.getDigitalTwinModels().listSinglePageAsync(
                 (List<String>) listModelOptions.getDependenciesFor(),
                 listModelOptions.getIncludeModelDefinition(),
-                new DigitalTwinModelsListOptions().setMaxItemCount(listModelOptions.getMaxItemCount()))
-            .map(
-                objectPagedResponse -> {
-                    List<ModelData> modelList = objectPagedResponse.getValue().stream()
-                        .filter(Objects::nonNull)
-                        .collect(Collectors.toList());
-                    return new PagedResponseBase<>(
-                        objectPagedResponse.getRequest(),
-                        objectPagedResponse.getStatusCode(),
-                        objectPagedResponse.getHeaders(),
-                        modelList,
-                        objectPagedResponse.getContinuationToken(),
-                        ((PagedResponseBase) objectPagedResponse).getDeserializedHeaders());
-                }
-            );
+                new DigitalTwinModelsListOptions().setMaxItemCount(listModelOptions.getMaxItemCount()));
 
-        Function<String, Mono<PagedResponse<ModelData>>> nextPage = nextLink -> protocolLayer.getDigitalTwinModels().listNextSinglePageAsync(nextLink)
-            .map(objectPagedResponse -> {
-                List<ModelData> modelList = objectPagedResponse.getValue().stream()
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toList());
-                return new PagedResponseBase<>(
-                    objectPagedResponse.getRequest(),
-                    objectPagedResponse.getStatusCode(),
-                    objectPagedResponse.getHeaders(),
-                    modelList,
-                    objectPagedResponse.getContinuationToken(),
-                    ((PagedResponseBase)objectPagedResponse).getDeserializedHeaders());
-            });
+        Function<String, Mono<PagedResponse<ModelData>>> nextPage = nextLink -> protocolLayer.getDigitalTwinModels().listNextSinglePageAsync(nextLink);
 
         return new PagedFlux<>(firstPage, nextPage);
     }
@@ -283,5 +274,4 @@ public final class DigitalTwinsAsyncClient {
     public PagedFlux<ModelData> listModels() {
         return listModels(new ListModelOptions());
     }
-
 }
