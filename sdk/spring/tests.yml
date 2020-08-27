@@ -64,7 +64,7 @@ jobs:
                   publishJUnitResults: false
 
             - task: Maven@3
-              displayName: 'Run tests again: $(DisplayName)'
+              displayName: 'Run tests again, JDK Version: $(JavaBuildVersion)'
               inputs:
                   mavenPomFile: pom.xml
                   goals: clean verify
