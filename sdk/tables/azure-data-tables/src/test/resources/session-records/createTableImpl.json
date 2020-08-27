@@ -4,24 +4,23 @@
     "Uri" : "https://REDACTED.table.core.windows.net/Tables",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "x-ms-client-request-id" : "10486662-1f29-41bc-bfcc-aeefe4c49449",
+      "x-ms-client-request-id" : "dd576296-1cdd-44b2-9fd7-7d651d6cf3a8",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "Transfer-Encoding" : "chunked",
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
       "X-Content-Type-Options" : "nosniff",
       "retry-after" : "0",
-      "StatusCode" : "201",
-      "Date" : "Tue, 28 Jul 2020 00:15:15 GMT",
+      "StatusCode" : "204",
+      "Date" : "Fri, 21 Aug 2020 21:09:37 GMT",
       "Cache-Control" : "no-cache",
-      "x-ms-request-id" : "ba19b2b1-9002-0013-0774-64858c000000",
-      "Body" : "{\"odata.metadata\":\"https://connieystorage.table.core.windows.net/$metadata#Tables/@Element\",\"TableName\":\"test907698555d\"}",
-      "Preference-Applied" : "return-content",
-      "x-ms-client-request-id" : "10486662-1f29-41bc-bfcc-aeefe4c49449",
-      "Content-Type" : "application/json;odata=minimalmetadata;streaming=true;charset=utf-8",
-      "Location" : "https://connieystorage.table.core.windows.net/Tables('test907698555d')"
+      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/Tables('test077343f063')",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "b61827e2-4002-004e-69ff-77e4d4000000",
+      "Preference-Applied" : "return-no-content",
+      "x-ms-client-request-id" : "dd576296-1cdd-44b2-9fd7-7d651d6cf3a8",
+      "Location" : "https://brsiegelsample.table.core.windows.net/Tables('test077343f063')"
     },
     "Exception" : null
   }, {
@@ -29,7 +28,7 @@
     "Uri" : "https://REDACTED.table.core.windows.net/Tables?$format=application/json%3Bodata%3Dminimalmetadata",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "x-ms-client-request-id" : "c507a389-fc0c-456e-8ec7-f4cc4b38c079"
+      "x-ms-client-request-id" : "20c02d70-e78e-409e-ac0f-b6f5e5146e32"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -39,19 +38,19 @@
       "X-Content-Type-Options" : "nosniff",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "4ff177a0-b002-0014-6f74-64e9ef000000",
-      "Body" : "{\"odata.metadata\":\"https://connieystorage.table.core.windows.net/$metadata#Tables\",\"value\":[{\"TableName\":\"test907698555d\"}]}",
-      "Date" : "Tue, 28 Jul 2020 00:15:15 GMT",
-      "x-ms-client-request-id" : "c507a389-fc0c-456e-8ec7-f4cc4b38c079",
+      "x-ms-request-id" : "b61827ec-4002-004e-70ff-77e4d4000000",
+      "Body" : "{\"odata.metadata\":\"https://brsiegelsample.table.core.windows.net/$metadata#Tables\",\"value\":[{\"TableName\":\"test077343f063\"}]}",
+      "Date" : "Fri, 21 Aug 2020 21:09:37 GMT",
+      "x-ms-client-request-id" : "20c02d70-e78e-409e-ac0f-b6f5e5146e32",
       "Content-Type" : "application/json;odata=minimalmetadata;streaming=true;charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.table.core.windows.net/Tables('test907698555d')",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables('test077343f063')",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "x-ms-client-request-id" : "c2d02d4f-cebc-4f1b-b96c-fc199a2cbe32"
+      "x-ms-client-request-id" : "2d912068-6226-4ab4-ac7a-4276a0de53a2"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -61,11 +60,11 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "6eee6e9a-f002-002a-7f74-647e90000000",
-      "Date" : "Tue, 28 Jul 2020 00:15:14 GMT",
-      "x-ms-client-request-id" : "c2d02d4f-cebc-4f1b-b96c-fc199a2cbe32"
+      "x-ms-request-id" : "533cfa6e-a002-00b2-56ff-77352d000000",
+      "Date" : "Fri, 21 Aug 2020 21:09:37 GMT",
+      "x-ms-client-request-id" : "2d912068-6226-4ab4-ac7a-4276a0de53a2"
     },
     "Exception" : null
   } ],
-  "variables" : [ "test907698555d", "10486662-1f29-41bc-bfcc-aeefe4c49449", "c507a389-fc0c-456e-8ec7-f4cc4b38c079", "c2d02d4f-cebc-4f1b-b96c-fc199a2cbe32" ]
+  "variables" : [ "test077343f063", "dd576296-1cdd-44b2-9fd7-7d651d6cf3a8", "20c02d70-e78e-409e-ac0f-b6f5e5146e32", "2d912068-6226-4ab4-ac7a-4276a0de53a2" ]
 }

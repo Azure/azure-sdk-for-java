@@ -41,11 +41,13 @@ public class EncryptionKeyWrapMetadata {
         this.value = source.value;
     }
 
-    EncryptionKeyWrapMetadata(String type, String value) {
+    // TODO: this doen't need to be public. only for test FIXME moderakh
+    public EncryptionKeyWrapMetadata(String type, String value) {
         this(type, value, null);
     }
 
-    EncryptionKeyWrapMetadata(String type, String value, String algorithm) {
+    // TODO: this doen't need to be public. only for test FIXME moderakh
+    public EncryptionKeyWrapMetadata(String type, String value, String algorithm) {
         Preconditions.checkNotNull(type, "type is null");
         Preconditions.checkNotNull(value, "value is null");
         this.type = type;
