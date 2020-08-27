@@ -4,7 +4,6 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
-import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;

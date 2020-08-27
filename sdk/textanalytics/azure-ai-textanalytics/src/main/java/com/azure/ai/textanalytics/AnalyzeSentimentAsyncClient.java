@@ -28,8 +28,6 @@ import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.models.WarningCode;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
-import com.azure.core.exception.HttpResponseException;
-import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;

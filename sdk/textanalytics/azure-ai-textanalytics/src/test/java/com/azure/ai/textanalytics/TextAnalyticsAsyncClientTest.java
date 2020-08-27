@@ -35,7 +35,6 @@ import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchLinkedEntitie
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchPiiEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchTextSentiment;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedDocumentSentiment;
-import static com.azure.ai.textanalytics.TestUtils.getPiiEntitiesList1;
 import static com.azure.ai.textanalytics.TestUtils.getLinkedEntitiesList1;
 import static com.azure.ai.textanalytics.TestUtils.getPiiEntitiesList1;
 import static com.azure.ai.textanalytics.TestUtils.getUnknownDetectedLanguage;
