@@ -8,9 +8,10 @@ import com.azure.messaging.servicebus.receivesettle.NetworkFailureException;
 import com.azure.messaging.servicebus.receivesettle.Order;
 import com.azure.messaging.servicebus.receivesettle.OrderServiceFailureException;
 
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
-import java.util.stream.Stream;
+import java.util.concurrent.TimeUnit;
 
 /**
  * An order service that save orders and possibly throw exception for each operation.
@@ -26,6 +27,11 @@ public class OrderSyncService {
      */
     public void createOrReplaceOrder(Order order) throws OrderServiceFailureException, NetworkFailureException {
         this.throwRandomError();
+        try {
+            TimeUnit.MICROSECONDS.sleep(50);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         if (order.getId() == null) {
             Order newOrder = new Order();
             newOrder.setId(UUID.randomUUID().toString());
@@ -44,8 +50,13 @@ public class OrderSyncService {
      * Exception might be thrown before or after the orders are saved (logged)。
      * @param orders The orders to be created or replaced.
      */
-    public void batchCreateOrReplaceOrder(Stream<Order> orders) throws OrderServiceFailureException, NetworkFailureException {
+    public void batchCreateOrReplaceOrder(List<Order> orders) throws OrderServiceFailureException, NetworkFailureException {
         this.throwRandomError();
+        try {
+            TimeUnit.MICROSECONDS.sleep(60);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         orders.forEach(order -> {
             if (order.getId() == null) {
                 Order newOrder = new Order();

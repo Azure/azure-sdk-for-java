@@ -8,11 +8,12 @@ import com.azure.messaging.servicebus.receivesettle.NetworkFailureException;
 import com.azure.messaging.servicebus.receivesettle.Order;
 import com.azure.messaging.servicebus.receivesettle.OrderServiceFailureException;
 import com.azure.messaging.servicebus.receivesettle.sync.OrderSyncService;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.Random;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 /**
  * An order service that save orders and possibly throw exception for each operation.
@@ -29,6 +30,7 @@ public class OrderAsyncService {
      */
     public Mono<Void> createOrReplaceOrder(Order order) {
         return this.throwRandomError()
+            .then(Mono.delay(Duration.ofMillis(50)))
             .then(Mono.fromRunnable(() -> {
                 if (order.getId() == null) {
                     Order newOrder = new Order();
@@ -49,9 +51,10 @@ public class OrderAsyncService {
      * @param orders The orders to create or replace.
      * @return Mono
      */
-    public Mono<Void> batchCreateOrReplaceOrder(Stream<Order> orders) {
-        return this.throwRandomError().then(
-            Mono.fromRunnable(() -> orders.forEach(order -> {
+    public Mono<Void> batchCreateOrReplaceOrder(Flux<Order> orders) {
+        return this.throwRandomError()
+            .then(Mono.delay(Duration.ofMillis(60)))
+            .then(orders.map(order -> {
                 String orderId = order.getId();
                 if (orderId == null) {
                     Order newOrder = new Order();
@@ -63,7 +66,8 @@ public class OrderAsyncService {
                     // simulate updating the order.
                     logger.info(String.format("Order updated with a batch: %s", order));
                 }
-            })).then(this.throwRandomError())
+                return null;
+            }).then(this.throwRandomError())
         );
     }
 

@@ -3,7 +3,6 @@
 
 package com.azure.messaging.servicebus.receivesettle.async;
 
-import com.azure.core.util.IterableStream;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.messaging.servicebus.ServiceBusReceiverAsyncClient;
@@ -15,7 +14,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * MessageReceiverAsyncApp receives messages then use one or multiple MessageReceiverAsyncWorker
@@ -63,10 +61,10 @@ public class MessageReceiverAsyncWorker {
      * @param messageContexts The message contexts, each of which includes a received message.
      * @return A Mono.
      */
-    public Mono<Void> processMessageInBatch(IterableStream<ServiceBusReceivedMessageContext> messageContexts) {
+    public Mono<Void> processMessageInBatch(List<ServiceBusReceivedMessageContext> messageContexts) {
         List<ServiceBusReceivedMessage> messageList = messageContexts.stream().map(ServiceBusReceivedMessageContext::getMessage).collect(Collectors.toList());
-        Stream<Order> orders = messageList.stream().map(this::convertMessageToOrder);
-        return receiverClient.createTransaction().flatMap(txContext -> orderService.batchCreateOrReplaceOrder(orders)
+        List<Order> orders = messageList.stream().map(this::convertMessageToOrder).collect(Collectors.toList());
+        return receiverClient.createTransaction().flatMap(txContext -> orderService.batchCreateOrReplaceOrder(Flux.fromIterable(orders))
             .then(Flux.fromIterable(messageList).flatMap(message -> receiverClient.complete(message.getLockToken())).then())
             .onErrorResume(error -> {
                 if (error instanceof OrderServiceFailureException) {

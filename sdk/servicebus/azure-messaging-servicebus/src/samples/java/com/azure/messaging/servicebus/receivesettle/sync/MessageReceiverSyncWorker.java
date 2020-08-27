@@ -3,7 +3,6 @@
 
 package com.azure.messaging.servicebus.receivesettle.sync;
 
-import com.azure.core.util.IterableStream;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.messaging.servicebus.ServiceBusReceiverClient;
@@ -14,7 +13,6 @@ import com.azure.messaging.servicebus.receivesettle.OrderServiceFailureException
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * MessageReceiverSyncApp receives messages then use one or multiple MessageReceiverSyncWorker
@@ -59,9 +57,9 @@ public class MessageReceiverSyncWorker {
      *
      * @param messageContexts The message contexts, each of which includes a received message.
      */
-    public void processMessageToOrderInBatch(IterableStream<ServiceBusReceivedMessageContext> messageContexts) {
+    public void processMessageToOrderInBatch(List<ServiceBusReceivedMessageContext> messageContexts) {
         List<ServiceBusReceivedMessage> messageList = messageContexts.stream().map(ServiceBusReceivedMessageContext::getMessage).collect(Collectors.toList());
-        Stream<Order> orders = messageList.stream().map(this::convertMessageToOrder);
+        List<Order> orders = messageList.stream().map(this::convertMessageToOrder).collect(Collectors.toList());
         ServiceBusTransactionContext txContext = this.receiverClient.createTransaction();
         try {
             this.orderService.batchCreateOrReplaceOrder(orders);

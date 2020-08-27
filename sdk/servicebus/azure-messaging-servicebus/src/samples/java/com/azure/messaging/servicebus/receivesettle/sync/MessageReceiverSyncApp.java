@@ -10,6 +10,7 @@ import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.messaging.servicebus.ServiceBusReceiverClient;
 
 import java.time.Duration;
+import java.util.stream.Collectors;
 
 /**
  * Sample Application that uses sync API to receive and settle messages.
@@ -36,6 +37,7 @@ public class MessageReceiverSyncApp {
         ServiceBusReceiverClient receiverClient = new ServiceBusClientBuilder()
             .connectionString(serviceBusConnectionString)
             .receiver()
+            .maxAutoLockRenewalDuration(Duration.ofSeconds(10))
             .queueName(queueName)
             .buildClient();
         OrderSyncService orderService = new OrderSyncService();
@@ -69,7 +71,7 @@ public class MessageReceiverSyncApp {
     public void processMessageInBatch() {
         while (true) {
             IterableStream<ServiceBusReceivedMessageContext> messageContextStream = receiverClient.receiveMessages(10, Duration.ofSeconds(3));
-            messageReceiverWorker.processMessageToOrderInBatch(messageContextStream);
+            messageReceiverWorker.processMessageToOrderInBatch(messageContextStream.stream().collect(Collectors.toList()));
         }
     }
 }
