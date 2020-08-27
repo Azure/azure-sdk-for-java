@@ -5,6 +5,7 @@ package com.azure.resourcemanager.eventhubs.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.EventHubsManager;
 import com.azure.resourcemanager.eventhubs.fluent.inner.ArmDisasterRecoveryInner;
 import com.azure.resourcemanager.eventhubs.models.DisasterRecoveryPairingAuthorizationRule;
@@ -30,6 +31,7 @@ class EventHubDisasterRecoveryPairingImpl
         EventHubDisasterRecoveryPairing.Update {
 
     private Ancestors.OneAncestor ancestor;
+    private final ClientLogger logger = new ClientLogger(EventHubDisasterRecoveryPairingImpl.class);
 
     EventHubDisasterRecoveryPairingImpl(String name, ArmDisasterRecoveryInner inner, EventHubsManager manager) {
         super(name, inner, manager);
@@ -72,6 +74,8 @@ class EventHubDisasterRecoveryPairingImpl
         if (namespaceCreatable instanceof EventHubNamespaceImpl) {
             EventHubNamespaceImpl namespace = ((EventHubNamespaceImpl) namespaceCreatable);
             this.ancestor = new Ancestors().new OneAncestor(namespace.resourceGroupName(), namespaceCreatable.name());
+        } else {
+            logger.logExceptionAsError(new IllegalArgumentException("The namespaceCreatable is invalid."));
         }
         return this;
     }
@@ -102,6 +106,8 @@ class EventHubDisasterRecoveryPairingImpl
         if (namespaceCreatable instanceof EventHubNamespaceImpl) {
             EventHubNamespaceImpl namespace = ((EventHubNamespaceImpl) namespaceCreatable);
             this.inner().withPartnerNamespace(namespace.name());
+        } else {
+            logger.logExceptionAsError(new IllegalArgumentException("The namespaceCreatable is invalid."));
         }
         return this;
     }

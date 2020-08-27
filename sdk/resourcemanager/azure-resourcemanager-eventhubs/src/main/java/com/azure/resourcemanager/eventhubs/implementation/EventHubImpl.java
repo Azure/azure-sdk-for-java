@@ -135,13 +135,14 @@ class EventHubImpl
         return Utils.toPrimitiveInt(this.inner().messageRetentionInDays());
     }
 
-
     @Override
     public EventHubImpl withNewNamespace(Creatable<EventHubNamespace> namespaceCreatable) {
         this.addDependency(namespaceCreatable);
         if (namespaceCreatable instanceof EventHubNamespaceImpl) {
             EventHubNamespaceImpl namespace = ((EventHubNamespaceImpl) namespaceCreatable);
             this.ancestor = new Ancestors().new OneAncestor(namespace.resourceGroupName(), namespaceCreatable.name());
+        } else {
+            logger.logExceptionAsError(new IllegalArgumentException("The namespaceCreatable is invalid."));
         }
         return this;
     }
