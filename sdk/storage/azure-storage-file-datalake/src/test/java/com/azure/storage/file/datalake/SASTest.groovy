@@ -86,8 +86,8 @@ class SASTest extends APISpec {
             .setListPermission(true)
             .setMovePermission(true)
             .setExecutePermission(true)
-            .setOwnershipPermission(true)
-            .setPermissionPermission(true)
+            .setChangeOwnershipPermission(true)
+            .setChangePermissionPermission(true)
 
         def sasValues = generateValues(permissions)
 
@@ -120,8 +120,8 @@ class SASTest extends APISpec {
             .setListPermission(true)
             .setMovePermission(true)
             .setExecutePermission(true)
-            .setOwnershipPermission(true)
-            .setPermissionPermission(true)
+            .setChangeOwnershipPermission(true)
+            .setChangePermissionPermission(true)
 
         def sasValues = generateValues(permissions)
 
@@ -184,8 +184,8 @@ class SASTest extends APISpec {
             .setListPermission(true)
             .setMovePermission(true)
             .setExecutePermission(true)
-            .setOwnershipPermission(true)
-            .setPermissionPermission(true)
+            .setChangeOwnershipPermission(true)
+            .setChangePermissionPermission(true)
 
         def expiryTime = getUTCNow().plusDays(1)
 
@@ -221,8 +221,8 @@ class SASTest extends APISpec {
             .setListPermission(true)
             .setMovePermission(true)
             .setExecutePermission(true)
-            .setOwnershipPermission(true)
-            .setPermissionPermission(true)
+            .setChangeOwnershipPermission(true)
+            .setChangePermissionPermission(true)
 
         def sasValues = generateValues(permissions)
 
@@ -255,8 +255,8 @@ class SASTest extends APISpec {
             .setListPermission(true)
             .setMovePermission(true)
             .setExecutePermission(true)
-            .setOwnershipPermission(true)
-            .setPermissionPermission(true)
+            .setChangeOwnershipPermission(true)
+            .setChangePermissionPermission(true)
 
         def sasValues = generateValues(permissions)
 
@@ -298,8 +298,8 @@ class SASTest extends APISpec {
             .setListPermission(true)
             .setMovePermission(true)
             .setExecutePermission(true)
-            .setOwnershipPermission(true)
-            .setPermissionPermission(true)
+            .setChangeOwnershipPermission(true)
+            .setChangePermissionPermission(true)
 
         def expiryTime = getUTCNow().plusDays(1)
 
@@ -336,8 +336,8 @@ class SASTest extends APISpec {
             .setListPermission(true)
             .setMovePermission(true)
             .setExecutePermission(true)
-            .setOwnershipPermission(true)
-            .setPermissionPermission(true)
+            .setChangeOwnershipPermission(true)
+            .setChangePermissionPermission(true)
         def expiryTime = getUTCNow().plusDays(1)
 
         def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
@@ -394,8 +394,8 @@ class SASTest extends APISpec {
             .setListPermission(true)
             .setMovePermission(true)
             .setExecutePermission(true)
-            .setOwnershipPermission(true)
-            .setPermissionPermission(true)
+            .setChangeOwnershipPermission(true)
+            .setChangePermissionPermission(true)
         def expiryTime = getUTCNow().plusDays(1)
 
         def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)

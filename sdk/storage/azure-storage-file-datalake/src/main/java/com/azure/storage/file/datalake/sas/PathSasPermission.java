@@ -31,9 +31,9 @@ public final class PathSasPermission {
 
     private boolean executePermission;
 
-    private boolean ownershipPermission;
+    private boolean changeOwnershipPermission;
 
-    private boolean permissionPermission;
+    private boolean changePermissionPermission;
 
 
     /**
@@ -82,10 +82,10 @@ public final class PathSasPermission {
                     permissions.executePermission = true;
                     break;
                 case 'o':
-                    permissions.ownershipPermission = true;
+                    permissions.changeOwnershipPermission = true;
                     break;
                 case 'p':
-                    permissions.permissionPermission = true;
+                    permissions.changePermissionPermission = true;
                     break;
                 default:
                     throw new IllegalArgumentException(
@@ -241,38 +241,38 @@ public final class PathSasPermission {
     }
 
     /**
-     * @return the ownership permission status.
+     * @return the change ownership permission status.
      */
-    public boolean hasOwnershipPermission() {
-        return ownershipPermission;
+    public boolean hasChangeOwnershipPermission() {
+        return changeOwnershipPermission;
     }
 
     /**
-     * Sets the ownership permission status.
+     * Sets the change ownership permission status.
      *
      * @param hasOwnershipPermission Permission status to set
      * @return the updated PathSasPermission object.
      */
-    public PathSasPermission setOwnershipPermission(boolean hasOwnershipPermission) {
-        this.ownershipPermission = hasOwnershipPermission;
+    public PathSasPermission setChangeOwnershipPermission(boolean hasOwnershipPermission) {
+        this.changeOwnershipPermission = hasOwnershipPermission;
         return this;
     }
 
     /**
-     * @return the permission permission status.
+     * @return the change permission permission status.
      */
-    public boolean hasPermissionPermission() {
-        return permissionPermission;
+    public boolean hasChangePermissionPermission() {
+        return changePermissionPermission;
     }
 
     /**
-     * Sets the permission permission status.
+     * Sets the change permission permission status.
      *
      * @param hasPermissionPermission Permission status to set
      * @return the updated PathSasPermission object.
      */
-    public PathSasPermission setPermissionPermission(boolean hasPermissionPermission) {
-        this.permissionPermission = hasPermissionPermission;
+    public PathSasPermission setChangePermissionPermission(boolean hasPermissionPermission) {
+        this.changePermissionPermission = hasPermissionPermission;
         return this;
     }
 
@@ -321,11 +321,11 @@ public final class PathSasPermission {
             builder.append('e');
         }
 
-        if (this.ownershipPermission) {
+        if (this.changeOwnershipPermission) {
             builder.append('o');
         }
 
-        if (this.permissionPermission) {
+        if (this.changePermissionPermission) {
             builder.append('p');
         }
 
