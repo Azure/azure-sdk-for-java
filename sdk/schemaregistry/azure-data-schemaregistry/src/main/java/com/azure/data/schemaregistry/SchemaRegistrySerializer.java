@@ -87,7 +87,7 @@ public abstract class SchemaRegistrySerializer {
      * @param object object to be serialized
      * @return Reactive stream that will indicate operation completion.
      */
-    protected Mono<Void> serializeAsync(ByteArrayOutputStream s, Object object) {
+    protected Mono<Void> serializeAsync(OutputStream s, Object object) {
         if (object == null) {
             return monoError(logger, new NullPointerException(
                 "Null object, behavior should be defined in concrete serializer implementation."));

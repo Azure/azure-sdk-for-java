@@ -106,6 +106,7 @@ class SchemaRegistryAvroUtils implements SchemaRegistrySerializationUtils {
 
         ByteArrayInputStream inputStream = new ByteArrayInputStream(b);
 
-        return AvroSerializerProviders.createInstance(schema).deserialize(inputStream, Object.class);
+        return AvroSerializerProviders.createInstance(schema)
+            .deserialize(inputStream, TypeReference.createInstance(Object.class));
     }
 }

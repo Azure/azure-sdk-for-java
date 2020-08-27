@@ -10,6 +10,7 @@ import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
 import com.azure.data.schemaregistry.SchemaRegistrySerializer;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -34,50 +35,32 @@ public final class SchemaRegistryAvroSerializer extends SchemaRegistrySerializer
 
     @Override
     public <T> T deserialize(InputStream stream, TypeReference<T> typeReference) {
-        return null;
+        return this.deserializeAsync(stream, typeReference).block();
     }
 
     @Override
     public <T> Mono<T> deserializeAsync(InputStream stream, TypeReference<T> typeReference) {
-        return null;
+        return super.deserializeAsync(stream)
+            .map(o -> {
+                if (typeReference.getJavaType().getClass().isInstance(o)) {
+                    return typeReference.getJavaType().getClass().cast(o);
+                }
+                return Mono.error(logger.logExceptionAsError(new IllegalStateException("Deserialized object not of class %s")));
+            });
     }
 
     @Override
     public <S extends OutputStream> S serialize(S stream, Object value) {
-        return null;
+        return this.serializeAsync(stream, value).block();
     }
 
     @Override
     public <S extends OutputStream> Mono<S> serializeAsync(S stream, Object value) {
-        return null;
+        if (value == null) {
+            return Mono.empty();
+        }
+
+        return super.serializeAsync(stream, value);
     }
-
-//
-//    @Override
-//    @SuppressWarnings("unchecked")
-//    public OutputStream serialize(OutputStream stream, Object value) {
-//        return stream;
-//    }
-//
-//    @Override
-//    @SuppressWarnings("unchecked")
-//    public Mono<Void> serializeAsync(OutputStream stream, Object object) {
-//        if (object == null) {
-//            return Mono.empty();
-//        }
-//
-//        return super.serializeAsync(stream, object);
-//    }
-
-//    @Override
-//    public <T> Mono<T> deserialize(InputStream stream, Class<T> clazz) {
-//        return this.deserialize(stream)
-//            .map(o -> {
-//                if (clazz.isInstance(o)) {
-//                    return clazz.cast(o);
-//                }
-//                throw logger.logExceptionAsError(new IllegalStateException("Deserialized object not of class %s"));
-//            });
-//    }
 }
 
