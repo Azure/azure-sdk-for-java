@@ -25,6 +25,8 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.security.keyvault.administration.implementation.models.FullBackupOperation;
 import com.azure.security.keyvault.administration.implementation.models.FullBackupResponse;
 import com.azure.security.keyvault.administration.implementation.models.FullRestoreOperationResponse;
@@ -65,9 +67,25 @@ public final class KeyVaultBackupClientImpl {
         return this.httpPipeline;
     }
 
+    /** The serializer to serialize an object into a string. */
+    private final SerializerAdapter serializerAdapter;
+
+    /**
+     * Gets The serializer to serialize an object into a string.
+     *
+     * @return the serializerAdapter value.
+     */
+    public SerializerAdapter getSerializerAdapter() {
+        return this.serializerAdapter;
+    }
+
     /** Initializes an instance of KeyVaultBackupClient client. */
     KeyVaultBackupClientImpl() {
-        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build());
+        this(
+                new HttpPipelineBuilder()
+                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
+                        .build(),
+                JacksonAdapter.createDefaultSerializerAdapter());
     }
 
     /**
@@ -76,9 +94,21 @@ public final class KeyVaultBackupClientImpl {
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
     KeyVaultBackupClientImpl(HttpPipeline httpPipeline) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter());
+    }
+
+    /**
+     * Initializes an instance of KeyVaultBackupClient client.
+     *
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param serializerAdapter The serializer to serialize an object into a string.
+     */
+    KeyVaultBackupClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter) {
         this.httpPipeline = httpPipeline;
+        this.serializerAdapter = serializerAdapter;
         this.apiVersion = "7.2-preview";
-        this.service = RestProxy.create(KeyVaultBackupClientService.class, this.httpPipeline);
+        this.service =
+                RestProxy.create(KeyVaultBackupClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
 
     /**
