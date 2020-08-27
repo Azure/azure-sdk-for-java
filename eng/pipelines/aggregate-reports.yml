@@ -81,7 +81,7 @@ jobs:
       displayName: 'Generate site'
       inputs:
         mavenPomFile: ClientAggregatePom.xml
-        options: '$(DefaultOptions) -T 1C -DskipTests -Ddependency-checker -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -Dmaven.main.skip=true -Dmaven.test.skip=true'
+        options: '$(DefaultOptions) -T 1C -DskipTests -Ddependency-checker -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -Dmaven.main.skip=true -Dbuildhelper.skipAttach=true'
         mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: $(JavaBuildVersion)
