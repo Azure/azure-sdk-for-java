@@ -67,5 +67,7 @@ jobs:
               displayName: 'Run tests again: $(DisplayName)'
               inputs:
                   mavenPomFile: pom.xml
-                  ${{ insert }}: ${{ parameters.TestStepMavenInputs }}
-              env: ${{ parameters.EnvVars }}
+                  goals: clean verify
+                  options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
+              env:
+                  AZURE_TEST_MODE: LIVE
