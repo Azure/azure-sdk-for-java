@@ -155,11 +155,11 @@ jobs:
         inputs:
           versionSpec: '3.6'
 
-      - script: |
-          pip install setuptools wheel
-          pip install doc-warden==$(DocWardenVersion)
-          ward scan -d $(Build.SourcesDirectory) -c $(Build.SourcesDirectory)/eng/.docsettings.yml
-        displayName: 'Verify Readmes'
+      # - script: |
+      #     pip install setuptools wheel
+      #     pip install doc-warden==$(DocWardenVersion)
+      #     ward scan -d $(Build.SourcesDirectory) -c $(Build.SourcesDirectory)/eng/.docsettings.yml
+      #   displayName: 'Verify Readmes'
 
       - template: ../../../common/pipelines/templates/steps/verify-links.yml
         parameters:
