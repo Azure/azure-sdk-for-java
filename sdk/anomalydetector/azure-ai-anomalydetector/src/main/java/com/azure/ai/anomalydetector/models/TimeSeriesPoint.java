@@ -8,9 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The Point model. */
+/** The TimeSeriesPoint model. */
 @Fluent
-public final class Point {
+public final class TimeSeriesPoint {
     /*
      * Timestamp of a data point (ISO8601 format).
      */
@@ -36,9 +36,9 @@ public final class Point {
      * Set the timestamp property: Timestamp of a data point (ISO8601 format).
      *
      * @param timestamp the timestamp value to set.
-     * @return the Point object itself.
+     * @return the TimeSeriesPoint object itself.
      */
-    public Point setTimestamp(OffsetDateTime timestamp) {
+    public TimeSeriesPoint setTimestamp(OffsetDateTime timestamp) {
         this.timestamp = timestamp;
         return this;
     }
@@ -56,9 +56,9 @@ public final class Point {
      * Set the value property: The measurement of that point, should be float.
      *
      * @param value the value value to set.
-     * @return the Point object itself.
+     * @return the TimeSeriesPoint object itself.
      */
-    public Point setValue(float value) {
+    public TimeSeriesPoint setValue(float value) {
         this.value = value;
         return this;
     }
