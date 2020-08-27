@@ -4,6 +4,7 @@
 - Added support for the 2019-02-10 service version.
 - Added support to schedule file expiration. 
 - Added support to specify Arrow Output Serialization when querying a file. 
+- Added support to generate directory SAS and added support to specify additional user ids and correlation ids for  user delegation SAS.
 
 ## 12.2.0 (2020-08-13)
 - Fixed bug where Query Input Stream would throw when a ByteBuffer of length 0 was encountered.
