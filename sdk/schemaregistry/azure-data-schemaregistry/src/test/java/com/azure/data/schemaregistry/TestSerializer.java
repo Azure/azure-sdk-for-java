@@ -3,10 +3,8 @@
 
 package com.azure.data.schemaregistry;
 
-import com.azure.data.schemaregistry.models.SerializationType;
-
-public class TestDummySerializer extends SchemaRegistrySerializer {
-    TestDummySerializer(
+class TestSerializer extends SchemaRegistrySerializer {
+    TestSerializer(
         SchemaRegistryAsyncClient mockClient,
         SchemaRegistrySerializationUtils utils,
         boolean autoRegisterSchemas,

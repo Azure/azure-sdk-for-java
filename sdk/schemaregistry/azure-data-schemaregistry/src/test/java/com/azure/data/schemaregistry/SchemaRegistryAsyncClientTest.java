@@ -29,7 +29,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public class SchemaRegistryAsyncClientTest {
+class SchemaRegistryAsyncClientTest {
 
     private static final SerializationType MOCK_SERIALIZATION = SerializationType.fromString("mock_serialization_type");
     private static final String MOCK_ID = "mock_guid";
@@ -45,7 +45,7 @@ public class SchemaRegistryAsyncClientTest {
     private ConcurrentSkipListMap<String, Function<String, Object>> typeParserDictionary;
 
     @BeforeEach
-    protected void setUp() {
+    void setUp() {
         this.guidCache = new HashMap<String, SchemaRegistryObject>();
         this.schemaStringCache = new HashMap<String, SchemaRegistryObject>();
 
@@ -61,12 +61,12 @@ public class SchemaRegistryAsyncClientTest {
     }
 
     @AfterEach
-    protected void tearDown() {
+    void tearDown() {
         validateMockitoUsage();
     }
 
     @Test
-    public void testRegisterThenSchemaCacheHit() throws Exception {
+    void testRegisterThenSchemaCacheHit() {
         MOCK_SCHEMA_ID.setId(MOCK_ID);
         when(restService.createSchemaWithResponseAsync(anyString(), anyString(), anyString(), anyString()))
             .thenReturn(
@@ -90,7 +90,7 @@ public class SchemaRegistryAsyncClientTest {
     }
 
     @Test
-    public void testGetGuidThenSchemaCacheHit() throws Exception {
+    void testGetGuidThenSchemaCacheHit() throws Exception {
         MOCK_SCHEMA_ID.setId(MOCK_ID);
         when(restService.getIdBySchemaContentWithResponseAsync(anyString(), anyString(), anyString(), anyString()))
             .thenReturn(
@@ -112,7 +112,7 @@ public class SchemaRegistryAsyncClientTest {
     }
 
     @Test
-    public void testGetSchemaThenGuidCacheHit() throws Exception {
+    void testGetSchemaThenGuidCacheHit() throws Exception {
         String mockId = "mock-id---";
         GetSchemaByIdHeaders mockHeaders = new GetSchemaByIdHeaders();
         mockHeaders.setXSchemaType(MOCK_SERIALIZATION.toString());
@@ -135,7 +135,7 @@ public class SchemaRegistryAsyncClientTest {
     }
 
     @Test
-    public void testClientReset() throws Exception {
+    void testClientReset() throws Exception {
         MOCK_SCHEMA_ID.setId(MOCK_ID);
         when(restService.createSchemaWithResponseAsync(anyString(), anyString(), anyString(), anyString()))
             .thenReturn(
@@ -168,7 +168,7 @@ public class SchemaRegistryAsyncClientTest {
     }
 
     @Test
-    public void testBadRegisterRequestThenThrows() {
+    void testBadRegisterRequestThenThrows() {
         MOCK_SCHEMA_ID.setId(MOCK_ID);
         when(restService.createSchemaWithResponseAsync(anyString(), anyString(), anyString(), anyString()))
             .thenReturn(
@@ -195,7 +195,7 @@ public class SchemaRegistryAsyncClientTest {
     }
 
     @Test
-    public void testGetIdBySchemaContentNotFoundThenThrows() {
+    void testGetIdBySchemaContentNotFoundThenThrows() {
         MOCK_SCHEMA_ID.setId(MOCK_ID);
         when(restService.getIdBySchemaContentWithResponseAsync(anyString(), anyString(), anyString(), anyString()))
             .thenReturn(
@@ -223,7 +223,7 @@ public class SchemaRegistryAsyncClientTest {
     }
 
     @Test
-    public void testGetSchemaByIdNotFoundThenThrows() {
+    void testGetSchemaByIdNotFoundThenThrows() {
         String mockId = "mock-id---";
         when(restService.getSchemaByIdWithResponseAsync(mockId))
             .thenReturn(
