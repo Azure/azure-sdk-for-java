@@ -237,17 +237,38 @@ public final class DigitalTwinsAsyncClient {
     // Models APIs
     //==================================================================================================================================================
 
-/*    *//**
+    /**
      * Creates one or many models.
      * @param models The list of models to create. Each string corresponds to exactly one model.
      * @return A {@link PagedFlux} of created models.
-     *//*
+     */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ModelData> createModels(List<String> models)
-    {
-        protocolLayer.getDigitalTwinModels().addWithResponseAsync(()
-        .map()
-    }*/
+    public PagedFlux<ModelData> createModels(List<String> models) {
+        List<Object> modelsPayload = new ArrayList<>();
+        for (String model: models) {
+            try {
+                modelsPayload.add(mapper.readValue(model, Object.class));
+            }
+            catch (JsonProcessingException e) {
+                logger.error("Could not parse the model payload [%s]: %s", model, e);
+                return null;
+            }
+        }
+
+        Supplier<Mono<PagedResponse<ModelData>>> firstPage = () -> protocolLayer.getDigitalTwinModels().addWithResponseAsync(modelsPayload)
+            .map(
+                listResponse -> new PagedResponseBase<>(
+                    listResponse.getRequest(),
+                    listResponse.getStatusCode(),
+                    listResponse.getHeaders(),
+                    listResponse.getValue(),
+                    null,
+                    ((ResponseBase)listResponse).getDeserializedHeaders()));
+
+        Function<String, Mono<PagedResponse<ModelData>>> nextPage = nextLink -> null;
+
+        return new PagedFlux<>(firstPage, nextPage);
+    }
 
     /**
      * Gets the list of models by iterating through a collection.
