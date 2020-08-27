@@ -5,6 +5,7 @@ package com.azure.data.tables.implementation;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.tables.models.TableEntity;
 
+import java.time.OffsetDateTime;
 import java.util.Objects;
 
 /**
@@ -42,25 +43,27 @@ public final class TableEntityHelper {
     /**
      * Sets the ETag on an {@link TableEntity}.
      *
-     * @param entity Entity to set the ETag on.
+     * @param entity Entity to set the values on.
+     * @param timestamp Timestamp to set.
      * @param eTag ETag to set.
      */
-    public static void setETag(TableEntity entity, String eTag) {
+    public static void setValues(TableEntity entity, OffsetDateTime timestamp, String eTag) {
         if (entityAccessor == null) {
             throw new ClientLogger(TableEntityHelper.class).logExceptionAsError(
                 new IllegalStateException("'entityAccessor' should not be null."));
         }
 
-        entityAccessor.setETag(entity, eTag);
+        entityAccessor.setValues(entity, timestamp, eTag);
     }
 
     public interface EntityAccessor {
         /**
-         * Sets the ETag on an {@link TableEntity}.
+         * Sets values on an {@link TableEntity}.
          *
          * @param entity Entity to set the ETag on.
+         * @param timestamp Timestamp to set.
          * @param eTag ETag to set.
          */
-        void setETag(TableEntity entity, String eTag);
+        void setValues(TableEntity entity, OffsetDateTime timestamp, String eTag);
     }
 }

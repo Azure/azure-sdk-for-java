@@ -17,9 +17,14 @@ public final class TableConstants {
     public static final String ROW_KEY = "RowKey";
 
     /**
-     * Name in the map to get row key.
+     * Name in the Map to get the timestamp.
      */
-    public static final String ETAG_KEY = "odata.etag";
+    public static final String TIMESTAMP_KEY = "Timestamp";
+
+    /**
+     * Name in the map to get the eTag.
+     */
+    public static final String ODATA_ETAG_KEY = "odata.etag";
 
     /**
      * Name in the map for key of metadata related to object.
@@ -29,7 +34,7 @@ public final class TableConstants {
     /**
      * Name in the map for the entity's URL.
      */
-    public static final String EDIT_LINK_KEY = "odata.editLink";
+    public static final String ODATA_EDIT_LINK_KEY = "odata.editLink";
 
     /**
      * Private constructor so this class cannot be instantiated.

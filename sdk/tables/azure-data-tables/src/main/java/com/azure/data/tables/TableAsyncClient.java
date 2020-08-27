@@ -18,8 +18,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.tables.implementation.AzureTableImpl;
 import com.azure.data.tables.implementation.AzureTableImplBuilder;
-import com.azure.data.tables.implementation.TableEntityHelper;
 import com.azure.data.tables.implementation.TableConstants;
+import com.azure.data.tables.implementation.TableEntityHelper;
 import com.azure.data.tables.implementation.models.OdataMetadataFormat;
 import com.azure.data.tables.implementation.models.QueryOptions;
 import com.azure.data.tables.implementation.models.ResponseFormat;
@@ -32,14 +32,14 @@ import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.data.tables.implementation.TableConstants.PARTITION_KEY;
-import static com.azure.data.tables.implementation.TableConstants.ROW_KEY;
 
 /**
  * class for the table async client
@@ -648,26 +648,43 @@ public class TableAsyncClient {
      * @throws NullPointerException if 'properties' is null.
      */
     private static TableEntity deserializeEntity(ClientLogger logger, Map<String, Object> properties) {
-        final Object partitionKeyValue = properties.get(PARTITION_KEY);
+        final Object partitionKeyValue = properties.get(TableConstants.PARTITION_KEY);
         if (!(partitionKeyValue instanceof String) || ((String) partitionKeyValue).isEmpty()) {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                "'%s' does not exist in property map or is an empty value.", PARTITION_KEY)));
+                "'%s' does not exist in property map or is an empty value.", TableConstants.PARTITION_KEY)));
         }
 
-        final Object rowKeyValue = properties.get(ROW_KEY);
+        final Object rowKeyValue = properties.get(TableConstants.ROW_KEY);
         if (!(rowKeyValue instanceof String) || ((String) rowKeyValue).isEmpty()) {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                "'%s' does not exist in property map or is an empty value.", ROW_KEY)));
+                "'%s' does not exist in property map or is an empty value.", TableConstants.ROW_KEY)));
+        }
+
+        final Object timestampValue = properties.get(TableConstants.TIMESTAMP_KEY);
+        OffsetDateTime timestamp = null;
+        if (timestampValue != null) {
+            if (!(timestampValue instanceof String)) {
+                throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+                    "'%s' value is of the wrong type.", TableConstants.TIMESTAMP_KEY)));
+            }
+            try {
+                timestamp = OffsetDateTime.parse((String) timestampValue);
+            } catch (DateTimeParseException e) {
+                throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+                    "'%s' value is not a valid OffsetDateTime.", TableConstants.TIMESTAMP_KEY), e));
+            }
+        }
+
+        final Object etagValue = properties.get(TableConstants.ODATA_ETAG_KEY);
+        if (etagValue != null && !(etagValue instanceof String)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+                "'%s' value is of the wrong type.", TableConstants.ODATA_ETAG_KEY)));
         }
 
         final TableEntity entity = new TableEntity((String) partitionKeyValue, (String) rowKeyValue);
-        properties.forEach((key, value) -> {
-            if (key.equals(TableConstants.ETAG_KEY)) {
-                TableEntityHelper.setETag(entity, String.valueOf(value));
-            }
+        TableEntityHelper.setValues(entity, timestamp, (String) etagValue);
 
-            entity.getProperties().putIfAbsent(key, value);
-        });
+        properties.forEach((key, value) -> entity.getProperties().putIfAbsent(key, value));
 
         return entity;
     }

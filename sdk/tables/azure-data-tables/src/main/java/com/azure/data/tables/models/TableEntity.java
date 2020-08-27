@@ -5,14 +5,13 @@ package com.azure.data.tables.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.tables.implementation.TableEntityHelper;
 import com.azure.data.tables.implementation.TableConstants;
+import com.azure.data.tables.implementation.TableEntityHelper;
+
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
-import static com.azure.data.tables.implementation.TableConstants.PARTITION_KEY;
-import static com.azure.data.tables.implementation.TableConstants.ROW_KEY;
 
 /**
  * table entity class
@@ -24,11 +23,15 @@ public class TableEntity {
     private final String rowKey;
     private final Map<String, Object> properties = new HashMap<>();
 
+    private OffsetDateTime timestamp;
     private String eTag;
 
     static {
         // This is used by classes in different packages to get access to private and package-private methods.
-        TableEntityHelper.setEntityAccessor((entity, name) -> entity.setETag(name));
+        TableEntityHelper.setEntityAccessor((entity, timestamp, eTag) -> {
+            entity.setTimestamp(timestamp);
+            entity.setETag(eTag);
+        });
     }
 
     /**
@@ -42,7 +45,7 @@ public class TableEntity {
         this.partitionKey = Objects.requireNonNull(partitionKey, "'partitionKey' cannot be null.");
         Objects.requireNonNull(properties, "'properties' cannot be null.");
 
-        properties.put(PARTITION_KEY, partitionKey);
+        properties.put(TableConstants.PARTITION_KEY, partitionKey);
         properties.put(TableConstants.ROW_KEY, rowKey);
     }
 
@@ -67,12 +70,12 @@ public class TableEntity {
     public TableEntity addProperty(String key, Object value) {
         Objects.requireNonNull(key, "'key' cannot be null.");
 
-        if (PARTITION_KEY.equals(key)) {
+        if (TableConstants.PARTITION_KEY.equals(key)) {
             throw logger.logExceptionAsError(
-                new IllegalArgumentException(PARTITION_KEY + " cannot be set after object creation."));
-        } else if (ROW_KEY.equals(key)) {
+                new IllegalArgumentException(TableConstants.PARTITION_KEY + " cannot be set after object creation."));
+        } else if (TableConstants.ROW_KEY.equals(key)) {
             throw logger.logExceptionAsError(
-                new IllegalArgumentException(ROW_KEY + " cannot be set after object creation."));
+                new IllegalArgumentException(TableConstants.ROW_KEY + " cannot be set after object creation."));
         }
 
         properties.put(key, value);
@@ -95,6 +98,24 @@ public class TableEntity {
      */
     public String getPartitionKey() {
         return partitionKey;
+    }
+
+    /**
+     * gets the Timestamp
+     *
+     * @return the Timestamp for the entity
+     */
+    public OffsetDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    /**
+     * Sets the Timestamp on the Entity.
+     *
+     * @param timestamp Timestamp to set.
+     */
+    void setTimestamp(OffsetDateTime timestamp) {
+        this.timestamp = timestamp;
     }
 
     /**
