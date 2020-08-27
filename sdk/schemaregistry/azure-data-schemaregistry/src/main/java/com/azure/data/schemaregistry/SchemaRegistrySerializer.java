@@ -87,7 +87,7 @@ public abstract class SchemaRegistrySerializer {
      * @param object object to be serialized
      * @return Reactive stream that will indicate operation completion.
      */
-    protected Mono<Void> serializeAsync(OutputStream s, Object object) {
+    protected Mono<Void> serializeInternalAsync(OutputStream s, Object object) {
         if (object == null) {
             return monoError(logger, new NullPointerException(
                 "Null object, behavior should be defined in concrete serializer implementation."));
@@ -117,7 +117,7 @@ public abstract class SchemaRegistrySerializer {
      * @param s InputStream containing bytes encoded by an Azure Schema Registry producer
      * @return object, deserialized with the prefixed schema
      */
-    protected Mono<Object> deserializeAsync(InputStream s) {
+    protected Mono<Object> deserializeInternalAsync(InputStream s) {
         if (s == null) {
             return Mono.empty();
         }

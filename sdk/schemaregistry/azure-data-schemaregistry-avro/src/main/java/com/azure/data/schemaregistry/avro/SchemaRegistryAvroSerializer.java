@@ -39,13 +39,14 @@ public final class SchemaRegistryAvroSerializer extends SchemaRegistrySerializer
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public <T> Mono<T> deserializeAsync(InputStream stream, TypeReference<T> typeReference) {
-        return super.deserializeAsync(stream)
+        return super.deserializeInternalAsync(stream)
             .handle((o, sink) -> {
                 if (typeReference.getJavaType().getClass().isInstance(o)) {
-                    return typeReference.getJavaType().getClass().cast(o);
+                    sink.next((T)o);
                 }
-                sink.error(logger.logExceptionAsError(new IllegalStateException("Deserialized object not of class %s"));
+                sink.error(logger.logExceptionAsError(new IllegalStateException("Deserialized object not of class %s")));
             });
     }
 
@@ -62,7 +63,7 @@ public final class SchemaRegistryAvroSerializer extends SchemaRegistrySerializer
             return Mono.empty();
         }
 
-        return super.serializeAsync(stream, value);
+        return super.serializeInternalAsync(stream, value).thenReturn(stream);
     }
 }
 

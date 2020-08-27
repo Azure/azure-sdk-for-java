@@ -58,7 +58,7 @@ public class SchemaRegistrySerializerTest {
 
         try {
             ByteArrayOutputStream payload =  new ByteArrayOutputStream();
-            serializer.serializeAsync(payload, 1).block();
+            serializer.serializeInternalAsync(payload, 1).block();
             ByteBuffer buffer = ByteBuffer.wrap(payload.toByteArray());
             byte[] schemaGuidByteArray = new byte[SchemaRegistrySerializer.SCHEMA_ID_SIZE];
             buffer.get(schemaGuidByteArray);
@@ -86,7 +86,7 @@ public class SchemaRegistrySerializerTest {
             MOCK_SCHEMA_GROUP);
 
         try {
-            serializer.serializeAsync(new ByteArrayOutputStream(), null).block();
+            serializer.serializeInternalAsync(new ByteArrayOutputStream(), null).block();
             fail("Serializing null payload failed to throw NullPointerException");
         } catch (NullPointerException e) {
             assertTrue(true);
@@ -131,14 +131,14 @@ public class SchemaRegistrySerializerTest {
             serializer.schemaRegistryClient.getSchema(MOCK_GUID).block().getSchemaId());
 
         assertEquals(TestSchemaRegistryUtils.CONSTANT_PAYLOAD,
-            serializer.deserializeAsync(new ByteArrayInputStream(getPayload())).block());
+            serializer.deserializeInternalAsync(new ByteArrayInputStream(getPayload())).block());
     }
 
     @Test
     public void testNullPayload() {
         TestDummySerializer deserializer = new TestDummySerializer(
             getMockClient(), new TestSchemaRegistryUtils(), true, MOCK_SCHEMA_GROUP);
-        assertNull(deserializer.deserializeAsync(null).block());
+        assertNull(deserializer.deserializeInternalAsync(null).block());
     }
 
     @Test
@@ -147,7 +147,7 @@ public class SchemaRegistrySerializerTest {
             getMockClient(), new TestSchemaRegistryUtils(), true, MOCK_SCHEMA_GROUP);
 
         try {
-            serializer.deserializeAsync(new ByteArrayInputStream("bad payload".getBytes())).block();
+            serializer.deserializeInternalAsync(new ByteArrayInputStream("bad payload".getBytes())).block();
             fail("Too short payload did not throw BufferUnderflowException");
         } catch (BufferUnderflowException e) {
             assertTrue(true);
