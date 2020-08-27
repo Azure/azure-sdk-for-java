@@ -269,6 +269,15 @@ public interface EventHub extends
             WithCreate withNewListenRule(String ruleName);
 
             /**
+             * Specifies that a new authorization rule should be created
+             * that has send and listen access to the event hub.
+             *
+             * @param ruleName rule name
+             * @return next stage of the event hub definition
+             */
+            WithCreate withNewSendAndListenRule(String ruleName);
+
+            /**
              * Specifies that a new authorization rule should be created that has manage access to the event hub.
              *
              * @param ruleName rule name
@@ -363,6 +372,15 @@ public interface EventHub extends
              * @return next stage of the event hub update
              */
             Update withNewListenRule(String name);
+
+            /**
+             * Specifies that a new authorization rule should be created
+             * that has send and listen access to the event hub.
+             *
+             * @param name rule name
+             * @return next stage of the event hub update
+             */
+            Update withNewSendAndListenRule(String name);
 
             /**
              * Specifies that a new authorization rule should be created that has manage access to the event hub.

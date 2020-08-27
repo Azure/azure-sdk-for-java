@@ -245,6 +245,17 @@ class EventHubImpl
     }
 
     @Override
+    public EventHubImpl withNewSendAndListenRule(final String ruleName) {
+        addPostRunDependent(context -> manager().eventHubAuthorizationRules()
+            .define(ruleName)
+            .withExistingEventHub(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name())
+            .withSendAndListenAccess()
+            .createAsync()
+            .last());
+        return this;
+    }
+
+    @Override
     public EventHubImpl withNewManageRule(final String ruleName) {
         addPostRunDependent(context -> manager().eventHubAuthorizationRules()
             .define(ruleName)
