@@ -75,7 +75,7 @@ class SASTest extends APISpec {
         return key
     }
 
-    def "serviceSASSignatureValues network test file"() {
+    def "file sas permission"() {
         setup:
         def permissions = new PathSasPermission()
             .setReadPermission(true)
@@ -106,7 +106,7 @@ class SASTest extends APISpec {
         notThrown(DataLakeStorageException)
     }
 
-    def "serviceSASSignatureValues network test directory"() {
+    def "directory sas permission"() {
         setup:
         def pathName = generatePathName()
         DataLakeDirectoryClient sasClient = getDirectoryClient(primaryCredential, fsc.getFileSystemUrl(), pathName)
@@ -143,7 +143,7 @@ class SASTest extends APISpec {
         notThrown(DataLakeStorageException)
     }
 
-    def "serviceSASSignatureValues network test directory fail"() {
+    def "directory sas permission fail"() {
         setup:
         def pathName = generatePathName()
         DataLakeDirectoryClient sasClient = getDirectoryClient(primaryCredential, fsc.getFileSystemUrl(), pathName)
@@ -166,7 +166,7 @@ class SASTest extends APISpec {
         thrown(DataLakeStorageException)
     }
 
-    def "serviceSASSignatureValues network test file system"() {
+    def "file system sas identifier"() {
         setup:
         def identifier = new DataLakeSignedIdentifier()
             .setId("0000")
@@ -210,7 +210,7 @@ class SASTest extends APISpec {
         notThrown(DataLakeStorageException)
     }
 
-    def "serviceSASSignatureValues network test file user delegation"() {
+    def "file user delegation"() {
         setup:
         def permissions = new PathSasPermission()
             .setReadPermission(true)
@@ -241,7 +241,7 @@ class SASTest extends APISpec {
         notThrown(DataLakeStorageException)
     }
 
-    def "serviceSASSignatureValues network test directory user delegation"() {
+    def "directory user delegation"() {
         setup:
         def pathName = generatePathName()
         DataLakeDirectoryClient sasClient = getDirectoryClient(primaryCredential, fsc.getFileSystemUrl(), pathName)
@@ -287,7 +287,7 @@ class SASTest extends APISpec {
         notThrown(DataLakeStorageException)
     }
 
-    def "serviceSASSignatureValues network test file system user delegation"() {
+    def "file system user delegation"() {
         setup:
         def permissions = new FileSystemSasPermission()
             .setReadPermission(true)
@@ -322,7 +322,7 @@ class SASTest extends APISpec {
         notThrown(DataLakeStorageException)
     }
 
-    def "user delegation file saoid"() {
+    def "file user delegation saoid"() {
         setup:
         def saoid = getRandomUUID()
         def pathName = generatePathName()
@@ -380,7 +380,7 @@ class SASTest extends APISpec {
         accessControl.getOwner() == saoid
     }
 
-    def "user delegation file suoid"() {
+    def "file user delegation suoid"() {
         setup:
         def suoid = getRandomUUID()
         def pathName = generatePathName()
@@ -459,7 +459,7 @@ class SASTest extends APISpec {
         thrown(DataLakeStorageException)
     }
 
-    def "user delegation file system correlation id"() {
+    def "file system user delegation correlation id"() {
         setup:
         def permissions = new FileSystemSasPermission()
             .setListPermission(true)
@@ -489,7 +489,7 @@ class SASTest extends APISpec {
         notThrown(DataLakeStorageException)
     }
 
-    def "user delegation file system correlation id error"() {
+    def "file system user delegation correlation id error"() {
         setup:
         def permissions = new FileSystemSasPermission()
             .setListPermission(true)
@@ -519,7 +519,7 @@ class SASTest extends APISpec {
         thrown(DataLakeStorageException)
     }
 
-    def "accountSAS network test file read"() {
+    def "account sas file read"() {
         setup:
         def pathName = generatePathName()
         def fc = fsc.getFileClient(pathName)
@@ -548,7 +548,7 @@ class SASTest extends APISpec {
         os.toString() == defaultText
     }
 
-    def "accountSAS network test file delete fails"() {
+    def "account sas file delete error"() {
         setup:
         def pathName = generatePathName()
         def fc = fsc.getFileClient(pathName)
@@ -574,7 +574,7 @@ class SASTest extends APISpec {
         thrown(DataLakeStorageException)
     }
 
-    def "accountSAS network create file system fails"() {
+    def "account sas create file system error"() {
         setup:
         def service = new AccountSasService()
             .setBlobAccess(true)
@@ -597,7 +597,7 @@ class SASTest extends APISpec {
         thrown(DataLakeStorageException)
     }
 
-    def "accountSAS network create file system succeeds"() {
+    def "account sas create file system"() {
         setup:
         def service = new AccountSasService()
             .setBlobAccess(true)
@@ -620,7 +620,7 @@ class SASTest extends APISpec {
         notThrown(DataLakeStorageException)
     }
 
-    def "accountSAS network account sas token on endpoint"() {
+    def "account sas token on endpoint"() {
         setup:
         def service = new AccountSasService()
             .setBlobAccess(true)
