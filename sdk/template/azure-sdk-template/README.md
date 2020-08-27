@@ -93,6 +93,6 @@ If the package or a related package supports it, include tips for logging or ena
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ftemplate%2Fazure-sdk-template%2FREADME.png)
 
-https://github.com/Azure/azure-sdk-for-net/tree/master/sdk/appconfiguration/Azure.ResourceManager.AppConfiguration
+https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/appconfiguration/azure-data-appconfiguration/README.md
 
-https://github.com/Azure/azure-sdk-for-net/tree/master/sdk/appconfiguration/Azure.ResourceManager.AppConfiguration
+https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/appconfiguration/azure-data-appconfiguration/README.md
