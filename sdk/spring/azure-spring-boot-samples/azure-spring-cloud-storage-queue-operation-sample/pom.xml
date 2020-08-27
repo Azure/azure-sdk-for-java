@@ -11,7 +11,7 @@
 
   <artifactId>storage-queue-operation-sample</artifactId>
   <groupId>com.microsoft.azure</groupId>
-  <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:storage-queue-operation-sample;dependency} -->
+  <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:storage-queue-operation-sample;current} -->
   <name>Azure Spring Cloud Storage Queue Operation Sample</name>
 
   <dependencyManagement>
@@ -34,7 +34,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>spring-cloud-starter-azure-storage-queue</artifactId>
-      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-starter-azure-storage-queue;dependency} -->
+      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-starter-azure-storage-queue;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

@@ -12,7 +12,7 @@
 
   <artifactId>azure-appconfiguration-convert-sample-initial</artifactId>
   <groupId>com.microsoft.azure</groupId>
-  <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-appconfiguration-convert-sample-initial;dependency} -->
+  <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-appconfiguration-convert-sample-initial;current} -->
   <name>Azure Spring Cloud App Configuration Conversion Sample</name>
   <description>Sample project to show conversion to Azure App Configuration</description>
 
