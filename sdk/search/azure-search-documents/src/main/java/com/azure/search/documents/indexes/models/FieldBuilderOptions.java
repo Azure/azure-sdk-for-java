@@ -14,7 +14,7 @@ import java.util.Objects;
 /**
  * Additional parameters to build {@link SearchField}.
  */
-public class FieldBuilderOptions {
+public final class FieldBuilderOptions {
     private JsonSerializer jsonSerializer;
 
     /**
@@ -41,8 +41,8 @@ public class FieldBuilderOptions {
      * @param jsonSerializer The custom serializer.
      * @return The updated FieldBuilderOptions object.
      */
-    public FieldBuilderOptions setConverter(JsonSerializer jsonSerializer) {
-        this.jsonSerializer = Objects.requireNonNull(jsonSerializer, "The JsonSerializer cannot be null");
+    public FieldBuilderOptions setJsonSerializer(JsonSerializer jsonSerializer) {
+        this.jsonSerializer = Objects.requireNonNull(jsonSerializer, "'jsonSerializer' cannot be null");
         return this;
     }
 
