@@ -14,7 +14,8 @@ import java.io.ByteArrayOutputStream;
 import java.util.Objects;
 
 /**
- * Base Codec class for Avro encoder and decoder implementations
+ * Utility class for Avro serialization.  Provides all methods required for the core Schema Registry serializer code
+ * to construct Schema Registry messages.
  */
 class SchemaRegistryAvroUtils implements SchemaRegistrySerializationUtils {
     private final ClientLogger logger = new ClientLogger(SchemaRegistryAvroUtils.class);
@@ -56,8 +57,7 @@ class SchemaRegistryAvroUtils implements SchemaRegistrySerializationUtils {
      */
     @Override
     public String getSchemaString(Object object) {
-//        return AvroSerializerProviders.getSchema(object);
-         return null;
+        return AvroSerializerProviders.getSchema(object);
     }
 
     /**
@@ -68,8 +68,7 @@ class SchemaRegistryAvroUtils implements SchemaRegistrySerializationUtils {
      */
     @Override
     public String getSchemaName(Object object) {
-//        return AvroSerializerProviders.getSchemaName(object);
-        return null;
+        return AvroSerializerProviders.getSchemaName(object);
     }
 
     /**
@@ -107,8 +106,6 @@ class SchemaRegistryAvroUtils implements SchemaRegistrySerializationUtils {
 
         ByteArrayInputStream inputStream = new ByteArrayInputStream(b);
 
-//        return AvroSerializerProviders.createInstance(schema)
-//            .deserialize(inputStream, TypeReference.createInstance(Object.class));
-        return null;
+        return AvroSerializerProviders.createInstance(schema).deserialize(inputStream, Object.class);
     }
 }
