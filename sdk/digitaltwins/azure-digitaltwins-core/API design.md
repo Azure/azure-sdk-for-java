@@ -372,23 +372,23 @@ These APIs are invoked via DigitalTwinsAsyncClient.
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be updated.
-     * @param relationshipUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin's relationship.
+     * @param relationshipUpdateOperations The list of application/json-patch+json operations to be performed on the specified digital twin's relationship.
      * @return An empty response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateRelationship(String digitalTwinId, String relationshipId, String relationshipUpdateOperations) { }
+    public Mono<Void> updateRelationship(String digitalTwinId, String relationshipId, List<Object> relationshipUpdateOperations) { }
 
     /**
      * Updates the properties of a relationship on a digital twin.
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be updated.
-     * @param relationshipUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin's relationship.
+     * @param relationshipUpdateOperations The list of application/json-patch+json operations to be performed on the specified digital twin's relationship.
      * @param options The optional settings for this request.
      * @return A REST response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DigitalTwinsResponse<Void>> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, String relationshipUpdateOperations, RequestOptions options) { }
+    public Mono<DigitalTwinsResponse<Void>> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, List<Object> relationshipUpdateOperations, RequestOptions options) { }
 
     /**
      * Deletes a relationship on a digital twin.
@@ -565,23 +565,23 @@ These APIs are invoked via DigitalTwinsClient.
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be updated.
-     * @param relationshipUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin's relationship.
+     * @param relationshipUpdateOperations The list of application/json-patch+json operations to be performed on the specified digital twin's relationship.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateRelationship(String digitalTwinId, String relationshipId, String relationshipUpdateOperations) { }
+    public void updateRelationship(String digitalTwinId, String relationshipId, List<Object> relationshipUpdateOperations) { }
 
     /**
      * Updates the properties of a relationship on a digital twin.
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be updated.
-     * @param relationshipUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin's relationship.
+     * @param relationshipUpdateOperations The list of application/json-patch+json operations to be performed on the specified digital twin's relationship.
      * @param options The optional settings for this request.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A REST response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DigitalTwinsResponse<Void> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, String relationshipUpdateOperations, RequestOptions options, Context context) { }
+    public DigitalTwinsResponse<Void> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, List<Object> relationshipUpdateOperations, RequestOptions options, Context context) { }
 
     /**
      * Deletes a relationship on a digital twin.

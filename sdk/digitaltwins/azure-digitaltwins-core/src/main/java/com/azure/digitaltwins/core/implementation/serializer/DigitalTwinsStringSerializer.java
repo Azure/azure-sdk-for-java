@@ -17,8 +17,8 @@ public class DigitalTwinsStringSerializer extends StdSerializer<String> {
     private static final long serialVersionUID = 1L;
     private final ObjectMapper mapper;
 
-    public DigitalTwinsStringSerializer(Class<?> t, boolean dummy, ObjectMapper mapper) {
-        super(t, dummy);
+    public DigitalTwinsStringSerializer(Class<String> t, ObjectMapper mapper) {
+        super(t);
         this.mapper = mapper;
     }
 
