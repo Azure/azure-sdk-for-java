@@ -306,11 +306,11 @@ These APIs are invoked via DigitalTwinsAsyncClient.
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be created.
      * @param relationship The relationship to be created.
-     * @param modelClass The model class to convert the relationship to.
+     * @param clazz The model class to convert the relationship to.
      * @return The relationship created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<T> createRelationship(String digitalTwinId, String relationshipId, Object relationship, Class<T> modelClass) { }
+    public <T> Mono<T> createRelationship(String digitalTwinId, String relationshipId, Object relationship, Class<T> clazz) { }
 
     /**
      * Creates a relationship on a digital twin.
@@ -318,11 +318,11 @@ These APIs are invoked via DigitalTwinsAsyncClient.
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be created.
      * @param relationship The relationship to be created.
-     * @param modelClass The model class to convert the relationship to.
+     * @param clazz The model class to convert the relationship to.
      * @return A REST response containing the relationship created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<DigitalTwinsResponse<T>> createRelationshipWithResponse(String digitalTwinId, String relationshipId, Object relationship, Class<T> modelClass) { }
+    public <T> Mono<DigitalTwinsResponse<T>> createRelationshipWithResponse(String digitalTwinId, String relationshipId, Object relationship, Class<T> clazz) { }
 
     /**
      * Gets a relationship on a digital twin.
@@ -349,22 +349,22 @@ These APIs are invoked via DigitalTwinsAsyncClient.
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to retrieve.
-     * @param modelClass The model class to convert the relationship to.
+     * @param clazz The model class to convert the relationship to.
      * @return The relationship corresponding to the provided relationshipId.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<T> getRelationship(String digitalTwinId, String relationshipId, Class<T> modelClass) { }
+    public <T> Mono<T> getRelationship(String digitalTwinId, String relationshipId, Class<T> clazz) { }
 
     /**
      * Gets a relationship on a digital twin.
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to retrieve.
-     * @param modelClass The model class to convert the relationship to.
+     * @param clazz The model class to convert the relationship to.
      * @return A REST response containing the relationship corresponding to the provided relationshipId.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<DigitalTwinsResponse<T>> getRelationshipWithResponse(String digitalTwinId, String relationshipId, Class<T> modelClass) { }
+    public <T> Mono<DigitalTwinsResponse<T>> getRelationshipWithResponse(String digitalTwinId, String relationshipId, Class<T> clazz) { }
 
     /**
      * Updates the properties of a relationship on a digital twin.
@@ -432,22 +432,22 @@ These APIs are invoked via DigitalTwinsAsyncClient.
      * Gets all the relationships on a digital twin by iterating through a collection.
      *
      * @param digitalTwinId The Id of the source digital twin.
-     * @param modelClass The model class to convert the relationship to. Since a digital twin might have relationships conforming to different models, it is advisable to convert them to a generic model.
+     * @param clazz The model class to convert the relationship to. Since a digital twin might have relationships conforming to different models, it is advisable to convert them to a generic model.
      * @return A {@link PagedFlux} of relationships belonging to the specified digital twin and the http response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public <T> PagedFlux<T> listRelationships(String digitalTwinId, Class<T> modelClass) { }
+    public <T> PagedFlux<T> listRelationships(String digitalTwinId, Class<T> clazz) { }
     
     /**
      * Gets all the relationships on a digital twin filtered by the relationship name, by iterating through a collection.
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipName The name of a relationship to filter to.
-     * @param modelClass The model class to convert the relationship to.
+     * @param clazz The model class to convert the relationship to.
      * @return A {@link PagedFlux} of relationships belonging to the specified digital twin and the http response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public <T> PagedFlux<T> listRelationships(String digitalTwinId, String relationshipName, Class<T> modelClass) { }
+    public <T> PagedFlux<T> listRelationships(String digitalTwinId, String relationshipName, Class<T> clazz) { }
 
 
     /**
@@ -496,11 +496,11 @@ These APIs are invoked via DigitalTwinsClient.
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be created.
      * @param relationship The relationship to be created.
-     * @param modelClass The model class to convert the relationship to.
+     * @param clazz The model class to convert the relationship to.
      * @return The relationship created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> T createRelationship(String digitalTwinId, String relationshipId, Object relationship, Class<T> modelClass) { }
+    public <T> T createRelationship(String digitalTwinId, String relationshipId, Object relationship, Class<T> clazz) { }
 
     /**
      * Creates a relationship on a digital twin.
@@ -508,12 +508,12 @@ These APIs are invoked via DigitalTwinsClient.
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be created.
      * @param relationship The relationship to be created.
-     * @param modelClass The model class to convert the relationship to.
+     * @param clazz The model class to convert the relationship to.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A REST response containing the relationship created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> DigitalTwinsResponse<T> createRelationshipWithResponse(String digitalTwinId, String relationshipId, Object relationship, Class<T> modelClass, Context context) { }
+    public <T> DigitalTwinsResponse<T> createRelationshipWithResponse(String digitalTwinId, String relationshipId, Object relationship, Class<T> clazz, Context context) { }
 
     /**
      * Gets a relationship on a digital twin.
@@ -541,23 +541,23 @@ These APIs are invoked via DigitalTwinsClient.
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to retrieve.
-     * @param modelClass The model class to convert the relationship to.
+     * @param clazz The model class to convert the relationship to.
      * @return The relationship corresponding to the provided relationshipId.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> T getRelationship(String digitalTwinId, String relationshipId, Class<T> modelClass) { }
+    public <T> T getRelationship(String digitalTwinId, String relationshipId, Class<T> clazz) { }
 
     /**
      * Gets a relationship on a digital twin.
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to retrieve.
-     * @param modelClass The model class to convert the relationship to.
+     * @param clazz The model class to convert the relationship to.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A REST response containing the relationship corresponding to the provided relationshipId.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> DigitalTwinsResponse<T> getRelationshipWithResponse(String digitalTwinId, String relationshipId, Class<T> modelClass, Context context) { }
+    public <T> DigitalTwinsResponse<T> getRelationshipWithResponse(String digitalTwinId, String relationshipId, Class<T> clazz, Context context) { }
 
     /**
      * Updates the properties of a relationship on a digital twin.
@@ -627,23 +627,23 @@ These APIs are invoked via DigitalTwinsClient.
      * Gets all the relationships on a digital twin by iterating through a collection.
      *
      * @param digitalTwinId The Id of the source digital twin.
-     * @param modelClass The model class to convert the relationship to. Since a digital twin might have relationships conforming to different models, it is advisable to convert them to a generic model.
+     * @param clazz The model class to convert the relationship to. Since a digital twin might have relationships conforming to different models, it is advisable to convert them to a generic model.
      * @return A {@link PagedIterable} of relationships belonging to the specified digital twin and the http response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public <T> PagedIterable<T> listRelationships(String digitalTwinId, Class<T> modelClass) { }
+    public <T> PagedIterable<T> listRelationships(String digitalTwinId, Class<T> clazz) { }
 
     /**
      * Gets all the relationships on a digital twin filtered by the relationship name, by iterating through a collection.
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipName The name of a relationship to filter to.
-     * @param modelClass The model class to convert the relationship to.
+     * @param clazz The model class to convert the relationship to.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link PagedIterable} of relationships belonging to the specified digital twin and the http response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public <T> PagedIterable<T> listRelationships(String digitalTwinId, String relationshipName, Class<T> modelClass, Context context) { }
+    public <T> PagedIterable<T> listRelationships(String digitalTwinId, String relationshipName, Class<T> clazz, Context context) { }
 
     /**
      * Gets all the relationships referencing a digital twin as a target by iterating through a collection.
