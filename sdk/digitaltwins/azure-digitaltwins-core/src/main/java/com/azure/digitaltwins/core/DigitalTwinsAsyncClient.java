@@ -265,7 +265,7 @@ public final class DigitalTwinsAsyncClient {
                     null,
                     ((ResponseBase)listResponse).getDeserializedHeaders()));
 
-        Function<String, Mono<PagedResponse<ModelData>>> nextPage = nextLink -> null;
+        Function<String, Mono<PagedResponse<ModelData>>> nextPage = nextLink -> Mono.empty();
 
         return new PagedFlux<>(firstPage, nextPage);
     }
