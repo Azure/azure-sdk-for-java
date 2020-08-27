@@ -10,13 +10,13 @@ package com.microsoft.azure.management.redis.v2018_03_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.redis.v2018_03_01.implementation.RedisManager;
+import com.microsoft.azure.management.redis.v2018_03_01.implementation.CacheManager;
 import com.microsoft.azure.management.redis.v2018_03_01.implementation.RedisForceRebootResponseInner;
 
 /**
  * Type representing RedisForceRebootResponse.
  */
-public interface RedisForceRebootResponse extends HasInner<RedisForceRebootResponseInner>, HasManager<RedisManager> {
+public interface RedisForceRebootResponse extends HasInner<RedisForceRebootResponseInner>, HasManager<CacheManager> {
     /**
      * @return the message value.
      */
