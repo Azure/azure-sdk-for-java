@@ -16,8 +16,10 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.junit.jupiter.api.Test;
+import reactor.test.StepVerifier;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,17 +34,23 @@ public class EventGridPublisherClientTests extends TestBase {
 
     private EventGridPublisherClientBuilder builder;
 
-    private static final String EVENTGRID_ENDPOINT = "EG_ENDPOINT";
+    // Event Grid endpoint for a topic accepting EventGrid schema events
+    private static final String EVENTGRID_ENDPOINT = "AZURE_EVENTGRID_EVENTGRID_ENDPOINT";
 
-    private static final String CLOUD_ENDPOINT = "EG_CLOUD_ENDPOINT";
+    // Event Grid endpoint for a topic accepting CloudEvents schema events
+    private static final String CLOUD_ENDPOINT = "AZURE_EVENTGRID_CLOUD_ENDPOINT";
 
-    private static final String CUSTOM_ENDPOINT = "EG_CUSTOM_ENDPOINT";
+    // Event Grid endpoint for a topic accepting custom schema events
+    private static final String CUSTOM_ENDPOINT = "AZURE_EVENTGRID_CUSTOM_ENDPOINT";
 
-    private static final String EVENTGRID_KEY = "EG_KEY";
+    // Event Grid access key for a topic accepting EventGrid schema events
+    private static final String EVENTGRID_KEY = "AZURE_EVENTGRID_EVENTGRID_KEY";
 
-    private static final String CLOUD_KEY = "EG_CLOUD_KEY";
+    // Event Grid access key for a topic accepting CloudEvents schema events
+    private static final String CLOUD_KEY = "AZURE_EVENTGRID_CLOUD_KEY";
 
-    private static final String CUSTOM_KEY = "EG_CUSTOM_KEY";
+    // Event Grid access key for a topic accepting custom schema events
+    private static final String CUSTOM_KEY = "AZURE_EVENTGRID_CUSTOM_KEY";
 
     private static final String DUMMY_ENDPOINT = "https://www.dummyEndpoint.com";
 
@@ -50,6 +58,8 @@ public class EventGridPublisherClientTests extends TestBase {
 
     @Override
     protected void beforeTest() {
+
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
 
         builder = new EventGridPublisherClientBuilder();
 
@@ -61,8 +71,13 @@ public class EventGridPublisherClientTests extends TestBase {
         }
     }
 
+    @Override
+    protected void afterTest() {
+        StepVerifier.resetDefaultTimeout();
+    }
+
     @Test
-    public void testPublishEventGridEvents() {
+    public void publishEventGridEvents() {
         EventGridPublisherAsyncClient egClient = builder
             .endpoint(getEndpoint(EVENTGRID_ENDPOINT))
             .keyCredential(getKey(EVENTGRID_KEY))
@@ -77,15 +92,13 @@ public class EventGridPublisherClientTests extends TestBase {
             }})
             .setEventTime(OffsetDateTime.now()));
 
-        Response<Void> response = egClient.sendEventsWithResponse(events).block();
-
-        assertNotNull(response);
-        assertEquals(response.getStatusCode(), 200);
-
+        StepVerifier.create(egClient.sendEventsWithResponse(events))
+            .expectNextMatches(voidResponse -> voidResponse.getStatusCode() == 200)
+            .verifyComplete();
     }
 
     @Test
-    public void testSasToken() {
+    public void publishWithSasToken() {
         String sasToken = EventGridSharedAccessSignatureCredential.createSharedAccessSignature(
             getEndpoint(EVENTGRID_ENDPOINT),
             OffsetDateTime.now().plusMinutes(20),
@@ -106,14 +119,13 @@ public class EventGridPublisherClientTests extends TestBase {
             }})
             .setEventTime(OffsetDateTime.now()));
 
-        Response<Void> response = egClient.sendEventsWithResponse(events).block();
-
-        assertNotNull(response);
-        assertEquals(response.getStatusCode(), 200);
+        StepVerifier.create(egClient.sendEventsWithResponse(events))
+            .expectNextMatches(voidResponse -> voidResponse.getStatusCode() == 200)
+            .verifyComplete();
     }
 
     @Test
-    public void testPublishCloudEvents() {
+    public void publishCloudEvents() {
         EventGridPublisherAsyncClient egClient = builder
             .endpoint(getEndpoint(CLOUD_ENDPOINT))
             .keyCredential(getKey(CLOUD_KEY))
@@ -129,10 +141,9 @@ public class EventGridPublisherClientTests extends TestBase {
             }})
             .setTime(OffsetDateTime.now()));
 
-        Response<Void> response = egClient.sendCloudEventsWithResponse(events).block();
-
-        assertNotNull(response);
-        assertEquals(response.getStatusCode(), 200);
+        StepVerifier.create(egClient.sendCloudEventsWithResponse(events))
+            .expectNextMatches(voidResponse -> voidResponse.getStatusCode() == 200)
+            .verifyComplete();
     }
 
     public static class TestData {
@@ -150,12 +161,11 @@ public class EventGridPublisherClientTests extends TestBase {
     }
 
     @Test
-    public void testPublishCloudEventsCustomSerializer() {
-
+    public void publishCloudEventsCustomSerializer() {
         // Custom Serializer for testData
         JacksonAdapter customSerializer = new JacksonAdapter();
         customSerializer.serializer().registerModule(new SimpleModule().addSerializer(TestData.class,
-            new JsonSerializer<TestData>() {
+            new JsonSerializer<>() {
                 @Override
                 public void serialize(TestData testData, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
                     throws IOException {
@@ -176,15 +186,14 @@ public class EventGridPublisherClientTests extends TestBase {
                 .setData(new TestData().setName("Hello " + i)));
         }
 
-        Response<Void> response = egClient.sendCloudEventsWithResponse(events).block();
-
-        assertNotNull(response);
-        assertEquals(response.getStatusCode(), 200);
+        StepVerifier.create(egClient.sendCloudEventsWithResponse(events))
+            .expectNextMatches(voidResponse -> voidResponse.getStatusCode() == 200)
+            .verifyComplete();
     }
 
 
     @Test
-    public void testPublishCustomEvents() {
+    public void publishCustomEvents() {
         EventGridPublisherAsyncClient egClient = builder
             .keyCredential(getKey(CUSTOM_KEY))
             .endpoint(getEndpoint(CUSTOM_ENDPOINT))
@@ -199,14 +208,11 @@ public class EventGridPublisherClientTests extends TestBase {
                 put("type", "Microsoft.MockPublisher.TestEvent");
             }});
         }
-        Response<Void> response = egClient.sendCustomEventsWithResponse(events).block();
-
-        assertNotNull(response);
-        assertEquals(response.getStatusCode(), 200);
+        StepVerifier.create(egClient.sendCustomEventsWithResponse(events));
     }
 
     @Test
-    public void testPublishEventGridEventsSync() {
+    public void publishEventGridEventsSync() {
         EventGridPublisherClient egClient = builder
             .keyCredential(getKey(EVENTGRID_KEY))
             .endpoint(getEndpoint(EVENTGRID_ENDPOINT))
@@ -225,12 +231,10 @@ public class EventGridPublisherClientTests extends TestBase {
 
         assertNotNull(response);
         assertEquals(response.getStatusCode(), 200);
-
-
     }
 
     @Test
-    public void testPublishCloudEventsSync() {
+    public void publishCloudEventsSync() {
         EventGridPublisherClient egClient = builder
             .keyCredential(getKey(CLOUD_KEY))
             .endpoint(getEndpoint(CLOUD_ENDPOINT))
@@ -254,7 +258,7 @@ public class EventGridPublisherClientTests extends TestBase {
     }
 
     @Test
-    public void testPublishCustomEventsSync() {
+    public void publishCustomEventsSync() {
         EventGridPublisherClient egClient = builder
             .keyCredential(getKey(CUSTOM_KEY))
             .endpoint(getEndpoint(CUSTOM_ENDPOINT))
@@ -279,13 +283,17 @@ public class EventGridPublisherClientTests extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             return DUMMY_ENDPOINT;
         }
-        return System.getenv(liveEnvName);
+        String endpoint = System.getenv(liveEnvName);
+        assertNotNull(endpoint, "System environment variable " + liveEnvName + "is null");
+        return endpoint;
     }
 
     private AzureKeyCredential getKey(String liveEnvName) {
         if (interceptorManager.isPlaybackMode()) {
             return new AzureKeyCredential(DUMMY_KEY);
         }
-        return new AzureKeyCredential(System.getenv(liveEnvName));
+        AzureKeyCredential key = new AzureKeyCredential(System.getenv(liveEnvName));
+        assertNotNull(key.getKey(), "System environment variable " + liveEnvName + "is null");
+        return key;
     }
 }
