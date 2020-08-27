@@ -5,21 +5,12 @@
 package com.azure.ai.anomalydetector;
 
 import com.azure.ai.anomalydetector.implementation.AnomalyDetectorClientImpl;
-<<<<<<< HEAD
 import com.azure.ai.anomalydetector.models.AnomalyDetectorErrorException;
 import com.azure.ai.anomalydetector.models.ChangePointDetectRequest;
 import com.azure.ai.anomalydetector.models.ChangePointDetectResponse;
 import com.azure.ai.anomalydetector.models.DetectRequest;
 import com.azure.ai.anomalydetector.models.EntireDetectResponse;
 import com.azure.ai.anomalydetector.models.LastDetectResponse;
-=======
-import com.azure.ai.anomalydetector.models.ApiErrorException;
-import com.azure.ai.anomalydetector.models.ChangePointDetectRequest;
-import com.azure.ai.anomalydetector.models.ChangePointDetectResponse;
-import com.azure.ai.anomalydetector.models.EntireDetectResponse;
-import com.azure.ai.anomalydetector.models.LastDetectResponse;
-import com.azure.ai.anomalydetector.models.Request;
->>>>>>> upstream/master
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -43,22 +34,13 @@ public final class AnomalyDetectorAsyncClient {
      *
      * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-<<<<<<< HEAD
      * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
-=======
-     * @throws ApiErrorException thrown if the request is rejected by server.
->>>>>>> upstream/master
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-<<<<<<< HEAD
     public Mono<Response<EntireDetectResponse>> detectEntireSeriesWithResponse(DetectRequest body) {
         return this.serviceClient.detectEntireSeriesWithResponseAsync(body);
-=======
-    public Mono<Response<EntireDetectResponse>> entireDetectWithResponse(Request body) {
-        return this.serviceClient.entireDetectWithResponseAsync(body);
->>>>>>> upstream/master
     }
 
     /**
@@ -68,22 +50,13 @@ public final class AnomalyDetectorAsyncClient {
      *
      * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-<<<<<<< HEAD
      * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
-=======
-     * @throws ApiErrorException thrown if the request is rejected by server.
->>>>>>> upstream/master
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-<<<<<<< HEAD
     public Mono<EntireDetectResponse> detectEntireSeries(DetectRequest body) {
         return this.serviceClient.detectEntireSeriesAsync(body);
-=======
-    public Mono<EntireDetectResponse> entireDetect(Request body) {
-        return this.serviceClient.entireDetectAsync(body);
->>>>>>> upstream/master
     }
 
     /**
@@ -93,22 +66,13 @@ public final class AnomalyDetectorAsyncClient {
      *
      * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-<<<<<<< HEAD
      * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
-=======
-     * @throws ApiErrorException thrown if the request is rejected by server.
->>>>>>> upstream/master
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-<<<<<<< HEAD
     public Mono<Response<LastDetectResponse>> detectLastPointWithResponse(DetectRequest body) {
         return this.serviceClient.detectLastPointWithResponseAsync(body);
-=======
-    public Mono<Response<LastDetectResponse>> lastDetectWithResponse(Request body) {
-        return this.serviceClient.lastDetectWithResponseAsync(body);
->>>>>>> upstream/master
     }
 
     /**
@@ -118,22 +82,13 @@ public final class AnomalyDetectorAsyncClient {
      *
      * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-<<<<<<< HEAD
      * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
-=======
-     * @throws ApiErrorException thrown if the request is rejected by server.
->>>>>>> upstream/master
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-<<<<<<< HEAD
     public Mono<LastDetectResponse> detectLastPoint(DetectRequest body) {
         return this.serviceClient.detectLastPointAsync(body);
-=======
-    public Mono<LastDetectResponse> lastDetect(Request body) {
-        return this.serviceClient.lastDetectAsync(body);
->>>>>>> upstream/master
     }
 
     /**
@@ -142,22 +97,13 @@ public final class AnomalyDetectorAsyncClient {
      * @param body Time series points and granularity is needed. Advanced model parameters can also be set in the
      *     request if needed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-<<<<<<< HEAD
      * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
-=======
-     * @throws ApiErrorException thrown if the request is rejected by server.
->>>>>>> upstream/master
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-<<<<<<< HEAD
     public Mono<Response<ChangePointDetectResponse>> detectChangePointWithResponse(ChangePointDetectRequest body) {
         return this.serviceClient.detectChangePointWithResponseAsync(body);
-=======
-    public Mono<Response<ChangePointDetectResponse>> changePointDetectWithResponse(ChangePointDetectRequest body) {
-        return this.serviceClient.changePointDetectWithResponseAsync(body);
->>>>>>> upstream/master
     }
 
     /**
@@ -166,21 +112,12 @@ public final class AnomalyDetectorAsyncClient {
      * @param body Time series points and granularity is needed. Advanced model parameters can also be set in the
      *     request if needed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-<<<<<<< HEAD
      * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
-=======
-     * @throws ApiErrorException thrown if the request is rejected by server.
->>>>>>> upstream/master
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-<<<<<<< HEAD
     public Mono<ChangePointDetectResponse> detectChangePoint(ChangePointDetectRequest body) {
         return this.serviceClient.detectChangePointAsync(body);
-=======
-    public Mono<ChangePointDetectResponse> changePointDetect(ChangePointDetectRequest body) {
-        return this.serviceClient.changePointDetectAsync(body);
->>>>>>> upstream/master
     }
 }

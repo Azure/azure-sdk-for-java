@@ -5,21 +5,12 @@
 package com.azure.ai.anomalydetector;
 
 import com.azure.ai.anomalydetector.implementation.AnomalyDetectorClientImpl;
-<<<<<<< HEAD
 import com.azure.ai.anomalydetector.models.AnomalyDetectorErrorException;
 import com.azure.ai.anomalydetector.models.ChangePointDetectRequest;
 import com.azure.ai.anomalydetector.models.ChangePointDetectResponse;
 import com.azure.ai.anomalydetector.models.DetectRequest;
 import com.azure.ai.anomalydetector.models.EntireDetectResponse;
 import com.azure.ai.anomalydetector.models.LastDetectResponse;
-=======
-import com.azure.ai.anomalydetector.models.ApiErrorException;
-import com.azure.ai.anomalydetector.models.ChangePointDetectRequest;
-import com.azure.ai.anomalydetector.models.ChangePointDetectResponse;
-import com.azure.ai.anomalydetector.models.EntireDetectResponse;
-import com.azure.ai.anomalydetector.models.LastDetectResponse;
-import com.azure.ai.anomalydetector.models.Request;
->>>>>>> upstream/master
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -43,22 +34,13 @@ public final class AnomalyDetectorClient {
      *
      * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-<<<<<<< HEAD
      * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
-=======
-     * @throws ApiErrorException thrown if the request is rejected by server.
->>>>>>> upstream/master
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-<<<<<<< HEAD
     public EntireDetectResponse detectEntireSeries(DetectRequest body) {
         return this.serviceClient.detectEntireSeries(body);
-=======
-    public EntireDetectResponse entireDetect(Request body) {
-        return this.serviceClient.entireDetect(body);
->>>>>>> upstream/master
     }
 
     /**
@@ -69,22 +51,13 @@ public final class AnomalyDetectorClient {
      * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-<<<<<<< HEAD
      * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
-=======
-     * @throws ApiErrorException thrown if the request is rejected by server.
->>>>>>> upstream/master
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-<<<<<<< HEAD
     public Response<EntireDetectResponse> detectEntireSeriesWithResponse(DetectRequest body, Context context) {
         return this.serviceClient.detectEntireSeriesWithResponse(body, context);
-=======
-    public Response<EntireDetectResponse> entireDetectWithResponse(Request body, Context context) {
-        return this.serviceClient.entireDetectWithResponse(body, context);
->>>>>>> upstream/master
     }
 
     /**
@@ -94,22 +67,13 @@ public final class AnomalyDetectorClient {
      *
      * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-<<<<<<< HEAD
      * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
-=======
-     * @throws ApiErrorException thrown if the request is rejected by server.
->>>>>>> upstream/master
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-<<<<<<< HEAD
     public LastDetectResponse detectLastPoint(DetectRequest body) {
         return this.serviceClient.detectLastPoint(body);
-=======
-    public LastDetectResponse lastDetect(Request body) {
-        return this.serviceClient.lastDetect(body);
->>>>>>> upstream/master
     }
 
     /**
@@ -120,22 +84,13 @@ public final class AnomalyDetectorClient {
      * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-<<<<<<< HEAD
      * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
-=======
-     * @throws ApiErrorException thrown if the request is rejected by server.
->>>>>>> upstream/master
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-<<<<<<< HEAD
     public Response<LastDetectResponse> detectLastPointWithResponse(DetectRequest body, Context context) {
         return this.serviceClient.detectLastPointWithResponse(body, context);
-=======
-    public Response<LastDetectResponse> lastDetectWithResponse(Request body, Context context) {
-        return this.serviceClient.lastDetectWithResponse(body, context);
->>>>>>> upstream/master
     }
 
     /**
@@ -144,22 +99,13 @@ public final class AnomalyDetectorClient {
      * @param body Time series points and granularity is needed. Advanced model parameters can also be set in the
      *     request if needed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-<<<<<<< HEAD
      * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
-=======
-     * @throws ApiErrorException thrown if the request is rejected by server.
->>>>>>> upstream/master
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-<<<<<<< HEAD
     public ChangePointDetectResponse detectChangePoint(ChangePointDetectRequest body) {
         return this.serviceClient.detectChangePoint(body);
-=======
-    public ChangePointDetectResponse changePointDetect(ChangePointDetectRequest body) {
-        return this.serviceClient.changePointDetect(body);
->>>>>>> upstream/master
     }
 
     /**
@@ -169,23 +115,13 @@ public final class AnomalyDetectorClient {
      *     request if needed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-<<<<<<< HEAD
      * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
-=======
-     * @throws ApiErrorException thrown if the request is rejected by server.
->>>>>>> upstream/master
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-<<<<<<< HEAD
     public Response<ChangePointDetectResponse> detectChangePointWithResponse(
             ChangePointDetectRequest body, Context context) {
         return this.serviceClient.detectChangePointWithResponse(body, context);
-=======
-    public Response<ChangePointDetectResponse> changePointDetectWithResponse(
-            ChangePointDetectRequest body, Context context) {
-        return this.serviceClient.changePointDetectWithResponse(body, context);
->>>>>>> upstream/master
     }
 }
