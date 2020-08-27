@@ -10,9 +10,9 @@ import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
 import com.azure.data.schemaregistry.SchemaRegistrySerializer;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Objects;
 
 /**
  * Asynchronous registry-based serializer implementation.
@@ -41,11 +41,11 @@ public final class SchemaRegistryAvroSerializer extends SchemaRegistrySerializer
     @Override
     public <T> Mono<T> deserializeAsync(InputStream stream, TypeReference<T> typeReference) {
         return super.deserializeAsync(stream)
-            .map(o -> {
+            .handle((o, sink) -> {
                 if (typeReference.getJavaType().getClass().isInstance(o)) {
                     return typeReference.getJavaType().getClass().cast(o);
                 }
-                return Mono.error(logger.logExceptionAsError(new IllegalStateException("Deserialized object not of class %s")));
+                sink.error(logger.logExceptionAsError(new IllegalStateException("Deserialized object not of class %s"));
             });
     }
 
@@ -56,6 +56,8 @@ public final class SchemaRegistryAvroSerializer extends SchemaRegistrySerializer
 
     @Override
     public <S extends OutputStream> Mono<S> serializeAsync(S stream, Object value) {
+        Objects.requireNonNull(stream, "'stream' cannot be null.");
+
         if (value == null) {
             return Mono.empty();
         }
