@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.security.keyvault.administration;
 
 import com.azure.core.annotation.ReturnType;
@@ -260,7 +263,7 @@ public class KeyVaultAccessControlAsyncClient {
      * @param properties Properties for the {@link RoleAssignment}.
      * @return A {@link Mono} containing the created {@link RoleAssignment}.
      * @throws KeyVaultErrorException if the operation is unsuccessful.
-     * @throws NullPointerException   if the {@link RoleScope scope}, {@link UUID name} or
+     * @throws NullPointerException   if the {@link RoleScope scope} or
      * {@link RoleAssignmentProperties properties} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -296,7 +299,7 @@ public class KeyVaultAccessControlAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the created
      * {@link RoleAssignment}.
      * @throws KeyVaultErrorException if the request is rejected by the server.
-     * @throws NullPointerException   if the {@link RoleScope scope}, {@link UUID name} or
+     * @throws NullPointerException   if the {@link RoleScope scope} or
      * {@link RoleAssignmentProperties properties} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

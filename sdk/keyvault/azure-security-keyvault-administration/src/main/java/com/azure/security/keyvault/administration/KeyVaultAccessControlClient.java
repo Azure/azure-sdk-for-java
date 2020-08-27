@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.security.keyvault.administration;
 
 import com.azure.core.annotation.ReturnType;
@@ -71,6 +74,21 @@ public class KeyVaultAccessControlClient {
      */
     public PagedIterable<RoleAssignment> listRoleAssignments(RoleScope scope, Context context) {
         return new PagedIterable<>(asyncClient.listRoleAssignments(scope, context));
+    }
+
+    /**
+     * Creates a {@link RoleAssignment} with a randomly generated {@link UUID name}.
+     *
+     * @param scope      The {@link RoleScope scope} of the {@link RoleAssignment} to create.
+     * @param properties Properties for the {@link RoleAssignment}.
+     * @return The created {@link RoleAssignment}.
+     * @throws KeyVaultErrorException if the request is rejected by the server.
+     * @throws NullPointerException   if the {@link RoleScope scope} or
+     * {@link RoleAssignmentProperties properties} are {@code null}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RoleAssignment createRoleAssignment(RoleScope scope, RoleAssignmentProperties properties) {
+        return createRoleAssignmentWithResponse(scope, UUID.randomUUID(), properties, Context.NONE).getValue();
     }
 
     /**
