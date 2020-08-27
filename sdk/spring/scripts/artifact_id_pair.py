@@ -8,4 +8,4 @@ class ArtifactIdPair:
         self.new_artifact_id = new_artifact_id
 
     def __str__(self):
-        return '{}:{}'.format(self.old_artifact_id, self.new_artifact_id)
+        return '[old_artifact_id: {}; new_artifact_id: {}]'.format(self.old_artifact_id, self.new_artifact_id)

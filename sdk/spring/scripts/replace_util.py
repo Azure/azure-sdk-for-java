@@ -14,21 +14,23 @@ from version_update_item import VersionUpdateItem
 
 X_VERSION_UPDATE = 'x-version-update'
 X_INCLUDE_UPDATE = 'x-include-update'
+ARTIFACT_ID_PAIRS_KEY_NAME = 'artifact_id_pairs'
+VERSION_UPDATE_ITEMS_KEY_NAME = 'version_update_items'
 
 config = {
     'cosmos': {
         'sdk/cosmos/azure-spring-data-cosmos-test/pom.xml': {
-            'artifact_id_pairs': (
+            ARTIFACT_ID_PAIRS_KEY_NAME: (
                 ArtifactIdPair('azure-spring-data-2-3-cosmos', 'azure-spring-data-2-2-cosmos'),
             )
         }
     },
     'spring': {
         'sdk/spring/azure-spring-boot-test-cosmosdb/pom.xml': {
-            'artifact_id_pairs': (
+            ARTIFACT_ID_PAIRS_KEY_NAME: (
                 ArtifactIdPair('azure-cosmosdb-spring-boot-2-3-starter', 'azure-cosmosdb-spring-boot-2-2-starter'),
             ),
-            'version_update_items': (
+            VERSION_UPDATE_ITEMS_KEY_NAME: (
                 VersionUpdateItem('org.springframework.boot:spring-boot-starter-web', '2.2.9.RELEASE'),
                 VersionUpdateItem('org.springframework.boot:spring-boot-starter-actuator', '2.2.9.RELEASE'),
                 VersionUpdateItem('org.springframework.boot:spring-boot-starter-test', '2.2.9.RELEASE')
@@ -105,23 +107,38 @@ def replace(module):
     """
     Replace action
     :param module: module name
-    :return:
     """
     for pom in config[module].keys():
         replace_artifact_id(module, pom)
         replace_version(module, pom)
 
 
+def get_str(tuple_obj):
+    """
+    Return str list for tuple obj for logger.
+    :param tuple_obj: tuple obj
+    :return: string list
+    """
+    str_list = list()
+    for item in tuple_obj:
+        str_list.append(str(item))
+    return str_list
+
+
 def replace_artifact_id(module, pom):
     """
-    Replace artifactId in dependency
+    Replace artifactId in dependency and plugin part.
     :param module: module name
     :param pom: pom file path
-    :return:
     """
     log.debug('Replacing artifact id in file: {}'.format(pom, module))
-    artifact_id_pairs = config[module][pom]['artifact_id_pairs']
-    log.debug('Module: {}, artifact ids: {}'.format(module, artifact_id_pairs))
+    pom_dict = config[module][pom]
+    if not pom_dict.__contains__(ARTIFACT_ID_PAIRS_KEY_NAME):
+        log.warn('No config key {} in pom parameters.'.format(ARTIFACT_ID_PAIRS_KEY_NAME))
+        return
+
+    artifact_id_pairs = pom_dict[ARTIFACT_ID_PAIRS_KEY_NAME]
+    log.debug('Module: {}, artifact ids: {}'.format(module, get_str(artifact_id_pairs)))
     with in_place.InPlace(pom) as file:
         line_num = 0
         for line in file:
@@ -129,48 +146,52 @@ def replace_artifact_id(module, pom):
             for artifact_id_pair in artifact_id_pairs:
                 new_line = line.replace(artifact_id_pair.old_artifact_id, artifact_id_pair.new_artifact_id)
                 if line != new_line:
-                    line = new_line
-                    log.debug('Updated artifact id in line {}'.format(line_num))
+                    log.debug('Updating artifact id in line {}'.format(line_num))
                     log.debug('    old_line = {}.'.format(line.strip('\n')))
                     log.debug('    new_line = {}.'.format(new_line.strip('\n')))
+                    line = new_line
             file.write(line)
 
 
 def replace_version(module, pom):
     """
-    Replace version, contains dependency and plugin parts.
+    Replace version in dependency and plugin part.
     :param module: module name
     :param pom: pom file path
-    :return:
     """
     log.debug('Replacing version in file: {}'.format(pom))
-    version_update_items = config[module][pom]['version_update_items']
-    log.debug('Module: {}, versions: {}'.format(module, version_update_items))
+    pom_dict = config[module][pom]
+    if not pom_dict.__contains__(VERSION_UPDATE_ITEMS_KEY_NAME):
+        log.warn('No config key {} in pom parameters.'.format(VERSION_UPDATE_ITEMS_KEY_NAME))
+        return
+
+    version_update_items = pom_dict[VERSION_UPDATE_ITEMS_KEY_NAME]
+    log.debug('Module: {}, versions: {}'.format(module, get_str(version_update_items)))
     with in_place.InPlace(pom) as file:
         line_num = 0
         for line in file:
             line_num = line_num + 1
             for version_update_item in version_update_items:
                 if version_update_item.id in line:
-                    log.debug('Updated line {}'.format(line_num))
+                    log.debug('Updating line {}'.format(line_num))
                     # update version in dependency part
                     if X_VERSION_UPDATE in line:
                         old_version = line[(line.index('<version>') + 9):line.index('</version>')]
                         new_line = line.replace(old_version, version_update_item.new_version)
                         if line != new_line:
-                            line = new_line
-                            log.debug('Updated version of dependency in line {}'.format(line_num))
+                            log.debug('Updating version of dependency in line {}'.format(line_num))
                             log.debug('    old_line = {}.'.format(line.strip('\n')))
                             log.debug('    new_line = {}.'.format(new_line.strip('\n')))
+                            line = new_line
                     # update version in plugin part
                     elif X_INCLUDE_UPDATE in line:
                         old_version = line[(line.index('[')+1):line.index(']')]
                         new_line = line.replace(old_version, version_update_item.new_version)
                         if line != new_line:
-                            line = new_line
-                            log.debug('Updated version of plugin in line {}'.format(line_num))
+                            log.debug('Updating version of plugin in line {}'.format(line_num))
                             log.debug('    old_line = {}.'.format(line.strip('\n')))
                             log.debug('    new_line = {}.'.format(new_line.strip('\n')))
+                            line = new_line
             file.write(line)
 
 

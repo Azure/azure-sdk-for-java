@@ -8,4 +8,4 @@ class VersionUpdateItem:
         self.new_version = new_version
 
     def __str__(self):
-        return '{}:{}'.format(self.id, self.new_version)
+        return '[id: {}; new_version: {}]'.format(self.id, self.new_version)
