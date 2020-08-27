@@ -111,18 +111,6 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         };
     }
 
-    @DataProvider(name = "readAllItemsOfLogicalPartition")
-    private Object[][] readAllItemsOfLogicalPartition() {
-        return new Object[][]{
-            new Object[] { 1, true },
-            new Object[] { 5, null },
-            new Object[] { 20, null },
-            new Object[] { 1, false },
-            new Object[] { 5, false },
-            new Object[] { 20, false },
-        };
-    }
-
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void gatewayDiagnostics() {
         CosmosClient testGatewayClient = null;
