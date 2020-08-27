@@ -388,7 +388,7 @@ These APIs are invoked via DigitalTwinsAsyncClient.
      * @return A REST response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DigitalTwinsResponse> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, String relationshipUpdateOperations, RequestOptions options) { }
+    public Mono<DigitalTwinsResponse<Void>> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, String relationshipUpdateOperations, RequestOptions options) { }
 
     /**
      * Deletes a relationship on a digital twin.
@@ -408,7 +408,7 @@ These APIs are invoked via DigitalTwinsAsyncClient.
      * @return A REST response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DigitalTwinsResponse> deleteRelationshipWithResponse(String digitalTwinId, String relationshipId, RequestOptions options) { }
+    public Mono<Response<Void>> deleteRelationshipWithResponse(String digitalTwinId, String relationshipId, RequestOptions options) { }
 
     /**
      * Gets all the relationships on a digital twin by iterating through a collection.
@@ -581,7 +581,7 @@ These APIs are invoked via DigitalTwinsClient.
      * @return A REST response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response updateRelationshipWithResponse(String digitalTwinId, String relationshipId, String relationshipUpdateOperations, RequestOptions options, Context context) { }
+    public DigitalTwinsResponse<Void> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, String relationshipUpdateOperations, RequestOptions options, Context context) { }
 
     /**
      * Deletes a relationship on a digital twin.
@@ -602,7 +602,7 @@ These APIs are invoked via DigitalTwinsClient.
      * @return A REST response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response deleteRelationshipWithResponse(String digitalTwinId, String relationshipId, RequestOptions options, Context context) { }
+    public Response<Void> deleteRelationshipWithResponse(String digitalTwinId, String relationshipId, RequestOptions options, Context context) { }
 
     /**
      * Gets all the relationships on a digital twin by iterating through a collection.
