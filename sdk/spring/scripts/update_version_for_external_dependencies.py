@@ -168,8 +168,8 @@ def update_version_for_external_dependencies(dependency_dict):
                 if key not in SKIP_IDS and key in dependency_dict:
                     value_in_dict = dependency_dict[key]
                     if version_bigger_than(value, value_in_dict):
-                        log.warn('Version update skipped. key = {}, value = {}, new_value = {}'.format(key, value, value_in_dict))
-                        file.write(line)
+                        log.warn('Version decreased. key = {}, value = {}, new_value = {}'.format(key, value, value_in_dict))
+                        file.write('{};{}'.format(key, value_in_dict))
                     elif version_bigger_than(value_in_dict, value):
                         log.info('Version updated. key = {}, value = {}, new_value = {}'.format(key, value, value_in_dict))
                         file.write('{};{}'.format(key, value_in_dict))
