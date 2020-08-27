@@ -40,6 +40,13 @@ public class CosmosDbSqlApiSource extends CopySource {
     private Object preferredRegions;
 
     /**
+     * Whether detect primitive values as datetime values. Type: boolean (or
+     * Expression with resultType boolean).
+     */
+    @JsonProperty(value = "detectDatetime")
+    private Object detectDatetime;
+
+    /**
      * Specifies the additional columns to be added to source data. Type: array
      * of objects (or Expression with resultType array of objects).
      */
@@ -103,6 +110,26 @@ public class CosmosDbSqlApiSource extends CopySource {
      */
     public CosmosDbSqlApiSource withPreferredRegions(Object preferredRegions) {
         this.preferredRegions = preferredRegions;
+        return this;
+    }
+
+    /**
+     * Get whether detect primitive values as datetime values. Type: boolean (or Expression with resultType boolean).
+     *
+     * @return the detectDatetime value
+     */
+    public Object detectDatetime() {
+        return this.detectDatetime;
+    }
+
+    /**
+     * Set whether detect primitive values as datetime values. Type: boolean (or Expression with resultType boolean).
+     *
+     * @param detectDatetime the detectDatetime value to set
+     * @return the CosmosDbSqlApiSource object itself.
+     */
+    public CosmosDbSqlApiSource withDetectDatetime(Object detectDatetime) {
+        this.detectDatetime = detectDatetime;
         return this;
     }
 
