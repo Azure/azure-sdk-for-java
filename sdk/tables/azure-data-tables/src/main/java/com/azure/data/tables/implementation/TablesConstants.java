@@ -5,7 +5,7 @@ package com.azure.data.tables.implementation;
 /**
  * Constants for Tables service.
  */
-public final class TableConstants {
+public final class TablesConstants {
     /**
      * Name in the Map to get the partition key.
      */
@@ -39,6 +39,6 @@ public final class TableConstants {
     /**
      * Private constructor so this class cannot be instantiated.
      */
-    private TableConstants() {
+    private TablesConstants() {
     }
 }

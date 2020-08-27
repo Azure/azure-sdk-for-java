@@ -5,8 +5,8 @@ package com.azure.data.tables.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.tables.implementation.TableConstants;
-import com.azure.data.tables.implementation.TableEntityHelper;
+import com.azure.data.tables.implementation.TablesConstants;
+import com.azure.data.tables.implementation.TablesModelHelper;
 
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -28,7 +28,7 @@ public class TableEntity {
 
     static {
         // This is used by classes in different packages to get access to private and package-private methods.
-        TableEntityHelper.setEntityAccessor((entity, timestamp, eTag) -> {
+        TablesModelHelper.setEntityAccessor((entity, timestamp, eTag) -> {
             entity.setTimestamp(timestamp);
             entity.setETag(eTag);
         });
@@ -45,8 +45,8 @@ public class TableEntity {
         this.partitionKey = Objects.requireNonNull(partitionKey, "'partitionKey' cannot be null.");
         Objects.requireNonNull(properties, "'properties' cannot be null.");
 
-        properties.put(TableConstants.PARTITION_KEY, partitionKey);
-        properties.put(TableConstants.ROW_KEY, rowKey);
+        properties.put(TablesConstants.PARTITION_KEY, partitionKey);
+        properties.put(TablesConstants.ROW_KEY, rowKey);
     }
 
     /**
@@ -70,12 +70,12 @@ public class TableEntity {
     public TableEntity addProperty(String key, Object value) {
         Objects.requireNonNull(key, "'key' cannot be null.");
 
-        if (TableConstants.PARTITION_KEY.equals(key)) {
+        if (TablesConstants.PARTITION_KEY.equals(key)) {
             throw logger.logExceptionAsError(
-                new IllegalArgumentException(TableConstants.PARTITION_KEY + " cannot be set after object creation."));
-        } else if (TableConstants.ROW_KEY.equals(key)) {
+                new IllegalArgumentException(TablesConstants.PARTITION_KEY + " cannot be set after object creation."));
+        } else if (TablesConstants.ROW_KEY.equals(key)) {
             throw logger.logExceptionAsError(
-                new IllegalArgumentException(TableConstants.ROW_KEY + " cannot be set after object creation."));
+                new IllegalArgumentException(TablesConstants.ROW_KEY + " cannot be set after object creation."));
         }
 
         properties.put(key, value);

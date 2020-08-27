@@ -18,6 +18,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.tables.implementation.AzureTableImpl;
 import com.azure.data.tables.implementation.AzureTableImplBuilder;
+import com.azure.data.tables.implementation.TablesModelHelper;
 import com.azure.data.tables.implementation.models.OdataMetadataFormat;
 import com.azure.data.tables.implementation.models.QueryOptions;
 import com.azure.data.tables.implementation.models.ResponseFormat;
@@ -220,7 +221,7 @@ public class TableServiceAsyncClient {
         QueryOptions queryOptions = new QueryOptions()
             .setFilter(options.getFilter())
             .setTop(options.getTop())
-            .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_MINIMALMETADATA);
+            .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
         return implementation.getTables().queryWithResponseAsync(null, nextTableName, queryOptions, context)
             .flatMap(response -> {
                 TableQueryResponse tableQueryResponse = response.getValue();
@@ -232,7 +233,7 @@ public class TableServiceAsyncClient {
                     return Mono.empty();
                 }
                 final List<TableItem> tables = tableResponsePropertiesList.stream()
-                    .map(e -> new TableItem(e.getTableName())).collect(Collectors.toList());
+                    .map(TablesModelHelper::createItem).collect(Collectors.toList());
 
                 return Mono.just(new TablePaged(response, tables,
                     response.getDeserializedHeaders().getXMsContinuationNextTableName()));
