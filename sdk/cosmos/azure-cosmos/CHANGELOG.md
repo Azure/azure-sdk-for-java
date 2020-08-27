@@ -4,6 +4,8 @@
 * Added new API to efficiently load many documents (via list of pk/id pairs or all documents for a set ok pk values)
 * Enabled query metrics by default
 * Fixed NPE in GatewayAddressCache
+* Fixed query metric issue for feed responses with zero items
+* Improved performance (reduced CPU usage) for address parsing and Master-Key authentication
 
 ## 4.3.2-beta.2 (2020-08-17)
 ### Key Bug Fixes
