@@ -787,7 +787,7 @@ public Mono<String> updateDigitalTwin(String digitalTwinId, List<Object> digital
  * @return The updated application/json digital twin.
  */
 @ServiceMethod(returns = ReturnType.SINGLE)
-public Mono<T> updateDigitalTwin(String digitalTwinId, List<Object> digitalTwinUpdateOperations, Class<T> classType)
+public <T> Mono<T> updateDigitalTwin(String digitalTwinId, List<Object> digitalTwinUpdateOperations, Class<T> classType)
 
 /**
  * Updates a digital twin.
