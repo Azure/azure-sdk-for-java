@@ -6,11 +6,11 @@ package com.azure.digitaltwins.core;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 public class SyncSample
 {
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) throws JsonProcessingException {
         String tenantId = System.getenv("TENANT_ID");
         String clientId = System.getenv("CLIENT_ID");
         String clientSecret = System.getenv("CLIENT_SECRET");
@@ -34,11 +34,11 @@ public class SyncSample
             .buildClient();
 
         // Create relationship on a digital twin
-        String createdRelationship = client.createRelationship(sourceDigitalTwinId, relationshipId, relationship);
+        String createdRelationship = client.createRelationshipWithResponse(sourceDigitalTwinId, relationshipId, relationship).getValue();
         System.out.println("Created relationship: " + createdRelationship);
 
         // List all relationships on a digital twin
-        PagedIterable<Object> relationships = client.listRelationships(sourceDigitalTwinId, relationshipId);
+        PagedIterable<String> relationships = client.listRelationships(sourceDigitalTwinId, relationshipId);
 
         // Process using the Stream interface by iterating over each page
         relationships

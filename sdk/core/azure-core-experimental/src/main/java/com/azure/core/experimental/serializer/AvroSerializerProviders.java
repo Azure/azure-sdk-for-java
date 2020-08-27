@@ -3,8 +3,6 @@
 
 package com.azure.core.experimental.serializer;
 
-import com.azure.core.util.serializer.ObjectSerializer;
-
 import java.util.Iterator;
 import java.util.ServiceLoader;
 
@@ -47,13 +45,43 @@ public final class AvroSerializerProviders {
      * Creates an Avro serializer instance based using the first {@link AvroSerializerProvider} found on the classpath.
      *
      * @param schema Schema tied to the Avro serializer for its lifetime.
-     * @return A new Avro serializer instance tied to the passed schema.
+     * @return A new {@link AvroSerializer} instance tied to the passed schema.
      */
-    public static ObjectSerializer createInstance(String schema) {
+    public static AvroSerializer createInstance(String schema) {
         if (defaultProvider == null) {
             load();
         }
 
         return defaultProvider.createInstance(schema);
+    }
+
+    /**
+     * Returns the Avro schema for specified object.
+     *
+     * @param object The object having its Avro schema retrieved.
+     * @return The Avro schema for the object.
+     * @throws IllegalArgumentException If the object is an unsupported type.
+     */
+    public static String getSchema(Object object) {
+        if (defaultProvider == null) {
+            load();
+        }
+
+        return defaultProvider.getSchema(object);
+    }
+
+    /**
+     * Returns the Avro schema for specified object.
+     *
+     * @param object The object having its Avro schema name retrieved.
+     * @return The Avro schema name for the object.
+     * @throws IllegalArgumentException If the object is an unsupported type.
+     */
+    public static String getSchemaName(Object object) {
+        if (defaultProvider == null) {
+            load();
+        }
+
+        return defaultProvider.getSchemaName(object);
     }
 }

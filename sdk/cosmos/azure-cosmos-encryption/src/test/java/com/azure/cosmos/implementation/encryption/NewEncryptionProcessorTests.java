@@ -41,7 +41,7 @@ public class NewEncryptionProcessorTests {
             @Override
             public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
 
-                byte[] plainText = invocationOnMock.getArgumentAt(0, byte[].class);
+                byte[] plainText = invocationOnMock.getArgument(0, byte[].class);
 
                 if (dekId == NewEncryptionProcessorTests.dekId) {
                     return Mono.just(TestCommon.EncryptData(plainText));
@@ -55,7 +55,7 @@ public class NewEncryptionProcessorTests {
             @Override
             public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
 
-                byte[] plainText = invocationOnMock.getArgumentAt(0, byte[].class);
+                byte[] plainText = invocationOnMock.getArgument(0, byte[].class);
 
                 if (dekId == NewEncryptionProcessorTests.dekId) {
                     return Mono.just(TestCommon.DecryptData(plainText));

@@ -560,6 +560,19 @@ public interface AsyncDocumentClient {
     Mono<ResourceResponse<Document>> deleteDocument(String documentLink, RequestOptions options);
 
     /**
+     * Deletes a document
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain a single resource response for the deleted document.
+     * In case of failure the {@link Mono} will error.
+     *
+     * @param internalObjectNode the internalObjectNode to delete (containing the id).
+     * @param options  the request options.
+     * @return a {@link Mono} containing the single resource response for the deleted document or an error.
+     */
+    Mono<ResourceResponse<Document>> deleteDocument(String documentLink, InternalObjectNode internalObjectNode, RequestOptions options);
+
+    /**
      * Reads a document
      * <p>
      * After subscription the operation will be performed.
@@ -1367,6 +1380,24 @@ public interface AsyncDocumentClient {
         String collectionLink,
         CosmosQueryRequestOptions options,
         Class<T> klass);
+
+    /**
+     * Read all documents of a certain logical partition.
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link Flux} will contain one or several feed response of the obtained documents.
+     * In case of failure the {@link Flux} will error.
+     *
+     * @param collectionLink the link to the parent document collection.
+     * @param partitionKey   the logical partition key.
+     * @param options        the query request options.
+     * @return a {@link Flux} containing one or several feed response pages of the obtained documents or an error.
+     */
+    Flux<FeedResponse<Document>> readAllDocuments(
+        String collectionLink,
+        PartitionKey partitionKey,
+        CosmosQueryRequestOptions options
+    );
 
     /**
      * Close this {@link AsyncDocumentClient} instance and cleans up the resources.

@@ -80,8 +80,7 @@ public interface SpringAppDeployment
         extends DefinitionStages.Blank,
             DefinitionStages.WithSource,
             DefinitionStages.WithModule,
-            DefinitionStages.WithPredefinedSettings,
-            DefinitionStages.WithSettingsAndCreate { }
+            DefinitionStages.WithCreate { }
 
     /** Grouping of all the deployment definition stages. */
     interface DefinitionStages {
@@ -95,14 +94,15 @@ public interface SpringAppDeployment
              * @param jar the file of the jar
              * @return the next stage of deployment definition
              */
-            WithPredefinedSettings withJarFile(File jar);
+            WithCreate withJarFile(File jar);
 
-            /**
-             * Specifies the source code for the deployment.
-             * @param sourceCodeFolder the folder of the source code
-             * @return the next stage of deployment definition
-             */
-            WithModule withSourceCodeFolder(File sourceCodeFolder);
+            // Remove compression first due to tar.gz needs extern dependency
+            // /**
+            //  * Specifies the source code for the deployment.
+            //  * @param sourceCodeFolder the folder of the source code
+            //  * @return the next stage of deployment definition
+            //  */
+            // WithModule withSourceCodeFolder(File sourceCodeFolder);
 
             /**
              * Specifies the source code for the deployment.
@@ -117,7 +117,7 @@ public interface SpringAppDeployment
              * @param relativePath the relative path gotten from getResourceUploadUrl
              * @return the next stage of deployment definition
              */
-            WithPredefinedSettings withExistingSource(UserSourceType type, String relativePath);
+            WithCreate withExistingSource(UserSourceType type, String relativePath);
         }
 
         /** The stage of a deployment definition allowing to specify the module of the source code. */
@@ -127,42 +127,13 @@ public interface SpringAppDeployment
              * @param moduleName the target module of the multi-module source code
              * @return the next stage of deployment definition
              */
-            WithPredefinedSettings withTargetModule(String moduleName);
+            WithCreate withTargetModule(String moduleName);
 
             /**
              * Specifies the only module of the source code.
              * @return the next stage of deployment definition
              */
-            WithPredefinedSettings withSingleModule();
-        }
-
-        /** The stage of a deployment definition allowing to specify predefined settings. */
-        interface WithPredefinedSettings {
-            /**
-             * Specifies the settings from the app active deployment.
-             * @return the next stage of deployment definition
-             */
-            WithCreate withSettingsFromActiveDeployment();
-
-            /**
-             * Specifies the settings from another deployment.
-             * @param deployment the deployment object
-             * @return the next stage of deployment definition
-             */
-            WithCreate withSettingsFromDeployment(SpringAppDeployment deployment);
-
-            /**
-             * Specifies the settings from another deployment.
-             * @param deploymentName the name of the deployment
-             * @return the next stage of deployment definition
-             */
-            WithCreate withSettingsFromDeployment(String deploymentName);
-
-            /**
-             * Customizes settings of the deployment.
-             * @return the next stage of deployment definition
-             */
-            WithSettingsAndCreate withCustomSetting();
+            WithCreate withSingleModule();
         }
 
         /** The stage of a deployment definition allowing to specify deployment settings. */
@@ -172,35 +143,35 @@ public interface SpringAppDeployment
              * @param count the number of the instance
              * @return the next stage of deployment definition
              */
-            WithSettingsAndCreate withInstance(int count);
+            WithCreate withInstance(int count);
 
             /**
              * Specifies the cpu number of the deployment.
              * @param cpuCount the number of the cpu
              * @return the next stage of deployment definition
              */
-            WithSettingsAndCreate withCpu(int cpuCount);
+            WithCreate withCpu(int cpuCount);
 
             /**
              * Specifies the memory of the deployment.
              * @param sizeInGB the size of the memory in GB
              * @return the next stage of deployment definition
              */
-            WithSettingsAndCreate withMemory(int sizeInGB);
+            WithCreate withMemory(int sizeInGB);
 
             /**
              * Specifies the runtime version of the deployment.
              * @param version the runtime version of Java
              * @return the next stage of deployment definition
              */
-            WithSettingsAndCreate withRuntime(RuntimeVersion version);
+            WithCreate withRuntime(RuntimeVersion version);
 
             /**
              * Specifies the jvm options of the deployment.
              * @param jvmOptions the argument of jvm
              * @return the next stage of deployment definition
              */
-            WithSettingsAndCreate withJvmOptions(String jvmOptions);
+            WithCreate withJvmOptions(String jvmOptions);
 
             /**
              * Specifies a environment variable of the deployment.
@@ -208,23 +179,8 @@ public interface SpringAppDeployment
              * @param value the value of the environment
              * @return the next stage of deployment definition
              */
-            WithSettingsAndCreate withEnvironment(String key, String value);
+            WithCreate withEnvironment(String key, String value);
 
-            /**
-             * Specifies the version of the deployment.
-             * @param versionName the version name of the deployment
-             * @return the next stage of deployment definition
-             */
-            WithSettingsAndCreate withVersionName(String versionName);
-
-            /**
-             * Activates of the deployment after definition.
-             * @return the next stage of deployment definition
-             */
-            WithSettingsAndCreate withActivation();
-        }
-
-        interface WithBaseSettings {
             /**
              * Specifies the version of the deployment.
              * @param versionName the version name of the deployment
@@ -240,18 +196,11 @@ public interface SpringAppDeployment
         }
 
         /**
-         * The stage of the definition which contains all required inputs for the resource to be created.
-         */
-        interface WithCreate
-            extends Creatable<SpringAppDeployment>,
-                WithBaseSettings { }
-
-        /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
          */
-        interface WithSettingsAndCreate
-            extends WithCreate,
+        interface WithCreate
+            extends Creatable<SpringAppDeployment>,
                 WithSettings { }
     }
 
@@ -269,7 +218,7 @@ public interface SpringAppDeployment
             /**
              * Specifies the instance number of the deployment.
              * @param count the number of the instance
-             * @return the next stage of deployment update
+             * @return the next stage of deployment definition
              */
             Update withInstance(int count);
 
@@ -339,12 +288,12 @@ public interface SpringAppDeployment
              */
             Update withJarFile(File jar);
 
-            /**
-             * Specifies the source code for the deployment.
-             * @param sourceCodeFolder the folder of the source code
-             * @return the next stage of deployment update
-             */
-            WithModule withSourceCodeFolder(File sourceCodeFolder);
+            // /**
+            //  * Specifies the source code for the deployment.
+            //  * @param sourceCodeFolder the folder of the source code
+            //  * @return the next stage of deployment update
+            //  */
+            // WithModule withSourceCodeFolder(File sourceCodeFolder);
 
             /**
              * Specifies the source code for the deployment.

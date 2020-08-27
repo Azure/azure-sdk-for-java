@@ -7,12 +7,24 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.FluxUtil;
+import com.azure.core.http.rest.*;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImpl;
+import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImplBuilder;
+import com.azure.digitaltwins.core.util.DigitalTwinsResponse;
+import com.azure.digitaltwins.core.util.DigitalTwinsResponseHeaders;
+import com.azure.digitaltwins.core.implementation.serializer.DigitalTwinsStringSerializer;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 
 /**
@@ -28,13 +40,24 @@ import reactor.core.publisher.Mono;
  * </p>
  */
 @ServiceClient(builder = DigitalTwinsClientBuilder.class)
-public class DigitalTwinsAsyncClient {
-    private final ClientLogger logger = new ClientLogger(DigitalTwinsAsyncClient.class);
+public final class DigitalTwinsAsyncClient {
+    private static final ClientLogger logger = new ClientLogger(DigitalTwinsAsyncClient.class);
+    private static final ObjectMapper mapper = new ObjectMapper();
     private final DigitalTwinsServiceVersion serviceVersion;
-    private final AzureDigitalTwinsAPI protocolLayer;
+    private final AzureDigitalTwinsAPIImpl protocolLayer;
 
     DigitalTwinsAsyncClient(HttpPipeline pipeline, DigitalTwinsServiceVersion serviceVersion, String host) {
-        this.protocolLayer = new AzureDigitalTwinsAPIBuilder().host(host).pipeline(pipeline).buildClient();
+        final SimpleModule stringModule = new SimpleModule("String Serializer");
+        stringModule.addSerializer(new DigitalTwinsStringSerializer(String.class, mapper));
+
+        JacksonAdapter jacksonAdapter = new JacksonAdapter();
+        jacksonAdapter.serializer().registerModule(stringModule);
+
+        this.protocolLayer = new AzureDigitalTwinsAPIImplBuilder()
+            .host(host)
+            .pipeline(pipeline)
+            .serializerAdapter(jacksonAdapter)
+            .buildClient();
         this.serviceVersion = serviceVersion;
     }
 
@@ -59,58 +82,38 @@ public class DigitalTwinsAsyncClient {
         return this.protocolLayer.getHttpPipeline();
     }
 
-    // TODO These are temporary implementations for sample purposes. This should be spruced up/replaced once this API is actually designed.
-    /**
-     * Creates a digital twin.
-     *
-     * @param digitalTwinId The Id of the digital twin.
-     * @param digitalTwin The application/json digital twin to create.
-     * @return The application/json digital twin created.
-     */
+    // TODO: This is a temporary implementation for sample purposes. This should be spruced up/replaced once this API is actually designed.
+    // Input is String and output is Response<String>.
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> createDigitalTwin(String digitalTwinId, String digitalTwin) {
-        try {
-            return protocolLayer
-                .getDigitalTwins()
-                .addWithResponseAsync(digitalTwinId, digitalTwin)
-                // Mono.flatMap: Transform the item emitted by this Mono asynchronously, returning the value emitted by another Mono (possibly changing the value type).
-                // The PL gives us a Mono<DigitalTwinsAddResponse>, so we use Mono.flatMap to transform the items emitted
-                // from Mono<DigitalTwinsAddResponse> to Mono<String>, asynchronously.
-                .flatMap(
-                    // Mono.just(item) creates a new Mono that emits the specified item.
-                    // response.getValue gives us the deserialized Http response body (Object).
-                    response -> Mono.just(response.getValue().toString()));
-        } catch (RuntimeException ex) {
-            // TODO: Ensure that exceptions are handled in a reactive way
-            return FluxUtil.monoError(logger, ex);
-        }
+    public Mono<DigitalTwinsResponse<String>> createDigitalTwinWithResponse(String digitalTwinId, String digitalTwin) {
+        return protocolLayer
+            .getDigitalTwins()
+            .addWithResponseAsync(digitalTwinId, digitalTwin)
+            .flatMap(
+                response -> {
+                    try {
+                        String jsonResponse = mapper.writeValueAsString(response.getValue());
+                        DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
+                        return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), jsonResponse, twinHeaders));
+                    } catch (JsonProcessingException e) {
+                        return Mono.error(e);
+                    }
+                });
     }
 
-    /**
-     * Creates a relationship on a digital twin.
-     *
-     * @param digitalTwinId The Id of the source digital twin.
-     * @param relationshipId The Id of the relationship to be created.
-     * @param relationship The application/json relationship to be created.
-     * @return The application/json relationship created.
-     */
+    // TODO: This is a temporary implementation for sample purposes. This should be spruced up/replaced once this API is actually designed.
+    // Input is Object and output is Response<T>.
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> createRelationship(String digitalTwinId, String relationshipId, String relationship) {
-        try {
-            return protocolLayer
-                .getDigitalTwins()
-                .addRelationshipWithResponseAsync(digitalTwinId, relationshipId, relationship)
-                // Mono.flatMap: Transform the item emitted by this Mono asynchronously, returning the value emitted by another Mono (possibly changing the value type).
-                // The PL gives us a Mono<DigitalTwinsAddRelationshipResponse>, so we use Mono.flatMap to transform the items emitted
-                // from Mono<DigitalTwinsAddRelationshipResponse> to Mono<String>, asynchronously.
-                .flatMap(
-                    // Mono.just(item) creates a new Mono that emits the specified item.
-                    // response.getValue gives us the deserialized Http response body (Object).
-                    response -> Mono.just(response.getValue().toString()));
-        } catch (RuntimeException ex) {
-            // TODO: Ensure that exceptions are handled in a reactive way
-            return FluxUtil.monoError(logger, ex);
-        }
+    public <T> Mono<DigitalTwinsResponse<T>> createDigitalTwinWithResponse(String digitalTwinId, Object digitalTwin, Class<T> klazz) {
+        return protocolLayer
+            .getDigitalTwins()
+            .addWithResponseAsync(digitalTwinId, digitalTwin)
+            .flatMap(
+                response -> {
+                    T genericResponse = mapper.convertValue(response.getValue(), klazz);
+                    DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
+                    return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), genericResponse, twinHeaders));
+                });
     }
 
     /**
@@ -123,22 +126,18 @@ public class DigitalTwinsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> createRelationshipWithResponse(String digitalTwinId, String relationshipId, String relationship) {
-        try {
-            return protocolLayer
-                .getDigitalTwins()
-                .addRelationshipWithResponseAsync(digitalTwinId, relationshipId, relationship)
-                // Mono.flatMap: Transform the item emitted by this Mono asynchronously, returning the value emitted by another Mono (possibly changing the value type).
-                // The PL gives us a Mono<DigitalTwinsAddRelationshipResponse>, so we use Mono.flatMap to transform the items emitted
-                // from Mono<DigitalTwinsAddRelationshipResponse> to Mono<Response<<String>>, asynchronously.
-                .flatMap(
-                    // Mono.just(item) creates a new Mono that emits the specified item.
-                    // SimpleResponse is an implementation of the interface Response<T>.
-                    // response.getValue gives us the deserialized Http response body (Object).
-                    response -> Mono.just(new SimpleResponse<>(response, response.getValue().toString())));
-        } catch (RuntimeException ex) {
-            // TODO: Ensure that exceptions are handled in a reactive way
-            return FluxUtil.monoError(logger, ex);
-        }
+        return protocolLayer
+            .getDigitalTwins()
+            .addRelationshipWithResponseAsync(digitalTwinId, relationshipId, relationship)
+            .flatMap(
+                response -> {
+                    try {
+                        String jsonResponse = mapper.writeValueAsString(response.getValue());
+                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), jsonResponse));
+                    } catch (JsonProcessingException e) {
+                        return Mono.error(e);
+                    }
+                });
     }
 
     /**
@@ -147,12 +146,59 @@ public class DigitalTwinsAsyncClient {
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipName The name of a relationship to filter to.
      * @return A {@link PagedFlux} of application/json relationships belonging to the specified digital twin and the http response.
-     * TODO: Impl here returns an Object and not a String.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Object> listRelationships(String digitalTwinId, String relationshipName) {
-        return new PagedFlux<>(
-            () -> protocolLayer.getDigitalTwins().listRelationshipsSinglePageAsync(digitalTwinId, relationshipName),
-            nextLink -> protocolLayer.getDigitalTwins().listRelationshipsNextSinglePageAsync(nextLink));
+    public PagedFlux<String> listRelationships(String digitalTwinId, String relationshipName) {
+
+        Supplier<Mono<PagedResponse<String>>> firstPage = () -> protocolLayer.getDigitalTwins().listRelationshipsSinglePageAsync(digitalTwinId, relationshipName)
+            .map(
+                objectPagedResponse -> {
+                    List<String> stringList = objectPagedResponse.getValue().stream()
+                        .map(object -> {
+                            try {
+                                return mapper.writeValueAsString(object);
+                            } catch (JsonProcessingException e) {
+                                logger.error("Could not parse the returned relationship [%s]: %s", object, e);
+                                return null;
+                            }
+                        })
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toList());
+                    return new PagedResponseBase<>(
+                        objectPagedResponse.getRequest(),
+                        objectPagedResponse.getStatusCode(),
+                        objectPagedResponse.getHeaders(),
+                        stringList,
+                        objectPagedResponse.getContinuationToken(),
+                        ((PagedResponseBase) objectPagedResponse).getDeserializedHeaders());
+
+                }
+            );
+
+        Function<String, Mono<PagedResponse<String>>> nextPage = nextLink -> protocolLayer.getDigitalTwins().listRelationshipsNextSinglePageAsync(nextLink)
+            .map(objectPagedResponse -> {
+                List<String> stringList = objectPagedResponse.getValue().stream()
+                    .map(object -> {
+                        try {
+                            return mapper.writeValueAsString(object);
+                        } catch (JsonProcessingException e) {
+                            logger.error("Could not parse the returned relationship [%s]: %s", object, e);
+                            return null;
+                        }
+                    })
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+                return new PagedResponseBase<>(
+                    objectPagedResponse.getRequest(),
+                    objectPagedResponse.getStatusCode(),
+                    objectPagedResponse.getHeaders(),
+                    stringList,
+                    objectPagedResponse.getContinuationToken(),
+                    ((PagedResponseBase)objectPagedResponse).getDeserializedHeaders());
+            });
+
+        return new PagedFlux<>(firstPage, nextPage);
+
     }
+
 }

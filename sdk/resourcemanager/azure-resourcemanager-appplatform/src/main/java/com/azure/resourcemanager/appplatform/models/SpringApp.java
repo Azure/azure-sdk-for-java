@@ -13,7 +13,6 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import reactor.core.publisher.Mono;
 
-import java.io.File;
 import java.time.OffsetDateTime;
 
 /** An immutable client-side representation of an Azure Spring App. */
@@ -48,7 +47,13 @@ public interface SpringApp
     OffsetDateTime createdTime();
 
     /** @return the active deployment name */
-    String activeDeployment();
+    String activeDeploymentName();
+
+    /** @return the active deployment */
+    SpringAppDeployment getActiveDeployment();
+
+    /** @return the active deployment */
+    Mono<SpringAppDeployment> getActiveDeploymentAsync();
 
     /** @return the entry point of the spring app deployment */
     SpringAppDeployments deployments();
@@ -128,22 +133,6 @@ public interface SpringApp
          * for more operations, use {@link #deployments()}
          */
         interface WithDeployment {
-            /**
-             * Deploys the jar package for the spring app with default scale.
-             * @param name the name of the deployment
-             * @param jarFile the file of the jar
-             * @return the next stage of spring app definition
-             */
-            WithCreate deployJar(String name, File jarFile);
-
-            /**
-             * Deploys the source code for the spring app with default scale.
-             * @param name the name of the deployment
-             * @param sourceCodeFolder the source code folder
-             * @param targetModule the target module of the source code
-             * @return the next stage of spring app definition
-             */
-            WithCreate deploySource(String name, File sourceCodeFolder, String targetModule);
         }
 
         /** The stage of a spring app update allowing to specify the service binding. */
@@ -272,35 +261,11 @@ public interface SpringApp
          */
         interface WithDeployment {
             /**
-             * Deploys the jar package for the spring app with default scale.
-             * @param name the name of the deployment
-             * @param jarFile the file of the jar
-             * @return the next stage of spring app update
-             */
-            Update deployJar(String name, File jarFile);
-
-            /**
-             * Deploys the source code for the spring app with default scale.
-             * @param name the name of the deployment
-             * @param sourceCodeFolder the source code folder
-             * @param targetModule the target module of the source code
-             * @return the next stage of spring app update
-             */
-            Update deploySource(String name, File sourceCodeFolder, String targetModule);
-
-            /**
              * Specifies active deployment for the spring app.
              * @param name the name of the deployment
              * @return the next stage of spring app update
              */
             Update withActiveDeployment(String name);
-
-            /**
-             * Removes a deployment for the spring app.
-             * @param name the name of the deployment
-             * @return the next stage of spring app update
-             */
-            Update withoutDeployment(String name);
         }
 
         /** The stage of a spring app update allowing to specify the service binding. */

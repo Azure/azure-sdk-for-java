@@ -9,6 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
  * This class provides a client for interacting synchronously with an Azure Digital Twins instance.
@@ -58,19 +59,6 @@ public final class DigitalTwinsClient {
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be created.
      * @param relationship The application/json relationship to be created.
-     * @return The application/json relationship created.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public String createRelationship(String digitalTwinId, String relationshipId, String relationship) {
-        return digitalTwinsAsyncClient.createRelationship(digitalTwinId, relationshipId, relationship).block();
-    }
-
-    /**
-     * Creates a relationship on a digital twin.
-     *
-     * @param digitalTwinId The Id of the source digital twin.
-     * @param relationshipId The Id of the relationship to be created.
-     * @param relationship The application/json relationship to be created.
      * @return A REST response containing the application/json relationship created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -84,10 +72,9 @@ public final class DigitalTwinsClient {
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipName The name of a relationship to filter to.
      * @return A {@link PagedIterable} of application/json relationships belonging to the specified digital twin and the http response.
-     * TODO: Impl here returns an Object and not a String.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Object> listRelationships(String digitalTwinId, String relationshipName) {
+    public PagedIterable<String> listRelationships(String digitalTwinId, String relationshipName) {
         return new PagedIterable<>(digitalTwinsAsyncClient.listRelationships(digitalTwinId, relationshipName));
     }
 }
