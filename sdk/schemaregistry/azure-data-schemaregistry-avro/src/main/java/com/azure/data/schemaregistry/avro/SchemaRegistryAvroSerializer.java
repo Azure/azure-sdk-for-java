@@ -15,7 +15,7 @@ import java.io.OutputStream;
 import java.util.Objects;
 
 /**
- * Asynchronous registry-based serializer implementation.
+ * Asynchronous registry-based serializer for Avro SpecificRecords and GenericRecords.
  */
 public final class SchemaRegistryAvroSerializer extends SchemaRegistrySerializer implements ObjectSerializer {
     private final ClientLogger logger = new ClientLogger(SchemaRegistryAvroSerializer.class);
@@ -46,7 +46,8 @@ public final class SchemaRegistryAvroSerializer extends SchemaRegistrySerializer
                 if (typeReference.getJavaType().getClass().isInstance(o)) {
                     sink.next((T)o);
                 }
-                sink.error(logger.logExceptionAsError(new IllegalStateException("Deserialized object not of class %s")));
+                sink.error(
+                    logger.logExceptionAsError(new IllegalStateException("Deserialized object not of class %s")));
             });
     }
 
