@@ -125,15 +125,15 @@ abstract class AsyncBenchmark<T> {
         }
 
         partitionKey = cosmosAsyncContainer.read().block().getProperties().getPartitionKeyDefinition()
-                                           .getPaths().iterator().next().split("/")[1];
+            .getPaths().iterator().next().split("/")[1];
 
         concurrencyControlSemaphore = new Semaphore(cfg.getConcurrency());
 
         ArrayList<Flux<PojoizedJson>> createDocumentObservables = new ArrayList<>();
 
         if (configuration.getOperationType() != Configuration.Operation.WriteLatency
-            && configuration.getOperationType() != Configuration.Operation.WriteThroughput
-            && configuration.getOperationType() != Configuration.Operation.ReadMyWrites) {
+                && configuration.getOperationType() != Configuration.Operation.WriteThroughput
+                && configuration.getOperationType() != Configuration.Operation.ReadMyWrites) {
             logger.info("PRE-populating {} documents ....", cfg.getNumberOfPreCreatedDocuments());
             String dataFieldValue = RandomStringUtils.randomAlphabetic(cfg.getDocumentDataFieldSize());
             for (int i = 0; i < cfg.getNumberOfPreCreatedDocuments(); i++) {
@@ -163,24 +163,24 @@ abstract class AsyncBenchmark<T> {
 
         if (configuration.getGraphiteEndpoint() != null) {
             final Graphite graphite = new Graphite(new InetSocketAddress(
-                configuration.getGraphiteEndpoint(),
-                configuration.getGraphiteEndpointPort()));
+                    configuration.getGraphiteEndpoint(),
+                    configuration.getGraphiteEndpointPort()));
             reporter = GraphiteReporter.forRegistry(metricsRegistry)
-                                       .prefixedWith(configuration.getOperationType().name())
-                                       .convertDurationsTo(TimeUnit.MILLISECONDS)
-                                       .convertRatesTo(TimeUnit.SECONDS)
-                                       .filter(MetricFilter.ALL)
-                                       .build(graphite);
+                .prefixedWith(configuration.getOperationType().name())
+                .convertDurationsTo(TimeUnit.MILLISECONDS)
+                .convertRatesTo(TimeUnit.SECONDS)
+                .filter(MetricFilter.ALL)
+                .build(graphite);
         } else if (configuration.getReportingDirectory() != null) {
             reporter = CsvReporter.forRegistry(metricsRegistry)
-                                  .convertDurationsTo(TimeUnit.MILLISECONDS)
-                                  .convertRatesTo(TimeUnit.SECONDS)
-                                  .build(configuration.getReportingDirectory());
+                .convertDurationsTo(TimeUnit.MILLISECONDS)
+                .convertRatesTo(TimeUnit.SECONDS)
+                .build(configuration.getReportingDirectory());
         } else {
             reporter = ConsoleReporter.forRegistry(metricsRegistry)
-                                      .convertDurationsTo(TimeUnit.MILLISECONDS)
-                                      .convertRatesTo(TimeUnit.SECONDS)
-                                      .build();
+                .convertDurationsTo(TimeUnit.MILLISECONDS)
+                .convertRatesTo(TimeUnit.SECONDS)
+                .build();
         }
 
         MeterRegistry registry = configuration.getAzureMonitorMeterRegistry();
