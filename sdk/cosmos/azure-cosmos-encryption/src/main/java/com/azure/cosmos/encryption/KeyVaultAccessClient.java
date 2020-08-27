@@ -92,6 +92,7 @@ public class KeyVaultAccessClient {
     }
 
     private CosmosException cryptoClientExceptionToCosmosException(String message, Throwable ex) {
+        // TODO: discuss with dotnet folks,
         return new KeyVaultCosmosException(-1, message, ex);
     }
 

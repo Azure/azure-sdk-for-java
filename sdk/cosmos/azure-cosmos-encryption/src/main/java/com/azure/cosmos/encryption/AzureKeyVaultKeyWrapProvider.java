@@ -48,7 +48,6 @@ public class AzureKeyVaultKeyWrapProvider implements EncryptionKeyWrapProvider {
         this.rawDekCacheTimeToLive = Duration.ofHours(1);
     }
 
-    // TODO make this async
     @Override
     public Mono<EncryptionKeyUnwrapResult> unwrapKey(byte[] wrappedKey,
                                                EncryptionKeyWrapMetadata metadata) {
