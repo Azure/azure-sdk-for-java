@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.digitaltwins.core.implementation.serialization;
+package com.azure.digitaltwins.core.util;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;

@@ -8,7 +8,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.digitaltwins.core.implementation.serialization.BasicDigitalTwin;
 import com.azure.digitaltwins.core.implementation.serialization.DigitalTwinMetadata;
-import com.azure.digitaltwins.core.implementation.serialization.DigitalTwinsResponse;
+import com.azure.digitaltwins.core.util.DigitalTwinsResponse;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
