@@ -15,9 +15,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImpl;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImplBuilder;
+import com.azure.digitaltwins.core.implementation.models.IncomingRelationship;
+import com.azure.digitaltwins.core.implementation.serializer.DigitalTwinsStringSerializer;
 import com.azure.digitaltwins.core.util.DigitalTwinsResponse;
 import com.azure.digitaltwins.core.util.DigitalTwinsResponseHeaders;
-import com.azure.digitaltwins.core.implementation.serializer.DigitalTwinsStringSerializer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -263,7 +264,7 @@ public final class DigitalTwinsAsyncClient {
     public <T> Mono<T> getRelationship(String digitalTwinId, String relationshipId, Class<T> modelClass) {
         return protocolLayer.getDigitalTwins().getRelationshipByIdWithResponseAsync(digitalTwinId, relationshipId)
             .flatMap(
-                response -> Mono.just(mapper.convertValue(response.getValue(), modelClass));
+                response -> Mono.just(mapper.convertValue(response.getValue(), modelClass)));
     }
 
     /**
@@ -294,8 +295,9 @@ public final class DigitalTwinsAsyncClient {
      * @return An empty response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateRelationship(String digitalTwinId, String relationshipId, String relationshipUpdateOperations) {
-        return protocolLayer.getDigitalTwins().updateRelationshipWithResponseAsync(digitalTwinId, relationshipId, relationshipUpdateOperations);
+    public Mono<Void> updateRelationship(String digitalTwinId, String relationshipId, List<Object> relationshipUpdateOperations) {
+        return protocolLayer.getDigitalTwins().updateRelationshipWithResponseAsync(digitalTwinId, relationshipId, null, relationshipUpdateOperations)
+            .flatMap(voidResponse -> Mono.empty());
     }
 
     /**
@@ -308,7 +310,14 @@ public final class DigitalTwinsAsyncClient {
      * @return A REST response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DigitalTwinsResponse<Void>> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, String relationshipUpdateOperations, RequestOptions options) { }
+    public Mono<DigitalTwinsResponse<Void>> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, List<Object> relationshipUpdateOperations, RequestOptions options) {
+        return protocolLayer.getDigitalTwins().updateRelationshipWithResponseAsync(digitalTwinId, relationshipId, options.getIfMatch(), relationshipUpdateOperations)
+            .flatMap(
+                response -> {
+                    DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
+                    return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), response.getValue(), twinHeaders));
+                });
+    }
 
     /**
      * Deletes a relationship on a digital twin.
@@ -342,7 +351,9 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link PagedFlux} of application/json relationships belonging to the specified digital twin and the http response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<String> listRelationships(String digitalTwinId) { }
+    public PagedFlux<String> listRelationships(String digitalTwinId) {
+        return listRelationships(digitalTwinId, (String) null);
+    }
 
     /**
      * Gets all the relationships on a digital twin filtered by the relationship name, by iterating through a collection.
@@ -411,7 +422,9 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link PagedFlux} of relationships belonging to the specified digital twin and the http response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public <T> PagedFlux<T> listRelationships(String digitalTwinId, Class<T> modelClass) { }
+    public <T> PagedFlux<T> listRelationships(String digitalTwinId, Class<T> modelClass) {
+        return listRelationships(digitalTwinId, null, modelClass);
+    }
 
     /**
      * Gets all the relationships on a digital twin filtered by the relationship name, by iterating through a collection.
@@ -422,7 +435,42 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link PagedFlux} of relationships belonging to the specified digital twin and the http response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public <T> PagedFlux<T> listRelationships(String digitalTwinId, String relationshipName, Class<T> modelClass) { }
+    public <T> PagedFlux<T> listRelationships(String digitalTwinId, String relationshipName, Class<T> modelClass) {
+        Supplier<Mono<PagedResponse<T>>> firstPage = () -> protocolLayer.getDigitalTwins().listRelationshipsSinglePageAsync(digitalTwinId, relationshipName)
+            .map(
+                objectPagedResponse -> {
+                    List<T> list = objectPagedResponse.getValue().stream()
+                        .map(object -> mapper.convertValue(object, modelClass))
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toList());
+                    return new PagedResponseBase<>(
+                        objectPagedResponse.getRequest(),
+                        objectPagedResponse.getStatusCode(),
+                        objectPagedResponse.getHeaders(),
+                        list,
+                        objectPagedResponse.getContinuationToken(),
+                        ((PagedResponseBase) objectPagedResponse).getDeserializedHeaders());
+
+                }
+            );
+
+        Function<String, Mono<PagedResponse<T>>> nextPage = nextLink -> protocolLayer.getDigitalTwins().listRelationshipsNextSinglePageAsync(nextLink)
+            .map(objectPagedResponse -> {
+                List<T> stringList = objectPagedResponse.getValue().stream()
+                    .map(object -> mapper.convertValue(object, modelClass))
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+                return new PagedResponseBase<>(
+                    objectPagedResponse.getRequest(),
+                    objectPagedResponse.getStatusCode(),
+                    objectPagedResponse.getHeaders(),
+                    stringList,
+                    objectPagedResponse.getContinuationToken(),
+                    ((PagedResponseBase)objectPagedResponse).getDeserializedHeaders());
+            });
+
+        return new PagedFlux<>(firstPage, nextPage);
+    }
 
 
     /**
@@ -432,6 +480,11 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link PagedFlux} of relationships directed towards the specified digital twin and the http response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<IncomingRelationship> listIncomingRelationships(String digitalTwinId) { }
+    public PagedFlux<IncomingRelationship> listIncomingRelationships(String digitalTwinId) {
+        return new PagedFlux<>(
+            () -> protocolLayer.getDigitalTwins().listIncomingRelationshipsSinglePageAsync(digitalTwinId),
+            nextLink -> protocolLayer.getDigitalTwins().listIncomingRelationshipsNextSinglePageAsync(nextLink)
+        );
+    }
 
 }
