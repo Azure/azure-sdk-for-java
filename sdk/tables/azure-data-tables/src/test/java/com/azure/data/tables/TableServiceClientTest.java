@@ -8,6 +8,8 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
+import com.azure.data.tables.implementation.models.TableServiceErrorException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class TableServiceClientTest extends TestBase {
@@ -36,8 +38,37 @@ public class TableServiceClientTest extends TestBase {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
 
-        // Act
+        // Act & Assert
         serviceClient.createTable(tableName);
+    }
+
+    @Test
+    void serviceCreateTableFailsIfExists() {
+        // Arrange
+        String tableName = testResourceNamer.randomName("test", 20);
+        serviceClient.createTable(tableName);
+
+        // Act & Assert
+        Assertions.assertThrows(TableServiceErrorException.class, () -> serviceClient.createTable(tableName));
+    }
+
+    @Test
+    void serviceCreateTableIfNotExists() {
+        // Arrange
+        String tableName = testResourceNamer.randomName("test", 20);
+
+        // Act & Assert
+        serviceClient.createTableIfNotExists(tableName);
+    }
+
+    @Test
+    void serviceCreateTableIfNotExistsSucceedsIfExists() {
+        // Arrange
+        String tableName = testResourceNamer.randomName("test", 20);
+        serviceClient.createTable(tableName);
+
+        //Act & Assert
+        serviceClient.createTableIfNotExists(tableName);
     }
 
     @Test

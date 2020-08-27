@@ -83,6 +83,28 @@ public class TableServiceClient {
     }
 
     /**
+     * creates the table with the given name if it does not exist, otherwise no action is taken.
+     *
+     * @param tableName the name of the table to create
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void createTableIfNotExists(String tableName) {
+        client.createTableIfNotExists(tableName).block();
+    }
+
+    /**
+     * creates the table with the given name if it does not exist, otherwise no action is taken.
+     *
+     * @param tableName the name of the table to create
+     * @param context the context of the query
+     * @return response
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> createTableIfNotExistsWithResponse(String tableName, Context context) {
+        return client.createTableIfNotExistsWithResponse(tableName, context).block();
+    }
+
+    /**
      * deletes the given table. Will error if the table doesn't exists or cannot be found with the given name.
      *
      * @param tableName the name of the table to be deleted
