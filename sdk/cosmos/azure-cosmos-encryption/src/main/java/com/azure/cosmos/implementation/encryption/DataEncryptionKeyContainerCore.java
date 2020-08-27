@@ -111,8 +111,8 @@ class DataEncryptionKeyContainerCore implements DataEncryptionKeyContainer {
                         EncryptionKeyWrapMetadata updatedMetadata = wrapResult.getMiddle();
                         InMemoryRawDek updatedRawDek = wrapResult.getRight();
 
+                        // TODO: do a deep copy on CosmosItemRequestOptions to avoid modifying the passed param
                         CosmosItemRequestOptions effectiveRequestOptions = requestOptions != null ? requestOptions : new CosmosItemRequestOptions();
-
                         effectiveRequestOptions.setIfMatchETag(dekProperties.eTag);
 
                         DataEncryptionKeyProperties newDekProperties = new DataEncryptionKeyProperties(dekProperties);

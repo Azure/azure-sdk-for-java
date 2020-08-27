@@ -50,7 +50,7 @@ public class AzureKeyVaultKeyWrapProvider implements EncryptionKeyWrapProvider {
 
     @Override
     public Mono<EncryptionKeyUnwrapResult> unwrapKey(byte[] wrappedKey,
-                                               EncryptionKeyWrapMetadata metadata) {
+                                                     EncryptionKeyWrapMetadata metadata) {
         if (!StringUtils.equals(metadata.type, AzureKeyVaultKeyWrapMetadata.TypeConstant)) {
             throw new IllegalArgumentException("Invalid metadata metadata");
         }
@@ -72,11 +72,10 @@ public class AzureKeyVaultKeyWrapProvider implements EncryptionKeyWrapProvider {
             .map(
                 dataEncryptionKey -> new EncryptionKeyUnwrapResult(dataEncryptionKey, this.rawDekCacheTimeToLive)
             ).switchIfEmpty(
-                Mono.defer(() -> {
-                    // TODO: this will throw, should we replace with a throw method?
-                    return Mono.just(new EncryptionKeyUnwrapResult(null, this.rawDekCacheTimeToLive));
-                }
-            ));
+                Mono.error(
+                    new IllegalArgumentException("keyVaultAccessClient.unwrapKey returned no bytes: dataEncryptionKey is null")
+                )
+            );
     }
 
     @Override
@@ -112,10 +111,8 @@ public class AzureKeyVaultKeyWrapProvider implements EncryptionKeyWrapProvider {
                                 return new EncryptionKeyWrapResult(wrappedDataEncryptionKey, responseMetadata);
                             }
                         ).switchIfEmpty(
-                            Mono.defer(() -> {
-                                    // TODO: this will throw, should we replace with a throw method?
-                                    return Mono.just(new EncryptionKeyWrapResult(null, null));
-                                }
+                            Mono.error(
+                                new IllegalArgumentException("keyVaultAccessClient.wrapKey returned no bytes: wrappedDataEncryptionKey is null")
                             ));
                 }
             );

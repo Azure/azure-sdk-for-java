@@ -736,8 +736,9 @@ public class EncryptionTests extends TestSuiteBase {
     /// Validates handling of Null Wrapped Key Returned from Key Vault
     //        [ExpectedException(typeof(ArgumentNullException),
     //        "ArgumentNullException when provided with null key.")]
-    @Test(groups = { "encryption" }, timeOut = TIMEOUT, expectedExceptions = { NullPointerException.class },
-        expectedExceptionsMessageRegExp = "wrappedDataEncryptionKey is null")
+    @Test(groups = { "encryption" }, timeOut = TIMEOUT,
+        expectedExceptions = { IllegalArgumentException.class },
+        expectedExceptionsMessageRegExp = "keyVaultAccessClient.wrapKey returned no bytes: wrappedDataEncryptionKey is null")
     public void validateNullWrappedKeyResult() throws Exception {
         URI keyUri =
             new URI("https://testdemo.vault.azure.net/keys/testkey1/" + KeyVaultTestConstants.ValidateNullWrappedKey);
@@ -749,7 +750,9 @@ public class EncryptionTests extends TestSuiteBase {
     }
 
     /// Validates handling of Null Unwrapped Key from Key Vault
-    @Test(groups = { "encryption" }, timeOut = TIMEOUT, expectedExceptions = {NullPointerException.class}, expectedExceptionsMessageRegExp = "dataEncryptionKey is null")
+    @Test(groups = { "encryption" }, timeOut = TIMEOUT,
+        expectedExceptions = {IllegalArgumentException.class},
+        expectedExceptionsMessageRegExp = "keyVaultAccessClient.unwrapKey returned no bytes: dataEncryptionKey is null")
     public void validateNullUnwrappedKeyResult() throws Exception {
         URI keyUri = new URI("https://testdemo.vault.azure.net/keys/testkey1/" + KeyVaultTestConstants.ValidateNullUnwrappedKey);
         EncryptionKeyWrapMetadata invalidWrapMetadata = new EncryptionKeyWrapMetadata("akv", keyUri.toString(), KeyVaultConstants.RsaOaep256.toString());
