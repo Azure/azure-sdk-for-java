@@ -5,6 +5,7 @@ package com.azure.search.documents;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.implementation.converters.IndexActionConverter;
 import com.azure.search.documents.models.IndexAction;
@@ -34,7 +35,7 @@ import static com.azure.core.util.FluxUtil.withContext;
 public class SearchIndexBatchingAsyncClient {
     private static final int DEFAULT_BATCH_SIZE = 1000;
     private static final long DEFAULT_FLUSH_WINDOW = TimeUnit.SECONDS.toMillis(60);
-    private static final int RETRY_LIMIT = 10;
+    private static final int TRY_LIMIT = 10;
 
     private final SearchAsyncClient client;
     private final boolean autoFlush;
@@ -44,7 +45,7 @@ public class SearchIndexBatchingAsyncClient {
     private final Timer autoFlushTimer;
 
     private final Object actionsMutex = 0;
-    private List<IndexAction<?>> actions = new ArrayList<>();
+    private List<TryTrackingIndexAction> actions = new ArrayList<>();
 
     private final AtomicReference<TimerTask> flushTask = new AtomicReference<>();
 
@@ -78,7 +79,7 @@ public class SearchIndexBatchingAsyncClient {
      * @return The {@link IndexAction IndexActions} in the batch that are ready to be indexed.
      */
     public Collection<IndexAction<?>> getActions() {
-        return actions;
+        return actions.stream().map(TryTrackingIndexAction::getAction).collect(Collectors.toList());
     }
 
     /**
@@ -161,7 +162,7 @@ public class SearchIndexBatchingAsyncClient {
 
     Mono<Void> addActions(Collection<IndexAction<?>> actions, Context context) {
         synchronized (actionsMutex) {
-            this.actions.addAll(actions);
+            actions.stream().map(TryTrackingIndexAction::new).forEach(this.actions::add);
         }
 
         if (indexingHook != null) {
@@ -181,14 +182,14 @@ public class SearchIndexBatchingAsyncClient {
     }
 
     Mono<Void> flush(Context context) {
-        List<IndexAction<?>> actions;
+        List<TryTrackingIndexAction> actions;
         synchronized (actionsMutex) {
             actions = this.actions;
             this.actions = new ArrayList<>();
         }
 
         List<com.azure.search.documents.implementation.models.IndexAction> convertedActions = actions.stream()
-            .map(action -> IndexActionConverter.map(action, client.serializer))
+            .map(action -> IndexActionConverter.map(action.getAction(), client.serializer))
             .collect(Collectors.toList());
 
         AtomicBoolean hasError = new AtomicBoolean(false);
@@ -241,23 +242,32 @@ public class SearchIndexBatchingAsyncClient {
             });
     }
 
-    private void handleResponse(List<IndexAction<?>> actions, List<IndexingResult> results, int offset) {
+    private void handleResponse(List<TryTrackingIndexAction> actions, List<IndexingResult> results, int offset) {
+        List<TryTrackingIndexAction> actionsToRetry = new ArrayList<>();
+
         for (int i = 0; i < results.size(); i++) {
             IndexingResult result = results.get(i);
-            IndexAction<?> action = actions.get(offset + i);
+            TryTrackingIndexAction action = actions.get(offset + i);
 
             if (isSuccess(result.getStatusCode())) {
                 if (indexingHook != null) {
-                    indexingHook.actionSuccess(action);
-                    indexingHook.actionRemoved(action);
+                    indexingHook.actionSuccess(action.getAction());
+                    indexingHook.actionRemoved(action.getAction());
                 }
-            } else if (isRetryable(result.getStatusCode())) {
-                this.actions.add(action);
+            } else if (isRetryable(result.getStatusCode()) && action.getTryCount() < TRY_LIMIT) {
+                action.incrementTryCount();
+                actionsToRetry.add(action);
             } else {
                 if (indexingHook != null) {
-                    indexingHook.actionError(action);
-                    indexingHook.actionRemoved(action);
+                    indexingHook.actionError(action.getAction());
+                    indexingHook.actionRemoved(action.getAction());
                 }
+            }
+        }
+
+        if (!CoreUtils.isNullOrEmpty(actionsToRetry)) {
+            synchronized (actionsMutex) {
+                this.actions.addAll(actionsToRetry);
             }
         }
     }
@@ -332,6 +342,35 @@ public class SearchIndexBatchingAsyncClient {
         return statusCode == 409 || statusCode == 422 || statusCode == 503;
     }
 
+    /*
+     * Helper class which contains the IndexAction and the number of times it has tried to be indexed.
+     */
+    private static final class TryTrackingIndexAction {
+        private final IndexAction<?> action;
+
+        private int tryCount = 1;
+
+        private TryTrackingIndexAction(IndexAction<?> action) {
+            this.action = action;
+        }
+
+        public IndexAction<?> getAction() {
+            return action;
+        }
+
+        public int getTryCount() {
+            return tryCount;
+        }
+
+        public void incrementTryCount() {
+            tryCount++;
+        }
+    }
+
+    /*
+     * Helper class which keeps track of the service results, the offset from the initial request set if it was split,
+     * and whether the response is an error status.
+     */
     private static final class IndexBatchResponse {
         private final List<IndexingResult> results;
         private final int offset;
