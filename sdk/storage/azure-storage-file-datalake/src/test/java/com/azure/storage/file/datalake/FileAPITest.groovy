@@ -14,6 +14,10 @@ import com.azure.storage.common.implementation.Constants
 import com.azure.storage.file.datalake.models.AccessTier
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions
 import com.azure.storage.file.datalake.models.DataLakeStorageException
+import com.azure.storage.file.datalake.models.FileExpirationOffset
+import com.azure.storage.file.datalake.models.FileQueryArrowField
+import com.azure.storage.file.datalake.models.FileQueryArrowFieldType
+import com.azure.storage.file.datalake.models.FileQueryArrowSerialization
 import com.azure.storage.file.datalake.models.FileQueryDelimitedSerialization
 import com.azure.storage.file.datalake.models.FileQueryError
 import com.azure.storage.file.datalake.models.FileQueryJsonSerialization
@@ -28,6 +32,7 @@ import com.azure.storage.file.datalake.models.PathHttpHeaders
 import com.azure.storage.file.datalake.models.PathPermissions
 import com.azure.storage.file.datalake.models.RolePermissions
 import com.azure.storage.file.datalake.options.FileQueryOptions
+import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions
 import spock.lang.Ignore
 import reactor.core.Exceptions
 import reactor.core.publisher.Flux
@@ -44,6 +49,8 @@ import java.nio.file.OpenOption
 import java.nio.file.StandardOpenOption
 import java.security.MessageDigest
 import java.time.Duration
+import java.time.OffsetDateTime
+import java.time.temporal.ChronoUnit
 import java.util.function.Consumer
 
 class FileAPITest extends APISpec {
@@ -3085,6 +3092,43 @@ class FileAPITest extends APISpec {
     }
 
     @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
+    def "Query Input csv Output arrow"() {
+        setup:
+        FileQueryDelimitedSerialization inSer = new FileQueryDelimitedSerialization()
+            .setRecordSeparator('\n' as char)
+            .setColumnSeparator(',' as char)
+            .setEscapeChar('\0' as char)
+            .setFieldQuote('\0' as char)
+            .setHeadersPresent(false)
+        uploadCsv(inSer, 32)
+        List<FileQueryArrowField> schema = new ArrayList<>()
+        schema.add(new FileQueryArrowField(FileQueryArrowFieldType.DECIMAL).setName("Name").setPrecision(4).setScale(2))
+        FileQueryArrowSerialization outSer = new FileQueryArrowSerialization().setSchema(schema)
+        def expression = "SELECT _2 from BlobStorage WHERE _1 > 250;"
+        String expectedData = "/////4AAAAAQAAAAAAAKAAwABgAFAAgACgAAAAABAwAMAAAACAAIAAAABAAIAAAABAAAAAEAAAAUAAAAEAAUAAgABgAHAAwAAAAQABAAAAAAAAEHJAAAABQAAAAEAAAAAAAAAAgADAAEAAgACAAAAAQAAAACAAAABAAAAE5hbWUAAAAAAAAAAP////9wAAAAEAAAAAAACgAOAAYABQAIAAoAAAAAAwMAEAAAAAAACgAMAAAABAAIAAoAAAAwAAAABAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAP////+IAAAAFAAAAAAAAAAMABYABgAFAAgADAAMAAAAAAMDABgAAAAAAgAAAAAAAAAACgAYAAwABAAIAAoAAAA8AAAAEAAAACAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAABAAAAIAAAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAA"
+        OutputStream os = new ByteArrayOutputStream()
+        FileQueryOptions options = new FileQueryOptions(expression, os).setInputSerialization(inSer).setOutputSerialization(outSer)
+
+        /* Input Stream. */
+        when:
+        InputStream qqStream = fc.openQueryInputStreamWithResponse(options).getValue()
+        byte[] queryData = readFromInputStream(qqStream, 912)
+
+        then:
+        notThrown(IOException)
+        Base64.getEncoder().encodeToString(queryData) == expectedData
+
+        /* Output Stream. */
+        when:
+        fc.queryWithResponse(options, null, null)
+        byte[] osData = os.toByteArray()
+
+        then:
+        notThrown(BlobStorageException)
+        Base64.getEncoder().encodeToString(osData) == expectedData
+    }
+
+    @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
     def "Query non fatal error"() {
         setup:
         FileQueryDelimitedSerialization base = new FileQueryDelimitedSerialization()
@@ -3284,6 +3328,29 @@ class FileAPITest extends APISpec {
         false   | true     || _
     }
 
+    @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
+    def "Query arrow input IA"() {
+        setup:
+        def inSer = new FileQueryArrowSerialization()
+        def expression = "SELECT * from BlobStorage"
+        FileQueryOptions options = new FileQueryOptions(expression)
+            .setInputSerialization(inSer)
+
+        when:
+        InputStream stream = fc.openQueryInputStreamWithResponse(options).getValue()  /* Don't need to call read. */
+
+        then:
+        thrown(IllegalArgumentException)
+
+        when:
+        options = new FileQueryOptions(expression, new ByteArrayOutputStream())
+            .setInputSerialization(inSer)
+        fc.queryWithResponse(options, null, null)
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
     @Unroll
     @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
     def "Query AC"() {
@@ -3362,6 +3429,54 @@ class FileAPITest extends APISpec {
         null     | null       | garbageEtag | null         | null
         null     | null       | null        | receivedEtag | null
         null     | null       | null        | null         | garbageLeaseID
+    }
+
+    @Unroll
+    def "Schedule deletion"() {
+        given:
+        def fileClient = fsc.getFileClient(generatePathName())
+        fileClient.create()
+
+        when:
+        fileClient.scheduleDeletionWithResponse(fileScheduleDeletionOptions, null, null)
+        def expiryTimeProperty = fileClient.getProperties().getExpiresOn()
+
+        then:
+        (expiryTimeProperty != null) == hasExpiry
+
+        where:
+        fileScheduleDeletionOptions                                                             | hasExpiry
+        new FileScheduleDeletionOptions(Duration.ofDays(1), FileExpirationOffset.CREATION_TIME) | true
+        new FileScheduleDeletionOptions(Duration.ofDays(1), FileExpirationOffset.NOW)           | true
+        new FileScheduleDeletionOptions()                                                       | false
+        null                                                                                    | false
+    }
+
+    def "Schedule deletion time"() {
+        given:
+        OffsetDateTime now = getUTCNow()
+        def fileScheduleDeletionOptions = new FileScheduleDeletionOptions(now.plusDays(1))
+        def fileClient = fsc.getFileClient(generatePathName())
+        fileClient.create()
+
+        when:
+        fileClient.scheduleDeletionWithResponse(fileScheduleDeletionOptions, null, null)
+        def expiryTimeProperty = fileClient.getProperties().getExpiresOn()
+
+        then:
+        expiryTimeProperty == now.plusDays(1).truncatedTo(ChronoUnit.SECONDS)
+    }
+
+    def "Schedule deletion error"() {
+        given:
+        def fileScheduleDeletionOptions = new FileScheduleDeletionOptions(getUTCNow().plusDays(1))
+        def fileClient = fsc.getFileClient(generatePathName())
+
+        when:
+        fileClient.scheduleDeletionWithResponse(fileScheduleDeletionOptions, null, null)
+
+        then:
+        thrown(DataLakeStorageException)
     }
 
     class MockProgressReceiver implements Consumer<FileQueryProgress> {

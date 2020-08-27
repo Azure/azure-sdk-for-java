@@ -7,7 +7,8 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
-import com.azure.digitaltwins.core.models.DigitalTwinsGetByIdResponse;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 
 /**
  * This class provides a client for interacting synchronously with an Azure Digital Twins instance.
@@ -50,11 +51,43 @@ public final class DigitalTwinsClient {
         return this.digitalTwinsAsyncClient.getServiceVersion();
     }
 
-    // this annotation lets users know this method makes a call to the service and whether it returns a single resource or a collection of resources
+    // TODO These are temporary implementations for sample purposes. This should be spruced up/replaced once this API is actually designed.
+    /**
+     * Creates a relationship on a digital twin.
+     *
+     * @param digitalTwinId The Id of the source digital twin.
+     * @param relationshipId The Id of the relationship to be created.
+     * @param relationship The application/json relationship to be created.
+     * @return The application/json relationship created.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    // TODO This is just a temporary implementation for test purposes. This should be spruced up/replaced once this API is actually designed
-    public DigitalTwinsGetByIdResponse getDigitalTwin(String digitalTwinId) {
-        // Blocking calls to the async client is the established pattern in track 2 Java SDKs
-        return this.digitalTwinsAsyncClient.getDigitalTwin(digitalTwinId).block();
+    public String createRelationship(String digitalTwinId, String relationshipId, String relationship) {
+        return digitalTwinsAsyncClient.createRelationship(digitalTwinId, relationshipId, relationship).block();
+    }
+
+    /**
+     * Creates a relationship on a digital twin.
+     *
+     * @param digitalTwinId The Id of the source digital twin.
+     * @param relationshipId The Id of the relationship to be created.
+     * @param relationship The application/json relationship to be created.
+     * @return A REST response containing the application/json relationship created.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<String> createRelationshipWithResponse(String digitalTwinId, String relationshipId, String relationship) {
+        return digitalTwinsAsyncClient.createRelationshipWithResponse(digitalTwinId, relationshipId, relationship).block();
+    }
+
+    /**
+     * Gets all the relationships on a digital twin filtered by the relationship name, by iterating through a collection.
+     *
+     * @param digitalTwinId The Id of the source digital twin.
+     * @param relationshipName The name of a relationship to filter to.
+     * @return A {@link PagedIterable} of application/json relationships belonging to the specified digital twin and the http response.
+     * TODO: Impl here returns an Object and not a String.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<Object> listRelationships(String digitalTwinId, String relationshipName) {
+        return new PagedIterable<>(digitalTwinsAsyncClient.listRelationships(digitalTwinId, relationshipName));
     }
 }

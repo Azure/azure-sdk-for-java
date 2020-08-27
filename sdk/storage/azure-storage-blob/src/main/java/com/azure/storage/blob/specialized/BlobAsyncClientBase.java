@@ -1211,7 +1211,8 @@ public class BlobAsyncClientBase {
                     hd.isAccessTierInferred(), ArchiveStatus.fromString(hd.getArchiveStatus()),
                     hd.getEncryptionKeySha256(), hd.getEncryptionScope(), hd.getAccessTierChangeTime(),
                     hd.getMetadata(), hd.getBlobCommittedBlockCount(), hd.getVersionId(), hd.isCurrentVersion(),
-                    hd.getTagCount(), hd.getObjectReplicationRules(), hd.getRehydratePriority(), hd.isSealed());
+                    hd.getTagCount(), hd.getObjectReplicationRules(), hd.getRehydratePriority(), hd.isSealed(),
+                    hd.getExpiresOn());
                 return new SimpleResponse<>(rb, properties);
             });
     }
@@ -1763,9 +1764,9 @@ public class BlobAsyncClientBase {
         BlobRequestConditions requestConditions = queryOptions.getRequestConditions() == null
             ? new BlobRequestConditions() : queryOptions.getRequestConditions();
 
-        QuerySerialization in = BlobQueryReader.transformSerialization(queryOptions.getInputSerialization(),
+        QuerySerialization in = BlobQueryReader.transformInputSerialization(queryOptions.getInputSerialization(),
             logger);
-        QuerySerialization out = BlobQueryReader.transformSerialization(queryOptions.getOutputSerialization(),
+        QuerySerialization out = BlobQueryReader.transformOutputSerialization(queryOptions.getOutputSerialization(),
             logger);
 
         QueryRequest qr = new QueryRequest()

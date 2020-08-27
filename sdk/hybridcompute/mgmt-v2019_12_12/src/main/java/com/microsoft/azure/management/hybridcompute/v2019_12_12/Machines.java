@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.management.hybridcompute.v2019_12_12;
 
-import com.microsoft.azure.arm.collection.SupportsCreating;
 import com.microsoft.azure.arm.resources.collection.SupportsDeletingByResourceGroup;
 import com.microsoft.azure.arm.resources.collection.SupportsBatchDeletion;
 import com.microsoft.azure.arm.resources.collection.SupportsGettingByResourceGroup;
@@ -21,16 +20,5 @@ import com.microsoft.azure.arm.model.HasInner;
 /**
  * Type representing Machines.
  */
-public interface Machines extends SupportsCreating<Machine.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<Machine>, SupportsListingByResourceGroup<Machine>, SupportsListing<Machine>, HasInner<MachinesInner> {
-    /**
-     * The operation to reconnect a hybrid machine resource to its identity in Azure.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the hybrid machine.
-     * @param parameters Parameters supplied to the Reconnect hybrid machine operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<Machine> reconnectAsync(String resourceGroupName, String name, MachineReconnect parameters);
-
+public interface Machines extends SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<Machine>, SupportsListingByResourceGroup<Machine>, SupportsListing<Machine>, HasInner<MachinesInner> {
 }
