@@ -529,4 +529,7 @@
 
   <!-- Suppress DigitalTwins for now -->
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-digitaltwins-core[/\\]src[/\\]"/>
+
+  <!-- Suppress Anomaly Detector checks as it's fully generated code for now -->
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-ai-anomalydetector[/\\]src[/\\]"/>
 </suppressions>
