@@ -5,6 +5,7 @@ module com.azure.core.serializer.avro.jackson {
     requires transitive com.azure.core;
     requires transitive com.azure.core.experimental;
     requires transitive com.fasterxml.jackson.dataformat.avro;
+    requires avro;
 
     exports com.azure.core.serializer.avro.jackson;
 
