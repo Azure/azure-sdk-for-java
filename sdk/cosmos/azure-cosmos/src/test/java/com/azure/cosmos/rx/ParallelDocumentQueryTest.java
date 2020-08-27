@@ -686,7 +686,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
                 new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(createdDocuments.get(i), "mypk"))));
         }
         FeedResponse<JsonNode> documentFeedResponse =
-            ItemOperations.readManyAsync(createdCollection, pairList, JsonNode.class).block();
+            createdCollection.readMany(pairList, JsonNode.class).block();
         assertThat(documentFeedResponse.getResults().size()).isEqualTo(pairList.size());
         assertThat(documentFeedResponse.getResults().stream().map(jsonNode -> jsonNode.get("id").textValue()).collect(Collectors.toList()))
             .containsAll(pairList.stream().map(p -> p.getLeft()).collect(Collectors.toList()));
@@ -707,7 +707,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
                 new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(newItems.get(i), "id"))));
         }
         FeedResponse<JsonNode> documentFeedResponse =
-            ItemOperations.readManyAsync(containerWithIdAsPartitionKey, pairList, JsonNode.class).block();
+            containerWithIdAsPartitionKey.readMany(pairList, JsonNode.class).block();
         assertThat(documentFeedResponse.getResults().size()).isEqualTo(pairList.size());
         assertThat(documentFeedResponse.getResults().stream().map(jsonNode -> jsonNode.get("id").textValue()).collect(Collectors.toList()))
             .containsAll(pairList.stream().map(p -> p.getLeft()).collect(Collectors.toList()));
