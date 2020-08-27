@@ -118,9 +118,9 @@ class OkHttpAsyncHttpClient implements HttpClient {
         return bsMono.map(bs -> {
             String contentType = headers.getValue("Content-Type");
             if (contentType == null) {
-                return RequestBody.create(bs, null);
+                return RequestBody.create(null, bs);
             } else {
-                return RequestBody.create(bs, MediaType.parse(contentType));
+                return RequestBody.create(MediaType.parse(contentType), bs);
             }
         });
     }
