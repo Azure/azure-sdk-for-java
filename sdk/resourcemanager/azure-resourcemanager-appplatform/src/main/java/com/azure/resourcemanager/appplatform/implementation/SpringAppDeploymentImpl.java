@@ -12,6 +12,7 @@ import com.azure.resourcemanager.appplatform.models.DeploymentResourceStatus;
 import com.azure.resourcemanager.appplatform.models.DeploymentSettings;
 import com.azure.resourcemanager.appplatform.models.ResourceUploadDefinition;
 import com.azure.resourcemanager.appplatform.models.RuntimeVersion;
+import com.azure.resourcemanager.appplatform.models.Sku;
 import com.azure.resourcemanager.appplatform.models.SpringApp;
 import com.azure.resourcemanager.appplatform.models.SpringAppDeployment;
 import com.azure.resourcemanager.appplatform.models.UserSourceInfo;
@@ -20,35 +21,20 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.storage.file.share.ShareFileAsyncClient;
 import com.azure.storage.file.share.ShareFileClientBuilder;
-import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
-import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
-import org.apache.commons.compress.utils.IOUtils;
 import reactor.core.publisher.Mono;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.zip.GZIPOutputStream;
 
 public class SpringAppDeploymentImpl
     extends ExternalChildResourceImpl<SpringAppDeployment, DeploymentResourceInner, SpringAppImpl, SpringApp>
     implements SpringAppDeployment, SpringAppDeployment.Definition, SpringAppDeployment.Update {
-    private static final int BLOCK_SIZE = 4 * 1024 * 1024; // 4MB
-    private final SpringAppDeploymentsImpl client;
-    private DeploymentSettings originalDeploymentSettings;
 
     SpringAppDeploymentImpl(String name, SpringAppImpl parent,
-                            DeploymentResourceInner innerObject, SpringAppDeploymentsImpl client) {
+                            DeploymentResourceInner innerObject) {
         super(name, parent, innerObject);
-        this.client = client;
     }
 
     @Override
@@ -166,30 +152,30 @@ public class SpringAppDeploymentImpl
         }
     }
 
-    private File compressSource(File sourceFolder) throws IOException {
-        File compressFile = File.createTempFile("java_package", "tar.gz");
-        compressFile.deleteOnExit();
-        try (TarArchiveOutputStream tarArchiveOutputStream = new TarArchiveOutputStream(
-                 new GZIPOutputStream(new FileOutputStream(compressFile)))) {
-            tarArchiveOutputStream.setLongFileMode(TarArchiveOutputStream.LONGFILE_GNU);
+    // private File compressSource(File sourceFolder) throws IOException {
+    //     File compressFile = File.createTempFile("java_package", "tar.gz");
+    //     compressFile.deleteOnExit();
+    //     try (TarArchiveOutputStream tarArchiveOutputStream = new TarArchiveOutputStream(
+    //              new GZIPOutputStream(new FileOutputStream(compressFile)))) {
+    //         tarArchiveOutputStream.setLongFileMode(TarArchiveOutputStream.LONGFILE_GNU);
 
-            for (Path sourceFile : Files.walk(sourceFolder.toPath()).collect(Collectors.toList())) {
-                String relativePath = sourceFolder.toPath().relativize(sourceFile).toString();
-                TarArchiveEntry entry = new TarArchiveEntry(sourceFile.toFile(), relativePath);
-                if (sourceFile.toFile().isFile()) {
-                    try (InputStream inputStream = new FileInputStream(sourceFile.toFile())) {
-                        tarArchiveOutputStream.putArchiveEntry(entry);
-                        IOUtils.copy(inputStream, tarArchiveOutputStream);
-                        tarArchiveOutputStream.closeArchiveEntry();
-                    }
-                } else {
-                    tarArchiveOutputStream.putArchiveEntry(entry);
-                    tarArchiveOutputStream.closeArchiveEntry();
-                }
-            }
-        }
-        return compressFile;
-    }
+    //         for (Path sourceFile : Files.walk(sourceFolder.toPath()).collect(Collectors.toList())) {
+    //             String relativePath = sourceFolder.toPath().relativize(sourceFile).toString();
+    //             TarArchiveEntry entry = new TarArchiveEntry(sourceFile.toFile(), relativePath);
+    //             if (sourceFile.toFile().isFile()) {
+    //                 try (InputStream inputStream = new FileInputStream(sourceFile.toFile())) {
+    //                     tarArchiveOutputStream.putArchiveEntry(entry);
+    //                     IOUtils.copy(inputStream, tarArchiveOutputStream);
+    //                     tarArchiveOutputStream.closeArchiveEntry();
+    //                 }
+    //             } else {
+    //                 tarArchiveOutputStream.putArchiveEntry(entry);
+    //                 tarArchiveOutputStream.closeArchiveEntry();
+    //             }
+    //         }
+    //     }
+    //     return compressFile;
+    // }
 
     private ShareFileAsyncClient createShareFileAsyncClient(ResourceUploadDefinition option) {
         return new ShareFileClientBuilder()
@@ -222,23 +208,23 @@ public class SpringAppDeploymentImpl
         return this;
     }
 
-    @Override
-    public SpringAppDeploymentImpl withSourceCodeFolder(File sourceCodeFolder) {
-        ensureSource();
-        inner().properties().source().withType(UserSourceType.SOURCE);
-        this.addDependency(
-            context -> parent().getResourceUploadUrlAsync()
-                .flatMap(option -> {
-                    try {
-                        return uploadToStorage(compressSource(sourceCodeFolder), option);
-                    } catch (Exception e) {
-                        return Mono.error(e);
-                    }
-                })
-                .then(context.voidMono())
-        );
-        return this;
-    }
+    // @Override
+    // public SpringAppDeploymentImpl withSourceCodeFolder(File sourceCodeFolder) {
+    //     ensureSource();
+    //     inner().properties().source().withType(UserSourceType.SOURCE);
+    //     this.addDependency(
+    //         context -> parent().getResourceUploadUrlAsync()
+    //             .flatMap(option -> {
+    //                 try {
+    //                     return uploadToStorage(compressSource(sourceCodeFolder), option);
+    //                 } catch (Exception e) {
+    //                     return Mono.error(e);
+    //                 }
+    //             })
+    //             .then(context.voidMono())
+    //     );
+    //     return this;
+    // }
 
     @Override
     public SpringAppDeploymentImpl withExistingSource(UserSourceType type, String relativePath) {
@@ -275,46 +261,14 @@ public class SpringAppDeploymentImpl
     }
 
     @Override
-    public SpringAppDeploymentImpl withSettingsFromActiveDeployment() {
-        this.addDependency(
-            context -> client.getByNameAsync(parent().activeDeployment())
-                .map(deployment -> {
-                    originalDeploymentSettings = deployment.settings();
-                    return (Indexable) deployment;
-                })
-        );
-        return this;
-    }
-
-    @Override
-    public SpringAppDeploymentImpl withSettingsFromDeployment(SpringAppDeployment deployment) {
-        originalDeploymentSettings = deployment.settings();
-        return this;
-    }
-
-    @Override
-    public SpringAppDeploymentImpl withSettingsFromDeployment(String deploymentName) {
-        this.addDependency(
-            context -> client.getByNameAsync(deploymentName)
-                .map(deployment -> {
-                    originalDeploymentSettings = deployment.settings();
-                    return (Indexable) deployment;
-                })
-        );
-        return this;
-    }
-
-    @Override
-    public SpringAppDeploymentImpl withCustomSetting() {
-        ensureDeploySettings();
-        inner().properties().withDeploymentSettings(new DeploymentSettings());
-        return this;
-    }
-
-    @Override
     public SpringAppDeploymentImpl withInstance(int count) {
-        ensureDeploySettings();
-        inner().properties().deploymentSettings().withInstanceCount(count);
+        if (inner().sku() == null) {
+            inner().withSku(parent().parent().sku());
+        }
+        if (inner().sku() == null) {
+            inner().withSku(new Sku().withName("B0"));
+        }
+        inner().sku().withCapacity(count);
         return this;
     }
 
@@ -385,16 +339,11 @@ public class SpringAppDeploymentImpl
 
     @Override
     public Mono<SpringAppDeployment> createResourceAsync() {
-        if (originalDeploymentSettings != null) {
-            ensureDeploySettings();
-            inner().properties().withDeploymentSettings(originalDeploymentSettings);
-        }
         return manager().inner().getDeployments().createOrUpdateAsync(
             parent().parent().resourceGroupName(), parent().parent().name(),
-            parent().name(), name(), inner().properties()
+            parent().name(), name(), inner()
         )
             .map(inner -> {
-                originalDeploymentSettings = null;
                 setInner(inner);
                 return this;
             });
@@ -402,16 +351,11 @@ public class SpringAppDeploymentImpl
 
     @Override
     public Mono<SpringAppDeployment> updateResourceAsync() {
-        if (originalDeploymentSettings != null) {
-            ensureDeploySettings();
-            inner().properties().withDeploymentSettings(originalDeploymentSettings);
-        }
         return manager().inner().getDeployments().updateAsync(
             parent().parent().resourceGroupName(), parent().parent().name(),
-            parent().name(), name(), inner().properties()
+            parent().name(), name(), inner()
         )
             .map(inner -> {
-                originalDeploymentSettings = null;
                 setInner(inner);
                 return this;
             });

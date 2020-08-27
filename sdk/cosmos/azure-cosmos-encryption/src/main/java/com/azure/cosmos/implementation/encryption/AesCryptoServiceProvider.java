@@ -15,7 +15,8 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
-class AesCryptoServiceProvider {
+// TODO change to package private? moderakh
+public class AesCryptoServiceProvider {
     private static final String ALGO_NAME = "AES";
 
     private final Cipher cipher;

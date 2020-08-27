@@ -76,9 +76,11 @@ public final class SkusClient {
     }
 
     /**
+     * Lists all of the available skus of the Microsoft.AppPlatform provider.
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return object that includes an array of Azure Spring Cloud SKU and a possible link for next set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ResourceSku>> listSinglePageAsync() {
@@ -116,11 +118,13 @@ public final class SkusClient {
     }
 
     /**
+     * Lists all of the available skus of the Microsoft.AppPlatform provider.
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return object that includes an array of Azure Spring Cloud SKU and a possible link for next set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ResourceSku>> listSinglePageAsync(Context context) {
@@ -151,9 +155,11 @@ public final class SkusClient {
     }
 
     /**
+     * Lists all of the available skus of the Microsoft.AppPlatform provider.
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return object that includes an array of Azure Spring Cloud SKU and a possible link for next set.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ResourceSku> listAsync() {
@@ -161,11 +167,13 @@ public final class SkusClient {
     }
 
     /**
+     * Lists all of the available skus of the Microsoft.AppPlatform provider.
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return object that includes an array of Azure Spring Cloud SKU and a possible link for next set.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ResourceSku> listAsync(Context context) {
@@ -174,9 +182,11 @@ public final class SkusClient {
     }
 
     /**
+     * Lists all of the available skus of the Microsoft.AppPlatform provider.
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return object that includes an array of Azure Spring Cloud SKU and a possible link for next set.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceSku> list() {
@@ -184,11 +194,13 @@ public final class SkusClient {
     }
 
     /**
+     * Lists all of the available skus of the Microsoft.AppPlatform provider.
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return object that includes an array of Azure Spring Cloud SKU and a possible link for next set.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceSku> list(Context context) {
@@ -202,7 +214,7 @@ public final class SkusClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return object that includes an array of Azure Spring Cloud SKU and a possible link for next set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ResourceSku>> listNextSinglePageAsync(String nextLink) {
@@ -231,7 +243,7 @@ public final class SkusClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return object that includes an array of Azure Spring Cloud SKU and a possible link for next set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ResourceSku>> listNextSinglePageAsync(String nextLink, Context context) {
