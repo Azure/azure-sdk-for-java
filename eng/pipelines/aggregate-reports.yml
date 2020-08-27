@@ -58,30 +58,10 @@ jobs:
       condition: succeeded()
 
     - task: Maven@3
-      displayName: 'Build for Aggregate Reports run'
-      inputs:
-        mavenPomFile: ClientAggregatePom.xml
-        goals: 'install'
-        # Build and install every track 2, client, library. The purpose is to have all of
-        # the libraries installed on the machine so we can simply run tests with the -amd
-        # switch and we can remove the SNAFU of dependencies that bloated the ci.yml files'
-        # AdditionalModules because we ended up having to list every transitive azure client
-        # dependency. Note: The -T 1C says spin up a build thread per core. Since we're building
-        # all of the track 2, client, libraries (which is now over 100) this effectively cuts the
-        # the build time in half.
-        options: '$(DefaultOptions) -T 1C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -Djacoco.skip=true -Dbuildhelper.skipAttach=true'
-        mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-        javaHomeOption: 'JDKVersion'
-        jdkVersionOption: $(JavaBuildVersion)
-        jdkArchitectureOption: 'x64'
-        publishJUnitResults: false
-      condition: succeeded()
-
-    - task: Maven@3
       displayName: 'Generate site'
       inputs:
         mavenPomFile: ClientAggregatePom.xml
-        options: '$(DefaultOptions) -T 1C -DskipTests -Ddependency-checker -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -Dmaven.main.skip=true -Dmaven.test.skip=true'
+        options: '$(DefaultOptions) -T 1C -DskipTests -Ddependency-checker -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true'
         mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: $(JavaBuildVersion)
@@ -100,7 +80,7 @@ jobs:
         jdkVersionOption: $(JavaBuildVersion)
         jdkArchitectureOption: 'x64'
         publishJUnitResults: false
-        goals: 'verify'
+        goals: 'verify site:site site:stage'
       condition: succeeded()
 
     - task: PublishTestResults@2
