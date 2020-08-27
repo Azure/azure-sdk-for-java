@@ -13,7 +13,7 @@ class CachedDekProperties {
         DataEncryptionKeyProperties serverProperties,
         Instant serverPropertiesExpiryUtc) {
         assert(serverProperties != null);
-
+        // TODO: add NPE validation
         this.serverProperties = serverProperties;
         this.serverPropertiesExpiryUtc = serverPropertiesExpiryUtc;
     }

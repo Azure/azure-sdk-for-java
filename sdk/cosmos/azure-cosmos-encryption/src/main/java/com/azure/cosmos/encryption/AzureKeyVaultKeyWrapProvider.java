@@ -5,11 +5,11 @@ package com.azure.cosmos.encryption;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.encryption.EncryptionUtils;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicReference;
 
-// TODO: moderakh remove blocking calls
 /**
  * Provides functionality to wrap (encrypt) and unwrap (decrypt) data encryption keys using master keys stored in Azure Key Vault.
  * Unwrapped data encryption keys will be cached within the client SDK for a period of 1 hour.
@@ -50,7 +50,7 @@ public class AzureKeyVaultKeyWrapProvider implements EncryptionKeyWrapProvider {
 
     // TODO make this async
     @Override
-    public EncryptionKeyUnwrapResult unwrapKey(byte[] wrappedKey,
+    public Mono<EncryptionKeyUnwrapResult> unwrapKey(byte[] wrappedKey,
                                                EncryptionKeyWrapMetadata metadata) {
         if (!StringUtils.equals(metadata.type, AzureKeyVaultKeyWrapMetadata.TypeConstant)) {
             throw new IllegalArgumentException("Invalid metadata metadata");
@@ -68,13 +68,21 @@ public class AzureKeyVaultKeyWrapProvider implements EncryptionKeyWrapProvider {
             throw new IllegalArgumentException(String.format("KeyVault Key Uri %s is invalid.", metadata.value));
         }
 
-        byte[] result = this.keyVaultAccessClient.unwrapKeyAsync(wrappedKey, keyVaultUriPropertiesRef.get()).block();
-        return new EncryptionKeyUnwrapResult(result, this.rawDekCacheTimeToLive);
+        return this.keyVaultAccessClient
+            .unwrapKeyAsync(wrappedKey, keyVaultUriPropertiesRef.get())
+            .map(
+                dataEncryptionKey -> new EncryptionKeyUnwrapResult(dataEncryptionKey, this.rawDekCacheTimeToLive)
+            ).switchIfEmpty(
+                Mono.defer(() -> {
+                    // TODO: this will throw, should we replace with a throw method?
+                    return Mono.just(new EncryptionKeyUnwrapResult(null, this.rawDekCacheTimeToLive));
+                }
+            ));
     }
 
     @Override
-    public EncryptionKeyWrapResult wrapKey(byte[] key,
-                                           EncryptionKeyWrapMetadata metadata) {
+    public Mono<EncryptionKeyWrapResult> wrapKey(byte[] key,
+                                                 EncryptionKeyWrapMetadata metadata) {
         if (!StringUtils.equals(metadata.type, AzureKeyVaultKeyWrapMetadata.TypeConstant)) {
             throw new IllegalArgumentException("Invalid metadata metadata");
         }
@@ -85,14 +93,32 @@ public class AzureKeyVaultKeyWrapProvider implements EncryptionKeyWrapProvider {
             throw new IllegalArgumentException(String.format("KeyVault Key Uri %s is invalid.", metadata.value));
         }
 
-        if (!this.keyVaultAccessClient.validatePurgeProtectionAndSoftDeleteSettingsAsync(keyVaultUriPropertiesRef.get()).block()) {
-            throw new IllegalArgumentException(String.format("Key Vault %s provided must have soft delete and purge "
-                + "protection enabled.", keyVaultUriPropertiesRef.get().getKeyUri()));
-        }
+        return this.keyVaultAccessClient
+            .validatePurgeProtectionAndSoftDeleteSettingsAsync(keyVaultUriPropertiesRef.get())
+            .flatMap(
+                isValid -> {
+                    if (!isValid) {
+                        throw new IllegalArgumentException(
+                            String.format("Key Vault %s provided must have soft delete and purge protection enabled."
+                                , keyVaultUriPropertiesRef.get().getKeyUri()));
+                    }
 
-        byte[] result = this.keyVaultAccessClient.wrapKeyAsync(key, keyVaultUriPropertiesRef.get()).block();
-        EncryptionKeyWrapMetadata responseMetadata = new EncryptionKeyWrapMetadata(metadata.type, metadata.value,
-            KeyVaultConstants.RsaOaep256.toString());
-        return new EncryptionKeyWrapResult(result, responseMetadata);
-    }
+                    return this.keyVaultAccessClient
+                        .wrapKeyAsync(key, keyVaultUriPropertiesRef.get())
+                        .map(
+                            wrappedDataEncryptionKey -> {  // TODO: what happens if wrappedDataEncryptionKey is null?
+                                EncryptionKeyWrapMetadata responseMetadata =
+                                    new EncryptionKeyWrapMetadata(metadata.type, metadata.value,
+                                    KeyVaultConstants.RsaOaep256.toString());
+                                return new EncryptionKeyWrapResult(wrappedDataEncryptionKey, responseMetadata);
+                            }
+                        ).switchIfEmpty(
+                            Mono.defer(() -> {
+                                    // TODO: this will throw, should we replace with a throw method?
+                                    return Mono.just(new EncryptionKeyWrapResult(null, null));
+                                }
+                            ));
+                }
+            );
+        }
 }

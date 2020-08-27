@@ -745,8 +745,7 @@ public class EncryptionTests extends TestSuiteBase {
 
         EncryptionKeyWrapResult keyWrapResponse = azureKeyVaultKeyWrapProvider.wrapKey(
             rawDekForKeyVault,
-            invalidWrapMetadata);
-
+            invalidWrapMetadata).block();
     }
 
     /// Validates handling of Null Unwrapped Key from Key Vault
@@ -758,9 +757,9 @@ public class EncryptionTests extends TestSuiteBase {
         EncryptionKeyWrapResult wrappedKey = EncryptionTests.wrapDekKeyVaultAsync(rawDekForKeyVault, azureKeyVaultKeyWrapMetadata).block();
         byte[] wrappedDek = wrappedKey.getWrappedDataEncryptionKey();
 
-        EncryptionKeyUnwrapResult keyWrapResponse =  azureKeyVaultKeyWrapProvider.unwrapKey(
-        wrappedDek,
-        invalidWrapMetadata);
+        EncryptionKeyUnwrapResult keyWrapResponse = azureKeyVaultKeyWrapProvider.unwrapKey(
+            wrappedDek,
+            invalidWrapMetadata).block();
     }
 
     /// Validates Null Response from KeyVault
@@ -1075,7 +1074,7 @@ public class EncryptionTests extends TestSuiteBase {
     }
 
     private class TestKeyWrapProvider implements EncryptionKeyWrapProvider {
-        public EncryptionKeyUnwrapResult unwrapKey(byte[] wrappedKey, EncryptionKeyWrapMetadata metadata) {
+        public Mono<EncryptionKeyUnwrapResult> unwrapKey(byte[] wrappedKey, EncryptionKeyWrapMetadata metadata) {
             int moveBy = StringUtils.equals(metadata.value,
                 EncryptionTests.metadata1.value + EncryptionTests.metadataUpdateSuffix) ? 1 : 2;
 
@@ -1083,10 +1082,10 @@ public class EncryptionTests extends TestSuiteBase {
                 wrappedKey[i] = (byte) (wrappedKey[i] - moveBy);
             }
 
-            return new EncryptionKeyUnwrapResult(wrappedKey, EncryptionTests.cacheTTL);
+            return Mono.just(new EncryptionKeyUnwrapResult(wrappedKey, EncryptionTests.cacheTTL));
         }
 
-        public EncryptionKeyWrapResult wrapKey(byte[] key, EncryptionKeyWrapMetadata metadata) {
+        public Mono<EncryptionKeyWrapResult> wrapKey(byte[] key, EncryptionKeyWrapMetadata metadata) {
             EncryptionKeyWrapMetadata responseMetadata =
                 new EncryptionKeyWrapMetadata(metadata.value + EncryptionTests.metadataUpdateSuffix);
             int moveBy = StringUtils.equals(metadata.value, EncryptionTests.metadata1.value) ? 1 : 2;
@@ -1095,7 +1094,7 @@ public class EncryptionTests extends TestSuiteBase {
                 key[i] = (byte) (key[i] + moveBy);
             }
 
-            return new EncryptionKeyWrapResult(key, responseMetadata);
+            return Mono.just(new EncryptionKeyWrapResult(key, responseMetadata));
         }
     }
 
@@ -1301,18 +1300,15 @@ public class EncryptionTests extends TestSuiteBase {
 
 
     private static Mono<EncryptionKeyWrapResult> wrapDekKeyVaultAsync(byte[] rawDek, EncryptionKeyWrapMetadata wrapMetaData) {
-        EncryptionKeyWrapResult keyWrapResponse = azureKeyVaultKeyWrapProvider.wrapKey(
-        rawDek,
-        wrapMetaData);
-
-        return Mono.just(keyWrapResponse);
+        return azureKeyVaultKeyWrapProvider.wrapKey(
+            rawDek,
+            wrapMetaData);
     }
 
     private static Mono<EncryptionKeyUnwrapResult> unwrapDekKeyVaultAsync(byte[] wrappedDek, EncryptionKeyWrapMetadata unwrapMetaData) {
-        EncryptionKeyUnwrapResult keyUnwrapResponse = azureKeyVaultKeyWrapProvider.unwrapKey(
-        wrappedDek,
-        unwrapMetaData);
-        return Mono.just(keyUnwrapResponse);
+        return azureKeyVaultKeyWrapProvider.unwrapKey(
+            wrappedDek,
+            unwrapMetaData);
     }
 
     class EncryptionTestsTokenCredentialFactory extends KeyVaultTokenCredentialFactory {
