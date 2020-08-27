@@ -111,7 +111,7 @@ jobs:
 
     # Azure DevOps only seems to respect the last code coverage result published, so only do this for Linux + Java LTS.
     # Code coverage reporting is setup only for Track 2 modules.
-    - task: PublishCodeCoverageResults@2
+    - task: PublishCodeCoverageResults@1
       inputs:
         codeCoverageTool: JaCoCo
         summaryFileLocation: eng/jacoco-test-coverage/target/site/test-coverage/jacoco.xml
@@ -131,17 +131,17 @@ jobs:
       displayName: Generate Interdependency Report Data
 
     - pwsh: |
-        Copy-Item target/staging $(Build.ArtifactStagingDirectory) -Recurse
-        Copy-Item eng/jacoco-test-coverage/target/staging $(Build.ArtifactStagingDirectory) -Recurse
-        Copy-Item eng/jacoco-test-coverage/target/dependency-allowlist.json $(Build.ArtifactStagingDirectory)/staging
-        Copy-Item eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
-        Copy-Item eng/code-quality-reports/src/main/resources/dependency-allowlist.html $(Build.ArtifactStagingDirectory)/staging
+        Copy-Item $(Build.SourcesDirectory)/target/staging $(Build.ArtifactStagingDirectory) -Recurse
+        Copy-Item $(Build.SourcesDirectory)/eng/jacoco-test-coverage/target/staging $(Build.ArtifactStagingDirectory) -Recurse
+        Copy-Item $(Build.SourcesDirectory)/eng/jacoco-test-coverage/target/dependency-allowlist.json $(Build.ArtifactStagingDirectory)/staging
+        Copy-Item $(Build.SourcesDirectory)/eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
+        Copy-Item $(Build.SourcesDirectory)/eng/code-quality-reports/src/main/resources/dependency-allowlist.html $(Build.ArtifactStagingDirectory)/staging
 
         # What is this?
         # copy output/pom.client.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
 
-        Copy-Item eng/common/InterdependencyGraph.html $(Build.ArtifactStagingDirectory)/staging
-        Copy-Item data.js $(Build.ArtifactStagingDirectory)/staging
+        Copy-Item $(Build.SourcesDirectory)/eng/common/InterdependencyGraph.html $(Build.ArtifactStagingDirectory)/staging
+        Copy-Item $(Build.SourcesDirectory)/data.js $(Build.ArtifactStagingDirectory)/staging
       displayName: 'Copy reports to artifact staging'
 
     - publish: $(Build.ArtifactStagingDirectory)
