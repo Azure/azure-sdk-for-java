@@ -15,7 +15,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 @Fluent
 public final class KeyValue {
     /*
-     * The Key property.
+     * The key property.
      */
     @JacksonXmlProperty(
             localName = "Key",
@@ -23,7 +23,7 @@ public final class KeyValue {
     private String key;
 
     /*
-     * The Value property.
+     * The value property.
      */
     @JacksonXmlProperty(
             localName = "Value",
@@ -31,7 +31,7 @@ public final class KeyValue {
     private String value;
 
     /**
-     * Get the key property: The Key property.
+     * Get the key property: The key property.
      *
      * @return the key value.
      */
@@ -40,7 +40,7 @@ public final class KeyValue {
     }
 
     /**
-     * Set the key property: The Key property.
+     * Set the key property: The key property.
      *
      * @param key the key value to set.
      * @return the KeyValue object itself.
@@ -51,7 +51,7 @@ public final class KeyValue {
     }
 
     /**
-     * Get the value property: The Value property.
+     * Get the value property: The value property.
      *
      * @return the value value.
      */
@@ -60,7 +60,7 @@ public final class KeyValue {
     }
 
     /**
-     * Set the value property: The Value property.
+     * Set the value property: The value property.
      *
      * @param value the value value to set.
      * @return the KeyValue object itself.
