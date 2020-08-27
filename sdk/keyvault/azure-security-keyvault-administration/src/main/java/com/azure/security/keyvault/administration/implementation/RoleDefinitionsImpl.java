@@ -38,7 +38,8 @@ public final class RoleDefinitionsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     RoleDefinitionsImpl(KeyVaultAccessControlClientImpl client) {
-        this.service = RestProxy.create(RoleDefinitionsService.class, client.getHttpPipeline());
+        this.service =
+                RestProxy.create(RoleDefinitionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 

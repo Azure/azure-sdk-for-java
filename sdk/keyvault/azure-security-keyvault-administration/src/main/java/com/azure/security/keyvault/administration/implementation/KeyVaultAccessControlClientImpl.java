@@ -9,6 +9,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 
 /** Initializes a new instance of the KeyVaultAccessControlClient type. */
 public final class KeyVaultAccessControlClientImpl {
@@ -34,6 +36,18 @@ public final class KeyVaultAccessControlClientImpl {
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
+    }
+
+    /** The serializer to serialize an object into a string. */
+    private final SerializerAdapter serializerAdapter;
+
+    /**
+     * Gets The serializer to serialize an object into a string.
+     *
+     * @return the serializerAdapter value.
+     */
+    public SerializerAdapter getSerializerAdapter() {
+        return this.serializerAdapter;
     }
 
     /** The RoleDefinitionsImpl object to access its operations. */
@@ -62,7 +76,11 @@ public final class KeyVaultAccessControlClientImpl {
 
     /** Initializes an instance of KeyVaultAccessControlClient client. */
     KeyVaultAccessControlClientImpl() {
-        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build());
+        this(
+                new HttpPipelineBuilder()
+                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
+                        .build(),
+                JacksonAdapter.createDefaultSerializerAdapter());
     }
 
     /**
@@ -71,7 +89,18 @@ public final class KeyVaultAccessControlClientImpl {
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
     KeyVaultAccessControlClientImpl(HttpPipeline httpPipeline) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter());
+    }
+
+    /**
+     * Initializes an instance of KeyVaultAccessControlClient client.
+     *
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param serializerAdapter The serializer to serialize an object into a string.
+     */
+    KeyVaultAccessControlClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter) {
         this.httpPipeline = httpPipeline;
+        this.serializerAdapter = serializerAdapter;
         this.apiVersion = "7.2-preview";
         this.roleDefinitions = new RoleDefinitionsImpl(this);
         this.roleAssignments = new RoleAssignmentsImpl(this);
