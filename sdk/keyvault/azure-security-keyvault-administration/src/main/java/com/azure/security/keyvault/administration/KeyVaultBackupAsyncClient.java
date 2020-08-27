@@ -26,6 +26,7 @@ import java.time.Duration;
 import java.util.Objects;
 import java.util.function.Function;
 
+import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
@@ -87,14 +88,14 @@ public class KeyVaultBackupAsyncClient {
      * @throws NullPointerException   if the {@code blobStorageUrl} or {@code sasToken} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<FullBackupOperation, Void> startBackup(String blobStorageUrl, String sasToken) {
+    public PollerFlux<FullBackupOperation, Void> beginBackup(String blobStorageUrl, String sasToken) {
         Objects.requireNonNull(blobStorageUrl, "'blobStorageUrl' cannot be null.");
         Objects.requireNonNull(sasToken, "'sasToken' cannot be null.");
 
         return new PollerFlux<>(Duration.ofSeconds(1),
             backupActivationOperation(blobStorageUrl, sasToken),
             backupPollOperation(),
-            (pollingContext, firstResponse) -> Mono.empty(),
+            (pollingContext, firstResponse) -> Mono.error(new RuntimeException("Cancellation is not supported")),
             (pollingContext) -> Mono.empty());
     }
 
@@ -118,8 +119,14 @@ public class KeyVaultBackupAsyncClient {
     }
 
     private Function<PollingContext<FullBackupOperation>, Mono<FullBackupOperation>> backupActivationOperation(String blobStorageUrl, String sasToken) {
-        return (pollingContext) -> withContext(context -> backupWithResponse(blobStorageUrl, sasToken, context))
-            .flatMap(backupResponse -> Mono.just(backupResponse.getValue()));
+        return (pollingContext) -> {
+            try {
+                return withContext(context -> backupWithResponse(blobStorageUrl, sasToken, context))
+                    .flatMap(backupResponse -> Mono.just(backupResponse.getValue()));
+            } catch (RuntimeException e) {
+                return monoError(logger, e);
+            }
+        };
     }
 
     private Function<PollingContext<FullBackupOperation>, Mono<PollResponse<FullBackupOperation>>> backupPollOperation() {
@@ -129,20 +136,19 @@ public class KeyVaultBackupAsyncClient {
 
                 if (pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
                     || pollResponse.getStatus() == LongRunningOperationStatus.FAILED) {
-
                     return Mono.just(pollResponse);
                 }
 
-                final FullBackupOperation responseValue = pollResponse.getValue();
+                final FullBackupOperation fullBackupOperation = pollResponse.getValue();
 
-                if (responseValue == null) {
-                    logger.warning("Operation does not exist. Activation operation failed.");
+                if (fullBackupOperation == null) {
+                    logger.warning("FullBackupOperation does not exist. Activation operation failed.");
 
                     return Mono.just(new PollResponse<FullBackupOperation>(
                         LongRunningOperationStatus.fromString("BACKUP_START_FAILED", true), null));
                 }
 
-                final String jobId = responseValue.getJobId();
+                final String jobId = fullBackupOperation.getJobId();
 
                 return withContext(context -> clientImpl.fullBackupStatusWithResponseAsync(vaultUrl, jobId,
                     context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE)))
@@ -164,11 +170,11 @@ public class KeyVaultBackupAsyncClient {
 
     private LongRunningOperationStatus toLongRunningOperationStatus(String operationStatus) {
         switch (operationStatus) {
-            case "inprogress":
+            case "InProgress":
                 return LongRunningOperationStatus.IN_PROGRESS;
-            case "success":
+            case "Success":
                 return LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-            case "failed":
+            case "Failed":
                 return LongRunningOperationStatus.FAILED;
             default:
                 // Should not reach here
@@ -187,7 +193,7 @@ public class KeyVaultBackupAsyncClient {
      * @throws NullPointerException   if the {@code blobStorageUrl} or {@code sasToken} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<RestoreOperation, Void> startRestore(String blobStorageUrl, String sasToken, String folderName) {
+    public PollerFlux<RestoreOperation, Void> beginRestore(String blobStorageUrl, String sasToken, String folderName) {
         Objects.requireNonNull(blobStorageUrl, "'blobStorageUrl' cannot be null.");
         Objects.requireNonNull(sasToken, "'sasToken' cannot be null.");
         Objects.requireNonNull(folderName, "'folderName' cannot be null.");
@@ -226,9 +232,14 @@ public class KeyVaultBackupAsyncClient {
     }
 
     private Function<PollingContext<RestoreOperation>, Mono<RestoreOperation>> restoreActivationOperation(String blobStorageUrl, String sasToken, String folderName) {
-        return (pollingContext) ->
-            withContext(context -> restoreWithResponse(blobStorageUrl, sasToken, folderName, context))
-                .flatMap(restoreResponse -> Mono.just(restoreResponse.getValue()));
+        return (pollingContext) -> {
+            try {
+                return withContext(context -> restoreWithResponse(blobStorageUrl, sasToken, folderName, context))
+                    .flatMap(restoreResponse -> Mono.just(restoreResponse.getValue()));
+            } catch (RuntimeException e) {
+                return monoError(logger, e);
+            }
+        };
     }
 
     private Function<PollingContext<RestoreOperation>, Mono<PollResponse<RestoreOperation>>> restorePollOperation() {
@@ -242,16 +253,16 @@ public class KeyVaultBackupAsyncClient {
                     return Mono.just(pollResponse);
                 }
 
-                final RestoreOperation responseValue = pollResponse.getValue();
+                final RestoreOperation restoreOperation = pollResponse.getValue();
 
-                if (responseValue == null) {
+                if (restoreOperation == null) {
                     logger.warning("RestoreOperation does not exist. Activation operation failed.");
 
                     return Mono.just(new PollResponse<RestoreOperation>(
                         LongRunningOperationStatus.fromString("RESTORE_START_FAILED", true), null));
                 }
 
-                final String jobId = responseValue.getJobId();
+                final String jobId = restoreOperation.getJobId();
 
                 return withContext(context -> clientImpl.restoreStatusWithResponseAsync(vaultUrl, jobId,
                     context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE)))
@@ -283,7 +294,7 @@ public class KeyVaultBackupAsyncClient {
      * @throws NullPointerException   if the {@code blobStorageUrl} or {@code sasToken} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<SelectiveKeyRestoreOperation, Void> startSelectiveRestore(String keyName, String blobStorageUrl, String sasToken, String folderName) {
+    public PollerFlux<SelectiveKeyRestoreOperation, Void> beginSelectiveRestore(String keyName, String blobStorageUrl, String sasToken, String folderName) {
         Objects.requireNonNull(keyName, "'keyName' cannot be null.");
         Objects.requireNonNull(blobStorageUrl, "'blobStorageUrl' cannot be null.");
         Objects.requireNonNull(sasToken, "'sasToken' cannot be null.");
@@ -325,9 +336,14 @@ public class KeyVaultBackupAsyncClient {
     }
 
     private Function<PollingContext<SelectiveKeyRestoreOperation>, Mono<SelectiveKeyRestoreOperation>> selectiveRestoreActivationOperation(String keyName, String blobStorageUrl, String sasToken, String folderName) {
-        return (pollingContext) ->
-            withContext(context -> selectiveRestoreWithResponse(keyName, blobStorageUrl, sasToken, folderName, context))
-                .flatMap(selectiveKeyRestoreResponse -> Mono.just(selectiveKeyRestoreResponse.getValue()));
+        return (pollingContext) -> {
+            try {
+                return withContext(context -> selectiveRestoreWithResponse(keyName, blobStorageUrl, sasToken, folderName, context))
+                    .flatMap(selectiveKeyRestoreResponse -> Mono.just(selectiveKeyRestoreResponse.getValue()));
+            } catch (RuntimeException e) {
+                return monoError(logger, e);
+            }
+        };
     }
 
     private Function<PollingContext<SelectiveKeyRestoreOperation>, Mono<PollResponse<SelectiveKeyRestoreOperation>>> selectiveRestorePollOperation() {
@@ -341,16 +357,16 @@ public class KeyVaultBackupAsyncClient {
                     return Mono.just(pollResponse);
                 }
 
-                final SelectiveKeyRestoreOperation responseValue = pollResponse.getValue();
+                final SelectiveKeyRestoreOperation selectiveKeyRestoreOperation = pollResponse.getValue();
 
-                if (responseValue == null) {
+                if (selectiveKeyRestoreOperation == null) {
                     logger.warning("SelectiveKeyRestoreOperation does not exist. Activation operation failed.");
 
                     return Mono.just(new PollResponse<SelectiveKeyRestoreOperation>(
-                        LongRunningOperationStatus.fromString("RESTORE_START_FAILED", true), null));
+                        LongRunningOperationStatus.fromString("SELECTIVE_RESTORE_START_FAILED", true), null));
                 }
 
-                final String jobId = responseValue.getJobId();
+                final String jobId = selectiveKeyRestoreOperation.getJobId();
 
                 return withContext(context -> clientImpl.restoreStatusWithResponseAsync(vaultUrl, jobId,
                     context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE)))

@@ -49,8 +49,8 @@ public class KeyVaultBackupClient {
      * @throws NullPointerException   if the {@code blobStorageUrl} or {@code sasToken} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<FullBackupOperation, Void> startBackup(String blobStorageUrl, String sasToken) {
-        return asyncClient.startBackup(blobStorageUrl, sasToken).getSyncPoller();
+    public SyncPoller<FullBackupOperation, Void> beginBackup(String blobStorageUrl, String sasToken) {
+        return asyncClient.beginBackup(blobStorageUrl, sasToken).getSyncPoller();
     }
 
     /**
@@ -64,8 +64,8 @@ public class KeyVaultBackupClient {
      * @throws NullPointerException   if the {@code blobStorageUrl} or {@code sasToken} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<RestoreOperation, Void> startRestore(String blobStorageUrl, String sasToken, String folderName) {
-        return asyncClient.startRestore(blobStorageUrl, sasToken, folderName).getSyncPoller();
+    public SyncPoller<RestoreOperation, Void> beginRestore(String blobStorageUrl, String sasToken, String folderName) {
+        return asyncClient.beginRestore(blobStorageUrl, sasToken, folderName).getSyncPoller();
     }
 
     /**
@@ -80,7 +80,7 @@ public class KeyVaultBackupClient {
      * @throws NullPointerException   if the {@code blobStorageUrl} or {@code sasToken} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<SelectiveKeyRestoreOperation, Void> startSelectiveRestore(String keyName, String blobStorageUrl, String sasToken, String folderName) {
-        return asyncClient.startSelectiveRestore(keyName, blobStorageUrl, sasToken, folderName).getSyncPoller();
+    public SyncPoller<SelectiveKeyRestoreOperation, Void> beginSelectiveRestore(String keyName, String blobStorageUrl, String sasToken, String folderName) {
+        return asyncClient.beginSelectiveRestore(keyName, blobStorageUrl, sasToken, folderName).getSyncPoller();
     }
 }
