@@ -25,8 +25,6 @@ public class Header {
      */
     public Header(String name, String value) {
         Objects.requireNonNull(name, "'name' cannot be null.");
-        Objects.requireNonNull(value, "'value' cannot be null.");
-
         this.name = name;
         this.value = value;
     }

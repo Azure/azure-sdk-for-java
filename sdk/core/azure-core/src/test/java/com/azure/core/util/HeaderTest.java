@@ -66,7 +66,6 @@ public class HeaderTest {
 
     private static Stream<Arguments> testNullArgsConstructor() {
         return Stream.of(
-            Arguments.arguments("a", null),
             Arguments.arguments(null, "a"),
             Arguments.arguments(null, null)
         );
