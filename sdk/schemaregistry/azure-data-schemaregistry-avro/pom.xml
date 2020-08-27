@@ -16,7 +16,6 @@
     <relativePath>../../parents/azure-client-sdk-parent</relativePath>
   </parent>
 
-  <groupId>com.azure</groupId>
   <artifactId>azure-data-schemaregistry-avro</artifactId>
   <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-avro;current} -->
 
