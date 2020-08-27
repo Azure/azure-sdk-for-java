@@ -122,10 +122,10 @@ public final class DigitalTwinsAsyncClient {
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be created.
      * @param relationship The application/json relationship to be created.
-     * @return A REST response containing the application/json relationship created.
+     * @return The application/json relationship created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<String>> createRelationshipWithResponse(String digitalTwinId, String relationshipId, String relationship) {
+    public Mono<String> createRelationship(String digitalTwinId, String relationshipId, String relationship) {
         return protocolLayer
             .getDigitalTwins()
             .addRelationshipWithResponseAsync(digitalTwinId, relationshipId, relationship)
@@ -133,12 +133,208 @@ public final class DigitalTwinsAsyncClient {
                 response -> {
                     try {
                         String jsonResponse = mapper.writeValueAsString(response.getValue());
-                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), jsonResponse));
+                        return Mono.just(jsonResponse);
                     } catch (JsonProcessingException e) {
                         return Mono.error(e);
                     }
                 });
     }
+
+    /**
+     * Creates a relationship on a digital twin.
+     *
+     * @param digitalTwinId The Id of the source digital twin.
+     * @param relationshipId The Id of the relationship to be created.
+     * @param relationship The application/json relationship to be created.
+     * @return A REST response containing the application/json relationship created.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DigitalTwinsResponse<String>> createRelationshipWithResponse(String digitalTwinId, String relationshipId, String relationship) {
+        return protocolLayer
+            .getDigitalTwins()
+            .addRelationshipWithResponseAsync(digitalTwinId, relationshipId, relationship)
+            .flatMap(
+                response -> {
+                    try {
+                        String jsonResponse = mapper.writeValueAsString(response.getValue());
+                        DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
+                        return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), jsonResponse, twinHeaders));
+                    } catch (JsonProcessingException e) {
+                        return Mono.error(e);
+                    }
+                });
+    }
+
+    /**
+     * Creates a relationship on a digital twin.
+     *
+     * @param digitalTwinId The Id of the source digital twin.
+     * @param relationshipId The Id of the relationship to be created.
+     * @param relationship The relationship to be created.
+     * @param modelClass The model class to convert the relationship to.
+     * @return The relationship created.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public <T> Mono<T> createRelationship(String digitalTwinId, String relationshipId, Object relationship, Class<T> modelClass) {
+        return protocolLayer
+            .getDigitalTwins()
+            .addRelationshipWithResponseAsync(digitalTwinId, relationshipId, relationship)
+            .flatMap(
+                response -> Mono.just(mapper.convertValue(response.getValue(), modelClass)));
+    }
+
+    /**
+     * Creates a relationship on a digital twin.
+     *
+     * @param digitalTwinId The Id of the source digital twin.
+     * @param relationshipId The Id of the relationship to be created.
+     * @param relationship The relationship to be created.
+     * @param modelClass The model class to convert the relationship to.
+     * @return A REST response containing the relationship created.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public <T> Mono<DigitalTwinsResponse<T>> createRelationshipWithResponse(String digitalTwinId, String relationshipId, Object relationship, Class<T> modelClass) {
+        return protocolLayer
+            .getDigitalTwins()
+            .addRelationshipWithResponseAsync(digitalTwinId, relationshipId, relationship)
+            .flatMap(
+                response -> {
+                    T genericResponse = mapper.convertValue(response.getValue(), modelClass);
+                    DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
+                    return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), genericResponse, twinHeaders));
+                });
+    }
+
+    /**
+     * Gets a relationship on a digital twin.
+     *
+     * @param digitalTwinId The Id of the source digital twin.
+     * @param relationshipId The Id of the relationship to retrieve.
+     * @return The application/json relationship corresponding to the provided relationshipId.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<String> getRelationship(String digitalTwinId, String relationshipId) {
+        return protocolLayer.getDigitalTwins().getRelationshipByIdWithResponseAsync(digitalTwinId, relationshipId)
+            .flatMap(
+                response -> {
+                    try {
+                        String jsonResponse = mapper.writeValueAsString(response.getValue());
+                        return Mono.just(jsonResponse);
+                    } catch (JsonProcessingException e) {
+                        return Mono.error(e);
+                    }
+                });
+    }
+
+    /**
+     * Gets a relationship on a digital twin.
+     *
+     * @param digitalTwinId The Id of the source digital twin.
+     * @param relationshipId The Id of the relationship to retrieve.
+     * @return A REST response containing the application/json relationship corresponding to the provided relationshipId.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DigitalTwinsResponse<String>> getRelationshipWithResponse(String digitalTwinId, String relationshipId) {
+        return protocolLayer.getDigitalTwins().getRelationshipByIdWithResponseAsync(digitalTwinId, relationshipId)
+            .flatMap(
+                response -> {
+                    try {
+                        String jsonResponse = mapper.writeValueAsString(response.getValue());
+                        DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
+                        return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), jsonResponse, twinHeaders));
+                    } catch (JsonProcessingException e) {
+                        return Mono.error(e);
+                    }
+                });
+    }
+
+    /**
+     * Gets a relationship on a digital twin.
+     *
+     * @param digitalTwinId The Id of the source digital twin.
+     * @param relationshipId The Id of the relationship to retrieve.
+     * @param modelClass The model class to convert the relationship to.
+     * @return The relationship corresponding to the provided relationshipId.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public <T> Mono<T> getRelationship(String digitalTwinId, String relationshipId, Class<T> modelClass) {
+        return protocolLayer.getDigitalTwins().getRelationshipByIdWithResponseAsync(digitalTwinId, relationshipId)
+            .flatMap(
+                response -> Mono.just(mapper.convertValue(response.getValue(), modelClass));
+    }
+
+    /**
+     * Gets a relationship on a digital twin.
+     *
+     * @param digitalTwinId The Id of the source digital twin.
+     * @param relationshipId The Id of the relationship to retrieve.
+     * @param modelClass The model class to convert the relationship to.
+     * @return A REST response containing the relationship corresponding to the provided relationshipId.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public <T> Mono<DigitalTwinsResponse<T>> getRelationshipWithResponse(String digitalTwinId, String relationshipId, Class<T> modelClass) {
+        return protocolLayer.getDigitalTwins().getRelationshipByIdWithResponseAsync(digitalTwinId, relationshipId)
+            .flatMap(
+                response -> {
+                    T genericResponse = mapper.convertValue(response.getValue(), modelClass);
+                    DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
+                    return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), genericResponse, twinHeaders));
+                });
+    }
+
+    /**
+     * Updates the properties of a relationship on a digital twin.
+     *
+     * @param digitalTwinId The Id of the source digital twin.
+     * @param relationshipId The Id of the relationship to be updated.
+     * @param relationshipUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin's relationship.
+     * @return An empty response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> updateRelationship(String digitalTwinId, String relationshipId, String relationshipUpdateOperations) {
+        return protocolLayer.getDigitalTwins().updateRelationshipWithResponseAsync(digitalTwinId, relationshipId, relationshipUpdateOperations);
+    }
+
+    /**
+     * Updates the properties of a relationship on a digital twin.
+     *
+     * @param digitalTwinId The Id of the source digital twin.
+     * @param relationshipId The Id of the relationship to be updated.
+     * @param relationshipUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin's relationship.
+     * @param options The optional settings for this request.
+     * @return A REST response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DigitalTwinsResponse> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, String relationshipUpdateOperations, RequestOptions options) { }
+
+    /**
+     * Deletes a relationship on a digital twin.
+     *
+     * @param digitalTwinId The Id of the source digital twin.
+     * @param relationshipId The Id of the relationship to delete.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteRelationship(String digitalTwinId, String relationshipId) { }
+
+    /**
+     * Deletes a relationship on a digital twin.
+     *
+     * @param digitalTwinId The Id of the source digital twin.
+     * @param relationshipId The Id of the relationship to delete.
+     * @param options The optional settings for this request.
+     * @return A REST response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DigitalTwinsResponse> deleteRelationshipWithResponse(String digitalTwinId, String relationshipId, RequestOptions options) { }
+
+    /**
+     * Gets all the relationships on a digital twin by iterating through a collection.
+     *
+     * @param digitalTwinId The Id of the source digital twin.
+     * @return A {@link PagedFlux} of application/json relationships belonging to the specified digital twin and the http response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<String> listRelationships(String digitalTwinId) { }
 
     /**
      * Gets all the relationships on a digital twin filtered by the relationship name, by iterating through a collection.
@@ -149,7 +345,6 @@ public final class DigitalTwinsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<String> listRelationships(String digitalTwinId, String relationshipName) {
-
         Supplier<Mono<PagedResponse<String>>> firstPage = () -> protocolLayer.getDigitalTwins().listRelationshipsSinglePageAsync(digitalTwinId, relationshipName)
             .map(
                 objectPagedResponse -> {
@@ -198,7 +393,37 @@ public final class DigitalTwinsAsyncClient {
             });
 
         return new PagedFlux<>(firstPage, nextPage);
-
     }
+
+    /**
+     * Gets all the relationships on a digital twin by iterating through a collection.
+     *
+     * @param digitalTwinId The Id of the source digital twin.
+     * @param modelClass The model class to convert the relationship to. Since a digital twin might have relationships conforming to different models, it is advisable to convert them to a generic model.
+     * @return A {@link PagedFlux} of relationships belonging to the specified digital twin and the http response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public <T> PagedFlux<T> listRelationships(String digitalTwinId, Class<T> modelClass) { }
+
+    /**
+     * Gets all the relationships on a digital twin filtered by the relationship name, by iterating through a collection.
+     *
+     * @param digitalTwinId The Id of the source digital twin.
+     * @param relationshipName The name of a relationship to filter to.
+     * @param modelClass The model class to convert the relationship to.
+     * @return A {@link PagedFlux} of relationships belonging to the specified digital twin and the http response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public <T> PagedFlux<T> listRelationships(String digitalTwinId, String relationshipName, Class<T> modelClass) { }
+
+
+    /**
+     * Gets all the relationships referencing a digital twin as a target by iterating through a collection.
+     *
+     * @param digitalTwinId The Id of the target digital twin.
+     * @return A {@link PagedFlux} of relationships directed towards the specified digital twin and the http response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<IncomingRelationship> listIncomingRelationships(String digitalTwinId) { }
 
 }
