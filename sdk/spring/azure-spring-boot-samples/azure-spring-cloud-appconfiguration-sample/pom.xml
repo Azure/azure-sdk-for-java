@@ -11,7 +11,7 @@
 
   <artifactId>azure-appconfiguration-sample</artifactId>
   <groupId>com.microsoft.azure</groupId>
-  <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-appconfiguration-sample;dependency} -->
+  <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-appconfiguration-sample;current} -->
   <name>Azure Spring Cloud App Configuration Sample</name>
 
   <dependencyManagement>
@@ -30,7 +30,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>spring-cloud-azure-appconfiguration-config</artifactId>
-      <version>1.2.8-beta.1</version><!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-appconfiguration-config;dependency} -->
+      <version>1.2.8-beta.1</version><!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-appconfiguration-config;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
