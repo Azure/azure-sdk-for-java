@@ -43,7 +43,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -90,7 +89,8 @@ public class ManagementChannel implements ServiceBusManagementNode {
      * {@inheritDoc}
      */
     @Override
-    public Mono<Void> cancelScheduledMessage(long sequenceNumber, String associatedLinkName) {
+    public Mono<Void> cancelScheduledMessage(long sequenceNumber, String associatedLinkName,
+        ServiceBusTransactionContext transactionContext) {
         return isAuthorized(ManagementConstants.OPERATION_CANCEL_SCHEDULED_MESSAGE)
             .then(createChannel.flatMap(channel -> {
                 final Message requestMessage = createManagementMessage(
@@ -99,7 +99,13 @@ public class ManagementChannel implements ServiceBusManagementNode {
                 requestMessage.setBody(new AmqpValue(Collections.singletonMap(ManagementConstants.SEQUENCE_NUMBERS,
                     new Long[]{sequenceNumber})));
 
-                return sendWithVerify(channel, requestMessage, null);
+                TransactionalState transactionalState = null;
+                if (transactionContext != null && transactionContext.getTransactionId() != null) {
+                    transactionalState = new TransactionalState();
+                    transactionalState.setTxnId(new Binary(transactionContext.getTransactionId().array()));
+                }
+
+                return sendWithVerify(channel, requestMessage, transactionalState);
             })).then();
     }
 
@@ -117,7 +123,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
                 final List<Long> numbers = new ArrayList<>();
                 sequenceNumbers.forEach(s -> numbers.add(s));
                 Long[] longs = numbers.toArray(new Long[0]);
-
+                System.out.println("!!!! MC.cancelScheduledMessages length " + longs.length);
                 requestMessage.setBody(new AmqpValue(Collections.singletonMap(ManagementConstants.SEQUENCE_NUMBERS,
                     longs)));
 
@@ -317,54 +323,57 @@ public class ManagementChannel implements ServiceBusManagementNode {
      * {@inheritDoc}
      */
     @Override
-    public Flux<Long> schedule(ServiceBusMessageBatch messageBatch, Instant scheduledEnqueueTime, int maxLinkSize,
+    public Flux<Long> schedule(final List<ServiceBusMessage> messages, Instant scheduledEnqueueTime, int maxLinkSize,
         String associatedLinkName, ServiceBusTransactionContext transactionContext) {
 
-        ServiceBusMessage message = null;
-
         return isAuthorized(OPERATION_SCHEDULE_MESSAGE).thenMany(createChannel.flatMap(channel -> {
-            // Serialize the request.
-            final Message amqpMessage = messageSerializer.serialize(message);
-
-            // The maxsize allowed logic is from ReactorSender, this logic should be kept in sync.
-            final int payloadSize = messageSerializer.getSize(amqpMessage);
-            final int allocationSize =
-                Math.min(payloadSize + ManagementConstants.MAX_MESSAGING_AMQP_HEADER_SIZE_BYTES, maxLinkSize);
-            final byte[] bytes = new byte[allocationSize];
-
-            int encodedSize;
-            try {
-                encodedSize = amqpMessage.encode(bytes, 0, allocationSize);
-            } catch (BufferOverflowException exception) {
-                final String errorMessage = String.format(
-                    "Error sending. Size of the payload exceeded maximum message size: %s kb", maxLinkSize / 1024);
-                final AmqpErrorContext errorContext = channel.getErrorContext();
-
-                return monoError(logger, Exceptions.propagate(new AmqpException(false,
-                    AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, errorMessage, exception, errorContext)));
-            }
-
-            final Map<String, Object> messageEntry = new HashMap<>();
-            messageEntry.put(ManagementConstants.MESSAGE, new Binary(bytes, 0, encodedSize));
-            messageEntry.put(ManagementConstants.MESSAGE_ID, amqpMessage.getMessageId());
-
-            final String sessionId = amqpMessage.getGroupId();
-            if (!CoreUtils.isNullOrEmpty(sessionId)) {
-                messageEntry.put(ManagementConstants.SESSION_ID, sessionId);
-            }
-
-            final String partitionKey = message.getPartitionKey();
-            if (!CoreUtils.isNullOrEmpty(partitionKey)) {
-                messageEntry.put(ManagementConstants.PARTITION_KEY, partitionKey);
-            }
-
-            final String viaPartitionKey = message.getViaPartitionKey();
-            if (!CoreUtils.isNullOrEmpty(viaPartitionKey)) {
-                messageEntry.put(ManagementConstants.VIA_PARTITION_KEY, viaPartitionKey);
-            }
 
             final Collection<Map<String, Object>> messageList = new LinkedList<>();
-            messageList.add(messageEntry);
+
+            for (ServiceBusMessage message : messages) {
+                message.setScheduledEnqueueTime(scheduledEnqueueTime);
+                // Serialize the request.
+                final Message amqpMessage = messageSerializer.serialize(message);
+
+                // The maxsize allowed logic is from ReactorSender, this logic should be kept in sync.
+                final int payloadSize = messageSerializer.getSize(amqpMessage);
+                final int allocationSize =
+                    Math.min(payloadSize + ManagementConstants.MAX_MESSAGING_AMQP_HEADER_SIZE_BYTES, maxLinkSize);
+                final byte[] bytes = new byte[allocationSize];
+
+                int encodedSize;
+                try {
+                    encodedSize = amqpMessage.encode(bytes, 0, allocationSize);
+                } catch (BufferOverflowException exception) {
+                    final String errorMessage = String.format(
+                        "Error sending. Size of the payload exceeded maximum message size: %s kb", maxLinkSize / 1024);
+                    final AmqpErrorContext errorContext = channel.getErrorContext();
+
+                    return monoError(logger, Exceptions.propagate(new AmqpException(false,
+                        AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, errorMessage, exception, errorContext)));
+                }
+
+                final Map<String, Object> messageEntry = new HashMap<>();
+                messageEntry.put(ManagementConstants.MESSAGE, new Binary(bytes, 0, encodedSize));
+                messageEntry.put(ManagementConstants.MESSAGE_ID, amqpMessage.getMessageId());
+
+                final String sessionId = amqpMessage.getGroupId();
+                if (!CoreUtils.isNullOrEmpty(sessionId)) {
+                    messageEntry.put(ManagementConstants.SESSION_ID, sessionId);
+                }
+
+                final String partitionKey = message.getPartitionKey();
+                if (!CoreUtils.isNullOrEmpty(partitionKey)) {
+                    messageEntry.put(ManagementConstants.PARTITION_KEY, partitionKey);
+                }
+
+                final String viaPartitionKey = message.getViaPartitionKey();
+                if (!CoreUtils.isNullOrEmpty(viaPartitionKey)) {
+                    messageEntry.put(ManagementConstants.VIA_PARTITION_KEY, viaPartitionKey);
+                }
+
+                messageList.add(messageEntry);
+            }
 
             final Map<String, Object> requestBodyMap = new HashMap<>();
             requestBodyMap.put(ManagementConstants.MESSAGES, messageList);
@@ -385,8 +394,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
                 final List<Long> sequenceNumbers = messageSerializer.deserializeList(response, Long.class);
                 if (CoreUtils.isNullOrEmpty(sequenceNumbers)) {
                     fluxError(logger, new AmqpException(false, String.format(
-                        "Service Bus response was empty. Could not schedule messages: '%s'.",
-                        message.getMessageId()), getErrorContext()));
+                        "Service Bus response was empty. Could not schedule messages."), getErrorContext()));
                 }
                 return Flux.fromIterable(sequenceNumbers);
             }));

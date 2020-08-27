@@ -375,7 +375,29 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityName, entityType))
-            .flatMap(managementNode -> managementNode.cancelScheduledMessage(sequenceNumber, linkName.get()));
+            .flatMap(managementNode -> managementNode.cancelScheduledMessage(sequenceNumber, linkName.get(),
+                null));
+    }
+
+    /**
+     * Cancels the enqueuing of an already scheduled message, if it was not already enqueued.
+     *
+     * @param sequenceNumber of the scheduled message to cancel.
+     * @param transactionContext to be set on batch message before scheduling them on Service Bus.
+     *
+     * @return The {@link Mono} that finishes this operation on service bus resource.
+     *
+     * @throws IllegalArgumentException if {@code sequenceNumber} is negative.
+     */
+    public Mono<Void> cancelScheduledMessage(long sequenceNumber, ServiceBusTransactionContext transactionContext) {
+        if (sequenceNumber < 0) {
+            return monoError(logger, new IllegalArgumentException("'sequenceNumber' cannot be negative."));
+        }
+
+        return connectionProcessor
+            .flatMap(connection -> connection.getManagementNode(entityName, entityType))
+            .flatMap(managementNode -> managementNode.cancelScheduledMessage(sequenceNumber, linkName.get(),
+                transactionContext));
     }
 
     /**
@@ -547,7 +569,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
                 return connectionProcessor
                     .flatMap(connection -> connection.getManagementNode(entityName, entityType))
-                    .flatMapMany(managementNode -> managementNode.schedule(message, scheduledEnqueueTime, maxSize,
+                    .flatMapMany(managementNode -> managementNode.schedule(message.getMessages(), scheduledEnqueueTime, maxSize,
                         link.getLinkName(), transactionContext));
             }));
     }

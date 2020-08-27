@@ -18,6 +18,8 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -333,6 +335,52 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
                 messagesPending.decrementAndGet();
             })
             .verifyComplete();
+    }
+
+    /**
+     * Verifies that we can create transaction, scheduleMessage and commit.
+     */
+    @MethodSource("messagingEntityProvider")
+    @ParameterizedTest
+    void transactionCancelScheduleTest(MessagingEntityType entityType) {
+
+        // Arrange
+        boolean isSessionEnabled = false;
+        setSenderAndReceiver(entityType, 0, isSessionEnabled);
+        final Duration scheduleDuration = Duration.ofSeconds(10);
+        final String messageId = UUID.randomUUID().toString();
+        final ArrayList<ServiceBusMessage> messages = new ArrayList<>();
+        messages.add(getMessage(messageId, isSessionEnabled));
+        messages.add(getMessage(messageId, isSessionEnabled));
+
+        // Assert & Act
+        AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
+        StepVerifier.create(sender.createTransaction())
+            .assertNext(transactionContext -> {
+                transaction.set(transactionContext);
+                assertNotNull(transaction);
+            })
+            .verifyComplete();
+
+        List<Long> sequenceNumbers = sender.scheduleMessages(messages, Instant.now().plusSeconds(5), transaction.get())
+            .collectList().block();
+        System.out.println("!!!! After scheduleMessages .. SQ []:" + Arrays.toString(sequenceNumbers.toArray()));
+        List<Long> sq = new ArrayList<>();
+        sq.add(sequenceNumbers.get(0));
+
+        StepVerifier.create(sender.cancelScheduledMessages(sequenceNumbers, transaction.get()))
+            .verifyComplete();
+
+        StepVerifier.create(sender.commitTransaction(transaction.get()))
+            .verifyComplete();
+
+        /*StepVerifier.create(Mono.delay(scheduleDuration).then(receiver.receiveMessages().next()))
+            .assertNext(receivedMessage -> {
+                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+                messagesPending.decrementAndGet();
+            })
+            .verifyComplete();
+        */
     }
 
     /**

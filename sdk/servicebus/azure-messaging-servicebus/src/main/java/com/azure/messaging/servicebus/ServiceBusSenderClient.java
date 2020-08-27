@@ -56,6 +56,18 @@ public class ServiceBusSenderClient implements AutoCloseable {
     }
 
     /**
+     * Cancels the enqueuing of an already scheduled message, if it was not already enqueued.
+     *
+     * @param sequenceNumber of the scheduled message to cancel.
+     * @param transactionContext to be set on batch sequence numbers for this operation on Service Bus.
+     *
+     * @throws IllegalArgumentException if {@code sequenceNumber} is negative.
+     */
+    public void cancelScheduledMessage(long sequenceNumber, ServiceBusTransactionContext transactionContext) {
+        asyncClient.cancelScheduledMessage(sequenceNumber, transactionContext).block(tryTimeout);
+    }
+
+    /**
      * Cancels the enqueuing of an already scheduled messages, if it was not already enqueued.
      *
      * @param sequenceNumbers of the scheduled message to cancel.
@@ -75,7 +87,7 @@ public class ServiceBusSenderClient implements AutoCloseable {
      * @throws NullPointerException if {@code sequenceNumbers} is null.
      */
     public void cancelScheduledMessages(Iterable<Long> sequenceNumbers,
-       ServiceBusTransactionContext transactionContext) {
+        ServiceBusTransactionContext transactionContext) {
         asyncClient.cancelScheduledMessages(sequenceNumbers, transactionContext).block(tryTimeout);
     }
 
@@ -246,12 +258,7 @@ public class ServiceBusSenderClient implements AutoCloseable {
      * @throws NullPointerException if  is null.
      */
     public Iterable<Long> scheduleMessages(Iterable<ServiceBusMessage> messages, Instant scheduledEnqueueTime) {
-        IterableStream
-        return asyncClient.scheduleMessages(messages, scheduledEnqueueTime)
-            .map(aLong -> {
-
-            })
-            .block(tryTimeout);
+        return new IterableStream<>(asyncClient.scheduleMessages(messages, scheduledEnqueueTime));
     }
 
 
@@ -270,7 +277,7 @@ public class ServiceBusSenderClient implements AutoCloseable {
      * @throws NullPointerException if  is null.
      */
     public Long scheduleMessages(ServiceBusMessage message, Instant scheduledEnqueueTime,
-                                ServiceBusTransactionContext transactionContext) {
+        ServiceBusTransactionContext transactionContext) {
         return asyncClient.scheduleMessage(message, scheduledEnqueueTime, transactionContext).block(tryTimeout);
     }
 

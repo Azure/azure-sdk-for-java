@@ -523,7 +523,7 @@ class ServiceBusSenderAsyncClientTest {
     void cancelScheduleMessage() {
         // Arrange
         long sequenceNumberReturned = 10;
-        when(managementNode.cancelScheduledMessage(eq(sequenceNumberReturned), isNull())).thenReturn(Mono.empty());
+        when(managementNode.cancelScheduledMessage(eq(sequenceNumberReturned), isNull(), isNull())).thenReturn(Mono.empty());
 
         // Act & Assert
         StepVerifier.create(sender.cancelScheduledMessage(sequenceNumberReturned))

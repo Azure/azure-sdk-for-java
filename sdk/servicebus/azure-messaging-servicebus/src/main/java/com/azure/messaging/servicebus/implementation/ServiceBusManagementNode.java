@@ -13,6 +13,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.Instant;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,7 +27,8 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      *
      * @return {@link Void} The successful completion represents the pending cancellation.
      */
-    Mono<Void> cancelScheduledMessage(long sequenceNumber, String associatedLinkName);
+    Mono<Void> cancelScheduledMessage(long sequenceNumber, String associatedLinkName,
+        ServiceBusTransactionContext transactionContext);
 
     /**
      * Cancels the enqueuing of an already sent scheduled messages, if it was not already enqueued.
@@ -121,14 +123,14 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      * entity. The CompletableFuture, on completion, returns the sequence number of the scheduled message which can be
      * used to cancel the scheduling of the message.
      *
-     * @param message The {@link ServiceBusMessageBatch} message to be sent to the entity.
+     * @param messages The messages to be sent to the entity.
      * @param scheduledEnqueueTime The {@link Instant} at which the message should be enqueued in the entity.
      * @param transactionContext to be set on message before sending to Service Bus.
      *
      * @return The sequence number representing the pending send, which returns the sequence number of the scheduled
      *     message. This sequence number can be used to cancel the scheduling of the message.
      */
-    Flux<Long> schedule(ServiceBusMessageBatch message, Instant scheduledEnqueueTime, int maxSendLinkSize,
+    Flux<Long> schedule(List<ServiceBusMessage> messages, Instant scheduledEnqueueTime, int maxSendLinkSize,
         String associatedLinkName, ServiceBusTransactionContext transactionContext);
 
     /**
