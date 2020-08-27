@@ -8,6 +8,8 @@ import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
 import com.azure.messaging.servicebus.administration.models.CreateTopicOptions;
 import com.azure.messaging.servicebus.administration.models.QueueProperties;
+import com.azure.messaging.servicebus.administration.models.RuleAction;
+import com.azure.messaging.servicebus.administration.models.RuleFilter;
 import com.azure.messaging.servicebus.administration.models.RuleProperties;
 import com.azure.messaging.servicebus.administration.models.SubscriptionProperties;
 import com.azure.messaging.servicebus.administration.models.TopicProperties;
@@ -173,7 +175,7 @@ public final class EntityHelper {
                 new IllegalStateException("'ruleAccessor' should not be null."));
         }
 
-        return ruleAccessor.toModel(description);
+        return ruleAccessor.toModel(description.getName());
     }
 
     /**
@@ -366,7 +368,7 @@ public final class EntityHelper {
     }
 
     public interface RuleAccessor {
-        RuleProperties toModel(RuleDescription description);
+        RuleProperties toModel(String name, RuleFilter filter, RuleAction action);
     }
 
     /**

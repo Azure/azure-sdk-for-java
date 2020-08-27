@@ -5,7 +5,6 @@ package com.azure.messaging.servicebus.administration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.messaging.servicebus.implementation.EntityHelper;
-import com.azure.messaging.servicebus.implementation.models.RuleDescription;
 
 import java.util.Objects;
 
@@ -21,20 +20,21 @@ public class RuleProperties {
     static {
         EntityHelper.setRuleAccessor(new EntityHelper.RuleAccessor() {
             @Override
-            public RuleProperties toModel(RuleDescription description) {
-                return new RuleProperties(description);
+            public RuleProperties toModel(String name, RuleFilter filter, RuleAction action) {
+                return new RuleProperties(name, filter, action);
             }
         });
-
     }
 
     /**
      * Initializes a new instance with the given rule {@code name}, {@code filter}, and {@code action}.
      *
-     * @param description Rule description to base the rule on.
+     * @param name Name of the rule.
+     * @param filter Filter for the rule.
+     * @param action Action for the rule.
      */
-    RuleProperties(RuleDescription description) {
-        this.name = description.getName();
+    RuleProperties(String name, RuleFilter filter, RuleAction action) {
+        this.name = name;
         this.filter = filter;
         this.action = action;
     }
