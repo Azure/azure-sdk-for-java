@@ -104,6 +104,7 @@ public class Configuration {
         + "\tMixed - runa workload of 90 reads, 9 writes and 1 QueryTopOrderby per 100 operations *\n"
         + "\tReadMyWrites - run a workflow of writes followed by reads and queries attempting to read the write.*\n"
         + "\tCtlWorkload - run a ctl workflow.*\n"
+        + "\tReadAllItemsOfLogicalPartition - run a workload that uses readAllItems for a logical partition and prints throughput\n"
         + "\n\t* writes 10k documents initially, which are used in the reads", converter = OperationTypeConverter.class)
     private Operation operation = Operation.WriteThroughput;
 
@@ -172,7 +173,8 @@ public class Configuration {
         Mixed,
         ReadMyWrites,
         ReadThroughputWithMultipleClients,
-        CtlWorkload;
+        CtlWorkload,
+        ReadAllItemsOfLogicalPartition;
 
         static Operation fromString(String code) {
 
