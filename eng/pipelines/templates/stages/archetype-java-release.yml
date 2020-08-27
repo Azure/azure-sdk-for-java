@@ -66,21 +66,21 @@ stages:
                 inputs:
                   versionSpec: '3.6'
 
-              - script: |
-                  python --version
-                  python eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --vv --ai ${{artifact.name}} --gi ${{artifact.groupId}}
-                displayName: 'Verify version for release'
+              # - script: |
+              #     python --version
+              #     python eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --vv --ai ${{artifact.name}} --gi ${{artifact.groupId}}
+              #   displayName: 'Verify version for release'
 
-              - pwsh: |
-                  $(Build.SourcesDirectory)/eng/versioning/scan_for_unreleased_dependencies.ps1 ${{artifact.groupId}} ${{artifact.name}} $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
-                displayName: "Verify no unreleased dependencies"
+              # - pwsh: |
+              #     $(Build.SourcesDirectory)/eng/versioning/scan_for_unreleased_dependencies.ps1 ${{artifact.groupId}} ${{artifact.name}} $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
+              #   displayName: "Verify no unreleased dependencies"
 
-              - ${{if ne(parameters.SDKType, 'data')}}:
-                - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
-                  parameters:
-                    PackageName: ${{artifact.name}}
-                    ServiceName: ${{parameters.ServiceDirectory}}
-                    ForRelease: true
+              # - ${{if ne(parameters.SDKType, 'data')}}:
+              #   - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
+              #     parameters:
+              #       PackageName: ${{artifact.name}}
+              #       ServiceName: ${{parameters.ServiceDirectory}}
+              #       ForRelease: true
 
 
           - deployment: TagRepository
