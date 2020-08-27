@@ -16,6 +16,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ServerForCreate {
     /**
+     * The Azure Active Directory identity of the server.
+     */
+    @JsonProperty(value = "identity")
+    private ResourceIdentity identity;
+
+    /**
      * The SKU (pricing tier) of the server.
      */
     @JsonProperty(value = "sku")
@@ -38,6 +44,26 @@ public class ServerForCreate {
      */
     @JsonProperty(value = "tags")
     private Map<String, String> tags;
+
+    /**
+     * Get the Azure Active Directory identity of the server.
+     *
+     * @return the identity value
+     */
+    public ResourceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the Azure Active Directory identity of the server.
+     *
+     * @param identity the identity value to set
+     * @return the ServerForCreate object itself.
+     */
+    public ServerForCreate withIdentity(ResourceIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
 
     /**
      * Get the SKU (pricing tier) of the server.
