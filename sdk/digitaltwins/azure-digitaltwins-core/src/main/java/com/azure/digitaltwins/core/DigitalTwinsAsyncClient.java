@@ -7,7 +7,10 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.rest.*;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImpl;
@@ -305,7 +308,7 @@ public final class DigitalTwinsAsyncClient {
      * @return A REST response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DigitalTwinsResponse> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, String relationshipUpdateOperations, RequestOptions options) { }
+    public Mono<DigitalTwinsResponse<Void>> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, String relationshipUpdateOperations, RequestOptions options) { }
 
     /**
      * Deletes a relationship on a digital twin.
@@ -314,7 +317,10 @@ public final class DigitalTwinsAsyncClient {
      * @param relationshipId The Id of the relationship to delete.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteRelationship(String digitalTwinId, String relationshipId) { }
+    public Mono<Void> deleteRelationship(String digitalTwinId, String relationshipId) {
+        return protocolLayer.getDigitalTwins().deleteRelationshipWithResponseAsync(digitalTwinId, relationshipId, null)
+            .flatMap(voidResponse -> Mono.empty());
+    }
 
     /**
      * Deletes a relationship on a digital twin.
@@ -325,7 +331,9 @@ public final class DigitalTwinsAsyncClient {
      * @return A REST response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DigitalTwinsResponse> deleteRelationshipWithResponse(String digitalTwinId, String relationshipId, RequestOptions options) { }
+    public Mono<Response<Void>> deleteRelationshipWithResponse(String digitalTwinId, String relationshipId, RequestOptions options) {
+        return protocolLayer.getDigitalTwins().deleteRelationshipWithResponseAsync(digitalTwinId, relationshipId, options.getIfMatch());
+    }
 
     /**
      * Gets all the relationships on a digital twin by iterating through a collection.
