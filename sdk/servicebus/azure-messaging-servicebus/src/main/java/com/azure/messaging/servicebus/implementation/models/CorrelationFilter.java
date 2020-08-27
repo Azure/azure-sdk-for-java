@@ -19,7 +19,7 @@ import java.util.List;
 @JsonTypeName("CorrelationFilter")
 @JacksonXmlRootElement(localName = "CorrelationFilter")
 @Fluent
-public final class CorrelationFilter extends RuleFilter {
+public final class CorrelationFilter extends RuleFilterImpl {
     /*
      * The correlationId property.
      */
@@ -86,10 +86,10 @@ public final class CorrelationFilter extends RuleFilter {
 
     private static final class PropertiesWrapper {
         @JacksonXmlProperty(localName = "KeyValueOfstringanyType")
-        private final List<KeyValue> items;
+        private final List<KeyValueImpl> items;
 
         @JsonCreator
-        private PropertiesWrapper(@JacksonXmlProperty(localName = "KeyValueOfstringanyType") List<KeyValue> items) {
+        private PropertiesWrapper(@JacksonXmlProperty(localName = "KeyValueOfstringanyType") List<KeyValueImpl> items) {
             this.items = items;
         }
     }
@@ -267,9 +267,9 @@ public final class CorrelationFilter extends RuleFilter {
      *
      * @return the properties value.
      */
-    public List<KeyValue> getProperties() {
+    public List<KeyValueImpl> getProperties() {
         if (this.properties == null) {
-            this.properties = new PropertiesWrapper(new ArrayList<KeyValue>());
+            this.properties = new PropertiesWrapper(new ArrayList<KeyValueImpl>());
         }
         return this.properties.items;
     }
@@ -280,7 +280,7 @@ public final class CorrelationFilter extends RuleFilter {
      * @param properties the properties value to set.
      * @return the CorrelationFilter object itself.
      */
-    public CorrelationFilter setProperties(List<KeyValue> properties) {
+    public CorrelationFilter setProperties(List<KeyValueImpl> properties) {
         this.properties = new PropertiesWrapper(properties);
         return this;
     }

@@ -10,20 +10,20 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/** The RuleFilter model. */
+/** The RuleAction model. */
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
         property = "type",
-        defaultImpl = RuleFilter.class)
-@JsonTypeName("RuleFilter")
+        defaultImpl = RuleActionImpl.class)
+@JsonTypeName("RuleAction")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "CorrelationFilter", value = CorrelationFilter.class),
-    @JsonSubTypes.Type(name = "SqlFilter", value = SqlFilter.class)
+    @JsonSubTypes.Type(name = "SqlRuleAction", value = SqlRuleActionImplImpl.class),
+    @JsonSubTypes.Type(name = "EmptyRuleAction", value = EmptyRuleActionImpl.class)
 })
 @JacksonXmlRootElement(
-        localName = "Filter",
+        localName = "Action",
         namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
 @Immutable
-public class RuleFilter {
+public class RuleActionImpl {
 }

@@ -9,10 +9,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/** The EmptyRuleAction model. */
+/** The FalseFilter model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("EmptyRuleAction")
-@JacksonXmlRootElement(localName = "EmptyRuleAction")
+@JsonTypeName("FalseFilter")
+@JacksonXmlRootElement(localName = "FalseFilter")
 @Immutable
-public final class EmptyRuleAction extends RuleAction {
+public final class FalseFilterImpl extends SqlFilterImpl {
 }
