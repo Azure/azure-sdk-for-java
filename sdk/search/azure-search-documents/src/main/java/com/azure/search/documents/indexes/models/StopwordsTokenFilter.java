@@ -5,8 +5,11 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -78,6 +81,19 @@ public final class StopwordsTokenFilter extends TokenFilter {
      * @param stopwords the stopwords value to set.
      * @return the StopwordsTokenFilter object itself.
      */
+    public StopwordsTokenFilter setStopwords(String... stopwords) {
+        this.stopwords = (stopwords == null) ? null : Arrays.asList(stopwords);
+        return this;
+    }
+
+    /**
+     * Set the stopwords property: The list of stopwords. This property and the
+     * stopwords list property cannot both be set.
+     *
+     * @param stopwords the stopwords value to set.
+     * @return the StopwordsTokenFilter object itself.
+     */
+    @JsonSetter
     public StopwordsTokenFilter setStopwords(List<String> stopwords) {
         this.stopwords = stopwords;
         return this;

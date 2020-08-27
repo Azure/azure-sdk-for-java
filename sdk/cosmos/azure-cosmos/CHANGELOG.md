@@ -1,7 +1,42 @@
 # Release History
 
-## 4.2.0-beta.1 (Unreleased)
+## 4.3.1 (2020-08-13)
+### Key Bug Fixes
+* Fixed issue with `GROUP BY` query, where it was returning only one page.
+* Fixed user agent string format to comply with central SDK guidelines.
+* Enhanced diagnostics information to include query plan diagnostics.
 
+## 4.3.0 (2020-07-29)
+### New Features
+* Updated reactor-core library version to `3.3.8.RELEASE`. 
+* Updated reactor-netty library version to `0.9.10.RELEASE`. 
+* Updated netty library version to `4.1.51.Final`. 
+* Added new overload APIs for `upsertItem` with `partitionKey`. 
+* Added open telemetry tracing support. 
+### Key Bug Fixes
+* Fixed issue where SSLException gets thrown in case of cancellation of requests in GATEWAY mode.
+* Fixed resource throttle retry policy on stored procedures execution.
+* Fixed issue where SDK hangs in log level DEBUG mode. 
+* Fixed periodic spikes in latency in Direct mode. 
+* Fixed high client initialization time issue. 
+* Fixed http proxy bug when customizing client with direct mode and gateway mode. 
+* Fixed potential NPE in users passes null options. 
+* Added timeUnit to `requestLatency` in diagnostics string.
+* Removed duplicate uri string from diagnostics string. 
+* Fixed diagnostics string in proper JSON format for point operations.
+* Fixed issue with `.single()` operator causing the reactor chain to blow up in case of Not Found exception. 
+
+## 4.2.0 (2020-07-14)
+### New Features
+* Added script logging enabled API to `CosmosStoredProcedureRequestOptions`.
+* Updated `DirectConnectionConfig` default `idleEndpointTimeout` to 1h and default `connectTimeout` to 5s.
+### Key Bug Fixes
+* Fixed issue where `GatewayConnectionConfig` `idleConnectionTimeout` was overriding `DirectConnectionConfig` `idleConnectionTimeout`.
+* Fixed `responseContinuationTokenLimitInKb` get and set APIs in `CosmosQueryRequestOptions`.
+* Fixed issue in query and change feed when recreating the collection with same name.
+* Fixed issue with top query throwing ClassCastException.
+* Fixed issue with order by query throwing NullPointerException.
+* Fixed issue in handling of cancelled requests in direct mode causing reactor `onErrorDropped` being called. 
 
 ## 4.1.0 (2020-06-25)
 ### New Features

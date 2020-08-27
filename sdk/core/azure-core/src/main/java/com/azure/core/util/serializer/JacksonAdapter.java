@@ -250,12 +250,11 @@ public class JacksonAdapter implements SerializerAdapter {
             .registerModule(ByteArraySerializer.getModule())
             .registerModule(Base64UrlSerializer.getModule())
             .registerModule(DateTimeSerializer.getModule())
+            .registerModule(DateTimeDeserializer.getModule())
             .registerModule(DateTimeRfc1123Serializer.getModule())
             .registerModule(DurationSerializer.getModule())
             .registerModule(HttpHeadersSerializer.getModule())
-            .registerModule(UnixTimeSerializer.getModule())
-            .registerModule(GeometryDeserializer.MODULE)
-            .registerModule(GeometrySerializer.MODULE);
+            .registerModule(UnixTimeSerializer.getModule());
         mapper.setVisibility(mapper.getSerializationConfig().getDefaultVisibilityChecker()
             .withFieldVisibility(JsonAutoDetect.Visibility.ANY)
             .withSetterVisibility(JsonAutoDetect.Visibility.NONE)

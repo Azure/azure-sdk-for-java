@@ -4,6 +4,7 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
@@ -554,12 +555,11 @@ public class DataLakeFileClient extends DataLakePathClient {
         return new SimpleResponse<>(resp, new DataLakeFileClient(resp.getValue()));
     }
 
-    /* TODO (gapra): Populate Rest Api docs for quick query. */
     /**
      * Opens an input stream to query the file.
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -569,23 +569,24 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @return An <code>InputStream</code> object that represents the stream to use for reading the query response.
      */
     public InputStream openQueryInputStream(String expression) {
-        return openQueryInputStream(new FileQueryOptions(expression));
+        return openQueryInputStreamWithResponse(new FileQueryOptions(expression)).getValue();
     }
 
     /**
      * Opens an input stream to query the file.
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.openQueryInputStream#FileQueryOptions}
      *
      * @param queryOptions {@link FileQueryOptions The query options}.
-     * @return An <code>InputStream</code> object that represents the stream to use for reading the query response.
+     * @return A response containing status code and HTTP headers including an <code>InputStream</code> object
+     * that represents the stream to use for reading the query response.
      */
-    public InputStream openQueryInputStream(FileQueryOptions queryOptions) {
+    public Response<InputStream> openQueryInputStreamWithResponse(FileQueryOptions queryOptions) {
 
         // Data to subscribe to and read from.
         FileQueryAsyncResponse response = dataLakeFileAsyncClient.queryWithResponse(queryOptions)
@@ -595,14 +596,15 @@ public class DataLakeFileClient extends DataLakePathClient {
         if (response == null) {
             throw logger.logExceptionAsError(new IllegalStateException("Query response cannot be null"));
         }
-        return new FluxInputStream(response.getValue());
+        return new ResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            new FluxInputStream(response.getValue()), response.getDeserializedHeaders());
     }
 
     /**
      * Queries an entire file into an output stream.
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -621,7 +623,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * Queries an entire file into an output stream.
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
      *
      * <p><strong>Code Samples</strong></p>
      *

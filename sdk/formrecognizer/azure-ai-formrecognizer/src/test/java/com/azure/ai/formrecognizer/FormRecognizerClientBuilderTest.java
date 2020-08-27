@@ -18,12 +18,16 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.EXPECTED_HTTPS_EXCEPTION_MESSAGE;
+import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.INVALID_ENDPOINT;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_API_KEY;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_ENDPOINT;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL;
 import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.formrecognizer.TestUtils.FORM_JPG;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
+import static com.azure.ai.formrecognizer.TestUtils.VALID_HTTP_LOCALHOST;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -79,6 +83,33 @@ public class FormRecognizerClientBuilderTest extends TestBase {
     public void clientBuilderWithDefaultPipeline(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         clientBuilderWithDefaultPipelineRunner(httpClient, serviceVersion, clientBuilder -> (input) ->
             assertNotNull(clientBuilder.buildClient().beginRecognizeContentFromUrl(input).getFinalResult()));
+    }
+
+    /**
+     * Test for invalid endpoint, which throws connection refused exception message.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void clientBuilderWithInvalidEndpoint(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        clientBuilderWithDefaultPipelineRunner(httpClient, serviceVersion, clientBuilder -> (input) -> {
+            assertThrows(RuntimeException.class,
+                () -> clientBuilder.endpoint(INVALID_ENDPOINT).buildClient()
+                        .beginRecognizeContentFromUrl(input).getFinalResult());
+        });
+    }
+
+    /**
+     * Test for an valid http endpoint, which throws HTTPS requirement exception message.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void clientBuilderWithHttpEndpoint(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        clientBuilderWithDefaultPipelineRunner(httpClient, serviceVersion, clientBuilder -> (input) -> {
+            Exception exception = assertThrows(RuntimeException.class,
+                () -> clientBuilder.endpoint(VALID_HTTP_LOCALHOST).buildClient()
+                        .beginRecognizeContentFromUrl(input).getFinalResult());
+            assertEquals(EXPECTED_HTTPS_EXCEPTION_MESSAGE, exception.getMessage());
+        });
     }
 
     // Client builder runner

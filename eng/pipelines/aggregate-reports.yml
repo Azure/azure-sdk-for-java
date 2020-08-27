@@ -10,6 +10,11 @@ jobs:
     pool:
       vmImage: 'ubuntu-18.04'
     steps:
+
+    - template: ../common/pipelines/templates/steps/verify-links.yml
+      parameters:
+        Directory: ""
+
     - task: Maven@3
       displayName: 'Generate Reports'
       inputs:

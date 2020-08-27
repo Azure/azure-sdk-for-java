@@ -14,6 +14,7 @@ import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
@@ -87,13 +88,14 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     private final Runnable onClientClose;
     private final String entityName;
     private final ServiceBusConnectionProcessor connectionProcessor;
+    private final String viaEntityName;
 
     /**
      * Creates a new instance of this {@link ServiceBusSenderAsyncClient} that sends messages to a Service Bus entity.
      */
     ServiceBusSenderAsyncClient(String entityName, MessagingEntityType entityType,
-        ServiceBusConnectionProcessor connectionProcessor, AmqpRetryOptions retryOptions,
-        TracerProvider tracerProvider, MessageSerializer messageSerializer, Runnable onClientClose) {
+        ServiceBusConnectionProcessor connectionProcessor, AmqpRetryOptions retryOptions, TracerProvider tracerProvider,
+        MessageSerializer messageSerializer, Runnable onClientClose, String viaEntityName) {
         // Caching the created link so we don't invoke another link creation.
         this.messageSerializer = Objects.requireNonNull(messageSerializer,
             "'messageSerializer' cannot be null.");
@@ -104,7 +106,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         this.tracerProvider = tracerProvider;
         this.retryPolicy = getRetryPolicy(retryOptions);
         this.entityType = entityType;
-
+        this.viaEntityName = viaEntityName;
         this.onClientClose = onClientClose;
     }
 
@@ -552,7 +554,14 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
     private Mono<AmqpSendLink> getSendLink() {
         return connectionProcessor
-            .flatMap(connection -> connection.createSendLink(entityName, entityName, retryOptions))
+            .flatMap(connection -> {
+                if (!CoreUtils.isNullOrEmpty(viaEntityName)) {
+                    return connection.createSendLink("VIA-".concat(viaEntityName), viaEntityName, retryOptions,
+                        entityName);
+                } else {
+                    return connection.createSendLink(entityName, entityName, retryOptions, null);
+                }
+            })
             .doOnNext(next -> linkName.compareAndSet(null, next.getLinkName()));
     }
 

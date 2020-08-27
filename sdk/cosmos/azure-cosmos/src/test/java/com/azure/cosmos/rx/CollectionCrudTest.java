@@ -70,19 +70,6 @@ public class CollectionCrudTest extends TestSuiteBase {
         };
     }
 
-    private CosmosContainerProperties getCollectionDefinition(String collectionName) {
-        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
-        ArrayList<String> paths = new ArrayList<String>();
-        paths.add("/mypk");
-        partitionKeyDef.setPaths(paths);
-
-        CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(
-                collectionName,
-                partitionKeyDef);
-
-        return collectionDefinition;
-    }
-
     @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void createCollection(String collectionName) throws InterruptedException {
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
@@ -374,10 +361,6 @@ public class CollectionCrudTest extends TestSuiteBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void replaceProvisionedThroughput(){
-        final String databaseName = CosmosDatabaseForTest.generateId();
-        client.createDatabase(databaseName).block();
-        CosmosAsyncDatabase database = client.getDatabase(databaseName);
-
         CosmosContainerProperties containerProperties = new CosmosContainerProperties("testCol", "/myPk");
         database.createContainer(
             containerProperties,

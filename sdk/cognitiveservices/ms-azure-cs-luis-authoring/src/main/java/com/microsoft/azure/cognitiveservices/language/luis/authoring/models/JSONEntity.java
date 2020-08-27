@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -37,6 +38,12 @@ public class JSONEntity {
      */
     @JsonProperty(value = "role")
     private String role;
+
+    /**
+     * The children property.
+     */
+    @JsonProperty(value = "children")
+    private List<JSONEntity> children;
 
     /**
      * Get the startPos value.
@@ -115,6 +122,26 @@ public class JSONEntity {
      */
     public JSONEntity withRole(String role) {
         this.role = role;
+        return this;
+    }
+
+    /**
+     * Get the children value.
+     *
+     * @return the children value
+     */
+    public List<JSONEntity> children() {
+        return this.children;
+    }
+
+    /**
+     * Set the children value.
+     *
+     * @param children the children value to set
+     * @return the JSONEntity object itself.
+     */
+    public JSONEntity withChildren(List<JSONEntity> children) {
+        this.children = children;
         return this;
     }
 

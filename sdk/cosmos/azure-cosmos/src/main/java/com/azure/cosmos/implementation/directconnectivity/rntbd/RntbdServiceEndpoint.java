@@ -213,7 +213,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             if (released.isDone()) {
                 ensureSuccessWhenReleasedToPool(channel, released);
             } else {
-                this.channelPool.release(channel).addListener(ignored -> ensureSuccessWhenReleasedToPool(channel, released));
+                released.addListener(ignored -> ensureSuccessWhenReleasedToPool(channel, released));
             }
         }
     }
@@ -314,7 +314,10 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         private final RntbdRequestTimer requestTimer;
         private final RntbdTransportClient transportClient;
 
-        public Provider(final RntbdTransportClient transportClient, final Options options, final SslContext sslContext) {
+        public Provider(
+            final RntbdTransportClient transportClient,
+            final Options options,
+            final SslContext sslContext) {
 
             checkNotNull(transportClient, "expected non-null provider");
             checkNotNull(options, "expected non-null options");

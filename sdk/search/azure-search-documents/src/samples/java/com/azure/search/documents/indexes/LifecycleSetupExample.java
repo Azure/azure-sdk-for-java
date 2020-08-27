@@ -29,7 +29,7 @@ import java.util.List;
 
 /**
  * This scenario assumes an existing search solution and uses a pre-population data source with sample data set
- * For more information visit Azure Search Sample Data:
+ * For more information visit Azure Cognitive Search Sample Data:
  * https://docs.microsoft.com/en-us/samples/azure-samples/azure-search-sample-data/azure-search-sample-data/
  */
 public class LifecycleSetupExample {
@@ -167,8 +167,7 @@ public class LifecycleSetupExample {
         SearchIndex index = new SearchIndex(INDEX_NAME, fields);
 
         // Set Suggester
-        index.setSuggesters(Collections.singletonList(new SearchSuggester(SUGGESTER_NAME,
-            Collections.singletonList("Tags"))));
+        index.setSuggesters(new SearchSuggester(SUGGESTER_NAME, Collections.singletonList("Tags")));
 
         return client.createOrUpdateIndex(index);
     }

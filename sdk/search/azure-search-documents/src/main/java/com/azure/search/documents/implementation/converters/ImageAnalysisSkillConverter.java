@@ -5,10 +5,8 @@ package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.ImageAnalysisSkill;
 import com.azure.search.documents.indexes.models.ImageAnalysisSkillLanguage;
-import com.azure.search.documents.indexes.models.ImageDetail;
 import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
-import com.azure.search.documents.indexes.models.VisualFeature;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,9 +42,9 @@ public final class ImageAnalysisSkillConverter {
         imageAnalysisSkill.setDescription(description);
 
         if (obj.getVisualFeatures() != null) {
-            List<VisualFeature> visualFeatures =
-                obj.getVisualFeatures().stream().map(VisualFeatureConverter::map).collect(Collectors.toList());
-            imageAnalysisSkill.setVisualFeatures(visualFeatures);
+            imageAnalysisSkill.setVisualFeatures(obj.getVisualFeatures().stream()
+                .map(VisualFeatureConverter::map)
+                .collect(Collectors.toList()));
         }
 
         if (obj.getDefaultLanguageCode() != null) {
@@ -56,9 +54,9 @@ public final class ImageAnalysisSkillConverter {
         }
 
         if (obj.getDetails() != null) {
-            List<ImageDetail> details =
-                obj.getDetails().stream().map(ImageDetailConverter::map).collect(Collectors.toList());
-            imageAnalysisSkill.setDetails(details);
+            imageAnalysisSkill.setDetails(obj.getDetails().stream()
+                .map(ImageDetailConverter::map)
+                .collect(Collectors.toList()));
         }
         return imageAnalysisSkill;
     }

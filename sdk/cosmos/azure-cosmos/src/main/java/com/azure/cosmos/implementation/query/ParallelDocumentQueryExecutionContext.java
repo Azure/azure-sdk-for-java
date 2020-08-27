@@ -4,21 +4,21 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.implementation.Resource;
-import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RequestChargeTracker;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.SqlQuerySpec;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.concurrent.Queues;
@@ -60,37 +60,29 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
 
     public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
             IDocumentQueryClient client,
-            ResourceType resourceTypeEnum,
-            Class<T> resourceType,
-            SqlQuerySpec query,
-            CosmosQueryRequestOptions cosmosQueryRequestOptions,
-            String resourceLink,
-            String collectionRid,
-            PartitionedQueryExecutionInfo partitionedQueryExecutionInfo,
-            List<PartitionKeyRange> targetRanges,
-            int initialPageSize,
-            boolean isContinuationExpected,
-            boolean getLazyFeedResponse,
-            UUID correlatedActivityId) {
+            PipelinedDocumentQueryParams<T> initParams) {
 
-        ParallelDocumentQueryExecutionContext<T> context = new ParallelDocumentQueryExecutionContext<T>(client,
-                targetRanges,
-                resourceTypeEnum,
-                resourceType,
-                query,
-                cosmosQueryRequestOptions,
-                resourceLink,
-                partitionedQueryExecutionInfo.getQueryInfo().getRewrittenQuery(),
-                collectionRid,
-                isContinuationExpected,
-                getLazyFeedResponse,
-                correlatedActivityId);
+        ParallelDocumentQueryExecutionContext<T> context = new ParallelDocumentQueryExecutionContext<T>(
+                client,
+                initParams.getPartitionKeyRanges(),
+                initParams.getResourceTypeEnum(),
+                initParams.getResourceType(),
+                initParams.getQuery(),
+                initParams.getCosmosQueryRequestOptions(),
+                initParams.getResourceLink(),
+                initParams.getQueryInfo().getRewrittenQuery(),
+                initParams.getCollectionRid(),
+                initParams.isContinuationExpected(),
+                initParams.isGetLazyResponseFeed(),
+                initParams.getCorrelatedActivityId());
+        context.setTop(initParams.getTop());
 
         try {
-            context.initialize(collectionRid,
-                    targetRanges,
-                    initialPageSize,
-                    ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(cosmosQueryRequestOptions));
+            context.initialize(
+                    initParams.getCollectionRid(),
+                    initParams.getPartitionKeyRanges(),
+                    initParams.getInitialPageSize(),
+                    ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(initParams.getCosmosQueryRequestOptions()));
             return Flux.just(context);
         } catch (CosmosException dce) {
             return Flux.error(dce);
@@ -228,8 +220,9 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE,
                     String.valueOf(pageCharge));
             FeedResponse<T> newPage = BridgeInternal.createFeedResponseWithQueryMetrics(page.getResults(),
-                    headers,
-                BridgeInternal.queryMetricsFromFeedResponse(page));
+                headers,
+                BridgeInternal.queryMetricsFromFeedResponse(page),
+                ModelBridgeInternal.getQueryPlanDiagnosticsContext(page));
             documentProducerFeedResponse.pageResult = newPage;
             return documentProducerFeedResponse;
         }
@@ -242,8 +235,10 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             headers.put(HttpConstants.HttpHeaders.CONTINUATION,
                     compositeContinuationToken);
             FeedResponse<T> newPage = BridgeInternal.createFeedResponseWithQueryMetrics(page.getResults(),
-                    headers,
-                BridgeInternal.queryMetricsFromFeedResponse(page));
+                headers,
+                BridgeInternal.queryMetricsFromFeedResponse(page),
+                ModelBridgeInternal.getQueryPlanDiagnosticsContext(page)
+            );
             documentProducerFeedResponse.pageResult = newPage;
             return documentProducerFeedResponse;
         }

@@ -69,7 +69,7 @@ final class AzureResource {
          */
         Path parent = this.path.getParent();
         return (parent == null || parent.equals(path.getRoot()))
-            || new AzureResource((AzurePath) this.path.getParent()).checkDirectoryExists();
+            || new AzureResource(this.path.getParent()).checkDirectoryExists();
     }
 
     /**

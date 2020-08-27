@@ -1,10 +1,34 @@
 # Release History
 
-## 11.0.0 (Unreleased)
+## 11.1.0-beta.2 (Unreleased)
+
+
+## 11.1.0-beta.1 (2020-08-12)
+
+- Added `buildSearchFields` API to `SearchIndexClient` and `SearchIndexAsyncClient` to aid in creating `SearchField`s from the passed `Class`.
+- Added `SearchableFieldProperty`, `SimpleFieldProperty`, and `FieldBuilderIgnore` to annotate `Class`es passed into `buildSearchFields`.
+- Added `getDefaultLogOptions` to `SearchClientBuilder`, `SearchIndexCleintBuilder`, and `SearchIndexerClientBuilder`. Updated client construction to use default log options by default.
+- Added the ability for clients to accept a `JsonSerializer` to specify a custom JSON serialization layer when dealing with Search documents.
+
+## 11.0.0 (2020-07-13)
+
 - Changed version to 11.0.0.
-- Removed preview version `SearchClientOptions.ServiceVersion.V2019_05_06_Preview`
-  and added version `SearchClientOptions.ServiceVersion.V2020_06_30`.
-- Added value constructors for required parameters.
+- Removed preview version `SearchClientOptions.ServiceVersion.V2019_05_06_Preview` and added version `SearchClientOptions.ServiceVersion.V2020_06_30`.
+
+### New Features
+
+- Added `IndexDocumentsOptions` used to configure document operations.
+
+### Breaking Changes
+
+- Moved search result metadata to `SearchPagedFlux` and `SearchPagedIterable` from `SearchPagedResponse`.
+- Changed many model classes from fluent setter pattern to immutable constructor pattern.
+- Removed `RequestOptions` from APIs, instead use pipeline context to pass per method contextual information.
+- Removed strongly type GeoJSON classes.
+
+### Bug Fixes
+
+- Removed `implementation` classes from APIs.
 
 ## 1.0.0-beta.4 (2020-06-09)
 - Split `SearchServiceClient` into two clients `SearchIndexClient`, `SearchIndexerClient`.

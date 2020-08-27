@@ -112,10 +112,11 @@ public final class UploadBufferPool {
             // We will overflow the current buffer and require another one.
             // Duplicate and adjust the window of buf so that we fill up currentBuf without going out of bounds.
             ByteBuffer duplicate = buf.duplicate();
-            duplicate.limit(buf.position() + (int) this.currentBuf.remainingCapacity());
+            int newLimit = buf.position() + (int) this.currentBuf.remainingCapacity();
+            duplicate.limit(newLimit);
             this.currentBuf.append(duplicate);
             // Adjust the window of original buffer to represent remaining part.
-            buf.position(buf.position() + (int) this.currentBuf.remainingCapacity());
+            buf.position(newLimit);
 
             result = Flux.just(this.currentBuf);
 

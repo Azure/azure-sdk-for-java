@@ -5,7 +5,7 @@ master_key=$ctl_key
 
 if [ -z "$ctl_operation" ]
 then
-operation=ReadLatency
+operation=CtlWorkload
 else
 operation=$ctl_operation
 fi

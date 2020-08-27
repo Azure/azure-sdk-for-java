@@ -50,9 +50,6 @@ public class AvroParser {
     private boolean partialRead; /* Whether or not the Avro Parser will read the Header and Block off different
                                      streams. This is custom functionality for Changefeed. */
 
-    private long objectBlockIndex; /* Index of the object in the block. */
-    private long blockOffset; /* Offset of block. */
-
     /**
      * Constructs a new Avro Parser object.
      */
@@ -106,31 +103,26 @@ public class AvroParser {
 
         /* On reading the header, read a block. */
         if (!partialRead) { /* Only do this if we are reading the stream from start to finish. */
-            onBlock(-1L);
+            onBlock(0L);
         }
     }
 
     /**
      * Block handler.
      *
-     * @param index The object index after which to start aggregating events in the block.
+     * @param beginObjectIndex The object index after which to start aggregating events in the block.
      *                         By default this is 0 to collect all objects in the block.
      */
-    private void onBlock(Object index) {
+    private void onBlock(Object beginObjectIndex) {
         /* On reading the block, read another block. */
-        AvroSchema.checkType("objectBlockIndex", index, Long.class);
-        long threshold = (Long) index;
+        AvroSchema.checkType("beginObjectIndex", beginObjectIndex, Long.class);
 
-        this.blockOffset = this.state.getSourceOffset();
-        this.objectBlockIndex = 0;
-        AvroBlockSchema blockSchema = new AvroBlockSchema(
+        final AvroBlockSchema blockSchema = new AvroBlockSchema(
             this.objectType,
+            (Long) beginObjectIndex,
             o -> {
-                if (objectBlockIndex <= threshold) {
-                    this.objectBlockIndex++;
-                } else {
-                    this.objects.add(new AvroObject(blockOffset, this.objectBlockIndex++, o));
-                }
+                AvroSchema.checkType("object", o, AvroObject.class);
+                this.objects.add((AvroObject) o);
             }, /* Object result handler. */
             this.syncMarker,
             this.state,

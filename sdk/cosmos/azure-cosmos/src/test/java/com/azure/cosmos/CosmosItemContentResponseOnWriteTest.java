@@ -7,19 +7,16 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.InternalObjectNode;
-import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -104,17 +101,6 @@ public class CosmosItemContentResponseOnWriteTest extends TestSuiteBase {
                                                                     options);
         assertThat(deleteResponse.getStatusCode()).isEqualTo(204);
         validateMinimalItemResponse(properties, deleteResponse, false);
-    }
-
-    private CosmosContainerProperties getCollectionDefinition(String collectionName) {
-        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
-        ArrayList<String> paths = new ArrayList<String>();
-        paths.add("/mypk");
-        partitionKeyDef.setPaths(paths);
-
-        return new CosmosContainerProperties(
-            collectionName,
-            partitionKeyDef);
     }
 
     private InternalObjectNode getDocumentDefinition(String documentId) {

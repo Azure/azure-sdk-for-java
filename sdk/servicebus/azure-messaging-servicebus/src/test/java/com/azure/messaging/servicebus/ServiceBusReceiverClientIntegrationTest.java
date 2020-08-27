@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -114,7 +113,6 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         final int maxMessages = 2;
         final int totalReceive = 2;
         final Duration shortTimeOut = Duration.ofSeconds(7);
-        final Duration longTimeOut = Duration.ofSeconds(10);
 
         final String messageId = UUID.randomUUID().toString();
         List<ServiceBusMessage> messageList = new ArrayList<>();
@@ -122,17 +120,12 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
             messageList.add(getMessage(messageId, isSessionEnabled));
         }
 
-        Mono.just(true)
-            .delayElement(longTimeOut)
-            .map(aBoolean -> {
-                sendMessages(messageList);
-                return aBoolean;
-            })
-            .subscribe();
         // Act & Assert
         IterableStream<ServiceBusReceivedMessageContext> messages = receiver.receiveMessages(maxMessages, shortTimeOut);
         long received = messages.stream().count();
         assertEquals(0, received);
+
+        sendMessages(messageList);
 
         int receivedMessageCount;
         int totalReceivedCount = 0;
@@ -255,12 +248,15 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void receiveTwoMessagesAndComplete(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSenderAndReceiver(entityType, 0, isSessionEnabled);
-        int maxMessages = 2;
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_RECEIVE_MORE_AND_COMPLETE, isSessionEnabled);
+        int maxMessages = 5;
+        int messagesToSend = 4;
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
 
+        sendMessage(message);
+        sendMessage(message);
         sendMessage(message);
         sendMessage(message);
 
@@ -269,6 +265,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         // Assert
         int receivedMessageCount = 0;
+        final long startTime = System.currentTimeMillis();
         for (ServiceBusReceivedMessageContext context : messages) {
             ServiceBusReceivedMessage receivedMessage = context.getMessage();
             assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
@@ -276,8 +273,9 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
             messagesPending.decrementAndGet();
             ++receivedMessageCount;
         }
-
-        assertEquals(maxMessages, receivedMessageCount);
+        final long endTime = System.currentTimeMillis();
+        assertEquals(messagesToSend, receivedMessageCount);
+        assertTrue(TIMEOUT.toMillis() > (endTime - startTime));
     }
 
     /**

@@ -1,0 +1,22 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.servicebus.windows.net/topic-1/subscriptions/subscription-session-not-exist?enrich=true&api-version=2017-04",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-messaging-servicebus/7.0.0-beta.4 (11.0.5; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=31536000",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "ETag" : "637293228523500000",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "Body" : "<Error><Code>404</Code><Detail>Entity 'sb-java-conniey-1:Topic:topic-1|subscription-session-not-exist' was not found. To know more visit https://aka.ms/sbResourceMgrExceptions.  TrackingId:22b5c9e6-e962-4ba3-8a3b-078a4f7070ac_B7, SystemTracker:NoSystemTracker, Timestamp:2020-07-02T22:49:14</Detail></Error>",
+      "Date" : "Thu, 02 Jul 2020 22:49:14 GMT",
+      "Content-Type" : "application/xml; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

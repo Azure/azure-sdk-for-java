@@ -27,6 +27,7 @@ import spock.lang.Specification
 
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
+import java.time.Duration
 import java.time.OffsetDateTime
 
 class APISpec extends Specification {
@@ -442,5 +443,9 @@ class APISpec extends Specification {
         }
 
         sleep(milliseconds)
+    }
+
+    def getPollingDuration(long liveTestDurationInMillis) {
+        return (testMode == TestMode.PLAYBACK) ? Duration.ofMillis(10) : Duration.ofMillis(liveTestDurationInMillis)
     }
 }

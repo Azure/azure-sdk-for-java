@@ -44,4 +44,21 @@ public class ObservableHelper {
             return BackoffRetryUtility.executeRetry(() -> function.call(), retryPolicy);
         }
     }
+
+    static public <T> Flux<T> fluxInlineIfPossibleAsObs(Callable<Flux<T>> function, IRetryPolicy retryPolicy) {
+
+        if (retryPolicy == null) {
+            // shortcut
+            return Flux.defer(() -> {
+                try {
+                    return function.call();
+                } catch (Exception e) {
+                    return Flux.error(e);
+                }
+            });
+
+        } else {
+            return BackoffRetryUtility.fluxExecuteRetry(() -> function.call(), retryPolicy);
+        }
+    }
 }

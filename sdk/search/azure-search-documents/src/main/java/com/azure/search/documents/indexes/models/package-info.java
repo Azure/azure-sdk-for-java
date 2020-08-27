@@ -2,8 +2,7 @@
 // Licensed under the MIT License.
 
 /**
- * Package containing the data models for SearchServiceRestClient.
- * Client that can be used to manage and query indexes and documents, as well
- * as manage other resources, on a search service.
+ * Package containing classes used for resource management operations that are being sent-to and received-from an
+ * Azure Cognitive Search service.
  */
 package com.azure.search.documents.indexes.models;

@@ -14,12 +14,13 @@ import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 public final class GroupByDocumentQueryExecutionContext<T extends Resource> implements
     IDocumentQueryExecutionComponent<T> {
@@ -40,11 +41,12 @@ public final class GroupByDocumentQueryExecutionContext<T extends Resource> impl
     }
 
     public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
-        Function<String, Flux<IDocumentQueryExecutionComponent<T>>> createSourceComponentFunction,
+        BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createSourceComponentFunction,
         String continuationToken,
         Map<String, AggregateOperator> groupByAliasToAggregateType,
         List<String> orderedAliases,
-        boolean hasSelectValue) {
+        boolean hasSelectValue,
+        PipelinedDocumentQueryParams<T> documentQueryParams) {
         if (continuationToken != null) {
             CosmosException dce = new BadRequestException(CONTINUATION_TOKEN_NOT_SUPPORTED_WITH_GROUP_BY);
             return Flux.error(dce);
@@ -57,7 +59,7 @@ public final class GroupByDocumentQueryExecutionContext<T extends Resource> impl
         }
         GroupingTable table = new GroupingTable(groupByAliasToAggregateType, orderedAliases, hasSelectValue);
         // Have to pass non-null continuation token once supported
-        return createSourceComponentFunction.apply(null)
+        return createSourceComponentFunction.apply(null, documentQueryParams)
                    .map(component -> new GroupByDocumentQueryExecutionContext<>(component,
                                                                                 table));
     }
@@ -66,32 +68,51 @@ public final class GroupByDocumentQueryExecutionContext<T extends Resource> impl
     @Override
     public Flux<FeedResponse<T>> drainAsync(int maxPageSize) {
         return this.component.drainAsync(maxPageSize)
-                   .collectList()
-                   .map(superList -> {
-                       double requestCharge = 0;
-                       HashMap<String, String> headers = new HashMap<>();
-                       List<Document> documentList = new ArrayList<>();
-                       /* Do groupby stuff here */
-                       // Stage 1:
-                       // Drain the groupings fully from all continuation and all partitions
-                       for (FeedResponse<T> page : superList) {
-                           List<Document> results = (List<Document>) page.getResults();
-                           documentList.addAll(results);
-                       }
+            .collectList()
+            .map(superList -> {
+                double requestCharge = 0;
+                HashMap<String, String> headers = new HashMap<>();
+                List<Document> documentList = new ArrayList<>();
+                /* Do groupBy stuff here */
+                // Stage 1:
+                // Drain the groupings fully from all continuation and all partitions
+                for (FeedResponse<T> page : superList) {
+                    List<Document> results = (List<Document>) page.getResults();
+                    documentList.addAll(results);
+                    requestCharge += page.getRequestCharge();
+                }
 
-                       this.aggregateGroupings(documentList);
+                this.aggregateGroupings(documentList);
 
-                       // Stage 2:
-                       // Emit the results from the grouping table page by page
+                // Stage 2:
+                // Emit the results from the grouping table page by page
+                return createFeedResponseFromGroupingTable(maxPageSize, requestCharge);
+            }).expand(tFeedResponse -> {
+                // For groupBy query, we have already drained everything for the first page request
+                // so for following requests, we will just need to drain page by page from the grouping table
+                FeedResponse<T> response = createFeedResponseFromGroupingTable(maxPageSize, 0);
+                if (response == null) {
+                    return Mono.empty();
+                }
+                return Mono.just(response);
+            });
+    }
 
-                       List<Document> groupByResults = this.groupingTable.drain(maxPageSize);
+    @SuppressWarnings("unchecked") // safe to upcast
+    private FeedResponse<T> createFeedResponseFromGroupingTable(int pageSize, double requestCharge) {
+        if (this.groupingTable != null) {
+            List<Document> groupByResults = groupingTable.drain(pageSize);
+            if (groupByResults.size() == 0) {
+                return null;
+            }
 
-                       headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double.toString(requestCharge));
-                       FeedResponse<Document> frp =
-                           BridgeInternal.createFeedResponse(groupByResults, headers);
+            HashMap<String, String> headers = new HashMap<>();
+            headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double.toString(requestCharge));
+            FeedResponse<Document> frp = BridgeInternal.createFeedResponse(groupByResults, headers);
+            return (FeedResponse<T>) frp;
+        }
 
-                       return (FeedResponse<T>) frp;
-                   }).flux();
+        return null;
     }
 
     private void aggregateGroupings(List<Document> superList) {
