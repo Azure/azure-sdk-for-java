@@ -60,6 +60,7 @@ public final class DigitalTwinsClient {
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be created.
      * @param relationship The application/json relationship to be created.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A REST response containing the application/json relationship created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -72,6 +73,7 @@ public final class DigitalTwinsClient {
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipName The name of a relationship to filter to.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link PagedIterable} of application/json relationships belonging to the specified digital twin and the http response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
