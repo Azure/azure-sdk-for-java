@@ -39,6 +39,14 @@ $XMLFileStart = @"
   <artifactId>azure-sdk-all</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
+
+  <parent>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-client-sdk-parent</artifactId>
+    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+    <relativePath>sdk/parents/azure-client-sdk-parent</relativePath>
+  </parent>
+
   <modules>
 
 "@
