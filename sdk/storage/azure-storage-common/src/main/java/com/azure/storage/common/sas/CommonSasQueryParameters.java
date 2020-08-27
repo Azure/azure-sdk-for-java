@@ -65,7 +65,7 @@ public class CommonSasQueryParameters {
 
     private final Integer directoryDepth;
 
-    private final String aadObjectId;
+    private final String authorizedObjectId;
 
     private final String unauthorizedObjectId;
 
@@ -123,7 +123,7 @@ public class CommonSasQueryParameters {
             removeSasParametersFromMap);
         this.contentType = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CONTENT_TYPE,
             removeSasParametersFromMap);
-        this.aadObjectId = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_AAD_OBJECT_ID,
+        this.authorizedObjectId = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_AUTHORIZED_OBJECT_ID,
             removeSasParametersFromMap);
         this.unauthorizedObjectId = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_UNAUTHORIZED_OBJECT_ID,
             removeSasParametersFromMap);
@@ -213,7 +213,7 @@ public class CommonSasQueryParameters {
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_ENCODING, this.contentEncoding);
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_LANGUAGE, this.contentLanguage);
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_TYPE, this.contentType);
-        SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_AAD_OBJECT_ID, this.aadObjectId);
+        SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_AUTHORIZED_OBJECT_ID, this.authorizedObjectId);
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_UNAUTHORIZED_OBJECT_ID,
             this.unauthorizedObjectId);
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CORRELATION_ID, this.correlationId);
@@ -390,8 +390,8 @@ public class CommonSasQueryParameters {
      * @return The AAD object ID of a user authorized by the owner of the user delegation key to perform the action
      * granted by the SAS token.
      */
-    public String getAadObjectId() {
-        return aadObjectId;
+    public String getAuthorizedObjectId() {
+        return authorizedObjectId;
     }
 
     /**

@@ -25,7 +25,7 @@ import java.time.OffsetDateTime;
  */
 public final class DataLakeServiceSasSignatureValues {
 
-    private String version = DataLakeServiceVersion.getLatest().getVersion();
+    private final String version = DataLakeServiceVersion.getLatest().getVersion();
 
     private SasProtocol protocol;
 
