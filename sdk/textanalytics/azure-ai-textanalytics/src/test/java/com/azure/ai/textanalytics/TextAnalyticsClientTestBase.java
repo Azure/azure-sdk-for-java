@@ -11,7 +11,7 @@ import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
-import com.azure.ai.textanalytics.models.MinedOpinions;
+import com.azure.ai.textanalytics.models.MinedOpinion;
 import com.azure.ai.textanalytics.models.OpinionSentiment;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
@@ -831,12 +831,12 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      * @param expectedMinedOpinions a list of mined opinions returned by the service.
      * @param actualMinedOpinions a list of mined opinions returned by the API.
      */
-    static void validateSentenceMinedOpinions(List<MinedOpinions> expectedMinedOpinions,
-        List<MinedOpinions> actualMinedOpinions) {
+    static void validateSentenceMinedOpinions(List<MinedOpinion> expectedMinedOpinions,
+        List<MinedOpinion> actualMinedOpinions) {
         assertEquals(expectedMinedOpinions.size(), actualMinedOpinions.size());
         for (int i = 0; i < actualMinedOpinions.size(); i++) {
-            final MinedOpinions expectedMinedOpinion = expectedMinedOpinions.get(i);
-            final MinedOpinions actualMinedOpinion = actualMinedOpinions.get(i);
+            final MinedOpinion expectedMinedOpinion = expectedMinedOpinions.get(i);
+            final MinedOpinion actualMinedOpinion = actualMinedOpinions.get(i);
             validateAspectSentiment(expectedMinedOpinion.getAspect(), actualMinedOpinion.getAspect());
             validateAspectOpinionList(expectedMinedOpinion.getOpinions().stream().collect(Collectors.toList()),
                 actualMinedOpinion.getOpinions().stream().collect(Collectors.toList()));

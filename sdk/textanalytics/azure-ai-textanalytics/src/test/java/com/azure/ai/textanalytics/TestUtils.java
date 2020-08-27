@@ -17,7 +17,7 @@ import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
-import com.azure.ai.textanalytics.models.MinedOpinions;
+import com.azure.ai.textanalytics.models.MinedOpinion;
 import com.azure.ai.textanalytics.models.OpinionSentiment;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
@@ -342,7 +342,7 @@ final class TestUtils {
             new SentimentConfidenceScores(0.0, 0.0, 0.0),
             new IterableStream<>(asList(
                 new SentenceSentiment("The hotel was dark and unclean.", TextSentiment.NEGATIVE,
-                    new IterableStream<>(asList(new MinedOpinions(
+                    new IterableStream<>(asList(new MinedOpinion(
                         new AspectSentiment("hotel", TextSentiment.NEGATIVE, 4, 5, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
                         new IterableStream<>(asList(
                             new OpinionSentiment("dark", TextSentiment.NEGATIVE, 14, 4, false, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
@@ -350,7 +350,7 @@ final class TestUtils {
                         ))))),
                     new SentimentConfidenceScores(0.0, 0.0, 0.0)),
                 new SentenceSentiment("The restaurant had amazing gnocchi.", TextSentiment.POSITIVE,
-                    new IterableStream<>(asList(new MinedOpinions(
+                    new IterableStream<>(asList(new MinedOpinion(
                         new AspectSentiment("gnocchi", TextSentiment.POSITIVE, 59, 7, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
                         new IterableStream<>(asList(
                             new OpinionSentiment("amazing", TextSentiment.POSITIVE, 51, 7, false, new SentimentConfidenceScores(0.0, 0.0, 0.0))
@@ -367,14 +367,14 @@ final class TestUtils {
             new SentimentConfidenceScores(0.0, 0.0, 0.0),
             new IterableStream<>(asList(
                 new SentenceSentiment("The restaurant had amazing gnocchi.", TextSentiment.POSITIVE,
-                    new IterableStream<>(asList(new MinedOpinions(
+                    new IterableStream<>(asList(new MinedOpinion(
                         new AspectSentiment("gnocchi", TextSentiment.POSITIVE, 27, 7, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
                         new IterableStream<>(asList(
                             new OpinionSentiment("amazing", TextSentiment.POSITIVE, 19, 7, false, new SentimentConfidenceScores(0.0, 0.0, 0.0))
                         ))))),
                     new SentimentConfidenceScores(0.0, 0.0, 0.0)),
                 new SentenceSentiment("The hotel was dark and unclean.", TextSentiment.NEGATIVE,
-                    new IterableStream<>(asList(new MinedOpinions(
+                    new IterableStream<>(asList(new MinedOpinion(
                         new AspectSentiment("hotel", TextSentiment.NEGATIVE, 40, 5, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
                         new IterableStream<>(asList(
                             new OpinionSentiment("dark", TextSentiment.NEGATIVE, 50, 4, false, new SentimentConfidenceScores(0.0, 0.0, 0.0)),

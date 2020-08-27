@@ -6,19 +6,19 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link MinedOpinions} model.
+ * The {@link MinedOpinion} model.
  */
-public final class MinedOpinions {
+public final class MinedOpinion {
     private final AspectSentiment aspect;
     private final IterableStream<OpinionSentiment> opinions;
 
     /**
-     * Create an {@link MinedOpinions} model that describes the mined opinions.
+     * Create an {@link MinedOpinion} model that describes the mined opinions.
      *
      * @param aspect The aspect of a product/service that the opinions is about.
      * @param opinions The opinions of the aspect text.
      */
-    public MinedOpinions(AspectSentiment aspect, IterableStream<OpinionSentiment> opinions) {
+    public MinedOpinion(AspectSentiment aspect, IterableStream<OpinionSentiment> opinions) {
         this.aspect = aspect;
         this.opinions = opinions;
     }

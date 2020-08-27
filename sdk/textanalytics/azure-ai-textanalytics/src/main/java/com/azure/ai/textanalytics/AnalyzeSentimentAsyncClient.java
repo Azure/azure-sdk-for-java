@@ -19,7 +19,7 @@ import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.AspectSentiment;
-import com.azure.ai.textanalytics.models.MinedOpinions;
+import com.azure.ai.textanalytics.models.MinedOpinion;
 import com.azure.ai.textanalytics.models.OpinionSentiment;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
@@ -219,7 +219,7 @@ class AnalyzeSentimentAsyncClient {
     /*
      * Transform SentenceSentiment's opinion mining to output that user can use.
      */
-    private IterableStream<MinedOpinions> toMinedOpinionList(
+    private IterableStream<MinedOpinion> toMinedOpinionList(
         com.azure.ai.textanalytics.implementation.models.SentenceSentiment sentenceSentiment,
         List<DocumentSentiment> documentSentimentList) {
         // If include opinion mining indicator is false, the service return null for the aspect list.
@@ -227,7 +227,7 @@ class AnalyzeSentimentAsyncClient {
         if (sentenceAspects == null) {
             return null;
         }
-        final List<MinedOpinions> minedOpinions = new ArrayList<>();
+        final List<MinedOpinion> minedOpinions = new ArrayList<>();
         sentenceAspects.forEach(sentenceAspect -> {
             final List<OpinionSentiment> opinionSentiments = new ArrayList<>();
             sentenceAspect.getRelations().forEach(aspectRelation -> {
@@ -239,7 +239,7 @@ class AnalyzeSentimentAsyncClient {
                 }
             });
 
-            minedOpinions.add(new MinedOpinions(
+            minedOpinions.add(new MinedOpinion(
                 new AspectSentiment(sentenceAspect.getText(),
                     TextSentiment.fromString(sentenceAspect.getSentiment().toString()),
                     sentenceAspect.getOffset(), sentenceAspect.getLength(),
@@ -272,26 +272,27 @@ class AnalyzeSentimentAsyncClient {
     /*
      * Parses the reference pointer to an index array that contains document, sentence, and opinion indexes.
      */
-    private int[] parseRefPointerToIndexArray(String referencePointer) {
+    int[] parseRefPointerToIndexArray(String opinionPointer) {
         // The pattern always start with character '#', the opinion index will existing in specified sentence, which
         // is under specified document.
         // example: #/documents/0/sentences/0/opinions/0
         final String patternRegex = "#\\/documents\\/(\\d+)\\/sentences\\/(\\d+)\\/opinions\\/(\\d+)";
         final Pattern pattern = Pattern.compile(patternRegex);
-        final Matcher matcher = pattern.matcher(referencePointer);
+        final Matcher matcher = pattern.matcher(opinionPointer);
         final boolean isMatched = matcher.find();
 
         // The first index represents the document index, second one represents the sentence index,
         // third ond represents the opinion index.
         final int[] result = new int[3];
+
         if (isMatched) {
-            String[] segments = referencePointer.split("/");
+            String[] segments = opinionPointer.split("/");
             result[0] = Integer.parseInt(segments[2]);
             result[1] = Integer.parseInt(segments[4]);
             result[2] = Integer.parseInt(segments[6]);
         } else {
-            throw logger.logExceptionAsError(new RuntimeException(
-                String.format("'referencePointer' %s is not a valid opinion pointer", referencePointer)));
+            throw logger.logExceptionAsError(new IllegalStateException(
+                String.format("'%s' is not a valid opinion pointer.", opinionPointer)));
         }
 
         return result;
@@ -300,28 +301,28 @@ class AnalyzeSentimentAsyncClient {
     /*
      * Find the specific sentence opinion in the document sentiment list by given the opinion reference pointer.
      */
-    private SentenceOpinion findSentimentOpinion(String opinionPointer, List<DocumentSentiment> documentSentimentList) {
+    SentenceOpinion findSentimentOpinion(String opinionPointer, List<DocumentSentiment> documentSentiments) {
         final int[] opinionIndexes = parseRefPointerToIndexArray(opinionPointer);
         final int documentIndex = opinionIndexes[0];
         final int sentenceIndex = opinionIndexes[1];
         final int opinionIndex = opinionIndexes[2];
-        if (documentIndex >= documentSentimentList.size()) {
-            throw logger.logExceptionAsError(
-                new RuntimeException(String.format("Invalid document index, %s.", documentIndex)));
+        if (documentIndex >= documentSentiments.size()) {
+            throw logger.logExceptionAsError(new IllegalStateException(
+                String.format("Invalid document index '%s' in '%s'.", documentIndex, opinionPointer)));
         }
-        final DocumentSentiment documentsentiment = documentSentimentList.get(documentIndex);
+        final DocumentSentiment documentsentiment = documentSentiments.get(documentIndex);
 
         final List<com.azure.ai.textanalytics.implementation.models.SentenceSentiment> sentenceSentiments =
             documentsentiment.getSentences();
         if (sentenceIndex >= sentenceSentiments.size()) {
-            throw logger.logExceptionAsError(
-                new RuntimeException(String.format("Invalid sentence index, %s.", sentenceIndex)));
+            throw logger.logExceptionAsError(new IllegalStateException(
+                String.format("Invalid sentence index '%s' in '%s'.", sentenceIndex, opinionPointer)));
         }
 
         final List<SentenceOpinion> opinions = sentenceSentiments.get(sentenceIndex).getOpinions();
         if (opinionIndex >= opinions.size()) {
-            throw logger.logExceptionAsError(
-                new RuntimeException(String.format("Invalid opinion index, %s.", opinionIndex)));
+            throw logger.logExceptionAsError(new IllegalStateException(
+                String.format("Invalid opinion index '%s' in '%s'.", opinionIndex, opinionPointer)));
         }
         return opinions.get(opinionIndex);
     }

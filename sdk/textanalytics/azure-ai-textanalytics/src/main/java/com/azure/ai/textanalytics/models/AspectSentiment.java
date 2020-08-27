@@ -21,8 +21,8 @@ public final class AspectSentiment {
      *
      * @param text The aspect text property.
      * @param sentiment The text sentiment label: POSITIVE, NEGATIVE, MIXED. {@link TextSentiment} has
-     * {@code neutral} sentiment type additionally, but aspect sentiment can only be positive, negative, or mixed.
-     * @param offset The offset of aspect text.
+     * NEUTRAL sentiment type additionally, but aspect sentiment can only be POSITIVE, NEGATIVE, or MIXED.
+     * @param offset The aspect text offset from the start of document.
      * @param length The length of aspect text.
      * @param confidenceScores The {@link SentimentConfidenceScores}.
      */
@@ -46,7 +46,7 @@ public final class AspectSentiment {
 
     /**
      * Get the aspect text sentiment label: POSITIVE, NEGATIVE, MIXED. {@link TextSentiment} has
-     * {@code neutral} sentiment type additionally, but aspect sentiment can only be positive, negative, or mixed.
+     * NEUTRAL sentiment type additionally, but aspect sentiment can only be POSITIVE, NEGATIVE, or MIXED.
      *
      * @return The sentiment value.
      */
@@ -56,9 +56,9 @@ public final class AspectSentiment {
 
 
     /**
-     * Get the offset of aspect text.
+     * Get the aspect text offset from the start of document.
      *
-     * @return The offset of aspect text.
+     * @return The aspect text offset from the start of document.
      */
     public int getOffset() {
         return offset;

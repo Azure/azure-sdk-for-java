@@ -15,7 +15,7 @@ public final class SentenceSentiment {
     private final String text;
     private final SentimentConfidenceScores confidenceScores;
     private final TextSentiment sentiment;
-    private final IterableStream<MinedOpinions> minedOpinions;
+    private final IterableStream<MinedOpinion> minedOpinions;
 
     /**
      * Creates a {@link SentenceSentiment} model that describes the sentiment analysis of sentence.
@@ -40,7 +40,7 @@ public final class SentenceSentiment {
      * @param confidenceScores The sentiment confidence score (Softmax score) between 0 and 1, for each sentiment label.
      *   Higher values signify higher confidence.
      */
-    public SentenceSentiment(String text, TextSentiment sentiment, IterableStream<MinedOpinions> minedOpinions,
+    public SentenceSentiment(String text, TextSentiment sentiment, IterableStream<MinedOpinion> minedOpinions,
         SentimentConfidenceScores confidenceScores) {
         this.text = text;
         this.sentiment = sentiment;
@@ -72,7 +72,7 @@ public final class SentenceSentiment {
      *
      * @return The mined opinions of sentence sentiment.
      */
-    public IterableStream<MinedOpinions> getMinedOpinions() {
+    public IterableStream<MinedOpinion> getMinedOpinions() {
         return minedOpinions;
     }
 
