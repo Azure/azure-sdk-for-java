@@ -1,6 +1,6 @@
 # Release History
 
-## 4.4.0-beta.1 (Unreleased)
+## 4.4.0-beta.1
 * Added new API to efficiently load many documents (via list of pk/id pairs or all documents for a set ok pk values)
 * Enabled query metrics by default
 * Fixed NPE in GatewayAddressCache

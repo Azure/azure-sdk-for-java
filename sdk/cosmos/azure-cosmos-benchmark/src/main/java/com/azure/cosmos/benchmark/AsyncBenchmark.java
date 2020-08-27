@@ -228,6 +228,7 @@ abstract class AsyncBenchmark<T> {
             case QueryAggregateTopOrderby:
             case QueryTopOrderby:
             case Mixed:
+            case ReadAllItemsOfLogicalPartition:
                 latency = metricsRegistry.timer("Latency");
                 break;
             default:

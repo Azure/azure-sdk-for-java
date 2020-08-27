@@ -110,6 +110,7 @@ public class Main {
                 case QueryTopOrderby:
                 case QueryAggregateTopOrderby:
                 case QueryInClauseParallel:
+                case ReadAllItemsOfLogicalPartition:
                     benchmark = new AsyncQueryBenchmark(cfg);
                     break;
 
