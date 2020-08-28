@@ -9,6 +9,7 @@ import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.LockRenewalStatus;
 import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.SubQueue;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
@@ -1089,7 +1090,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         receiver.complete(receivedDeferredMessage.getLockToken()).block(TIMEOUT);
     }
 
-    private ServiceBusClientBuilder.ServiceBusDeadLetterReceiverClientBuilder getDeadLetterReceiverBuilder(boolean useCredentials,
+    private ServiceBusClientBuilder.ServiceBusReceiverClientBuilder getDeadLetterReceiverBuilder(boolean useCredentials,
         MessagingEntityType entityType, int entityIndex, Function<ServiceBusClientBuilder, ServiceBusClientBuilder> onBuilderCreate) {
 
         ServiceBusClientBuilder builder = getBuilder(useCredentials);
@@ -1100,14 +1101,14 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 final String queueName = getQueueName(entityIndex);
                 assertNotNull(queueName, "'queueName' cannot be null.");
 
-                return builder.deadLetterReceiver().queueName(queueName);
+                return builder.receiver().queueName(queueName).subQueue(SubQueue.DEAD_LETTER_QUEUE);
             case SUBSCRIPTION:
                 final String topicName = getTopicName(entityIndex);
                 final String subscriptionName = getSubscriptionBaseName();
                 assertNotNull(topicName, "'topicName' cannot be null.");
                 assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
 
-                return builder.deadLetterReceiver().topicName(topicName).subscriptionName(subscriptionName);
+                return builder.receiver().topicName(topicName).subscriptionName(subscriptionName).subQueue(SubQueue.DEAD_LETTER_QUEUE);
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
         }
