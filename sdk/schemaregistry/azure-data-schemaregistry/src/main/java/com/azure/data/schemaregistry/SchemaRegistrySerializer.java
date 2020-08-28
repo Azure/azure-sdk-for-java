@@ -19,10 +19,12 @@ import static com.azure.core.util.FluxUtil.monoError;
  * Common implementation for all registry-based serializers.
  */
 public abstract class SchemaRegistrySerializer {
+
     private final ClientLogger logger = new ClientLogger(SchemaRegistrySerializer.class);
 
     private static final Boolean AUTO_REGISTER_SCHEMAS_DEFAULT = false;
     private static final String SCHEMA_GROUP_DEFAULT = "$default";
+    static final int RECORD_FORMAT_INDICATOR_SIZE = 4;
     static final int SCHEMA_ID_SIZE = 32;
 
     SchemaRegistryAsyncClient schemaRegistryClient;
@@ -99,9 +101,14 @@ public abstract class SchemaRegistrySerializer {
         return this.maybeRegisterSchema(this.schemaGroup, schemaName, schemaString,
                 serializationUtils.getSerializationType())
             .handle((id, sink) -> {
-                ByteBuffer idBuffer = ByteBuffer.allocate(SchemaRegistrySerializer.SCHEMA_ID_SIZE)
+                ByteBuffer recordFormatIndicatorBuffer = ByteBuffer
+                    .allocate(SchemaRegistrySerializer.RECORD_FORMAT_INDICATOR_SIZE)
+                    .put(new byte[] {0x00, 0x00, 0x00, 0x00});
+                ByteBuffer idBuffer = ByteBuffer
+                    .allocate(SchemaRegistrySerializer.SCHEMA_ID_SIZE)
                     .put(id.getBytes(StandardCharsets.UTF_8));
                 try {
+                    s.write(recordFormatIndicatorBuffer.array());
                     s.write(idBuffer.array());
                     s.write(serializationUtils.encode(object));
                 } catch (IOException e) {
@@ -133,6 +140,13 @@ public abstract class SchemaRegistrySerializer {
                 }
 
                 ByteBuffer buffer = ByteBuffer.wrap(payload);
+
+                byte[] recordFormatIndicator = getRecordFormatIndicator(buffer);
+                if (!Arrays.equals(recordFormatIndicator, new byte[]{0x00, 0x00, 0x00, 0x00})) {
+                    return Mono.error(
+                        new IllegalStateException("Illegal format: unsupport record format indicator in payload"));
+                }
+
                 String schemaId = getSchemaIdFromPayload(buffer);
 
                 return this.schemaRegistryClient.getSchema(schemaId)
@@ -154,6 +168,15 @@ public abstract class SchemaRegistrySerializer {
                         sink.next(serializationUtils.decode(b, payloadSchema));
                     });
             });
+    }
+
+    /**
+     *
+     */
+    private byte[] getRecordFormatIndicator(ByteBuffer buffer) {
+        byte[] indicatorBytes = new byte[SchemaRegistrySerializer.RECORD_FORMAT_INDICATOR_SIZE];
+        buffer.get(indicatorBytes);
+        return indicatorBytes;
     }
 
     /**

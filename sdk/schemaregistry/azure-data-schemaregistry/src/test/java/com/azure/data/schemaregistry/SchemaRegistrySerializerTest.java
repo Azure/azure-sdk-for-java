@@ -60,17 +60,13 @@ class SchemaRegistrySerializerTest {
             ByteArrayOutputStream payload =  new ByteArrayOutputStream();
             serializer.serializeInternalAsync(payload, 1).block();
             ByteBuffer buffer = ByteBuffer.wrap(payload.toByteArray());
+            buffer.get(new byte[SchemaRegistrySerializer.RECORD_FORMAT_INDICATOR_SIZE]);
             byte[] schemaGuidByteArray = new byte[SchemaRegistrySerializer.SCHEMA_ID_SIZE];
             buffer.get(schemaGuidByteArray);
 
             System.out.println(new String(schemaGuidByteArray));
             // guid should match preloaded SchemaRegistryObject guid
             assertEquals(MOCK_GUID, new String(schemaGuidByteArray));
-
-            int start = buffer.position() + buffer.arrayOffset();
-            int length = buffer.limit() - SchemaRegistrySerializer.SCHEMA_ID_SIZE;
-            byte[] encodedBytes = Arrays.copyOfRange(buffer.array(), start, start + length);
-            assertTrue(Arrays.equals(encoder.encode(null), encodedBytes));
         } catch (RuntimeException e) {
             e.printStackTrace();
             fail();
@@ -147,7 +143,23 @@ class SchemaRegistrySerializerTest {
             getMockClient(), new TestSchemaRegistryUtils(), true, MOCK_SCHEMA_GROUP);
 
         try {
-            serializer.deserializeInternalAsync(new ByteArrayInputStream("bad payload".getBytes())).block();
+            serializer.deserializeInternalAsync(new ByteArrayInputStream("aaa".getBytes())).block();
+            fail("Too short payload did not throw BufferUnderflowException");
+        } catch (BufferUnderflowException e) {
+            assertTrue(true);
+        }
+
+        try {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            try {
+                out.write(new byte[] {0x00, 0x00, 0x00, 0x00});
+                out.write("aa".getBytes());
+            } catch (IOException e) {
+                fail();
+            }
+
+            ByteArrayInputStream stream = new ByteArrayInputStream(out.toByteArray());
+            serializer.deserializeInternalAsync(stream).block();
             fail("Too short payload did not throw BufferUnderflowException");
         } catch (BufferUnderflowException e) {
             assertTrue(true);
@@ -173,6 +185,7 @@ class SchemaRegistrySerializerTest {
 
     private byte[] getPayload() throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
+        out.write(new byte[] {0x00, 0x00, 0x00, 0x00});
         out.write(ByteBuffer.allocate(SchemaRegistrySerializer.SCHEMA_ID_SIZE)
             .put(MOCK_GUID.getBytes(StandardCharsets.UTF_8))
             .array());
