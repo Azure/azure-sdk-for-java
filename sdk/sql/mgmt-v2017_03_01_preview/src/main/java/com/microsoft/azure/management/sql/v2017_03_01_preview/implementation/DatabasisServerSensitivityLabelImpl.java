@@ -11,6 +11,7 @@ package com.microsoft.azure.management.sql.v2017_03_01_preview.implementation;
 import com.microsoft.azure.management.sql.v2017_03_01_preview.DatabasisServerSensitivityLabel;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import rx.Observable;
+import com.microsoft.azure.management.sql.v2017_03_01_preview.SensitivityLabelRank;
 
 class DatabasisServerSensitivityLabelImpl extends WrapperImpl<SensitivityLabelInner> implements DatabasisServerSensitivityLabel {
     private final SqlManager manager;
@@ -60,6 +61,11 @@ class DatabasisServerSensitivityLabelImpl extends WrapperImpl<SensitivityLabelIn
     @Override
     public String name() {
         return this.inner().name();
+    }
+
+    @Override
+    public SensitivityLabelRank rank() {
+        return this.inner().rank();
     }
 
     @Override
