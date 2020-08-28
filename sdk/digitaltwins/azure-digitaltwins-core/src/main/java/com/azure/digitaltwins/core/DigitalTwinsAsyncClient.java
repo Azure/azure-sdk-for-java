@@ -320,6 +320,21 @@ public final class DigitalTwinsAsyncClient {
             nextLink -> withContext(context -> listModelsNextSinglePageAsync(nextLink, context)));
     }
 
+    /**
+     * Gets the list of models by iterating through a collection.
+     * @return A {@link PagedFlux} of ModelData and the http response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ModelData> listModels() {
+        return listModels(new ListModelOptions());
+    }
+
+    PagedFlux<ModelData> listModels(Context context){
+        return new PagedFlux<>(
+            () -> listModelsSinglePageAsync(new ListModelOptions(), context),
+            nextLink -> listModelsNextSinglePageAsync(nextLink, context));
+    }
+
     PagedFlux<ModelData> listModels(ListModelOptions listModelOptions, Context context){
         return new PagedFlux<>(
             () -> listModelsSinglePageAsync(listModelOptions, context),
@@ -339,17 +354,27 @@ public final class DigitalTwinsAsyncClient {
     }
 
     /**
-     * Gets the list of models by iterating through a collection.
-     * @return A {@link PagedFlux} of ModelData and the http response.
+     * Deletes a model.
+     * @param modelId The id for the model. The id is globally unique and case sensitive.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ModelData> listModels() {
-        return listModels(new ListModelOptions());
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteModel(String modelId) {
+        return withContext(context -> deleteModelWithResponse(modelId, context))
+            .flatMap(response -> Mono.just(response.getValue()));
     }
 
-    PagedFlux<ModelData> listModels(Context context){
-        return new PagedFlux<>(
-            () -> listModelsSinglePageAsync(new ListModelOptions(), context),
-            nextLink -> listModelsNextSinglePageAsync(nextLink, context));
+    /**
+     * Deletes a model.
+     * @param modelId The id for the model. The id is globally unique and case sensitive.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteModelWithResponse(String modelId) {
+        return withContext(context -> deleteModelWithResponse(modelId, context));
     }
+
+    Mono<Response<Void>> deleteModelWithResponse(String modelId, Context context){
+        return protocolLayer.getDigitalTwinModels().deleteWithResponseAsync(modelId, context);
+    }
+
+    //TODO: Decommission Model APIs (waiting for Abhipsa's change to come in)
 }
