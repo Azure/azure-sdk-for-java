@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.lang.reflect.Field;
@@ -77,7 +78,40 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"simple"})
+    @DataProvider(name = "query")
+    private Object[][] query() {
+        return new Object[][]{
+            new Object[] { "Select * from c where c.id = 'wrongId'", true },
+            new Object[] { "Select top 1 * from c where c.id = 'wrongId'", true },
+            new Object[] { "Select * from c where c.id = 'wrongId' order by c.id", true },
+            new Object[] { "Select count(1) from c where c.id = 'wrongId' group by c.pk", true },
+            new Object[] { "Select distinct c.pk from c where c.id = 'wrongId'", true },
+            new Object[] { "Select * from c where c.id = 'wrongId'", false },
+            new Object[] { "Select top 1 * from c where c.id = 'wrongId'", false },
+            new Object[] { "Select * from c where c.id = 'wrongId' order by c.id", false },
+            new Object[] { "Select count(1) from c where c.id = 'wrongId' group by c.pk", false },
+            new Object[] { "Select distinct c.pk from c where c.id = 'wrongId'", false },
+            new Object[] { "Select * from c where c.id = 'wrongId'", false },
+            new Object[] { "Select top 1 * from c where c.id = 'wrongId'", false },
+            new Object[] { "Select * from c where c.id = 'wrongId' order by c.id", false },
+            new Object[] { "Select count(1) from c where c.id = 'wrongId' group by c.pk", false },
+            new Object[] { "Select distinct c.pk from c where c.id = 'wrongId'", false },
+        };
+    }
+
+    @DataProvider(name = "readAllItemsOfLogicalPartition")
+    private Object[][] readAllItemsOfLogicalPartition() {
+        return new Object[][]{
+            new Object[] { 1, true },
+            new Object[] { 5, null },
+            new Object[] { 20, null },
+            new Object[] { 1, false },
+            new Object[] { 5, false },
+            new Object[] { 20, false },
+        };
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void gatewayDiagnostics() {
         CosmosClient testGatewayClient = null;
         try {
@@ -108,7 +142,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"simple"})
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void gatewayDiagnosticsOnException() {
         InternalObjectNode internalObjectNode = getInternalObjectNode();
         CosmosItemResponse<InternalObjectNode> createResponse = null;
@@ -135,7 +169,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"simple"})
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void systemDiagnosticsForSystemStateInformation() {
         InternalObjectNode internalObjectNode = getInternalObjectNode();
         CosmosItemResponse<InternalObjectNode> createResponse = this.container.createItem(internalObjectNode);
@@ -149,7 +183,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(createResponse.getDiagnostics().getDuration()).isNotNull();
     }
 
-    @Test(groups = {"simple"})
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void directDiagnostics() {
         CosmosClient testDirectClient = null;
         try {
@@ -183,7 +217,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"simple"})
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void queryPlanDiagnostics() {
         CosmosContainer cosmosContainer = directClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
         List<String> itemIdList = new ArrayList<>();
@@ -232,7 +266,93 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"simple"})
+    @Test(groups = {"simple"}, dataProvider = "query", timeOut = TIMEOUT)
+    public void queryMetrics(String query, Boolean qmEnabled) {
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        if (qmEnabled != null) {
+            options.setQueryMetricsEnabled(qmEnabled);
+        }
+        boolean qroupByFirstResponse = true; // TODO https://github.com/Azure/azure-sdk-for-java/issues/14142
+        Iterator<FeedResponse<InternalObjectNode>> iterator = this.container.queryItems(query, options,
+            InternalObjectNode.class).iterableByPage().iterator();
+        assertThat(iterator.hasNext()).isTrue();
+        while (iterator.hasNext()) {
+            FeedResponse<InternalObjectNode> feedResponse = iterator.next();
+            String queryDiagnostics = feedResponse.getCosmosDiagnostics().toString();
+            assertThat(feedResponse.getResults().size()).isEqualTo(0);
+            if (!query.contains("group by") || qroupByFirstResponse) { // TODO https://github
+                validateQueryDiagnostics(queryDiagnostics, qmEnabled, true);
+
+                if (query.contains("group by")) {
+                    qroupByFirstResponse = false;
+                }
+            }
+        }
+    }
+
+    private static void validateQueryDiagnostics(
+        String queryDiagnostics,
+        Boolean qmEnabled,
+        boolean expectQueryPlanDiagnostics) {
+        if (qmEnabled == null || qmEnabled == true) {
+            assertThat(queryDiagnostics).contains("Retrieved Document Count");
+            assertThat(queryDiagnostics).contains("Query Preparation Times");
+            assertThat(queryDiagnostics).contains("Runtime Execution Times");
+            assertThat(queryDiagnostics).contains("Partition Execution Timeline");
+        } else {
+            assertThat(queryDiagnostics).doesNotContain("Retrieved Document Count");
+            assertThat(queryDiagnostics).doesNotContain("Query Preparation Times");
+            assertThat(queryDiagnostics).doesNotContain("Runtime Execution Times");
+            assertThat(queryDiagnostics).doesNotContain("Partition Execution Timeline");
+        }
+
+        if (expectQueryPlanDiagnostics) {
+            assertThat(queryDiagnostics).contains("QueryPlan Start Time (UTC)=");
+            assertThat(queryDiagnostics).contains("QueryPlan End Time (UTC)=");
+            assertThat(queryDiagnostics).contains("QueryPlan Duration (ms)=");
+        } else {
+            assertThat(queryDiagnostics).doesNotContain("QueryPlan Start Time (UTC)=");
+            assertThat(queryDiagnostics).doesNotContain("QueryPlan End Time (UTC)=");
+            assertThat(queryDiagnostics).doesNotContain("QueryPlan Duration (ms)=");
+        }
+    }
+
+    @Test(groups = {"simple"}, dataProvider = "readAllItemsOfLogicalPartition", timeOut = TIMEOUT)
+    public void queryMetricsForReadAllItemsOfLogicalPartition(Integer expectedItemCount, Boolean qmEnabled) {
+        String pkValue = UUID.randomUUID().toString();
+
+        for (int i = 0; i < expectedItemCount; i++) {
+            InternalObjectNode internalObjectNode = getInternalObjectNode(pkValue);
+            CosmosItemResponse<InternalObjectNode> createResponse = container.createItem(internalObjectNode);
+        }
+
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        if (qmEnabled != null) {
+            options = options.setQueryMetricsEnabled(qmEnabled);
+        }
+        ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 5);
+
+        Iterator<FeedResponse<InternalObjectNode>> iterator =
+            this.container
+                .readAllItems(
+                    new PartitionKey(pkValue),
+                    options,
+                    InternalObjectNode.class)
+                .iterableByPage().iterator();
+        assertThat(iterator.hasNext()).isTrue();
+
+        int actualItemCount = 0;
+        while (iterator.hasNext()) {
+            FeedResponse<InternalObjectNode> feedResponse = iterator.next();
+            String queryDiagnostics = feedResponse.getCosmosDiagnostics().toString();
+            actualItemCount += feedResponse.getResults().size();
+
+            validateQueryDiagnostics(queryDiagnostics, qmEnabled, false);
+        }
+        assertThat(actualItemCount).isEqualTo(expectedItemCount);
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void directDiagnosticsOnException() {
         CosmosContainer cosmosContainer = directClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
         InternalObjectNode internalObjectNode = getInternalObjectNode();
@@ -270,7 +390,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"simple"})
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void supplementalResponseStatisticsList() throws Exception {
         ClientSideRequestStatistics clientSideRequestStatistics = new ClientSideRequestStatistics();
         for (int i = 0; i < 15; i++) {
@@ -320,7 +440,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"simple"})
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void serializationOnVariousScenarios() {
         //checking database serialization
         CosmosDatabaseResponse cosmosDatabase = gatewayClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).read();
@@ -363,6 +483,14 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         String uuid = UUID.randomUUID().toString();
         internalObjectNode.setId(uuid);
         BridgeInternal.setProperty(internalObjectNode, "mypk", uuid);
+        return internalObjectNode;
+    }
+
+    private InternalObjectNode getInternalObjectNode(String pkValue) {
+        InternalObjectNode internalObjectNode = new InternalObjectNode();
+        String uuid = UUID.randomUUID().toString();
+        internalObjectNode.setId(uuid);
+        BridgeInternal.setProperty(internalObjectNode, "mypk", pkValue);
         return internalObjectNode;
     }
 

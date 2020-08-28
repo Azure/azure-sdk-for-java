@@ -5,13 +5,11 @@ package com.azure.cosmos.implementation;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.models.ModelBridgeInternal;
 
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -19,23 +17,25 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * This class is used internally by both client (for generating the auth header with master/system key) and by the GATEWAY when
- * verifying the auth header in the Azure Cosmos DB database service.
+ * This class is used internally by client (for generating the auth header with master/system key)
+ * to generate the master-key auth header for communication with Azure Cosmos DB database service.
  */
 public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvider {
 
     private static final String AUTH_PREFIX = "type=master&ver=1.0&sig=";
     private final AzureKeyCredential credential;
-    private final Mac macInstance;
+    private volatile String currentCredentialKey;
+    private volatile MacPool macPool;
 
-    //  stores current master key's hashcode for performance reasons.
-    private int masterKeyHashCode;
+    private final Lock macInstanceLock = new ReentrantLock();
 
     public BaseAuthorizationTokenProvider(AzureKeyCredential credential) {
         this.credential = credential;
-        this.macInstance = getMacInstance();
+        reInitializeIfPossible();
     }
 
     private static String getResourceSegment(ResourceType resourceType) {
@@ -148,13 +148,18 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
 
         body.append('\n');
 
-        Mac mac = getMacInstance();
+        MacPool.ReUsableMac macInstance = getReUseableMacInstance();
 
-        byte[] digest = mac.doFinal(body.toString().getBytes(StandardCharsets.UTF_8));
+        try {
 
-        String auth = Utils.encodeBase64String(digest);
-
-        return AUTH_PREFIX + auth;
+            byte[] digest = macInstance.get().doFinal(body.toString().getBytes(StandardCharsets.UTF_8));
+            String auth = Utils.encodeBase64String(digest);
+            return AUTH_PREFIX + auth;
+        }
+        finally {
+            // doFinal already resets for re-use
+            macInstance.close();
+        }
     }
 
     /**
@@ -198,29 +203,46 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
         return resourceToken;
     }
 
-    private Mac getMacInstance() {
-        int masterKeyLatestHashCode = this.credential.getKey().hashCode();
+    private MacPool.ReUsableMac getReUseableMacInstance() {
+        reInitializeIfPossible();
 
-        //  Master key has changed, or this is the first time we are getting mac instance
-        if (masterKeyLatestHashCode != this.masterKeyHashCode) {
-            byte[] masterKeyBytes = this.credential.getKey().getBytes(StandardCharsets.UTF_8);
-            byte[] masterKeyDecodedBytes = Utils.Base64Decoder.decode(masterKeyBytes);
-            SecretKey signingKey = new SecretKeySpec(masterKeyDecodedBytes, "HMACSHA256");
-            try {
-                Mac macInstance = Mac.getInstance("HMACSHA256");
-                macInstance.init(signingKey);
-                //  Update the master key hash code
-                this.masterKeyHashCode = masterKeyLatestHashCode;
-                return macInstance;
-            } catch (NoSuchAlgorithmException | InvalidKeyException e) {
-                throw new IllegalStateException(e);
-            }
-        } else {
-            //  Master key hasn't changed, return the cloned mac instance
-            try {
-                return (Mac)this.macInstance.clone();
-            } catch (CloneNotSupportedException e) {
-                throw new IllegalStateException(e);
+        return macPool.take();
+    }
+
+    /*
+     * Ensures that this.macInstance is initialized
+     * In-case of credential change, optimistically will try to refresh the macInstance
+     *
+     * Implementation is non-blocking, the one which acquire the lock will try to refresh
+     * with new credentials
+     *
+     * NOTE: Calling it CTOR ensured that default is initialized.
+     */
+    private void reInitializeIfPossible() {
+        // Java == operator is reference equals not content
+        // leveraging reference comparison avoid hash computation
+        if (this.currentCredentialKey != this.credential.getKey()) {
+            // Try to acquire the lock, the one who got lock will try to refresh the macInstance
+            boolean lockAcquired = this.macInstanceLock.tryLock();
+            if (lockAcquired) {
+                try {
+                    if (this.currentCredentialKey != this.credential.getKey()) {
+                        byte[] masterKeyBytes = this.credential.getKey().getBytes(StandardCharsets.UTF_8);
+                        byte[] masterKeyDecodedBytes = Utils.Base64Decoder.decode(masterKeyBytes);
+                        SecretKey signingKey = new SecretKeySpec(masterKeyDecodedBytes, "HMACSHA256");
+                        try {
+                            Mac macInstance = Mac.getInstance("HMACSHA256");
+                            macInstance.init(signingKey);
+
+                            this.currentCredentialKey = this.credential.getKey();
+                            this.macPool = new MacPool(macInstance);
+                        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+                            throw new IllegalStateException(e);
+                        }
+                    }
+                } finally {
+                    this.macInstanceLock.unlock();
+                }
             }
         }
     }

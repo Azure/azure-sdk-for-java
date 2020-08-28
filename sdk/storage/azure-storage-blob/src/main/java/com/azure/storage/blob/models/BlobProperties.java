@@ -57,7 +57,7 @@ public final class BlobProperties {
     private final RehydratePriority rehydratePriority;
     private final Boolean isSealed;
     private final OffsetDateTime lastAccessedTime;
-
+    private final OffsetDateTime expiresOn;
     /**
      * Constructs a {@link BlobProperties}.
      *
@@ -180,7 +180,7 @@ public final class BlobProperties {
             encryptionKeySha256, encryptionScope, accessTierChangeTime, metadata, committedBlockCount, tagCount,
             versionId, isCurrentVersion, ModelHelper.getObjectReplicationSourcePolicies(objectReplicationStatus),
             ModelHelper.getObjectReplicationDestinationPolicyId(objectReplicationStatus),
-            RehydratePriority.fromString(rehydratePriority), isSealed, null);
+            RehydratePriority.fromString(rehydratePriority), isSealed, null, null);
     }
 
     /**
@@ -246,7 +246,7 @@ public final class BlobProperties {
             isIncrementalCopy, copyDestinationSnapshot, accessTier, isAccessTierInferred, archiveStatus,
             encryptionKeySha256, encryptionScope, accessTierChangeTime, metadata, committedBlockCount, tagCount,
             versionId, isCurrentVersion, objectReplicationSourcePolicies, objectReplicationDestinationPolicyId,
-            null, null, null);
+            null, null, null, null);
     }
 
     /**
@@ -295,6 +295,7 @@ public final class BlobProperties {
      * @param rehydratePriority The rehydrate priority
      * @param isSealed Whether or not the blob is sealed.
      * @param lastAccessedTime The date and time the blob was read or written to.
+     * @param expiresOn The time when the blob is going to expire.
      */
     public BlobProperties(final OffsetDateTime creationTime, final OffsetDateTime lastModified, final String eTag,
         final long blobSize, final String contentType, final byte[] contentMd5, final String contentEncoding,
@@ -309,7 +310,7 @@ public final class BlobProperties {
         final Integer committedBlockCount, final Long tagCount, final String versionId, final Boolean isCurrentVersion,
         final List<ObjectReplicationPolicy> objectReplicationSourcePolicies,
         final String objectReplicationDestinationPolicyId, final RehydratePriority rehydratePriority,
-        final Boolean isSealed, final OffsetDateTime lastAccessedTime) {
+        final Boolean isSealed, final OffsetDateTime lastAccessedTime, final OffsetDateTime expiresOn) {
         this.creationTime = creationTime;
         this.lastModified = lastModified;
         this.eTag = eTag;
@@ -350,6 +351,7 @@ public final class BlobProperties {
         this.rehydratePriority = rehydratePriority;
         this.isSealed = isSealed;
         this.lastAccessedTime = lastAccessedTime;
+        this.expiresOn = expiresOn;
     }
 
     /**
@@ -644,5 +646,12 @@ public final class BlobProperties {
      */
     public OffsetDateTime getLastAccessedTime() {
         return lastAccessedTime;
+    }
+
+    /**
+     * @return the time when the blob is going to expire.
+     */
+    public OffsetDateTime getExpiresOn() {
+        return expiresOn;
     }
 }

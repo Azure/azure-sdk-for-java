@@ -1,0 +1,218 @@
+= Spring Cloud Azure Stream Binder for Event Hub Code Sample shared library for Java
+
+== Key concepts
+== Getting started
+This code sample demonstrates how to use the Spring Cloud Stream Binder for Azure Event Hub.
+The sample app exposes a rest api to receive string message.
+Then message is sent through Azure Event Hub to a `sink` which simply logs the message.
+
+Running this sample will be charged by Azure.
+You can check the usage and bill at https://azure.microsoft.com/en-us/account/[this link].
+
+We have several ways to config the Spring Cloud Stream Binder for Azure Event Hub.
+You can choose anyone of them.
+
+=== Method 1: Connection string based usage
+
+1. Create https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-create[Azure Event Hubs].
+Please note `Basic` tier is unsupported.
+After creating the Azure Event Hub, you can create your own Consumer Group or use the default "$Default" Consumer Group.
+
+2. Create https://docs.microsoft.com/en-us/azure/storage/[Azure Storage] for checkpoint use.
+
+3. Update link:src/main/resources/application.properties[application.properties].
+
++
+....
+# Fill event hub namespace connection string copied from portal
+spring.cloud.azure.eventhub.connection-string=[eventhub-namespace-connection-string]
+
+# Fill checkpoint storage account name, accese key and container
+spring.cloud.azure.eventhub.checkpoint-storage-account=[checkpoint-storage-account]
+spring.cloud.azure.eventhub.checkpoint-access-key=[checkpoint-accesskey]
+spring.cloud.azure.eventhub.checkpoint-container=[checkpoint-container]
+
+# Fill eventhub infomation
+spring.cloud.stream.bindings.input.destination=[eventhub-name]
+spring.cloud.stream.bindings.input.group=[consumer-group]
+spring.cloud.stream.bindings.output.destination=[eventhub-name]
+
+# Use manual checkpoint mode
+spring.cloud.stream.eventhub.bindings.input.consumer.checkpoint-mode=MANUAL
+
+# Config this property if you want to create resource automatically
+#spring.cloud.azure.auto-create-resources=true
+#spring.cloud.azure.region=[region]
+....
+
+=== Method 2: Credential file based usage
+
+1. Create Azure credential file.
+Please see https://github.com/Azure/azure-libraries-for-java/blob/master/AUTH.md[how
+to create credential file]
++
+....
+$  az login
+$  az account set --subscription <name or id>
+$  az ad sp create-for-rbac --sdk-auth > my.azureauth
+....
++
+Make sure `my.azureauth` is encoded with UTF-8.
+
+2. Put credential file under `src/main/resources/`.
+
+3. Create https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-create[Azure Event Hubs] and https://docs.microsoft.com/en-us/azure/storage/[Azure Storage].
+Please note event hub `Basic` tier is unsupported.
+Or enable auto create resources feature in link:src/main/resources/application.properties[application.properties]:
++
+....
+spring.cloud.azure.auto-create-resources=true
+
+# Default environment is GLOBAL. Provide your own if in another environment
+# Example environment is China, GLOBAL
+# spring.cloud.azure.environment=[environment]
+# Example region is westUS, northchina
+spring.cloud.azure.region=[region]
+....
+
+4. Update credential file based properties in link:src/main/resources/application.properties[application.properties]
++
+....
+# Enter 'my.azureauth' here if following step 1 and 2
+spring.cloud.azure.credential-file-path=[credential-file-path]
+spring.cloud.azure.resource-group=[resource-group]
+
+spring.cloud.azure.eventhub.namespace=[eventhub-namespace]
+spring.cloud.azure.eventhub.checkpoint-storage-account=[checkpoint-storage-account]
+spring.cloud.azure.eventhub.checkpoint-container=[checkpoint-container]
+
+# Fill eventhub infomation
+spring.cloud.stream.bindings.input.destination=[eventhub-name]
+spring.cloud.stream.bindings.input.group=[consumer-group]
+spring.cloud.stream.bindings.output.destination=[eventhub-name]
+....
+
+=== Method 3: MSI credential based usage
+
+==== Overview
+
+https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/[MSI] (Managed Service Identity, aka Managed Identity) for Azure resources provides Azure services with an automatically managed identity in https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-whatis[Azure AD].
+You can use this identity to authenticate to any service that supports Azure AD authentication without having any credentials in your code.
+
+==== Prerequisites
+
+1. Create https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-create[Azure Event Hubs].
+Please note `Basic` tier is unsupported.
+
+2. Create https://docs.microsoft.com/en-us/azure/storage/[Azure Storage] for checkpoint use.
+
+==== Setup Application
+
+Please note your application should run in VM (Virtual Machine) or App Services on Azure for support of MSI. Choose any of them.
+
+===== Method 1:  Setup VM and assign identity
+
+1. Create VM in Azure portal.
+Please refer to https://docs.microsoft.com/en-us/azure/virtual-machines/windows/quick-create-portal[Create a Windows virtual machine in the Azure portal] or https://docs.microsoft.com/en-us/azure/virtual-machines/linux/quick-create-portal[Create a Linux virtual machine in the Azure portal].
+Choose any one according to your needs.
+
+2. Create an user-assigned identity in Azure Portal.
+Please refer to https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/how-to-manage-ua-identity-portal#create-a-user-assigned-managed-identity[Create an user-assigned managed identity].
+
+3. Assign the user-assigned identity to the VM.
+Please refer to https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/qs-configure-portal-windows-vm#assign-a-user-assigned-managed-identity-to-an-existing-vm[Assign an user-assigned managed identity to an existing VM].
+
+===== Method 2: Setup App Service and assign identity
+
+- 1. Deploy this sample's Spring Boot JAR file to App Service.
+
+You can follow  https://docs.microsoft.com/en-us/java/azure/spring-framework/deploy-spring-boot-java-app-with-maven-plugin?toc=%2Fazure%2Fapp-service%2Fcontainers%2Ftoc.json&view=azure-java-stable[
+ Deploy a Spring Boot JAR file to Azure App Service] to deploy the JAR file.
+
+Another way to deploy an executable JAR is via FTP/S. Follow https://docs.microsoft.com/en-us/azure/app-service/deploy-ftp[
+Deploy your app to App Service using FTP/S].
+And the JAR file's name must be `app.jar`.
+
+- 2. Create a managed identity for App Service.
+
+If you choose system-assigned identity, follow https://docs.microsoft.com/en-us/azure/app-service/overview-managed-identity#adding-a-system-assigned-identity[
+ Adding a system assigned identity].
+
+If you choose user-assigned identity, follow https://docs.microsoft.com/en-us/azure/app-service/overview-managed-identity#adding-a-user-assigned-identity[
+ Adding a user assigned identity].
+
+==== Role Assignment
+
+Add role assignment to Event hub, Storage Account and Resource Group.
+
+- Event Hub: `Contributor` role.
+- Storage Account: `Storage Account Key Operator Service Role` role.
+- Resource Group: `Reader` role.
+
+See https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-managed-service-identity[Managed identities for Azure resources with Event Hubs] to add role assignment for Event Hub, Storage Account and Resource Group are similar.
+
+For different built-in role's descriptions, please see https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles[Built-in role descriptions].
+
+==== Add MSI related properties
+
+1. Update link:src/main/resources/application.properties[application.properties]
++
+....
+# Enable MSI for event hub and storage account
+spring.cloud.azure.msi-enabled=true
+
+# Fill subscription ID copied from portal
+spring.cloud.azure.subscription-id=[subscription-id]
+
+# Fill client ID if user-assigned identity is used in App Service
+spring.cloud.azure.managed-identity.client-id=[The ID of the user-assigned identity to be used]
+
+# Fill resource group name
+spring.cloud.azure.resource-group=[resource-group]
+
+# Fill checkpoint storage account name
+spring.cloud.azure.eventhub.checkpoint-storage-account=[checkpoint-storage-account]
+# Fill checkpoint storage container
+spring.cloud.azure.eventhub.checkpoint-container=[checkpoint-container]
+
+# Fill event hub namespace
+spring.cloud.azure.eventhub.namespace=[eventhub-namespace]
+
+# Fill eventhub infomation
+spring.cloud.stream.bindings.input.destination=[eventhub-name]
+spring.cloud.stream.bindings.input.group=[consumer-group]
+spring.cloud.stream.bindings.output.destination=[eventhub-name]
+
+spring.cloud.stream.eventhub.bindings.input.consumer.checkpoint-mode=MANUAL
+....
+
+=== How to run
+
+1. Run the `mvn clean spring-boot:run` in the root of the code sample to get the app running.
+
+2. Send a POST request
++
+....
+$ curl -X POST http://localhost:8080/messages?message=hello
+....
++
+or when the app runs on App Service or VM
++
+....
+$ curl -d -X POST https://[your-app-URL]/messages?message=hello
+....
+
+3. Verify in your app's logs that a similar message was posted:
++
+....
+New message received: 'hello'
+Message 'hello' successfully checkpointed
+....
+
+4. Delete the resources on http://ms.portal.azure.com/[Azure Portal] to avoid unexpected charges.
+
+== Examples
+== Troubleshooting
+== Next steps
+== Contributing
+

@@ -14,6 +14,9 @@ import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobProperties;
+import com.azure.storage.blob.models.BlobQueryArrowField;
+import com.azure.storage.blob.models.BlobQueryArrowFieldType;
+import com.azure.storage.blob.models.BlobQueryArrowSerialization;
 import com.azure.storage.blob.models.BlobQueryAsyncResponse;
 import com.azure.storage.blob.models.BlobQueryDelimitedSerialization;
 import com.azure.storage.blob.models.BlobQueryError;
@@ -39,6 +42,8 @@ import com.azure.storage.file.datalake.models.DataLakeAccessPolicy;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
+import com.azure.storage.file.datalake.models.FileQueryArrowField;
+import com.azure.storage.file.datalake.models.FileQueryArrowSerialization;
 import com.azure.storage.file.datalake.models.FileQueryAsyncResponse;
 import com.azure.storage.file.datalake.models.FileQueryDelimitedSerialization;
 import com.azure.storage.file.datalake.models.FileQueryError;
@@ -244,7 +249,7 @@ class Transforms {
                 properties.isServerEncrypted(), properties.isIncrementalCopy(),
                 Transforms.toDataLakeAccessTier(properties.getAccessTier()),
                 Transforms.toDataLakeArchiveStatus(properties.getArchiveStatus()), properties.getEncryptionKeySha256(),
-                properties.getAccessTierChangeTime(), properties.getMetadata());
+                properties.getAccessTierChangeTime(), properties.getMetadata(), properties.getExpiresOn());
         }
     }
 
@@ -489,10 +494,34 @@ class Transforms {
                 .setFieldQuote(delSer.getFieldQuote())
                 .setHeadersPresent(delSer.isHeadersPresent())
                 .setRecordSeparator(delSer.getRecordSeparator());
+        } else if (ser instanceof FileQueryArrowSerialization) {
+            FileQueryArrowSerialization arrSer = (FileQueryArrowSerialization) ser;
+            return new BlobQueryArrowSerialization().setSchema(toBlobQueryArrowSchema(arrSer.getSchema()));
         } else {
-            throw new IllegalArgumentException("serialization must be FileQueryJsonSerialization or "
-                + "FileQueryDelimitedSerialization");
+            throw new IllegalArgumentException("serialization must be FileQueryJsonSerialization, "
+                + "FileQueryDelimitedSerialization, or FileQueryArrowSerialization");
         }
+    }
+
+    private static List<BlobQueryArrowField> toBlobQueryArrowSchema(List<FileQueryArrowField> schema) {
+        if (schema == null) {
+            return null;
+        }
+        List<BlobQueryArrowField> blobSchema = new ArrayList<>(schema.size());
+        for (FileQueryArrowField field : schema) {
+            blobSchema.add(toBlobQueryArrowField(field));
+        }
+        return blobSchema;
+    }
+
+    private static BlobQueryArrowField toBlobQueryArrowField(FileQueryArrowField field) {
+        if (field == null) {
+            return null;
+        }
+        return new BlobQueryArrowField(BlobQueryArrowFieldType.fromString(field.getType().toString()))
+            .setName(field.getName())
+            .setPrecision(field.getPrecision())
+            .setScale(field.getScale());
     }
 
     static Consumer<BlobQueryError> toBlobQueryErrorConsumer(Consumer<FileQueryError> er) {

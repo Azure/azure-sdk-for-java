@@ -67,7 +67,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
-    public void queryDocumentsValidateContent(boolean qmEnabled) throws Exception {
+    public void queryDocumentsValidateContent(Boolean qmEnabled) throws Exception {
         InternalObjectNode expectedDocument = createdDocuments.get(0);
 
         String query = String.format("SELECT * from root r where r.propStr = '%s'"
@@ -75,7 +75,10 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             , ModelBridgeInternal.getStringFromJsonSerializable(expectedDocument,"propStr"));
 
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-        options.setQueryMetricsEnabled(qmEnabled);
+
+        if (qmEnabled != null) {
+            options.setQueryMetricsEnabled(qmEnabled);
+        }
 
         CosmosPagedFlux<InternalObjectNode> queryObservable = createdCollection.queryItems(query, options, InternalObjectNode.class);
 
