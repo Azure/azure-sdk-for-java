@@ -18,9 +18,8 @@
       "name": "[variables('namespaces_name')]",
       "location": "[variables('location')]",
       "sku": {
-        "name": "Premium",
-        "tier": "Premium",
-        "capacity": 1
+        "name": "Standard",
+        "tier": "Standard"
       },
       "properties": {
         "zoneRedundant": false
@@ -65,11 +64,11 @@
         "[resourceId('Microsoft.ServiceBus/namespaces', variables('namespaces_name'))]"
       ],
       "properties": {
-        "lockDuration": "PT1M",
+        "lockDuration": "PT30S",
         "maxSizeInMegabytes": 1024,
         "requiresDuplicateDetection": false,
         "requiresSession": false,
-        "defaultMessageTimeToLive": "P10675199DT2H48M5.4775807S",
+        "defaultMessageTimeToLive": "P14D",
         "deadLetteringOnMessageExpiration": false,
         "enableBatchedOperations": true,
         "duplicateDetectionHistoryTimeWindow": "PT10M",
