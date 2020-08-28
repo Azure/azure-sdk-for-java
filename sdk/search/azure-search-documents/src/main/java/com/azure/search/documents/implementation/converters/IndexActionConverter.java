@@ -77,7 +77,7 @@ public final class IndexActionConverter {
                             SerializerEncoding.JSON);
                 } catch (IOException ex) {
                     throw LOGGER.logExceptionAsError(
-                        new RuntimeException("Something wrong with the serialization."));
+                        new RuntimeException("Failed to serialize IndexAction.", ex));
                 }
             } else {
                 ByteArrayOutputStream sourceStream = new ByteArrayOutputStream();

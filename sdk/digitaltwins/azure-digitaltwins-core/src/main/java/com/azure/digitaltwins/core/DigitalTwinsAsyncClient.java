@@ -8,6 +8,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.*;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImpl;
@@ -25,6 +26,8 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+
+import static com.azure.core.util.FluxUtil.withContext;
 
 
 /**
@@ -86,9 +89,20 @@ public final class DigitalTwinsAsyncClient {
     // Input is String and output is Response<String>.
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsResponse<String>> createDigitalTwinWithResponse(String digitalTwinId, String digitalTwin) {
+        return withContext(context -> createDigitalTwinWithResponse(digitalTwinId, digitalTwin, context));
+    }
+
+    // TODO: This is a temporary implementation for sample purposes. This should be spruced up/replaced once this API is actually designed.
+    // Input is Object and output is Response<T>.
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public <T> Mono<DigitalTwinsResponse<T>> createDigitalTwinWithResponse(String digitalTwinId, Object digitalTwin, Class<T> klazz) {
+        return withContext(context -> createDigitalTwinWithResponse(digitalTwinId, digitalTwin, klazz, context));
+    }
+
+    Mono<DigitalTwinsResponse<String>> createDigitalTwinWithResponse(String digitalTwinId, String digitalTwin, Context context) {
         return protocolLayer
             .getDigitalTwins()
-            .addWithResponseAsync(digitalTwinId, digitalTwin)
+            .addWithResponseAsync(digitalTwinId, digitalTwin, context)
             .flatMap(
                 response -> {
                     try {
@@ -101,13 +115,10 @@ public final class DigitalTwinsAsyncClient {
                 });
     }
 
-    // TODO: This is a temporary implementation for sample purposes. This should be spruced up/replaced once this API is actually designed.
-    // Input is Object and output is Response<T>.
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<DigitalTwinsResponse<T>> createDigitalTwinWithResponse(String digitalTwinId, Object digitalTwin, Class<T> klazz) {
+    <T> Mono<DigitalTwinsResponse<T>> createDigitalTwinWithResponse(String digitalTwinId, Object digitalTwin, Class<T> klazz, Context context) {
         return protocolLayer
             .getDigitalTwins()
-            .addWithResponseAsync(digitalTwinId, digitalTwin)
+            .addWithResponseAsync(digitalTwinId, digitalTwin, context)
             .flatMap(
                 response -> {
                     T genericResponse = mapper.convertValue(response.getValue(), klazz);
@@ -126,9 +137,13 @@ public final class DigitalTwinsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> createRelationshipWithResponse(String digitalTwinId, String relationshipId, String relationship) {
+        return withContext(context -> createRelationshipWithResponse(digitalTwinId, relationshipId, relationship, context));
+    }
+
+    Mono<Response<String>> createRelationshipWithResponse(String digitalTwinId, String relationshipId, String relationship, Context context) {
         return protocolLayer
             .getDigitalTwins()
-            .addRelationshipWithResponseAsync(digitalTwinId, relationshipId, relationship)
+            .addRelationshipWithResponseAsync(digitalTwinId, relationshipId, relationship, context)
             .flatMap(
                 response -> {
                     try {
@@ -150,7 +165,20 @@ public final class DigitalTwinsAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<String> listRelationships(String digitalTwinId, String relationshipName) {
 
-        Supplier<Mono<PagedResponse<String>>> firstPage = () -> protocolLayer.getDigitalTwins().listRelationshipsSinglePageAsync(digitalTwinId, relationshipName)
+        return new PagedFlux<>(
+            () -> withContext(context -> listRelationshipsSinglePageAsync(digitalTwinId, relationshipName, context)),
+            nextLink -> withContext(context -> listRelationshipsNextSinglePageAsync(nextLink, context)));
+    }
+
+    PagedFlux<String> listRelationships(String digitalTwinId, String relationshipName, Context context) {
+
+        return new PagedFlux<>(
+            () -> listRelationshipsSinglePageAsync(digitalTwinId, relationshipName, context),
+            nextLink -> listRelationshipsNextSinglePageAsync(nextLink, context));
+    }
+
+    Mono<PagedResponse<String>> listRelationshipsSinglePageAsync(String digitalTwinId, String relationshipName, Context context) {
+        return protocolLayer.getDigitalTwins().listRelationshipsSinglePageAsync(digitalTwinId, relationshipName, context)
             .map(
                 objectPagedResponse -> {
                     List<String> stringList = objectPagedResponse.getValue().stream()
@@ -174,8 +202,10 @@ public final class DigitalTwinsAsyncClient {
 
                 }
             );
+    }
 
-        Function<String, Mono<PagedResponse<String>>> nextPage = nextLink -> protocolLayer.getDigitalTwins().listRelationshipsNextSinglePageAsync(nextLink)
+    Mono<PagedResponse<String>> listRelationshipsNextSinglePageAsync(String nextLink, Context context) {
+        return protocolLayer.getDigitalTwins().listRelationshipsNextSinglePageAsync(nextLink, context)
             .map(objectPagedResponse -> {
                 List<String> stringList = objectPagedResponse.getValue().stream()
                     .map(object -> {
@@ -196,9 +226,6 @@ public final class DigitalTwinsAsyncClient {
                     objectPagedResponse.getContinuationToken(),
                     ((PagedResponseBase)objectPagedResponse).getDeserializedHeaders());
             });
-
-        return new PagedFlux<>(firstPage, nextPage);
-
     }
 
 }

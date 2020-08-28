@@ -188,6 +188,11 @@ public class SearchIndexBatchingAsyncClient {
             this.actions = new ArrayList<>();
         }
 
+        // If there are no documents to in the batch to index just return.
+        if (CoreUtils.isNullOrEmpty(actions)) {
+            return Mono.empty();
+        }
+
         List<com.azure.search.documents.implementation.models.IndexAction> convertedActions = actions.stream()
             .map(action -> IndexActionConverter.map(action.getAction(), client.serializer))
             .collect(Collectors.toList());
@@ -195,7 +200,7 @@ public class SearchIndexBatchingAsyncClient {
         AtomicBoolean hasError = new AtomicBoolean(false);
         return flushInternal(convertedActions, 0, context)
             .map(response -> {
-                handleResponse(actions, response.getResults(), response.getOffset());
+                handleResponse(actions, response);
                 if (response.isError()) {
                     hasError.set(true);
                 }
@@ -211,7 +216,7 @@ public class SearchIndexBatchingAsyncClient {
      * This may result in more than one service call in the case where the index batch is too large and we attempt to
      * split it.
      */
-    private Flux<IndexBatchResponse> flushInternal(
+    Flux<IndexBatchResponse> flushInternal(
         List<com.azure.search.documents.implementation.models.IndexAction> actions, int actionsOffset,
         Context context) {
         return client.indexDocumentsWithResponse(actions, true, context)
@@ -242,12 +247,24 @@ public class SearchIndexBatchingAsyncClient {
             });
     }
 
-    private void handleResponse(List<TryTrackingIndexAction> actions, List<IndexingResult> results, int offset) {
-        List<TryTrackingIndexAction> actionsToRetry = new ArrayList<>();
+    private void handleResponse(List<TryTrackingIndexAction> actions, IndexBatchResponse batchResponse) {
+        /*
+         * Batch has been split until it had one document in it and it returned a 413 response.
+         */
+        if (batchResponse.getResults() == null && batchResponse.getCount() == 1) {
+            if (indexingHook != null) {
+                IndexAction<?> action = actions.get(batchResponse.getOffset()).getAction();
+                indexingHook.actionError(action);
+                indexingHook.actionRemoved(action);
+            }
 
-        for (int i = 0; i < results.size(); i++) {
-            IndexingResult result = results.get(i);
-            TryTrackingIndexAction action = actions.get(offset + i);
+            return;
+        }
+
+        List<TryTrackingIndexAction> actionsToRetry = new ArrayList<>();
+        for (int i = 0; i < batchResponse.getResults().size(); i++) {
+            IndexingResult result = batchResponse.getResults().get(i);
+            TryTrackingIndexAction action = actions.get(batchResponse.getOffset() + i);
 
             if (isSuccess(result.getStatusCode())) {
                 if (indexingHook != null) {
@@ -277,7 +294,7 @@ public class SearchIndexBatchingAsyncClient {
         TimerTask newTask = new TimerTask() {
             @Override
             public void run() {
-                flush();
+                flush().subscribe();
             }
         };
 

@@ -589,7 +589,7 @@ public final class SearchAsyncClient {
                             return new SimpleResponse<>(res, document);
                         } catch (IOException ex) {
                             throw logger.logExceptionAsError(
-                                new RuntimeException("Something wrong with the serialization."));
+                                new RuntimeException("Failed to deserialize document.", ex));
                         }
                     }
                     ByteArrayOutputStream sourceStream = new ByteArrayOutputStream();
