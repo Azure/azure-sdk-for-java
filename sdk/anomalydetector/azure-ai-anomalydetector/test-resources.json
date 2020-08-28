@@ -1,0 +1,96 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "baseName": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().name]",
+            "metadata": {
+                "description": "The base resource name."
+            }
+        },
+        "endpointSuffix": {
+            "defaultValue": ".cognitiveservices.azure.com/",
+            "type": "String"
+        },
+        "testApplicationOid": {
+            "type": "String",
+            "metadata": {
+                "description": "The principal to assign the role to. This is application object id."
+            }
+        },
+        "tenantId": {
+            "type": "String",
+            "metadata": {
+                "description": "The tenant id to which the application and resources belong."
+            }
+        },
+        "testApplicationId": {
+            "type": "String",
+            "metadata": {
+                "description": "The application client id used to run tests."
+            }
+        },
+        "testApplicationSecret": {
+            "type": "String",
+            "metadata": {
+                "description": "The application client secret used to run tests."
+            }
+        }
+    },
+    "variables": {
+        "authorizationApiVersion": "2018-09-01-preview",
+        "anomalyDetectorApiVersion": "V1_0",
+        "azureAnomalyDetectorUrl": "[concat('https://', parameters('baseName'), parameters('endpointSuffix'))]",
+        "cognitiveServiceUserRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/a97b65f3-24c7-4388-baec-2e87135dc908')]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/roleAssignments",
+            "apiVersion": "[variables('authorizationApiVersion')]",
+            "name": "[guid(concat(variables('cognitiveServiceUserRoleId'), parameters('baseName')))]",
+            "dependsOn": [
+                "[parameters('baseName')]"
+            ],
+            "properties": {
+                "principalId": "[parameters('testApplicationOid')]",
+                "roleDefinitionId": "[variables('cognitiveServiceUserRoleId')]"
+            }
+        },
+        {
+            "type": "Microsoft.CognitiveServices/accounts",
+            "name": "[parameters('baseName')]",
+            "apiVersion": "[variables('anomalyDetectorApiVersion')]",
+            "sku": {
+                "name": "S"
+            },
+            "kind": "AnomalyDetector",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "customSubDomainName": "[parameters('baseName')]"
+            }
+        }
+    ],
+    "outputs": {
+        "AZURE_TENANT_ID": {
+            "type": "String",
+            "value": "[parameters('tenantId')]"
+        },
+        "AZURE_CLIENT_ID": {
+            "type": "String",
+            "value": "[parameters('testApplicationId')]"
+        },
+        "AZURE_CLIENT_SECRET": {
+            "type": "String",
+            "value": "[parameters('testApplicationSecret')]"
+        },
+        "AZURE_ANOMALY_DETECTOR_API_KEY": {
+            "type": "string",
+            "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', parameters('baseName')), variables('anomalyDetectorApiVersion')).key1]"
+        },
+        "AZURE_ANOMALY_DETECTOR_ENDPOINT": {
+            "type": "string",
+            "value": "[variables('azureAnomalyDetectorUrl')]"
+        }
+    }
+}

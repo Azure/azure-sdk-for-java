@@ -19,10 +19,10 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.resources.fluentcore.rest.ActivationResponse;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -44,6 +44,7 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
     private byte[] responseBytes;
     private final SerializerAdapter serializerAdapter;
     private final HttpPipeline httpPipeline;
+    private final Duration defaultPollInterval;
     private final Type pollResultType;
     private final Type finalResultType;
     private final Function<InnerT, T> wrapOperation;
@@ -54,12 +55,14 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
     public AcceptedImpl(Response<Flux<ByteBuffer>> activationResponse,
                         SerializerAdapter serializerAdapter,
                         HttpPipeline httpPipeline,
+                        Duration defaultPollInterval,
                         Type pollResultType,
                         Type finalResultType,
                         Function<InnerT, T> wrapOperation) {
         this.activationResponse = Objects.requireNonNull(activationResponse);
         this.serializerAdapter = Objects.requireNonNull(serializerAdapter);
         this.httpPipeline = Objects.requireNonNull(httpPipeline);
+        this.defaultPollInterval = Objects.requireNonNull(defaultPollInterval);
         this.pollResultType = Objects.requireNonNull(pollResultType);
         this.finalResultType = Objects.requireNonNull(finalResultType);
         this.wrapOperation = Objects.requireNonNull(wrapOperation);
@@ -143,7 +146,7 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
                 httpPipeline,
                 pollResultType,
                 finalResultType,
-                SdkContext.getLroRetryDuration(),
+                defaultPollInterval,
                 Mono.just(clonedResponse)
             );
         }
@@ -236,10 +239,9 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
 
     public static <T, InnerT> Accepted<T> newAccepted(
         ClientLogger logger,
+        AzureServiceClient client,
         Supplier<Response<Flux<ByteBuffer>>> activationOperation,
         Function<InnerT, T> convertOperation,
-        SerializerAdapter serializerAdapter,
-        HttpPipeline httpPipeline,
         Type innerType,
         Runnable preActivation) {
 
@@ -253,8 +255,9 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
         } else {
             Accepted<T> accepted = new AcceptedImpl<InnerT, T>(
                 activationResponse,
-                serializerAdapter,
-                httpPipeline,
+                client.getSerializerAdapter(),
+                client.getHttpPipeline(),
+                client.getDefaultPollInterval(),
                 innerType, innerType,
                 convertOperation);
 
@@ -264,10 +267,9 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
 
     public static <T extends HasInner<InnerT>, InnerT> Accepted<T> newAccepted(
         ClientLogger logger,
+        AzureServiceClient client,
         Supplier<Response<Flux<ByteBuffer>>> activationOperation,
         Function<InnerT, T> convertOperation,
-        SerializerAdapter serializerAdapter,
-        HttpPipeline httpPipeline,
         Type innerType,
         Runnable preActivation, Consumer<InnerT> postActivation) {
 
@@ -281,8 +283,9 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
         } else {
             Accepted<T> accepted = new AcceptedImpl<InnerT, T>(
                 activationResponse,
-                serializerAdapter,
-                httpPipeline,
+                client.getSerializerAdapter(),
+                client.getHttpPipeline(),
+                client.getDefaultPollInterval(),
                 innerType, innerType,
                 convertOperation);
 

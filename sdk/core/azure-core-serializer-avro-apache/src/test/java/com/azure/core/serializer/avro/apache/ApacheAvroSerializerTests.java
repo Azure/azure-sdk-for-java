@@ -31,6 +31,9 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+/**
+ * Tests {@link ApacheAvroSerializer}.
+ */
 public class ApacheAvroSerializerTests {
     /*
      * This Avro schema specifies the Java string type that should be used to deserialize STRING. Without specifying
