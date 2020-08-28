@@ -15,18 +15,21 @@ import com.azure.resourcemanager.eventhubs.models.EventHub;
 import com.azure.resourcemanager.eventhubs.models.EventHubAuthorizationRule;
 import com.azure.resourcemanager.eventhubs.models.EventHubConsumerGroup;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
+import com.azure.resourcemanager.resources.fluentcore.dag.VoidIndexable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.models.PublicAccess;
 import com.azure.resourcemanager.storage.models.StorageAccount;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * Implementation for {@link EventHub}.
@@ -38,6 +41,7 @@ class EventHubImpl
     private Ancestors.OneAncestor ancestor;
     private CaptureSettings captureSettings;
     private StorageManager storageManager;
+    private Flux<Indexable> postRunTasks;
 
     private final ClientLogger logger = new ClientLogger(EventHubImpl.class);
 
@@ -224,7 +228,7 @@ class EventHubImpl
 
     @Override
     public EventHubImpl withNewSendRule(final String ruleName) {
-        addPostRunDependent(context -> manager().eventHubAuthorizationRules()
+        concatPostRunTask(manager().eventHubAuthorizationRules()
             .define(ruleName)
             .withExistingEventHub(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name())
             .withSendAccess()
@@ -235,7 +239,7 @@ class EventHubImpl
 
     @Override
     public EventHubImpl withNewListenRule(final String ruleName) {
-        addPostRunDependent(context -> manager().eventHubAuthorizationRules()
+        concatPostRunTask(manager().eventHubAuthorizationRules()
             .define(ruleName)
             .withExistingEventHub(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name())
             .withListenAccess()
@@ -246,7 +250,7 @@ class EventHubImpl
 
     @Override
     public EventHubImpl withNewSendAndListenRule(final String ruleName) {
-        addPostRunDependent(context -> manager().eventHubAuthorizationRules()
+        concatPostRunTask(manager().eventHubAuthorizationRules()
             .define(ruleName)
             .withExistingEventHub(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name())
             .withSendAndListenAccess()
@@ -257,7 +261,7 @@ class EventHubImpl
 
     @Override
     public EventHubImpl withNewManageRule(final String ruleName) {
-        addPostRunDependent(context -> manager().eventHubAuthorizationRules()
+        concatPostRunTask(manager().eventHubAuthorizationRules()
             .define(ruleName)
             .withExistingEventHub(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name())
             .withManageAccess()
@@ -268,15 +272,15 @@ class EventHubImpl
 
     @Override
     public EventHubImpl withoutAuthorizationRule(final String ruleName) {
-        addPostRunDependent(context -> manager().eventHubAuthorizationRules()
+        concatPostRunTask(manager().eventHubAuthorizationRules()
             .deleteByNameAsync(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name(), ruleName)
-            .then(context.voidMono()));
+            .map(aVoid -> new VoidIndexable(UUID.randomUUID().toString())));
         return this;
     }
 
     @Override
     public EventHubImpl withNewConsumerGroup(final String name) {
-        addPostRunDependent(context -> manager().consumerGroups()
+        concatPostRunTask(manager().consumerGroups()
             .define(name)
             .withExistingEventHub(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name())
             .createAsync()
@@ -286,7 +290,7 @@ class EventHubImpl
 
     @Override
     public EventHubImpl withNewConsumerGroup(final String name, final String metadata) {
-        addPostRunDependent(context -> manager().consumerGroups()
+        concatPostRunTask(manager().consumerGroups()
             .define(name)
             .withExistingEventHub(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name())
             .withUserMetadata(metadata)
@@ -297,9 +301,9 @@ class EventHubImpl
 
     @Override
     public EventHubImpl withoutConsumerGroup(final String name) {
-        addPostRunDependent(context -> manager().consumerGroups()
+        concatPostRunTask(manager().consumerGroups()
             .deleteByNameAsync(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name(), name)
-            .then(context.voidMono()));
+            .map(aVoid -> new VoidIndexable(UUID.randomUUID().toString())));
         return this;
     }
 
@@ -323,6 +327,9 @@ class EventHubImpl
 
     @Override
     public void beforeGroupCreateOrUpdate() {
+        if (postRunTasks != null) {
+            addPostRunDependent(context -> postRunTasks.last());
+        }
         this.inner().withCaptureDescription(this.captureSettings.validateAndGetSettings());
     }
 
@@ -331,6 +338,15 @@ class EventHubImpl
         return this.manager.inner().getEventHubs()
                 .createOrUpdateAsync(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name(), this.inner())
                 .map(innerToFluentMap(this));
+    }
+
+    @Override
+    public Mono<Void> afterPostRunAsync(boolean isGroupFaulted) {
+        return Mono.just(true)
+            .map(aBoolean -> {
+                postRunTasks = null;
+                return aBoolean;
+            }).then();
     }
 
     @Override
@@ -371,6 +387,13 @@ class EventHubImpl
 
     private String selfId(String parentId) {
         return String.format("%s/eventhubs/%s", parentId, this.name());
+    }
+
+    private void concatPostRunTask(Mono<Indexable> task) {
+        if (postRunTasks == null) {
+            postRunTasks = Flux.empty();
+        }
+        postRunTasks = postRunTasks.concatWith(task);
     }
 
     private class CaptureSettings {

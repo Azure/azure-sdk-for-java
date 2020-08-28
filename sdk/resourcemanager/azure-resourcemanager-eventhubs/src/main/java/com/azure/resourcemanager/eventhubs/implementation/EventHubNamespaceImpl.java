@@ -8,6 +8,8 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.eventhubs.EventHubsManager;
 import com.azure.resourcemanager.eventhubs.fluent.inner.EHNamespaceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.dag.VoidIndexable;
+import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.resourcemanager.eventhubs.models.EventHub;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
@@ -15,9 +17,11 @@ import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceAuthorization
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceSkuType;
 import com.azure.resourcemanager.eventhubs.models.Sku;
 import com.azure.resourcemanager.eventhubs.models.SkuName;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 /**
  * Implementation for {@link EventHubNamespace}.
@@ -28,6 +32,8 @@ class EventHubNamespaceImpl
         EventHubNamespace,
         EventHubNamespace.Definition,
         EventHubNamespace.Update {
+
+    private Flux<Indexable> postRunTasks;
 
     protected EventHubNamespaceImpl(String name, EHNamespaceInner innerObject, EventHubsManager manager) {
         super(name, innerObject, manager);
@@ -80,7 +86,7 @@ class EventHubNamespaceImpl
 
     @Override
     public EventHubNamespaceImpl withNewEventHub(final String eventHubName) {
-        addPostRunDependent(context -> manager().eventHubs()
+        concatPostRunTask(manager().eventHubs()
             .define(eventHubName)
             .withExistingNamespace(resourceGroupName(), name())
             .createAsync()
@@ -90,7 +96,7 @@ class EventHubNamespaceImpl
 
     @Override
     public EventHubNamespaceImpl withNewEventHub(final String eventHubName, final int partitionCount) {
-        addPostRunDependent(context ->  manager().eventHubs()
+        concatPostRunTask(manager().eventHubs()
             .define(eventHubName)
             .withExistingNamespace(resourceGroupName(), name())
             .withPartitionCount(partitionCount)
@@ -102,7 +108,7 @@ class EventHubNamespaceImpl
     @Override
     public EventHubNamespaceImpl withNewEventHub(
         final String eventHubName, final int partitionCount, final int retentionPeriodInDays) {
-        addPostRunDependent(context -> manager().eventHubs()
+        concatPostRunTask(manager().eventHubs()
             .define(eventHubName)
             .withExistingNamespace(resourceGroupName(), name())
             .withPartitionCount(partitionCount)
@@ -114,15 +120,15 @@ class EventHubNamespaceImpl
 
     @Override
     public Update withoutEventHub(final String eventHubName) {
-        addPostRunDependent(context -> manager().eventHubs()
+        concatPostRunTask(manager().eventHubs()
             .deleteByNameAsync(resourceGroupName(), name(), eventHubName)
-            .then(context.voidMono()));
+            .map(aVoid -> new VoidIndexable(UUID.randomUUID().toString())));
         return this;
     }
 
     @Override
     public EventHubNamespaceImpl withNewSendRule(final String ruleName) {
-        addPostRunDependent(context -> manager().namespaceAuthorizationRules()
+        concatPostRunTask(manager().namespaceAuthorizationRules()
             .define(ruleName)
             .withExistingNamespace(resourceGroupName(), name())
             .withSendAccess()
@@ -133,7 +139,7 @@ class EventHubNamespaceImpl
 
     @Override
     public EventHubNamespaceImpl withNewListenRule(final String ruleName) {
-        addPostRunDependent(context -> manager().namespaceAuthorizationRules()
+        concatPostRunTask(manager().namespaceAuthorizationRules()
             .define(ruleName)
             .withExistingNamespace(resourceGroupName(), name())
             .withListenAccess()
@@ -144,7 +150,7 @@ class EventHubNamespaceImpl
 
     @Override
     public EventHubNamespaceImpl withNewManageRule(final String ruleName) {
-        addPostRunDependent(context -> manager().namespaceAuthorizationRules()
+        concatPostRunTask(manager().namespaceAuthorizationRules()
             .define(ruleName)
             .withExistingNamespace(resourceGroupName(), name())
             .withManageAccess()
@@ -155,9 +161,9 @@ class EventHubNamespaceImpl
 
     @Override
     public EventHubNamespaceImpl withoutAuthorizationRule(final String ruleName) {
-        addPostRunDependent(context -> manager().namespaceAuthorizationRules()
+        concatPostRunTask(manager().namespaceAuthorizationRules()
             .deleteByNameAsync(resourceGroupName(), name(), ruleName)
-            .then(context.voidMono()));
+            .map(aVoid -> new VoidIndexable(UUID.randomUUID().toString())));
         return this;
     }
 
@@ -205,10 +211,26 @@ class EventHubNamespaceImpl
     }
 
     @Override
+    public void beforeGroupCreateOrUpdate() {
+        if (postRunTasks != null) {
+            addPostRunDependent(context -> postRunTasks.last());
+        }
+    }
+
+    @Override
     public Mono<EventHubNamespace> createResourceAsync() {
         return this.manager().inner().getNamespaces()
                 .createOrUpdateAsync(resourceGroupName(), name(), this.inner())
                 .map(innerToFluentMap(this));
+    }
+
+    @Override
+    public Mono<Void> afterPostRunAsync(boolean isGroupFaulted) {
+        return Mono.just(true)
+            .map(aBoolean -> {
+                postRunTasks = null;
+                return aBoolean;
+            }).then();
     }
 
     @Override
@@ -242,5 +264,12 @@ class EventHubNamespaceImpl
         if (this.inner().sku() == null) {
             this.withSku(EventHubNamespaceSkuType.STANDARD);
         }
+    }
+
+    private void concatPostRunTask(Mono<Indexable> task) {
+        if (postRunTasks == null) {
+            postRunTasks = Flux.empty();
+        }
+        postRunTasks = postRunTasks.concatWith(task);
     }
 }
