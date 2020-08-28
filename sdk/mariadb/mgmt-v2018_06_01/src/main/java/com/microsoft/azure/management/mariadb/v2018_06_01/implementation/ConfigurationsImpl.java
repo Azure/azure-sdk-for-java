@@ -63,10 +63,14 @@ class ConfigurationsImpl extends WrapperImpl<ConfigurationsInner> implements Con
     public Observable<Configuration> getAsync(String resourceGroupName, String serverName, String configurationName) {
         ConfigurationsInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, configurationName)
-        .map(new Func1<ConfigurationInner, Configuration>() {
+        .flatMap(new Func1<ConfigurationInner, Observable<Configuration>>() {
             @Override
-            public Configuration call(ConfigurationInner inner) {
-                return wrapModel(inner);
+            public Observable<Configuration> call(ConfigurationInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((Configuration)wrapModel(inner));
+                }
             }
        });
     }

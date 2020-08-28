@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * The properties used to create a new server.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "createMode")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "createMode", defaultImpl = ServerPropertiesForCreate.class)
 @JsonTypeName("ServerPropertiesForCreate")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Default", value = ServerPropertiesForDefaultCreate.class),
@@ -37,6 +37,14 @@ public class ServerPropertiesForCreate {
      */
     @JsonProperty(value = "sslEnforcement")
     private SslEnforcementEnum sslEnforcement;
+
+    /**
+     * Whether or not public network access is allowed for this server. Value
+     * is optional but if passed in, must be 'Enabled' or 'Disabled'. Possible
+     * values include: 'Enabled', 'Disabled'.
+     */
+    @JsonProperty(value = "publicNetworkAccess")
+    private PublicNetworkAccessEnum publicNetworkAccess;
 
     /**
      * Storage profile of a server.
@@ -81,6 +89,26 @@ public class ServerPropertiesForCreate {
      */
     public ServerPropertiesForCreate withSslEnforcement(SslEnforcementEnum sslEnforcement) {
         this.sslEnforcement = sslEnforcement;
+        return this;
+    }
+
+    /**
+     * Get whether or not public network access is allowed for this server. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. Possible values include: 'Enabled', 'Disabled'.
+     *
+     * @return the publicNetworkAccess value
+     */
+    public PublicNetworkAccessEnum publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set whether or not public network access is allowed for this server. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. Possible values include: 'Enabled', 'Disabled'.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set
+     * @return the ServerPropertiesForCreate object itself.
+     */
+    public ServerPropertiesForCreate withPublicNetworkAccess(PublicNetworkAccessEnum publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
         return this;
     }
 
