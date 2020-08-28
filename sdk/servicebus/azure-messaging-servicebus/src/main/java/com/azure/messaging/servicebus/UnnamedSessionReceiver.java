@@ -20,7 +20,8 @@ import reactor.core.publisher.MonoProcessor;
 import reactor.core.scheduler.Scheduler;
 
 import java.time.Duration;
-import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
@@ -30,8 +31,8 @@ import java.util.function.Function;
  */
 class UnnamedSessionReceiver implements AutoCloseable {
     private final AtomicBoolean isDisposed = new AtomicBoolean();
-    private final LockContainer<Instant> lockContainer;
-    private final AtomicReference<Instant> sessionLockedUntil = new AtomicReference<>();
+    private final LockContainer<OffsetDateTime> lockContainer;
+    private final AtomicReference<OffsetDateTime> sessionLockedUntil = new AtomicReference<>();
     private final AtomicReference<String> sessionId = new AtomicReference<>();
     private final AtomicReference<LockRenewalOperation> renewalOperation = new AtomicReference<>();
     private final ClientLogger logger = new ClientLogger(UnnamedSessionReceiver.class);
@@ -59,7 +60,7 @@ class UnnamedSessionReceiver implements AutoCloseable {
     UnnamedSessionReceiver(ServiceBusReceiveLink receiveLink, MessageSerializer messageSerializer,
         AmqpRetryOptions retryOptions, int prefetch, boolean disposeOnIdle, Scheduler scheduler,
         boolean enableSessionLockRenewal, Duration maxSessionLockRenewDuration,
-        Function<String, Mono<Instant>> renewSessionLock) {
+        Function<String, Mono<OffsetDateTime>> renewSessionLock) {
 
         this.receiveLink = receiveLink;
         this.lockContainer = new LockContainer<>(ServiceBusConstants.OPERATION_TIMEOUT);
@@ -80,7 +81,7 @@ class UnnamedSessionReceiver implements AutoCloseable {
 
                 //TODO (conniey): For session receivers, do they have a message lock token?
                 if (!CoreUtils.isNullOrEmpty(deserialized.getLockToken()) && deserialized.getLockedUntil() != null) {
-                    lockContainer.addOrUpdate(deserialized.getLockToken(), deserialized.getLockedUntil(),
+                    lockContainer.addOrUpdate(deserialized.getLockToken(), deserialized.getLockedUntil().toInstant(),
                         deserialized.getLockedUntil());
                 } else {
                     logger.info("sessionId[{}] message[{}]. There is no lock token.",
@@ -128,14 +129,14 @@ class UnnamedSessionReceiver implements AutoCloseable {
             }
         }));
         this.subscriptions.add(receiveLink.getSessionLockedUntil().subscribe(lockedUntil -> {
-            if (!sessionLockedUntil.compareAndSet(null, lockedUntil)) {
+            if (!sessionLockedUntil.compareAndSet(null, lockedUntil.atOffset(ZoneOffset.UTC))) {
                 logger.info("SessionLockedUntil was already set: {}", sessionLockedUntil);
                 return;
             }
 
             final Duration maxRenewal = enableSessionLockRenewal ? maxSessionLockRenewDuration : Duration.ZERO;
             this.renewalOperation.compareAndSet(null, new LockRenewalOperation(sessionId.get(),
-                maxRenewal, true, renewSessionLock, lockedUntil));
+                maxRenewal, true, renewSessionLock, lockedUntil.atOffset(ZoneOffset.UTC)));
         }));
     }
 
@@ -181,7 +182,7 @@ class UnnamedSessionReceiver implements AutoCloseable {
      *
      * @param lockedUntil Gets the time when the session is locked until.
      */
-    void setSessionLockedUntil(Instant lockedUntil) {
+    void setSessionLockedUntil(OffsetDateTime lockedUntil) {
         sessionLockedUntil.set(lockedUntil);
     }
 

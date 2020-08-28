@@ -18,6 +18,8 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -612,11 +614,11 @@ class ServiceBusReceiverClientTest {
     @Test
     void renewMessageLock() {
         // Arrange
-        final Instant response = Instant.ofEpochSecond(1585259339);
+        final OffsetDateTime response = Instant.ofEpochSecond(1585259339).atOffset(ZoneOffset.UTC);
         when(asyncClient.renewMessageLock(LOCK_TOKEN)).thenReturn(Mono.just(response));
 
         // Act
-        final Instant actual = client.renewMessageLock(LOCK_TOKEN);
+        final OffsetDateTime actual = client.renewMessageLock(LOCK_TOKEN);
 
         // Assert
         assertEquals(response, actual);
@@ -626,11 +628,11 @@ class ServiceBusReceiverClientTest {
     void renewSessionLock() {
         // Arrange
         final String sessionId = "a-session-id";
-        final Instant response = Instant.ofEpochSecond(1585259339);
+        final OffsetDateTime response = Instant.ofEpochSecond(1585259339).atOffset(ZoneOffset.UTC);
         when(asyncClient.renewSessionLock(sessionId)).thenReturn(Mono.just(response));
 
         // Act
-        final Instant actual = client.renewSessionLock(sessionId);
+        final OffsetDateTime actual = client.renewSessionLock(sessionId);
 
         // Assert
         assertEquals(response, actual);

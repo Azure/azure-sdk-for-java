@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -318,7 +318,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
                 assertNotNull(transaction);
             })
             .verifyComplete();
-        StepVerifier.create(sender.scheduleMessage(message, Instant.now().plusSeconds(5), transaction.get()))
+        StepVerifier.create(sender.scheduleMessage(message, OffsetDateTime.now().plusSeconds(5), transaction.get()))
             .assertNext(sequenceNumber -> {
                 assertNotNull(sequenceNumber);
                 assertTrue(sequenceNumber.intValue() > 0);

@@ -33,7 +33,8 @@ import org.apache.qpid.proton.message.Message;
 
 import java.lang.reflect.Array;
 import java.time.Duration;
-import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -154,7 +155,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         final Map<Symbol, Object> messageAnnotationsMap = new HashMap<>();
         if (brokeredMessage.getScheduledEnqueueTime() != null) {
             messageAnnotationsMap.put(Symbol.valueOf(SCHEDULED_ENQUEUE_TIME_NAME),
-                Date.from(brokeredMessage.getScheduledEnqueueTime()));
+                Date.from(brokeredMessage.getScheduledEnqueueTime().toInstant()));
         }
 
         final String partitionKey = brokeredMessage.getPartitionKey();
@@ -191,7 +192,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
     public <T> List<T> deserializeList(Message message, Class<T> clazz) {
         if (clazz == ServiceBusReceivedMessage.class) {
             return (List<T>) deserializeListOfMessages(message);
-        } else if (clazz == Instant.class) {
+        } else if (clazz == OffsetDateTime.class) {
             return (List<T>) deserializeListOfInstant(message);
         } else if (clazz == Long.class) {
             return (List<T>) deserializeListOfLong(message);
@@ -219,7 +220,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         return Collections.emptyList();
     }
 
-    private List<Instant> deserializeListOfInstant(Message amqpMessage) {
+    private List<OffsetDateTime> deserializeListOfInstant(Message amqpMessage) {
 
         if (amqpMessage.getBody() instanceof AmqpValue) {
             AmqpValue amqpValue = ((AmqpValue) amqpMessage.getBody());
@@ -230,7 +231,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
 
                 if (expirationListObj instanceof Date[]) {
                     return Arrays.stream((Date[]) expirationListObj)
-                        .map(Date::toInstant)
+                        .map(date -> date.toInstant().atOffset(ZoneOffset.UTC))
                         .collect(Collectors.toList());
                 }
             }
@@ -365,16 +366,18 @@ class ServiceBusMessageSerializer implements MessageSerializer {
 
                     switch (key) {
                         case ENQUEUED_TIME_UTC_NAME:
-                            brokeredMessage.setEnqueuedTime(((Date) value).toInstant());
+                            brokeredMessage.setEnqueuedTime(((Date) value).toInstant().atOffset(ZoneOffset.UTC));
+
                             break;
                         case SCHEDULED_ENQUEUE_TIME_NAME:
-                            brokeredMessage.setScheduledEnqueueTime(((Date) value).toInstant());
+                            brokeredMessage.setScheduledEnqueueTime(((Date) value).toInstant()
+                                .atOffset(ZoneOffset.UTC));
                             break;
                         case SEQUENCE_NUMBER_NAME:
                             brokeredMessage.setSequenceNumber((long) value);
                             break;
                         case LOCKED_UNTIL_NAME:
-                            brokeredMessage.setLockedUntil(((Date) value).toInstant());
+                            brokeredMessage.setLockedUntil(((Date) value).toInstant().atOffset(ZoneOffset.UTC));
                             break;
                         case PARTITION_KEY_NAME:
                             brokeredMessage.setPartitionKey((String) value);

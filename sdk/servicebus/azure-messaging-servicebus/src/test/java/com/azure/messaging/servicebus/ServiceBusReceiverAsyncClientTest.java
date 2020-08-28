@@ -50,6 +50,8 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -124,7 +126,7 @@ class ServiceBusReceiverAsyncClientTest {
     @Mock
     private Runnable onClientClose;
     @Mock
-    private Function<String, Mono<Instant>> renewalOperation;
+    private Function<String, Mono<OffsetDateTime>> renewalOperation;
 
     @BeforeAll
     static void beforeAll() {
@@ -442,7 +444,7 @@ class ServiceBusReceiverAsyncClientTest {
             .setDeadLetterErrorDescription(description)
             .setPropertiesToModify(propertiesToModify);
 
-        final Instant expiration = Instant.now().plus(Duration.ofMinutes(5));
+        final OffsetDateTime expiration = OffsetDateTime.now().plus(Duration.ofMinutes(5));
 
         final MessageWithLockToken message = mock(MessageWithLockToken.class);
 
@@ -473,7 +475,7 @@ class ServiceBusReceiverAsyncClientTest {
         // Arrange
         final String lockToken1 = UUID.randomUUID().toString();
         final String lockToken2 = UUID.randomUUID().toString();
-        final Instant expiration = Instant.now().plus(Duration.ofMinutes(5));
+        final OffsetDateTime expiration = OffsetDateTime.now().plus(Duration.ofMinutes(5));
         final long sequenceNumber = 10L;
         final long sequenceNumber2 = 15L;
 
@@ -734,7 +736,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(sessionReceiver.renewSessionLock(SESSION_ID))
-            .expectNext(expiry)
+            .expectNext(expiry.atOffset(ZoneOffset.UTC))
             .expectComplete()
             .verify();
     }
@@ -762,7 +764,7 @@ class ServiceBusReceiverAsyncClientTest {
         final Duration maxDuration = Duration.ofSeconds(8);
         final Duration renewalPeriod = Duration.ofSeconds(3);
         final String lockToken = "some-token";
-        final Instant startTime = Instant.now();
+        final OffsetDateTime startTime = OffsetDateTime.now();
 
         // At most 4 times because we renew the lock before it expires (by some seconds).
         final int atMost = 5;
@@ -795,7 +797,7 @@ class ServiceBusReceiverAsyncClientTest {
         final Duration maxDuration = Duration.ofSeconds(8);
         final Duration renewalPeriod = Duration.ofSeconds(3);
         final String sessionId = "some-token";
-        final Instant startTime = Instant.now();
+        final OffsetDateTime startTime = OffsetDateTime.now();
 
         // At most 4 times because we renew the lock before it expires (by some seconds).
         final int atMost = 5;

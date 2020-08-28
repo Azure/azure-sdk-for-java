@@ -29,6 +29,8 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
@@ -90,7 +92,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
     private final LockContainer<LockRenewalOperation> renewalContainer;
     private final AtomicBoolean isDisposed = new AtomicBoolean();
-    private final LockContainer<Instant> managementNodeLocks;
+    private final LockContainer<OffsetDateTime> managementNodeLocks;
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClient.class);
     private final String fullyQualifiedNamespace;
     private final String entityPath;
@@ -1000,7 +1002,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 }
                 if (receiverOptions.getReceiveMode() == ReceiveMode.PEEK_LOCK) {
                     receivedMessage.setLockedUntil(managementNodeLocks.addOrUpdate(receivedMessage.getLockToken(),
-                        receivedMessage.getLockedUntil(), receivedMessage.getLockedUntil()));
+                        receivedMessage.getLockedUntil().toInstant(),
+                        receivedMessage.getLockedUntil()).atOffset(ZoneOffset.UTC));
                 }
 
                 return receivedMessage;
@@ -1045,7 +1048,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 }
                 if (receiverOptions.getReceiveMode() == ReceiveMode.PEEK_LOCK) {
                     receivedMessage.setLockedUntil(managementNodeLocks.addOrUpdate(receivedMessage.getLockToken(),
-                        receivedMessage.getLockedUntil(), receivedMessage.getLockedUntil()));
+                        receivedMessage.getLockedUntil().toInstant(),
+                        receivedMessage.getLockedUntil()).atOffset(ZoneOffset.UTC));
                 }
 
                 return receivedMessage;
@@ -1068,7 +1072,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws IllegalStateException if the receiver is a session receiver.
      * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      */
-    public Mono<Instant> renewMessageLock(String lockToken) {
+    public Mono<OffsetDateTime> renewMessageLock(String lockToken) {
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "renewMessageLock")));
@@ -1085,7 +1089,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(serviceBusManagementNode ->
                 serviceBusManagementNode.renewMessageLock(lockToken, getLinkName(null)))
-            .map(instant -> managementNodeLocks.addOrUpdate(lockToken, instant, instant));
+            .map(instant -> managementNodeLocks.addOrUpdate(lockToken, instant,
+                instant.atOffset(ZoneOffset.UTC)).atOffset(ZoneOffset.UTC));
     }
 
     /**
@@ -1096,7 +1101,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @return The next expiration time for the session lock.
      * @throws IllegalStateException if the receiver is a non-session receiver.
      */
-    public Mono<Instant> renewSessionLock(String sessionId) {
+    public Mono<OffsetDateTime> renewSessionLock(String sessionId) {
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "renewSessionLock")));
@@ -1110,7 +1115,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(channel -> channel.renewSessionLock(sessionId, linkName));
+            .flatMap(channel -> channel.renewSessionLock(sessionId, linkName)
+                .map(instant -> instant.atOffset(ZoneOffset.UTC)));
     }
 
     /**
