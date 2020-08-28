@@ -355,7 +355,7 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Deletes a model.
-     * @param modelId The id for the model. The id is globally unique and case sensitive.
+     * @param modelId The Id for the model. The Id is globally unique and case sensitive.
      * @return An empty Mono
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -366,7 +366,7 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Deletes a model.
-     * @param modelId The id for the model. The id is globally unique and case sensitive.
+     * @param modelId The Id for the model. The Id is globally unique and case sensitive.
      * @return The http response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

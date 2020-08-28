@@ -1175,60 +1175,7 @@ When updating a model, the payload for a multi-operation json patch follows the 
 Async APIs
 
 ```java
-    /**
-     * Creates one or many models.
-     * @param models The list of models to create. Each string corresponds to exactly one model.
-     * @return A {@link PagedFlux} of created models and the http response.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ModelData> createModels(List<String> models) { }
-
-    /**
-     * Gets a model, including the model metadata and the model definition.
-     * @param modelId The Id of the model.
-     * @return The ModelData
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ModelData> getModel(String modelId) { }
-
-    /**
-     * Gets a model, including the model metadata and the model definition asynchronously.
-     * @param modelId The Id of the model.
-     * @return The ModelData and the http response
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ModelData>> getModelWithResponse(String modelId) { }
-   
-    /**
-     * Gets the list of models by iterating through a collection.
-     * @return A {@link PagedFlux} of ModelData and the http response.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ModelData> listModels() { }
     
-    /**
-     * Gets the list of models by iterating through a collection.
-     * @param listModelOptions The options to follow when listing the models. For example, the page size hint can be specified.
-     * @return A {@link PagedFlux} of ModelData and the http response.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ModelData> listModels(ListModelOptions listModelOptions) { }
-
-    /**
-     * Deletes a model.
-     * @param modelId The id for the model. The id is globally unique and case sensitive.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteModel(String modelId) { }
-
-    /**
-     * Deletes a model.
-     * @param modelId The id for the model. The id is globally unique and case sensitive.
-     * @return The http response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response> deleteModelWithResponse(String modelId) { }
-
     /**
      * Decommissions a model.
      * @param modelId The Id of the model to decommission.
@@ -1249,53 +1196,6 @@ Async APIs
 Sync APIs
 ```java
  /**
-     * Creates one or many models.
-     * @param models The list of models to create. Each string corresponds to exactly one model.
-     * @return A {@link PagedIterable} of created ModelData.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ModelData> createModels(Iterable<String> models, Context context) { }
-
-    /**
-     * Gets a model, including the model metadata and the model definition.
-     * @param modelId The Id of the model.
-     * @return The application/json model
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ModelData getModel(String modelId) { }
-
-    /**
-     * Gets a model, including the model metadata and the model definition.
-     * @param modelId The Id of the model.
-     * @return A REST response containing the model.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ModelData> getModelWithResponse(String modelId, Context context) { }
-
-    /**
-     * Gets the list of models by iterating through a collection.
-     * @param dependenciesFor The model Ids to have dependencies retrieved.
-     * @param includeModelDefinition Whether to include the model definition in the result. If false, only the model metadata will be returned.
-     * @param options The options to follow when listing the models. For example, the page size hint can be specified.
-     * @return A {@link PagedIterable} of ModelData.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ModelData> listModels(Iterable<String> dependenciesFor, boolean includeModelDefinition, DigitalTwinModelsListOptions options, Context context) { }
-    
-    /**
-     * Deletes a model.
-     * @param modelId The id for the model. The id is globally unique and case sensitive.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteModel(String modelId) { }
-
-    /**
-     * Deletes a model.
-     * @param modelId The id for the model. The id is globally unique and case sensitive.
-     * @return The http response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response deleteModelWithResponse(String modelId, Context context) { }
 
     /**
      * Decommissions a model.
@@ -1307,6 +1207,7 @@ Sync APIs
     /**
      * Decommissions a model.
      * @param modelId The Id of the model to decommission.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The http response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

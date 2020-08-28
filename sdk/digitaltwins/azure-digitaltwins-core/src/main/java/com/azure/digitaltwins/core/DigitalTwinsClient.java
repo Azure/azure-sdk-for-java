@@ -148,7 +148,7 @@ public final class DigitalTwinsClient {
 
     /**
      * Deletes a model.
-     * @param modelId The id for the model. The id is globally unique and case sensitive.
+     * @param modelId The Id for the model. The Id is globally unique and case sensitive.
      * @return Void
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -158,7 +158,7 @@ public final class DigitalTwinsClient {
 
     /**
      * Deletes a model.
-     * @param modelId The id for the model. The id is globally unique and case sensitive.
+     * @param modelId The Id for the model. The Id is globally unique and case sensitive.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The http response.
      */
