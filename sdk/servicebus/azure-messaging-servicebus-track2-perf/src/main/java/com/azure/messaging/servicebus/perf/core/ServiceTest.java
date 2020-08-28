@@ -50,13 +50,13 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
         super(options);
         String connectionString = System.getenv(AZURE_SERVICE_BUS_CONNECTION_STRING);
         if (CoreUtils.isNullOrEmpty(connectionString)) {
-            logger.logExceptionAsError(new IllegalArgumentException("Environment variable "
+            throw logger.logExceptionAsError(new IllegalArgumentException("Environment variable "
                 + AZURE_SERVICE_BUS_CONNECTION_STRING + " must be set."));
         }
 
         String queueName = System.getenv(AZURE_SERVICEBUS_QUEUE_NAME);
         if (CoreUtils.isNullOrEmpty(queueName)) {
-            logger.logExceptionAsError(new IllegalArgumentException("Environment variable "
+            throw logger.logExceptionAsError(new IllegalArgumentException("Environment variable "
                 + AZURE_SERVICEBUS_QUEUE_NAME + " must be set."));
         }
 

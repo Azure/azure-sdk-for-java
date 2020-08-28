@@ -73,6 +73,7 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
             .map(messageContext -> receiverAsync.complete(messageContext.getMessage().getLockToken()))
             .count()
             .handle((aLong, sink) -> {
+                System.out.println("!!!! runAsync messages received : " + aLong);
                 if (aLong <= 0) {
                     sink.error(new RuntimeException("Error. Should have received some messages."));
                 }
