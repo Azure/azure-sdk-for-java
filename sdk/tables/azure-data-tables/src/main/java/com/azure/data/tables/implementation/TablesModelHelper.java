@@ -7,14 +7,14 @@ import com.azure.data.tables.implementation.models.TableResponseProperties;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableItem;
 
-import java.time.OffsetDateTime;
+import java.util.Map;
 import java.util.Objects;
 
 /**
  * Used to access internal methods on models.
  */
 public final class TablesModelHelper {
-    private static EntityAccessor entityAccessor;
+    private static EntityCreator entityCreator;
     private static ItemCreator itemCreator;
 
     static {
@@ -32,18 +32,18 @@ public final class TablesModelHelper {
     /**
      * Sets the entity accessor.
      *
-     * @param accessor The entity accessor.
+     * @param creator The entity accessor.
      * @throws IllegalStateException if the accessor has already been set.
      */
-    public static void setEntityAccessor(EntityAccessor accessor) {
-        Objects.requireNonNull(accessor, "'accessor' cannot be null.");
+    public static void setEntityCreator(EntityCreator creator) {
+        Objects.requireNonNull(creator, "'creator' cannot be null.");
 
-        if (TablesModelHelper.entityAccessor != null) {
+        if (TablesModelHelper.entityCreator != null) {
             throw new ClientLogger(TablesModelHelper.class).logExceptionAsError(new IllegalStateException(
-                "'entityAccessor' is already set."));
+                "'entityCreator' is already set."));
         }
 
-        entityAccessor = accessor;
+        entityCreator = creator;
     }
 
     /**
@@ -64,25 +64,25 @@ public final class TablesModelHelper {
     }
 
     /**
-     * Sets values on a {@link TableEntity}.
+     * Creates a {@link TableEntity}.
      *
-     * @param entity Entity to set the values on.
-     * @param timestamp Timestamp to set.
-     * @param eTag ETag to set.
+     * @param properties The properties used to construct the entity
+     * @return The created TableEntity
      */
-    public static void setValues(TableEntity entity, OffsetDateTime timestamp, String eTag) {
-        if (entityAccessor == null) {
+    public static TableEntity createEntity(Map<String, Object> properties) {
+        if (entityCreator == null) {
             throw new ClientLogger(TablesModelHelper.class).logExceptionAsError(
-                new IllegalStateException("'entityAccessor' should not be null."));
+                new IllegalStateException("'entityCreator' should not be null."));
         }
 
-        entityAccessor.setValues(entity, timestamp, eTag);
+        return entityCreator.create(properties);
     }
 
     /**
      * Creates a {@link TableItem}.
      *
      * @param properties The TableResponseProperties used to construct the table
+     * @return The created TableItem
      */
     public static TableItem createItem(TableResponseProperties properties) {
         if (itemCreator == null) {
@@ -93,15 +93,14 @@ public final class TablesModelHelper {
         return itemCreator.create(properties);
     }
 
-    public interface EntityAccessor {
+    public interface EntityCreator {
         /**
-         * Sets values on a {@link TableEntity}.
+         * Creates a {@link TableEntity}.
          *
-         * @param entity Entity to set the ETag on.
-         * @param timestamp Timestamp to set.
-         * @param eTag ETag to set.
+         * @param properties The properties used to construct the entity
+         * @return The created TableEntity
          */
-        void setValues(TableEntity entity, OffsetDateTime timestamp, String eTag);
+        TableEntity create(Map<String, Object> properties);
     }
 
     public interface ItemCreator {
@@ -109,6 +108,7 @@ public final class TablesModelHelper {
          * Creates a {@link TableItem}.
          *
          * @param properties The TableResponseProperties used to construct the table
+         * @return The created TableItem
          */
         TableItem create(TableResponseProperties properties);
     }

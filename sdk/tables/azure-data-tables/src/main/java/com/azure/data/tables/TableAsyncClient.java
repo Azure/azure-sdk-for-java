@@ -18,7 +18,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.tables.implementation.AzureTableImpl;
 import com.azure.data.tables.implementation.AzureTableImplBuilder;
-import com.azure.data.tables.implementation.TablesConstants;
 import com.azure.data.tables.implementation.TablesModelHelper;
 import com.azure.data.tables.implementation.models.OdataMetadataFormat;
 import com.azure.data.tables.implementation.models.QueryOptions;
@@ -32,8 +31,6 @@ import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.time.Duration;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -519,7 +516,7 @@ public class TableAsyncClient {
                 }
 
                 final List<TableEntity> entities = entityResponseValue.stream()
-                    .map(entityMap -> deserializeEntity(logger, entityMap))
+                    .map(TablesModelHelper::createEntity)
                     .collect(Collectors.toList());
 
                 return Mono.just(new EntityPaged(response, entities,
@@ -632,60 +629,9 @@ public class TableAsyncClient {
 
                 // Deserialize the first entity.
                 // TODO: Potentially update logic to deserialize them all.
-                final TableEntity entity = deserializeEntity(logger, matchingEntities.get(0));
+                final TableEntity entity = TablesModelHelper.createEntity(matchingEntities.get(0));
                 sink.next(new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                     entity));
             });
-    }
-
-    /**
-     * Given a Map, creates the corresponding entity.
-     *
-     * @param properties Properties representing the entity.
-     *
-     * @return The Entity represented by this map.
-     * @throws IllegalArgumentException if the Map is missing a row key or partition key.
-     * @throws NullPointerException if 'properties' is null.
-     */
-    private static TableEntity deserializeEntity(ClientLogger logger, Map<String, Object> properties) {
-        final Object partitionKeyValue = properties.get(TablesConstants.PARTITION_KEY);
-        if (!(partitionKeyValue instanceof String) || ((String) partitionKeyValue).isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                "'%s' does not exist in property map or is an empty value.", TablesConstants.PARTITION_KEY)));
-        }
-
-        final Object rowKeyValue = properties.get(TablesConstants.ROW_KEY);
-        if (!(rowKeyValue instanceof String) || ((String) rowKeyValue).isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                "'%s' does not exist in property map or is an empty value.", TablesConstants.ROW_KEY)));
-        }
-
-        final Object timestampValue = properties.get(TablesConstants.TIMESTAMP_KEY);
-        OffsetDateTime timestamp = null;
-        if (timestampValue != null) {
-            if (!(timestampValue instanceof String)) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                    "'%s' value is of the wrong type.", TablesConstants.TIMESTAMP_KEY)));
-            }
-            try {
-                timestamp = OffsetDateTime.parse((String) timestampValue);
-            } catch (DateTimeParseException e) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                    "'%s' value is not a valid OffsetDateTime.", TablesConstants.TIMESTAMP_KEY), e));
-            }
-        }
-
-        final Object etagValue = properties.get(TablesConstants.ODATA_ETAG_KEY);
-        if (etagValue != null && !(etagValue instanceof String)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                "'%s' value is of the wrong type.", TablesConstants.ODATA_ETAG_KEY)));
-        }
-
-        final TableEntity entity = new TableEntity((String) partitionKeyValue, (String) rowKeyValue);
-        TablesModelHelper.setValues(entity, timestamp, (String) etagValue);
-
-        properties.forEach((key, value) -> entity.getProperties().putIfAbsent(key, value));
-
-        return entity;
     }
 }
