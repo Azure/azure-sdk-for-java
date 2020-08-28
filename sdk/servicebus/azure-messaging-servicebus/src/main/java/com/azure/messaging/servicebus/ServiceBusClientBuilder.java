@@ -550,13 +550,13 @@ public final class ServiceBusClientBuilder {
             if (!CoreUtils.isNullOrEmpty(viaQueueName) && entityType == MessagingEntityType.SUBSCRIPTION) {
                 throw logger.logExceptionAsError(new IllegalStateException(String.format(
                     "(%s), Via queue feature work only with a queue.", viaQueueName)));
-            } else if(!CoreUtils.isNullOrEmpty(viaTopicName) && entityType == MessagingEntityType.QUEUE) {
+            } else if (!CoreUtils.isNullOrEmpty(viaTopicName) && entityType == MessagingEntityType.QUEUE) {
                 throw logger.logExceptionAsError(new IllegalStateException(String.format(
                     "(%s), Via topic feature work only with a topic.", viaTopicName)));
             }
 
             final String entityName;
-            final String viaEntityName = !CoreUtils.isNullOrEmpty(viaQueueName)?viaQueueName: viaTopicName;
+            final String viaEntityName = !CoreUtils.isNullOrEmpty(viaQueueName) ? viaQueueName : viaTopicName;
             switch (entityType) {
                 case QUEUE:
                     entityName = queueName;

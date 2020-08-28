@@ -4,30 +4,32 @@
 package com.azure.messaging.servicebus.administration.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.messaging.servicebus.implementation.models.MessageCountDetails;
 
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
 /**
- * Runtime information about the topic.
+ * Runtime properties about the topic.
  */
 @Immutable
-public class TopicRuntimeInfo {
+public class TopicRuntimeProperties {
     private final String name;
     private final int subscriptionCount;
     private final long sizeInBytes;
     private final OffsetDateTime accessedAt;
     private final OffsetDateTime createdAt;
     private final OffsetDateTime updatedAt;
+    private final int scheduledMessageCount;
 
     /**
      * Creates a new instance with runtime properties extracted from the given TopicDescription.
      *
-     * @param topicProperties Topic description to extract runtime information from.
+     * @param topicProperties Topic description to extract runtime properties from.
      *
      * @throws NullPointerException if {@code topicDescription} is null.
      */
-    public TopicRuntimeInfo(TopicProperties topicProperties) {
+    public TopicRuntimeProperties(TopicProperties topicProperties) {
         Objects.requireNonNull(topicProperties, "'topicDescription' cannot be null.");
 
         this.name = topicProperties.getName();
@@ -36,6 +38,8 @@ public class TopicRuntimeInfo {
         this.accessedAt = topicProperties.getAccessedAt();
         this.createdAt = topicProperties.getCreatedAt();
         this.updatedAt = topicProperties.getUpdatedAt();
+        final MessageCountDetails details = topicProperties.getMessageCountDetails();
+        this.scheduledMessageCount = details != null ? details.getScheduledMessageCount() : 0;
     }
 
     /**
@@ -72,6 +76,15 @@ public class TopicRuntimeInfo {
      */
     public long getSizeInBytes() {
         return sizeInBytes;
+    }
+
+    /**
+     * Get the scheduledMessageCount property: Number of scheduled messages.
+     *
+     * @return the scheduledMessageCount value.
+     */
+    public int getScheduledMessageCount() {
+        return this.scheduledMessageCount;
     }
 
     /**

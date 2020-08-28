@@ -10,10 +10,10 @@ import java.time.OffsetDateTime;
 import java.util.Objects;
 
 /**
- * Runtime information about the queue.
+ * Runtime properties about the queue.
  */
 @Immutable
-public class QueueRuntimeInfo {
+public class QueueRuntimeProperties {
     private final String name;
     private final long messageCount;
     private final long sizeInBytes;
@@ -29,11 +29,11 @@ public class QueueRuntimeInfo {
     /**
      * Creates a new instance with runtime properties extracted from the given QueueDescription.
      *
-     * @param queueProperties Queue description to extract runtime information from.
+     * @param queueProperties Queue description to extract runtime properties from.
      *
      * @throws NullPointerException if {@code queueDescription} is null.
      */
-    public QueueRuntimeInfo(QueueProperties queueProperties) {
+    public QueueRuntimeProperties(QueueProperties queueProperties) {
         Objects.requireNonNull(queueProperties, "'queueProperties' cannot be null.");
         this.name = queueProperties.getName();
         this.messageCount = queueProperties.getMessageCount();

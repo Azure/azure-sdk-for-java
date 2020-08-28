@@ -10,8 +10,8 @@ import com.azure.messaging.servicebus.administration.models.MessagingSku;
 import com.azure.messaging.servicebus.administration.models.NamespaceProperties;
 import com.azure.messaging.servicebus.administration.models.NamespaceType;
 import com.azure.messaging.servicebus.administration.models.QueueProperties;
-import com.azure.messaging.servicebus.administration.models.QueueRuntimeInfo;
-import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeInfo;
+import com.azure.messaging.servicebus.administration.models.QueueRuntimeProperties;
+import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeProperties;
 import com.azure.messaging.servicebus.implementation.models.MessageCountDetails;
 import com.azure.messaging.servicebus.implementation.models.NamespacePropertiesEntry;
 import com.azure.messaging.servicebus.implementation.models.QueueDescription;
@@ -88,10 +88,10 @@ class ServiceBusManagementSerializerTest {
     }
 
     /**
-     * Verify we can deserialize XML from a GET queue request and create convenience model, {@link QueueRuntimeInfo}.
+     * Verify we can deserialize XML from a GET queue request and create convenience model, {@link QueueRuntimeProperties}.
      */
     @Test
-    void deserializeQueueRuntimeInfo() throws IOException {
+    void deserializeQueueRuntimeProperties() throws IOException {
         final String contents = getContents("QueueDescriptionEntry.xml");
 
         final OffsetDateTime createdAt = OffsetDateTime.parse("2020-06-05T03:55:07.5Z");
@@ -109,7 +109,7 @@ class ServiceBusManagementSerializerTest {
         // Act
         final QueueDescriptionEntry entry = serializer.deserialize(contents, QueueDescriptionEntry.class);
         final QueueProperties properties = EntityHelper.toModel(entry.getContent().getQueueDescription());
-        final QueueRuntimeInfo actual = new QueueRuntimeInfo(properties);
+        final QueueRuntimeProperties actual = new QueueRuntimeProperties(properties);
 
         // Assert
         assertEquals(sizeInBytes, actual.getSizeInBytes());
@@ -325,10 +325,10 @@ class ServiceBusManagementSerializerTest {
 
     /**
      * Verify we can deserialize XML from a GET subscription request and create convenience model, {@link
-     * SubscriptionRuntimeInfo}.
+     * SubscriptionRuntimeProperties}.
      */
     @Test
-    void deserializeSubscriptionRuntimeInfo() throws IOException {
+    void deserializeSubscriptionRuntimeProperties() throws IOException {
         final String contents = getContents("SubscriptionDescriptionEntry.xml");
 
         final OffsetDateTime createdAt = OffsetDateTime.parse("2020-06-22T23:47:54.0131447Z");
@@ -344,7 +344,7 @@ class ServiceBusManagementSerializerTest {
 
         // Act
         final SubscriptionDescriptionEntry entry = serializer.deserialize(contents, SubscriptionDescriptionEntry.class);
-        final SubscriptionRuntimeInfo actual = new SubscriptionRuntimeInfo(
+        final SubscriptionRuntimeProperties actual = new SubscriptionRuntimeProperties(
             EntityHelper.toModel(entry.getContent().getSubscriptionDescription()));
 
         // Assert
@@ -356,7 +356,6 @@ class ServiceBusManagementSerializerTest {
 
         assertEquals(expectedCount.getActiveMessageCount(), actual.getActiveMessageCount());
         assertEquals(expectedCount.getDeadLetterMessageCount(), actual.getDeadLetterMessageCount());
-        assertEquals(expectedCount.getScheduledMessageCount(), actual.getScheduledMessageCount());
         assertEquals(expectedCount.getTransferMessageCount(), actual.getTransferMessageCount());
         assertEquals(expectedCount.getTransferDeadLetterMessageCount(), actual.getTransferDeadLetterMessageCount());
     }
