@@ -3,6 +3,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.MemberNameConverter;
 import com.azure.core.util.serializer.MemberNameConverterProviders;
@@ -14,6 +15,7 @@ import java.util.Objects;
 /**
  * Additional parameters to build {@link SearchField}.
  */
+@Fluent
 public final class FieldBuilderOptions {
     private JsonSerializer jsonSerializer;
 
