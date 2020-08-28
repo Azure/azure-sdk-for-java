@@ -52,6 +52,7 @@ public final class DigitalTwinsAsyncClient {
     private static final ObjectMapper mapper = new ObjectMapper();
     private final DigitalTwinsServiceVersion serviceVersion;
     private final AzureDigitalTwinsAPIImpl protocolLayer;
+    private static final Boolean includeModelDefinition = true;
 
     DigitalTwinsAsyncClient(HttpPipeline pipeline, DigitalTwinsServiceVersion serviceVersion, String host) {
         final SimpleModule stringModule = new SimpleModule("String Serializer");
@@ -236,7 +237,6 @@ public final class DigitalTwinsAsyncClient {
     //==================================================================================================================================================
     // Models APIs
     //==================================================================================================================================================
-
     /**
      * Creates one or many models.
      * @param models The list of models to create. Each string corresponds to exactly one model.
@@ -268,6 +268,29 @@ public final class DigitalTwinsAsyncClient {
         Function<String, Mono<PagedResponse<ModelData>>> nextPage = nextLink -> Mono.empty();
 
         return new PagedFlux<>(firstPage, nextPage);
+    }
+
+    /**
+     * Gets a model, including the model metadata and the model definition.
+     * @param modelId The Id of the model.
+     * @return The application/json model
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ModelData> getModel(String modelId) {
+        return protocolLayer.getDigitalTwinModels().getByIdWithResponseAsync(modelId, includeModelDefinition)
+            .flatMap(modelDataResponse -> Mono.just(mapper.convertValue(modelDataResponse.getValue(), ModelData.class)));
+    }
+
+    /**
+     * Gets a model, including the model metadata and the model definition.
+     * @param modelId The Id of the model.
+     * @return The application/json model
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ModelData>> getModelWithResponse(String modelId) {
+        return protocolLayer
+            .getDigitalTwinModels()
+            .getByIdWithResponseAsync(modelId, includeModelDefinition);
     }
 
     /**
