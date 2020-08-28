@@ -116,7 +116,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:msal4j:[1.6.1]</include> <!-- {x-include-update;com.microsoft.azure:msal4j;external_dependency} -->
+                <include>com.microsoft.azure:msal4j:[1.6.2]</include> <!-- {x-include-update;com.microsoft.azure:msal4j;external_dependency} -->
                 <include>com.microsoft.azure:msal4j-persistence-extension:[1.0.0]</include> <!-- {x-include-update;com.microsoft.azure:msal4j-persistence-extension;external_dependency} -->
                 <include>com.nimbusds:oauth2-oidc-sdk:[7.1.1]</include> <!-- {x-include-update;com.nimbusds:oauth2-oidc-sdk;external_dependency} -->
                 <include>net.java.dev.jna:jna-platform:[5.4.0]</include> <!-- {x-include-update;net.java.dev.jna:jna-platform;external_dependency} -->
