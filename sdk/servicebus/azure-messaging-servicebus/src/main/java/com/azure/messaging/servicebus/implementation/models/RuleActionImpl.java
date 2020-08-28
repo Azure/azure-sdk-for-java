@@ -18,7 +18,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
         defaultImpl = RuleActionImpl.class)
 @JsonTypeName("RuleAction")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "SqlRuleAction", value = SqlRuleActionImplImpl.class),
+    @JsonSubTypes.Type(name = "SqlRuleAction", value = SqlRuleActionImpl.class),
     @JsonSubTypes.Type(name = "EmptyRuleAction", value = EmptyRuleActionImpl.class)
 })
 @JacksonXmlRootElement(

@@ -19,7 +19,7 @@ import java.util.List;
 @JsonTypeName("SqlRuleAction")
 @JacksonXmlRootElement(localName = "SqlRuleAction")
 @Fluent
-public final class SqlRuleActionImplImpl extends RuleActionImpl {
+public final class SqlRuleActionImpl extends RuleActionImpl {
     /*
      * The sqlExpression property.
      */
@@ -77,7 +77,7 @@ public final class SqlRuleActionImplImpl extends RuleActionImpl {
      * @param sqlExpression the sqlExpression value to set.
      * @return the SqlRuleAction object itself.
      */
-    public SqlRuleActionImplImpl setSqlExpression(String sqlExpression) {
+    public SqlRuleActionImpl setSqlExpression(String sqlExpression) {
         this.sqlExpression = sqlExpression;
         return this;
     }
@@ -97,7 +97,7 @@ public final class SqlRuleActionImplImpl extends RuleActionImpl {
      * @param compatibilityLevel the compatibilityLevel value to set.
      * @return the SqlRuleAction object itself.
      */
-    public SqlRuleActionImplImpl setCompatibilityLevel(String compatibilityLevel) {
+    public SqlRuleActionImpl setCompatibilityLevel(String compatibilityLevel) {
         this.compatibilityLevel = compatibilityLevel;
         return this;
     }
@@ -120,7 +120,7 @@ public final class SqlRuleActionImplImpl extends RuleActionImpl {
      * @param parameters the parameters value to set.
      * @return the SqlRuleAction object itself.
      */
-    public SqlRuleActionImplImpl setParameters(List<KeyValueImpl> parameters) {
+    public SqlRuleActionImpl setParameters(List<KeyValueImpl> parameters) {
         this.parameters = new ParametersWrapper(parameters);
         return this;
     }
@@ -140,7 +140,7 @@ public final class SqlRuleActionImplImpl extends RuleActionImpl {
      * @param requiresPreprocessing the requiresPreprocessing value to set.
      * @return the SqlRuleAction object itself.
      */
-    public SqlRuleActionImplImpl setRequiresPreprocessing(Boolean requiresPreprocessing) {
+    public SqlRuleActionImpl setRequiresPreprocessing(Boolean requiresPreprocessing) {
         this.requiresPreprocessing = requiresPreprocessing;
         return this;
     }
