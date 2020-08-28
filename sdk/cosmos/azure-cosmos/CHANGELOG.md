@@ -1,5 +1,8 @@
 # Release History
 
+## 4.4.0-beta.2 (Unreleased)
+
+
 ## 4.4.0-beta.1 (2020-08-27)
 ### New Features
 * Added new API to efficiently load many documents (via list of pk/id pairs or all documents for a set of pk values).
