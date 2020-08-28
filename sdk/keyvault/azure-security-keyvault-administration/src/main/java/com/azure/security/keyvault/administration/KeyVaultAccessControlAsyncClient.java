@@ -130,6 +130,8 @@ public class KeyVaultAccessControlAsyncClient {
      */
     Mono<PagedResponse<KeyVaultRoleDefinition>> listRoleDefinitionsFirstPage(String vaultUrl, KeyVaultRoleScope scope,
                                                                              Context context) {
+        Objects.requireNonNull(scope, "'scope' cannot be null.");
+
         try {
             return clientImpl.getRoleDefinitions().listSinglePageAsync(vaultUrl, scope.toString(), null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
@@ -352,6 +354,8 @@ public class KeyVaultAccessControlAsyncClient {
         Objects.requireNonNull(scope, "'scope' cannot be null.");
         Objects.requireNonNull(name, "'name' cannot be null.");
         Objects.requireNonNull(properties, "'properties' cannot be null.");
+        Objects.requireNonNull(properties.getRoleDefinitionId(), "'roleDefinitionId' in 'properties' cannot be null.");
+        Objects.requireNonNull(properties.getPrincipalId(), "'roleDefinitionId' in 'properties' cannot be null.");
 
         KeyVaultRoleAssignmentCreateParameters parameters = new KeyVaultRoleAssignmentCreateParameters().setProperties(properties);
         return clientImpl.getRoleAssignments().createWithResponseAsync(vaultUrl, scope.toString(), name.toString(),
