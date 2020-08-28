@@ -59,6 +59,8 @@ public final class ServiceBusClientBuilder {
 
     private static final String SERVICE_BUS_PROPERTIES_FILE = "azure-messaging-servicebus.properties";
     private static final String SUBSCRIPTION_ENTITY_PATH_FORMAT = "%s/subscriptions/%s";
+    private static final String DEAD_LETTER_QUEUE_NAME_SUFFIX = "/$deadletterqueue";
+    private static final String TRANSFER_DEAD_LETTER_QUEUE_NAME_SUFFIX = "/$Transfer/$deadletterqueue";
 
     // Using 0 pre-fetch count for both receive modes, to avoid message lock lost exceptions in application
     // receiving messages at a slow rate. Applications can set it to a higher value if they need better performance.
@@ -441,13 +443,16 @@ public final class ServiceBusClientBuilder {
 
         switch (subQueue) {
             case NONE:
-            case TRANSFER_QUEUE:
+                break;
+            case TRANSFER_DEAD_LETTER_QUEUE:
+                entityPath += TRANSFER_DEAD_LETTER_QUEUE_NAME_SUFFIX;
                 break;
             case DEAD_LETTER_QUEUE:
-                entityPath += "/$deadletterqueue";
+                entityPath += DEAD_LETTER_QUEUE_NAME_SUFFIX;
                 break;
             default:
-                logger.warning("Unsupported value of subqueue type {}.", subQueue);
+                throw logger.logExceptionAsError(new IllegalArgumentException("Unsupported value of subqueue type: "
+                    + subQueue));
         }
 
         return entityPath;
