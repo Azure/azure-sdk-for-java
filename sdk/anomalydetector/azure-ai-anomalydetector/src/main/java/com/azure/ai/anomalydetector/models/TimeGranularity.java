@@ -7,8 +7,8 @@ package com.azure.ai.anomalydetector.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for Granularity. */
-public enum Granularity {
+/** Defines values for TimeGranularity. */
+public enum TimeGranularity {
     /** Enum value yearly. */
     YEARLY("yearly"),
 
@@ -25,28 +25,28 @@ public enum Granularity {
     HOURLY("hourly"),
 
     /** Enum value minutely. */
-    MINUTELY("minutely"),
+    PER_MINUTE("minutely"),
 
     /** Enum value secondly. */
-    SECONDLY("secondly");
+    PER_SECOND("secondly");
 
-    /** The actual serialized value for a Granularity instance. */
+    /** The actual serialized value for a TimeGranularity instance. */
     private final String value;
 
-    Granularity(String value) {
+    TimeGranularity(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a Granularity instance.
+     * Parses a serialized value to a TimeGranularity instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed Granularity object, or null if unable to parse.
+     * @return the parsed TimeGranularity object, or null if unable to parse.
      */
     @JsonCreator
-    public static Granularity fromString(String value) {
-        Granularity[] items = Granularity.values();
-        for (Granularity item : items) {
+    public static TimeGranularity fromString(String value) {
+        TimeGranularity[] items = TimeGranularity.values();
+        for (TimeGranularity item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

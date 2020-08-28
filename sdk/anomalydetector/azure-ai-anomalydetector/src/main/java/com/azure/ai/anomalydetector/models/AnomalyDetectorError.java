@@ -7,9 +7,9 @@ package com.azure.ai.anomalydetector.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ApiError model. */
+/** The AnomalyDetectorError model. */
 @Fluent
-public final class ApiError {
+public final class AnomalyDetectorError {
     /*
      * The error code.
      */
@@ -35,9 +35,9 @@ public final class ApiError {
      * Set the code property: The error code.
      *
      * @param code the code value to set.
-     * @return the ApiError object itself.
+     * @return the AnomalyDetectorError object itself.
      */
-    public ApiError setCode(AnomalyDetectorErrorCodes code) {
+    public AnomalyDetectorError setCode(AnomalyDetectorErrorCodes code) {
         this.code = code;
         return this;
     }
@@ -55,9 +55,9 @@ public final class ApiError {
      * Set the message property: A message explaining the error reported by the service.
      *
      * @param message the message value to set.
-     * @return the ApiError object itself.
+     * @return the AnomalyDetectorError object itself.
      */
-    public ApiError setMessage(String message) {
+    public AnomalyDetectorError setMessage(String message) {
         this.message = message;
         return this;
     }
