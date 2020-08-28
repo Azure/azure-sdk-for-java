@@ -15,6 +15,9 @@ function credcheck(dir) {
     redactDict.set(/\\"primaryReadonlyMasterKey\\":\\"(.*?)\\"/g, '\\"primaryReadonlyMasterKey\\":\\"***REMOVED***\\"');	
     redactDict.set(/\\"secondaryMasterKey\\":\\"(.*?)\\"/g, '\\"secondaryMasterKey\\":\\"***REMOVED***\\"');
     redactDict.set(/\\"secondaryReadonlyMasterKey\\":\\"(.*?)\\"/g, '\\"secondaryReadonlyMasterKey\\":\\"***REMOVED***\\"');
+    redactDict.set(/;SharedAccessKey=(.*?)(;|\\")/g, ';SharedAccessKey=***REMOVED***$2');
+    redactDict.set(/\\"primaryKey\\":\\"(.*?)\\"/g, '\\"primaryKey\\":\\"***REMOVED***\\"');
+    redactDict.set(/\\"secondaryKey\\":\\"(.*?)\\"/g, '\\"secondaryKey\\":\\"***REMOVED***\\"');
     
     credcheckRecursive(dir, redactDict);
 }
