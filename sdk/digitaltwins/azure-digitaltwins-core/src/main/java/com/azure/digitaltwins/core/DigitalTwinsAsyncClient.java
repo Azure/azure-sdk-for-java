@@ -22,6 +22,7 @@ import com.azure.digitaltwins.core.util.ListModelOptions;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -237,7 +238,7 @@ public final class DigitalTwinsAsyncClient {
     //==================================================================================================================================================
     // Models APIs
     //==================================================================================================================================================
-    
+
     /**
      * Creates one or many models.
      * @param models The list of models to create. Each string corresponds to exactly one model.
@@ -265,7 +266,7 @@ public final class DigitalTwinsAsyncClient {
             }
             catch (JsonProcessingException e) {
                 logger.error("Could not parse the model payload [%s]: %s", model, e);
-                return null;
+                return Mono.error(e);
             }
         }
 
