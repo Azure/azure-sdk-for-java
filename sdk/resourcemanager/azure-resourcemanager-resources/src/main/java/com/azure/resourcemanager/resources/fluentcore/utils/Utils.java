@@ -19,6 +19,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.models.Subscription;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -346,6 +347,7 @@ public final class Utils {
      * @param <R> the return data type
      * @return a new flux
      */
+    @SuppressFBWarnings(value = "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE", justification = "Incorrect spot bugs")
     public static <T, R> Flux<R> flatMapSequential(Flux<T> flux,
         Function<? super T, ? extends Publisher<? extends R>> mapperOnNext,
         Function<? super Throwable, ? extends Publisher<? extends R>> mapperOnError,
@@ -389,6 +391,7 @@ public final class Utils {
      * @param <R> the return data type
      * @return a new flux
      */
+    @SuppressFBWarnings(value = "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE", justification = "Incorrect spot bugs")
     public static <T, R> Flux<R> flatMapSequentialDelayError(Flux<T> flux,
         Function<? super T, ? extends Publisher<? extends R>> mapperOnNext,
         Function<? super Throwable, ? extends Publisher<? extends R>> mapperOnError,
