@@ -99,9 +99,9 @@ public class ReadmeSamples {
 
     public void createSharedAccessSignature() {
         OffsetDateTime expiration = OffsetDateTime.now().plusMinutes(20);
-        String credentialString = EventGridSharedAccessSignatureCredential
-            .createSharedAccessSignature(endpoint, expiration, new AzureKeyCredential(key));
-        EventGridSharedAccessSignatureCredential signature = new EventGridSharedAccessSignatureCredential(credentialString);
+        String credentialString = EventGridSasCredential
+            .createSas(endpoint, expiration, new AzureKeyCredential(key));
+        EventGridSasCredential signature = new EventGridSasCredential(credentialString);
     }
 
 

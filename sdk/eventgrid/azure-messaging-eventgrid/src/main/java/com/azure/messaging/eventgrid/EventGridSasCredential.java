@@ -23,22 +23,22 @@ import java.util.Base64;
 /**
  * A way to use a generated shared access signature as a credential to publish events to a topic through a client.
  */
-public final class EventGridSharedAccessSignatureCredential {
+public final class EventGridSasCredential {
 
-    private String accessToken;
+    private String sas;
 
     /**
      * Generate a shared access signature to provide time-limited authentication for requests to the Event Grid
      * service.
-     * @param endpoint   the endpoint of the Event Grid topic or domain.
-     * @param expiration the time in which the signature should expire, no longer providing authentication.
-     * @param key        the access key obtained from the Event Grid topic or domain.
+     * @param endpoint       the endpoint of the Event Grid topic or domain.
+     * @param expirationTime the time in which the signature should expire, no longer providing authentication.
+     * @param keyCredential  the access key obtained from the Event Grid topic or domain.
      *
      * @return the shared access signature string which can be used to construct an instance of
-     * {@link EventGridSharedAccessSignatureCredential}.
+     * {@link EventGridSasCredential}.
      */
-    public static String createSharedAccessSignature(String endpoint, OffsetDateTime expiration,
-                                                     AzureKeyCredential key) {
+    public static String createSas(String endpoint, OffsetDateTime expirationTime,
+                                   AzureKeyCredential keyCredential) {
         try {
             String resKey = "r";
             String expKey = "e";
@@ -46,14 +46,14 @@ public final class EventGridSharedAccessSignatureCredential {
 
             Charset charset = StandardCharsets.UTF_8;
             String encodedResource = URLEncoder.encode(endpoint, charset.name());
-            String encodedExpiration = URLEncoder.encode(expiration.atZoneSameInstant(ZoneOffset.UTC).format(
+            String encodedExpiration = URLEncoder.encode(expirationTime.atZoneSameInstant(ZoneOffset.UTC).format(
                 DateTimeFormatter.ofPattern("M/d/yyyy h:m:s a")),
                 charset.name());
 
             String unsignedSas = String.format("%s=%s&%s=%s", resKey, encodedResource, expKey, encodedExpiration);
 
             Mac hmac = Mac.getInstance("hmacSHA256");
-            hmac.init(new SecretKeySpec(Base64.getDecoder().decode(key.getKey()), "hmacSHA256"));
+            hmac.init(new SecretKeySpec(Base64.getDecoder().decode(keyCredential.getKey()), "hmacSHA256"));
             String signature = new String(Base64.getEncoder().encode(
                 hmac.doFinal(unsignedSas.getBytes(charset))),
                 charset);
@@ -70,29 +70,29 @@ public final class EventGridSharedAccessSignatureCredential {
 
     /**
      * Create an instance of this object to authenticate calls to the EventGrid service.
-     * @param accessSignature the shared access signature to use.
+     * @param sas the shared access signature to use.
      */
-    public EventGridSharedAccessSignatureCredential(String accessSignature) {
-        if (CoreUtils.isNullOrEmpty(accessSignature)) {
+    public EventGridSasCredential(String sas) {
+        if (CoreUtils.isNullOrEmpty(sas)) {
             throw new IllegalArgumentException("the access signature cannot be null or empty");
         }
-        this.accessToken = accessSignature;
+        this.sas = sas;
     }
 
     /**
      * Get the token string to authenticate service calls
      * @return the Shared Access Signature as a string
      */
-    public String getSignature() {
-        return accessToken;
+    public String getSas() {
+        return sas;
     }
 
 
     /**
      * Change the shared access signature token to a new one.
-     * @param accessSignature the shared access signature token to use.
+     * @param sas the shared access signature token to use.
      */
-    public void update(String accessSignature) {
-        this.accessToken = accessSignature;
+    public void update(String sas) {
+        this.sas = sas;
     }
 }

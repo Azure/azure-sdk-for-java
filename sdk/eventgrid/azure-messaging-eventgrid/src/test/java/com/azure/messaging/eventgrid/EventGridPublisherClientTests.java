@@ -99,14 +99,14 @@ public class EventGridPublisherClientTests extends TestBase {
 
     @Test
     public void publishWithSasToken() {
-        String sasToken = EventGridSharedAccessSignatureCredential.createSharedAccessSignature(
+        String sasToken = EventGridSasCredential.createSas(
             getEndpoint(EVENTGRID_ENDPOINT),
             OffsetDateTime.now().plusMinutes(20),
             getKey(EVENTGRID_KEY)
         );
 
         EventGridPublisherAsyncClient egClient = builder
-            .sharedAccessSignatureCredential(new EventGridSharedAccessSignatureCredential(sasToken))
+            .sharedAccessSignatureCredential(new EventGridSasCredential(sasToken))
             .endpoint(getEndpoint(EVENTGRID_ENDPOINT))
             .buildAsyncClient();
 
