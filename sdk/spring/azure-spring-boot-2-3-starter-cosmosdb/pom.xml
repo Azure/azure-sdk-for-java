@@ -16,7 +16,7 @@
   <version>2.4.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-cosmosdb-spring-boot-2-3-starter;current} -->
 
   <name>Azure Cosmos DB Spring Boot 2.3 Starter</name>
-  <description>Spring Boot 2.3 Starter for Azure Document DB service</description>
+  <description>Spring Boot 2.3 Starter for Azure Cosmos DB service</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <dependencies>
