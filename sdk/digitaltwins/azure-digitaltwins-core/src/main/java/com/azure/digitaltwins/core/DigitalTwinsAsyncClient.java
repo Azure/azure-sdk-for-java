@@ -242,7 +242,7 @@ public final class DigitalTwinsAsyncClient {
     /**
      * Creates one or many models.
      * @param models The list of models to create. Each string corresponds to exactly one model.
-     * @return A {@link PagedFlux} of created models.
+     * @return A {@link PagedFlux} of created models and the http response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ModelData> createModels(List<String> models) {
@@ -284,22 +284,18 @@ public final class DigitalTwinsAsyncClient {
     /**
      * Gets a model, including the model metadata and the model definition.
      * @param modelId The Id of the model.
-     * @return The application/json model
+     * @return The ModelData
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ModelData> getModel(String modelId) {
-        return withContext(context -> getModel(modelId, context));
-    }
-
-    Mono<ModelData> getModel(String modelId, Context context){
-        return protocolLayer.getDigitalTwinModels().getByIdWithResponseAsync(modelId, includeModelDefinition, context)
-            .flatMap(modelDataResponse -> Mono.just(mapper.convertValue(modelDataResponse.getValue(), ModelData.class)));
+        return withContext(context -> getModelWithResponse(modelId, context))
+            .flatMap(response -> Mono.just(response.getValue()));
     }
 
     /**
      * Gets a model, including the model metadata and the model definition.
      * @param modelId The Id of the model.
-     * @return The application/json model
+     * @return The ModelData and the http response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ModelData>> getModelWithResponse(String modelId) {
@@ -315,7 +311,7 @@ public final class DigitalTwinsAsyncClient {
     /**
      * Gets the list of models by iterating through a collection.
      * @param listModelOptions The options for the list operation.
-     * @return A {@link PagedFlux} of ModelData.
+     * @return A {@link PagedFlux} of ModelData and the http response..
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ModelData> listModels(ListModelOptions listModelOptions) {
@@ -332,7 +328,7 @@ public final class DigitalTwinsAsyncClient {
 
     Mono<PagedResponse<ModelData>> listModelsSinglePageAsync(ListModelOptions listModelOptions, Context context){
         return protocolLayer.getDigitalTwinModels().listSinglePageAsync(
-            (List<String>) listModelOptions.getDependenciesFor(),
+            listModelOptions.getDependenciesFor(),
             listModelOptions.getIncludeModelDefinition(),
             new DigitalTwinModelsListOptions().setMaxItemCount(listModelOptions.getMaxItemCount()),
             context);
@@ -344,7 +340,7 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Gets the list of models by iterating through a collection.
-     * @return A {@link PagedFlux} of ModelData.
+     * @return A {@link PagedFlux} of ModelData and the http response..
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ModelData> listModels() {

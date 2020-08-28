@@ -2,6 +2,8 @@ package com.azure.digitaltwins.core.util;
 
 import com.azure.core.annotation.Fluent;
 
+import java.util.List;
+
 @Fluent
 public final class ListModelOptions {
 
@@ -57,14 +59,14 @@ public final class ListModelOptions {
     /*
     * The model Ids to have dependencies retrieved.
     */
-    private Iterable<String> dependenciesFor;
+    private List<String> dependenciesFor;
 
     /**
      * Get the dependenciesFor property.
      *
      * @return the dependenciesFor value.
      */
-    public Iterable<String> getDependenciesFor() { return this.dependenciesFor; }
+    public List<String> getDependenciesFor() { return this.dependenciesFor; }
 
     /**
      * Set the dependenciesFor property.
@@ -72,7 +74,7 @@ public final class ListModelOptions {
      * @param dependenciesFor the dependenciesFor value to set.
      * @return the ListModelOptions object itself.
      */
-    public ListModelOptions setDependenciesFor(Iterable<String> dependenciesFor) {
+    public ListModelOptions setDependenciesFor(List<String> dependenciesFor) {
         this.dependenciesFor = dependenciesFor;
         return this;
     }
