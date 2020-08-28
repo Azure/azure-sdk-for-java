@@ -26,6 +26,11 @@ import java.util.Map;
  */
 public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshable<Database>, Updatable<Database.Update>, HasManager<SqlManager> {
     /**
+     * @return the autoPauseDelay value.
+     */
+    Integer autoPauseDelay();
+
+    /**
      * @return the catalogCollation value.
      */
     CatalogCollationType catalogCollation();
@@ -121,9 +126,24 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
     Long maxSizeBytes();
 
     /**
+     * @return the minCapacity value.
+     */
+    Double minCapacity();
+
+    /**
      * @return the name value.
      */
     String name();
+
+    /**
+     * @return the pausedDate value.
+     */
+    DateTime pausedDate();
+
+    /**
+     * @return the readReplicaCount value.
+     */
+    Integer readReplicaCount();
 
     /**
      * @return the readScale value.
@@ -154,6 +174,11 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
      * @return the restorePointInTime value.
      */
     DateTime restorePointInTime();
+
+    /**
+     * @return the resumedDate value.
+     */
+    DateTime resumedDate();
 
     /**
      * @return the sampleName value.
@@ -237,6 +262,18 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         }
 
         /**
+         * The stage of the database definition allowing to specify AutoPauseDelay.
+         */
+        interface WithAutoPauseDelay {
+            /**
+             * Specifies autoPauseDelay.
+             * @param autoPauseDelay Time in minutes after which database is automatically paused. A value of -1 means that automatic pause is disabled
+             * @return the next definition stage
+             */
+            WithCreate withAutoPauseDelay(Integer autoPauseDelay);
+        }
+
+        /**
          * The stage of the database definition allowing to specify CatalogCollation.
          */
         interface WithCatalogCollation {
@@ -298,7 +335,7 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithLicenseType {
             /**
              * Specifies licenseType.
-             * @param licenseType The license type to apply for this database. Possible values include: 'LicenseIncluded', 'BasePrice'
+             * @param licenseType The license type to apply for this database. `LicenseIncluded` if you need a license, or `BasePrice` if you have a license and are eligible for the Azure Hybrid Benefit. Possible values include: 'LicenseIncluded', 'BasePrice'
              * @return the next definition stage
              */
             WithCreate withLicenseType(DatabaseLicenseType licenseType);
@@ -329,12 +366,36 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         }
 
         /**
+         * The stage of the database definition allowing to specify MinCapacity.
+         */
+        interface WithMinCapacity {
+            /**
+             * Specifies minCapacity.
+             * @param minCapacity Minimal capacity that database will always have allocated, if not paused
+             * @return the next definition stage
+             */
+            WithCreate withMinCapacity(Double minCapacity);
+        }
+
+        /**
+         * The stage of the database definition allowing to specify ReadReplicaCount.
+         */
+        interface WithReadReplicaCount {
+            /**
+             * Specifies readReplicaCount.
+             * @param readReplicaCount The number of readonly secondary replicas associated with the database to which readonly application intent connections may be routed. This property is only settable for Hyperscale edition databases
+             * @return the next definition stage
+             */
+            WithCreate withReadReplicaCount(Integer readReplicaCount);
+        }
+
+        /**
          * The stage of the database definition allowing to specify ReadScale.
          */
         interface WithReadScale {
             /**
              * Specifies readScale.
-             * @param readScale The state of read-only routing. If enabled, connections that have application intent set to readonly in their connection string may be routed to a readonly secondary replica in the same region. Possible values include: 'Enabled', 'Disabled'
+             * @param readScale If enabled, connections that have application intent set to readonly in their connection string may be routed to a readonly secondary replica. This property is only settable for Premium and Business Critical databases. Possible values include: 'Enabled', 'Disabled'
              * @return the next definition stage
              */
             WithCreate withReadScale(DatabaseReadScale readScale);
@@ -406,7 +467,14 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithSku {
             /**
              * Specifies sku.
-             * @param sku The name and tier of the SKU
+             * @param sku The database SKU.
+ The list of SKUs may vary by region and support offer. To determine the SKUs (including the SKU name, tier/edition, family, and capacity) that are available to your subscription in an Azure region, use the `Capabilities_ListByLocation` REST API or one of the following commands:
+ ```azurecli
+ az sql db list-editions -l &lt;location&gt; -o table
+ ````
+ ```powershell
+ Get-AzSqlServerServiceObjective -Location &lt;location&gt;
+ ````
              * @return the next definition stage
              */
             WithCreate withSku(Sku sku);
@@ -465,19 +533,31 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<Database>, DefinitionStages.WithCatalogCollation, DefinitionStages.WithCollation, DefinitionStages.WithCreateMode, DefinitionStages.WithElasticPoolId, DefinitionStages.WithLicenseType, DefinitionStages.WithLongTermRetentionBackupResourceId, DefinitionStages.WithMaxSizeBytes, DefinitionStages.WithReadScale, DefinitionStages.WithRecoverableDatabaseId, DefinitionStages.WithRecoveryServicesRecoveryPointId, DefinitionStages.WithRestorableDroppedDatabaseId, DefinitionStages.WithRestorePointInTime, DefinitionStages.WithSampleName, DefinitionStages.WithSku, DefinitionStages.WithSourceDatabaseDeletionDate, DefinitionStages.WithSourceDatabaseId, DefinitionStages.WithTags, DefinitionStages.WithZoneRedundant {
+        interface WithCreate extends Creatable<Database>, DefinitionStages.WithAutoPauseDelay, DefinitionStages.WithCatalogCollation, DefinitionStages.WithCollation, DefinitionStages.WithCreateMode, DefinitionStages.WithElasticPoolId, DefinitionStages.WithLicenseType, DefinitionStages.WithLongTermRetentionBackupResourceId, DefinitionStages.WithMaxSizeBytes, DefinitionStages.WithMinCapacity, DefinitionStages.WithReadReplicaCount, DefinitionStages.WithReadScale, DefinitionStages.WithRecoverableDatabaseId, DefinitionStages.WithRecoveryServicesRecoveryPointId, DefinitionStages.WithRestorableDroppedDatabaseId, DefinitionStages.WithRestorePointInTime, DefinitionStages.WithSampleName, DefinitionStages.WithSku, DefinitionStages.WithSourceDatabaseDeletionDate, DefinitionStages.WithSourceDatabaseId, DefinitionStages.WithTags, DefinitionStages.WithZoneRedundant {
         }
     }
     /**
      * The template for a Database update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Database>, UpdateStages.WithCatalogCollation, UpdateStages.WithCollation, UpdateStages.WithCreateMode, UpdateStages.WithElasticPoolId, UpdateStages.WithLicenseType, UpdateStages.WithLongTermRetentionBackupResourceId, UpdateStages.WithMaxSizeBytes, UpdateStages.WithReadScale, UpdateStages.WithRecoverableDatabaseId, UpdateStages.WithRecoveryServicesRecoveryPointId, UpdateStages.WithRestorableDroppedDatabaseId, UpdateStages.WithRestorePointInTime, UpdateStages.WithSampleName, UpdateStages.WithSku, UpdateStages.WithSourceDatabaseDeletionDate, UpdateStages.WithSourceDatabaseId, UpdateStages.WithTags, UpdateStages.WithZoneRedundant {
+    interface Update extends Appliable<Database>, UpdateStages.WithAutoPauseDelay, UpdateStages.WithCatalogCollation, UpdateStages.WithCollation, UpdateStages.WithCreateMode, UpdateStages.WithElasticPoolId, UpdateStages.WithLicenseType, UpdateStages.WithLongTermRetentionBackupResourceId, UpdateStages.WithMaxSizeBytes, UpdateStages.WithMinCapacity, UpdateStages.WithReadReplicaCount, UpdateStages.WithReadScale, UpdateStages.WithRecoverableDatabaseId, UpdateStages.WithRecoveryServicesRecoveryPointId, UpdateStages.WithRestorableDroppedDatabaseId, UpdateStages.WithRestorePointInTime, UpdateStages.WithSampleName, UpdateStages.WithSku, UpdateStages.WithSourceDatabaseDeletionDate, UpdateStages.WithSourceDatabaseId, UpdateStages.WithTags, UpdateStages.WithZoneRedundant {
     }
 
     /**
      * Grouping of Database update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the database update allowing to specify AutoPauseDelay.
+         */
+        interface WithAutoPauseDelay {
+            /**
+             * Specifies autoPauseDelay.
+             * @param autoPauseDelay Time in minutes after which database is automatically paused. A value of -1 means that automatic pause is disabled
+             * @return the next update stage
+             */
+            Update withAutoPauseDelay(Integer autoPauseDelay);
+        }
+
         /**
          * The stage of the database update allowing to specify CatalogCollation.
          */
@@ -540,7 +620,7 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithLicenseType {
             /**
              * Specifies licenseType.
-             * @param licenseType The license type to apply for this database. Possible values include: 'LicenseIncluded', 'BasePrice'
+             * @param licenseType The license type to apply for this database. `LicenseIncluded` if you need a license, or `BasePrice` if you have a license and are eligible for the Azure Hybrid Benefit. Possible values include: 'LicenseIncluded', 'BasePrice'
              * @return the next update stage
              */
             Update withLicenseType(DatabaseLicenseType licenseType);
@@ -571,12 +651,36 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         }
 
         /**
+         * The stage of the database update allowing to specify MinCapacity.
+         */
+        interface WithMinCapacity {
+            /**
+             * Specifies minCapacity.
+             * @param minCapacity Minimal capacity that database will always have allocated, if not paused
+             * @return the next update stage
+             */
+            Update withMinCapacity(Double minCapacity);
+        }
+
+        /**
+         * The stage of the database update allowing to specify ReadReplicaCount.
+         */
+        interface WithReadReplicaCount {
+            /**
+             * Specifies readReplicaCount.
+             * @param readReplicaCount The number of readonly secondary replicas associated with the database to which readonly application intent connections may be routed. This property is only settable for Hyperscale edition databases
+             * @return the next update stage
+             */
+            Update withReadReplicaCount(Integer readReplicaCount);
+        }
+
+        /**
          * The stage of the database update allowing to specify ReadScale.
          */
         interface WithReadScale {
             /**
              * Specifies readScale.
-             * @param readScale The state of read-only routing. If enabled, connections that have application intent set to readonly in their connection string may be routed to a readonly secondary replica in the same region. Possible values include: 'Enabled', 'Disabled'
+             * @param readScale If enabled, connections that have application intent set to readonly in their connection string may be routed to a readonly secondary replica. This property is only settable for Premium and Business Critical databases. Possible values include: 'Enabled', 'Disabled'
              * @return the next update stage
              */
             Update withReadScale(DatabaseReadScale readScale);
