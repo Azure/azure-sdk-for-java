@@ -23,7 +23,9 @@ public final class TablesModelHelper {
             Class.forName(TableEntity.class.getName(), true, TableEntity.class.getClassLoader());
             Class.forName(TableItem.class.getName(), true, TableItem.class.getClassLoader());
         } catch (ClassNotFoundException e) {
-            throw new ClientLogger(TablesModelHelper.class).logThrowableAsError(new AssertionError(e));
+            AssertionError err = new AssertionError("Failed to initialize TablesModelHelper dependency classes.", e);
+            new ClientLogger(TablesModelHelper.class).logThrowableAsError(err);
+            throw err;
         }
     }
 
