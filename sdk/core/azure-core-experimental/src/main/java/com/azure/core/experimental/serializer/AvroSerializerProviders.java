@@ -14,7 +14,7 @@ public final class AvroSerializerProviders {
     private static AvroSerializerProvider defaultProvider;
 
     private static final IllegalStateException NO_AVRO_SERIALIZER_EXCEPTION =
-        new IllegalStateException("No AvroSerializerProvicer found on the classpath.");
+        new IllegalStateException("No AvroSerializerProvider found on the classpath.");
 
     private AvroSerializerProviders() {
         // no-op
