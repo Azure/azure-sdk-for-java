@@ -39,7 +39,6 @@ import reactor.core.scheduler.Schedulers;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
-import java.time.Duration;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -591,21 +590,8 @@ public final class ServiceBusClientBuilder {
         private String sessionId;
         private String subscriptionName;
         private String topicName;
-        private Duration maxAutoLockRenewalDuration;
 
         private ServiceBusSessionReceiverClientBuilder() {
-        }
-
-        /**
-         * Enables auto-lock renewal by renewing each session lock until the {@code maxAutoLockRenewalDuration} has
-         * elapsed.
-         *
-         * @param maxAutoLockRenewalDuration Maximum amount of time to renew the session lock.
-         * @return The modified {@link ServiceBusSessionReceiverClientBuilder} object.
-         */
-        public ServiceBusSessionReceiverClientBuilder maxAutoLockRenewalDuration(Duration maxAutoLockRenewalDuration) {
-            this.maxAutoLockRenewalDuration = maxAutoLockRenewalDuration;
-            return this;
         }
 
         /**
@@ -725,11 +711,11 @@ public final class ServiceBusClientBuilder {
             final String entityPath = getEntityPath(logger, entityType, queueName, topicName, subscriptionName,
                 SubQueue.NONE);
 
-            validateAndThrow(prefetchCount, maxAutoLockRenewalDuration);
+            validateAndThrow(prefetchCount);
 
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
-                maxAutoLockRenewalDuration, sessionId, isRollingSessionReceiver(), maxConcurrentSessions);
+                sessionId, isRollingSessionReceiver(), maxConcurrentSessions);
 
             if (CoreUtils.isNullOrEmpty(sessionId)) {
                 final UnnamedSessionManager sessionManager = new UnnamedSessionManager(entityPath, entityType,
@@ -798,21 +784,8 @@ public final class ServiceBusClientBuilder {
         private ReceiveMode receiveMode = ReceiveMode.PEEK_LOCK;
         private String subscriptionName;
         private String topicName;
-        private Duration maxAutoLockRenewalDuration;
 
         private ServiceBusReceiverClientBuilder() {
-        }
-
-        /**
-         * Enables auto-lock renewal by renewing each message lock renewal until the {@code maxAutoLockRenewalDuration}
-         * has elapsed.
-         *
-         * @param maxAutoLockRenewalDuration Maximum amount of time to renew the session lock.
-         * @return The modified {@link ServiceBusReceiverClientBuilder} object.
-         */
-        public ServiceBusReceiverClientBuilder maxAutoLockRenewalDuration(Duration maxAutoLockRenewalDuration) {
-            this.maxAutoLockRenewalDuration = maxAutoLockRenewalDuration;
-            return this;
         }
 
         /**
@@ -914,11 +887,10 @@ public final class ServiceBusClientBuilder {
                 queueName);
             final String entityPath = getEntityPath(logger, entityType, queueName, topicName, subscriptionName,
                 subQueue);
-            validateAndThrow(prefetchCount, maxAutoLockRenewalDuration);
+            validateAndThrow(prefetchCount);
 
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
-            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
-                maxAutoLockRenewalDuration);
+            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount);
 
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
                 entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
@@ -942,13 +914,10 @@ public final class ServiceBusClientBuilder {
         }
     }
 
-    private void validateAndThrow(int prefetchCount, Duration maxAutoLockRenewalDuration) {
+    private void validateAndThrow(int prefetchCount) {
         if (prefetchCount < 1) {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
                 "prefetchCount (%s) cannot be less than 1.", prefetchCount)));
-        } else if (maxAutoLockRenewalDuration != null && maxAutoLockRenewalDuration.isNegative()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                "maxAutoLockRenewalDuration (%s) cannot be negative.", maxAutoLockRenewalDuration)));
         }
     }
 }

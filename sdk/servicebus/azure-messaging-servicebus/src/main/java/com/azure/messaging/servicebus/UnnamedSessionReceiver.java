@@ -53,13 +53,10 @@ class UnnamedSessionReceiver implements AutoCloseable {
      * @param disposeOnIdle true to dispose the session receiver if there are no more messages and the receiver is
      *     idle.
      * @param scheduler The scheduler to publish messages on.
-     * @param maxSessionLockRenewDuration Maximum time to renew the session lock for. {@code null} or {@link
-     *     Duration#ZERO} to disable session lock renewal.
      * @param renewSessionLock Function to renew the session lock.
      */
     UnnamedSessionReceiver(ServiceBusReceiveLink receiveLink, MessageSerializer messageSerializer,
         AmqpRetryOptions retryOptions, int prefetch, boolean disposeOnIdle, Scheduler scheduler,
-        boolean enableSessionLockRenewal, Duration maxSessionLockRenewDuration,
         Function<String, Mono<OffsetDateTime>> renewSessionLock) {
 
         this.receiveLink = receiveLink;
@@ -134,9 +131,8 @@ class UnnamedSessionReceiver implements AutoCloseable {
                 return;
             }
 
-            final Duration maxRenewal = enableSessionLockRenewal ? maxSessionLockRenewDuration : Duration.ZERO;
             this.renewalOperation.compareAndSet(null, new LockRenewalOperation(sessionId.get(),
-                maxRenewal, true, renewSessionLock, lockedUntil.atOffset(ZoneOffset.UTC)));
+                Duration.ZERO, true, renewSessionLock, lockedUntil.atOffset(ZoneOffset.UTC)));
         }));
     }
 

@@ -170,11 +170,11 @@ class ServiceBusReceiverAsyncClientTest {
                     connectionOptions.getRetry()));
 
         receiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, maxAutoLockRenewalDuration), connectionProcessor, CLEANUP_INTERVAL,
+            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH), connectionProcessor, CLEANUP_INTERVAL,
             tracerProvider, messageSerializer, onClientClose);
 
         sessionReceiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, maxAutoLockRenewalDuration, "Some-Session", false, null),
+            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, "Some-Session", false, null),
             connectionProcessor, CLEANUP_INTERVAL, tracerProvider, messageSerializer, onClientClose);
     }
 
@@ -376,7 +376,7 @@ class ServiceBusReceiverAsyncClientTest {
      */
     @Test
     void completeInReceiveAndDeleteMode() {
-        final ReceiverOptions options = new ReceiverOptions(ReceiveMode.RECEIVE_AND_DELETE, PREFETCH, maxAutoLockRenewalDuration);
+        final ReceiverOptions options = new ReceiverOptions(ReceiveMode.RECEIVE_AND_DELETE, PREFETCH);
         ServiceBusReceiverAsyncClient client = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, options, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
             messageSerializer, onClientClose);
@@ -615,8 +615,7 @@ class ServiceBusReceiverAsyncClientTest {
         ServiceBusReceiverClientBuilder builder = new ServiceBusClientBuilder()
             .connectionString(NAMESPACE_CONNECTION_STRING)
             .receiver()
-            .topicName("baz").subscriptionName("bar")
-            .maxAutoLockRenewalDuration(Duration.ofSeconds(-1))
+            .topicName("baz").subscriptionName("bar").prefetchCount(-1)
             .receiveMode(ReceiveMode.PEEK_LOCK);
 
         // Act & Assert

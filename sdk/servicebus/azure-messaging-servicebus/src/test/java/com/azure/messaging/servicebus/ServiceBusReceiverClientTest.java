@@ -53,7 +53,6 @@ class ServiceBusReceiverClientTest {
 
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverClientTest.class);
 
-    private Duration maxAutoLockRenewalDuration;
     private ServiceBusReceiverClient client;
 
     @Mock
@@ -69,8 +68,7 @@ class ServiceBusReceiverClientTest {
 
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
-        when(asyncClient.getReceiverOptions()).thenReturn(new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1,
-            maxAutoLockRenewalDuration));
+        when(asyncClient.getReceiverOptions()).thenReturn(new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1));
 
         client = new ServiceBusReceiverClient(asyncClient, OPERATION_TIMEOUT);
     }

@@ -284,9 +284,7 @@ class UnnamedSessionManager implements AutoCloseable {
                 }
 
                 return new UnnamedSessionReceiver(link, messageSerializer, connectionProcessor.getRetryOptions(),
-                    receiverOptions.getPrefetchCount(), disposeOnIdle, scheduler,
-                    receiverOptions.autoLockRenewalEnabled(), receiverOptions.getMaxAutoLockRenewalDuration(),
-                    this::renewSessionLock);
+                    receiverOptions.getPrefetchCount(), disposeOnIdle, scheduler, this::renewSessionLock);
             })))
             .flatMapMany(session -> session.receive().doFinally(signalType -> {
                 logger.verbose("Adding scheduler back to pool.");
