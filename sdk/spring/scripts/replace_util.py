@@ -173,7 +173,6 @@ def replace_version(module, pom):
             line_num = line_num + 1
             for version_update_item in version_update_items:
                 if version_update_item.id in line:
-                    log.debug('Updating line {}'.format(line_num))
                     # update version in dependency part
                     if X_VERSION_UPDATE in line:
                         old_version = line[(line.index('<version>') + 9):line.index('</version>')]
@@ -190,7 +189,7 @@ def replace_version(module, pom):
                         old_version = line[(line.index('[') + 1):line.index(']')]
                         if old_version != version_update_item.new_version:
                             new_line = line.replace(old_version, version_update_item.new_version)
-                            log.debug('Updating version of plugin in line {}'.format(line_num))
+                            log.debug('Updating line {}'.format(line_num))
                             log.debug('    old_line = {}.'.format(line.strip('\n')))
                             log.debug('    new_line = {}.'.format(new_line.strip('\n')))
                             line = new_line
