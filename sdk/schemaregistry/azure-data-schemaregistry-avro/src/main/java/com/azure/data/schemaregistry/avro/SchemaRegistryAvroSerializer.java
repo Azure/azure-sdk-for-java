@@ -21,7 +21,6 @@ public final class SchemaRegistryAvroSerializer extends SchemaRegistrySerializer
     private final ClientLogger logger = new ClientLogger(SchemaRegistryAvroSerializer.class);
     private static final Boolean AVRO_SPECIFIC_READER_DEFAULT = false;
 
-
     /**
      * @param registryClient
      * @param schemaGroup
