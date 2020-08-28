@@ -1,6 +1,7 @@
 # Release History
 
 ## 5.2.0-beta.3 (Unreleased)
+- Default scheme to 'sb://' if not scheme is set in 'Endpoint'. 
 
 ## 5.2.0-beta.2 (2020-08-14)
 - Support for object serializer to send and receive strongly-typed objects.
