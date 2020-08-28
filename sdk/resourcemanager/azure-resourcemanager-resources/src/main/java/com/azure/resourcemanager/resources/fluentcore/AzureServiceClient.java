@@ -48,6 +48,7 @@ public abstract class AzureServiceClient {
     }
 
     private final SerializerAdapter serializerAdapter;
+    private final HttpPipeline httpPipeline;
 
     private final String sdkName;
 
@@ -55,6 +56,7 @@ public abstract class AzureServiceClient {
                                  AzureEnvironment environment) {
         sdkName = this.getClass().getPackage().getName();
 
+        this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
     }
 
@@ -65,6 +67,24 @@ public abstract class AzureServiceClient {
      */
     public SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
+    }
+
+    /**
+     * Gets The default poll interval for long-running operation.
+     *
+     * @return the defaultPollInterval value.
+     */
+    public Duration getDefaultPollInterval() {
+        return SdkContext.getLroRetryDuration();
+    }
+
+    /**
+     * Gets The HTTP pipeline to send requests through.
+     *
+     * @return the httpPipeline value.
+     */
+    public HttpPipeline getHttpPipeline() {
+        return this.httpPipeline;
     }
 
     /**
@@ -163,15 +183,6 @@ public abstract class AzureServiceClient {
         } else {
             return response.getFinalResult();
         }
-    }
-
-    /**
-     * Gets The default poll interval for long-running operation.
-     *
-     * @return the defaultPollInterval value.
-     */
-    public Duration getDefaultPollInterval() {
-        return SdkContext.getLroRetryDuration();
     }
 
     private static class HttpResponseImpl extends HttpResponse {
