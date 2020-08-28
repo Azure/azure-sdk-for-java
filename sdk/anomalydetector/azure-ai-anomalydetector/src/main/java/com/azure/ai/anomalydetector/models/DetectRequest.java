@@ -8,9 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The Request model. */
+/** The DetectRequest model. */
 @Fluent
-public final class Request {
+public final class DetectRequest {
     /*
      * Time series data points. Points should be sorted by timestamp in
      * ascending order to match the anomaly detection result. If the data is
@@ -18,14 +18,14 @@ public final class Request {
      * work. In such case, an error message will be returned.
      */
     @JsonProperty(value = "series", required = true)
-    private List<Point> series;
+    private List<TimeSeriesPoint> series;
 
     /*
      * Can only be one of yearly, monthly, weekly, daily, hourly, minutely or
      * secondly. Granularity is used for verify whether input series is valid.
      */
     @JsonProperty(value = "granularity", required = true)
-    private Granularity granularity;
+    private TimeGranularity granularity;
 
     /*
      * Custom Interval is used to set non-standard time interval, for example,
@@ -64,7 +64,7 @@ public final class Request {
      *
      * @return the series value.
      */
-    public List<Point> getSeries() {
+    public List<TimeSeriesPoint> getSeries() {
         return this.series;
     }
 
@@ -74,9 +74,9 @@ public final class Request {
      * will not work. In such case, an error message will be returned.
      *
      * @param series the series value to set.
-     * @return the Request object itself.
+     * @return the DetectRequest object itself.
      */
-    public Request setSeries(List<Point> series) {
+    public DetectRequest setSeries(List<TimeSeriesPoint> series) {
         this.series = series;
         return this;
     }
@@ -87,7 +87,7 @@ public final class Request {
      *
      * @return the granularity value.
      */
-    public Granularity getGranularity() {
+    public TimeGranularity getGranularity() {
         return this.granularity;
     }
 
@@ -96,9 +96,9 @@ public final class Request {
      * Granularity is used for verify whether input series is valid.
      *
      * @param granularity the granularity value to set.
-     * @return the Request object itself.
+     * @return the DetectRequest object itself.
      */
-    public Request setGranularity(Granularity granularity) {
+    public DetectRequest setGranularity(TimeGranularity granularity) {
         this.granularity = granularity;
         return this;
     }
@@ -118,9 +118,9 @@ public final class Request {
      * series is 5 minutes, request can be set as {"granularity":"minutely", "customInterval":5}.
      *
      * @param customInterval the customInterval value to set.
-     * @return the Request object itself.
+     * @return the DetectRequest object itself.
      */
-    public Request setCustomInterval(Integer customInterval) {
+    public DetectRequest setCustomInterval(Integer customInterval) {
         this.customInterval = customInterval;
         return this;
     }
@@ -140,9 +140,9 @@ public final class Request {
      * present, the API will determine the period automatically.
      *
      * @param period the period value to set.
-     * @return the Request object itself.
+     * @return the DetectRequest object itself.
      */
-    public Request setPeriod(Integer period) {
+    public DetectRequest setPeriod(Integer period) {
         this.period = period;
         return this;
     }
@@ -162,9 +162,9 @@ public final class Request {
      * series.
      *
      * @param maxAnomalyRatio the maxAnomalyRatio value to set.
-     * @return the Request object itself.
+     * @return the DetectRequest object itself.
      */
-    public Request setMaxAnomalyRatio(Float maxAnomalyRatio) {
+    public DetectRequest setMaxAnomalyRatio(Float maxAnomalyRatio) {
         this.maxAnomalyRatio = maxAnomalyRatio;
         return this;
     }
@@ -184,9 +184,9 @@ public final class Request {
      * the larger the margin value will be which means less anomalies will be accepted.
      *
      * @param sensitivity the sensitivity value to set.
-     * @return the Request object itself.
+     * @return the DetectRequest object itself.
      */
-    public Request setSensitivity(Integer sensitivity) {
+    public DetectRequest setSensitivity(Integer sensitivity) {
         this.sensitivity = sensitivity;
         return this;
     }
