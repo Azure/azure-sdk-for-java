@@ -15,7 +15,6 @@ import reactor.core.publisher.Flux;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.*;
@@ -172,34 +171,8 @@ public final class CloudEvent {
     }
 
     /**
-     * Deserialize and get the non-JSON type data property from the parsed event, such as data set with
-     * {@link CloudEvent#setData(Object, ObjectSerializer, String)}. Note that this will not deserialize binary data
-     * set by {@link CloudEvent#setData(byte[], String)}, which should instead be obtained by
-     * {@link CloudEvent#getData()} as a {@code byte[]}.
-     * @param clazz            the class of the type to deserialize the data into.
-     * @param dataDeserializer the deserializer to use.
-     * @param <T>              the type to deserialize the data into.
-     *
-     * @return the data deserialized into the given type using the given deserializer.
-     * @throws IllegalStateException If the event was not created through {@link EventGridEvent#parse(String)}.
-     */
-    public <T> T getData(Class<T> clazz, ObjectSerializer dataDeserializer) {
-        if (!parsed) {
-            // data was set instead of parsed, throw exception because we don't know how the data relates to clazz
-            throw new IllegalStateException("This method should only be called on events created through the parse method");
-        }
-
-        String stringData = deserializer.deserialize(new ByteArrayInputStream((byte[]) this.cloudEvent.getData()),
-            TypeReference.createInstance(String.class));
-
-        return dataDeserializer.deserialize(new ByteArrayInputStream(stringData.getBytes(StandardCharsets.UTF_8)),
-            TypeReference.createInstance(clazz));
-    }
-
-    /**
-     * Set the data associated with this event, to be serialized by the serializer set by
-     * {@link EventGridPublisherClientBuilder#serializer(SerializerAdapter)}
-     * @param data the data to set. Must be serializable with the serializer set on the publisher client.
+     * Set the data associated with this event.
+     * @param data the data to set. Should be serializable with the serializer set on the publisher client.
      *
      * @return the cloud event itself.
      */
@@ -209,25 +182,17 @@ public final class CloudEvent {
     }
 
     /**
-     * Set the data to be serialized in a non-JSON media format, and set the media type identifying the format.
-     * @param data            the data to serialized by the given serializer and set.
-     * @param dataContentType the string identifying the media type of the data field, since the media type is no longer
-     *                        {@code application/json}.
-     * @param serializer      the serializer to serializer the data in a non-JSON format.
-     *
+     * Set the data associated with this event, along with a content type URI
+     * @param data            the data to set. Should be serializable by the serializer set on the publisher client.
+     * @param dataContentType a URI identifying the MIME type of the data.
+     *                        For example, if the data was an XML string, the data content type could be
+     *                        {@code "application/xml"}.
      * @return the cloud event itself.
-     * @throws IllegalArgumentException if {@code serializer} is a JsonSerializer, since this is only meant for
-     *                                  serialization into non-JSON types. To use custom JSON serialization behavior,
-     *                                  set the custom serializer on
-     *                                  {@link EventGridPublisherClientBuilder#serializer(SerializerAdapter)}.
      */
-    public CloudEvent setData(Object data, ObjectSerializer serializer, String dataContentType) {
-        if (serializer instanceof JsonSerializer) {
-            throw new IllegalArgumentException("serializer must not be a JsonSerializer. To set custom JSON " +
-                "serialization behavior, set a custom serializer on the EventGridPublisherClientBuilder");
-        }
+    public CloudEvent setData(Object data, String dataContentType) {
+        this.cloudEvent.setData(data);
         this.cloudEvent.setDatacontenttype(dataContentType);
-        return this.setData(data);
+        return this;
     }
 
     /**

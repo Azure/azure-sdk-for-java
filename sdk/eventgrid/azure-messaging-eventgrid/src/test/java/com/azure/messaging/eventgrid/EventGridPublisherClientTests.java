@@ -165,7 +165,7 @@ public class EventGridPublisherClientTests extends TestBase {
         // Custom Serializer for testData
         JacksonAdapter customSerializer = new JacksonAdapter();
         customSerializer.serializer().registerModule(new SimpleModule().addSerializer(TestData.class,
-            new JsonSerializer<>() {
+            new JsonSerializer<TestData>() {
                 @Override
                 public void serialize(TestData testData, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
                     throws IOException {
