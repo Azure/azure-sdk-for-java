@@ -22,13 +22,13 @@
 [//]: # ({x-version-update-end})
 
 ## Key concepts
-Please refer to [Azure Cosmos DB Spring Boot 2.3 Starter](../azure-spring-boot-2-3-starter-cosmosdb/README.md) for key concepts.
+Please refer to [Azure Cosmos DB Spring Boot 2.3 Starter][azure_spring_boot_2_3_starter_cosmosdb_readme_key_concepts] for key concepts.
 
 ## Examples
-Please refer to [Azure Cosmos DB Spring Boot 2.3 Starter](../azure-spring-boot-2-3-starter-cosmosdb/README.md) for examples.
+Please refer to [Azure Cosmos DB Spring Boot 2.3 Starter][azure_spring_boot_2_3_starter_cosmosdb_readme_examples] for examples.
 
 ## Troubleshooting
-Please refer to [Azure Cosmos DB Spring Boot 2.3 Starter](../azure-spring-boot-2-3-starter-cosmosdb/README.md) for troubleshooting.
+Please refer to [Azure Cosmos DB Spring Boot 2.3 Starter][azure_spring_boot_2_3_starter_cosmosdb_readme_troubleshooting] for troubleshooting.
 
 ## Next steps
 
@@ -36,7 +36,7 @@ Besides using this Azure CosmosDb Spring Boot Starter, you can directly use Spri
 
 The following section provide a sample project illustrating how to use the starter.
 ### More sample code
-- [Cosmos DB SQL API](../azure-spring-boot-samples/azure-spring-boot-sample-cosmosdb)
+- [Cosmos DB SQL API][cosmos_db_sql_api]
 
 ## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
@@ -50,3 +50,7 @@ Please follow [instructions here](../CONTRIBUTING.md) to build from source or co
 [sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-cosmosdb
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [azure_subscription]: https://azure.microsoft.com/free
+[azure_spring_boot_2_3_starter_cosmosdb_readme_key_concepts]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-2-3-starter-cosmosdb#key-concepts
+[azure_spring_boot_2_3_starter_cosmosdb_readme_examples]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-2-3-starter-cosmosdb#examples
+[azure_spring_boot_2_3_starter_cosmosdb_readme_troubleshooting]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-2-3-starter-cosmosdb#troubleshooting
+[cosmos_db_sql_api]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-cosmosdb
