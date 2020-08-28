@@ -1,5 +1,21 @@
 trigger: none
 
+parameters:
+  EnvVars:
+    AZURE_TEST_MODE: LIVE
+    AAD_TENANT_ID_1: $(java-spring-aad-tenant-id-1)
+    AAD_USER_NAME_1: $(java-spring-aad-user-name-1)
+    AAD_USER_PASSWORD_1: $(java-spring-aad-user-password-1)
+    AAD_TENANT_ID_2: $(java-spring-aad-tenant-id-2)
+    AAD_USER_NAME_2: $(java-spring-aad-user-name-2)
+    AAD_USER_PASSWORD_2: $(java-spring-aad-user-password-2)
+    AAD_MULTI_TENANT_CLIENT_ID: $(java-spring-aad-multi-tenant-client-id)
+    AAD_MULTI_TENANT_CLIENT_SECRET: $(java-spring-aad-multi-tenant-client-secret)
+    AAD_SINGLE_TENANT_CLIENT_ID: $(java-spring-aad-single-tenant-id)
+    AAD_SINGLE_TENANT_CLIENT_SECRET: $(java-spring-aad-single-tenant-secret)
+    AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE: $(java-spring-aad-single-tenant-id-with-role)
+    AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE: $(java-spring-aad-single-tenant-secret-with-role)
+
 jobs:
     - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
       parameters:
@@ -29,20 +45,7 @@ jobs:
             groupId: com.azure
             safeName: azurespringcloudtesteventhubs
 
-        EnvVars:
-          AZURE_TEST_MODE: LIVE
-          AAD_TENANT_ID_1: $(java-spring-aad-tenant-id-1)
-          AAD_USER_NAME_1: $(java-spring-aad-user-name-1)
-          AAD_USER_PASSWORD_1: $(java-spring-aad-user-password-1)
-          AAD_TENANT_ID_2: $(java-spring-aad-tenant-id-2)
-          AAD_USER_NAME_2: $(java-spring-aad-user-name-2)
-          AAD_USER_PASSWORD_2: $(java-spring-aad-user-password-2)
-          AAD_MULTI_TENANT_CLIENT_ID: $(java-spring-aad-multi-tenant-client-id)
-          AAD_MULTI_TENANT_CLIENT_SECRET: $(java-spring-aad-multi-tenant-client-secret)
-          AAD_SINGLE_TENANT_CLIENT_ID: $(java-spring-aad-single-tenant-id)
-          AAD_SINGLE_TENANT_CLIENT_SECRET: $(java-spring-aad-single-tenant-secret)
-          AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE: $(java-spring-aad-single-tenant-id-with-role)
-          AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE: $(java-spring-aad-single-tenant-secret-with-role)
+        EnvVars: ${{ parameters.EnvVars }}
 
         PostRunSteps:
           - script: |
@@ -67,7 +70,6 @@ jobs:
             displayName: 'Run tests again, JDK Version: $(JavaBuildVersion)'
             inputs:
               mavenPomFile: pom.xml
-              goals: clean verify
+              goals: verify
               options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
-            env:
-              AZURE_TEST_MODE: LIVE
+            env: ${{ parameters.EnvVars }}
