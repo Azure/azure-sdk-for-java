@@ -35,6 +35,7 @@ class ServiceBusClientBuilderTest {
     private static final String QUEUE_NAME = "test-queue-name";
     private static final String VIA_QUEUE_NAME = "test-via-queue-name";
     private static final String TOPIC_NAME = "test-topic-name";
+    private static final String VIA_TOPIC_NAME = "test-via-queue-name";
     private static final String SHARED_ACCESS_KEY_NAME = "dummySasKeyName";
     private static final String SHARED_ACCESS_KEY = "dummySasKey";
     private static final String ENDPOINT = getUri(ENDPOINT_FORMAT, NAMESPACE_NAME, DEFAULT_DOMAIN_NAME).toString();
@@ -64,6 +65,19 @@ class ServiceBusClientBuilderTest {
     }
 
     @Test
+    void viaTopicNameWithQueueNotAllowed() {
+        // Arrange
+        ServiceBusSenderClientBuilder builder = new ServiceBusClientBuilder()
+            .connectionString(NAMESPACE_CONNECTION_STRING)
+            .sender()
+            .queueName(QUEUE_NAME)
+            .viaTopicName(VIA_TOPIC_NAME);
+
+        // Act & Assert
+        assertThrows(IllegalStateException.class, () -> builder.buildAsyncClient());
+    }
+
+    @Test
     void queueClientWithViaQueueName() {
         // Arrange
         final ServiceBusSenderClientBuilder builder = new ServiceBusClientBuilder()
@@ -71,6 +85,22 @@ class ServiceBusClientBuilderTest {
             .sender()
             .queueName(QUEUE_NAME)
             .viaQueueName(VIA_QUEUE_NAME);
+
+        // Act
+        final ServiceBusSenderAsyncClient client = builder.buildAsyncClient();
+
+        // Assert
+        assertNotNull(client);
+    }
+
+    @Test
+    void topicClientWithViaTopicName() {
+        // Arrange
+        final ServiceBusSenderClientBuilder builder = new ServiceBusClientBuilder()
+            .connectionString(NAMESPACE_CONNECTION_STRING)
+            .sender()
+            .topicName(TOPIC_NAME)
+            .viaTopicName(TOPIC_NAME);
 
         // Act
         final ServiceBusSenderAsyncClient client = builder.buildAsyncClient();
