@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -357,12 +358,21 @@ public final class Utils {
                     )));
                 }
                 if (signal.isOnNext()) {
-                    return mapperOnNext.apply(signal.get());
+                    if (mapperOnNext != null) {
+                        return mapperOnNext.apply(signal.get());
+                    }
+                    return Mono.empty();
                 }
                 if (signal.isOnComplete()) {
-                    return mapperOnComplete.get();
+                    if (mapperOnComplete != null) {
+                        return mapperOnComplete.get();
+                    }
+                    return Mono.empty();
                 }
-                return mapperOnError.apply(signal.getThrowable());
+                if (mapperOnError != null) {
+                    return mapperOnError.apply(signal.getThrowable());
+                }
+                return Mono.error(Objects.requireNonNull(signal.getThrowable()));
             });
     }
 
@@ -392,12 +402,21 @@ public final class Utils {
                     )));
                 }
                 if (signal.isOnNext()) {
-                    return mapperOnNext.apply(signal.get());
+                    if (mapperOnNext != null) {
+                        return mapperOnNext.apply(signal.get());
+                    }
+                    return Mono.empty();
                 }
                 if (signal.isOnComplete()) {
-                    return mapperOnComplete.get();
+                    if (mapperOnComplete != null) {
+                        return mapperOnComplete.get();
+                    }
+                    return Mono.empty();
                 }
-                return mapperOnError.apply(signal.getThrowable());
+                if (mapperOnError != null) {
+                    return mapperOnError.apply(signal.getThrowable());
+                }
+                return Mono.error(Objects.requireNonNull(signal.getThrowable()));
             }, maxConcurrency, prefetch);
     }
 }
