@@ -328,7 +328,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Sends a scheduled message to the Azure Service Bus entity this sender is connected to. A scheduled message is
+     * Sends a scheduled messages to the Azure Service Bus entity this sender is connected to. A scheduled message is
      * enqueued and made available to receivers only at the scheduled enqueue time.
      *
      * @param messages Message to be sent to the Service Bus Queue.
@@ -336,14 +336,14 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      *
      * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
      *
-     * @throws NullPointerException if {@code message} or {@code scheduledEnqueueTime} is {@code null}.
+     * @throws NullPointerException if {@code messages} or {@code scheduledEnqueueTime} is {@code null}.
      */
     public Flux<Long> scheduleMessages(Iterable<ServiceBusMessage> messages, Instant scheduledEnqueueTime) {
         return scheduleMessagesInternal(messages, scheduledEnqueueTime, null);
     }
 
     /**
-     * Sends a scheduled message to the Azure Service Bus entity this sender is connected to. A scheduled message is
+     * Sends a scheduled messages to the Azure Service Bus entity this sender is connected to. A scheduled message is
      * enqueued and made available to receivers only at the scheduled enqueue time.
      *
      * @param messages Message to be sent to the Service Bus Queue.
@@ -569,8 +569,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
                 return connectionProcessor
                     .flatMap(connection -> connection.getManagementNode(entityName, entityType))
-                    .flatMapMany(managementNode -> managementNode.schedule(message.getMessages(), scheduledEnqueueTime, maxSize,
-                        link.getLinkName(), transactionContext));
+                    .flatMapMany(managementNode -> managementNode.schedule(message.getMessages(), scheduledEnqueueTime,
+                        maxSize, link.getLinkName(), transactionContext));
             }));
     }
 

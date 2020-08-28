@@ -15,7 +15,6 @@ import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusMessage;
-import com.azure.messaging.servicebus.ServiceBusMessageBatch;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusTransactionContext;
 import com.azure.messaging.servicebus.models.ReceiveMode;
@@ -123,7 +122,6 @@ public class ManagementChannel implements ServiceBusManagementNode {
                 final List<Long> numbers = new ArrayList<>();
                 sequenceNumbers.forEach(s -> numbers.add(s));
                 Long[] longs = numbers.toArray(new Long[0]);
-                System.out.println("!!!! MC.cancelScheduledMessages length " + longs.length);
                 requestMessage.setBody(new AmqpValue(Collections.singletonMap(ManagementConstants.SEQUENCE_NUMBERS,
                     longs)));
 

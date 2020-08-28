@@ -40,7 +40,7 @@ public class TestUtils {
     static final Map<String, Object> APPLICATION_PROPERTIES = new HashMap<>();
     static final int USE_CASE_DEFAULT = 0;
     static final int USE_CASE_RECEIVE_MORE_AND_COMPLETE = 1;
-    static final int USE_CASE_RECEIVE_BY_TIME = 2;
+    static final int USE_CASE_SCHEDULE_CANCEL_MESSAGES = 2;
     static final int USE_CASE_RECEIVE_NO_MESSAGES = 3;
     static final int USE_CASE_SEND_RECEIVE_WITH_PROPERTIES = 4;
     static final int USE_CASE_MULTIPLE_RECEIVE_ONE_TIMEOUT = 5;
