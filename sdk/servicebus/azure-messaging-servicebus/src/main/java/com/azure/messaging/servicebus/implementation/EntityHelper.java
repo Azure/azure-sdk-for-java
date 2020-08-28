@@ -8,8 +8,6 @@ import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
 import com.azure.messaging.servicebus.administration.models.CreateTopicOptions;
 import com.azure.messaging.servicebus.administration.models.QueueProperties;
-import com.azure.messaging.servicebus.administration.models.RuleAction;
-import com.azure.messaging.servicebus.administration.models.RuleFilter;
 import com.azure.messaging.servicebus.administration.models.RuleProperties;
 import com.azure.messaging.servicebus.administration.models.SubscriptionProperties;
 import com.azure.messaging.servicebus.administration.models.TopicProperties;
@@ -45,6 +43,7 @@ public final class EntityHelper {
      * Gets a queue description given the options.
      *
      * @param options The options.
+     *
      * @return The corresponding queue.
      */
     public static QueueDescription getQueueDescription(CreateQueueOptions options) {
@@ -103,6 +102,7 @@ public final class EntityHelper {
      * Creates a new queue given the existing queue.
      *
      * @param description Options to create queue with.
+     *
      * @return A new {@link QueueProperties} with the set options.
      */
     public static QueueDescription toImplementation(QueueProperties description) {
@@ -117,9 +117,27 @@ public final class EntityHelper {
     }
 
     /**
+     * Creates a new rule description given an existing rule.
+     *
+     * @param properties Rule properties.
+     * @return A new instance of {@link RuleDescription}.
+     */
+    public static RuleDescription toImplementation(RuleProperties properties) {
+        Objects.requireNonNull(properties, "'properties' cannot be null.");
+
+        if (ruleAccessor == null) {
+            throw new ClientLogger(EntityHelper.class).logExceptionAsError(
+                new IllegalStateException("'ruleAccessor' should not be null."));
+        }
+
+        return ruleAccessor.toImplementation(properties);
+    }
+
+    /**
      * Creates a new queue given the existing queue.
      *
      * @param description Options to create queue with.
+     *
      * @return A new {@link SubscriptionProperties} with the set options.
      */
     public static SubscriptionDescription toImplementation(SubscriptionProperties description) {
@@ -137,6 +155,7 @@ public final class EntityHelper {
      * Creates a new queue given the existing queue.
      *
      * @param properties Options to create queue with.
+     *
      * @return A new {@link TopicProperties} with the set options.
      */
     public static TopicDescription toImplementation(TopicProperties properties) {
@@ -154,6 +173,7 @@ public final class EntityHelper {
      * Creates a new queue given the existing queue.
      *
      * @param description Options to create queue with.
+     *
      * @return A new {@link QueueProperties} with the set options.
      */
     public static QueueProperties toModel(QueueDescription description) {
@@ -167,6 +187,12 @@ public final class EntityHelper {
         return queueAccessor.toModel(description);
     }
 
+    /**
+     * Gets a new rule based on the existing rule description.
+     *
+     * @param description The implementation type.
+     * @return A new {@link RuleProperties} with the set options.
+     */
     public static RuleProperties toModel(RuleDescription description) {
         Objects.requireNonNull(description, "'description' cannot be null.");
 
@@ -175,7 +201,7 @@ public final class EntityHelper {
                 new IllegalStateException("'ruleAccessor' should not be null."));
         }
 
-        return ruleAccessor.toModel(description.getName());
+        return ruleAccessor.toModel(description);
     }
 
     /**
@@ -346,6 +372,7 @@ public final class EntityHelper {
          * Creates a new queue from the given {@code queueDescription}.
          *
          * @param queueDescription Queue description to use.
+         *
          * @return A new queue with the properties set.
          */
         QueueDescription toImplementation(QueueProperties queueDescription);
@@ -354,6 +381,7 @@ public final class EntityHelper {
          * Creates a new queue from the given {@code queueDescription}.
          *
          * @param queueDescription Queue description to use.
+         *
          * @return A new queue with the properties set.
          */
         QueueProperties toModel(QueueDescription queueDescription);
@@ -367,8 +395,13 @@ public final class EntityHelper {
         void setName(QueueProperties queueProperties, String name);
     }
 
+    /**
+     * Interface for accessing methods on a rule.
+     */
     public interface RuleAccessor {
-        RuleProperties toModel(String name, RuleFilter filter, RuleAction action);
+        RuleProperties toModel(RuleDescription ruleDescription);
+
+        RuleDescription toImplementation(RuleProperties ruleProperties);
     }
 
     /**
@@ -379,6 +412,7 @@ public final class EntityHelper {
          * Creates a model subscription with the given implementation.
          *
          * @param subscription Options used to create subscription.
+         *
          * @return A new subscription.
          */
         SubscriptionProperties toModel(SubscriptionDescription subscription);
@@ -387,6 +421,7 @@ public final class EntityHelper {
          * Creates the implementation subscription with the given subscription.
          *
          * @param subscription Options used to create subscription.
+         *
          * @return A new subscription.
          */
         SubscriptionDescription toImplementation(SubscriptionProperties subscription);

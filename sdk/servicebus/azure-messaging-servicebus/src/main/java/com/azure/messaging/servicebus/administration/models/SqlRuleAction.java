@@ -6,8 +6,6 @@ import com.azure.messaging.servicebus.ServiceBusMessage;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.messaging.servicebus.administration.models.SqlRuleFilter.MAXIMUM_SQL_RULE_ACTION_STATEMENT_LENGTH;
-
 /**
  * Represents set of actions written in SQL language-based syntax that is performed against a
  * {@link ServiceBusMessage}.
@@ -15,19 +13,61 @@ import static com.azure.messaging.servicebus.administration.models.SqlRuleFilter
 public class SqlRuleAction extends RuleAction {
     private final Map<String, Object> properties = new HashMap<>();
     private final String sqlExpression;
+    private final String compatibilityLevel;
+    private final Boolean requiresPreprocessing;
 
+    /**
+     * Creates a new instance with the given SQL expression.
+     *
+     * @param sqlExpression SQL expression for the action.
+     *
+     * @throws NullPointerException if {@code sqlExpression} is null.
+     * @throws IllegalArgumentException if {@code sqlExpression} is an empty string.
+     */
     public SqlRuleAction(String sqlExpression) {
         final ClientLogger logger = new ClientLogger(SqlRuleAction.class);
 
         if (sqlExpression == null) {
             throw logger.logThrowableAsError(new NullPointerException("'sqlExpression' cannot be null."));
-        } else if (sqlExpression.length() > MAXIMUM_SQL_RULE_ACTION_STATEMENT_LENGTH) {
-            throw logger.logThrowableAsError(new IllegalArgumentException(String.format(
-                "The argument '%s' cannot exceed %s characters.",
-                sqlExpression, MAXIMUM_SQL_RULE_ACTION_STATEMENT_LENGTH)));
+        } else if (sqlExpression.isEmpty()) {
+            throw logger.logThrowableAsError(
+                new IllegalArgumentException("'sqlExpression' cannot be an empty string."));
         }
 
         this.sqlExpression = sqlExpression;
+        this.compatibilityLevel = null;
+        this.requiresPreprocessing = null;
+    }
+
+    /**
+     * Package private constructor for creating a model deserialised from the service.
+     *
+     * @param sqlExpression SQL expression for the action.
+     * @param compatibilityLevel The compatibility level.
+     * @param requiresPreprocessing Whether or not it requires preprocessing
+     */
+    SqlRuleAction(String sqlExpression, String compatibilityLevel, Boolean requiresPreprocessing) {
+        this.sqlExpression = sqlExpression;
+        this.compatibilityLevel = compatibilityLevel;
+        this.requiresPreprocessing = requiresPreprocessing;
+    }
+
+    /**
+     * Gets the compatibility level.
+     *
+     * @return The compatibility level.
+     */
+    String getCompatibilityLevel() {
+        return compatibilityLevel;
+    }
+
+    /**
+     * Gets whether or not requires preprocessing.
+     *
+     * @return Whether or not requires preprocessing.
+     */
+    Boolean getRequiresPreprocessing() {
+        return requiresPreprocessing;
     }
 
     public Map<String, Object> getProperties() {

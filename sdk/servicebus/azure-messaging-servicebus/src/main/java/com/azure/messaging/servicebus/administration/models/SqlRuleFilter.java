@@ -17,23 +17,63 @@ import java.util.Map;
  * </p>
  */
 public class SqlRuleFilter extends RuleFilter {
-    static final int MAXIMUM_SQL_RULE_ACTION_STATEMENT_LENGTH = 1024;
-
     private final Map<String, Object> properties = new HashMap<>();
     private final String sqlExpression;
+    private final String compatibilityLevel;
+    private final Boolean requiresPreprocessing;
 
+    /**
+     * Creates a new instance with the given SQL expression.
+     *
+     * @param sqlExpression SQL expression for the filter.
+     *
+     * @throws NullPointerException if {@code sqlExpression} is null.
+     * @throws IllegalArgumentException if {@code sqlExpression} is an empty string.
+     */
     public SqlRuleFilter(String sqlExpression) {
         final ClientLogger logger = new ClientLogger(SqlRuleAction.class);
 
         if (sqlExpression == null) {
             throw logger.logThrowableAsError(new NullPointerException("'sqlExpression' cannot be null."));
-        } else if (sqlExpression.length() > MAXIMUM_SQL_RULE_ACTION_STATEMENT_LENGTH) {
-            throw logger.logThrowableAsError(new IllegalArgumentException(String.format(
-                "The argument '%s' cannot exceed %s characters.",
-                sqlExpression, MAXIMUM_SQL_RULE_ACTION_STATEMENT_LENGTH)));
+        } else if (sqlExpression.isEmpty()) {
+            throw logger.logThrowableAsError(
+                new IllegalArgumentException("'sqlExpression' cannot be an empty string."));
         }
 
         this.sqlExpression = sqlExpression;
+        this.compatibilityLevel = null;
+        this.requiresPreprocessing = null;
+    }
+
+    /**
+     * Package private constructor for creating a model deserialised from the service.
+     *
+     * @param sqlExpression SQL expression for the filter.
+     * @param compatibilityLevel The compatibility level.
+     * @param requiresPreprocessing Whether or not it requires preprocessing
+     */
+    SqlRuleFilter(String sqlExpression, String compatibilityLevel, Boolean requiresPreprocessing) {
+        this.sqlExpression = sqlExpression;
+        this.compatibilityLevel = compatibilityLevel;
+        this.requiresPreprocessing = requiresPreprocessing;
+    }
+
+    /**
+     * Gets the compatibility level.
+     *
+     * @return The compatibility level.
+     */
+    String getCompatibilityLevel() {
+        return compatibilityLevel;
+    }
+
+    /**
+     * Gets whether or not requires preprocessing.
+     *
+     * @return Whether or not requires preprocessing.
+     */
+    Boolean getRequiresPreprocessing() {
+        return requiresPreprocessing;
     }
 
     /**
