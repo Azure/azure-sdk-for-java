@@ -966,8 +966,4 @@ public class IdentityClient {
     public String getClientId() {
         return clientId;
     }
-
-    private boolean isAdfsTenant(String tenantId) {
-        return tenantId.equalsIgnoreCase("adfs");
-    }
 }
