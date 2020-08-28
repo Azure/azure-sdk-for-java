@@ -1178,15 +1178,15 @@ Async APIs
     /**
      * Creates one or many models.
      * @param models The list of models to create. Each string corresponds to exactly one model.
-     * @return A {@link PagedFlux} of created models.
+     * @return A {@link PagedFlux} of created models and the http response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ModelData> createModels(Iterable<String> models) { }
+    public PagedFlux<ModelData> createModels(List<String> models) { }
 
     /**
      * Gets a model, including the model metadata and the model definition.
      * @param modelId The Id of the model.
-     * @return The application/json model
+     * @return The ModelData
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ModelData> getModel(String modelId) { }
@@ -1194,14 +1194,14 @@ Async APIs
     /**
      * Gets a model, including the model metadata and the model definition asynchronously.
      * @param modelId The Id of the model.
-     * @return A REST response containing the model.
+     * @return The ModelData and the http response
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ModelData>> getModelWithResponse(String modelId) { }
    
     /**
      * Gets the list of models by iterating through a collection.
-     * @return A {@link PagedFlux} of ModelData.
+     * @return A {@link PagedFlux} of ModelData and the http response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ModelData> listModels() { }
@@ -1209,7 +1209,7 @@ Async APIs
     /**
      * Gets the list of models by iterating through a collection.
      * @param listModelOptions The options to follow when listing the models. For example, the page size hint can be specified.
-     * @return A {@link PagedFlux} of ModelData.
+     * @return A {@link PagedFlux} of ModelData and the http response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ModelData> listModels(ListModelOptions listModelOptions) { }
