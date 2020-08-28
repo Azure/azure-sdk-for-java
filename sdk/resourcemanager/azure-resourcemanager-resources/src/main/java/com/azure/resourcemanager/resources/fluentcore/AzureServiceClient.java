@@ -29,6 +29,7 @@ import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.Map;
 
 /**
@@ -110,7 +111,7 @@ public abstract class AzureServiceClient {
             httpPipeline,
             pollResultType,
             finalResultType,
-            SdkContext.getLroRetryDuration(),
+            SdkContext.getDelayDuration(this.getDefaultPollInterval()),
             lroInit,
             context
         );
@@ -162,6 +163,15 @@ public abstract class AzureServiceClient {
         } else {
             return response.getFinalResult();
         }
+    }
+
+    /**
+     * Gets The default poll interval for long-running operation.
+     *
+     * @return the defaultPollInterval value.
+     */
+    public Duration getDefaultPollInterval() {
+        return SdkContext.getLroRetryDuration();
     }
 
     private static class HttpResponseImpl extends HttpResponse {
