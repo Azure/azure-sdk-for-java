@@ -96,11 +96,12 @@ public final class DigitalTwinsClient {
     /**
      * Creates one or many models.
      * @param models The list of models to create. Each string corresponds to exactly one model.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link PagedIterable} of created models and the http response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ModelData> createModels(List<String> models) {
-        return new PagedIterable<>(digitalTwinsAsyncClient.createModels(models));
+    public PagedIterable<ModelData> createModels(List<String> models, Context context) {
+        return new PagedIterable<>(digitalTwinsAsyncClient.createModels(models, context));
     }
 
     /**
@@ -116,22 +117,24 @@ public final class DigitalTwinsClient {
     /**
      * Gets a model, including the model metadata and the model definition.
      * @param modelId The Id of the model.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The ModelData and the http response
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ModelData> getModelWithResponse(String modelId) {
-        return digitalTwinsAsyncClient.getModelWithResponse(modelId).block();
+    public Response<ModelData> getModelWithResponse(String modelId, Context context) {
+        return digitalTwinsAsyncClient.getModelWithResponse(modelId, context).block();
     }
 
     /**
      * Gets the list of models by iterating through a collection.
      * @param listModelOptions The options to follow when listing the models. For example, the page size hint can be specified.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link PagedIterable} of ModelData and the http response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ModelData> listModels(ListModelOptions listModelOptions) {
+    public PagedIterable<ModelData> listModels(ListModelOptions listModelOptions, Context context) {
         return new PagedIterable<>(
-            digitalTwinsAsyncClient.listModels(listModelOptions));
+            digitalTwinsAsyncClient.listModels(listModelOptions, context));
     }
 
     /**
@@ -140,7 +143,7 @@ public final class DigitalTwinsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ModelData> listModels() {
-        return listModels(new ListModelOptions());
+        return new PagedIterable<>(digitalTwinsAsyncClient.listModels());
     }
 
     /**
@@ -156,11 +159,12 @@ public final class DigitalTwinsClient {
     /**
      * Deletes a model.
      * @param modelId The id for the model. The id is globally unique and case sensitive.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The http response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteModelWithResponse(String modelId) {
-        return digitalTwinsAsyncClient.deleteModelWithResponse(modelId).block();
+    public Response<Void> deleteModelWithResponse(String modelId, Context context) {
+        return digitalTwinsAsyncClient.deleteModelWithResponse(modelId, context).block();
     }
 
     //TODO: Decommission Model APIs (waiting for Abhipsa's change to come in)
