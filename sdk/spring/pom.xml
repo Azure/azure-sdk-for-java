@@ -23,6 +23,7 @@
     <module>azure-spring-boot-test-aad</module>
     <module>azure-spring-boot-test-cosmosdb</module>
     <module>azure-spring-boot-test-keyvault</module>
+    <module>azure-spring-boot-test-servicebus-jms</module>
     <module>azure-spring-cloud-test-eventhubs</module>
     <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory</module>
     <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc</module>
