@@ -213,7 +213,8 @@ public class CommonSasQueryParameters {
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_ENCODING, this.contentEncoding);
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_LANGUAGE, this.contentLanguage);
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_TYPE, this.contentType);
-        SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_AUTHORIZED_OBJECT_ID, this.authorizedObjectId);
+        SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_AUTHORIZED_OBJECT_ID,
+            this.authorizedObjectId);
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_UNAUTHORIZED_OBJECT_ID,
             this.unauthorizedObjectId);
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CORRELATION_ID, this.correlationId);
