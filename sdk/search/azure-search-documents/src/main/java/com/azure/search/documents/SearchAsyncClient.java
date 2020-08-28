@@ -852,7 +852,9 @@ public final class SearchAsyncClient {
                 .setScoringParameters(scoringParameters)
                 .setScoringProfile(searchOptions.getScoringProfile())
                 .setSkip(searchOptions.getSkip())
-                .setTop(searchOptions.getTop());
+                .setTop(searchOptions.getTop())
+                .setScoringStatistics(searchOptions.getScoringStatistics())
+                .setSessionId(searchOptions.getSessionId());
 
             if (searchOptions.getHighlightFields() != null) {
                 searchRequest.setHighlightFields(String.join(",", searchOptions.getHighlightFields()));

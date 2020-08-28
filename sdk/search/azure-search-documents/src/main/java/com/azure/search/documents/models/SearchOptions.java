@@ -5,6 +5,7 @@ package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -120,6 +121,26 @@ public final class SearchOptions {
      */
     @JsonProperty(value = "")
     private SearchMode searchMode;
+
+    /*
+     * A value that specifies whether we want to calculate scoring statistics
+     * (such as document frequency) globally for more consistent scoring, or
+     * locally, for lower latency.
+     */
+    @JsonProperty(value = "scoringStatistics")
+    private ScoringStatistics scoringStatistics;
+
+    /*
+     * A value to be used to create a sticky session, which can help to get
+     * more consistent results. As long as the same sessionId is used, a
+     * best-effort attempt will be made to target the same replica set. Be wary
+     * that reusing the same sessionID values repeatedly can interfere with the
+     * load balancing of the requests across replicas and adversely affect the
+     * performance of the search service. The value used as sessionId cannot
+     * start with a '_' character.
+     */
+    @JsonProperty(value = "sessionId")
+    private String sessionId;
 
     /*
      * The list of fields to retrieve. If unspecified, all fields marked as
@@ -476,6 +497,56 @@ public final class SearchOptions {
      */
     public SearchOptions setSearchMode(SearchMode searchMode) {
         this.searchMode = searchMode;
+        return this;
+    }
+
+    /**
+     * Get the scoringStatistics property: A value that specifies whether we want to calculate scoring statistics (such
+     * as document frequency) globally for more consistent scoring, or locally, for lower latency.
+     *
+     * @return the scoringStatistics value.
+     */
+    public ScoringStatistics getScoringStatistics() {
+        return this.scoringStatistics;
+    }
+
+    /**
+     * Set the scoringStatistics property: A value that specifies whether we want to calculate scoring statistics (such
+     * as document frequency) globally for more consistent scoring, or locally, for lower latency.
+     *
+     * @param scoringStatistics the scoringStatistics value to set.
+     * @return the SearchOptions object itself.
+     */
+    public SearchOptions setScoringStatistics(ScoringStatistics scoringStatistics) {
+        this.scoringStatistics = scoringStatistics;
+        return this;
+    }
+
+    /**
+     * Get the sessionId property: A value to be used to create a sticky session, which can help to get more consistent
+     * results. As long as the same sessionId is used, a best-effort attempt will be made to target the same replica
+     * set. Be wary that reusing the same sessionID values repeatedly can interfere with the load balancing of the
+     * requests across replicas and adversely affect the performance of the search service. The value used as sessionId
+     * cannot start with a '_' character.
+     *
+     * @return the sessionId value.
+     */
+    public String getSessionId() {
+        return this.sessionId;
+    }
+
+    /**
+     * Set the sessionId property: A value to be used to create a sticky session, which can help to get more consistent
+     * results. As long as the same sessionId is used, a best-effort attempt will be made to target the same replica
+     * set. Be wary that reusing the same sessionID values repeatedly can interfere with the load balancing of the
+     * requests across replicas and adversely affect the performance of the search service. The value used as sessionId
+     * cannot start with a '_' character.
+     *
+     * @param sessionId the sessionId value to set.
+     * @return the SearchOptions object itself.
+     */
+    public SearchOptions setSessionId(String sessionId) {
+        this.sessionId = sessionId;
         return this;
     }
 

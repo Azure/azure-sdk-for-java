@@ -73,7 +73,7 @@ input-file:
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/search/data-plane/Azure.Search/preview/2020-06-30/searchindex.json
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: AutocompleteItem,AutocompleteMode,AutocompleteResult,FacetResult,IndexActionType,QueryType,SearchMode
+custom-types: AutocompleteItem,AutocompleteMode,AutocompleteResult,FacetResult,IndexActionType,QueryType,ScoringStatistics,SearchMode
 ```
 
 ---

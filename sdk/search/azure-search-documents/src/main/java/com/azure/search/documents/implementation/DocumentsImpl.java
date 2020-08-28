@@ -29,6 +29,7 @@ import com.azure.search.documents.implementation.models.AutocompleteRequest;
 import com.azure.search.documents.implementation.models.IndexBatch;
 import com.azure.search.documents.implementation.models.IndexDocumentsResult;
 import com.azure.search.documents.implementation.models.RequestOptions;
+import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.implementation.models.SearchDocumentsResult;
 import com.azure.search.documents.implementation.models.SearchErrorException;
 import com.azure.search.documents.implementation.models.SearchOptions;
@@ -40,9 +41,10 @@ import com.azure.search.documents.models.AutocompleteMode;
 import com.azure.search.documents.models.AutocompleteResult;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.SearchMode;
+import reactor.core.publisher.Mono;
+
 import java.util.List;
 import java.util.UUID;
-import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Documents. */
 public final class DocumentsImpl {
@@ -101,6 +103,8 @@ public final class DocumentsImpl {
                 @QueryParam("scoringProfile") String scoringProfile,
                 @QueryParam("searchFields") String searchFields,
                 @QueryParam("searchMode") SearchMode searchMode,
+                @QueryParam("scoringStatistics") ScoringStatistics scoringStatistics,
+                @QueryParam("sessionId") String sessionId,
                 @QueryParam("$select") String select,
                 @QueryParam("$skip") Integer skip,
                 @QueryParam("$top") Integer top,
@@ -322,6 +326,16 @@ public final class DocumentsImpl {
             searchModeInternal = searchOptions.getSearchMode();
         }
         SearchMode searchMode = searchModeInternal;
+        ScoringStatistics scoringStatisticsInternal = null;
+        if (searchOptions != null) {
+            scoringStatisticsInternal = searchOptions.getScoringStatistics();
+        }
+        ScoringStatistics scoringStatistics = scoringStatisticsInternal;
+        String sessionIdInternal = null;
+        if (searchOptions != null) {
+            sessionIdInternal = searchOptions.getSessionId();
+        }
+        String sessionId = sessionIdInternal;
         List<String> selectInternal = null;
         if (searchOptions != null) {
             selectInternal = searchOptions.getSelect();
@@ -371,6 +385,8 @@ public final class DocumentsImpl {
                 scoringProfile,
                 searchFieldsConverted,
                 searchMode,
+                scoringStatistics,
+                sessionId,
                 selectConverted,
                 skip,
                 top,
