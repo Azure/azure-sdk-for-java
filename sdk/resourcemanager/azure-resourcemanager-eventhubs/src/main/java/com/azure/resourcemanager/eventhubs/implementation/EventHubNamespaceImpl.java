@@ -226,11 +226,8 @@ class EventHubNamespaceImpl
 
     @Override
     public Mono<Void> afterPostRunAsync(boolean isGroupFaulted) {
-        return Mono.just(true)
-            .map(aBoolean -> {
-                postRunTasks = null;
-                return aBoolean;
-            }).then();
+        postRunTasks = null;
+        return Mono.empty();
     }
 
     @Override
