@@ -42,6 +42,4 @@ public final class MinedOpinion {
     public IterableStream<OpinionSentiment> getOpinions() {
         return opinions;
     }
-
-
 }

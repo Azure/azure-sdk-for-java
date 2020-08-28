@@ -5,7 +5,7 @@
   - `offset` is the offset of the text from the start of the document
   
 **New features**
-- Text analytics SDK update the service to version `v3.1-preview.1` from `v3.0`.
+- Updated Text Analytics SDK's default service API version to `v3.1-preview.1` from `v3.0`.
 - Added support for Personally Identifiable Information(PII) entity recognition feature.
   To use this feature, you need to make sure you are using the service's v3.1-preview.1 API.
 - Added support for the Opinion Mining feature. To use this feature, you need to make sure you are using the 

@@ -4,6 +4,7 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
+import com.azure.ai.textanalytics.implementation.Utility;
 import com.azure.ai.textanalytics.implementation.models.AspectConfidenceScoreLabel;
 import com.azure.ai.textanalytics.implementation.models.AspectRelationType;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
@@ -213,7 +214,7 @@ class AnalyzeSentimentAsyncClient {
             .doOnSuccess(response -> logger.info("Analyzed sentiment for a batch of documents - {}", response))
             .doOnError(error -> logger.warning("Failed to analyze sentiment - {}", error))
             .map(this::toAnalyzeSentimentResultCollectionResponse)
-            .onErrorMap(throwable -> mapToHttpResponseExceptionIfExist(throwable));
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
     }
 
     /*
@@ -276,7 +277,7 @@ class AnalyzeSentimentAsyncClient {
         // The pattern always start with character '#', the opinion index will existing in specified sentence, which
         // is under specified document.
         // example: #/documents/0/sentences/0/opinions/0
-        final String patternRegex = "#\\/documents\\/(\\d+)\\/sentences\\/(\\d+)\\/opinions\\/(\\d+)";
+        final String patternRegex = "#/documents/(\\d+)/sentences/(\\d+)/opinions/(\\d+)";
         final Pattern pattern = Pattern.compile(patternRegex);
         final Matcher matcher = pattern.matcher(opinionPointer);
         final boolean isMatched = matcher.find();
