@@ -34,6 +34,7 @@ import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
 import com.microsoft.aad.msal4j.IAccount;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
 import com.microsoft.aad.msal4j.IClientCredential;
+import com.microsoft.aad.msal4j.InteractiveRequestParameters;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.RefreshTokenParameters;
 import com.microsoft.aad.msal4j.SilentParameters;
@@ -246,8 +247,6 @@ public class IdentityClient {
         }
         String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId;
         PublicClientApplication.Builder publicClientApplicationBuilder = PublicClientApplication.builder(clientId);
-        publicClientApplicationBuilder.validateAuthority(!isAdfsTenant(tenantId));
-
         try {
             publicClientApplicationBuilder = publicClientApplicationBuilder.authority(authorityUrl);
         } catch (MalformedURLException e) {
@@ -643,42 +642,20 @@ public class IdentityClient {
      * @return a Publisher that emits an AccessToken
      */
     public Mono<MsalToken> authenticateWithBrowserInteraction(TokenRequestContext request, int port) {
-        String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId;
-        return AuthorizationCodeListener.create(port)
-            .flatMap(server -> {
-                URI redirectUri;
-                String browserUri;
-                try {
-                    redirectUri = new URI(String.format("http://localhost:%s", port));
-                    StringBuilder endpont = new StringBuilder(authorityUrl + "/oauth2/");
-                    if (!isAdfsTenant(tenantId)) {
-                        endpont.append("v2.0/");
-                    }
-                    endpont.append(String.format("authorize?response_type=code&response_mode=query&prompt"
-                         + "=select_account&client_id=%s&redirect_uri=%s&state=%s&scope=%s",
-                        clientId,
-                        redirectUri.toString(),
-                        UUID.randomUUID(),
-                        String.join(" ", request.getScopes())));
+        URI redirectUri;
+        try {
+            redirectUri = new URI(String.format("http://localhost:%s", port));
+        } catch (URISyntaxException e) {
+            return Mono.error(logger.logExceptionAsError(new RuntimeException(e)));
+        }
+        InteractiveRequestParameters parameters = InteractiveRequestParameters.builder(redirectUri)
+                                                     .scopes(new HashSet<>(request.getScopes()))
+                                                     .build();
+        Mono<IAuthenticationResult> acquireToken = publicClientApplicationAccessor.getValue()
+                               .flatMap(pc -> Mono.fromFuture(() -> pc.acquireToken(parameters)));
 
-                    browserUri = endpont.toString();
-                } catch (URISyntaxException e) {
-                    return server.dispose().then(Mono.error(e));
-                }
-
-                return server.listen()
-                    .mergeWith(Mono.<String>fromRunnable(() -> {
-                        try {
-                            openUrl(browserUri);
-                        } catch (IOException e) {
-                            throw logger.logExceptionAsError(new IllegalStateException(e));
-                        }
-                    }).subscribeOn(Schedulers.newSingle("browser")))
-                    .next()
-                    .flatMap(code -> authenticateWithAuthorizationCode(request, code, redirectUri))
-                    .onErrorResume(t -> server.dispose().then(Mono.error(t)))
-                    .flatMap(msalToken -> server.dispose().then(Mono.just(msalToken)));
-            });
+        return acquireToken.onErrorMap(t -> new ClientAuthenticationException(
+            "Failed to acquire token with Interactive Browser Authentication.", null, t)).map(MsalToken::new);
     }
 
     /**
