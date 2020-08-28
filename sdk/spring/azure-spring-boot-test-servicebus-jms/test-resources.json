@@ -42,20 +42,6 @@
       }
     },
     {
-      "type": "Microsoft.ServiceBus/namespaces/networkRuleSets",
-      "apiVersion": "2018-01-01-preview",
-      "name": "[concat(variables('namespaces_name'), '/default')]",
-      "location": "[variables('location')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.ServiceBus/namespaces', variables('namespaces_name'))]"
-      ],
-      "properties": {
-        "defaultAction": "Deny",
-        "virtualNetworkRules": [],
-        "ipRules": []
-      }
-    },
-    {
       "type": "Microsoft.ServiceBus/namespaces/queues",
       "apiVersion": "2017-04-01",
       "name": "[concat(variables('namespaces_name'), '/que001')]",
