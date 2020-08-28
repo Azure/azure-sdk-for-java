@@ -19,7 +19,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.models.Subscription;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -31,7 +30,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -347,7 +345,6 @@ public final class Utils {
      * @param <R> the return data type
      * @return a new flux
      */
-    @SuppressFBWarnings(value = "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE", justification = "Incorrect spot bugs")
     public static <T, R> Flux<R> flatMapSequential(Flux<T> flux,
         Function<? super T, ? extends Publisher<? extends R>> mapperOnNext,
         Function<? super Throwable, ? extends Publisher<? extends R>> mapperOnError,
@@ -371,10 +368,15 @@ public final class Utils {
                     }
                     return Mono.empty();
                 }
+                Throwable exception = signal.getThrowable();
                 if (mapperOnError != null) {
-                    return mapperOnError.apply(signal.getThrowable());
+                    return mapperOnError.apply(exception);
                 }
-                return Mono.error(Objects.requireNonNull(signal.getThrowable()));
+                if (exception != null) {
+                    return Mono.error(exception);
+                } else {
+                    throw new ClientLogger(Utils.class).logExceptionAsError(new IllegalStateException());
+                }
             });
     }
 
@@ -391,7 +393,6 @@ public final class Utils {
      * @param <R> the return data type
      * @return a new flux
      */
-    @SuppressFBWarnings(value = "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE", justification = "Incorrect spot bugs")
     public static <T, R> Flux<R> flatMapSequentialDelayError(Flux<T> flux,
         Function<? super T, ? extends Publisher<? extends R>> mapperOnNext,
         Function<? super Throwable, ? extends Publisher<? extends R>> mapperOnError,
@@ -416,10 +417,15 @@ public final class Utils {
                     }
                     return Mono.empty();
                 }
+                Throwable exception = signal.getThrowable();
                 if (mapperOnError != null) {
-                    return mapperOnError.apply(signal.getThrowable());
+                    return mapperOnError.apply(exception);
                 }
-                return Mono.error(Objects.requireNonNull(signal.getThrowable()));
+                if (exception != null) {
+                    return Mono.error(exception);
+                } else {
+                    throw new ClientLogger(Utils.class).logExceptionAsError(new IllegalStateException());
+                }
             }, maxConcurrency, prefetch);
     }
 }
