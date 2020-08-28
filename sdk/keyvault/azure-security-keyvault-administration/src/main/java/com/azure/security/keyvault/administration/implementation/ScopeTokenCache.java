@@ -40,6 +40,7 @@ class ScopeTokenCache {
 
     /**
      * Asynchronously get a token from either the cache or replenish the cache with a new token.
+     *
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> getToken() {
@@ -49,9 +50,9 @@ class ScopeTokenCache {
         return Mono.defer(() -> {
             if (!wip.getAndSet(true)) {
                 return getNew.apply(request).doOnNext(ac -> cache = ac)
-                        .doOnNext(sink::next)
-                        .doOnError(sink::error)
-                        .doOnTerminate(() -> wip.set(false));
+                    .doOnNext(sink::next)
+                    .doOnError(sink::error)
+                    .doOnTerminate(() -> wip.set(false));
             } else {
                 return emitterProcessor.next();
             }

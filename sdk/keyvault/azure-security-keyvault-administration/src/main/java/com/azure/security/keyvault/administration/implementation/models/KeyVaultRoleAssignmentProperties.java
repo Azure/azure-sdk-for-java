@@ -7,9 +7,9 @@ package com.azure.security.keyvault.administration.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RoleAssignmentProperties model. */
+/** The KeyVaultRoleAssignmentProperties model. */
 @Fluent
-public final class RoleAssignmentProperties {
+public final class KeyVaultRoleAssignmentProperties {
     /*
      * The role definition ID used in the role assignment.
      */
@@ -37,9 +37,9 @@ public final class RoleAssignmentProperties {
      * Set the roleDefinitionId property: The role definition ID used in the role assignment.
      *
      * @param roleDefinitionId the roleDefinitionId value to set.
-     * @return the RoleAssignmentProperties object itself.
+     * @return the KeyVaultRoleAssignmentProperties object itself.
      */
-    public RoleAssignmentProperties setRoleDefinitionId(String roleDefinitionId) {
+    public KeyVaultRoleAssignmentProperties setRoleDefinitionId(String roleDefinitionId) {
         this.roleDefinitionId = roleDefinitionId;
         return this;
     }
@@ -59,9 +59,9 @@ public final class RoleAssignmentProperties {
      * Directory. It can point to a user, service principal, or security group.
      *
      * @param principalId the principalId value to set.
-     * @return the RoleAssignmentProperties object itself.
+     * @return the KeyVaultRoleAssignmentProperties object itself.
      */
-    public RoleAssignmentProperties setPrincipalId(String principalId) {
+    public KeyVaultRoleAssignmentProperties setPrincipalId(String principalId) {
         this.principalId = principalId;
         return this;
     }

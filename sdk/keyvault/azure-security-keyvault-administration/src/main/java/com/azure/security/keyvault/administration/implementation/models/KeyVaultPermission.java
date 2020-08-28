@@ -8,9 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The Permission model. */
+/** The KeyVaultPermission model. */
 @Fluent
-public final class Permission {
+public final class KeyVaultPermission {
     /*
      * Allowed actions.
      */
@@ -48,9 +48,9 @@ public final class Permission {
      * Set the actions property: Allowed actions.
      *
      * @param actions the actions value to set.
-     * @return the Permission object itself.
+     * @return the KeyVaultPermission object itself.
      */
-    public Permission setActions(List<String> actions) {
+    public KeyVaultPermission setActions(List<String> actions) {
         this.actions = actions;
         return this;
     }
@@ -68,9 +68,9 @@ public final class Permission {
      * Set the notActions property: Denied actions.
      *
      * @param notActions the notActions value to set.
-     * @return the Permission object itself.
+     * @return the KeyVaultPermission object itself.
      */
-    public Permission setNotActions(List<String> notActions) {
+    public KeyVaultPermission setNotActions(List<String> notActions) {
         this.notActions = notActions;
         return this;
     }
@@ -88,9 +88,9 @@ public final class Permission {
      * Set the dataActions property: Allowed Data actions.
      *
      * @param dataActions the dataActions value to set.
-     * @return the Permission object itself.
+     * @return the KeyVaultPermission object itself.
      */
-    public Permission setDataActions(List<String> dataActions) {
+    public KeyVaultPermission setDataActions(List<String> dataActions) {
         this.dataActions = dataActions;
         return this;
     }
@@ -108,9 +108,9 @@ public final class Permission {
      * Set the notDataActions property: Denied Data actions.
      *
      * @param notDataActions the notDataActions value to set.
-     * @return the Permission object itself.
+     * @return the KeyVaultPermission object itself.
      */
-    public Permission setNotDataActions(List<String> notDataActions) {
+    public KeyVaultPermission setNotDataActions(List<String> notDataActions) {
         this.notDataActions = notDataActions;
         return this;
     }

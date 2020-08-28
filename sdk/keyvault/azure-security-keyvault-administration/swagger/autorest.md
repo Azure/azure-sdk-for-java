@@ -41,6 +41,40 @@ generate-client-as-impl: true
 sync-methods: none
 add-context-parameter: true
 context-client-method-parameter: true
+directive :
+    - rename-model:
+        from: Permission
+        to: KeyVaultPermission
+    - rename-model:
+        from: RoleAssignment
+        to: KeyVaultRoleAssignment
+    - rename-model:
+        from: RoleAssignmentCreateParameters
+        to: KeyVaultRoleAssignmentCreateParameters
+    - rename-model:
+        from: RoleAssignmentFilter
+        to: KeyVaultRoleAssignmentFilter
+    - rename-model:
+         from: RoleAssignmentListResult
+         to: KeyVaultRoleAssignmentListResult
+    - rename-model:
+        from: RoleAssignmentProperties
+        to: KeyVaultRoleAssignmentProperties
+    - rename-model:
+        from: RoleAssignmentPropertiesWithScope
+        to: KeyVaultRoleAssignmentPropertiesWithScope
+    - rename-model:
+        from: RoleAssignmentProperties
+        to: KeyVaultRoleAssignmentProperties
+    - rename-model:
+        from: RoleDefinition
+        to: KeyVaultRoleDefinition
+    - rename-model:
+        from: RoleDefinitionFilter
+        to: KeyVaultRoleDefinitionFilter
+    - rename-model:
+        from: RoleDefinitionListResult
+        to: KeyVaultRoleDefinitionListResult
 ```
 
 ### Tag: rbac-preview

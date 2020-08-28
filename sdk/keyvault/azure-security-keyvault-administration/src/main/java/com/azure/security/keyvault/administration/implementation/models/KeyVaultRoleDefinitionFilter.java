@@ -7,9 +7,9 @@ package com.azure.security.keyvault.administration.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RoleDefinitionFilter model. */
+/** The KeyVaultRoleDefinitionFilter model. */
 @Fluent
-public final class RoleDefinitionFilter {
+public final class KeyVaultRoleDefinitionFilter {
     /*
      * Returns role definition with the specific name.
      */
@@ -29,9 +29,9 @@ public final class RoleDefinitionFilter {
      * Set the roleName property: Returns role definition with the specific name.
      *
      * @param roleName the roleName value to set.
-     * @return the RoleDefinitionFilter object itself.
+     * @return the KeyVaultRoleDefinitionFilter object itself.
      */
-    public RoleDefinitionFilter setRoleName(String roleName) {
+    public KeyVaultRoleDefinitionFilter setRoleName(String roleName) {
         this.roleName = roleName;
         return this;
     }

@@ -24,8 +24,9 @@ import java.util.Objects;
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the
  * {@link KeyVaultAccessControlAsyncClient} and {@link KeyVaultAccessControlClient}, by calling
- * {@link KeyVaultAccessControlClientBuilder#buildAsyncClient()} and {@link KeyVaultAccessControlClientBuilder#buildClient()}
- * respectively. It constructs an instance of the desired client.
+ * {@link KeyVaultAccessControlClientBuilder#buildAsyncClient()} and
+ * {@link KeyVaultAccessControlClientBuilder#buildClient()} respectively. It constructs an instance of the desired
+ * client.
  *
  * <p> The minimal configuration options required by {@link KeyVaultAccessControlClientBuilder} to build an
  * an {@link KeyVaultAccessControlAsyncClient} are {@link String vaultUrl} and {@link TokenCredential credential}.</p>
@@ -38,8 +39,8 @@ import java.util.Objects;
  * {@codesnippet com.azure.security.keyvault.keys.async.accesscontrolclient.withhttpclient.instantiation}
  *
  * <p>Alternatively, a custom {@link HttpPipeline} with custom {@link HttpPipelinePolicy} policies and {@link String
- * vaultUrl} can be specified. It provides finer control over the construction of {@link KeyVaultAccessControlAsyncClient}
- * and {@link KeyVaultAccessControlClient} instances.</p>
+ * vaultUrl} can be specified. It provides finer control over the construction of
+ * {@link KeyVaultAccessControlAsyncClient} and {@link KeyVaultAccessControlClient} instances.</p>
  * <p>
  * {@codesnippet com.azure.security.keyvault.keys.async.accesscontrolclient.pipeline.instantiation}
  *
@@ -81,8 +82,8 @@ public class KeyVaultAccessControlClientBuilder {
     }
 
     /**
-     * Creates an {@link KeyVaultAccessControlClient} based on options set in the Builder. Every time {@code buildClient()}
-     * is called a new instance of {@link KeyVaultAccessControlClient} is created.
+     * Creates an {@link KeyVaultAccessControlClient} based on options set in the Builder. Every time {@code
+     * buildClient()} is called a new instance of {@link KeyVaultAccessControlClient} is created.
      * <p>
      * If {@link #pipeline(HttpPipeline) pipeline} is set, then only the {@code pipeline} and
      * {@link #vaultUrl(String) vaultUrl} are used to create the {@link KeyVaultAccessControlClient client}. All other
@@ -100,8 +101,8 @@ public class KeyVaultAccessControlClientBuilder {
      * buildAsyncClient()} is called a new instance of {@link KeyVaultAccessControlAsyncClient} is created.
      * <p>
      * If {@link #pipeline(HttpPipeline) pipeline} is set, then only the {@code pipeline} and
-     * {@link #vaultUrl(String) endpoint} are used to create the {@link KeyVaultAccessControlAsyncClient client}. All other
-     * builder settings are ignored.
+     * {@link #vaultUrl(String) endpoint} are used to create the {@link KeyVaultAccessControlAsyncClient client}. All
+     * other builder settings are ignored.
      *
      * @return An {@link KeyVaultAccessControlAsyncClient} with the options set from the builder.
      * @throws NullPointerException If {@code vaultUrl} is {@code null}.
@@ -228,8 +229,8 @@ public class KeyVaultAccessControlClientBuilder {
      * Sets the HTTP pipeline to use for the service client.
      * <p>
      * If {@code pipeline} is set, all other settings are ignored, aside from
-     * {@link KeyVaultAccessControlClientBuilder#vaultUrl(String) vaultUrl} to build {@link KeyVaultAccessControlClient} or
-     * {@link KeyVaultAccessControlAsyncClient}.
+     * {@link KeyVaultAccessControlClientBuilder#vaultUrl(String) vaultUrl} to build {@link KeyVaultAccessControlClient}
+     * or {@link KeyVaultAccessControlAsyncClient}.
      *
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
      * @return The updated {@link KeyVaultAccessControlClientBuilder} object.

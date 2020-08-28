@@ -52,7 +52,7 @@ public final class KeyVaultCredentialPolicy implements HttpPipelinePolicy {
      */
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        if (context.getHttpRequest().getUrl().getProtocol().startsWith("http")) {
+        if (!context.getHttpRequest().getUrl().getProtocol().startsWith("https")) {
             return Mono.error(new RuntimeException("Token credentials require a URL using the HTTPS protocol scheme"));
         }
 

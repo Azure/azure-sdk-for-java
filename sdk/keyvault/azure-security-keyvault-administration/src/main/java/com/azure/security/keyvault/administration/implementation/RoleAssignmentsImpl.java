@@ -23,9 +23,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.security.keyvault.administration.implementation.models.KeyVaultErrorException;
-import com.azure.security.keyvault.administration.implementation.models.RoleAssignment;
-import com.azure.security.keyvault.administration.implementation.models.RoleAssignmentCreateParameters;
-import com.azure.security.keyvault.administration.implementation.models.RoleAssignmentListResult;
+import com.azure.security.keyvault.administration.implementation.models.KeyVaultRoleAssignment;
+import com.azure.security.keyvault.administration.implementation.models.KeyVaultRoleAssignmentCreateParameters;
+import com.azure.security.keyvault.administration.implementation.models.KeyVaultRoleAssignmentListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RoleAssignments. */
@@ -57,7 +57,7 @@ public final class RoleAssignmentsImpl {
         @Delete("/{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<RoleAssignment>> delete(
+        Mono<Response<KeyVaultRoleAssignment>> delete(
                 @HostParam("vaultBaseUrl") String vaultBaseUrl,
                 @PathParam(value = "scope", encoded = true) String scope,
                 @PathParam("roleAssignmentName") String roleAssignmentName,
@@ -67,18 +67,18 @@ public final class RoleAssignmentsImpl {
         @Put("/{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<RoleAssignment>> create(
+        Mono<Response<KeyVaultRoleAssignment>> create(
                 @HostParam("vaultBaseUrl") String vaultBaseUrl,
                 @PathParam(value = "scope", encoded = true) String scope,
                 @PathParam("roleAssignmentName") String roleAssignmentName,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") RoleAssignmentCreateParameters parameters,
+                @BodyParam("application/json") KeyVaultRoleAssignmentCreateParameters parameters,
                 Context context);
 
         @Get("/{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<RoleAssignment>> get(
+        Mono<Response<KeyVaultRoleAssignment>> get(
                 @HostParam("vaultBaseUrl") String vaultBaseUrl,
                 @PathParam(value = "scope", encoded = true) String scope,
                 @PathParam("roleAssignmentName") String roleAssignmentName,
@@ -88,7 +88,7 @@ public final class RoleAssignmentsImpl {
         @Get("/{scope}/providers/Microsoft.Authorization/roleAssignments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<RoleAssignmentListResult>> listForScope(
+        Mono<Response<KeyVaultRoleAssignmentListResult>> listForScope(
                 @HostParam("vaultBaseUrl") String vaultBaseUrl,
                 @PathParam(value = "scope", encoded = true) String scope,
                 @QueryParam("$filter") String filter,
@@ -98,7 +98,7 @@ public final class RoleAssignmentsImpl {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<RoleAssignmentListResult>> listForScopeNext(
+        Mono<Response<KeyVaultRoleAssignmentListResult>> listForScopeNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -115,7 +115,7 @@ public final class RoleAssignmentsImpl {
      * @return role Assignments.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RoleAssignment>> deleteWithResponseAsync(
+    public Mono<Response<KeyVaultRoleAssignment>> deleteWithResponseAsync(
             String vaultBaseUrl, String scope, String roleAssignmentName, Context context) {
         return service.delete(vaultBaseUrl, scope, roleAssignmentName, this.client.getApiVersion(), context);
     }
@@ -134,11 +134,11 @@ public final class RoleAssignmentsImpl {
      * @return role Assignments.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RoleAssignment>> createWithResponseAsync(
+    public Mono<Response<KeyVaultRoleAssignment>> createWithResponseAsync(
             String vaultBaseUrl,
             String scope,
             String roleAssignmentName,
-            RoleAssignmentCreateParameters parameters,
+            KeyVaultRoleAssignmentCreateParameters parameters,
             Context context) {
         return service.create(
                 vaultBaseUrl, scope, roleAssignmentName, this.client.getApiVersion(), parameters, context);
@@ -157,7 +157,7 @@ public final class RoleAssignmentsImpl {
      * @return the specified role assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RoleAssignment>> getWithResponseAsync(
+    public Mono<Response<KeyVaultRoleAssignment>> getWithResponseAsync(
             String vaultBaseUrl, String scope, String roleAssignmentName, Context context) {
         return service.get(vaultBaseUrl, scope, roleAssignmentName, this.client.getApiVersion(), context);
     }
@@ -177,7 +177,7 @@ public final class RoleAssignmentsImpl {
      * @return role assignments for a scope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RoleAssignment>> listForScopeSinglePageAsync(
+    public Mono<PagedResponse<KeyVaultRoleAssignment>> listForScopeSinglePageAsync(
             String vaultBaseUrl, String scope, String filter, Context context) {
         return service.listForScope(vaultBaseUrl, scope, filter, this.client.getApiVersion(), context)
                 .map(
@@ -202,7 +202,8 @@ public final class RoleAssignmentsImpl {
      * @return role assignment list operation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RoleAssignment>> listForScopeNextSinglePageAsync(String nextLink, Context context) {
+    public Mono<PagedResponse<KeyVaultRoleAssignment>> listForScopeNextSinglePageAsync(
+            String nextLink, Context context) {
         return service.listForScopeNext(nextLink, context)
                 .map(
                         res ->
