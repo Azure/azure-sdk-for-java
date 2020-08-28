@@ -66,10 +66,6 @@ public class ManagedInstancesInner implements InnerSupportsGet<ManagedInstanceIn
      * used by Retrofit to perform actually REST calls.
      */
     interface ManagedInstancesService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2015_05_01_preview.ManagedInstances list" })
-        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Sql/managedInstances")
-        Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2015_05_01_preview.ManagedInstances listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances")
         Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -102,121 +98,18 @@ public class ManagedInstancesInner implements InnerSupportsGet<ManagedInstanceIn
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}")
         Observable<Response<ResponseBody>> beginUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("managedInstanceName") String managedInstanceName, @Path("subscriptionId") String subscriptionId, @Body ManagedInstanceUpdate parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2015_05_01_preview.ManagedInstances listNext" })
-        @GET
-        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2015_05_01_preview.ManagedInstances list" })
+        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Sql/managedInstances")
+        Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2015_05_01_preview.ManagedInstances listByResourceGroupNext" })
         @GET
         Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-    }
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2015_05_01_preview.ManagedInstances listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-    /**
-     * Gets a list of all managed instances in the subscription.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;ManagedInstanceInner&gt; object if successful.
-     */
-    public PagedList<ManagedInstanceInner> list() {
-        ServiceResponse<Page<ManagedInstanceInner>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<ManagedInstanceInner>(response.body()) {
-            @Override
-            public Page<ManagedInstanceInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
-            }
-        };
-    }
-
-    /**
-     * Gets a list of all managed instances in the subscription.
-     *
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<ManagedInstanceInner>> listAsync(final ListOperationCallback<ManagedInstanceInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            listSinglePageAsync(),
-            new Func1<String, Observable<ServiceResponse<Page<ManagedInstanceInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<ManagedInstanceInner>>> call(String nextPageLink) {
-                    return listNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Gets a list of all managed instances in the subscription.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;ManagedInstanceInner&gt; object
-     */
-    public Observable<Page<ManagedInstanceInner>> listAsync() {
-        return listWithServiceResponseAsync()
-            .map(new Func1<ServiceResponse<Page<ManagedInstanceInner>>, Page<ManagedInstanceInner>>() {
-                @Override
-                public Page<ManagedInstanceInner> call(ServiceResponse<Page<ManagedInstanceInner>> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Gets a list of all managed instances in the subscription.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;ManagedInstanceInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<ManagedInstanceInner>>> listWithServiceResponseAsync() {
-        return listSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<ManagedInstanceInner>>, Observable<ServiceResponse<Page<ManagedInstanceInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<ManagedInstanceInner>>> call(ServiceResponse<Page<ManagedInstanceInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
-                }
-            });
-    }
-
-    /**
-     * Gets a list of all managed instances in the subscription.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;ManagedInstanceInner&gt; object wrapped in {@link ServiceResponse} if successful.
-     */
-    public Observable<ServiceResponse<Page<ManagedInstanceInner>>> listSinglePageAsync() {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.list(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ManagedInstanceInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<ManagedInstanceInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<ManagedInstanceInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ManagedInstanceInner>>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<PageImpl<ManagedInstanceInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<ManagedInstanceInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<ManagedInstanceInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
     }
 
     /**
@@ -923,14 +816,13 @@ public class ManagedInstancesInner implements InnerSupportsGet<ManagedInstanceIn
     /**
      * Gets a list of all managed instances in the subscription.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ManagedInstanceInner&gt; object if successful.
      */
-    public PagedList<ManagedInstanceInner> listNext(final String nextPageLink) {
-        ServiceResponse<Page<ManagedInstanceInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
+    public PagedList<ManagedInstanceInner> list() {
+        ServiceResponse<Page<ManagedInstanceInner>> response = listSinglePageAsync().toBlocking().single();
         return new PagedList<ManagedInstanceInner>(response.body()) {
             @Override
             public Page<ManagedInstanceInner> nextPage(String nextPageLink) {
@@ -942,15 +834,13 @@ public class ManagedInstancesInner implements InnerSupportsGet<ManagedInstanceIn
     /**
      * Gets a list of all managed instances in the subscription.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<ManagedInstanceInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<ManagedInstanceInner>> serviceFuture, final ListOperationCallback<ManagedInstanceInner> serviceCallback) {
+    public ServiceFuture<List<ManagedInstanceInner>> listAsync(final ListOperationCallback<ManagedInstanceInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listNextSinglePageAsync(nextPageLink),
+            listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<ManagedInstanceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ManagedInstanceInner>>> call(String nextPageLink) {
@@ -963,12 +853,11 @@ public class ManagedInstancesInner implements InnerSupportsGet<ManagedInstanceIn
     /**
      * Gets a list of all managed instances in the subscription.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ManagedInstanceInner&gt; object
      */
-    public Observable<Page<ManagedInstanceInner>> listNextAsync(final String nextPageLink) {
-        return listNextWithServiceResponseAsync(nextPageLink)
+    public Observable<Page<ManagedInstanceInner>> listAsync() {
+        return listWithServiceResponseAsync()
             .map(new Func1<ServiceResponse<Page<ManagedInstanceInner>>, Page<ManagedInstanceInner>>() {
                 @Override
                 public Page<ManagedInstanceInner> call(ServiceResponse<Page<ManagedInstanceInner>> response) {
@@ -980,12 +869,11 @@ public class ManagedInstancesInner implements InnerSupportsGet<ManagedInstanceIn
     /**
      * Gets a list of all managed instances in the subscription.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ManagedInstanceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ManagedInstanceInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
-        return listNextSinglePageAsync(nextPageLink)
+    public Observable<ServiceResponse<Page<ManagedInstanceInner>>> listWithServiceResponseAsync() {
+        return listSinglePageAsync()
             .concatMap(new Func1<ServiceResponse<Page<ManagedInstanceInner>>, Observable<ServiceResponse<Page<ManagedInstanceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ManagedInstanceInner>>> call(ServiceResponse<Page<ManagedInstanceInner>> page) {
@@ -1001,21 +889,22 @@ public class ManagedInstancesInner implements InnerSupportsGet<ManagedInstanceIn
     /**
      * Gets a list of all managed instances in the subscription.
      *
-    ServiceResponse<PageImpl<ManagedInstanceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ManagedInstanceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<ManagedInstanceInner>>> listNextSinglePageAsync(final String nextPageLink) {
-        if (nextPageLink == null) {
-            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+    public Observable<ServiceResponse<Page<ManagedInstanceInner>>> listSinglePageAsync() {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        String nextUrl = String.format("%s", nextPageLink);
-        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.list(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ManagedInstanceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ManagedInstanceInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<ManagedInstanceInner>> result = listNextDelegate(response);
+                        ServiceResponse<PageImpl<ManagedInstanceInner>> result = listDelegate(response);
                         return Observable.just(new ServiceResponse<Page<ManagedInstanceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1024,7 +913,7 @@ public class ManagedInstancesInner implements InnerSupportsGet<ManagedInstanceIn
             });
     }
 
-    private ServiceResponse<PageImpl<ManagedInstanceInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<ManagedInstanceInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<ManagedInstanceInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ManagedInstanceInner>>() { }.getType())
                 .registerError(CloudException.class)
@@ -1136,6 +1025,117 @@ public class ManagedInstancesInner implements InnerSupportsGet<ManagedInstanceIn
     }
 
     private ServiceResponse<PageImpl<ManagedInstanceInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ManagedInstanceInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<ManagedInstanceInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets a list of all managed instances in the subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;ManagedInstanceInner&gt; object if successful.
+     */
+    public PagedList<ManagedInstanceInner> listNext(final String nextPageLink) {
+        ServiceResponse<Page<ManagedInstanceInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<ManagedInstanceInner>(response.body()) {
+            @Override
+            public Page<ManagedInstanceInner> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets a list of all managed instances in the subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<ManagedInstanceInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<ManagedInstanceInner>> serviceFuture, final ListOperationCallback<ManagedInstanceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<ManagedInstanceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ManagedInstanceInner>>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets a list of all managed instances in the subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ManagedInstanceInner&gt; object
+     */
+    public Observable<Page<ManagedInstanceInner>> listNextAsync(final String nextPageLink) {
+        return listNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<ManagedInstanceInner>>, Page<ManagedInstanceInner>>() {
+                @Override
+                public Page<ManagedInstanceInner> call(ServiceResponse<Page<ManagedInstanceInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets a list of all managed instances in the subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ManagedInstanceInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ManagedInstanceInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
+        return listNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<ManagedInstanceInner>>, Observable<ServiceResponse<Page<ManagedInstanceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ManagedInstanceInner>>> call(ServiceResponse<Page<ManagedInstanceInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets a list of all managed instances in the subscription.
+     *
+    ServiceResponse<PageImpl<ManagedInstanceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;ManagedInstanceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ManagedInstanceInner>>> listNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ManagedInstanceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ManagedInstanceInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ManagedInstanceInner>> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ManagedInstanceInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<ManagedInstanceInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<ManagedInstanceInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ManagedInstanceInner>>() { }.getType())
                 .registerError(CloudException.class)
