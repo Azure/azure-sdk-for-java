@@ -26,6 +26,11 @@ public final class CategorizedEntity {
     private final String subcategory;
 
     /*
+     * Confidence score between 0 and 1 of the extracted entity.
+     */
+    private final double confidenceScore;
+
+    /*
      * Start position for the entity text.
      */
     private final int offset;
@@ -34,11 +39,6 @@ public final class CategorizedEntity {
      * Length for the entity text.
      */
     private final int length;
-
-    /*
-     * Confidence score between 0 and 1 of the extracted entity.
-     */
-    private final double confidenceScore;
 
     /**
      * Creates a {@link CategorizedEntity} model that describes entity.
@@ -104,6 +104,15 @@ public final class CategorizedEntity {
     }
 
     /**
+     * Get the score property: Confidence score between 0 and 1 of the extracted entity.
+     *
+     * @return The score value.
+     */
+    public double getConfidenceScore() {
+        return this.confidenceScore;
+    }
+
+    /**
      * Get the offset of entity text.
      *
      * @return The offset of entity text.
@@ -119,14 +128,5 @@ public final class CategorizedEntity {
      */
     public int getLength() {
         return length;
-    }
-
-    /**
-     * Get the score property: Confidence score between 0 and 1 of the extracted entity.
-     *
-     * @return The score value.
-     */
-    public double getConfidenceScore() {
-        return this.confidenceScore;
     }
 }

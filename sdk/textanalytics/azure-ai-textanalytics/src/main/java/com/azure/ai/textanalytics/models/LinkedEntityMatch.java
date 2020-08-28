@@ -11,15 +11,15 @@ import com.azure.core.annotation.Immutable;
 @Immutable
 public final class LinkedEntityMatch {
     /*
+     * Linked entity match text as appears in the request.
+     */
+    private final String text;
+
+    /*
      * If a well-known item is recognized, a decimal number denoting the
      * confidence level between 0 and 1 will be returned.
      */
     private final double confidenceScore;
-
-    /*
-     * Linked entity match text as appears in the request.
-     */
-    private final String text;
 
     /*
      * Start position for the linked entity match text.
@@ -49,16 +49,25 @@ public final class LinkedEntityMatch {
      * Creates a {@link LinkedEntityMatch} model that describes linked entity match.
      *
      * @param text The entity text as appears in the request.
-     * @param offset The start position for the entity text.
-     * @param length The length for the entity text.
      * @param confidenceScore If a well-known item is recognized, a decimal number denoting the
      * confidence level between 0 and 1 will be returned.
+     * @param offset The start position for the entity text.
+     * @param length The length for the entity text.
      */
-    public LinkedEntityMatch(String text, int offset, int length, double confidenceScore) {
+    public LinkedEntityMatch(String text, double confidenceScore, int offset, int length) {
         this.text = text;
         this.offset = offset;
         this.length = length;
         this.confidenceScore = confidenceScore;
+    }
+
+    /**
+     * Get the linked entity match text property: Entity text as appears in the request.
+     *
+     * @return The text value.
+     */
+    public String getText() {
+        return this.text;
     }
 
     /**
@@ -69,15 +78,6 @@ public final class LinkedEntityMatch {
      */
     public double getConfidenceScore() {
         return this.confidenceScore;
-    }
-
-    /**
-     * Get the linked entity match text property: Entity text as appears in the request.
-     *
-     * @return The text value.
-     */
-    public String getText() {
-        return this.text;
     }
 
     /**

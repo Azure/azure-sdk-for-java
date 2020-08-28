@@ -13,39 +13,49 @@ import com.azure.core.util.IterableStream;
 @Immutable
 public final class SentenceSentiment {
     private final String text;
-    private final SentimentConfidenceScores confidenceScores;
     private final TextSentiment sentiment;
+    private final SentimentConfidenceScores confidenceScores;
     private final IterableStream<MinedOpinion> minedOpinions;
+    private final int offset;
+    private final int length;
 
     /**
      * Creates a {@link SentenceSentiment} model that describes the sentiment analysis of sentence.
+     *
      * @param text The sentence text.
      * @param sentiment The sentiment label of the sentence.
      * @param confidenceScores The sentiment confidence score (Softmax score) between 0 and 1, for each sentiment label.
-     *   Higher values signify higher confidence.
+     * Higher values signify higher confidence.
      */
     public SentenceSentiment(String text, TextSentiment sentiment, SentimentConfidenceScores confidenceScores) {
         this.text = text;
         this.sentiment = sentiment;
-        this.minedOpinions = null;
         this.confidenceScores = confidenceScores;
+        this.minedOpinions = null;
+        this.offset = 0;
+        this.length = 0;
     }
 
     /**
      * Creates a {@link SentenceSentiment} model that describes the sentiment analysis of sentence.
+     *
      * @param text The sentence text.
      * @param sentiment The sentiment label of the sentence.
+     * @param confidenceScores The sentiment confidence score (Softmax score) between 0 and 1, for each sentiment label.
+     * Higher values signify higher confidence.
      * @param minedOpinions The mined opinions of the sentence sentiment. This is only returned if you pass the
      * opinion mining parameter to the analyze sentiment APIs.
-     * @param confidenceScores The sentiment confidence score (Softmax score) between 0 and 1, for each sentiment label.
-     *   Higher values signify higher confidence.
+     * @param offset The start position for the entity text.
+     * @param length The length for the entity text.
      */
-    public SentenceSentiment(String text, TextSentiment sentiment, IterableStream<MinedOpinion> minedOpinions,
-        SentimentConfidenceScores confidenceScores) {
+    public SentenceSentiment(String text, TextSentiment sentiment, SentimentConfidenceScores confidenceScores,
+        IterableStream<MinedOpinion> minedOpinions, int offset, int length) {
         this.text = text;
         this.sentiment = sentiment;
         this.minedOpinions = minedOpinions;
         this.confidenceScores = confidenceScores;
+        this.offset = offset;
+        this.length = length;
     }
 
     /**
@@ -67,6 +77,16 @@ public final class SentenceSentiment {
     }
 
     /**
+     * Get the confidence score of the sentiment label. All score values sum up to 1, the higher the score, the
+     * higher the confidence in the sentiment.
+     *
+     * @return The {@link SentimentConfidenceScores}.
+     */
+    public SentimentConfidenceScores getConfidenceScores() {
+        return confidenceScores;
+    }
+
+    /**
      * Get the mined opinions of sentence sentiment.
      * This is only returned if you pass the opinion mining parameter to the analyze sentiment APIs.
      *
@@ -77,12 +97,20 @@ public final class SentenceSentiment {
     }
 
     /**
-     * Get the confidence score of the sentiment label. All score values sum up to 1, the higher the score, the
-     * higher the confidence in the sentiment.
+     * Get the offset of sentence sentiment match text.
      *
-     * @return The {@link SentimentConfidenceScores}.
+     * @return The offset of sentence sentiment match text.
      */
-    public SentimentConfidenceScores getConfidenceScores() {
-        return confidenceScores;
+    public int getOffset() {
+        return offset;
+    }
+
+    /**
+     * Get the length of sentence sentiment match text.
+     *
+     * @return The length of sentence sentiment match text.
+     */
+    public int getLength() {
+        return length;
     }
 }

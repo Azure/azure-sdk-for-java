@@ -857,8 +857,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 TextSentiment.NEUTRAL,
                 new SentimentConfidenceScores(0.0, 0.0, 0.0),
                 new IterableStream<>(Arrays.asList(
-                    new SentenceSentiment("!", TextSentiment.NEUTRAL, null, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
-                    new SentenceSentiment("@#%%", TextSentiment.NEUTRAL, null, new SentimentConfidenceScores(0.0, 0.0, 0.0))
+                    new SentenceSentiment("!", TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0), null, 0, 1),
+                    new SentenceSentiment("@#%%", TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0), null, 1, 4)
                 )), null);
             StepVerifier.create(client.analyzeSentiment(input))
                 .assertNext(response -> validateAnalyzedSentiment(false, expectedDocumentSentiment, response))
