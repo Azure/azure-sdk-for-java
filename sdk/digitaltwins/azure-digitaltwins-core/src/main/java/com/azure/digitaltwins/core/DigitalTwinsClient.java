@@ -7,10 +7,18 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.*;
 import com.azure.core.util.Context;
+import com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions;
+import com.azure.digitaltwins.core.models.ModelData;
+import com.azure.digitaltwins.core.util.ListModelOptions;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import reactor.core.publisher.Mono;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * This class provides a client for interacting synchronously with an Azure Digital Twins instance.
@@ -80,4 +88,80 @@ public final class DigitalTwinsClient {
     public PagedIterable<String> listRelationships(String digitalTwinId, String relationshipName, Context context) {
         return new PagedIterable<>(digitalTwinsAsyncClient.listRelationships(digitalTwinId, relationshipName, context));
     }
+
+    //==================================================================================================================================================
+    // Models APIs
+    //==================================================================================================================================================
+
+    /**
+     * Creates one or many models.
+     * @param models The list of models to create. Each string corresponds to exactly one model.
+     * @return A {@link PagedIterable} of created models and the http response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ModelData> createModels(List<String> models) {
+        return new PagedIterable<>(digitalTwinsAsyncClient.createModels(models));
+    }
+
+    /**
+     * Gets a model, including the model metadata and the model definition.
+     * @param modelId The Id of the model.
+     * @return The ModelData
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ModelData getModel(String modelId) {
+        return digitalTwinsAsyncClient.getModel(modelId).block();
+    }
+
+    /**
+     * Gets a model, including the model metadata and the model definition.
+     * @param modelId The Id of the model.
+     * @return The ModelData and the http response
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ModelData> getModelWithResponse(String modelId) {
+        return digitalTwinsAsyncClient.getModelWithResponse(modelId).block();
+    }
+
+    /**
+     * Gets the list of models by iterating through a collection.
+     * @param listModelOptions The options to follow when listing the models. For example, the page size hint can be specified.
+     * @return A {@link PagedIterable} of ModelData and the http response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ModelData> listModels(ListModelOptions listModelOptions) {
+        return new PagedIterable<>(
+            digitalTwinsAsyncClient.listModels(listModelOptions));
+    }
+
+    /**
+     * Gets the list of models by iterating through a collection.
+     * @return A {@link PagedFlux} of ModelData and the http response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ModelData> listModels() {
+        return listModels(new ListModelOptions());
+    }
+
+    /**
+     * Deletes a model.
+     * @param modelId The id for the model. The id is globally unique and case sensitive.
+     * @return Void
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Void deleteModel(String modelId) {
+        return digitalTwinsAsyncClient.deleteModel(modelId).block();
+    }
+
+    /**
+     * Deletes a model.
+     * @param modelId The id for the model. The id is globally unique and case sensitive.
+     * @return The http response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteModelWithResponse(String modelId) {
+        return digitalTwinsAsyncClient.deleteModelWithResponse(modelId).block();
+    }
+
+    //TODO: Decommission Model APIs (waiting for Abhipsa's change to come in)
 }
