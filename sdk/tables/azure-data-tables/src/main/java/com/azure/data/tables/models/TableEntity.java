@@ -66,14 +66,14 @@ public class TableEntity {
 
     TableEntity(Map<String, Object> properties) {
         Object partitionKey =  properties.get(TablesConstants.PARTITION_KEY);
-        if (!(partitionKey instanceof String) || ((String)partitionKey).isEmpty()) {
+        if (partitionKey != null && (!(partitionKey instanceof String) || ((String) partitionKey).isEmpty())) {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
                 "'%s' is an empty value or is of the wrong type.", TablesConstants.PARTITION_KEY)));
         }
         this.partitionKey = (String) partitionKey;
 
         Object rowKey = properties.get(TablesConstants.ROW_KEY);
-        if (!(rowKey instanceof String) || ((String)rowKey).isEmpty()) {
+        if (rowKey != null && (!(rowKey instanceof String) || ((String) rowKey).isEmpty())) {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
                 "'%s' is an empty value or is of the wrong type.", TablesConstants.ROW_KEY)));
         }

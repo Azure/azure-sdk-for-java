@@ -365,11 +365,10 @@ public class TablesAsyncClientTest extends TestBase {
         // Act & Assert
         StepVerifier.create(tableClient.listEntities(options))
             .assertNext(returnEntity -> {
-                assertEquals(entity.getRowKey(), returnEntity.getRowKey());
-                assertEquals(entity.getPartitionKey(), returnEntity.getPartitionKey());
+                assertNull(returnEntity.getRowKey());
+                assertNull(returnEntity.getPartitionKey());
                 assertEquals("valueC", returnEntity.getProperties().get("propertyC"));
                 assertNull(returnEntity.getProperties().get("propertyD"));
-                assertEquals(3, returnEntity.getProperties().size());
             })
             .expectComplete()
             .verify();
