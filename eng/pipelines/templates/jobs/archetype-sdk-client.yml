@@ -68,13 +68,13 @@ jobs:
       - ${{ each artifact in parameters.Artifacts }}:
         - script: |
             python3 --version
-            python3 eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --build-qualifier dev.$(Build.BuildNumber) --artifact-id ${{artifact.name}} --group-id ${{artifact.groupId}}
+            python3 eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --build-qualifier alpha.$(Build.BuildNumber) --artifact-id ${{artifact.name}} --group-id ${{artifact.groupId}}
           condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
           displayName: Append dev package version suffix for ${{artifact.name}}
 
       - script: |
           python3 --version
-          python3 eng/versioning/set_versions.py --set-dev-zero-version --build-type ${{parameters.SDKType}} --build-qualifier dev.$(Build.BuildNumber)
+          python3 eng/versioning/set_versions.py --set-dev-zero-version --build-type ${{parameters.SDKType}} --build-qualifier alpha.$(Build.BuildNumber)
         condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
         displayName: Set zero-dev-version for packages
 
