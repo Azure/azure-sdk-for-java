@@ -13,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.microsoft.azure.ProxyResource;
-import com.microsoft.azure.management.kusto.v2020_06_14.ReadOnlyFollowingDatabase;
-import com.microsoft.azure.management.kusto.v2020_06_14.ReadWriteDatabase;
 
 /**
  * Class representing a Kusto database.
