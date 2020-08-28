@@ -62,6 +62,16 @@ public class Main {
                         "for write latency and write throughput operations");
                 }
         }
+
+        switch (cfg.getOperationType()) {
+            case ReadLatency:
+            case ReadThroughput:
+                break;
+            default:
+                if (cfg.getSparsityWaitTime() != null) {
+                    throw new IllegalArgumentException("sparsityWaitTime is not supported for " + cfg.getOperationType());
+                }
+        }
     }
 
     private static void syncBenchmark(Configuration cfg) throws Exception {
@@ -110,6 +120,7 @@ public class Main {
                 case QueryTopOrderby:
                 case QueryAggregateTopOrderby:
                 case QueryInClauseParallel:
+                case ReadAllItemsOfLogicalPartition:
                     benchmark = new AsyncQueryBenchmark(cfg);
                     break;
 

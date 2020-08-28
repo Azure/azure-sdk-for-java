@@ -33,4 +33,10 @@ java:
     namespace: com.azure.digitaltwins.core
     add-credentials: true
     sync-methods: none
+    generate-client-as-impl: true
+    implementation-subpackage: implementation
+    models-subpackage: implementation.models
+    custom-types-subpackage: models
+    custom-types: ModelData
+    context-client-method-parameter: true
 ```
