@@ -49,9 +49,9 @@ public final class DataLakeServiceSasSignatureValues {
 
     private String contentType;
 
-    private String authorizedAadObjectId;
+    private String objectId;
 
-    private String unauthorizedAadObjectId;
+    private boolean posixCheckPerformed;
 
     private String correlationId;
 
@@ -333,46 +333,35 @@ public final class DataLakeServiceSasSignatureValues {
     }
 
     /**
-     * @return the authorized AAD object id value for the SAS.
-     */
-    public String getAuthorizedAadObjectId() {
-        return authorizedAadObjectId;
-    }
-
-    /**
      * Sets the authorized AAD object id value for the SAS.
      *
      * <p>Note: This parameter is only valid for user delegation SAS. </p>
      *
-     * @param authorizedAadObjectId The AAD object ID of a user authorized by the owner of the user delegation key
+     * @param objectId The AAD object ID of a user authorized by the owner of the user delegation key
      * to perform the action granted by the SAS token.
+     * @param posixCheckPerformed Whether or not the service will perform an additional POSIX ACL check to determine
+     * if the user is authorized.
      * @return the updated DataLakeServiceSasSignatureValues object
      */
-    public DataLakeServiceSasSignatureValues setAuthorizedAadObjectId(String authorizedAadObjectId) {
-        this.authorizedAadObjectId = authorizedAadObjectId;
+    public DataLakeServiceSasSignatureValues setObjectId(String objectId, boolean posixCheckPerformed) {
+        this.objectId = objectId;
+        this.posixCheckPerformed = posixCheckPerformed;
         return this;
     }
 
     /**
-     * @return the unauthorized AAD object id value for the SAS.
+     * @return the AAD object id value for the SAS.
      */
-    public String getUnauthorizedAadObjectId() {
-        return unauthorizedAadObjectId;
+    public String getObjectId() {
+        return objectId;
     }
 
     /**
-     * Sets the unauthorized AAD object id value for the SAS.
-     *
-     * <p>Note: This parameter is only valid for user delegation SAS. </p>
-     *
-     * @param unauthorizedAadObjectId The AAD object ID of a user assumed to be unauthorized by the owner of the user
-     * delegation key to perform the action granted by the SAS token. The service will perform an additional
-     * POSIX ACL check to determine if the user is authorized.
-     * @return the updated DataLakeServiceSasSignatureValues object
+     * @return Whether or not the service will perform an additional POSIX ACL check to determine
+     * if the user is authorized.
      */
-    public DataLakeServiceSasSignatureValues setUnauthorizedAadObjectId(String unauthorizedAadObjectId) {
-        this.unauthorizedAadObjectId = unauthorizedAadObjectId;
-        return this;
+    public boolean isPosixCheckPerformed() {
+        return posixCheckPerformed;
     }
 
     /**

@@ -358,7 +358,7 @@ class SASTest extends APISpec {
         rootClient.setAccessControlList(acl, null, null)
 
         def sasValues = new DataLakeServiceSasSignatureValues(expiryTime, permissions)
-            .setAuthorizedAadObjectId(saoid)
+            .setObjectId(saoid, false)
         def sasWithPermissions = rootClient.generateUserDelegationSas(sasValues, key)
 
         def client = getFileClient(sasWithPermissions, fsc.getFileSystemUrl(), pathName)
@@ -406,7 +406,7 @@ class SASTest extends APISpec {
 
         when: "User is not authorized yet."
         def sasValues = new DataLakeServiceSasSignatureValues(expiryTime, permissions)
-            .setUnauthorizedAadObjectId(suoid)
+            .setObjectId(suoid, true)
         def sasWithPermissions = sasClient.generateUserDelegationSas(sasValues, key)
 
         def client = getFileClient(sasWithPermissions, fsc.getFileSystemUrl(), pathName)
@@ -430,7 +430,7 @@ class SASTest extends APISpec {
         rootClient.setAccessControlList(acl, null, null)
 
         sasValues = new DataLakeServiceSasSignatureValues(expiryTime, permissions)
-            .setUnauthorizedAadObjectId(suoid)
+            .setObjectId(suoid, true)
         sasWithPermissions = rootClient.generateUserDelegationSas(sasValues, key)
 
         client = getFileClient(sasWithPermissions, fsc.getFileSystemUrl(), pathName)
@@ -448,7 +448,7 @@ class SASTest extends APISpec {
 
         when: "Use random other suoid. User should not be authorized."
         sasValues = new DataLakeServiceSasSignatureValues(expiryTime, permissions)
-            .setUnauthorizedAadObjectId(getRandomUUID())
+            .setObjectId(getRandomUUID(), true)
         sasWithPermissions = rootClient.generateUserDelegationSas(sasValues, key)
 
         client = getFileClient(sasWithPermissions, fsc.getFileSystemUrl(), pathName)
@@ -756,9 +756,8 @@ class SASTest extends APISpec {
             .setSignedVersion(keyVersion)
             .setValue(keyValue)
 
-        v.setAuthorizedAadObjectId(saoid)
-            .setUnauthorizedAadObjectId(suoid)
-            .setCorrelationId(cid)
+        v.setCorrelationId(cid)
+            .setObjectId(suoid == null ? saoid : suoid, suoid != null)
 
         def util = new DataLakeSasImplUtil(v, "fileSystemName", "pathName", false)
         util.ensureState()
