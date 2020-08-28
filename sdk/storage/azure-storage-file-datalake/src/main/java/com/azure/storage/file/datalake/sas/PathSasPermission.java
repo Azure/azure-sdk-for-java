@@ -250,11 +250,11 @@ public final class PathSasPermission {
     /**
      * Sets the change ownership permission status.
      *
-     * @param hasOwnershipPermission Permission status to set
+     * @param hasChangeOwnershipPermission Permission status to set
      * @return the updated PathSasPermission object.
      */
-    public PathSasPermission setChangeOwnershipPermission(boolean hasOwnershipPermission) {
-        this.changeOwnershipPermission = hasOwnershipPermission;
+    public PathSasPermission setChangeOwnershipPermission(boolean hasChangeOwnershipPermission) {
+        this.changeOwnershipPermission = hasChangeOwnershipPermission;
         return this;
     }
 
@@ -268,11 +268,11 @@ public final class PathSasPermission {
     /**
      * Sets the change permission permission status.
      *
-     * @param hasPermissionPermission Permission status to set
+     * @param hasChangePermissionPermission Permission status to set
      * @return the updated PathSasPermission object.
      */
-    public PathSasPermission setChangePermissionPermission(boolean hasPermissionPermission) {
-        this.changePermissionPermission = hasPermissionPermission;
+    public PathSasPermission setChangePermissionPermission(boolean hasChangePermissionPermission) {
+        this.changePermissionPermission = hasChangePermissionPermission;
         return this;
     }
 
