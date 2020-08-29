@@ -264,7 +264,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             if (tokenCredential != null) {
                 this.tokenCredentialScopes = new String[] {
 //                    AadTokenAuthorizationHelper.AAD_AUTH_TOKEN_COSMOS_WINDOWS_SCOPE,
-                    Utils.joinPath(serviceEndpoint.toString(), ".default")
+                    serviceEndpoint.getScheme() + "://" + serviceEndpoint.getHost() + "/.default"
                 };
                 this.tokenCredentialCache = new SimpleTokenCache(() -> this.tokenCredential
                     .getToken(new TokenRequestContext().addScopes(this.tokenCredentialScopes)));
