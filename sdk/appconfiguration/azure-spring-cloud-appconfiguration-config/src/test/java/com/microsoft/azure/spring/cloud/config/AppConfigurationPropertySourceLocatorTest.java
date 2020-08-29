@@ -162,7 +162,7 @@ public class AppConfigurationPropertySourceLocatorTest {
     }
 
     @Test
-    public void compositeSourceShouldNotBeCreated() {
+    public void compositeSourceShouldBeCreatedWithoutTheActiveSpringProfiles() {
         String[] labels = new String[1];
         labels[0] = "\0";
         when(configStoreMock.getLabels()).thenReturn(labels);
