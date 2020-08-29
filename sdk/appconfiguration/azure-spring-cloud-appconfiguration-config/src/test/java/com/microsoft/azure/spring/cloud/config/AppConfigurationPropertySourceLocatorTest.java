@@ -158,7 +158,7 @@ public class AppConfigurationPropertySourceLocatorTest {
             "/application/store1/\0"
         };
         assertThat(sources.size()).isEqualTo(6);
-        assertThat(sources.stream().map(PropertySource::getName).toArray()).containsExactly(expectedSourceNames);
+        assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly((Object[]) expectedSourceNames);
     }
 
     @Test
@@ -180,7 +180,7 @@ public class AppConfigurationPropertySourceLocatorTest {
             "/application/store1/\0"
         };
         assertThat(sources.size()).isEqualTo(2);
-        assertThat(sources.stream().map(PropertySource::getName).toArray()).containsExactly(expectedSourceNames);
+        assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly((Object[]) expectedSourceNames);
     }
 
     @Test
