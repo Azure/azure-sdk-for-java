@@ -130,7 +130,9 @@ public class KeyVaultAccessControlAsyncClient {
      */
     Mono<PagedResponse<KeyVaultRoleDefinition>> listRoleDefinitionsFirstPage(String vaultUrl, KeyVaultRoleScope scope,
                                                                              Context context) {
-        Objects.requireNonNull(scope, "'scope' cannot be null.");
+        Objects.requireNonNull(scope,
+            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                "'scope'"));
 
         try {
             return clientImpl.getRoleDefinitions().listSinglePageAsync(vaultUrl, scope.toString(), null,
@@ -351,13 +353,24 @@ public class KeyVaultAccessControlAsyncClient {
     Mono<Response<KeyVaultRoleAssignment>> createRoleAssignmentWithResponse(KeyVaultRoleScope scope, UUID name,
                                                                             KeyVaultRoleAssignmentProperties properties,
                                                                             Context context) {
-        Objects.requireNonNull(scope, "'scope' cannot be null.");
-        Objects.requireNonNull(name, "'name' cannot be null.");
-        Objects.requireNonNull(properties, "'properties' cannot be null.");
-        Objects.requireNonNull(properties.getRoleDefinitionId(), "'roleDefinitionId' in 'properties' cannot be null.");
-        Objects.requireNonNull(properties.getPrincipalId(), "'roleDefinitionId' in 'properties' cannot be null.");
+        Objects.requireNonNull(scope,
+            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                "'scope'"));
+        Objects.requireNonNull(name,
+            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                "'name'"));
+        Objects.requireNonNull(properties,
+            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                "'properties'"));
+        Objects.requireNonNull(properties.getRoleDefinitionId(),
+            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                "'roleDefinitionId' in 'properties'"));
+        Objects.requireNonNull(properties.getPrincipalId(),
+            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                "'principalId' in 'properties'"));
 
         KeyVaultRoleAssignmentCreateParameters parameters = new KeyVaultRoleAssignmentCreateParameters().setProperties(properties);
+
         return clientImpl.getRoleAssignments().createWithResponseAsync(vaultUrl, scope.toString(), name.toString(),
             parameters, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.info("Creating role assignment - {}", name))
@@ -415,8 +428,12 @@ public class KeyVaultAccessControlAsyncClient {
      */
     Mono<Response<KeyVaultRoleAssignment>> getRoleAssignmentWithResponse(KeyVaultRoleScope scope, String name,
                                                                          Context context) {
-        Objects.requireNonNull(scope, "'scope' cannot be null.");
-        Objects.requireNonNull(name, "'name' cannot be null.");
+        Objects.requireNonNull(scope,
+            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                "'scope'"));
+        Objects.requireNonNull(name,
+            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                "'name'"));
 
         return clientImpl.getRoleAssignments().getWithResponseAsync(vaultUrl, scope.toString(), name,
             context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
@@ -476,8 +493,12 @@ public class KeyVaultAccessControlAsyncClient {
      */
     Mono<Response<KeyVaultRoleAssignment>> deleteRoleAssignmentWithResponse(KeyVaultRoleScope scope, String name,
                                                                             Context context) {
-        Objects.requireNonNull(scope, "'scope' cannot be null.");
-        Objects.requireNonNull(name, "'name' cannot be null.");
+        Objects.requireNonNull(scope,
+            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                "'scope'"));
+        Objects.requireNonNull(name,
+            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                "'name'"));
 
         return clientImpl.getRoleAssignments().deleteWithResponseAsync(vaultUrl, scope.toString(), name,
             context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
