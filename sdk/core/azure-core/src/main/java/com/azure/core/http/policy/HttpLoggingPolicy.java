@@ -292,7 +292,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      */
     private void addHeadersToLogMessage(ClientLogger logger, HttpHeaders headers, StringBuilder sb) {
         // Either headers shouldn't be logged or the logging level isn't set to VERBOSE, don't add headers.
-        if (!httpLogDetailLevel.shouldLogHeaders() || logger.canLogAtLevel(LogLevel.VERBOSE)) {
+        if (!httpLogDetailLevel.shouldLogHeaders() || !logger.canLogAtLevel(LogLevel.VERBOSE)) {
             return;
         }
 

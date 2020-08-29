@@ -6,6 +6,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -17,6 +18,9 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.util.CosmosPagedIterable;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -30,6 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class CosmosItemTest extends TestSuiteBase {
 
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private CosmosClient client;
     private CosmosContainer container;
 
@@ -127,9 +132,19 @@ public class CosmosItemTest extends TestSuiteBase {
         assertThat(deleteResponse.getStatusCode()).isEqualTo(204);
     }
 
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void deleteItemUsingEntity() throws Exception {
+        InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
+        CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);
+        CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+
+        CosmosItemResponse<?> deleteResponse = container.deleteItem(itemResponse.getItem(), options);
+        assertThat(deleteResponse.getStatusCode()).isEqualTo(204);
+    }
+
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void readAllItems() throws Exception{
+    public void readAllItems() throws Exception {
         InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);
 
@@ -200,6 +215,69 @@ public class CosmosItemTest extends TestSuiteBase {
 
     }
 
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void readAllItemsOfLogicalPartition() throws Exception{
+        String pkValue = UUID.randomUUID().toString();
+        ObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString(), pkValue);
+        CosmosItemResponse<ObjectNode> itemResponse = container.createItem(properties);
+
+        CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
+
+        CosmosPagedIterable<ObjectNode> feedResponseIterator1 =
+            container.readAllItems(
+                new PartitionKey(pkValue),
+                cosmosQueryRequestOptions,
+                ObjectNode.class);
+        // Very basic validation
+        assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
+
+        CosmosPagedIterable<ObjectNode> feedResponseIterator3 =
+            container.readAllItems(
+                new PartitionKey(pkValue),
+                cosmosQueryRequestOptions,
+                ObjectNode.class);
+        assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void readAllItemsOfLogicalPartitionWithContinuationTokenAndPageSize() throws Exception{
+        String pkValue = UUID.randomUUID().toString();
+        List<String> actualIds = new ArrayList<>();
+        ObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString(), pkValue);
+        container.createItem(properties);
+
+        properties = getDocumentDefinition(UUID.randomUUID().toString(), pkValue);
+        container.createItem(properties);
+
+        properties = getDocumentDefinition(UUID.randomUUID().toString(), pkValue);
+        container.createItem(properties);
+
+        CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
+        String continuationToken = null;
+        int pageSize = 1;
+
+        int initialDocumentCount = 3;
+        int finalDocumentCount = 0;
+
+        CosmosPagedIterable<InternalObjectNode> feedResponseIterator1 =
+            container.readAllItems(
+                new PartitionKey(pkValue),
+                cosmosQueryRequestOptions,
+                InternalObjectNode.class);
+
+        do {
+            Iterable<FeedResponse<InternalObjectNode>> feedResponseIterable =
+                feedResponseIterator1.iterableByPage(continuationToken, pageSize);
+            for (FeedResponse<InternalObjectNode> fr : feedResponseIterable) {
+                int resultSize = fr.getResults().size();
+                assertThat(resultSize).isEqualTo(pageSize);
+                finalDocumentCount += fr.getResults().size();
+                continuationToken = fr.getContinuationToken();
+            }
+        } while(continuationToken != null);
+
+        assertThat(finalDocumentCount).isEqualTo(initialDocumentCount);
+    }
 
     private InternalObjectNode getDocumentDefinition(String documentId) {
         final String uuid = UUID.randomUUID().toString();
@@ -211,6 +289,18 @@ public class CosmosItemTest extends TestSuiteBase {
                                                        + "}"
                 , documentId, uuid));
         return properties;
+    }
+
+    private ObjectNode getDocumentDefinition(String documentId, String pkId) throws JsonProcessingException {
+
+        String json = String.format("{ "
+                + "\"id\": \"%s\", "
+                + "\"mypk\": \"%s\", "
+                + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671440]]"
+                + "}"
+            , documentId, pkId);
+        return
+            OBJECT_MAPPER.readValue(json, ObjectNode.class);
     }
 
     private void validateItemResponse(InternalObjectNode containerProperties,

@@ -35,12 +35,14 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.IntStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.util.StringUtils;
 
 public class AppConfigurationPropertySource extends EnumerablePropertySource<ConfigurationClient> {
 
@@ -61,18 +63,30 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
     private static final String DEFAULT_ROLLOUT_PERCENTAGE = "defaultRolloutPercentage";
 
     private static final String DEFAULT_ROLLOUT_PERCENTAGE_CAPS = "DefaultRolloutPercentage";
+
     private static final ObjectMapper MAPPER = new ObjectMapper();
+
     private static final ObjectMapper CASE_INSENSITIVE_MAPPER = new ObjectMapper()
         .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+
     private final String context;
+
     private final String label;
+
     private final Map<String, Object> properties = new LinkedHashMap<>();
+
     private final AppConfigurationProperties appConfigurationProperties;
+
     private final HashMap<String, KeyVaultClient> keyVaultClients;
+
     private final ClientStore clients;
+
     private final KeyVaultCredentialProvider keyVaultCredentialProvider;
+
     private final SecretClientBuilderSetup keyVaultClientProvider;
+
     private final AppConfigurationProviderProperties appProperties;
+
     private final ConfigStore configStore;
 
     AppConfigurationPropertySource(String context, ConfigStore configStore, String label,
@@ -97,8 +111,7 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
         List<Object> listObjects = CASE_INSENSITIVE_MAPPER.convertValue(
             parameters.get(key),
             new TypeReference<List<Object>>() {
-            }
-        );
+            });
         return listObjects == null ? emptyList() : listObjects;
     }
 
@@ -119,8 +132,8 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
      * </p>
      *
      * <p>
-     * <b>Note</b>: Doesn't update Feature Management, just stores values in cache. Call
-     * {@code initFeatures} to update Feature Management, but make sure its done in the last {@code
+     * <b>Note</b>: Doesn't update Feature Management, just stores values in cache. Call {@code initFeatures} to update
+     * Feature Management, but make sure its done in the last {@code
      * AppConfigurationPropertySource}
      * </p>
      *
@@ -156,6 +169,13 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
                 // Null in the case of failFast is false, will just skip entry.
                 if (entry != null) {
                     properties.put(key, entry);
+                }
+            } else if (StringUtils.hasText(setting.getContentType())
+                && JsonConfigurationParser.isJsonContentType(setting.getContentType())) {
+                HashMap<String, Object> jsonSettings = JsonConfigurationParser.parseJsonSetting(setting);
+                for (Entry<String, Object> jsonSetting : jsonSettings.entrySet()) {
+                    key = jsonSetting.getKey().trim().substring(context.length());
+                    properties.put(key, jsonSetting.getValue());
                 }
             } else {
                 properties.put(key, setting.getValue());

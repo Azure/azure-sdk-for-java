@@ -11,6 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.paging.ContinuablePagedIterable;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
+import com.azure.security.keyvault.secrets.models.SecretProperties;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -125,6 +126,7 @@ public class KeyVaultOperation {
                 .orElseGet(Stream::empty)
                 .map(PagedResponse::getElements)
                 .flatMap(i -> StreamSupport.stream(i.spliterator(), false))
+                .filter(SecretProperties::isEnabled)
                 .map(p -> secretClient.getSecret(p.getName(), p.getVersion()))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toMap(

@@ -288,6 +288,25 @@ public class CosmosTemplateIT {
     }
 
     @Test
+    public void testDeleteByEntity() {
+        Person insertedPerson = cosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(TEST_PERSON_2.getLastName()));
+        assertThat(cosmosTemplate.count(Person.class.getSimpleName())).isEqualTo(2);
+
+        cosmosTemplate.deleteEntity(Person.class.getSimpleName(), insertedPerson);
+
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
+
+        final List<Person> result = TestUtils.toList(cosmosTemplate.findAll(Person.class));
+
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+        assertThat(result.size()).isEqualTo(1);
+        assertEquals(result.get(0), TEST_PERSON);
+    }
+
+    @Test
     public void testCountByContainer() {
         final long prevCount = cosmosTemplate.count(containerName);
         assertThat(prevCount).isEqualTo(1);
