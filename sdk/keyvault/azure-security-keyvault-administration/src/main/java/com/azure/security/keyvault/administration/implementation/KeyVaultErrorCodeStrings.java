@@ -22,9 +22,14 @@ public class KeyVaultErrorCodeStrings {
     public static final String VAULT_END_POINT_REQUIRED = "vault_endpoint_required";
 
     /**
+     * The property name of Azure Key Vault Parameter required error string.
+     */
+    public static final String PARAMETER_REQUIRED = "parameter_required";
+
+    /**
      * Gets the error String for the specified property.
      *
-     * @param propertyName The property name for which error string is required.
+     * @param propertyName the property name for which error string is required.
      * @return The {@link String value} containing the error message.
      */
     public static String getErrorString(String propertyName) {
@@ -32,11 +37,10 @@ public class KeyVaultErrorCodeStrings {
         return errorStrings.getProperty(propertyName);
     }
 
-    @SuppressWarnings("ConstantConditions")
     private static synchronized void loadProperties() {
         if (errorStrings == null) {
             try (InputStream fileInputStream =
-                     KeyVaultErrorCodeStrings.class.getClassLoader().getResource((ERROR_STRINGS_FILE_NAME)).openStream()) {
+                KeyVaultErrorCodeStrings.class.getClassLoader().getResource((ERROR_STRINGS_FILE_NAME)).openStream()) {
                 errorStrings = new Properties();
                 errorStrings.load(fileInputStream);
             } catch (IOException ex) {
