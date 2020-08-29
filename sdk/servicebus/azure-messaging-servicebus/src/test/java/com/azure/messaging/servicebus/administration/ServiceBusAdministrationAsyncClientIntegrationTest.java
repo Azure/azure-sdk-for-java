@@ -92,10 +92,10 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
                 assertEquals(expected.requiresDuplicateDetection(), actual.requiresDuplicateDetection());
                 assertEquals(expected.requiresSession(), actual.requiresSession());
 
-                final QueueRuntimeProperties RuntimeProperties = new QueueRuntimeProperties(actual);
-                assertEquals(0, RuntimeProperties.getTotalMessageCount());
-                assertEquals(0, RuntimeProperties.getSizeInBytes());
-                assertNotNull(RuntimeProperties.getCreatedAt());
+                final QueueRuntimeProperties runtimeProperties = new QueueRuntimeProperties(actual);
+                assertEquals(0, runtimeProperties.getTotalMessageCount());
+                assertEquals(0, runtimeProperties.getSizeInBytes());
+                assertNotNull(runtimeProperties.getCreatedAt());
             })
             .verifyComplete();
     }
@@ -376,10 +376,10 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
                 assertTrue(description.requiresSession());
                 assertNotNull(description.getLockDuration());
 
-                final SubscriptionRuntimeProperties RuntimeProperties = new SubscriptionRuntimeProperties(description);
-                assertNotNull(RuntimeProperties.getCreatedAt());
-                assertTrue(nowUtc.isAfter(RuntimeProperties.getCreatedAt()));
-                assertNotNull(RuntimeProperties.getAccessedAt());
+                final SubscriptionRuntimeProperties runtimeProperties = new SubscriptionRuntimeProperties(description);
+                assertNotNull(runtimeProperties.getCreatedAt());
+                assertTrue(nowUtc.isAfter(runtimeProperties.getCreatedAt()));
+                assertNotNull(runtimeProperties.getAccessedAt());
             })
             .verifyComplete();
     }
@@ -481,10 +481,10 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
                 assertNotNull(topicDescription.getDefaultMessageTimeToLive());
                 assertFalse(topicDescription.enablePartitioning());
 
-                final TopicRuntimeProperties RuntimeProperties = new TopicRuntimeProperties(topicDescription);
-                assertNotNull(RuntimeProperties.getCreatedAt());
-                assertTrue(nowUtc.isAfter(RuntimeProperties.getCreatedAt()));
-                assertNotNull(RuntimeProperties.getAccessedAt());
+                final TopicRuntimeProperties runtimeProperties = new TopicRuntimeProperties(topicDescription);
+                assertNotNull(runtimeProperties.getCreatedAt());
+                assertTrue(nowUtc.isAfter(runtimeProperties.getCreatedAt()));
+                assertNotNull(runtimeProperties.getAccessedAt());
             })
             .verifyComplete();
     }
