@@ -2,43 +2,12 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.cloud.config;
 
-import static com.microsoft.azure.spring.cloud.config.Constants.FEATURE_FLAG_CONTENT_TYPE;
-import static com.microsoft.azure.spring.cloud.config.TestConstants.FEATURE_LABEL;
-import static com.microsoft.azure.spring.cloud.config.TestConstants.FEATURE_VALUE;
-import static com.microsoft.azure.spring.cloud.config.TestConstants.TEST_CONN_STRING;
-import static com.microsoft.azure.spring.cloud.config.TestConstants.TEST_CONN_STRING_2;
-import static com.microsoft.azure.spring.cloud.config.TestConstants.TEST_CONTEXT;
-import static com.microsoft.azure.spring.cloud.config.TestConstants.TEST_KEY_1;
-import static com.microsoft.azure.spring.cloud.config.TestConstants.TEST_LABEL_1;
-import static com.microsoft.azure.spring.cloud.config.TestConstants.TEST_STORE_NAME;
-import static com.microsoft.azure.spring.cloud.config.TestConstants.TEST_STORE_NAME_1;
-import static com.microsoft.azure.spring.cloud.config.TestConstants.TEST_STORE_NAME_2;
-import static com.microsoft.azure.spring.cloud.config.TestConstants.TEST_VALUE_1;
-import static com.microsoft.azure.spring.cloud.config.TestUtils.createItem;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProperties;
-import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
-import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring;
-import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreTrigger;
-import com.microsoft.azure.spring.cloud.config.properties.ConfigStore;
+import com.microsoft.azure.spring.cloud.config.properties.*;
 import com.microsoft.azure.spring.cloud.config.stores.ClientStore;
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -52,6 +21,18 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertySource;
 import reactor.core.publisher.Flux;
+
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import static com.microsoft.azure.spring.cloud.config.Constants.FEATURE_FLAG_CONTENT_TYPE;
+import static com.microsoft.azure.spring.cloud.config.TestConstants.*;
+import static com.microsoft.azure.spring.cloud.config.TestUtils.createItem;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.*;
 
 public class AppConfigurationPropertySourceLocatorTest {
 
@@ -177,7 +158,29 @@ public class AppConfigurationPropertySourceLocatorTest {
             "/application/store1/\0"
         };
         assertThat(sources.size()).isEqualTo(6);
-        assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly((Object[]) expectedSourceNames);
+        assertThat(sources.stream().map(PropertySource::getName).toArray()).containsExactly(expectedSourceNames);
+    }
+
+    @Test
+    public void compositeSourceShouldNotBeCreated() {
+        String[] labels = new String[1];
+        labels[0] = "\0";
+        when(configStoreMock.getLabels()).thenReturn(labels);
+        when(configStoreMock.isDisableSpringProfileLookup()).thenReturn(true);
+        when(properties.getDefaultContext()).thenReturn("application");
+
+        locator = new AppConfigurationPropertySourceLocator(properties, appProperties, clientStoreMock,
+            tokenCredentialProvider, null);
+        PropertySource<?> source = locator.locate(environment);
+        assertThat(source).isInstanceOf(CompositePropertySource.class);
+
+        Collection<PropertySource<?>> sources = ((CompositePropertySource) source).getPropertySources();
+        String[] expectedSourceNames = new String[]{
+            "/foo/store1/\0",
+            "/application/store1/\0"
+        };
+        assertThat(sources.size()).isEqualTo(2);
+        assertThat(sources.stream().map(PropertySource::getName).toArray()).containsExactly(expectedSourceNames);
     }
 
     @Test

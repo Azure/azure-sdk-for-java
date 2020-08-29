@@ -2,20 +2,21 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.cloud.config.properties;
 
-import static com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProperties.LABEL_SEPARATOR;
-
 import com.microsoft.azure.spring.cloud.config.resource.Connection;
+import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
+
+import javax.annotation.PostConstruct;
+import javax.validation.constraints.Pattern;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.annotation.PostConstruct;
-import javax.validation.constraints.Pattern;
-import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
+
+import static com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProperties.LABEL_SEPARATOR;
 
 public class ConfigStore {
 
@@ -26,6 +27,11 @@ public class ConfigStore {
     @Nullable
     @Pattern(regexp = "(/[a-zA-Z0-9.\\-_]+)*")
     private String prefix;
+
+    /**
+     * If its enabled spring profile will be ignored at context lookup.
+     */
+    private boolean disableSpringProfileLookup = false;
 
     private String connectionString;
 
@@ -79,6 +85,14 @@ public class ConfigStore {
 
     public void setFailFast(boolean failFast) {
         this.failFast = failFast;
+    }
+
+    public boolean isDisableSpringProfileLookup() {
+        return disableSpringProfileLookup;
+    }
+
+    public void setDisableSpringProfileLookup(boolean disableSpringProfileLookup) {
+        this.disableSpringProfileLookup = disableSpringProfileLookup;
     }
 
     /**

@@ -10,15 +10,6 @@ import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProvid
 import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreTrigger;
 import com.microsoft.azure.spring.cloud.config.properties.ConfigStore;
 import com.microsoft.azure.spring.cloud.config.stores.ClientStore;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicBoolean;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +21,10 @@ import org.springframework.core.env.PropertySource;
 import org.springframework.lang.NonNull;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
+
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AppConfigurationPropertySourceLocator implements PropertySourceLocator {
 
@@ -50,9 +45,13 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
     private final SecretClientBuilderSetup keyVaultClientProvider;
     private static AtomicBoolean startup = new AtomicBoolean(true);
 
-    public AppConfigurationPropertySourceLocator(AppConfigurationProperties properties,
-        AppConfigurationProviderProperties appProperties, ClientStore clients,
-        KeyVaultCredentialProvider keyVaultCredentialProvider, SecretClientBuilderSetup keyVaultClientProvider) {
+    public AppConfigurationPropertySourceLocator(
+        AppConfigurationProperties properties,
+        AppConfigurationProviderProperties appProperties,
+        ClientStore clients,
+        KeyVaultCredentialProvider keyVaultCredentialProvider,
+        SecretClientBuilderSetup keyVaultClientProvider
+    ) {
         this.properties = properties;
         this.appProperties = appProperties;
         this.profileSeparator = properties.getProfileSeparator();
@@ -111,7 +110,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
      *                         one it needs to be in the last one.
      */
     private void addPropertySource(CompositePropertySource composite, ConfigStore store, String applicationName,
-        List<String> profiles, Map<String, List<String>> storeContextsMap, boolean initFeatures) {
+                                   List<String> profiles, Map<String, List<String>> storeContextsMap, boolean initFeatures) {
         /*
          * Generate which contexts(key prefixes) will be used for key-value items search
          * If key prefix is empty, default context is: application, current application
@@ -166,7 +165,10 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
 
         String prefixedContext = propWithAppName(prefix, applicationName);
         result.add(prefixedContext + PATH_SPLITTER);
-        profiles.forEach(profile -> result.add(propWithProfile(prefixedContext, profile)));
+
+        if (!configStore.isDisableSpringProfileLookup()) {
+            profiles.forEach(profile -> result.add(propWithProfile(prefixedContext, profile)));
+        }
 
         return result;
     }
@@ -195,7 +197,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
      * @return a list of AppConfigurationPropertySources
      */
     private List<AppConfigurationPropertySource> create(String context, ConfigStore store,
-        Map<String, List<String>> storeContextsMap, boolean initFeatures, FeatureSet featureSet) throws Exception {
+                                                        Map<String, List<String>> storeContextsMap, boolean initFeatures, FeatureSet featureSet) throws Exception {
         List<AppConfigurationPropertySource> sourceList = new ArrayList<>();
 
         try {
@@ -239,7 +241,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
      * @param storeContextsMap the Map storing the storeName -> List of contexts map
      */
     private void putStoreContext(String storeName, String context,
-        @NonNull Map<String, List<String>> storeContextsMap) {
+                                 @NonNull Map<String, List<String>> storeContextsMap) {
         if (!StringUtils.hasText(context) || !StringUtils.hasText(storeName)) {
             return;
         }
