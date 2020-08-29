@@ -27,7 +27,7 @@ public class KeyVaultErrorCodeStrings {
     public static final String PARAMETER_REQUIRED = "parameter_required";
 
     /**
-     *  Gets the error String for the specified property.
+     * Gets the error String for the specified property.
      *
      * @param propertyName the property name for which error string is required.
      * @return The {@link String value} containing the error message.
