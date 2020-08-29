@@ -12,8 +12,10 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.appplatform.fluent.AppsClient;
 import com.azure.resourcemanager.appplatform.fluent.BindingsClient;
 import com.azure.resourcemanager.appplatform.fluent.CertificatesClient;
+import com.azure.resourcemanager.appplatform.fluent.ConfigServersClient;
 import com.azure.resourcemanager.appplatform.fluent.CustomDomainsClient;
 import com.azure.resourcemanager.appplatform.fluent.DeploymentsClient;
+import com.azure.resourcemanager.appplatform.fluent.MonitoringSettingsClient;
 import com.azure.resourcemanager.appplatform.fluent.OperationsClient;
 import com.azure.resourcemanager.appplatform.fluent.ServicesClient;
 import com.azure.resourcemanager.appplatform.fluent.SkusClient;
@@ -111,6 +113,30 @@ public final class AppPlatformManagementClient extends AzureServiceClient {
      */
     public ServicesClient getServices() {
         return this.services;
+    }
+
+    /** The ConfigServersClient object to access its operations. */
+    private final ConfigServersClient configServers;
+
+    /**
+     * Gets the ConfigServersClient object to access its operations.
+     *
+     * @return the ConfigServersClient object.
+     */
+    public ConfigServersClient getConfigServers() {
+        return this.configServers;
+    }
+
+    /** The MonitoringSettingsClient object to access its operations. */
+    private final MonitoringSettingsClient monitoringSettings;
+
+    /**
+     * Gets the MonitoringSettingsClient object to access its operations.
+     *
+     * @return the MonitoringSettingsClient object.
+     */
+    public MonitoringSettingsClient getMonitoringSettings() {
+        return this.monitoringSettings;
     }
 
     /** The AppsClient object to access its operations. */
@@ -218,8 +244,10 @@ public final class AppPlatformManagementClient extends AzureServiceClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2019-05-01-preview";
+        this.apiVersion = "2020-07-01";
         this.services = new ServicesClient(this);
+        this.configServers = new ConfigServersClient(this);
+        this.monitoringSettings = new MonitoringSettingsClient(this);
         this.apps = new AppsClient(this);
         this.bindings = new BindingsClient(this);
         this.certificates = new CertificatesClient(this);

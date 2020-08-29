@@ -53,14 +53,17 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
-    public void queryDocuments(boolean queryMetricsEnabled) throws Exception {
+    public void queryDocuments(Boolean qmEnabled) throws Exception {
 
         String query = "SELECT * from c where c.prop = 99";
 
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         int maxItemCount = 5;
 
-        options.setQueryMetricsEnabled(queryMetricsEnabled);
+        if (qmEnabled != null) {
+            options.setQueryMetricsEnabled(qmEnabled);
+        }
+
         CosmosPagedFlux<InternalObjectNode> queryObservable = createdCollection.queryItems(query, options, InternalObjectNode.class);
 
         List<InternalObjectNode> expectedDocs = createdDocuments.stream().filter(d -> 99 == ModelBridgeInternal.getIntFromJsonSerializable(d,"prop") ).collect(Collectors.toList());
@@ -74,7 +77,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<InternalObjectNode>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
-                .hasValidQueryMetrics(queryMetricsEnabled)
+                .hasValidQueryMetrics(qmEnabled)
                 .build();
 
         validateQuerySuccess(queryObservable.byPage(maxItemCount), validator, 10000);

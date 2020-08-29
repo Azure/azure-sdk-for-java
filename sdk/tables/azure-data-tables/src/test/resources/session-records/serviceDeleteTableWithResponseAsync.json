@@ -4,34 +4,33 @@
     "Uri" : "https://REDACTED.table.core.windows.net/Tables",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f53d0fe5-aee1-4556-8194-50462acf41db",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.8; Mac OS X; 10.15.6)",
+      "x-ms-client-request-id" : "71d1228d-1969-4fb4-b8c4-99d646e29e9c",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "Transfer-Encoding" : "chunked",
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
       "X-Content-Type-Options" : "nosniff",
       "retry-after" : "0",
-      "StatusCode" : "201",
-      "Date" : "Tue, 28 Jul 2020 00:25:00 GMT",
+      "StatusCode" : "204",
+      "Date" : "Fri, 21 Aug 2020 21:09:08 GMT",
       "Cache-Control" : "no-cache",
-      "x-ms-request-id" : "5cc16d38-9002-0003-1575-6440e4000000",
-      "Body" : "{\"odata.metadata\":\"https://connieystorage.table.core.windows.net/$metadata#Tables/@Element\",\"TableName\":\"test497148f21a\"}",
-      "Preference-Applied" : "return-content",
-      "x-ms-client-request-id" : "f53d0fe5-aee1-4556-8194-50462acf41db",
-      "Content-Type" : "application/json;odata=minimalmetadata;streaming=true;charset=utf-8",
-      "Location" : "https://connieystorage.table.core.windows.net/Tables('test497148f21a')"
+      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/Tables('test76417a6582')",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "55377bf8-8002-008a-15ff-7791ed000000",
+      "Preference-Applied" : "return-no-content",
+      "x-ms-client-request-id" : "71d1228d-1969-4fb4-b8c4-99d646e29e9c",
+      "Location" : "https://brsiegelsample.table.core.windows.net/Tables('test76417a6582')"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.table.core.windows.net/Tables('test497148f21a')",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables('test76417a6582')",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f1c5248b-3de5-410d-859e-b7d2d362c8a9"
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.8; Mac OS X; 10.15.6)",
+      "x-ms-client-request-id" : "cbad353e-9b15-4f51-bdc5-6609eac7505f"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -41,11 +40,11 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "5cc16d3a-9002-0003-1675-6440e4000000",
-      "Date" : "Tue, 28 Jul 2020 00:25:00 GMT",
-      "x-ms-client-request-id" : "f1c5248b-3de5-410d-859e-b7d2d362c8a9"
+      "x-ms-request-id" : "55377bfc-8002-008a-17ff-7791ed000000",
+      "Date" : "Fri, 21 Aug 2020 21:09:08 GMT",
+      "x-ms-client-request-id" : "cbad353e-9b15-4f51-bdc5-6609eac7505f"
     },
     "Exception" : null
   } ],
-  "variables" : [ "test497148f21a" ]
+  "variables" : [ "test76417a6582" ]
 }

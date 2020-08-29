@@ -393,7 +393,7 @@ class VirtualMachineImpl
 
     @Override
     public RunCommandResult runPowerShellScript(
-        String groupName, String name, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters) {
+        List<String> scriptLines, List<RunCommandInputParameter> scriptParameters) {
         return this
             .manager()
             .virtualMachines()
@@ -1768,12 +1768,11 @@ class VirtualMachineImpl
 
     public Accepted<VirtualMachine> beginCreate() {
         return AcceptedImpl.<VirtualMachine, VirtualMachineInner>newAccepted(logger,
+            this.manager().inner(),
             () -> this.manager().inner().getVirtualMachines()
                 .createOrUpdateWithResponseAsync(resourceGroupName(), vmName, inner()).block(),
             inner -> new VirtualMachineImpl(inner.name(), inner, this.manager(),
                 this.storageManager, this.networkManager, this.authorizationManager),
-            this.manager().inner().getSerializerAdapter(),
-            this.manager().inner().getHttpPipeline(),
             VirtualMachineInner.class,
             () -> {
                 Flux<Indexable> dependencyTasksAsync =

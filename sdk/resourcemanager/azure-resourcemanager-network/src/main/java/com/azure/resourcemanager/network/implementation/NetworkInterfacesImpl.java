@@ -101,10 +101,9 @@ public class NetworkInterfacesImpl
     @Override
     public Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name) {
         return AcceptedImpl.newAccepted(logger,
+            manager().inner(),
             () -> this.inner().deleteWithResponseAsync(resourceGroupName, name).block(),
             Function.identity(),
-            manager().inner().getSerializerAdapter(),
-            manager().inner().getHttpPipeline(),
             Void.class,
             null);
     }

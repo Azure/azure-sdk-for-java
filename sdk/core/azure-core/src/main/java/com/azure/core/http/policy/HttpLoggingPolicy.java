@@ -19,8 +19,8 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayOutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Locale;
 import java.util.Set;
@@ -138,7 +138,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                             .append("-byte body:")
                             .append(System.lineSeparator())
                             .append(prettyPrintIfNeeded(logger, contentType,
-                                new String(outputStream.toByteArray(), StandardCharsets.UTF_8)))
+                                convertStreamToString(outputStream, logger)))
                             .append(System.lineSeparator())
                             .append("--> END ")
                             .append(request.getHttpMethod())
@@ -217,7 +217,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                     responseLogMessage.append("Response body:")
                         .append(System.lineSeparator())
                         .append(prettyPrintIfNeeded(logger, contentTypeHeader,
-                            new String(outputStream.toByteArray(), StandardCharsets.UTF_8)))
+                            convertStreamToString(outputStream, logger)))
                         .append(System.lineSeparator())
                         .append("<-- END HTTP");
 
@@ -292,7 +292,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      */
     private void addHeadersToLogMessage(ClientLogger logger, HttpHeaders headers, StringBuilder sb) {
         // Either headers shouldn't be logged or the logging level isn't set to VERBOSE, don't add headers.
-        if (!httpLogDetailLevel.shouldLogHeaders() || logger.canLogAtLevel(LogLevel.VERBOSE)) {
+        if (!httpLogDetailLevel.shouldLogHeaders() || !logger.canLogAtLevel(LogLevel.VERBOSE)) {
             return;
         }
 
@@ -371,5 +371,16 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         return !ContentType.APPLICATION_OCTET_STREAM.equalsIgnoreCase(contentTypeHeader)
             && contentLength != 0
             && contentLength < MAX_BODY_LOG_SIZE;
+    }
+
+    /*
+     * Helper function which converts a ByteArrayOutputStream to a String without duplicating the internal buffer.
+     */
+    private static String convertStreamToString(ByteArrayOutputStream stream, ClientLogger logger) {
+        try {
+            return stream.toString("UTF-8");
+        } catch (UnsupportedEncodingException ex) {
+            throw logger.logExceptionAsError(new RuntimeException(ex));
+        }
     }
 }
