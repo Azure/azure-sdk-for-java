@@ -3,15 +3,13 @@
 
 package com.azure.security.keyvault.administration.models;
 
-import com.azure.security.keyvault.administration.implementation.models.Error;
-
 /**
  * A class that contains the details of a long running operation.
  */
 public class KeyVaultLongRunningOperation {
     private final String status;
     private final String statusDetails;
-    private final Error error;
+    private final KeyVaultError error;
     private final String jobId;
     private final Long startTime;
     private final Long endTime;
@@ -26,8 +24,8 @@ public class KeyVaultLongRunningOperation {
      * @param endTime       The end time of the {@link KeyVaultLongRunningOperation} in UTC.
      * @param jobId         Identifier for the full {@link KeyVaultLongRunningOperation}.
      */
-    public KeyVaultLongRunningOperation(String status, String statusDetails, Error error, String jobId, Long startTime,
-                                        Long endTime) {
+    public KeyVaultLongRunningOperation(String status, String statusDetails, KeyVaultError error, String jobId,
+                                        Long startTime, Long endTime) {
         this.status = status;
         this.statusDetails = statusDetails;
         this.error = error;
@@ -59,7 +57,7 @@ public class KeyVaultLongRunningOperation {
      *
      * @return The error.
      */
-    public Error getError() {
+    public KeyVaultError getError() {
         return error;
     }
 

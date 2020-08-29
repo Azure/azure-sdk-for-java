@@ -17,7 +17,7 @@ import com.azure.security.keyvault.administration.models.KeyVaultRestoreOperatio
  * Vault.
  */
 @ServiceClient(builder = KeyVaultBackupClientBuilder.class)
-public class KeyVaultBackupClient {
+public final class KeyVaultBackupClient {
     private final KeyVaultBackupAsyncClient asyncClient;
 
     /**

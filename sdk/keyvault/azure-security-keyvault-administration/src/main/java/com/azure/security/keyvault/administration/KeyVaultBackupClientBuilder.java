@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.administration;
 
+import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -51,7 +52,8 @@ import java.util.Objects;
  * @see KeyVaultBackupAsyncClient
  * @see KeyVaultBackupClient
  */
-public class KeyVaultBackupClientBuilder {
+@ServiceClientBuilder(serviceClients = {KeyVaultBackupClient.class, KeyVaultBackupAsyncClient.class})
+public final class KeyVaultBackupClientBuilder {
     // This is the properties file name.
     private static final String AZURE_KEY_VAULT_RBAC = "azure-key-vault-administration.properties";
     private static final String SDK_NAME = "name";

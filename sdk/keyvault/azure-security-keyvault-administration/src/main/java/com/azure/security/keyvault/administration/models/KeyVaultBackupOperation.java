@@ -3,12 +3,10 @@
 
 package com.azure.security.keyvault.administration.models;
 
-import com.azure.security.keyvault.administration.implementation.models.Error;
-
 /**
  * A class that contains the details of a backup operation.
  */
-public class KeyVaultBackupOperation extends KeyVaultLongRunningOperation {
+public final class KeyVaultBackupOperation extends KeyVaultLongRunningOperation {
     private final String azureStorageBlobContainerUri;
 
     /**
@@ -22,7 +20,7 @@ public class KeyVaultBackupOperation extends KeyVaultLongRunningOperation {
      * @param jobId                        Identifier for the full {@link KeyVaultBackupOperation}.
      * @param azureStorageBlobContainerUri The Azure blob storage container URI which contains the backup.
      */
-    public KeyVaultBackupOperation(String status, String statusDetails, Error error, String jobId,
+    public KeyVaultBackupOperation(String status, String statusDetails, KeyVaultError error, String jobId,
                                    Long startTime, Long endTime, String azureStorageBlobContainerUri) {
         super(status, statusDetails, error, jobId, startTime, endTime);
         this.azureStorageBlobContainerUri = azureStorageBlobContainerUri;

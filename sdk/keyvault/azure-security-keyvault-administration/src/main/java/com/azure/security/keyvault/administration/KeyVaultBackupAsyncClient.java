@@ -20,7 +20,9 @@ import com.azure.security.keyvault.administration.implementation.KeyVaultBackupC
 import com.azure.security.keyvault.administration.implementation.KeyVaultBackupClientImplBuilder;
 import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
 import com.azure.security.keyvault.administration.implementation.models.*;
+import com.azure.security.keyvault.administration.implementation.models.Error;
 import com.azure.security.keyvault.administration.models.KeyVaultBackupOperation;
+import com.azure.security.keyvault.administration.models.KeyVaultError;
 import com.azure.security.keyvault.administration.models.KeyVaultLongRunningOperation;
 import com.azure.security.keyvault.administration.models.KeyVaultRestoreOperation;
 import reactor.core.publisher.Mono;
@@ -39,7 +41,7 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  * Key Vault.
  */
 @ServiceClient(builder = KeyVaultBackupClientBuilder.class, isAsync = true)
-public class KeyVaultBackupAsyncClient {
+public final class KeyVaultBackupAsyncClient {
     // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
     private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
@@ -430,29 +432,40 @@ public class KeyVaultBackupAsyncClient {
         };
     }
 
-    private <O> KeyVaultLongRunningOperation transformToLongRunningOperation(O operation) {
+    private static <O> KeyVaultLongRunningOperation transformToLongRunningOperation(O operation) {
         if (operation instanceof RestoreOperation) {
             RestoreOperation restoreOperation = (RestoreOperation) operation;
 
             return new KeyVaultRestoreOperation(restoreOperation.getStatus(),
                 restoreOperation.getStatusDetails(),
-                restoreOperation.getError(), restoreOperation.getJobId(),
+                createKeyVaultErrorFromError(restoreOperation.getError()), restoreOperation.getJobId(),
                 restoreOperation.getStartTime(), restoreOperation.getEndTime());
         } else if (operation instanceof SelectiveKeyRestoreOperation) {
             SelectiveKeyRestoreOperation selectiveKeyRestoreOperation = (SelectiveKeyRestoreOperation) operation;
 
             return new KeyVaultRestoreOperation(selectiveKeyRestoreOperation.getStatus(),
                 selectiveKeyRestoreOperation.getStatusDetails(),
-                selectiveKeyRestoreOperation.getError(), selectiveKeyRestoreOperation.getJobId(),
-                selectiveKeyRestoreOperation.getStartTime(), selectiveKeyRestoreOperation.getEndTime());
+                createKeyVaultErrorFromError(selectiveKeyRestoreOperation.getError()),
+                selectiveKeyRestoreOperation.getJobId(), selectiveKeyRestoreOperation.getStartTime(),
+                selectiveKeyRestoreOperation.getEndTime());
         } else if (operation instanceof FullBackupOperation) {
             FullBackupOperation fullBackupOperation = (FullBackupOperation) operation;
 
             return new KeyVaultBackupOperation(fullBackupOperation.getStatus(), fullBackupOperation.getStatusDetails(),
-                fullBackupOperation.getError(), fullBackupOperation.getJobId(), fullBackupOperation.getStartTime(),
-                fullBackupOperation.getEndTime(), fullBackupOperation.getAzureStorageBlobContainerUri());
+                createKeyVaultErrorFromError(fullBackupOperation.getError()), fullBackupOperation.getJobId(),
+                fullBackupOperation.getStartTime(), fullBackupOperation.getEndTime(),
+                fullBackupOperation.getAzureStorageBlobContainerUri());
         } else {
             throw new IllegalArgumentException("Operation type not supported");
+        }
+    }
+
+    private static KeyVaultError createKeyVaultErrorFromError(Error error) {
+        if (error.getInnerError() == null) {
+            return new KeyVaultError(error.getCode(), error.getMessage(), null);
+        } else {
+            return new KeyVaultError(error.getCode(), error.getMessage(),
+                createKeyVaultErrorFromError(error.getInnerError()));
         }
     }
 }
