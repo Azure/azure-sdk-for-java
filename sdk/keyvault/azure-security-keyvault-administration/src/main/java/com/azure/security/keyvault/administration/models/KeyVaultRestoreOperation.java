@@ -1,7 +1,6 @@
 package com.azure.security.keyvault.administration.models;
 
 import com.azure.security.keyvault.administration.implementation.models.Error;
-import com.azure.security.keyvault.administration.implementation.models.KeyVaultLongRunningOperation;
 
 /**
  * A class that contains the details of a restore operation.

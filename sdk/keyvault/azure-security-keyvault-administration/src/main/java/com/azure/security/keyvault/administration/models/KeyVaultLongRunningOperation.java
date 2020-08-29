@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.security.keyvault.administration.implementation.models;
+package com.azure.security.keyvault.administration.models;
+
+import com.azure.security.keyvault.administration.implementation.models.Error;
 
 /**
  * A class that contains the details of a long running operation.

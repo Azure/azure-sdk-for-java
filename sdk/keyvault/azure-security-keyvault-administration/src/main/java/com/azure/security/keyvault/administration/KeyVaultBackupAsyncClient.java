@@ -21,6 +21,7 @@ import com.azure.security.keyvault.administration.implementation.KeyVaultBackupC
 import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
 import com.azure.security.keyvault.administration.implementation.models.*;
 import com.azure.security.keyvault.administration.models.KeyVaultBackupOperation;
+import com.azure.security.keyvault.administration.models.KeyVaultLongRunningOperation;
 import com.azure.security.keyvault.administration.models.KeyVaultRestoreOperation;
 import reactor.core.publisher.Mono;
 
@@ -90,13 +91,14 @@ public class KeyVaultBackupAsyncClient {
      * @throws KeyVaultErrorException if the operation is unsuccessful.
      * @throws NullPointerException   if the {@code blobStorageUrl} or {@code sasToken} are {@code null}.
      */
-    @SuppressWarnings("MalformedFormatString")
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<KeyVaultBackupOperation, Void> beginBackup(String blobStorageUrl, String sasToken) {
-        Objects.requireNonNull(blobStorageUrl, String.format("'blobStorageUrl'",
-            KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED)));
-        Objects.requireNonNull(sasToken, String.format("'sasToken'",
-            KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED)));
+        Objects.requireNonNull(blobStorageUrl,
+            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                "'blobStorageUrl'"));
+        Objects.requireNonNull(sasToken,
+            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                "'sasToken'"));
 
         return new PollerFlux<>(Duration.ofSeconds(1),
             backupActivationOperation(blobStorageUrl, sasToken),
@@ -206,16 +208,18 @@ public class KeyVaultBackupAsyncClient {
      * @throws KeyVaultErrorException if the operation is unsuccessful.
      * @throws NullPointerException   if the {@code blobStorageUrl} or {@code sasToken} are {@code null}.
      */
-    @SuppressWarnings("MalformedFormatString")
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<KeyVaultRestoreOperation, Void> beginRestore(String blobStorageUrl, String sasToken,
                                                                    String folderName) {
-        Objects.requireNonNull(sasToken, String.format("'blobStorageUrl'",
-            KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED)));
-        Objects.requireNonNull(sasToken, String.format("'sasToken'",
-            KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED)));
-        Objects.requireNonNull(sasToken, String.format("'folderName'",
-            KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED)));
+        Objects.requireNonNull(blobStorageUrl,
+            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                "'blobStorageUrl'"));
+        Objects.requireNonNull(sasToken,
+            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                "'sasToken'"));
+        Objects.requireNonNull(folderName,
+            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                "'folderName'"));
 
 
         return new PollerFlux<>(Duration.ofSeconds(1),
@@ -320,19 +324,21 @@ public class KeyVaultBackupAsyncClient {
      * @throws KeyVaultErrorException if the operation is unsuccessful.
      * @throws NullPointerException   if the {@code blobStorageUrl} or {@code sasToken} are {@code null}.
      */
-    @SuppressWarnings("MalformedFormatString")
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<KeyVaultRestoreOperation, Void> beginSelectiveRestore(String keyName, String blobStorageUrl,
                                                                             String sasToken, String folderName) {
-        Objects.requireNonNull(sasToken, String.format("'keyName'",
-            KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED)));
-        Objects.requireNonNull(sasToken, String.format("'blobStorageUrl'",
-            KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED)));
-        Objects.requireNonNull(sasToken, String.format("'sasToken'",
-            KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED)));
-        Objects.requireNonNull(sasToken, String.format("'folderName'",
-            KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED)));
-
+        Objects.requireNonNull(keyName,
+            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                "'keyName'"));
+        Objects.requireNonNull(blobStorageUrl,
+            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                "'blobStorageUrl'"));
+        Objects.requireNonNull(sasToken,
+            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                "'sasToken'"));
+        Objects.requireNonNull(folderName,
+            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                "'folderName'"));
 
         return new PollerFlux<>(Duration.ofSeconds(1),
             selectiveRestoreActivationOperation(keyName, blobStorageUrl, sasToken, folderName),
