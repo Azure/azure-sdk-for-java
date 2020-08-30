@@ -99,26 +99,25 @@ public class GlobalAddressResolver implements AddressResolverExtension {
     }
 
     @Override
-    public Mono<Void> updateAsync(final List<RntbdAddressCacheToken> tokens) {
+    public Mono<Void> updateAsync(final RxDocumentServiceRequest request, final List<RntbdAddressCacheToken> tokens) {
 
-        final CompletableFuture<?>[] updates = new CompletableFuture<?>[tokens.size()];
-        int i = 0;
+        final ArrayList<CompletableFuture<?>> updates = new ArrayList<>(tokens.size());
 
         for (RntbdAddressCacheToken token : tokens) {
 
             final PartitionKeyRangeIdentity partitionKeyRangeIdentity = token.getPartitionKeyRangeIdentity();
 
-            // TODO (DANOBLE) when is partitionKeyRangeIdentity null? Should address cache tokens be created for them?
-
             if (partitionKeyRangeIdentity != null) {
-                EndpointCache endpointCache = this.addressCacheByEndpoint.get(token.getAddressResolverURI());
+                final EndpointCache endpointCache = this.addressCacheByEndpoint.get(token.getAddressResolverURI());
                 if (endpointCache != null) {
-                    updates[i++] = endpointCache.addressCache.updateAsync(partitionKeyRangeIdentity).toFuture();
+                    updates.add(endpointCache.addressCache.updateAsync(request, partitionKeyRangeIdentity).toFuture());
                 }
             }
         }
 
-        return Mono.fromFuture(CompletableFuture.allOf(updates));
+        return updates.size() > 0
+            ? Mono.fromFuture(CompletableFuture.allOf(updates.toArray(new CompletableFuture<?>[0])))
+            : Mono.empty();
     }
 
     Mono<Void> openAsync(DocumentCollection collection) {

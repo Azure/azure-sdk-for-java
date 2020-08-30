@@ -80,8 +80,10 @@ import static com.azure.cosmos.models.ModelBridgeInternal.toDatabaseAccount;
 public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorizationTokenProvider {
 
     private static final String DUMMY_SQL_QUERY = "this is dummy and only used in creating " +
-        "ParallelDocumentQueryExecutioncontext, but not used";
-    private final static ObjectMapper mapper = Utils.getSimpleObjectMapper();
+        "ParallelDocumentQueryExecutionContext, but not used";
+
+    private static final ObjectMapper mapper = Utils.getSimpleObjectMapper();
+
     private final ItemDeserializer itemDeserializer = new ItemDeserializer.JsonDeserializer();
     private final Logger logger = LoggerFactory.getLogger(RxDocumentClientImpl.class);
     private final String masterKeyOrResourceToken;
@@ -300,14 +302,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private void initializeDirectConnectivity() {
 
-        this.storeClientFactory = new StoreClientFactory(
-            this.configs,
-            this.connectionPolicy,
-           // this.maxConcurrentConnectionOpenRequests,
-            this.userAgentContainer,
-            this.connectionSharingAcrossClientsEnabled
-        );
-
         this.addressResolver = new GlobalAddressResolver(
             this.reactorHttpClient,
             this.globalEndpointManager,
@@ -320,6 +314,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             //     this.gatewayConfigurationReader,
             null,
             this.connectionPolicy);
+
+        this.storeClientFactory = new StoreClientFactory(
+            this.addressResolver,
+            this.configs,
+            this.connectionPolicy,
+            this.userAgentContainer,
+            this.connectionSharingAcrossClientsEnabled
+        );
 
         this.createStoreModel(true);
     }
@@ -1531,7 +1533,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             OperationType.Query,
             ResourceType.Document,
             collectionLink, null
-        ); 
+        );
 
         // This should not got to backend
         Mono<Utils.ValueHolder<DocumentCollection>> collectionObs =
@@ -1732,7 +1734,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return new SqlQuerySpec(queryStringBuilder.toString(), parameters);
     }
 
-    
+
 
     private String createPkSelector(PartitionKeyDefinition partitionKeyDefinition) {
         return partitionKeyDefinition.getPaths()

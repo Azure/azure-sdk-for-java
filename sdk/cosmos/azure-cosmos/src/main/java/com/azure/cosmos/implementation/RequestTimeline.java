@@ -189,10 +189,5 @@ public final class RequestTimeline implements Iterable<RequestTimeline.Event> {
         public Instant getStartTime() {
             return startTime;
         }
-
-        @JsonProperty
-        private Long getDurationInMicroSec() {
-            return this.duration == null ? null : this.duration.toNanos() / 1000L;
-        }
     }
 }

@@ -16,7 +16,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -44,22 +43,29 @@ public class RntbdConnectionStateListener {
     public void onConnectionEvent(
         final RntbdConnectionEvent event,
         final Instant time,
-        final RntbdEndpoint endpoint) {
+        final RntbdEndpoint endpoint,
+        final RxDocumentServiceRequest request) {
 
         checkNotNull(event, "expected non-null event");
         checkNotNull(time,"expected non-null time" );
         checkNotNull(endpoint, "expected non-null endpoint");
+        checkNotNull(request, "expected non-null request");
 
         if (logger.isDebugEnabled()) {
-            logger.debug("onConnectionEvent({\"event\":{},\"time\":{},\"endpoint\":{})",
+            logger.debug("onConnectionEvent({\"event\":{},\"time\":{},\"endpoint\":{},\"request\":{})",
                 RntbdObjectMapper.toJson(event),
                 RntbdObjectMapper.toJson(time),
-                RntbdObjectMapper.toJson(endpoint));
+                RntbdObjectMapper.toJson(endpoint),
+                RntbdObjectMapper.toJson(request));
         }
 
         if (event == RntbdConnectionEvent.READ_EOF || event == RntbdConnectionEvent.READ_FAILURE) {
-            this.updateAddressCacheAsync(endpoint).publishOn(Schedulers.parallel())
-                .doOnError(error -> logger.warn("Address cache update failed due to ", error))
+            this.updateAddressCacheAsync(endpoint, request).publishOn(Schedulers.parallel())
+                .doOnError(error -> {
+                    logger.warn("Address cache update failed due to ", error);
+                    endpoint.close();
+                })
+                .doOnNext(result -> endpoint.close())
                 .subscribe();
         }
     }
@@ -72,16 +78,17 @@ public class RntbdConnectionStateListener {
 
     // region Privates
 
-    private Mono<Void> updateAddressCacheAsync(final RntbdEndpoint endpoint) {
+    @SuppressWarnings("unchecked")
+    private Mono<Void> updateAddressCacheAsync(final RntbdEndpoint endpoint, final RxDocumentServiceRequest request) {
 
-        final AtomicReference<Mono<Void>> result = new AtomicReference<>(Mono.empty());
+        final Mono<?>[] result = new Mono<?>[] { null };
 
         this.partitionAddressCache.computeIfPresent(endpoint.remoteAddress(), (address, tokens) -> {
-            result.set(this.addressResolver.updateAsync(new UnmodifiableList<>(new ArrayList<>(tokens))));
+            result[0] = this.addressResolver.updateAsync(request, new UnmodifiableList<>(new ArrayList<>(tokens)));
             return null;
         });
 
-        return result.get();
+        return result[0] == null ? Mono.empty() : (Mono<Void>) result[0];
     }
 
     private void updatePartitionAddressCache(final RntbdAddressCacheToken addressCacheToken) {

@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.HttpConstants.SubStatusCodes;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
@@ -46,6 +47,7 @@ import java.util.concurrent.CompletionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
+import com.azure.cosmos.implementation.directconnectivity.WFConstants.BackendHeaders;
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssue;
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssueUnless;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
@@ -58,6 +60,7 @@ public final class RntbdTransportClient extends TransportClient {
 
     // region Fields
 
+    private static final String DISCONTINUING_SERVICE = Integer.toString(SubStatusCodes.DISCONTINUING_SERVICE);
     private static final String TAG_NAME = RntbdTransportClient.class.getSimpleName();
 
     private static final AtomicLong instanceCount = new AtomicLong();
@@ -194,7 +197,7 @@ public final class RntbdTransportClient extends TransportClient {
     @Override
     public Mono<StoreResponse> invokeStoreAsync(final Uri addressUri, final RxDocumentServiceRequest request) {
 
-        checkNotNull(addressUri, "expected non-null address");
+        checkNotNull(addressUri, "expected non-null addressUri");
         checkNotNull(request, "expected non-null request");
         this.throwIfClosed();
 
@@ -243,27 +246,29 @@ public final class RntbdTransportClient extends TransportClient {
             if (this.connectionStateListener != null && error instanceof GoneException) {
 
                 final Throwable cause = error.getCause();
+                final RntbdConnectionEvent event;
 
-                if (cause instanceof IOException) {
+                if (cause != null) {
+
+                    // GoneException was produced by the client, not the server
+                    //
+                    // This will occur when:
+                    //
+                    // * an operation fails due to an IOException which indicates a connection reset by the server,
+                    // * a channel closes unexpectedly because the server stopped taking requests, or
+                    // * an error was detected by the transport client (e.g., IllegalStateException)
+                    //
+                    // We report the latter as an issue because it may indicate we've got a bug to find and fix.
 
                     final Class<?> type = cause.getClass();
-                    final RntbdConnectionEvent event;
 
                     if (type == ClosedChannelException.class) {
                         event = RntbdConnectionEvent.READ_EOF;
-                    } else if (type == IOException.class) {
-                        event = RntbdConnectionEvent.READ_FAILURE;
                     } else {
-                        reportIssue(logger, endpoint, "expected ClosedChannelException or IOException, not ", cause);
-                        event = null;
-                    }
-
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("{} failed due to {}\n  {}\n  {}",
-                            endpoint,
-                            type.getSimpleName(),
-                            RntbdObjectMapper.toString(error),
-                            RntbdObjectMapper.toString(cause));
+                        reportIssueUnless(logger, type == IOException.class, endpoint,
+                            "expected ClosedChannelException or IOException, not ",
+                            cause);
+                        event = RntbdConnectionEvent.READ_FAILURE;
                     }
 
                     logger.warn("connection to {} lost due to {} event caused by ",
@@ -271,30 +276,32 @@ public final class RntbdTransportClient extends TransportClient {
                         event,
                         cause);
 
-                    this.connectionStateListener.onConnectionEvent(event, Instant.now(), endpoint);
-
                 } else {
+
+                    // GoneException was created from the response from the server
+                    //
+                    // This will occur for any of a number of reasons. We care about sub-status code zero because it
+                    // indicates the server hosting the targeted endpoint is being discontinued or reconfigured. The
+                    // cause of the exception should be null. We report an issue if it is not. We choose to reserve
+                    // sub-status code zero for responses from the server. If we detect that we're not honoring that
+                    // contract, we will fix it.
 
                     final GoneException exception = (GoneException) error;
 
-                    if (exception.getSubStatusCode() == 0) {
-
-                        if (cause != null) {
-                            reportIssue(logger, endpoint,
-                                "expected a null cause for GoneException with sub-status code zero, not a {}: ",
-                                cause.getClass().getSimpleName(),
-                                exception);
-                        }
-
+                    if (exception.getSubStatusCode() != 0) {
+                        event = null;
+                    } else {
                         logger.warn(
                             "dropping connection to {} because the service is being discontinued or reconfigured",
                             endpoint.remoteURI());
-
-                        this.connectionStateListener.onConnectionEvent(
-                            RntbdConnectionEvent.READ_FAILURE,
-                            Instant.now(),
-                            endpoint);
+                        event = RntbdConnectionEvent.READ_EOF;
                     }
+                }
+
+                if (event != null) {
+                    this.connectionStateListener.onConnectionEvent(event, Instant.now(), endpoint, request);
+                    final GoneException exception = (GoneException) error;
+                    exception.getResponseHeaders().put(BackendHeaders.SUB_STATUS, DISCONTINUING_SERVICE);
                 }
             }
 

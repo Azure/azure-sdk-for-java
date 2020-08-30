@@ -243,87 +243,99 @@ public class GatewayAddressCache implements IAddressCache {
     }
 
     public Mono<List<Address>> getServerAddressesViaGatewayAsync(
-            RxDocumentServiceRequest request,
-            String collectionRid,
-            List<String> partitionKeyRangeIds,
-            boolean forceRefresh) {
+        RxDocumentServiceRequest request,
+        String collectionRid,
+        List<String> partitionKeyRangeIds,
+        boolean forceRefresh) {
+
         if (logger.isDebugEnabled()) {
-            logger.debug("getServerAddressesViaGatewayAsync collectionRid {}, partitionKeyRangeIds {}", collectionRid,
+            logger.debug("getServerAddressesViaGatewayAsync collectionRid {}, partitionKeyRangeIds {}",
+                collectionRid,
                 JavaStreamUtils.toString(partitionKeyRangeIds, ","));
         }
+
         String entryUrl = PathsHelper.generatePath(ResourceType.Document, collectionRid, true);
         HashMap<String, String> addressQuery = new HashMap<>();
 
         addressQuery.put(HttpConstants.QueryStrings.URL, HttpUtils.urlEncode(entryUrl));
 
         HashMap<String, String> headers = new HashMap<>(defaultRequestHeaders);
+
         if (forceRefresh) {
             headers.put(HttpConstants.HttpHeaders.FORCE_REFRESH, "true");
         }
 
-        if(request.forceCollectionRoutingMapRefresh) {
+        if (request.forceCollectionRoutingMapRefresh) {
             headers.put(HttpConstants.HttpHeaders.FORCE_COLLECTION_ROUTING_MAP_REFRESH, "true");
         }
 
         addressQuery.put(HttpConstants.QueryStrings.FILTER, HttpUtils.urlEncode(this.protocolFilter));
-
         addressQuery.put(HttpConstants.QueryStrings.PARTITION_KEY_RANGE_IDS, String.join(",", partitionKeyRangeIds));
+
         headers.put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());
         String token;
 
         token = this.tokenProvider.getUserAuthorizationToken(
-                collectionRid,
+            collectionRid,
+            ResourceType.Document,
+            RequestVerb.GET,
+            headers,
+            AuthorizationTokenType.PrimaryMasterKey,
+            request.properties);
+
+        if (token == null && request.getIsNameBased()) {
+
+            // User doesn't have rid based resource token. Maybe user has name based.
+
+            String collectionAltLink = PathsHelper.getCollectionPath(request.getResourceAddress());
+            token = this.tokenProvider.getUserAuthorizationToken(
+                collectionAltLink,
                 ResourceType.Document,
                 RequestVerb.GET,
                 headers,
                 AuthorizationTokenType.PrimaryMasterKey,
                 request.properties);
-
-        if (token == null && request.getIsNameBased()) {
-            // User doesn't have rid based resource token. Maybe user has name based.
-            String collectionAltLink = PathsHelper.getCollectionPath(request.getResourceAddress());
-            token = this.tokenProvider.getUserAuthorizationToken(
-                    collectionAltLink,
-                    ResourceType.Document,
-                    RequestVerb.GET,
-                    headers,
-                    AuthorizationTokenType.PrimaryMasterKey,
-                    request.properties);
         }
 
         token = HttpUtils.urlEncode(token);
         headers.put(HttpConstants.HttpHeaders.AUTHORIZATION, token);
+
         URI targetEndpoint = Utils.setQuery(this.addressEndpoint.toString(), Utils.createQuery(addressQuery));
         String identifier = logAddressResolutionStart(request, targetEndpoint);
 
         HttpHeaders httpHeaders = new HttpHeaders(headers.size());
+
         for (Map.Entry<String, String> entry : headers.entrySet()) {
             httpHeaders.set(entry.getKey(), entry.getValue());
         }
 
         Instant addressCallStartTime = Instant.now();
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), httpHeaders);
+
+        HttpRequest httpRequest = new HttpRequest(
+            HttpMethod.GET,
+            targetEndpoint,
+            targetEndpoint.getPort(),
+            httpHeaders);
 
         Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
-
         Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(httpResponseMono, httpRequest);
-        return dsrObs.map(
-                dsr -> {
-                    MetadataDiagnosticsContext metadataDiagnosticsContext = BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
-                    if (metadataDiagnosticsContext != null) {
-                        Instant addressCallEndTime = Instant.now();
-                        MetadataDiagnostics metaDataDiagnostic = new MetadataDiagnostics(addressCallStartTime,
-                            addressCallEndTime,
-                            MetadataType.SERVER_ADDRESS_LOOKUP);
-                        metadataDiagnosticsContext.addMetaDataDiagnostic(metaDataDiagnostic);
-                    }
 
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("getServerAddressesViaGatewayAsync deserializes result");
-                    }
-                    logAddressResolutionEnd(request, identifier);
-                    return dsr.getQueryResponse(Address.class);
-                });
+        return dsrObs.map(dsr -> {
+            MetadataDiagnosticsContext metadataDiagnosticsContext = BridgeInternal.getMetaDataDiagnosticContext(
+                request.requestContext.cosmosDiagnostics);
+            if (metadataDiagnosticsContext != null) {
+                Instant addressCallEndTime = Instant.now();
+                MetadataDiagnostics metaDataDiagnostic = new MetadataDiagnostics(addressCallStartTime,
+                    addressCallEndTime,
+                    MetadataType.SERVER_ADDRESS_LOOKUP);
+                metadataDiagnosticsContext.addMetaDataDiagnostic(metaDataDiagnostic);
+            }
+            if (logger.isDebugEnabled()) {
+                logger.debug("getServerAddressesViaGatewayAsync deserializes result");
+            }
+            logAddressResolutionEnd(request, identifier);
+            return dsr.getQueryResponse(Address.class);
+        });
     }
 
     public void dispose() {
@@ -510,7 +522,9 @@ public class GatewayAddressCache implements IAddressCache {
                 });
     }
 
-    public Mono<AddressInformation[]> updateAsync(final PartitionKeyRangeIdentity partitionKeyRangeIdentity) {
+    public Mono<AddressInformation[]> updateAsync(
+        final RxDocumentServiceRequest request,
+        final PartitionKeyRangeIdentity partitionKeyRangeIdentity) {
 
         checkNotNull(partitionKeyRangeIdentity, "expected non-null partitionKeyRangeIdentity");
         final String collectionRid = partitionKeyRangeIdentity.getCollectionRid();
@@ -519,7 +533,7 @@ public class GatewayAddressCache implements IAddressCache {
         return this.serverPartitionAddressCache.getAsync(
             partitionKeyRangeIdentity,
             null,
-            () -> this.getAddressesForRangeId(null, collectionRid, partitionKeyRangeId, true));
+            () -> this.getAddressesForRangeId(request, collectionRid, partitionKeyRangeId, true));
     }
 
     private Pair<PartitionKeyRangeIdentity, AddressInformation[]> toPartitionAddressAndRange(String collectionRid, List<Address> addresses) {

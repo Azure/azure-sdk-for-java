@@ -93,6 +93,9 @@ public final class DirectConnectionConfig {
     /**
      * Sets a value that indicates whether Direct TCP connection endpoint rediscovery should is enabled.
      *
+     * @param enableConnectionEndpointRediscovery {@code true} if connection endpoint rediscovery is enabled; {@code
+     *                                            false} otherwise.
+     *
      * @return the {@linkplain DirectConnectionConfig}.
      */
     public DirectConnectionConfig setEnableConnectionEndpointRediscovery(boolean enableConnectionEndpointRediscovery) {
