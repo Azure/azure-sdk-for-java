@@ -31,7 +31,7 @@ public class SqlRuleFilter extends RuleFilter {
      * @throws IllegalArgumentException if {@code sqlExpression} is an empty string.
      */
     public SqlRuleFilter(String sqlExpression) {
-        final ClientLogger logger = new ClientLogger(SqlRuleAction.class);
+        final ClientLogger logger = new ClientLogger(SqlRuleFilter.class);
 
         if (sqlExpression == null) {
             throw logger.logThrowableAsError(new NullPointerException("'sqlExpression' cannot be null."));

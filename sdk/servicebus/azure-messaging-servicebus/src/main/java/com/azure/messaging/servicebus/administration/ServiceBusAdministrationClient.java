@@ -83,8 +83,7 @@ public final class ServiceBusAdministrationClient {
      * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
      *     occurred processing the request.
      * @throws NullPointerException if {@code queue} is null.
-     * @throws ResourceExistsException if a queue exists with the same {@link QueueProperties#getName()
-     *     queueName}.
+     * @throws ResourceExistsException if a queue exists with the same {@link QueueProperties#getName() queueName}.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -105,8 +104,7 @@ public final class ServiceBusAdministrationClient {
      * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
      *     occurred processing the request.
      * @throws NullPointerException if {@code queue} is null.
-     * @throws ResourceExistsException if a queue exists with the same {@link QueueProperties#getName()
-     *     queueName}.
+     * @throws ResourceExistsException if a queue exists with the same {@link QueueProperties#getName() queueName}.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -120,6 +118,7 @@ public final class ServiceBusAdministrationClient {
      * Creates a rule under the given topic and subscription
      *
      * @param topicName Name of the topic associated with rule.
+     * @param subscriptionName Name of the subscription associated with the rule.
      * @param ruleName Name of the rule.
      *
      * @return Information about the created rule.
@@ -140,6 +139,7 @@ public final class ServiceBusAdministrationClient {
      * Creates a rule with the {@link CreateRuleOptions}.
      *
      * @param topicName Name of the topic associated with rule.
+     * @param subscriptionName Name of the subscription associated with the rule.
      * @param ruleName Name of the rule.
      * @param ruleOptions Information about the rule to create.
      *
@@ -149,8 +149,7 @@ public final class ServiceBusAdministrationClient {
      * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
      *     processing the request.
      * @throws IllegalArgumentException if {@code topicName} or {@code ruleName} are are empty strings.
-     * @throws NullPointerException if {@code topicName}, {@code ruleName}, or {@code ruleOptions}
-     *     are are null.
+     * @throws NullPointerException if {@code topicName}, {@code ruleName}, or {@code ruleOptions} are are null.
      * @throws ResourceExistsException if a rule exists with the same topic and rule name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -163,6 +162,7 @@ public final class ServiceBusAdministrationClient {
      * Creates a rule and returns the created rule in addition to the HTTP response.
      *
      * @param topicName Name of the topic associated with rule.
+     * @param subscriptionName Name of the subscription associated with the rule.
      * @param ruleName Name of the rule.
      * @param ruleOptions Information about the rule to create.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
@@ -173,8 +173,7 @@ public final class ServiceBusAdministrationClient {
      * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
      *     processing the request.
      * @throws IllegalArgumentException if {@code topicName} or {@code ruleName} are are empty strings.
-     * @throws NullPointerException if {@code topicName}, {@code ruleName}, or {@code ruleOptions}
-     *     are are null.
+     * @throws NullPointerException if {@code topicName}, {@code ruleName}, or {@code ruleOptions} are are null.
      * @throws ResourceExistsException if a rule exists with the same topic and rule name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1172,12 +1171,12 @@ public final class ServiceBusAdministrationClient {
     public Response<RuleProperties> updateRuleWithResponse(String topicName, String subscriptionName,
         RuleProperties rule, Context context) {
         return asyncClient.updateRuleWithResponse(topicName, subscriptionName, rule,
-            context != null ? context :Context.NONE).block();
+            context != null ? context : Context.NONE).block();
     }
 
     /**
-     * Updates a subscription with the given {@link SubscriptionProperties}. The {@link SubscriptionProperties} must
-     * be fully populated as all of the properties are replaced. If a property is not set the service default value is
+     * Updates a subscription with the given {@link SubscriptionProperties}. The {@link SubscriptionProperties} must be
+     * fully populated as all of the properties are replaced. If a property is not set the service default value is
      * used.
      *
      * The suggested flow is:
@@ -1214,8 +1213,8 @@ public final class ServiceBusAdministrationClient {
     }
 
     /**
-     * Updates a subscription with the given {@link SubscriptionProperties}. The {@link SubscriptionProperties} must
-     * be fully populated as all of the properties are replaced. If a property is not set the service default value is
+     * Updates a subscription with the given {@link SubscriptionProperties}. The {@link SubscriptionProperties} must be
+     * fully populated as all of the properties are replaced. If a property is not set the service default value is
      * used.
      *
      * The suggested flow is:

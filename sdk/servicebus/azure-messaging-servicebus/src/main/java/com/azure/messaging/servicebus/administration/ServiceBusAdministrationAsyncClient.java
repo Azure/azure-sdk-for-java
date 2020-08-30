@@ -199,6 +199,7 @@ public final class ServiceBusAdministrationAsyncClient {
      * Creates a rule under the given topic and subscription
      *
      * @param topicName Name of the topic associated with rule.
+     * @param subscriptionName Name of the subscription associated with the rule.
      * @param ruleName Name of the rule.
      *
      * @return A Mono that completes with information about the created rule.
@@ -223,6 +224,7 @@ public final class ServiceBusAdministrationAsyncClient {
      * Creates a rule with the {@link CreateRuleOptions}.
      *
      * @param topicName Name of the topic associated with rule.
+     * @param subscriptionName Name of the subscription associated with the rule.
      * @param ruleName Name of the rule.
      * @param ruleOptions Information about the rule to create.
      *
@@ -248,6 +250,7 @@ public final class ServiceBusAdministrationAsyncClient {
      * Creates a rule and returns the created rule in addition to the HTTP response.
      *
      * @param topicName Name of the topic associated with rule.
+     * @param subscriptionName Name of the subscription associated with the rule.
      * @param ruleName Name of the rule.
      * @param ruleOptions Information about the rule to create.
      *
