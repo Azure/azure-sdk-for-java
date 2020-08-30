@@ -116,7 +116,6 @@
                 <include>com.nimbusds:oauth2-oidc-sdk:[7.1.1]</include> <!-- {x-include-update;com.nimbusds:oauth2-oidc-sdk;external_dependency} -->
                 <include>net.java.dev.jna:jna-platform:[5.4.0]</include> <!-- {x-include-update;net.java.dev.jna:jna-platform;external_dependency} -->
                 <include>org.linguafranca.pwdb:KeePassJava2:[2.1.4]</include> <!-- {x-include-update;org.linguafranca.pwdb:KeePassJava2;external_dependency} -->
-                <include>org.nanohttpd:nanohttpd:[2.3.1]</include> <!-- {x-include-update;org.nanohttpd:nanohttpd;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
