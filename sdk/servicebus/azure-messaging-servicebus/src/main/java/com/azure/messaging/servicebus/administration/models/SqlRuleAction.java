@@ -10,8 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Represents set of actions written in SQL language-based syntax that is performed against a
- * {@link ServiceBusMessage}.
+ * Represents set of actions written in SQL language-based syntax that is performed against a {@link
+ * ServiceBusMessage}.
  */
 public class SqlRuleAction extends RuleAction {
     private final Map<String, Object> properties = new HashMap<>();
@@ -73,10 +73,20 @@ public class SqlRuleAction extends RuleAction {
         return requiresPreprocessing;
     }
 
+    /**
+     * Gets the properties for this action.
+     *
+     * @return the properties for this action.
+     */
     public Map<String, Object> getProperties() {
         return properties;
     }
 
+    /**
+     * Gets the SQL expression.
+     *
+     * @return the SQL expression.
+     */
     public String getSqlExpression() {
         return sqlExpression;
     }
