@@ -8,11 +8,15 @@ import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
 import com.azure.messaging.servicebus.administration.models.CreateTopicOptions;
 import com.azure.messaging.servicebus.administration.models.QueueProperties;
+import com.azure.messaging.servicebus.administration.models.RuleAction;
+import com.azure.messaging.servicebus.administration.models.RuleFilter;
 import com.azure.messaging.servicebus.administration.models.RuleProperties;
 import com.azure.messaging.servicebus.administration.models.SubscriptionProperties;
 import com.azure.messaging.servicebus.administration.models.TopicProperties;
 import com.azure.messaging.servicebus.implementation.models.QueueDescription;
+import com.azure.messaging.servicebus.implementation.models.RuleActionImpl;
 import com.azure.messaging.servicebus.implementation.models.RuleDescription;
+import com.azure.messaging.servicebus.implementation.models.RuleFilterImpl;
 import com.azure.messaging.servicebus.implementation.models.SubscriptionDescription;
 import com.azure.messaging.servicebus.implementation.models.TopicDescription;
 
@@ -117,12 +121,46 @@ public final class EntityHelper {
     }
 
     /**
+     * Creates a new rule action given an existing rule action.
+     *
+     * @param properties Rule properties.
+     * @return A new instance of {@link RuleActionImpl}.
+     */
+    public static RuleActionImpl toImplementation(RuleAction properties) {
+        Objects.requireNonNull(properties, "'properties' cannot be null.");
+
+        if (ruleAccessor == null) {
+            throw new ClientLogger(EntityHelper.class).logExceptionAsError(
+                new IllegalStateException("'ruleAccessor' should not be null."));
+        }
+
+        return ruleAccessor.toImplementation(properties);
+    }
+
+    /**
      * Creates a new rule description given an existing rule.
      *
      * @param properties Rule properties.
      * @return A new instance of {@link RuleDescription}.
      */
     public static RuleDescription toImplementation(RuleProperties properties) {
+        Objects.requireNonNull(properties, "'properties' cannot be null.");
+
+        if (ruleAccessor == null) {
+            throw new ClientLogger(EntityHelper.class).logExceptionAsError(
+                new IllegalStateException("'ruleAccessor' should not be null."));
+        }
+
+        return ruleAccessor.toImplementation(properties);
+    }
+
+    /**
+     * Creates a new rule filter given an existing rule filter.
+     *
+     * @param properties Rule filter.
+     * @return A new instance of {@link RuleFilter}.
+     */
+    public static RuleFilterImpl toImplementation(RuleFilter properties) {
         Objects.requireNonNull(properties, "'properties' cannot be null.");
 
         if (ruleAccessor == null) {
@@ -185,6 +223,40 @@ public final class EntityHelper {
         }
 
         return queueAccessor.toModel(description);
+    }
+
+    /**
+     * Gets a new rule action based on the existing rule description.
+     *
+     * @param description The implementation type.
+     * @return A new {@link RuleProperties} with the set options.
+     */
+    public static RuleAction toModel(RuleActionImpl description) {
+        Objects.requireNonNull(description, "'description' cannot be null.");
+
+        if (ruleAccessor == null) {
+            throw new ClientLogger(EntityHelper.class).logExceptionAsError(
+                new IllegalStateException("'ruleAccessor' should not be null."));
+        }
+
+        return ruleAccessor.toModel(description);
+    }
+
+    /**
+     * Gets a new rule action based on the existing rule description.
+     *
+     * @param description The implementation type.
+     * @return A new {@link RuleProperties} with the set options.
+     */
+    public static RuleFilter toModel(RuleFilterImpl description) {
+        Objects.requireNonNull(description, "'description' cannot be null.");
+
+        if (ruleAccessor == null) {
+            throw new ClientLogger(EntityHelper.class).logExceptionAsError(
+                new IllegalStateException("'ruleAccessor' should not be null."));
+        }
+
+        return ruleAccessor.toModel(description);
     }
 
     /**
@@ -401,7 +473,15 @@ public final class EntityHelper {
     public interface RuleAccessor {
         RuleProperties toModel(RuleDescription ruleDescription);
 
+        RuleAction toModel(RuleActionImpl implementation);
+
+        RuleFilter toModel(RuleFilterImpl implementation);
+
         RuleDescription toImplementation(RuleProperties ruleProperties);
+
+        RuleActionImpl toImplementation(RuleAction model);
+
+        RuleFilterImpl toImplementation(RuleFilter model);
     }
 
     /**

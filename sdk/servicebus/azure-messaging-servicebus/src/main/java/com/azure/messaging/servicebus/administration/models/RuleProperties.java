@@ -48,21 +48,7 @@ public class RuleProperties {
             }
 
             @Override
-            public RuleDescription toImplementation(RuleProperties ruleProperties) {
-                final RuleFilterImpl filter = ruleProperties.getFilter() != null
-                    ? toImplementation(ruleProperties.getFilter())
-                    : null;
-                final RuleActionImpl action = ruleProperties.getAction() != null
-                    ? toImplementation(ruleProperties.getAction())
-                    : null;
-
-                return new RuleDescription()
-                    .setName(ruleProperties.getName())
-                    .setAction(action)
-                    .setFilter(filter);
-            }
-
-            private RuleAction toModel(RuleActionImpl implementation) {
+            public RuleAction toModel(RuleActionImpl implementation) {
                 if (implementation instanceof EmptyRuleActionImpl) {
                     return EmptyRuleAction.getInstance();
                 } else if (implementation instanceof SqlRuleActionImpl) {
@@ -82,7 +68,8 @@ public class RuleProperties {
                 }
             }
 
-            private RuleFilter toModel(RuleFilterImpl implementation) {
+            @Override
+            public RuleFilter toModel(RuleFilterImpl implementation) {
                 if (implementation instanceof TrueFilterImpl) {
                     return TrueRuleFilter.getInstance();
                 } else if (implementation instanceof FalseFilterImpl) {
@@ -121,7 +108,23 @@ public class RuleProperties {
                 }
             }
 
-            private RuleActionImpl toImplementation(RuleAction model) {
+            @Override
+            public RuleDescription toImplementation(RuleProperties ruleProperties) {
+                final RuleFilterImpl filter = ruleProperties.getFilter() != null
+                    ? toImplementation(ruleProperties.getFilter())
+                    : null;
+                final RuleActionImpl action = ruleProperties.getAction() != null
+                    ? toImplementation(ruleProperties.getAction())
+                    : null;
+
+                return new RuleDescription()
+                    .setName(ruleProperties.getName())
+                    .setAction(action)
+                    .setFilter(filter);
+            }
+
+            @Override
+            public RuleActionImpl toImplementation(RuleAction model) {
                 if (model instanceof EmptyRuleAction) {
                     return emptyRuleAction;
                 } else if (model instanceof SqlRuleAction) {
@@ -146,7 +149,8 @@ public class RuleProperties {
                 }
             }
 
-            private RuleFilterImpl toImplementation(RuleFilter model) {
+            @Override
+            public RuleFilterImpl toImplementation(RuleFilter model) {
                 if (model instanceof TrueRuleFilter) {
                     return trueFilter;
                 } else if (model instanceof FalseRuleFilter) {
