@@ -110,6 +110,7 @@ public class IdentityClient {
     private static final String DEFAULT_CONFIDENTIAL_KEYRING_ITEM_NAME = DEFAULT_CONFIDENTIAL_KEYCHAIN_ACCOUNT;
     private static final String DEFAULT_KEYRING_ATTR_NAME = "MsalClientID";
     private static final String DEFAULT_KEYRING_ATTR_VALUE = "Microsoft.Developer.IdentityService";
+    private static final String HTTP_LOCALHOST = "http://localhost";
     private final ClientLogger logger = new ClientLogger(IdentityClient.class);
 
     private final IdentityClientOptions options;
@@ -641,7 +642,7 @@ public class IdentityClient {
     public Mono<MsalToken> authenticateWithBrowserInteraction(TokenRequestContext request, int port) {
         URI redirectUri;
         try {
-            redirectUri = new URI(String.format("http://localhost:%s", port));
+            redirectUri = new URI(HTTP_LOCALHOST + ":" + port);
         } catch (URISyntaxException e) {
             return Mono.error(logger.logExceptionAsError(new RuntimeException(e)));
         }
@@ -802,7 +803,16 @@ public class IdentityClient {
                         throw logger.logExceptionAsError(new RuntimeException(
                                 String.format("Could not connect to the url: %s.", url), exception));
                     }
-                    int responseCode = connection.getResponseCode();
+                    int responseCode;
+                    try {
+                        responseCode = connection.getResponseCode();
+                    } catch (Exception e) {
+                        throw logger.logExceptionAsError(
+                            new CredentialUnavailableException(
+                                "ManagedIdentityCredential authentication unavailable. "
+                                    + "Connection to IMDS endpoint cannot be established, "
+                                    + e.getMessage() + ".", e));
+                    }
                     if (responseCode == 410
                             || responseCode == 429
                             || responseCode == 404
