@@ -11,9 +11,11 @@ import java.time.Duration;
 import java.util.Collection;
 
 /**
+ * This class provides a client that contains operations for conveniently indexing documents to an Azure Search index.
  *
+ * @see SearchIndexBatchingClientBuilder
  */
-public class SearchIndexBatchingClient {
+public final class SearchIndexBatchingClient {
     private static final Duration DEFAULT_TIMEOUT = Duration.ofDays(1);
 
     private final SearchIndexBatchingAsyncClient client;

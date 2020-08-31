@@ -176,8 +176,8 @@ public final class SearchAsyncClient {
      * @return A {@link SearchIndexBatchingAsyncClient} used to index documents for the Search index associated with
      * this {@link SearchAsyncClient}.
      */
-    public SearchIndexBatchingAsyncClient getIndexDocumentBatchingAsyncClient() {
-        return getIndexDocumentBatchingAsyncClient(null, null, null, null);
+    public SearchIndexBatchingAsyncClient getSearchIndexDocumentBatchingAsyncClient() {
+        return getSearchIndexDocumentBatchingAsyncClient(null, null, null, null);
     }
 
     /**
@@ -196,8 +196,8 @@ public final class SearchAsyncClient {
      * this {@link SearchAsyncClient}.
      * @throws IllegalArgumentException If {@code batchSize} is less than one.
      */
-    public SearchIndexBatchingAsyncClient getIndexDocumentBatchingAsyncClient(Boolean autoFlush, Duration flushWindow,
-        Integer batchSize, IndexingHook indexingHook) {
+    public SearchIndexBatchingAsyncClient getSearchIndexDocumentBatchingAsyncClient(Boolean autoFlush,
+        Duration flushWindow, Integer batchSize, IndexingHook indexingHook) {
         return new SearchIndexBatchingAsyncClient(this, autoFlush, flushWindow, batchSize, indexingHook);
     }
 

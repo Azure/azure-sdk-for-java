@@ -30,9 +30,11 @@ import java.util.stream.Collectors;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
+ * This class provides a client that contains operations for conveniently indexing documents to an Azure Search index.
  *
+ * @see SearchIndexBatchingClientBuilder
  */
-public class SearchIndexBatchingAsyncClient {
+public final class SearchIndexBatchingAsyncClient {
     private static final int DEFAULT_BATCH_SIZE = 1000;
     private static final long DEFAULT_FLUSH_WINDOW = TimeUnit.SECONDS.toMillis(60);
     private static final int TRY_LIMIT = 10;

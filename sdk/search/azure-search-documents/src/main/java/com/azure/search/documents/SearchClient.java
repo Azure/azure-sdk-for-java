@@ -84,8 +84,8 @@ public final class SearchClient {
      * @return A {@link SearchIndexBatchingClient} used to index documents for the Search index associated with this
      * {@link SearchClient}.
      */
-    public SearchIndexBatchingClient getIndexDocumentBatchingClient() {
-        return getIndexDocumentBatchingClient(null, null, null, null);
+    public SearchIndexBatchingClient getSearchIndexDocumentBatchingClient() {
+        return getSearchIndexDocumentBatchingClient(null, null, null, null);
     }
 
     /**
@@ -104,10 +104,10 @@ public final class SearchClient {
      * {@link SearchClient}.
      * @throws IllegalArgumentException If {@code batchSize} is less than one.
      */
-    public SearchIndexBatchingClient getIndexDocumentBatchingClient(Boolean autoFlush, Duration flushWindow,
+    public SearchIndexBatchingClient getSearchIndexDocumentBatchingClient(Boolean autoFlush, Duration flushWindow,
         Integer batchSize, IndexingHook indexingHook) {
         return new SearchIndexBatchingClient(asyncClient
-            .getIndexDocumentBatchingAsyncClient(autoFlush, flushWindow, batchSize, indexingHook));
+            .getSearchIndexDocumentBatchingAsyncClient(autoFlush, flushWindow, batchSize, indexingHook));
     }
 
     /**
