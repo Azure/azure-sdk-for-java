@@ -98,7 +98,7 @@ public class TableClientBuilder {
      * @return a sync tableClient
      */
     public TableClient buildClient() {
-        return new TableClient(tableName, buildAsyncClient());
+        return new TableClient(buildAsyncClient());
     }
 
     /**
