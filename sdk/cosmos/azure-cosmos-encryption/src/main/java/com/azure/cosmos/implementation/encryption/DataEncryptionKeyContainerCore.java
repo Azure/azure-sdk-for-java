@@ -12,6 +12,7 @@ import com.azure.cosmos.encryption.DataEncryptionKey;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
@@ -111,8 +112,9 @@ class DataEncryptionKeyContainerCore implements DataEncryptionKeyContainer {
                         EncryptionKeyWrapMetadata updatedMetadata = wrapResult.getMiddle();
                         InMemoryRawDek updatedRawDek = wrapResult.getRight();
 
-                        // TODO: do a deep copy on CosmosItemRequestOptions to avoid modifying the passed param
-                        CosmosItemRequestOptions effectiveRequestOptions = requestOptions != null ? requestOptions : new CosmosItemRequestOptions();
+                        CosmosItemRequestOptions effectiveRequestOptions = requestOptions != null ?
+                            ModelBridgeInternal.clone(requestOptions) :
+                            new CosmosItemRequestOptions();
                         effectiveRequestOptions.setIfMatchETag(dekProperties.eTag);
 
                         DataEncryptionKeyProperties newDekProperties = new DataEncryptionKeyProperties(dekProperties);
