@@ -35,6 +35,8 @@ The following sections provide several code snippets covering some of the most c
 - [Extract key phrases in a document with asynchronous client][async_sample_key_phrases]
 - [Analyze sentiment in a document][sample_sentiment]
 - [Analyze sentiment in a document with asynchronous client][async_sample_sentiment]
+- [Analyze sentiment with opinion mining in a document][sample_sentiment_opinion_mining]
+- [Analyze sentiment with opinion mining in a document with asynchronous client][async_sample_sentiment_opinion_mining]
 - [Rotate key credential][sample_rotate_key]
 - [Rotate key credential with asynchronous client][async_sample_rotate_key]
 
@@ -61,8 +63,12 @@ Batch Samples:
 - [Extract key phrases in a batch of documents with asynchronous client(Convenience)][async_sample_key_phrases_batch_convenience]
 - [Analyze sentiment in a batch of documents][sample_sentiment_batch]
 - [Analyze sentiment in a batch of documents(Convenience)][sample_sentiment_batch_convenience]
+- [Analyze sentiment with opinion mining in a batch of documents][sample_sentiment_opinion_mining_batch]
+- [Analyze sentiment with opinion mining in a batch of documents(Convenience)][sample_sentiment_opinion_mining_batch_convenience]
 - [Analyze sentiment in a batch of documents with asynchronous client][async_sample_sentiment_batch]
 - [Analyze sentiment in a batch of documents with asynchronous client(Convenience)][async_sample_sentiment_batch_convenience]
+- [Analyze sentiment with opinion mining in a batch of documents with asynchronous client][async_sample_sentiment_opinion_mining_batch]
+- [Analyze sentiment with opinion mining in a batch of documents with asynchronous client(Convenience)][async_sample_sentiment_opinion_mining_batch_convenience]
 
 ## Troubleshooting
 Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
@@ -101,6 +107,9 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [async_sample_sentiment]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/AnalyzeSentimentAsync.java
 [async_sample_sentiment_batch]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/AnalyzeSentimentBatchDocumentsAsync.java
 [async_sample_sentiment_batch_convenience]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/AnalyzeSentimentBatchStringDocumentsAsync.java
+[async_sample_sentiment_opinion_mining]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/AnalyzeSentimentWithOpinionMiningAsync.java
+[async_sample_sentiment_opinion_mining_batch]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/AnalyzeSentimentBatchDocumentsWithOpinionMiningAsync.java
+[async_sample_sentiment_opinion_mining_batch_convenience]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/AnalyzeSentimentBatchStringWithOpinionMiningAsync.java
 
 [sample_detect_language]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/DetectLanguage.java
 [sample_detect_language_batch]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/DetectLanguageBatchDocuments.java
@@ -121,5 +130,8 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [sample_sentiment]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/AnalyzeSentiment.java
 [sample_sentiment_batch]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/AnalyzeSentimentBatchDocuments.java
 [sample_sentiment_batch_convenience]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/AnalyzeSentimentBatchStringDocuments.java
+[sample_sentiment_opinion_mining]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/AnalyzeSentimentWithOpinionMining.java
+[sample_sentiment_opinion_mining_batch]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/AnalyzeSentimentBatchDocumentsWithOpinionMining.java
+[sample_sentiment_opinion_mining_batch_convenience]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/AnalyzeSentimentBatchStringWithOpinionMining.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ftextanalytics%2Fazure-ai-textanalytics%2FREADME.png)
