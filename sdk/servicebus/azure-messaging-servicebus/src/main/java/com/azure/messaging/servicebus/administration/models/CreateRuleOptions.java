@@ -58,6 +58,7 @@ public class CreateRuleOptions {
      * Sets the action to perform if the message satisfies the filtering expression.
      *
      * @param action The action to perform if the message satisfies the filtering expression.
+     * @return The updated {@link CreateRuleOptions} object.
      */
     public CreateRuleOptions setAction(RuleAction action) {
         this.action = action;
@@ -77,6 +78,7 @@ public class CreateRuleOptions {
      * Sets the filter expression used to match messages.
      *
      * @param filter The filter expression used to match messages.
+     * @return The updated {@link CreateRuleOptions} object.
      */
     public CreateRuleOptions setFilter(RuleFilter filter) {
         this.filter = Objects.requireNonNull(filter, "'filter' cannot be null.");
