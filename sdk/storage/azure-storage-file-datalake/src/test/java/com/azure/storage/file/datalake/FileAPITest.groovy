@@ -3493,31 +3493,31 @@ class FileAPITest extends APISpec {
         defaultDataSize - 1 | 1
     }
 
-    /* How to spy on private stuff? */
-//    @Unroll
-//    def "Upload numBlocks"() {
-//        setup:
-//        DataLakeFileClient fac = fsc.getFileClient(generatePathName())
-//        def spyClient = Spy(fac.dataLakeFileAsyncClient)
-//        def randomData = getRandomByteArray(dataSize)
-//        def input = new ByteArrayInputStream(randomData)
-//
-//        def pto = new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(singleUploadSize)
-//
-//        when:
-//        fac.uploadWithResponse(new FileParallelUploadOptions(input, dataSize).setParallelTransferOptions(pto), null, null)
-//
-//        then:
-//        fac.getProperties().getFileSize() == dataSize
-//        numAppends * spyClient.appendWithResponse(_, _, _, _, _)
-//
-//        where:
-//        dataSize                 | singleUploadSize | blockSize || numAppends
-//        (100 * Constants.MB) - 1 | null             | null      || 1
-//        (100 * Constants.MB) + 1 | null             | null      || Math.ceil(((double) (100 * Constants.MB) + 1) / (double) (4 * Constants.MB))
-//        100                      | 50               | null      || 1
-//        100                      | 50               | 20        || 5
-//    }
+    /* Due to the inability to spy on a private method, we are just calling the async client with the input stream constructor */
+    @Unroll
+    def "Upload numAppends"() {
+        setup:
+        DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
+        def spyClient = Spy(fac)
+        def randomData = getRandomByteArray(dataSize)
+        def input = new ByteArrayInputStream(randomData)
+
+        def pto = new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(singleUploadSize)
+
+        when:
+        spyClient.uploadWithResponse(new FileParallelUploadOptions(input, dataSize).setParallelTransferOptions(pto)).block()
+
+        then:
+        fac.getProperties().block().getFileSize() == dataSize
+        numAppends * spyClient.appendWithResponse(_, _, _, _, _)
+
+        where:
+        dataSize                 | singleUploadSize | blockSize || numAppends
+        (100 * Constants.MB) - 1 | null             | null      || 1
+        (100 * Constants.MB) + 1 | null             | null      || Math.ceil(((double) (100 * Constants.MB) + 1) / (double) (4 * Constants.MB))
+        100                      | 50               | null      || 1
+        100                      | 50               | 20        || 5
+    }
 
     def "Upload return value"() {
         expect:
