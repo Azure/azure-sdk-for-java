@@ -7,11 +7,13 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.*;
+
 /**
  * An optional, helper class for deserializing a digital twin.
  */
 @Fluent
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(Include.NON_NULL)
 public class WritableProperty {
 
     @JsonProperty(value = "desiredValue")

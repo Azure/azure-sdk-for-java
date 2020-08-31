@@ -8,8 +8,10 @@ import com.azure.digitaltwins.core.implementation.serialization.WritableProperty
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.*;
+
 @Fluent
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(Include.NON_NULL)
 public class CustomDigitalTwin {
 
     @JsonProperty(value = "$dtId", required = true)
@@ -74,7 +76,7 @@ public class CustomDigitalTwin {
 }
 
 @Fluent
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(Include.NON_NULL)
 class Metadata {
 
     @JsonProperty(value = "$model", required = true)
@@ -91,7 +93,7 @@ class Metadata {
 }
 
 @Fluent
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(Include.NON_NULL)
 class CustomDigitalTwinMetadata extends Metadata {
 
     @JsonProperty(value = "AverageTemperature")
