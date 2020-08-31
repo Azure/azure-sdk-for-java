@@ -28,7 +28,7 @@ public class ConnectionStringProperties {
     private static final String ENTITY_PATH = "EntityPath";
     private static final String ERROR_MESSAGE_FORMAT = "Could not parse 'connectionString'. Expected format: "
         + "'Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
-        + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}'. Actual: %s";
+        + "SharedAccessKey={sharedAccessKey};EntityPath={entityPath}'. Actual: %s";
     private static final String ERROR_MESSAGE_ENDPOINT_FORMAT = "'Endpoint' must be provided in 'connectionString'."
         + " Actual: %s";
 
