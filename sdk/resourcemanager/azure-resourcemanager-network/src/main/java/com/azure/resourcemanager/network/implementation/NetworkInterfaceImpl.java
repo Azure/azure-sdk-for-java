@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.network.implementation;
 
+import com.azure.core.management.provider.IdentifierProvider;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
@@ -22,7 +23,6 @@ import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.utils.ResourceNamer;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,7 +44,7 @@ class NetworkInterfaceImpl
     /** the name of the network interface. */
     private final String nicName;
     /** used to generate unique name for any dependency resources. */
-    protected final ResourceNamer namer;
+    protected final IdentifierProvider namer;
     /** references to all ip configuration. */
     private Map<String, NicIpConfiguration> nicIPConfigurations;
     /** unique key of a creatable network security group to be associated with the network interface. */
@@ -57,7 +57,7 @@ class NetworkInterfaceImpl
     NetworkInterfaceImpl(String name, NetworkInterfaceInner innerModel, final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
         this.nicName = name;
-        this.namer = this.manager().sdkContext().getResourceNamerFactory().createResourceNamer(this.nicName);
+        this.namer = this.manager().sdkContext().createIdentifierProvider(this.nicName);
         initializeChildrenFromInner();
     }
 
