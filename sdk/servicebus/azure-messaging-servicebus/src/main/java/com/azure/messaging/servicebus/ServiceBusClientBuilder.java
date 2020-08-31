@@ -441,6 +441,10 @@ public final class ServiceBusClientBuilder {
                     new IllegalArgumentException("Unknown entity type: " + entityType));
         }
 
+        if (subQueue ==  null) {
+            return entityPath;
+        }
+
         switch (subQueue) {
             case NONE:
                 break;
