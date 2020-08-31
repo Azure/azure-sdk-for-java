@@ -386,54 +386,6 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * Verifies that we can create transaction, scheduleMessages, cancel commit.
-     */
-    @MethodSource("messagingEntityProvider")
-    @ParameterizedTest
-    void transactionScheduleCancelMessagesTest(MessagingEntityType entityType) {
-
-        // Arrange
-        boolean isSessionEnabled = false;
-        int total = 2;
-        setSenderAndReceiver(entityType, TestUtils.USE_CASE_SCHEDULE_CANCEL_MESSAGES, isSessionEnabled);
-        final Duration scheduleDuration = Duration.ofSeconds(5);
-        final String messageId = UUID.randomUUID().toString();
-        final List<ServiceBusMessage> messages = new ArrayList<>();
-        for (int i = 0; i < total; ++i) {
-            messages.add(getMessage(messageId, isSessionEnabled));
-        }
-
-        List<Long> sequenceNumbers = sender.scheduleMessages(messages, Instant.now().plus(scheduleDuration))
-            .collectList().block();
-        System.out.println("!!!! after schedule " + sequenceNumbers.size());
-        // Assert & Act
-        AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
-        StepVerifier.create(sender.createTransaction())
-            .assertNext(transactionContext -> {
-                transaction.set(transactionContext);
-                assertNotNull(transaction);
-            })
-            .verifyComplete();
-
-        StepVerifier.create(sender.cancelScheduledMessages(sequenceNumbers, transaction.get()))
-            .verifyComplete();
-
-        StepVerifier.create(sender.rollbackTransaction(transaction.get()))
-            .verifyComplete();
-
-        StepVerifier.create(Mono.delay(scheduleDuration).thenMany(receiver.receiveMessages().take(total)))
-            .assertNext(receivedMessage -> {
-                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
-                messagesPending.decrementAndGet();
-            })
-            .assertNext(receivedMessage -> {
-                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
-                messagesPending.decrementAndGet();
-            })
-            .verifyComplete();
-    }
-
-    /**
      * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
      */
     private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex, boolean useCredentials) {

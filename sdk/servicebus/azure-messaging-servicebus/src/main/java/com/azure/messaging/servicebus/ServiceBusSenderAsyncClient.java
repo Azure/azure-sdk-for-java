@@ -382,27 +382,6 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     /**
      * Cancels the enqueuing of an already scheduled message, if it was not already enqueued.
      *
-     * @param sequenceNumber of the scheduled message to cancel.
-     * @param transactionContext to be set on batch message before scheduling them on Service Bus.
-     *
-     * @return The {@link Mono} that finishes this operation on service bus resource.
-     *
-     * @throws IllegalArgumentException if {@code sequenceNumber} is negative.
-     */
-    public Mono<Void> cancelScheduledMessage(long sequenceNumber, ServiceBusTransactionContext transactionContext) {
-        if (sequenceNumber < 0) {
-            return monoError(logger, new IllegalArgumentException("'sequenceNumber' cannot be negative."));
-        }
-
-        return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityName, entityType))
-            .flatMap(managementNode -> managementNode.cancelScheduledMessage(sequenceNumber, linkName.get(),
-                transactionContext));
-    }
-
-    /**
-     * Cancels the enqueuing of an already scheduled message, if it was not already enqueued.
-     *
      * @param sequenceNumbers of the scheduled messages to cancel.
      *
      * @return The {@link Mono} that finishes this operation on service bus resource.
@@ -424,34 +403,6 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             .flatMap(connection -> connection.getManagementNode(entityName, entityType))
             .flatMap(managementNode -> managementNode.cancelScheduledMessages(sequenceNumbers, linkName.get(),
                 null));
-    }
-
-    /**
-     * Cancels the enqueuing of an already scheduled message, if it was not already enqueued.
-     *
-     * @param sequenceNumbers of the scheduled messages to cancel.
-     * @param transactionContext to be set on batch sequence numbers for this operation on Service Bus.
-     *
-     * @return The {@link Mono} that finishes this operation on service bus resource.
-     *
-     * @throws NullPointerException if {@code sequenceNumbers} is null.
-     */
-    public Mono<Void> cancelScheduledMessages(Iterable<Long> sequenceNumbers,
-        ServiceBusTransactionContext transactionContext) {
-
-        if (isDisposed.get()) {
-            return monoError(logger, new IllegalStateException(
-                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "cancelScheduledMessages")));
-        }
-
-        if (Objects.isNull(sequenceNumbers)) {
-            return monoError(logger, new NullPointerException("'messages' cannot be null."));
-        }
-
-        return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityName, entityType))
-            .flatMap(managementNode -> managementNode.cancelScheduledMessages(sequenceNumbers, linkName.get(),
-                transactionContext));
     }
 
     /**
