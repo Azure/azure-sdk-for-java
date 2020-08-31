@@ -13,7 +13,9 @@ import com.azure.data.tables.models.ListTablesOptions;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -177,17 +179,65 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
+    @Tag("ListTables")
+    void serviceListTablesAsync() {
+        // Arrange
+        final String tableName = testResourceNamer.randomName("test", 20);
+        final String tableName2 = testResourceNamer.randomName("test", 20);
+        Mono.when(
+            serviceClient.createTable(tableName),
+            serviceClient.createTable(tableName2)
+        ).block(TIMEOUT);
+
+        // Act & Assert
+        StepVerifier.create(serviceClient.listTables())
+            .expectNextCount(2)
+            .thenConsumeWhile(x -> true)
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
+    @Tag("ListTables")
     void serviceListTablesWithFilterAsync() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
+        final String tableName2 = testResourceNamer.randomName("test", 20);
         ListTablesOptions options = new ListTablesOptions().setFilter("TableName eq '" + tableName + "'");
-        serviceClient.createTable(tableName).block(TIMEOUT);
+        Mono.when(
+            serviceClient.createTable(tableName),
+            serviceClient.createTable(tableName2)
+        ).block(TIMEOUT);
 
         // Act & Assert
         StepVerifier.create(serviceClient.listTables(options))
             .assertNext(table -> {
                 assertEquals(tableName, table.getName());
             })
+            .expectNextCount(0)
+            .thenConsumeWhile(x -> true)
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
+    @Tag("ListTables")
+    void serviceListTablesWithTopAsync() {
+        // Arrange
+        final String tableName = testResourceNamer.randomName("test", 20);
+        final String tableName2 = testResourceNamer.randomName("test", 20);
+        final String tableName3 = testResourceNamer.randomName("test", 20);
+        ListTablesOptions options = new ListTablesOptions().setTop(2);
+        Mono.when(
+            serviceClient.createTable(tableName),
+            serviceClient.createTable(tableName2),
+            serviceClient.createTable(tableName3)
+        ).block(TIMEOUT);
+        
+        // Act & Assert
+        StepVerifier.create(serviceClient.listTables(options))
+            .expectNextCount(2)
+            .thenConsumeWhile(x -> true)
             .expectComplete()
             .verify();
     }
