@@ -270,8 +270,8 @@ jobs:
         - script: |
             python --version
             python -m pip install setuptools termcolor in_place
-            python sdk/spring/scripts/replace_artifact.py --module cosmos --log debug --color false
-          displayName: 'Run replace_artifact.py'
+            python sdk/spring/scripts/replace_util.py --module cosmos --log debug --color false
+          displayName: 'Run replace_util.py'
         - task: Maven@3
           displayName: 'Build and Install again, JDK Version: $(JavaBuildVersion)'
           inputs:

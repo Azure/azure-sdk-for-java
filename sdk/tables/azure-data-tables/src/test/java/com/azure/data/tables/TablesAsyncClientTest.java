@@ -245,6 +245,7 @@ public class TablesAsyncClientTest extends TestBase {
                 assertEquals(tableEntity.getPartitionKey(), entity.getPartitionKey());
                 assertEquals(tableEntity.getRowKey(), entity.getRowKey());
 
+                assertNotNull(entity.getTimestamp());
                 assertNotNull(entity.getETag());
                 assertNotNull(entity.getProperties());
             })
