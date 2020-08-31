@@ -28,7 +28,7 @@ import org.springframework.lang.Nullable;
 @EnableReactiveCosmosRepositories
 @PropertySource("classpath:application.properties")
 public class UserRepositoryConfiguration extends AbstractCosmosConfiguration {
-    private static final Logger logger = LoggerFactory.getLogger(UserRepositoryConfiguration.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserRepositoryConfiguration.class);
 
     @Autowired
     private CosmosProperties properties;
@@ -70,7 +70,7 @@ public class UserRepositoryConfiguration extends AbstractCosmosConfiguration {
 
         @Override
         public void processResponseDiagnostics(@Nullable ResponseDiagnostics responseDiagnostics) {
-            logger.info("Response Diagnostics {}", responseDiagnostics);
+            LOGGER.info("Response Diagnostics {}", responseDiagnostics);
         }
     }
 }

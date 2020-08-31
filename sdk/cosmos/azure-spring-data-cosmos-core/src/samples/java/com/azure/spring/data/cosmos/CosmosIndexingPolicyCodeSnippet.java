@@ -9,7 +9,6 @@ package com.azure.spring.data.cosmos;
  */
 
 import com.azure.cosmos.models.IndexingMode;
-import com.azure.spring.data.cosmos.Constants;
 
 public @interface CosmosIndexingPolicyCodeSnippet {
 
