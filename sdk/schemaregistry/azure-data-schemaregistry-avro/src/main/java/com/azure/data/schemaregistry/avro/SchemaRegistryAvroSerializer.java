@@ -42,11 +42,14 @@ public final class SchemaRegistryAvroSerializer extends SchemaRegistrySerializer
     public <T> Mono<T> deserializeAsync(InputStream stream, TypeReference<T> typeReference) {
         return super.deserializeInternalAsync(stream)
             .handle((o, sink) -> {
-                if (typeReference.getJavaType().getClass().isInstance(o)) {
-                    sink.next((T)o);
+                Class<T> outClass = (Class<T>)typeReference.getJavaType();
+                if (outClass.isInstance(o)) {
+                    sink.next(outClass.cast(o));
                 }
-                sink.error(
-                    logger.logExceptionAsError(new IllegalStateException("Deserialized object not of class %s")));
+                else {
+                    sink.error(
+                        logger.logExceptionAsError(new IllegalStateException("Deserialized object not of class %s")));
+                }
             });
     }
 
