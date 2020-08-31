@@ -1,5 +1,8 @@
 package com.azure.digitaltwins.core;
 
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -8,6 +11,7 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import reactor.core.publisher.Mono;
 
 import java.util.Locale;
 
@@ -27,15 +31,12 @@ public class DigitalTwinsTestBase extends TestBase
 
     protected DigitalTwinsClientBuilder getDigitalTwinsClientBuilder() {
         DigitalTwinsClientBuilder builder = new DigitalTwinsClientBuilder()
-            .endpoint(DIGITALTWINS_URL)
-            .tokenCredential(new ClientSecretCredentialBuilder()
-                .tenantId(TENANT_ID)
-                .clientId(CLIENT_ID)
-                .clientSecret(CLIENT_SECRET)
-                .build());
+            .endpoint(DIGITALTWINS_URL);
 
         if (interceptorManager.isPlaybackMode()){
             builder.httpClient(interceptorManager.getPlaybackClient());
+            // Use fake credentials for playback mode.
+            builder.tokenCredential(new FakeCredentials());
             return builder;
         }
 
@@ -47,20 +48,24 @@ public class DigitalTwinsTestBase extends TestBase
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
+        // Only get valid live token when running live tests.
+        builder.tokenCredential(new ClientSecretCredentialBuilder()
+            .tenantId(TENANT_ID)
+            .clientId(CLIENT_ID)
+            .clientSecret(CLIENT_SECRET)
+            .build());
+
         return builder;
     }
 
     protected DigitalTwinsClientBuilder getDigitalTwinsClientBuilder(HttpPipelinePolicy... policies) {
         DigitalTwinsClientBuilder builder = new DigitalTwinsClientBuilder()
-            .endpoint(DIGITALTWINS_URL)
-            .tokenCredential(new ClientSecretCredentialBuilder()
-                .tenantId(TENANT_ID)
-                .clientId(CLIENT_ID)
-                .clientSecret(CLIENT_SECRET)
-                .build());
+            .endpoint(DIGITALTWINS_URL);
 
         if (interceptorManager.isPlaybackMode()){
             builder.httpClient(interceptorManager.getPlaybackClient());
+            // Use fake credentials for playback mode.
+            builder.tokenCredential(new FakeCredentials());
             addPolicies(builder, policies);
             return builder;
         }
@@ -75,6 +80,13 @@ public class DigitalTwinsTestBase extends TestBase
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
+        // Only get valid live token when running live tests.
+        builder.tokenCredential(new ClientSecretCredentialBuilder()
+            .tenantId(TENANT_ID)
+            .clientId(CLIENT_ID)
+            .clientSecret(CLIENT_SECRET)
+            .build());
+
         return builder;
     }
 
@@ -85,6 +97,14 @@ public class DigitalTwinsTestBase extends TestBase
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy);
+        }
+    }
+
+    static class FakeCredentials implements TokenCredential
+    {
+        @Override
+        public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
+            return Mono.empty();
         }
     }
 }
