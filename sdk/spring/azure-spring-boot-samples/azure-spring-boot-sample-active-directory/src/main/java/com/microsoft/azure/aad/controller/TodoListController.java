@@ -4,6 +4,7 @@
 package com.microsoft.azure.aad.controller;
 
 import com.microsoft.azure.aad.model.TodoItem;
+import com.microsoft.azure.spring.autoconfigure.aad.AADGraphApiObjectType;
 import com.microsoft.azure.spring.autoconfigure.aad.UserGroup;
 import com.microsoft.azure.spring.autoconfigure.aad.UserPrincipal;
 import org.springframework.http.HttpStatus;
@@ -93,10 +94,13 @@ public class TodoListController {
         final UserPrincipal current = (UserPrincipal) authToken.getPrincipal();
 
         if (current.isMemberOf(
-                new UserGroup("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", "Group", "group1"))) {
-            final List<TodoItem> find = todoList.stream().filter(i -> i.getID() == id).collect(Collectors.toList());
-            if (!find.isEmpty()) {
-                todoList.remove(todoList.indexOf(find.get(0)));
+                new UserGroup("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", AADGraphApiObjectType.GROUP, "group1"))) {
+            final TodoItem itemToBeDelete = todoList.stream()
+                                                    .filter(i -> i.getID() == id)
+                                                    .findFirst()
+                                                    .orElse(null);
+            if (itemToBeDelete != null) {
+                todoList.remove(itemToBeDelete);
                 return new ResponseEntity<>("OK", HttpStatus.OK);
             }
             return new ResponseEntity<>("Entity not found", HttpStatus.OK);
