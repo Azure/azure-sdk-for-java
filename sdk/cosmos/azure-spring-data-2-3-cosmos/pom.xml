@@ -51,10 +51,11 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
+        <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <configuration>
           <archive>
             <manifestEntries>
-              <Automatic-Module-Name>com.azure.spring.data.cosmos</Automatic-Module-Name>
+              <Automatic-Module-Name>com.azure.spring.data.cosmos.pom</Automatic-Module-Name>
             </manifestEntries>
           </archive>
         </configuration>
