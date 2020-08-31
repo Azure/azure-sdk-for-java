@@ -20,6 +20,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = CompressionReadSettings.class)
 @JsonTypeName("CompressionReadSettings")
 @JsonSubTypes({
+    @JsonSubTypes.Type(name = "TarGZipReadSettings", value = TarGZipReadSettings.class),
+    @JsonSubTypes.Type(name = "TarReadSettings", value = TarReadSettings.class),
     @JsonSubTypes.Type(name = "ZipDeflateReadSettings", value = ZipDeflateReadSettings.class)
 })
 public class CompressionReadSettings {
