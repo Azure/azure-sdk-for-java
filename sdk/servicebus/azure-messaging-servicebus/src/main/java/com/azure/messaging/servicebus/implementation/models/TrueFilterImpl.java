@@ -14,5 +14,5 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 @JsonTypeName("TrueFilter")
 @JacksonXmlRootElement(localName = "TrueFilter")
 @Immutable
-public final class TrueFilter extends SqlFilter {
+public final class TrueFilterImpl extends SqlFilterImpl {
 }

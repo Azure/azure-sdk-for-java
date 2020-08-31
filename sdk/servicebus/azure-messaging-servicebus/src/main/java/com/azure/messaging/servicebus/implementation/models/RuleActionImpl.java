@@ -15,15 +15,15 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
         property = "type",
-        defaultImpl = RuleAction.class)
+        defaultImpl = RuleActionImpl.class)
 @JsonTypeName("RuleAction")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "SqlRuleAction", value = SqlRuleAction.class),
-    @JsonSubTypes.Type(name = "EmptyRuleAction", value = EmptyRuleAction.class)
+    @JsonSubTypes.Type(name = "SqlRuleAction", value = SqlRuleActionImpl.class),
+    @JsonSubTypes.Type(name = "EmptyRuleAction", value = EmptyRuleActionImpl.class)
 })
 @JacksonXmlRootElement(
         localName = "Action",
         namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
 @Immutable
-public class RuleAction {
+public class RuleActionImpl {
 }

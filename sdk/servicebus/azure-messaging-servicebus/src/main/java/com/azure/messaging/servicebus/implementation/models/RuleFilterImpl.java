@@ -15,15 +15,15 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
         property = "type",
-        defaultImpl = RuleFilter.class)
+        defaultImpl = RuleFilterImpl.class)
 @JsonTypeName("RuleFilter")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "CorrelationFilter", value = CorrelationFilter.class),
-    @JsonSubTypes.Type(name = "SqlFilter", value = SqlFilter.class)
+    @JsonSubTypes.Type(name = "CorrelationFilter", value = CorrelationFilterImpl.class),
+    @JsonSubTypes.Type(name = "SqlFilter", value = SqlFilterImpl.class)
 })
 @JacksonXmlRootElement(
         localName = "Filter",
         namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
 @Immutable
-public class RuleFilter {
+public class RuleFilterImpl {
 }

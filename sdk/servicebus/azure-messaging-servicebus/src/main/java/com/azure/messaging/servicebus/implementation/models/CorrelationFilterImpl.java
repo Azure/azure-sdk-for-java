@@ -19,7 +19,7 @@ import java.util.List;
 @JsonTypeName("CorrelationFilter")
 @JacksonXmlRootElement(localName = "CorrelationFilter")
 @Fluent
-public final class CorrelationFilter extends RuleFilter {
+public final class CorrelationFilterImpl extends RuleFilterImpl {
     /*
      * The correlationId property.
      */
@@ -86,10 +86,10 @@ public final class CorrelationFilter extends RuleFilter {
 
     private static final class PropertiesWrapper {
         @JacksonXmlProperty(localName = "KeyValueOfstringanyType")
-        private final List<KeyValue> items;
+        private final List<KeyValueImpl> items;
 
         @JsonCreator
-        private PropertiesWrapper(@JacksonXmlProperty(localName = "KeyValueOfstringanyType") List<KeyValue> items) {
+        private PropertiesWrapper(@JacksonXmlProperty(localName = "KeyValueOfstringanyType") List<KeyValueImpl> items) {
             this.items = items;
         }
     }
@@ -117,7 +117,7 @@ public final class CorrelationFilter extends RuleFilter {
      * @param correlationId the correlationId value to set.
      * @return the CorrelationFilter object itself.
      */
-    public CorrelationFilter setCorrelationId(String correlationId) {
+    public CorrelationFilterImpl setCorrelationId(String correlationId) {
         this.correlationId = correlationId;
         return this;
     }
@@ -137,7 +137,7 @@ public final class CorrelationFilter extends RuleFilter {
      * @param messageId the messageId value to set.
      * @return the CorrelationFilter object itself.
      */
-    public CorrelationFilter setMessageId(String messageId) {
+    public CorrelationFilterImpl setMessageId(String messageId) {
         this.messageId = messageId;
         return this;
     }
@@ -157,7 +157,7 @@ public final class CorrelationFilter extends RuleFilter {
      * @param to the to value to set.
      * @return the CorrelationFilter object itself.
      */
-    public CorrelationFilter setTo(String to) {
+    public CorrelationFilterImpl setTo(String to) {
         this.to = to;
         return this;
     }
@@ -177,7 +177,7 @@ public final class CorrelationFilter extends RuleFilter {
      * @param replyTo the replyTo value to set.
      * @return the CorrelationFilter object itself.
      */
-    public CorrelationFilter setReplyTo(String replyTo) {
+    public CorrelationFilterImpl setReplyTo(String replyTo) {
         this.replyTo = replyTo;
         return this;
     }
@@ -197,7 +197,7 @@ public final class CorrelationFilter extends RuleFilter {
      * @param label the label value to set.
      * @return the CorrelationFilter object itself.
      */
-    public CorrelationFilter setLabel(String label) {
+    public CorrelationFilterImpl setLabel(String label) {
         this.label = label;
         return this;
     }
@@ -217,7 +217,7 @@ public final class CorrelationFilter extends RuleFilter {
      * @param sessionId the sessionId value to set.
      * @return the CorrelationFilter object itself.
      */
-    public CorrelationFilter setSessionId(String sessionId) {
+    public CorrelationFilterImpl setSessionId(String sessionId) {
         this.sessionId = sessionId;
         return this;
     }
@@ -237,7 +237,7 @@ public final class CorrelationFilter extends RuleFilter {
      * @param replyToSessionId the replyToSessionId value to set.
      * @return the CorrelationFilter object itself.
      */
-    public CorrelationFilter setReplyToSessionId(String replyToSessionId) {
+    public CorrelationFilterImpl setReplyToSessionId(String replyToSessionId) {
         this.replyToSessionId = replyToSessionId;
         return this;
     }
@@ -257,7 +257,7 @@ public final class CorrelationFilter extends RuleFilter {
      * @param contentType the contentType value to set.
      * @return the CorrelationFilter object itself.
      */
-    public CorrelationFilter setContentType(String contentType) {
+    public CorrelationFilterImpl setContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -267,9 +267,9 @@ public final class CorrelationFilter extends RuleFilter {
      *
      * @return the properties value.
      */
-    public List<KeyValue> getProperties() {
+    public List<KeyValueImpl> getProperties() {
         if (this.properties == null) {
-            this.properties = new PropertiesWrapper(new ArrayList<KeyValue>());
+            this.properties = new PropertiesWrapper(new ArrayList<KeyValueImpl>());
         }
         return this.properties.items;
     }
@@ -280,7 +280,7 @@ public final class CorrelationFilter extends RuleFilter {
      * @param properties the properties value to set.
      * @return the CorrelationFilter object itself.
      */
-    public CorrelationFilter setProperties(List<KeyValue> properties) {
+    public CorrelationFilterImpl setProperties(List<KeyValueImpl> properties) {
         this.properties = new PropertiesWrapper(properties);
         return this;
     }

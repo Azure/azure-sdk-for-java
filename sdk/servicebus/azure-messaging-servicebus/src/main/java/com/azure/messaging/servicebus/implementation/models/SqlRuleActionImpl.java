@@ -6,7 +6,6 @@ package com.azure.messaging.servicebus.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
@@ -15,20 +14,12 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
-/** The SqlFilter model. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "type",
-        defaultImpl = SqlFilter.class)
-@JsonTypeName("SqlFilter")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "TrueFilter", value = TrueFilter.class),
-    @JsonSubTypes.Type(name = "FalseFilter", value = FalseFilter.class)
-})
-@JacksonXmlRootElement(localName = "SqlFilter")
+/** The SqlRuleAction model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeName("SqlRuleAction")
+@JacksonXmlRootElement(localName = "SqlRuleAction")
 @Fluent
-public class SqlFilter extends RuleFilter {
+public final class SqlRuleActionImpl extends RuleActionImpl {
     /*
      * The sqlExpression property.
      */
@@ -47,10 +38,10 @@ public class SqlFilter extends RuleFilter {
 
     private static final class ParametersWrapper {
         @JacksonXmlProperty(localName = "KeyValueOfstringanyType")
-        private final List<KeyValue> items;
+        private final List<KeyValueImpl> items;
 
         @JsonCreator
-        private ParametersWrapper(@JacksonXmlProperty(localName = "KeyValueOfstringanyType") List<KeyValue> items) {
+        private ParametersWrapper(@JacksonXmlProperty(localName = "KeyValueOfstringanyType") List<KeyValueImpl> items) {
             this.items = items;
         }
     }
@@ -84,9 +75,9 @@ public class SqlFilter extends RuleFilter {
      * Set the sqlExpression property: The sqlExpression property.
      *
      * @param sqlExpression the sqlExpression value to set.
-     * @return the SqlFilter object itself.
+     * @return the SqlRuleAction object itself.
      */
-    public SqlFilter setSqlExpression(String sqlExpression) {
+    public SqlRuleActionImpl setSqlExpression(String sqlExpression) {
         this.sqlExpression = sqlExpression;
         return this;
     }
@@ -104,9 +95,9 @@ public class SqlFilter extends RuleFilter {
      * Set the compatibilityLevel property: The compatibilityLevel property.
      *
      * @param compatibilityLevel the compatibilityLevel value to set.
-     * @return the SqlFilter object itself.
+     * @return the SqlRuleAction object itself.
      */
-    public SqlFilter setCompatibilityLevel(String compatibilityLevel) {
+    public SqlRuleActionImpl setCompatibilityLevel(String compatibilityLevel) {
         this.compatibilityLevel = compatibilityLevel;
         return this;
     }
@@ -116,9 +107,9 @@ public class SqlFilter extends RuleFilter {
      *
      * @return the parameters value.
      */
-    public List<KeyValue> getParameters() {
+    public List<KeyValueImpl> getParameters() {
         if (this.parameters == null) {
-            this.parameters = new ParametersWrapper(new ArrayList<KeyValue>());
+            this.parameters = new ParametersWrapper(new ArrayList<KeyValueImpl>());
         }
         return this.parameters.items;
     }
@@ -127,9 +118,9 @@ public class SqlFilter extends RuleFilter {
      * Set the parameters property: The parameters property.
      *
      * @param parameters the parameters value to set.
-     * @return the SqlFilter object itself.
+     * @return the SqlRuleAction object itself.
      */
-    public SqlFilter setParameters(List<KeyValue> parameters) {
+    public SqlRuleActionImpl setParameters(List<KeyValueImpl> parameters) {
         this.parameters = new ParametersWrapper(parameters);
         return this;
     }
@@ -147,9 +138,9 @@ public class SqlFilter extends RuleFilter {
      * Set the requiresPreprocessing property: The requiresPreprocessing property.
      *
      * @param requiresPreprocessing the requiresPreprocessing value to set.
-     * @return the SqlFilter object itself.
+     * @return the SqlRuleAction object itself.
      */
-    public SqlFilter setRequiresPreprocessing(Boolean requiresPreprocessing) {
+    public SqlRuleActionImpl setRequiresPreprocessing(Boolean requiresPreprocessing) {
         this.requiresPreprocessing = requiresPreprocessing;
         return this;
     }
