@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.implementation.encryption.CosmosDataEncryptionKeyProvider;
 import com.azure.cosmos.implementation.encryption.CosmosEncryptor;
 import com.azure.cosmos.implementation.encryption.DataEncryptionKeyContainer;
+import com.azure.cosmos.implementation.encryption.UserProvidedTokenCredentialFactory;
 import reactor.core.publisher.Mono;
 
 /**

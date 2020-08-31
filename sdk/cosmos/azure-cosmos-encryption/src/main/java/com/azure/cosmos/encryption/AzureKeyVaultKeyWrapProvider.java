@@ -4,13 +4,19 @@
 package com.azure.cosmos.encryption;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.encryption.CryptographyClientFactory;
 import com.azure.cosmos.implementation.encryption.EncryptionUtils;
+import com.azure.cosmos.implementation.encryption.KeyClientFactory;
+import com.azure.cosmos.implementation.encryption.KeyVaultAccessClient;
+import com.azure.cosmos.implementation.encryption.KeyVaultConstants;
+import com.azure.cosmos.implementation.encryption.KeyVaultKeyUriProperties;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
+ * TODO: moderakh now this should be internal
  * Provides functionality to wrap (encrypt) and unwrap (decrypt) data encryption keys using master keys stored in Azure Key Vault.
  * Unwrapped data encryption keys will be cached within the client SDK for a period of 1 hour.
  */
@@ -51,7 +57,7 @@ public class AzureKeyVaultKeyWrapProvider implements EncryptionKeyWrapProvider {
     @Override
     public Mono<EncryptionKeyUnwrapResult> unwrapKey(byte[] wrappedKey,
                                                      EncryptionKeyWrapMetadata metadata) {
-        if (!StringUtils.equals(metadata.type, AzureKeyVaultKeyWrapMetadata.TypeConstant)) {
+        if (!StringUtils.equals(metadata.type, AzureKeyVaultKeyWrapMetadata.TYPE_CONSTANT)) {
             throw new IllegalArgumentException("Invalid metadata metadata");
         }
 
@@ -81,7 +87,7 @@ public class AzureKeyVaultKeyWrapProvider implements EncryptionKeyWrapProvider {
     @Override
     public Mono<EncryptionKeyWrapResult> wrapKey(byte[] key,
                                                  EncryptionKeyWrapMetadata metadata) {
-        if (!StringUtils.equals(metadata.type, AzureKeyVaultKeyWrapMetadata.TypeConstant)) {
+        if (!StringUtils.equals(metadata.type, AzureKeyVaultKeyWrapMetadata.TYPE_CONSTANT)) {
             throw new IllegalArgumentException("Invalid metadata metadata");
         }
 

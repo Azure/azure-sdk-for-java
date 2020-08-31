@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.encryption;
+package com.azure.cosmos.implementation.encryption;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.encryption.KeyVaultTokenCredentialFactory;
 import com.azure.cosmos.implementation.caches.AsyncCache;
-import com.azure.cosmos.implementation.encryption.KeyVaultCosmosException;
 import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient;
 import org.slf4j.Logger;
@@ -16,8 +16,7 @@ import reactor.core.publisher.Mono;
 import java.net.URI;
 
 /**
- * Implements Core KeyVault access methods that uses the TODO: moderakh this doesn't need to be public. it is public due
- * to tests. FIXME
+ * Implements Core KeyVault access methods that uses the {@link KeyVaultAccessClient}
  */
 public class KeyVaultAccessClient {
     private final AsyncCache<URI, KeyAsyncClient> akvClientCache;

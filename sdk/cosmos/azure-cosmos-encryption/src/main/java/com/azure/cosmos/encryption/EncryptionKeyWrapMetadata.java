@@ -15,6 +15,7 @@ import java.util.Objects;
  * {@link EncryptionKeyWrapProvider}
  */
 public class EncryptionKeyWrapMetadata {
+
     /**
      * For JSON deserialize
      */

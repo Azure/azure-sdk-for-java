@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.encryption;
+package com.azure.cosmos.implementation.encryption;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.cosmos.encryption.KeyVaultTokenCredentialFactory;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;

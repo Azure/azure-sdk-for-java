@@ -9,7 +9,7 @@ import java.net.URL;
  * Metadata used by Azure Key Vault to wrap (encrypt) and unwrap (decrypt) keys.
  */
 public final class AzureKeyVaultKeyWrapMetadata extends EncryptionKeyWrapMetadata {
-    static final String TypeConstant = "akv";
+    static final String TYPE_CONSTANT = "akv";
 
     // TODO: moderakh use URL vs URI?
     /**
@@ -19,6 +19,6 @@ public final class AzureKeyVaultKeyWrapMetadata extends EncryptionKeyWrapMetadat
      */
     public AzureKeyVaultKeyWrapMetadata(URL masterKeyUri) {
         // masterKeyUri.AbsoluteUri
-        super(AzureKeyVaultKeyWrapMetadata.TypeConstant, masterKeyUri.toString());
+        super(AzureKeyVaultKeyWrapMetadata.TYPE_CONSTANT, masterKeyUri.toString());
     }
 }
