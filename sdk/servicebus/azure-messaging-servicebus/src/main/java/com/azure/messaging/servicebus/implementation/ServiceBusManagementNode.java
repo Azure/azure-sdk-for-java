@@ -101,7 +101,7 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      *     message. This sequence number can be used to cancel the scheduling of the message.
      */
     Mono<Long> schedule(ServiceBusMessage message, OffsetDateTime scheduledEnqueueTime, int maxSendLinkSize,
-                        String associatedLinkName, ServiceBusTransactionContext transactionContext);
+        String associatedLinkName, ServiceBusTransactionContext transactionContext);
 
     /**
      * Updates the session state.

@@ -27,6 +27,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ServiceBusClientBuilderTest {
     private static final String NAMESPACE_NAME = "dummyNamespaceName";
@@ -91,6 +92,7 @@ class ServiceBusClientBuilderTest {
 
         // Assert
         assertNotNull(client);
+        assertEquals(client.getEntityPath(), QUEUE_NAME);
     }
 
     @Test
@@ -100,13 +102,14 @@ class ServiceBusClientBuilderTest {
             .connectionString(NAMESPACE_CONNECTION_STRING)
             .sender()
             .topicName(TOPIC_NAME)
-            .viaTopicName(TOPIC_NAME);
+            .viaTopicName(VIA_TOPIC_NAME);
 
         // Act
         final ServiceBusSenderAsyncClient client = builder.buildAsyncClient();
 
         // Assert
         assertNotNull(client);
+        assertEquals(client.getEntityPath(), TOPIC_NAME);
     }
 
     @Test

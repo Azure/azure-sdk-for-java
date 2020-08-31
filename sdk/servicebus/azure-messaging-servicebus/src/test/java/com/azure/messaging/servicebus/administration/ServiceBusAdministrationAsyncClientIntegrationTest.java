@@ -69,7 +69,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
         final String queueName = testResourceNamer.randomName("test", 10);
         final CreateQueueOptions expected = new CreateQueueOptions()
-            .setMaxSizeInMegabytes(500)
+            .setMaxSizeInMegabytes(1024)
             .setMaxDeliveryCount(7)
             .setLockDuration(Duration.ofSeconds(45))
             .setRequiresSession(true)

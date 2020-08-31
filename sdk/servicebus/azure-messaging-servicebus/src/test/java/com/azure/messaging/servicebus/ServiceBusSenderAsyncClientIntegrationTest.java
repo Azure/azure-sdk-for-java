@@ -216,7 +216,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * Verifies that we can send message to final destination using via-queue.
+     * Verifies that we can send message to final destination using via-topic.
      */
     @Test
     void viaTopicMessageSendTest() {
