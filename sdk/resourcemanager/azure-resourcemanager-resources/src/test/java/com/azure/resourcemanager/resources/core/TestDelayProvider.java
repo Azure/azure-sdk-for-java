@@ -28,6 +28,6 @@ public class TestDelayProvider extends DelayProvider {
 
     @Override
     public Duration getDelayDuration(Duration delay) {
-        return isLiveMode ? delay : Duration.ZERO;
+        return isLiveMode ? delay : Duration.ofMillis(1);
     }
 }

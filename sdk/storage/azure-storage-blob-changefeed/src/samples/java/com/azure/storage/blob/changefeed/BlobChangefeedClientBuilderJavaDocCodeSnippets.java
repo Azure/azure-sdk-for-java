@@ -11,8 +11,10 @@ import com.azure.storage.blob.BlobServiceClientBuilder;
  * Code snippets for {@link BlobChangefeedClientBuilder}
  */
 public class BlobChangefeedClientBuilderJavaDocCodeSnippets {
-    private BlobServiceClient blobServiceClient = new BlobServiceClientBuilder().buildClient();
-    private BlobServiceAsyncClient blobServiceAsyncClient = new BlobServiceClientBuilder().buildAsyncClient();
+    private String endpoint = "endpoint";
+    private BlobServiceClient blobServiceClient = new BlobServiceClientBuilder().endpoint(endpoint).buildClient();
+    private BlobServiceAsyncClient blobServiceAsyncClient = new BlobServiceClientBuilder().endpoint(endpoint)
+        .buildAsyncClient();
 
     /**
      * Code snippet for {@link BlobChangefeedClientBuilder#buildClient()}

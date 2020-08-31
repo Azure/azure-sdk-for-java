@@ -85,7 +85,7 @@
 /eng/code-quality-reports/                          @mssfang @JonathanGiles
 /eng/jacoco-test-coverage/                          @srnagar @JonathanGiles
 /eng/spotbugs-aggregate-report/                     @srnagar @JonathanGiles
-/eng/versioning/                                    @JimSuplizio @mitchdenny @weshaggard @danieljurek @alzimmermsft @samvaity
+/eng/versioning/                                    @JimSuplizio @mitchdenny @danieljurek @alzimmermsft @samvaity
 /parent/                                            @JimSuplizio @alzimmermsft
 
 /**/tests.yml                                       @danieljurek
