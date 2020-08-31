@@ -113,6 +113,7 @@ public final class DigitalTwinsAsyncClient {
                     DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
                     return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), jsonResponse, twinHeaders));
                 } catch (JsonProcessingException e) {
+                    logger.error("JsonProcessingException occurred while creating a digital twin: ", e);
                     return Mono.error(e);
                 }
             });
@@ -146,7 +147,7 @@ public final class DigitalTwinsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> createRelationship(String digitalTwinId, String relationshipId, String relationship) {
-        return withContext(context -> createRelationship(digitalTwinId, relationshipId, relationship, context))
+        return createRelationshipWithResponse(digitalTwinId, relationshipId, relationship)
             .map(DigitalTwinsResponse::getValue);
     }
 
@@ -156,14 +157,14 @@ public final class DigitalTwinsAsyncClient {
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be created.
      * @param relationship The application/json relationship to be created.
-     * @return A REST response containing the application/json relationship created.
+     * @return The Http response containing the application/json relationship created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsResponse<String>> createRelationshipWithResponse(String digitalTwinId, String relationshipId, String relationship) {
-        return withContext(context -> createRelationship(digitalTwinId, relationshipId, relationship, context));
+        return withContext(context -> createRelationshipWithResponse(digitalTwinId, relationshipId, relationship, context));
     }
 
-    Mono<DigitalTwinsResponse<String>> createRelationship(String digitalTwinId, String relationshipId, String relationship, Context context) {
+    Mono<DigitalTwinsResponse<String>> createRelationshipWithResponse(String digitalTwinId, String relationshipId, String relationship, Context context) {
         return protocolLayer
             .getDigitalTwins()
             .addRelationshipWithResponseAsync(digitalTwinId, relationshipId, relationship, context)
@@ -173,6 +174,7 @@ public final class DigitalTwinsAsyncClient {
                     DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
                     return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), jsonResponse, twinHeaders));
                 } catch (JsonProcessingException e) {
+                    logger.error("JsonProcessingException occurred while creating a relationship: ", e);
                     return Mono.error(e);
                 }
             });
@@ -190,7 +192,7 @@ public final class DigitalTwinsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> Mono<T> createRelationship(String digitalTwinId, String relationshipId, Object relationship, Class<T> clazz) {
-        return withContext(context -> createRelationship(digitalTwinId, relationshipId, relationship, clazz, context))
+        return createRelationshipWithResponse(digitalTwinId, relationshipId, relationship, clazz)
             .map(DigitalTwinsResponse::getValue);
     }
 
@@ -202,14 +204,14 @@ public final class DigitalTwinsAsyncClient {
      * @param relationship The relationship to be created.
      * @param clazz The model class to convert the relationship to.
      * @param <T> The generic type to convert the relationship to.
-     * @return A REST response containing the relationship created.
+     * @return The Http response containing the relationship created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> Mono<DigitalTwinsResponse<T>> createRelationshipWithResponse(String digitalTwinId, String relationshipId, Object relationship, Class<T> clazz) {
-        return withContext(context -> createRelationship(digitalTwinId, relationshipId, relationship, clazz, context));
+        return withContext(context -> createRelationshipWithResponse(digitalTwinId, relationshipId, relationship, clazz, context));
     }
 
-    <T> Mono<DigitalTwinsResponse<T>> createRelationship(String digitalTwinId, String relationshipId, Object relationship, Class<T> clazz, Context context) {
+    <T> Mono<DigitalTwinsResponse<T>> createRelationshipWithResponse(String digitalTwinId, String relationshipId, Object relationship, Class<T> clazz, Context context) {
         return protocolLayer
             .getDigitalTwins()
             .addRelationshipWithResponseAsync(digitalTwinId, relationshipId, relationship, context)
@@ -229,7 +231,7 @@ public final class DigitalTwinsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> getRelationship(String digitalTwinId, String relationshipId) {
-        return withContext(context -> getRelationship(digitalTwinId, relationshipId, context))
+        return getRelationshipWithResponse(digitalTwinId, relationshipId)
             .map(DigitalTwinsResponse::getValue);
     }
 
@@ -238,14 +240,14 @@ public final class DigitalTwinsAsyncClient {
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to retrieve.
-     * @return A REST response containing the application/json relationship corresponding to the provided relationshipId.
+     * @return The Http response containing the application/json relationship corresponding to the provided relationshipId.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsResponse<String>> getRelationshipWithResponse(String digitalTwinId, String relationshipId) {
-        return withContext(context -> getRelationship(digitalTwinId, relationshipId, context));
+        return withContext(context -> getRelationshipWithResponse(digitalTwinId, relationshipId, context));
     }
 
-    Mono<DigitalTwinsResponse<String>> getRelationship(String digitalTwinId, String relationshipId, Context context) {
+    Mono<DigitalTwinsResponse<String>> getRelationshipWithResponse(String digitalTwinId, String relationshipId, Context context) {
         return protocolLayer
             .getDigitalTwins()
             .getRelationshipByIdWithResponseAsync(digitalTwinId, relationshipId, context)
@@ -255,6 +257,7 @@ public final class DigitalTwinsAsyncClient {
                     DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
                     return Mono.justOrEmpty(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), jsonResponse, twinHeaders));
                 } catch (JsonProcessingException e) {
+                    logger.error("JsonProcessingException occurred while retrieving a relationship: ", e);
                     return Mono.error(e);
                 }
             });
@@ -271,7 +274,7 @@ public final class DigitalTwinsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> Mono<T> getRelationship(String digitalTwinId, String relationshipId, Class<T> clazz) {
-        return withContext(context -> getRelationship(digitalTwinId, relationshipId, clazz, context))
+        return getRelationshipWithResponse(digitalTwinId, relationshipId, clazz)
             .map(DigitalTwinsResponse::getValue);
     }
 
@@ -282,14 +285,14 @@ public final class DigitalTwinsAsyncClient {
      * @param relationshipId The Id of the relationship to retrieve.
      * @param clazz The model class to convert the relationship to.
      * @param <T> The generic type to convert the relationship to.
-     * @return A REST response containing the relationship corresponding to the provided relationshipId.
+     * @return The Http response containing the relationship corresponding to the provided relationshipId.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> Mono<DigitalTwinsResponse<T>> getRelationshipWithResponse(String digitalTwinId, String relationshipId, Class<T> clazz) {
-        return withContext(context -> getRelationship(digitalTwinId, relationshipId, clazz, context));
+        return withContext(context -> getRelationshipWithResponse(digitalTwinId, relationshipId, clazz, context));
     }
 
-    <T> Mono<DigitalTwinsResponse<T>> getRelationship(String digitalTwinId, String relationshipId, Class<T> clazz, Context context) {
+    <T> Mono<DigitalTwinsResponse<T>> getRelationshipWithResponse(String digitalTwinId, String relationshipId, Class<T> clazz, Context context) {
         return protocolLayer
             .getDigitalTwins()
             .getRelationshipByIdWithResponseAsync(digitalTwinId, relationshipId, context)
@@ -306,11 +309,11 @@ public final class DigitalTwinsAsyncClient {
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be updated.
      * @param relationshipUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin's relationship.
-     * @return An empty response.
+     * @return An empty Mono.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateRelationship(String digitalTwinId, String relationshipId, List<Object> relationshipUpdateOperations) {
-        return withContext(context -> updateRelationship(digitalTwinId, relationshipId, relationshipUpdateOperations, new RequestOptions(), context))
+        return updateRelationshipWithResponse(digitalTwinId, relationshipId, relationshipUpdateOperations, new RequestOptions())
             .flatMap(voidResponse -> Mono.empty());
     }
 
@@ -321,14 +324,14 @@ public final class DigitalTwinsAsyncClient {
      * @param relationshipId The Id of the relationship to be updated.
      * @param relationshipUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin's relationship.
      * @param options The optional settings for this request.
-     * @return A REST response.
+     * @return The Http response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsResponse<Void>> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, List<Object> relationshipUpdateOperations, RequestOptions options) {
-        return withContext(context -> updateRelationship(digitalTwinId, relationshipId, relationshipUpdateOperations, options, context));
+        return withContext(context -> updateRelationshipWithResponse(digitalTwinId, relationshipId, relationshipUpdateOperations, options, context));
     }
 
-    Mono<DigitalTwinsResponse<Void>> updateRelationship(String digitalTwinId, String relationshipId, List<Object> relationshipUpdateOperations, RequestOptions options, Context context) {
+    Mono<DigitalTwinsResponse<Void>> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, List<Object> relationshipUpdateOperations, RequestOptions options, Context context) {
         return protocolLayer
             .getDigitalTwins()
             .updateRelationshipWithResponseAsync(digitalTwinId, relationshipId, options.getIfMatch(), relationshipUpdateOperations, context)
@@ -343,11 +346,11 @@ public final class DigitalTwinsAsyncClient {
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to delete.
-     * @return An empty response.
+     * @return An empty Mono.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteRelationship(String digitalTwinId, String relationshipId) {
-        return withContext(context -> deleteRelationship(digitalTwinId, relationshipId, new RequestOptions(), context))
+        return deleteRelationshipWithResponse(digitalTwinId, relationshipId, new RequestOptions())
             .flatMap(voidResponse -> Mono.empty());
     }
 
@@ -357,14 +360,14 @@ public final class DigitalTwinsAsyncClient {
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to delete.
      * @param options The optional settings for this request.
-     * @return A REST response.
+     * @return The Http response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteRelationshipWithResponse(String digitalTwinId, String relationshipId, RequestOptions options) {
-        return withContext(context -> deleteRelationship(digitalTwinId, relationshipId, options, context));
+        return withContext(context -> deleteRelationshipWithResponse(digitalTwinId, relationshipId, options, context));
     }
 
-    Mono<Response<Void>> deleteRelationship(String digitalTwinId, String relationshipId, RequestOptions options, Context context) {
+    Mono<Response<Void>> deleteRelationshipWithResponse(String digitalTwinId, String relationshipId, RequestOptions options, Context context) {
         return protocolLayer
             .getDigitalTwins()
             .deleteRelationshipWithResponseAsync(digitalTwinId, relationshipId, options.getIfMatch(), context);
@@ -406,6 +409,7 @@ public final class DigitalTwinsAsyncClient {
                             try {
                                 return mapper.writeValueAsString(object);
                             } catch (JsonProcessingException e) {
+                                logger.error("JsonProcessingException occurred while retrieving relationships: ", e);
                                 throw new RuntimeException("JsonProcessingException occurred while retrieving relationships", e);
                             }
                         })
@@ -418,7 +422,6 @@ public final class DigitalTwinsAsyncClient {
                         stringList,
                         objectPagedResponse.getContinuationToken(),
                         ((PagedResponseBase) objectPagedResponse).getDeserializedHeaders());
-
                 }
             );
     }
@@ -433,6 +436,7 @@ public final class DigitalTwinsAsyncClient {
                         try {
                             return mapper.writeValueAsString(object);
                         } catch (JsonProcessingException e) {
+                            logger.error("JsonProcessingException occurred while retrieving relationships: ", e);
                             throw new RuntimeException("JsonProcessingException occurred while retrieving relationships", e);
                         }
                     })
@@ -494,7 +498,6 @@ public final class DigitalTwinsAsyncClient {
                         list,
                         objectPagedResponse.getContinuationToken(),
                         ((PagedResponseBase) objectPagedResponse).getDeserializedHeaders());
-
                 }
             );
     }

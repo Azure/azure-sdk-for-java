@@ -85,11 +85,11 @@ public final class DigitalTwinsClient {
      * @param relationshipId The Id of the relationship to be created.
      * @param relationship The application/json relationship to be created.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A REST response containing the application/json relationship created.
+     * @return The Http response containing the application/json relationship created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DigitalTwinsResponse<String> createRelationshipWithResponse(String digitalTwinId, String relationshipId, String relationship, Context context) {
-        return digitalTwinsAsyncClient.createRelationship(digitalTwinId, relationshipId, relationship, context).block();
+        return digitalTwinsAsyncClient.createRelationshipWithResponse(digitalTwinId, relationshipId, relationship, context).block();
     }
 
     /**
@@ -116,11 +116,11 @@ public final class DigitalTwinsClient {
      * @param clazz The model class to convert the relationship to.
      * @param <T> The generic type to convert the relationship to.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A REST response containing the relationship created.
+     * @return The Http response containing the relationship created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> DigitalTwinsResponse<T> createRelationshipWithResponse(String digitalTwinId, String relationshipId, Object relationship, Class<T> clazz, Context context) {
-        return digitalTwinsAsyncClient.createRelationship(digitalTwinId, relationshipId, relationship, clazz, context).block();
+        return digitalTwinsAsyncClient.createRelationshipWithResponse(digitalTwinId, relationshipId, relationship, clazz, context).block();
     }
 
     /**
@@ -141,11 +141,11 @@ public final class DigitalTwinsClient {
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to retrieve.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A REST response containing the application/json relationship corresponding to the provided relationshipId.
+     * @return The Http response containing the application/json relationship corresponding to the provided relationshipId.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DigitalTwinsResponse<String> getRelationshipWithResponse(String digitalTwinId, String relationshipId, Context context) {
-        return digitalTwinsAsyncClient.getRelationship(digitalTwinId, relationshipId, context).block();
+        return digitalTwinsAsyncClient.getRelationshipWithResponse(digitalTwinId, relationshipId, context).block();
     }
 
     /**
@@ -170,11 +170,11 @@ public final class DigitalTwinsClient {
      * @param clazz The model class to convert the relationship to.
      * @param <T> The generic type to convert the relationship to.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A REST response containing the relationship corresponding to the provided relationshipId.
+     * @return The Http response containing the relationship corresponding to the provided relationshipId.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> DigitalTwinsResponse<T> getRelationshipWithResponse(String digitalTwinId, String relationshipId, Class<T> clazz, Context context) {
-        return digitalTwinsAsyncClient.getRelationship(digitalTwinId, relationshipId, clazz, context).block();
+        return digitalTwinsAsyncClient.getRelationshipWithResponse(digitalTwinId, relationshipId, clazz, context).block();
     }
 
     /**
@@ -186,7 +186,7 @@ public final class DigitalTwinsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void updateRelationship(String digitalTwinId, String relationshipId, List<Object> relationshipUpdateOperations) {
-        updateRelationshipWithResponse(digitalTwinId, relationshipId, relationshipUpdateOperations, new RequestOptions(), Context.NONE);
+        updateRelationshipWithResponse(digitalTwinId, relationshipId, relationshipUpdateOperations, new RequestOptions(), Context.NONE).getValue();
     }
 
     /**
@@ -197,11 +197,11 @@ public final class DigitalTwinsClient {
      * @param relationshipUpdateOperations The list of application/json-patch+json operations to be performed on the specified digital twin's relationship.
      * @param options The optional settings for this request.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A REST response.
+     * @return The Http response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DigitalTwinsResponse<Void> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, List<Object> relationshipUpdateOperations, RequestOptions options, Context context) {
-        return digitalTwinsAsyncClient.updateRelationship(digitalTwinId, relationshipId, relationshipUpdateOperations, options, context).block();
+        return digitalTwinsAsyncClient.updateRelationshipWithResponse(digitalTwinId, relationshipId, relationshipUpdateOperations, options, context).block();
     }
 
     /**
@@ -222,11 +222,11 @@ public final class DigitalTwinsClient {
      * @param relationshipId The Id of the relationship to delete.
      * @param options The optional settings for this request.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A REST response.
+     * @return The Http response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteRelationshipWithResponse(String digitalTwinId, String relationshipId, RequestOptions options, Context context) {
-        return digitalTwinsAsyncClient.deleteRelationship(digitalTwinId, relationshipId, options, context).block();
+        return digitalTwinsAsyncClient.deleteRelationshipWithResponse(digitalTwinId, relationshipId, options, context).block();
     }
 
     /**
