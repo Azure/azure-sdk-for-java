@@ -31,9 +31,9 @@ public class SqlRuleAction extends RuleAction {
         final ClientLogger logger = new ClientLogger(SqlRuleAction.class);
 
         if (sqlExpression == null) {
-            throw logger.logThrowableAsError(new NullPointerException("'sqlExpression' cannot be null."));
+            throw logger.logExceptionAsError(new NullPointerException("'sqlExpression' cannot be null."));
         } else if (sqlExpression.isEmpty()) {
-            throw logger.logThrowableAsError(
+            throw logger.logExceptionAsError(
                 new IllegalArgumentException("'sqlExpression' cannot be an empty string."));
         }
 

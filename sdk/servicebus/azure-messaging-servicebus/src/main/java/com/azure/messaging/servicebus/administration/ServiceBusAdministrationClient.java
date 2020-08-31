@@ -40,7 +40,6 @@ import java.util.function.Function;
 @ServiceClient(builder = ServiceBusAdministrationClientBuilder.class)
 public final class ServiceBusAdministrationClient {
     private final ServiceBusAdministrationAsyncClient asyncClient;
-    private final CreateRuleOptions defaultRuleOptions = new CreateRuleOptions();
 
     /**
      * Creates a new instance with the given client.

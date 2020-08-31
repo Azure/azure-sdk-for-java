@@ -62,9 +62,9 @@ public class CorrelationRuleFilter extends RuleFilter {
     public CorrelationRuleFilter(String correlationId) {
         final ClientLogger logger = new ClientLogger(CorrelationRuleFilter.class);
         if (correlationId == null) {
-            throw logger.logThrowableAsError(new NullPointerException("'correlationId' cannot be null"));
+            throw logger.logExceptionAsError(new NullPointerException("'correlationId' cannot be null"));
         } else if (correlationId.isEmpty()) {
-            throw logger.logThrowableAsError(new IllegalArgumentException("'correlationId' cannot be empty."));
+            throw logger.logExceptionAsError(new IllegalArgumentException("'correlationId' cannot be empty."));
         }
 
         this.correlationId = correlationId;

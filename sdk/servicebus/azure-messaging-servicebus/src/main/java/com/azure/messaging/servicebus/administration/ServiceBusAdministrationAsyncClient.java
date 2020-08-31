@@ -29,7 +29,6 @@ import com.azure.messaging.servicebus.administration.models.CreateTopicOptions;
 import com.azure.messaging.servicebus.administration.models.NamespaceProperties;
 import com.azure.messaging.servicebus.administration.models.QueueProperties;
 import com.azure.messaging.servicebus.administration.models.QueueRuntimeInfo;
-import com.azure.messaging.servicebus.administration.models.RuleFilter;
 import com.azure.messaging.servicebus.administration.models.RuleProperties;
 import com.azure.messaging.servicebus.administration.models.SubscriptionProperties;
 import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeInfo;
@@ -2563,10 +2562,6 @@ public final class ServiceBusAdministrationAsyncClient {
             default:
                 return new HttpResponseException(error.getDetail(), managementError.getResponse(), exception);
         }
-    }
-
-    private static RuleFilter toModel(RuleFilterImpl implementation) {
-        return null;
     }
 
     /**
