@@ -1,7 +1,8 @@
 # Release History
 
 ## 12.3.0-beta.1 (Unreleased)
-
+- Added support to upload data to a file from an InputStream.
+- Modified a method to return null instead of empty string when metadata passed in was null or empty.
 
 ## 12.2.0 (2020-08-13)
 - Fixed bug where Query Input Stream would throw when a ByteBuffer of length 0 was encountered.
