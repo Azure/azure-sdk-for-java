@@ -25,7 +25,7 @@ public class DigitalTwinsTestBase extends TestBase
     protected static final String DIGITALTWINS_URL = Configuration.getGlobalConfiguration()
         .get("DIGITALTWINS_URL", "https://playback.api.wus2.digitaltwins.azure.net");
 
-    protected DigitalTwinsClientBuilder getDigitalTwinsClientBuilder(){
+    protected DigitalTwinsClientBuilder getDigitalTwinsClientBuilder() {
         DigitalTwinsClientBuilder builder = new DigitalTwinsClientBuilder()
             .endpoint(DIGITALTWINS_URL)
             .tokenCredential(new ClientSecretCredentialBuilder()
@@ -34,7 +34,7 @@ public class DigitalTwinsTestBase extends TestBase
                 .clientSecret(CLIENT_SECRET)
                 .build());
 
-        if(interceptorManager.isPlaybackMode()){
+        if (interceptorManager.isPlaybackMode()){
             builder.httpClient(interceptorManager.getPlaybackClient());
             return builder;
         }
@@ -43,14 +43,14 @@ public class DigitalTwinsTestBase extends TestBase
 
         // If it is record mode, we add record mode policies to the builder.
         // There is no isRecordMode method on interceptorManger.
-        if(!interceptorManager.isLiveMode()){
+        if (!interceptorManager.isLiveMode()){
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
         return builder;
     }
 
-    protected DigitalTwinsClientBuilder getDigitalTwinsClientBuilder(HttpPipelinePolicy... policies){
+    protected DigitalTwinsClientBuilder getDigitalTwinsClientBuilder(HttpPipelinePolicy... policies) {
         DigitalTwinsClientBuilder builder = new DigitalTwinsClientBuilder()
             .endpoint(DIGITALTWINS_URL)
             .tokenCredential(new ClientSecretCredentialBuilder()
@@ -59,7 +59,7 @@ public class DigitalTwinsTestBase extends TestBase
                 .clientSecret(CLIENT_SECRET)
                 .build());
 
-        if(interceptorManager.isPlaybackMode()){
+        if (interceptorManager.isPlaybackMode()){
             builder.httpClient(interceptorManager.getPlaybackClient());
             addPolicies(builder, policies);
             return builder;
@@ -71,7 +71,7 @@ public class DigitalTwinsTestBase extends TestBase
 
         // If it is record mode, we add record mode policies to the builder.
         // There is no isRecordMode method on interceptorManger.
-        if(!interceptorManager.isLiveMode()){
+        if (!interceptorManager.isLiveMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
