@@ -83,18 +83,6 @@ public class CosmosQueryMethod extends QueryMethod {
         return doFindAnnotation(Query.class);
     }
 
-    /**
-     * Returns the field specification to be used for the query.
-     */
-    @Nullable
-    String getFieldSpecification() {
-
-        return lookupQueryAnnotation() //
-                   .map(Query::fields) //
-                   .filter(StringUtils::hasText) //
-                   .orElse(null);
-    }
-
     @SuppressWarnings("unchecked")
     private <A extends Annotation> Optional<A> doFindAnnotation(Class<A> annotationType) {
         return (Optional<A>) this.annotationCache
