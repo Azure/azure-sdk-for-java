@@ -34,7 +34,7 @@ public class AppPlatformTest extends ResourceManagerTestBase {
     @Override
     protected HttpPipeline buildHttpPipeline(
         TokenCredential credential,
-        com.azure.core.management.profile.AzureProfile profile,
+        AzureProfile profile,
         HttpLogOptions httpLogOptions,
         List<HttpPipelinePolicy> policies,
         HttpClient httpClient) {
