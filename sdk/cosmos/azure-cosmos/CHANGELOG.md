@@ -1,7 +1,17 @@
 # Release History
 
-## 4.3.2-beta.3 (Unreleased)
+## 4.4.0-beta.2 (Unreleased)
 
+
+## 4.4.0-beta.1 (2020-08-27)
+### New Features
+* Added new API to efficiently load many documents (via list of pk/id pairs or all documents for a set of pk values).
+* Added new `deleteItem` API.
+* Enabled query metrics by default.
+### Key Bug Fixes
+* Fixed NPE in `GatewayAddressCache`.
+* Fixing query metric issue for zero item response.
+* Improved performance (reduced CPU usage) for address parsing and Master-Key authentication.
 
 ## 4.3.2-beta.2 (2020-08-17)
 ### Key Bug Fixes

@@ -68,9 +68,7 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
         Assert.notNull(entity, "Entity must not be null!");
 
         if (entityInformation.isNew(entity)) {
-            return cosmosOperations.insert(entityInformation.getContainerName(),
-                entity,
-                createKey(entityInformation.getPartitionKeyFieldValue(entity)));
+            return cosmosOperations.insert(entityInformation.getContainerName(), entity);
         } else {
             return cosmosOperations.upsert(entityInformation.getContainerName(), entity);
         }
@@ -183,11 +181,7 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
     public Mono<Void> delete(@NonNull T entity) {
         Assert.notNull(entity, "entity to be deleted must not be null!");
 
-        final Object id = entityInformation.getId(entity);
-        return cosmosOperations.deleteEntityById(entityInformation.getContainerName(),
-            entity,
-            id,
-            createKey(entityInformation.getPartitionKeyFieldValue(entity)));
+        return cosmosOperations.deleteEntity(entityInformation.getContainerName(), entity);
     }
 
     @Override
@@ -211,13 +205,6 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
     @Override
     public Mono<Void> deleteAll() {
         return cosmosOperations.deleteAll(entityInformation.getContainerName(), entityInformation.getJavaType());
-    }
-
-    private PartitionKey createKey(Object partitionKeyValue) {
-        if (partitionKeyValue == null) {
-            return PartitionKey.NONE;
-        }
-        return new PartitionKey(partitionKeyValue);
     }
 
 }
