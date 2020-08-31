@@ -65,7 +65,7 @@ public class TablesJacksonSerializer extends JacksonAdapter {
             final Map.Entry<String, JsonNode> entry = it.next();
             final JsonNode childNode = entry.getValue();
 
-            if (entry.getKey().equals(TableConstants.ODATA_METADATA_KEY)) {
+            if (entry.getKey().equals(TablesConstants.ODATA_METADATA_KEY)) {
                 odataMetadata = childNode.asText();
                 continue;
             }
