@@ -12,11 +12,12 @@ import com.azure.data.tables.models.ListTablesOptions;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests methods for {@link TableServiceAsyncClient}.
@@ -108,19 +109,19 @@ public class TableServiceAsyncClientTest extends TestBase {
             .verify();
     }
 
-    @Disabled("TODO: Not working at the moment.")
     @Test
-    void serviceListTableWithResponseWithParamsAsync() {
+    void serviceListTablesWithFilterAsync() {
         // Arrange
-        ListTablesOptions options = new ListTablesOptions().setFilter("TableName eq SampleTable");
+        final String tableName = testResourceNamer.randomName("test", 20);
+        ListTablesOptions options = new ListTablesOptions().setFilter("TableName eq '" + tableName + "'");
+        serviceClient.createTable(tableName).block(TIMEOUT);
 
         // Act & Assert
         StepVerifier.create(serviceClient.listTables(options))
             .assertNext(table -> {
-                System.out.print(table);
+                assertEquals(tableName, table.getName());
             })
             .expectComplete()
             .verify();
-
     }
 }

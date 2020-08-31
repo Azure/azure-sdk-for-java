@@ -24,13 +24,40 @@ public class TableServiceClient {
     }
 
     /**
+     * returns the account for this service
+     *
+     * @return returns the account name
+     */
+    public String getAccountName() {
+        return client.getAccountName();
+    }
+
+    /**
+     * returns Url of this service
+     *
+     * @return Url
+     */
+    public String getServiceUrl() {
+        return client.getServiceUrl();
+    }
+
+    /**
+     * returns the version
+     *
+     * @return the version
+     */
+    public TablesServiceVersion getApiVersion() {
+        return client.getApiVersion();
+    }
+
+    /**
      * gets the Table Client for the given table
      *
      * @param name the name of the table
      * @return the Table Client for the table
      */
     public TableClient getTableClient(String name) {
-        return null;
+        return new TableClient(client.getTableClient(name));
     }
 
     /**
