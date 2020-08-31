@@ -58,8 +58,6 @@ if (-not $AppRegistrationName)
     $AppRegistrationName = $ResourceGroup
 }
 
-$pathToManifest = "$PSScriptRoot\manifest.json"
-
 $appId = az ad app list --show-mine --query "[?displayName=='$AppRegistrationName'].appId" --output tsv
 if (-not $appId)
 {
