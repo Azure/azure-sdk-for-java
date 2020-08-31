@@ -25,8 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Base64Util;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
-import com.azure.storage.file.datalake.implementation.models.AppendMode;
-import com.azure.storage.file.datalake.implementation.models.BlobType;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.PathExpiryOptions;
@@ -35,7 +33,6 @@ import com.azure.storage.file.datalake.implementation.models.PathLeaseAction;
 import com.azure.storage.file.datalake.implementation.models.PathRenameMode;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.models.PathsAppendDataResponse;
-import com.azure.storage.file.datalake.implementation.models.PathsConcurrentAppendResponse;
 import com.azure.storage.file.datalake.implementation.models.PathsCreateResponse;
 import com.azure.storage.file.datalake.implementation.models.PathsDeleteResponse;
 import com.azure.storage.file.datalake.implementation.models.PathSetAccessControlRecursiveMode;
@@ -91,7 +88,7 @@ public final class PathsImpl {
         @Put("{filesystem}/{path}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
-        Mono<PathsCreateResponse> create(@PathParam("filesystem") String fileSystem, @PathParam("path") String path1, @HostParam("url") String url, @QueryParam("resource") PathResourceType resource, @QueryParam("continuation") String continuation, @QueryParam("blobtype") BlobType blobType, @QueryParam("mode") PathRenameMode mode, @HeaderParam("x-ms-rename-source") String renameSource, @HeaderParam("x-ms-source-lease-id") String sourceLeaseId, @HeaderParam("x-ms-properties") String properties, @HeaderParam("x-ms-permissions") String permissions, @HeaderParam("x-ms-umask") String umask, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-cache-control") String cacheControl, @HeaderParam("x-ms-content-encoding") String contentEncoding, @HeaderParam("x-ms-content-language") String contentLanguage, @HeaderParam("x-ms-content-disposition") String contentDisposition, @HeaderParam("x-ms-content-type") String contentType, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("x-ms-source-if-match") String sourceIfMatch, @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch, @HeaderParam("x-ms-source-if-modified-since") DateTimeRfc1123 sourceIfModifiedSince, @HeaderParam("x-ms-source-if-unmodified-since") DateTimeRfc1123 sourceIfUnmodifiedSince, Context context);
+        Mono<PathsCreateResponse> create(@PathParam("filesystem") String fileSystem, @PathParam("path") String path1, @HostParam("url") String url, @QueryParam("resource") PathResourceType resource, @QueryParam("continuation") String continuation, @QueryParam("mode") PathRenameMode mode, @HeaderParam("x-ms-rename-source") String renameSource, @HeaderParam("x-ms-source-lease-id") String sourceLeaseId, @HeaderParam("x-ms-properties") String properties, @HeaderParam("x-ms-permissions") String permissions, @HeaderParam("x-ms-umask") String umask, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-cache-control") String cacheControl, @HeaderParam("x-ms-content-encoding") String contentEncoding, @HeaderParam("x-ms-content-language") String contentLanguage, @HeaderParam("x-ms-content-disposition") String contentDisposition, @HeaderParam("x-ms-content-type") String contentType, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("x-ms-source-if-match") String sourceIfMatch, @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch, @HeaderParam("x-ms-source-if-modified-since") DateTimeRfc1123 sourceIfModifiedSince, @HeaderParam("x-ms-source-if-unmodified-since") DateTimeRfc1123 sourceIfUnmodifiedSince, Context context);
 
         @Patch("{filesystem}/{path}")
         @ExpectedResponses({200, 202})
@@ -126,7 +123,7 @@ public final class PathsImpl {
         @Patch("{filesystem}/{path}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
-        Mono<PathsSetAccessControlRecursiveResponse> setAccessControlRecursive(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @QueryParam("continuation") String continuation, @QueryParam("mode") PathSetAccessControlRecursiveMode mode, @QueryParam("forceFlag") Boolean forceFlag, @QueryParam("maxRecords") Integer maxRecords, @HeaderParam("x-ms-acl") String acl, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-version") String version, @QueryParam("action") String action, Context context);
+        Mono<PathsSetAccessControlRecursiveResponse> setAccessControlRecursive(@PathParam("filesystem") String fileSystem, @PathParam("path") String path1, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @QueryParam("continuation") String continuation, @QueryParam("mode") PathSetAccessControlRecursiveMode mode, @QueryParam("forceFlag") Boolean forceFlag, @QueryParam("maxRecords") Integer maxRecords, @HeaderParam("x-ms-acl") String acl, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-version") String version, @QueryParam("action") String action, Context context);
 
         @Patch("{filesystem}/{path}")
         @ExpectedResponses({200})
@@ -142,11 +139,6 @@ public final class PathsImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<PathsSetExpiryResponse> setExpiry(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-expiry-option") PathExpiryOptions expiryOptions, @HeaderParam("x-ms-expiry-time") String expiresOn, @QueryParam("comp") String comp, Context context);
-
-        @Patch("{filesystem}/{path}")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
-        Mono<PathsConcurrentAppendResponse> concurrentAppend(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("appendmode") AppendMode appendMode, @BodyParam("application/json; charset=utf-8") Flux<ByteBuffer> body, @HeaderParam("Content-Length") Long contentLength, @QueryParam("action") String action, @HeaderParam("Content-MD5") String transactionalContentHash, Context context);
     }
 
     /**
@@ -161,7 +153,6 @@ public final class PathsImpl {
     public Mono<PathsCreateResponse> createWithRestResponseAsync(Context context) {
         final PathResourceType resource = null;
         final String continuation = null;
-        final BlobType blobType = null;
         final PathRenameMode mode = null;
         final String renameSource = null;
         final String sourceLeaseId = null;
@@ -184,7 +175,7 @@ public final class PathsImpl {
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
         DateTimeRfc1123 sourceIfModifiedSinceConverted = null;
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted = null;
-        return service.create(this.client.getFileSystem(), this.client.getPath1(), this.client.getUrl(), resource, continuation, blobType, mode, renameSource, sourceLeaseId, properties, permissions, umask, requestId, timeout, this.client.getVersion(), cacheControl, contentEncoding, contentLanguage, contentDisposition, contentType, leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, context);
+        return service.create(this.client.getFileSystem(), this.client.getPath1(), this.client.getUrl(), resource, continuation, mode, renameSource, sourceLeaseId, properties, permissions, umask, requestId, timeout, this.client.getVersion(), cacheControl, contentEncoding, contentLanguage, contentDisposition, contentType, leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -193,7 +184,6 @@ public final class PathsImpl {
      *
      * @param resource Required only for Create File and Create Directory. The value must be "file" or "directory". Possible values include: 'directory', 'file'.
      * @param continuation Optional.  When deleting a directory, the number of paths that are deleted with each invocation is limited.  If the number of paths to be deleted exceeds this limit, a continuation token is returned in this response header.  When a continuation token is returned in the response, it must be specified in a subsequent invocation of the delete operation to continue deleting the directory.
-     * @param blobType Optional.  Indicates concurrent append mode. Possible values include: 'appendblob'.
      * @param mode Optional. Valid only when namespace is enabled. This parameter determines the behavior of the rename operation. The value must be "legacy" or "posix", and the default value will be "posix". Possible values include: 'legacy', 'posix'.
      * @param renameSource An optional file or directory to be renamed.  The value must have the following format: "/{filesystem}/{path}".  If "x-ms-properties" is specified, the properties will overwrite the existing properties; otherwise, the existing properties will be preserved. This value must be a URL percent-encoded string. Note that the string may only contain ASCII characters in the ISO-8859-1 character set.
      * @param sourceLeaseId A lease ID for the source path. If specified, the source path must have an active lease and the lease ID must match.
@@ -211,7 +201,7 @@ public final class PathsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsCreateResponse> createWithRestResponseAsync(PathResourceType resource, String continuation, BlobType blobType, PathRenameMode mode, String renameSource, String sourceLeaseId, String properties, String permissions, String umask, String requestId, Integer timeout, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, SourceModifiedAccessConditions sourceModifiedAccessConditions, Context context) {
+    public Mono<PathsCreateResponse> createWithRestResponseAsync(PathResourceType resource, String continuation, PathRenameMode mode, String renameSource, String sourceLeaseId, String properties, String permissions, String umask, String requestId, Integer timeout, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, SourceModifiedAccessConditions sourceModifiedAccessConditions, Context context) {
         String cacheControl = null;
         if (pathHttpHeaders != null) {
             cacheControl = pathHttpHeaders.getCacheControl();
@@ -272,7 +262,7 @@ public final class PathsImpl {
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         DateTimeRfc1123 sourceIfModifiedSinceConverted = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
-        return service.create(this.client.getFileSystem(), this.client.getPath1(), this.client.getUrl(), resource, continuation, blobType, mode, renameSource, sourceLeaseId, properties, permissions, umask, requestId, timeout, this.client.getVersion(), cacheControl, contentEncoding, contentLanguage, contentDisposition, contentType, leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, context);
+        return service.create(this.client.getFileSystem(), this.client.getPath1(), this.client.getUrl(), resource, continuation, mode, renameSource, sourceLeaseId, properties, permissions, umask, requestId, timeout, this.client.getVersion(), cacheControl, contentEncoding, contentLanguage, contentDisposition, contentType, leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -736,7 +726,7 @@ public final class PathsImpl {
         final String acl = null;
         final String requestId = null;
         final String action = "setAccessControlRecursive";
-        return service.setAccessControlRecursive(this.client.getUrl(), timeout, continuation, mode, forceFlag, maxRecords, acl, requestId, this.client.getVersion(), action, context);
+        return service.setAccessControlRecursive(this.client.getFileSystem(), this.client.getPath1(), this.client.getUrl(), timeout, continuation, mode, forceFlag, maxRecords, acl, requestId, this.client.getVersion(), action, context);
     }
 
     /**
@@ -756,7 +746,7 @@ public final class PathsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathsSetAccessControlRecursiveResponse> setAccessControlRecursiveWithRestResponseAsync(PathSetAccessControlRecursiveMode mode, Integer timeout, String continuation, Boolean forceFlag, Integer maxRecords, String acl, String requestId, Context context) {
         final String action = "setAccessControlRecursive";
-        return service.setAccessControlRecursive(this.client.getUrl(), timeout, continuation, mode, forceFlag, maxRecords, acl, requestId, this.client.getVersion(), action, context);
+        return service.setAccessControlRecursive(this.client.getFileSystem(), this.client.getPath1(), this.client.getUrl(), timeout, continuation, mode, forceFlag, maxRecords, acl, requestId, this.client.getVersion(), action, context);
     }
 
     /**
@@ -942,48 +932,5 @@ public final class PathsImpl {
     public Mono<PathsSetExpiryResponse> setExpiryWithRestResponseAsync(PathExpiryOptions expiryOptions, Integer timeout, String requestId, String expiresOn, Context context) {
         final String comp = "expiry";
         return service.setExpiry(this.client.getUrl(), timeout, this.client.getVersion(), requestId, expiryOptions, expiresOn, comp, context);
-    }
-
-    /**
-     * Appends data to the file.
-     *
-     * @param body Initial data.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsConcurrentAppendResponse> concurrentAppendWithRestResponseAsync(Flux<ByteBuffer> body, Context context) {
-        final Integer timeout = null;
-        final String requestId = null;
-        final AppendMode appendMode = null;
-        final Long contentLength = null;
-        final String action = "concurrentAppend";
-        String transactionalContentHashConverted = null;
-        return service.concurrentAppend(this.client.getUrl(), timeout, this.client.getVersion(), requestId, appendMode, body, contentLength, action, transactionalContentHashConverted, context);
-    }
-
-    /**
-     * Appends data to the file.
-     *
-     * @param body Initial data.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param appendMode Optional.  Indicates concurrent append mode. Possible values include: 'autoCreate'.
-     * @param contentLength Required for "Append Data" and "Flush Data".  Must be 0 for "Flush Data".  Must be the length of the request content in bytes for "Append Data".
-     * @param pathHttpHeaders Additional parameters for the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsConcurrentAppendResponse> concurrentAppendWithRestResponseAsync(Flux<ByteBuffer> body, Integer timeout, String requestId, AppendMode appendMode, Long contentLength, PathHttpHeaders pathHttpHeaders, Context context) {
-        final String action = "concurrentAppend";
-        byte[] transactionalContentHash = null;
-        if (pathHttpHeaders != null) {
-            transactionalContentHash = pathHttpHeaders.getTransactionalContentHash();
-        }
-        String transactionalContentHashConverted = Base64Util.encodeToString(transactionalContentHash);
-        return service.concurrentAppend(this.client.getUrl(), timeout, this.client.getVersion(), requestId, appendMode, body, contentLength, action, transactionalContentHashConverted, context);
     }
 }

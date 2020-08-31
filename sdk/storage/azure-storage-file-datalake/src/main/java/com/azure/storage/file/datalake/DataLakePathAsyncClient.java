@@ -25,7 +25,6 @@ import com.azure.storage.file.datalake.implementation.models.ModifiedAccessCondi
 import com.azure.storage.file.datalake.implementation.models.PathGetPropertiesAction;
 import com.azure.storage.file.datalake.implementation.models.PathRenameMode;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
-import com.azure.storage.file.datalake.implementation.models.PathSetAccessControlRecursiveHeaders;
 import com.azure.storage.file.datalake.implementation.models.PathSetAccessControlRecursiveMode;
 import com.azure.storage.file.datalake.implementation.models.PathsSetAccessControlRecursiveResponse;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
@@ -43,7 +42,7 @@ import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathProperties;
-import com.azure.storage.file.datalake.models.RemovePathAccessControlItem;
+import com.azure.storage.file.datalake.models.RemovePathAccessControlEntry;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.file.datalake.options.RemoveAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.SetAccessControlRecursiveOptions;
@@ -300,7 +299,7 @@ public class DataLakePathAsyncClient {
             .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince());
 
         context = context == null ? Context.NONE : context;
-        return this.dataLakeStorage.paths().createWithRestResponseAsync(resourceType, null, null, null, null, null,
+        return this.dataLakeStorage.paths().createWithRestResponseAsync(resourceType, null, null, null, null,
             buildMetadataString(metadata), permissions, umask, null, null, headers, lac, mac, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
@@ -747,7 +746,7 @@ public class DataLakePathAsyncClient {
      * @return A reactive response containing the result of the operation.
      */
     public Mono<AccessControlChangeResult> removeAccessControlRecursive(
-        List<RemovePathAccessControlItem> accessControlList) {
+        List<RemovePathAccessControlEntry> accessControlList) {
         try {
             return removeAccessControlRecursiveWithResponse(new RemoveAccessControlRecursiveOptions(accessControlList))
                 .flatMap(FluxUtil::toMono);
@@ -773,7 +772,7 @@ public class DataLakePathAsyncClient {
         RemoveAccessControlRecursiveOptions options) {
         try {
             return withContext(context -> setAccessControlRecursiveWithResponse(
-                RemovePathAccessControlItem.serializeList(options.getAccessControlList()), options.getProgressHandler(),
+                RemovePathAccessControlEntry.serializeList(options.getAccessControlList()), options.getProgressHandler(),
                 PathSetAccessControlRecursiveMode.REMOVE, options.getBatchSize(), options.getMaxBatches(),
                 options.isContinuingOnFailure(), options.getContinuationToken(), context));
         } catch (RuntimeException ex) {
@@ -785,7 +784,10 @@ public class DataLakePathAsyncClient {
         String accessControlList, Consumer<Response<AccessControlChanges>> progressHandler,
         PathSetAccessControlRecursiveMode mode, Integer batchSize, Integer maxBatches, Boolean continueOnFailure,
         String continuationToken, Context context) {
-        // TODO: parameter validation?
+        // TODO: parameter validation? List should not be null (check in options, too).
+
+        context = context == null ? Context.NONE : context;
+        Context contextFinal = context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE);
 
         AtomicInteger directoriesSuccessfulCount = new AtomicInteger(0);
         AtomicInteger filesSuccessfulCount = new AtomicInteger(0);
@@ -793,12 +795,10 @@ public class DataLakePathAsyncClient {
         AtomicInteger batchesCount = new AtomicInteger(0);
 
         return this.dataLakeStorage.paths().setAccessControlRecursiveWithRestResponseAsync(mode, null,
-            continuationToken, continueOnFailure, batchSize, accessControlList, null,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            continuationToken, continueOnFailure, batchSize, accessControlList, null, contextFinal)
             .flatMap(response -> setAccessControlRecursiveWithResponseHelper(response, maxBatches,
                 directoriesSuccessfulCount, filesSuccessfulCount, failureCount, batchesCount, progressHandler,
-                accessControlList, mode, batchSize, continueOnFailure, continuationToken,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE)));
+                accessControlList, mode, batchSize, continueOnFailure, continuationToken, contextFinal));
     }
 
     Mono<Response<AccessControlChangeResult>> setAccessControlRecursiveWithResponseHelper(
@@ -820,19 +820,50 @@ public class DataLakePathAsyncClient {
         Determine which token we should report/return/use next.
         If there was a token present on the response (still processing and either no errors or forceFlag set),
         use that one.
-        If there were no failures and still nothing present, we are at the end, so use that.
-        If there were failures, use the last token (no token is returned in this case).
+        If there were no failures or force flag set and still nothing present, we are at the end, so use that.
+        If there were failures and no force flag set, use the last token (no token is returned in this case).
          */
         String newToken = response.getDeserializedHeaders().getContinuation();
         String effectiveNextToken;
         if (newToken != null && !newToken.isEmpty()) {
             effectiveNextToken = newToken;
         } else {
-            if (failureCount.get() == 0) {
-                effectiveNextToken = newToken; // Will be null or empty
+            if (failureCount.get() == 0 || (continueOnFailure == null || continueOnFailure)) {
+                effectiveNextToken = newToken;
             } else {
                 effectiveNextToken = lastToken;
             }
+        }
+
+        // Report progress
+        if (progressHandler != null) {
+            AccessControlChanges changes = new AccessControlChanges();
+
+            changes.setContinuationToken(effectiveNextToken);
+
+            changes.setBatchFailures(
+                response.getValue().getFailedEntries()
+                    .stream()
+                    .map(aclFailedEntry -> new AccessControlChangeFailure()
+                        .setDirectory(aclFailedEntry.getType().equals("DIRECTORY"))
+                        .setName(aclFailedEntry.getName())
+                        .setErrorMessage(aclFailedEntry.getErrorMessage())
+                    ).collect(Collectors.toList())
+            );
+
+            changes.setBatchCounters(new AccessControlChangeCounters()
+                .setChangedDirectoriesCount(response.getValue().getDirectoriesSuccessful())
+                .setChangedFilesCount(response.getValue().getFilesSuccessful())
+                .setFailedChangesCount(response.getValue().getFailureCount()));
+
+            changes.setAggregateCounters(new AccessControlChangeCounters()
+                .setChangedDirectoriesCount(directoriesSuccessfulCount.get())
+                .setChangedFilesCount(filesSuccessfulCount.get())
+                .setFailedChangesCount(failureCount.get()));
+
+            progressHandler.accept(
+                new ResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), changes,
+                    response.getDeserializedHeaders()));
         }
 
         /*
@@ -850,38 +881,9 @@ public class DataLakePathAsyncClient {
             return Mono.just(new ResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                 result, response.getDeserializedHeaders()
             ));
-        } else {
-            if (progressHandler != null) {
-                AccessControlChanges changes = new AccessControlChanges();
-
-                changes.setContinuationToken(effectiveNextToken);
-
-                changes.setBatchFailures(
-                    response.getValue().getFailedEntries()
-                        .stream()
-                        .map(aclFailedEntry -> new AccessControlChangeFailure()
-                            .setDirectory(aclFailedEntry.getType().equals("DIRECTORY"))
-                            .setName(aclFailedEntry.getName())
-                            .setErrorMessage(aclFailedEntry.getErrorMessage())
-                        ).collect(Collectors.toList())
-                );
-
-                changes.setBatchCounters(new AccessControlChangeCounters()
-                    .setChangedDirectoriesCount(response.getValue().getDirectoriesSuccessful())
-                    .setChangedFilesCount(response.getValue().getFilesSuccessful())
-                    .setFailedChangesCount(response.getValue().getFailureCount()));
-
-                changes.setAggregateCounters(new AccessControlChangeCounters()
-                    .setChangedDirectoriesCount(directoriesSuccessfulCount.get())
-                    .setChangedFilesCount(filesSuccessfulCount.get())
-                    .setFailedChangesCount(failureCount.get()));
-
-                progressHandler.accept(
-                    new ResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), changes,
-                        response.getDeserializedHeaders()));
-            }
         }
 
+        // If we're not finished, issue another request
         return this.dataLakeStorage.paths().setAccessControlRecursiveWithRestResponseAsync(mode, null,
             effectiveNextToken, continueOnFailure, batchSize, accessControlStr, null, context)
             .flatMap(response2 -> setAccessControlRecursiveWithResponseHelper(response2, maxBatches,
@@ -996,7 +998,7 @@ public class DataLakePathAsyncClient {
         String renameSource = "/" + this.fileSystemName + "/" + pathName;
 
         return dataLakePathAsyncClient.dataLakeStorage.paths().createWithRestResponseAsync(null /* pathResourceType */,
-            null /* continuation */, null /* blobType */, PathRenameMode.LEGACY, renameSource, sourceRequestConditions.getLeaseId(),
+            null /* continuation */, PathRenameMode.LEGACY, renameSource, sourceRequestConditions.getLeaseId(),
             null /* metadata */, null /* permissions */, null /* umask */, null /* request id */, null /* timeout */,
             null /* pathHttpHeaders */, destLac, destMac, sourceConditions,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))

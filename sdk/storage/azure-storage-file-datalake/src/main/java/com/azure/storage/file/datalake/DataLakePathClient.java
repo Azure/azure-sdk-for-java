@@ -28,7 +28,7 @@ import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathProperties;
-import com.azure.storage.file.datalake.models.RemovePathAccessControlItem;
+import com.azure.storage.file.datalake.models.RemovePathAccessControlEntry;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.file.datalake.options.RemoveAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.SetAccessControlRecursiveOptions;
@@ -41,7 +41,6 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
@@ -392,6 +391,8 @@ public class DataLakePathClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
      *
      * @param options {@link SetAccessControlRecursiveOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the result of the operation.
      */
     public Response<AccessControlChangeResult> setAccessControlRecursiveWithResponse(
@@ -434,6 +435,8 @@ public class DataLakePathClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
      *
      * @param options {@link UpdateAccessControlRecursiveOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the result of the operation.
      */
     public Response<AccessControlChangeResult> updateAccessControlRecursiveWithResponse(
@@ -461,7 +464,7 @@ public class DataLakePathClient {
      * @return The result of the operation.
      */
     public AccessControlChangeResult removeAccessControlRecursive(
-        List<RemovePathAccessControlItem> accessControlList) {
+        List<RemovePathAccessControlEntry> accessControlList) {
         return removeAccessControlRecursiveWithResponse(new RemoveAccessControlRecursiveOptions(accessControlList),
             null, Context.NONE).getValue();
     }
@@ -477,13 +480,15 @@ public class DataLakePathClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
      *
      * @param options {@link RemoveAccessControlRecursiveOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A  response containing the result of the operation.
      */
     public Response<AccessControlChangeResult> removeAccessControlRecursiveWithResponse(
         RemoveAccessControlRecursiveOptions options, Duration timeout, Context context) {
         Mono<Response<AccessControlChangeResult>> response =
             dataLakePathAsyncClient.setAccessControlRecursiveWithResponse(
-                RemovePathAccessControlItem.serializeList(options.getAccessControlList()), options.getProgressHandler(),
+                RemovePathAccessControlEntry.serializeList(options.getAccessControlList()), options.getProgressHandler(),
                 PathSetAccessControlRecursiveMode.REMOVE, options.getBatchSize(), options.getMaxBatches(),
                 options.isContinuingOnFailure(), options.getContinuationToken(), context);
 
@@ -649,7 +654,7 @@ public class DataLakePathClient {
             + Utility.urlEncode(dataLakePathAsyncClient.getObjectPath());
 
         return dataLakePathClient.dataLakePathAsyncClient.dataLakeStorage.paths().createWithRestResponseAsync(
-            null /* pathResourceType */, null /* continuation */, null, PathRenameMode.LEGACY, renameSource,
+            null /* pathResourceType */, null /* continuation */, PathRenameMode.LEGACY, renameSource,
             sourceRequestConditions.getLeaseId(), null /* properties */, null /* permissions */, null /* umask */,
             null /* request id */, null /* timeout */, null /* headers */, destLac, destMac, sourceConditions, context)
             .map(response -> new SimpleResponse<>(response, dataLakePathClient));

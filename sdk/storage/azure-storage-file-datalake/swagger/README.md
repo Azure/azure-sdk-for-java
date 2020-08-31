@@ -87,6 +87,22 @@ directive:
     }
 ```
 
+### Adds FileSystem and Path parameter to /{filesystem}/{path}?action=setAccessControlRecursive
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{filesystem}/{path}?action=setAccessControlRecursive"].patch
+  transform: >
+    let param = $.parameters[0];
+    if (!param["$ref"].endsWith("FileSystem")) {
+        const fileSystemPath = param["$ref"].replace(/[#].*$/, "#/parameters/FileSystem");
+        const pathPath = param["$ref"].replace(/[#].*$/, "#/parameters/Path");
+        $.parameters.splice(0, 0, { "$ref": fileSystemPath });
+        $.parameters.splice(1, 0, { "$ref": pathPath });
+    }
+```
+
+
 ### Adds FileSystem and Path parameter to /{filesystem}/{path}?action=flush
 ``` yaml
 directive:

@@ -11,7 +11,7 @@ import java.util.Locale;
 import static com.azure.storage.file.datalake.models.PathAccessControlEntry.ACCESS_CONTROL_ENTRY_INVALID_SCOPE;
 import static com.azure.storage.file.datalake.models.PathAccessControlEntry.DEFAULT_SCOPE;
 
-public class RemovePathAccessControlItem {
+public class RemovePathAccessControlEntry {
     private boolean defaultScope;
     private AccessControlType accessControlType;
     private String entityId;
@@ -31,7 +31,7 @@ public class RemovePathAccessControlItem {
      * @param defaultScope Whether this is the default entry for the ACL.
      * @return The updated object.
      */
-    public RemovePathAccessControlItem setDefaultScope(boolean defaultScope) {
+    public RemovePathAccessControlEntry setDefaultScope(boolean defaultScope) {
         this.defaultScope = defaultScope;
         return this;
     }
@@ -51,7 +51,7 @@ public class RemovePathAccessControlItem {
      * @param accessControlType Which role this entry targets.
      * @return The updated object.
      */
-    public RemovePathAccessControlItem setAccessControlType(AccessControlType accessControlType) {
+    public RemovePathAccessControlEntry setAccessControlType(AccessControlType accessControlType) {
         this.accessControlType = accessControlType;
         return this;
     }
@@ -73,7 +73,7 @@ public class RemovePathAccessControlItem {
      * @param entityId The entity for which this entry applies.
      * @return The updated object.
      */
-    public RemovePathAccessControlItem setEntityId(String entityId) {
+    public RemovePathAccessControlEntry setEntityId(String entityId) {
         this.entityId = entityId;
         return this;
     }
@@ -103,14 +103,14 @@ public class RemovePathAccessControlItem {
      * @return The deserialized list.
      * @throws IllegalArgumentException if the String provided does not match the format.
      */
-    public static RemovePathAccessControlItem parse(String str) {
-        RemovePathAccessControlItem res = new RemovePathAccessControlItem();
+    public static RemovePathAccessControlEntry parse(String str) {
+        RemovePathAccessControlEntry res = new RemovePathAccessControlEntry();
         String[] parts = str.split(":");
         int indexOffset = 0;
 
-        StorageImplUtils.assertInBounds("parts.length", parts.length, 3, 4);
+        StorageImplUtils.assertInBounds("parts.length", parts.length, 1, 3);
 
-        if (parts.length == 4) {
+        if (parts.length == 3) {
             if (!parts[0].equals(DEFAULT_SCOPE)) {
                 throw new IllegalArgumentException(ACCESS_CONTROL_ENTRY_INVALID_SCOPE);
             }
@@ -118,7 +118,7 @@ public class RemovePathAccessControlItem {
             indexOffset = 1;
         }
         res.accessControlType = AccessControlType.fromString(parts[indexOffset]);
-        res.entityId = !parts[1 + indexOffset].equals("") ? parts[1 + indexOffset] : null;
+        res.entityId = ((1 + indexOffset) < parts.length) && !parts[1 + indexOffset].equals("") ? parts[1 + indexOffset] : null;
         return res;
     }
 
@@ -128,9 +128,9 @@ public class RemovePathAccessControlItem {
      * @param acl The Access Control List to serialize.
      * @return A {@code String} representing the serialized Access Control List
      */
-    public static String serializeList(List<RemovePathAccessControlItem> acl) {
+    public static String serializeList(List<RemovePathAccessControlEntry> acl) {
         StringBuilder sb = new StringBuilder();
-        for (RemovePathAccessControlItem entry : acl) {
+        for (RemovePathAccessControlEntry entry : acl) {
             sb.append(entry.toString());
             sb.append(',');
         }
@@ -144,11 +144,11 @@ public class RemovePathAccessControlItem {
      * @param str The {@code String} representation of the ACL.
      * @return The ACL deserialized into a {@code java.util.List}
      */
-    public static List<RemovePathAccessControlItem> parseList(String str) {
+    public static List<RemovePathAccessControlEntry> parseList(String str) {
         String[] strs = str.split(",");
-        List<RemovePathAccessControlItem> acl = new ArrayList<>(strs.length);
+        List<RemovePathAccessControlEntry> acl = new ArrayList<>(strs.length);
         for (String entry : strs) {
-            acl.add(RemovePathAccessControlItem.parse(entry));
+            acl.add(RemovePathAccessControlEntry.parse(entry));
         }
         return acl;
     }
