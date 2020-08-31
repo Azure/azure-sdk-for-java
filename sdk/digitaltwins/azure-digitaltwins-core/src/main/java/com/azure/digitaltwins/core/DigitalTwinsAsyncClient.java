@@ -595,7 +595,7 @@ public final class DigitalTwinsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ModelData> getModel(String modelId) {
         return getModelWithResponse(modelId)
-            .map(response -> response.getValue());
+            .map(Response::getValue);
     }
 
     /**
@@ -667,7 +667,7 @@ public final class DigitalTwinsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteModel(String modelId) {
         return deleteModelWithResponse(modelId)
-            .map(response -> response.getValue());
+            .map(Response::getValue);
     }
 
     /**
@@ -697,7 +697,7 @@ public final class DigitalTwinsAsyncClient {
      */
     public Mono<Void> decommissionModel(String modelId) {
         return decommissionModelWithResponse(modelId)
-            .map(response -> response.getValue());
+            .map(Response::getValue);
     }
 
     /**
