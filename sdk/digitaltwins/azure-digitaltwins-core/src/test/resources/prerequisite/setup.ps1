@@ -86,7 +86,7 @@ if ($rgExists -eq "False")
 
 Write-Host "`nDeploying resources to $ResourceGroup in $Region`n"
 
-$armTemplateFile = Join-Path -Path $PSScriptRoot -ChildPath "../../../../test-resources.json";
+$armTemplateFile = Join-Path -Path $PSScriptRoot -ChildPath "../../../../../test-resources.json";
 
 if (-not (Test-Path $armTemplateFile -PathType leaf))
 {
@@ -106,7 +106,7 @@ $dtHostName = az deployment group show -g $ResourceGroup -n $($DigitalTwinName.T
 Write-Host("`nSet a new client secret for $appId`n")
 $appSecret = az ad app credential reset --id $appId --years 2 --query 'password' --output tsv
 
-$outputfileDir = (Get-Item -Path $PSScriptRoot).Parent.Parent.Parent.Parent.Fullname
+$outputfileDir = (Get-Item -Path $PSScriptRoot).Parent.Parent.Parent.Parent.Parent.Fullname
 $outputFile = Join-Path -Path $outputfileDir -ChildPath "test-resources.json.env"
 $tenantId = "72f988bf-86f1-41af-91ab-2d7cd011db47"
 
