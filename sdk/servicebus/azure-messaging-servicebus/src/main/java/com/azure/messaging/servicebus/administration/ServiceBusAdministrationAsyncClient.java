@@ -238,7 +238,7 @@ public final class ServiceBusAdministrationAsyncClient {
      * @throws ResourceExistsException if a rule exists with the same topic and rule name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RuleProperties> createRule(String topicName, String ruleName, String subscriptionName,
+    public Mono<RuleProperties> createRule(String topicName, String subscriptionName, String ruleName,
         CreateRuleOptions ruleOptions) {
 
         return createRuleWithResponse(topicName, subscriptionName, ruleName, ruleOptions)
@@ -1429,7 +1429,8 @@ public final class ServiceBusAdministrationAsyncClient {
             : null;
         final RuleDescription rule = new RuleDescription()
             .setAction(action)
-            .setFilter(filter);
+            .setFilter(filter)
+            .setName(ruleName);
 
         final CreateRuleBodyContent content = new CreateRuleBodyContent()
             .setType(CONTENT_TYPE)
