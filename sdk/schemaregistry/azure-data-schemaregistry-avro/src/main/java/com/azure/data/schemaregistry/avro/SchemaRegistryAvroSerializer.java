@@ -47,8 +47,10 @@ public final class SchemaRegistryAvroSerializer extends SchemaRegistrySerializer
                     sink.next(outClass.cast(o));
                 }
                 else {
-                    sink.error(
-                        logger.logExceptionAsError(new IllegalStateException("Deserialized object not of class %s")));
+                    sink.error(logger.logExceptionAsError(new IllegalStateException(
+                        String.format("Deserialized object is %s, could not be cast to %s",
+                            o.getClass().getName(),
+                            typeReference.getJavaType()))));
                 }
             });
     }
