@@ -395,14 +395,14 @@ class ManagementChannelTests {
     void updateDispositionWithTransaction() {
         // Arrange
         final String associatedLinkName = "associatedLinkName";
-        final String TXN_ID_STRING = "Transaction-ID";
+        final String txnIdString = "Transaction-ID";
         final DeadLetterOptions options = new DeadLetterOptions()
             .setDeadLetterErrorDescription("dlq-description")
             .setDeadLetterReason("dlq-reason");
 
         final UUID lockToken = UUID.randomUUID();
         final ServiceBusTransactionContext mockTransaction = mock(ServiceBusTransactionContext.class);
-        when(mockTransaction.getTransactionId()).thenReturn(ByteBuffer.wrap(TXN_ID_STRING.getBytes()));
+        when(mockTransaction.getTransactionId()).thenReturn(ByteBuffer.wrap(txnIdString.getBytes()));
         when(requestResponseChannel.sendWithAck(any(Message.class), any(DeliveryState.class)))
             .thenReturn(Mono.just(responseMessage));
 
@@ -418,7 +418,7 @@ class ManagementChannelTests {
         final DeliveryState delivery = amqpDeliveryStateCaptor.getValue();
         Assertions.assertNotNull(delivery);
         Assertions.assertTrue(delivery instanceof TransactionalState);
-        Assertions.assertEquals(TXN_ID_STRING, ((TransactionalState) delivery).getTxnId().toString());
+        Assertions.assertEquals(txnIdString, ((TransactionalState) delivery).getTxnId().toString());
     }
 
     /**
