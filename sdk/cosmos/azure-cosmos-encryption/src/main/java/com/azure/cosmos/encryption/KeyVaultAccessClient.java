@@ -18,7 +18,6 @@ import java.net.URI;
 /**
  * Implements Core KeyVault access methods that uses the TODO: moderakh this doesn't need to be public. it is public due
  * to tests. FIXME
- * TODO: methods should be async moderakh
  */
 public class KeyVaultAccessClient {
     private final AsyncCache<URI, KeyAsyncClient> akvClientCache;
@@ -70,12 +69,12 @@ public class KeyVaultAccessClient {
      * @return Mono of Result including KeyIdentifier and decrypted bytes in base64 string format, can be convert to
      * bytes using Convert.FromBase64String().
      */
-    public Mono<byte[]> unwrapKeyAsync(
+    public Mono<byte[]> unwrapKey(
         byte[] wrappedKey,
         KeyVaultKeyUriProperties keyVaultUriProperties) {
 
         // Get a Crypto Client for Wrap and UnWrap,this gets init per Key ID
-        Mono<CryptographyAsyncClient> cryptoClientMono = this.getCryptoClientAsync(keyVaultUriProperties);
+        Mono<CryptographyAsyncClient> cryptoClientMono = this.getCryptoClient(keyVaultUriProperties);
         return cryptoClientMono.flatMap(
             cryptoClient ->
                 cryptoClient.unwrapKey(KeyVaultConstants.RsaOaep256, wrappedKey)
@@ -104,12 +103,12 @@ public class KeyVaultAccessClient {
      * https://{keyvault-name}.vault.azure.net/keys/{key-name}/{key-version}
      * @return Mono of Result including KeyIdentifier and encrypted bytes in base64 string format.
      */
-    public Mono<byte[]> wrapKeyAsync(
+    public Mono<byte[]> wrapKey(
         byte[] key,
         KeyVaultKeyUriProperties keyVaultUriProperties) {
 
         // Get a Crypto Client for Wrap and UnWrap,this gets init per Key ID
-        Mono<CryptographyAsyncClient> cryptoClientMono = this.getCryptoClientAsync(keyVaultUriProperties);
+        Mono<CryptographyAsyncClient> cryptoClientMono = this.getCryptoClient(keyVaultUriProperties);
         return cryptoClientMono.flatMap(
             cryptoClient ->
                 cryptoClient.wrapKey(KeyVaultConstants.RsaOaep256, key)
@@ -130,9 +129,9 @@ public class KeyVaultAccessClient {
      * @param keyVaultUriProperties Parsed key Vault Uri Properties.
      * @return Whether The Customer has the correct Deletion Level.
      */
-    public Mono<Boolean> validatePurgeProtectionAndSoftDeleteSettingsAsync(
+    public Mono<Boolean> validatePurgeProtectionAndSoftDeleteSettings(
         KeyVaultKeyUriProperties keyVaultUriProperties) {
-        Mono<KeyAsyncClient> akvClientMono = this.getAkvClientAsync(keyVaultUriProperties);
+        Mono<KeyAsyncClient> akvClientMono = this.getAkvClient(keyVaultUriProperties);
         return akvClientMono.flatMap(
             akvClient ->
                 akvClient.getKey(keyVaultUriProperties.getKeyName())
@@ -161,7 +160,7 @@ public class KeyVaultAccessClient {
      * @param keyVaultUriProperties Parsed key Vault Uri Properties.
      * @return Mono of KeyClient
      */
-    private Mono<KeyAsyncClient> getAkvClientAsync(
+    private Mono<KeyAsyncClient> getAkvClient(
         KeyVaultKeyUriProperties keyVaultUriProperties) {
 
         // Called once per KEYVALTNAME
@@ -172,7 +171,7 @@ public class KeyVaultAccessClient {
             /** singleValueInitFunc: */
             () -> {
                 Mono<TokenCredential> tokenCredMono =
-                    this.keyVaultTokenCredentialFactory.getTokenCredentialAsync(keyVaultUriProperties.getKeyUri());
+                    this.keyVaultTokenCredentialFactory.getTokenCredential(keyVaultUriProperties.getKeyUri());
                 return tokenCredMono.map(
                     tokenCred ->
                         this.keyClientFactory.getKeyClient(keyVaultUriProperties, tokenCred)
@@ -189,7 +188,7 @@ public class KeyVaultAccessClient {
     //    /// <param name="keyVaultUriProperties"> Parsed key Vault Uri Properties. </param>
     //    /// <param name="cancellationToken"> cancellation token </param>
     //    /// <returns> CryptographyClient </returns>
-    private Mono<CryptographyAsyncClient> getCryptoClientAsync(
+    private Mono<CryptographyAsyncClient> getCryptoClient(
         KeyVaultKeyUriProperties keyVaultUriProperties) {
 
         // Get a Crypto Client for Wrap and UnWrap,this gets init per Key Version
@@ -202,7 +201,7 @@ public class KeyVaultAccessClient {
             () -> {
                 // we need to acquire the Client Cert Creds for cases where we directly access Crypto Services.
                 Mono<TokenCredential> tokenCredMono =
-                    this.keyVaultTokenCredentialFactory.getTokenCredentialAsync(keyVaultUriProperties.getKeyUri());
+                    this.keyVaultTokenCredentialFactory.getTokenCredential(keyVaultUriProperties.getKeyUri());
                 return tokenCredMono.map(
                     tokenCred ->
                          this.cryptographyClientFactory.getCryptographyClient(keyVaultUriProperties, tokenCred)

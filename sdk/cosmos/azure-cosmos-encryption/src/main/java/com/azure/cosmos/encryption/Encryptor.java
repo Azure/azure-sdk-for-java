@@ -19,7 +19,7 @@ public interface Encryptor {
      * @param encryptionAlgorithm Identifier for the encryption algorithm.
      * @return Mono of Cipher text byte array.
      */
-    Mono<byte[]> encryptAsync(
+    Mono<byte[]> encrypt(
         byte[] plainText,
         String dataEncryptionKeyId,
         String encryptionAlgorithm);
@@ -32,7 +32,7 @@ public interface Encryptor {
      * @param encryptionAlgorithm Identifier for the encryption algorithm.
      * @return Mono of Plain text byte array.
      */
-    Mono<byte[]> decryptAsync(
+    Mono<byte[]> decrypt(
         byte[] cipherText,
         String dataEncryptionKeyId,
         String encryptionAlgorithm);

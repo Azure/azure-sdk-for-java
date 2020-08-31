@@ -169,7 +169,7 @@ public class OldEncryptionTests extends TestSuiteBase {
 
         dekProvider.initialize(databaseCore, OldEncryptionTests.keyContainer.getId());
 
-        DataEncryptionKeyProperties readProperties = dekProvider.getDataEncryptionKeyContainer().readDataEncryptionKeyAsync(dekId, null).block().getItem();
+        DataEncryptionKeyProperties readProperties = dekProvider.getDataEncryptionKeyContainer().readDataEncryptionKey(dekId, null).block().getItem();
         assertThat(dekProperties).isEqualTo(readProperties);
     }
 
@@ -228,7 +228,7 @@ public class OldEncryptionTests extends TestSuiteBase {
     }
 
     private static DataEncryptionKeyProperties createDek(CosmosDataEncryptionKeyProvider dekProvider, String dekId) {
-        CosmosItemResponse<DataEncryptionKeyProperties> dekResponse = dekProvider.getDataEncryptionKeyContainer().createDataEncryptionKeyAsync(
+        CosmosItemResponse<DataEncryptionKeyProperties> dekResponse = dekProvider.getDataEncryptionKeyContainer().createDataEncryptionKey(
             dekId,
             CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED,
             OldEncryptionTests.metadata1, null).block();

@@ -38,7 +38,7 @@ public class UserProvidedTokenCredentialFactory extends KeyVaultTokenCredentialF
      * @return Mono of TokenCredential User passed TokenCredential.
      */
     @Override
-    public Mono<TokenCredential> getTokenCredentialAsync(URI keyVaultKeyUri) {
+    public Mono<TokenCredential> getTokenCredential(URI keyVaultKeyUri) {
         return Mono.just(this.tokenCredential);
     }
 }

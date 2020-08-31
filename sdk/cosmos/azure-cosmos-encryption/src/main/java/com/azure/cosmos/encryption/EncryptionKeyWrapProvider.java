@@ -46,4 +46,3 @@ public interface EncryptionKeyWrapProvider {
      */
     Mono<EncryptionKeyUnwrapResult> unwrapKey(byte[] wrappedKey, EncryptionKeyWrapMetadata metadata);
 }
-// TODO: @moderakh look into if this class needs to be async

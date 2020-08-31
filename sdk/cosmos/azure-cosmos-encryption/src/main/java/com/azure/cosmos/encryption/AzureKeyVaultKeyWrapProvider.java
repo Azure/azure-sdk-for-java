@@ -68,7 +68,7 @@ public class AzureKeyVaultKeyWrapProvider implements EncryptionKeyWrapProvider {
         }
 
         return this.keyVaultAccessClient
-            .unwrapKeyAsync(wrappedKey, keyVaultUriPropertiesRef.get())
+            .unwrapKey(wrappedKey, keyVaultUriPropertiesRef.get())
             .map(
                 dataEncryptionKey -> new EncryptionKeyUnwrapResult(dataEncryptionKey, this.rawDekCacheTimeToLive)
             ).switchIfEmpty(
@@ -92,7 +92,7 @@ public class AzureKeyVaultKeyWrapProvider implements EncryptionKeyWrapProvider {
         }
 
         return this.keyVaultAccessClient
-            .validatePurgeProtectionAndSoftDeleteSettingsAsync(keyVaultUriPropertiesRef.get())
+            .validatePurgeProtectionAndSoftDeleteSettings(keyVaultUriPropertiesRef.get())
             .flatMap(
                 isValid -> {
                     if (!isValid) {
@@ -102,7 +102,7 @@ public class AzureKeyVaultKeyWrapProvider implements EncryptionKeyWrapProvider {
                     }
 
                     return this.keyVaultAccessClient
-                        .wrapKeyAsync(key, keyVaultUriPropertiesRef.get())
+                        .wrapKey(key, keyVaultUriPropertiesRef.get())
                         .map(
                             wrappedDataEncryptionKey -> {  // TODO: what happens if wrappedDataEncryptionKey is null?
                                 EncryptionKeyWrapMetadata responseMetadata =

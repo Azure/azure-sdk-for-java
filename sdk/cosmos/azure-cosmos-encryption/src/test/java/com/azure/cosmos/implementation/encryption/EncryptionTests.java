@@ -250,7 +250,7 @@ public class EncryptionTests extends TestSuiteBase {
         dekProvider.initialize(databaseCore, EncryptionTests.keyContainer.getId());
 
         DataEncryptionKeyProperties readProperties =
-            dekProvider.getDataEncryptionKeyContainer().readDataEncryptionKeyAsync(dekId, null).block().getItem();
+            dekProvider.getDataEncryptionKeyContainer().readDataEncryptionKey(dekId, null).block().getItem();
         assertThat(dekProperties).isEqualTo(readProperties);
     }
 
@@ -261,7 +261,7 @@ public class EncryptionTests extends TestSuiteBase {
         assertThat(dekProperties.encryptionKeyWrapMetadata
             ).isEqualTo(new EncryptionKeyWrapMetadata(EncryptionTests.metadata1.value + EncryptionTests.metadataUpdateSuffix));
 
-        CosmosItemResponse<DataEncryptionKeyProperties> dekResponse =  EncryptionTests.dekProvider.getDataEncryptionKeyContainer().rewrapDataEncryptionKeyAsync(
+        CosmosItemResponse<DataEncryptionKeyProperties> dekResponse =  EncryptionTests.dekProvider.getDataEncryptionKeyContainer().rewrapDataEncryptionKey(
             dekId,
             EncryptionTests.metadata2, null).block();
 
@@ -275,7 +275,7 @@ public class EncryptionTests extends TestSuiteBase {
         // Use different DEK provider to avoid (unintentional) cache impact
         CosmosDataEncryptionKeyProvider dekProvider = new CosmosDataEncryptionKeyProvider(new TestKeyWrapProvider());
          dekProvider.initialize(EncryptionTests.databaseCore, EncryptionTests.keyContainer.getId());
-        DataEncryptionKeyProperties readProperties =  dekProvider.getDataEncryptionKeyContainer().readDataEncryptionKeyAsync(dekId, null).block().getItem();
+        DataEncryptionKeyProperties readProperties =  dekProvider.getDataEncryptionKeyContainer().readDataEncryptionKey(dekId, null).block().getItem();
         assertThat(readProperties).isEqualTo(readProperties);
     }
 
@@ -711,7 +711,7 @@ public class EncryptionTests extends TestSuiteBase {
         AtomicReference<KeyVaultKeyUriProperties> keyVaultKeyUriPropertiesRef = new AtomicReference<KeyVaultKeyUriProperties>();
         KeyVaultKeyUriProperties.tryParse(new URI(wrapKeyVaultMetaData.value), keyVaultKeyUriPropertiesRef);
         boolean validatepurgeprotection =
-            keyVaultAccessClient.validatePurgeProtectionAndSoftDeleteSettingsAsync(keyVaultKeyUriPropertiesRef.get()).block();
+            keyVaultAccessClient.validatePurgeProtectionAndSoftDeleteSettings(keyVaultKeyUriPropertiesRef.get()).block();
 
         assertThat(validatepurgeprotection).isEqualTo(true);
     }
@@ -727,7 +727,7 @@ public class EncryptionTests extends TestSuiteBase {
         KeyVaultKeyUriProperties.tryParse(new URI(wrapKeyVaultMetaData.value), keyVaultUriPropertiesRef);
 
         boolean validatepurgeprotection =
-            keyVaultAccessClient.validatePurgeProtectionAndSoftDeleteSettingsAsync(keyVaultUriPropertiesRef.get()).block();
+            keyVaultAccessClient.validatePurgeProtectionAndSoftDeleteSettings(keyVaultUriPropertiesRef.get()).block();
 
         assertThat(validatepurgeprotection).isEqualTo(false);
     }
@@ -817,7 +817,7 @@ public class EncryptionTests extends TestSuiteBase {
 
         dekProvider.initialize(EncryptionTests.databaseCore, EncryptionTests.keyContainer.getId());
         DataEncryptionKeyProperties readProperties =
-            dekProvider.getDataEncryptionKeyContainer().readDataEncryptionKeyAsync(dekId,
+            dekProvider.getDataEncryptionKeyContainer().readDataEncryptionKey(dekId,
                 new CosmosItemRequestOptions()).block().getItem();
 
         assertThat(readProperties).isEqualTo(dekProperties);
@@ -832,7 +832,7 @@ public class EncryptionTests extends TestSuiteBase {
             .isEqualTo(dekProperties.encryptionKeyWrapMetadata);
 
         CosmosItemResponse<DataEncryptionKeyProperties> dekResponse =
-            EncryptionTests.dekProvider.getDataEncryptionKeyContainer().rewrapDataEncryptionKeyAsync(
+            EncryptionTests.dekProvider.getDataEncryptionKeyContainer().rewrapDataEncryptionKey(
             dekId,
             EncryptionTests.metadata2, new CosmosItemRequestOptions()).block();
 
@@ -852,7 +852,7 @@ public class EncryptionTests extends TestSuiteBase {
         CosmosDataEncryptionKeyProvider dekProvider = new CosmosDataEncryptionKeyProvider(azureKeyVaultKeyWrapProvider);
         dekProvider.initialize(EncryptionTests.databaseCore, EncryptionTests.keyContainer.getId());
         DataEncryptionKeyProperties readProperties =
-            dekProvider.getDataEncryptionKeyContainer().readDataEncryptionKeyAsync(dekId,
+            dekProvider.getDataEncryptionKeyContainer().readDataEncryptionKey(dekId,
                 new CosmosItemRequestOptions()).block().getItem();
 
         assertThat(readProperties).isEqualTo(dekProperties);
@@ -1004,7 +1004,7 @@ public class EncryptionTests extends TestSuiteBase {
 
     private static DataEncryptionKeyProperties createDek(CosmosDataEncryptionKeyProvider dekProvider, String dekId)
     {
-        CosmosItemResponse<DataEncryptionKeyProperties> dekResponse =  dekProvider.getDataEncryptionKeyContainer().createDataEncryptionKeyAsync(
+        CosmosItemResponse<DataEncryptionKeyProperties> dekResponse =  dekProvider.getDataEncryptionKeyContainer().createDataEncryptionKey(
         dekId,
         CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED,
         EncryptionTests.metadata1,
@@ -1111,7 +1111,7 @@ public class EncryptionTests extends TestSuiteBase {
             this.failDecryption = false;
         }
 
-        public Mono<byte[]> decryptAsync(
+        public Mono<byte[]> decrypt(
             byte[] cipherText,
             String dataEncryptionKeyId,
             String encryptionAlgorithm) {
@@ -1136,7 +1136,7 @@ public class EncryptionTests extends TestSuiteBase {
             );
         }
 
-        public Mono<byte[]> encryptAsync(
+        public Mono<byte[]> encrypt(
             byte[] plainText,
             String dataEncryptionKeyId,
             String encryptionAlgorithm) {
@@ -1315,7 +1315,7 @@ public class EncryptionTests extends TestSuiteBase {
     }
 
     class EncryptionTestsTokenCredentialFactory extends KeyVaultTokenCredentialFactory {
-        public Mono<TokenCredential> getTokenCredentialAsync(URI keyVaultKeyUri) {
+        public Mono<TokenCredential> getTokenCredential(URI keyVaultKeyUri) {
 
             // TODO: DefaultAzureCredentials
             return Mono.just(Mockito.mock(TokenCredential.class));

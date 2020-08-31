@@ -69,22 +69,22 @@ public class AzureKeyVaultCosmosEncryptor implements Encryptor {
     }
 
     @Override
-    public Mono<byte[]> encryptAsync(
+    public Mono<byte[]> encrypt(
         byte[] plainText,
         String dataEncryptionKeyId,
         String encryptionAlgorithm) {
-        return this.cosmosEncryptor.encryptAsync(
+        return this.cosmosEncryptor.encrypt(
             plainText,
             dataEncryptionKeyId,
             encryptionAlgorithm);
     }
 
     @Override
-    public Mono<byte[]> decryptAsync(
+    public Mono<byte[]> decrypt(
         byte[] cipherText,
         String dataEncryptionKeyId,
         String encryptionAlgorithm) {
-        return this.cosmosEncryptor.decryptAsync(
+        return this.cosmosEncryptor.decrypt(
             cipherText,
             dataEncryptionKeyId,
             encryptionAlgorithm);
