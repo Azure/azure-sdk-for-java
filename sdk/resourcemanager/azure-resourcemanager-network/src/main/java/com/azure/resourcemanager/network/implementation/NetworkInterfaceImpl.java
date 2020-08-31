@@ -462,11 +462,10 @@ class NetworkInterfaceImpl
     @Override
     public Accepted<NetworkInterface> beginCreate() {
         return AcceptedImpl.newAccepted(logger,
+            this.manager().inner(),
             () -> this.manager().inner().getNetworkInterfaces()
                 .createOrUpdateWithResponseAsync(resourceGroupName(), name(), this.inner()).block(),
             inner -> new NetworkInterfaceImpl(inner.name(), inner, this.manager()),
-            this.manager().inner().getSerializerAdapter(),
-            this.manager().inner().getHttpPipeline(),
             NetworkInterfaceInner.class,
             () -> {
                 Flux<Indexable> dependencyTasksAsync =
