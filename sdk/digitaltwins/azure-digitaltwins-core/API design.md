@@ -802,21 +802,6 @@ When updating a model, the payload for a multi-operation json patch follows the 
 Async APIs
 
 ```java
-    
-    /**
-     * Decommissions a model.
-     * @param modelId The Id of the model to decommission.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> decommissionModel(String modelId) { }
-
-    /**
-     * Decommissions a model.
-     * @param modelId The Id of the model to decommission.
-     * @return The http response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response> decommissionModelWithResponse(String modelId) { }
 
 ```
 
