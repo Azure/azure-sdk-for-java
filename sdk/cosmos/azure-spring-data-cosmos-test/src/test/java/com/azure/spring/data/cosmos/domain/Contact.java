@@ -14,12 +14,23 @@ public class Contact {
 
     private String title;
 
+    private int intValue;
+
+    private boolean status;
+
     public Contact() {
     }
 
     public Contact(String logicId, String title) {
         this.logicId = logicId;
         this.title = title;
+    }
+
+    public Contact(final String logicId, final String title, final int intValue, boolean status) {
+        this.logicId = logicId;
+        this.title = title;
+        this.intValue = intValue;
+        this.status = status;
     }
 
     public String getLogicId() {
@@ -36,6 +47,42 @@ public class Contact {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    /**
+     * Getter for property 'status'.
+     *
+     * @return Value for property 'status'.
+     */
+    public boolean isStatus() {
+        return status;
+    }
+
+    /**
+     * Setter for property 'status'.
+     *
+     * @param status Value to set for property 'status'.
+     */
+    public void setStatus(final boolean status) {
+        this.status = status;
+    }
+
+    /**
+     * Getter for property 'value'.
+     *
+     * @return Value for property 'value'.
+     */
+    public int getIntValue() {
+        return intValue;
+    }
+
+    /**
+     * Setter for property 'value'.
+     *
+     * @param intValue Value to set for property 'value'.
+     */
+    public void setIntValue(final int intValue) {
+        this.intValue = intValue;
     }
 
     @Override
@@ -59,12 +106,18 @@ public class Contact {
     @Override
     public String toString() {
         return "Contact{"
-            + "logicId='"
-            + logicId
-            + '\''
-            + ", title='"
-            + title
-            + '\''
-            + '}';
+                   + "logicId='"
+                   + logicId
+                   + '\''
+                   + ", title='"
+                   + title
+                   + '\''
+                   + ", value='"
+                   + intValue
+                   + '\''
+                   + ", status='"
+                   + status
+                   + '\''
+                   + '}';
     }
 }

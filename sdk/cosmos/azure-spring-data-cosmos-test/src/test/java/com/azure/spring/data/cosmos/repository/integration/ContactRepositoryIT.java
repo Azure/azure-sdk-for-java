@@ -9,6 +9,7 @@ import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.ContactRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.assertj.core.util.Lists;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -33,7 +34,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class ContactRepositoryIT {
 
-    private static final Contact TEST_CONTACT = new Contact("testId", "faketitle");
+    private static final Contact TEST_CONTACT = new Contact("testId", "faketitle", 25, true);
+    private static final Contact TEST_CONTACT2 = new Contact("testId2", "faketitle2",  32, false);
+    private static final Contact TEST_CONTACT3 = new Contact("testId3", "faketitle3", 43, false);
+    private static final Contact TEST_CONTACT4 = new Contact("testId4", "faketitle4", 43, true);
+    private static final Contact TEST_CONTACT5 = new Contact("testId4", "faketitle", 43, true);
 
     private static final CosmosEntityInformation<Contact, String> entityInformation =
         new CosmosEntityInformation<>(Contact.class);
@@ -54,6 +59,10 @@ public class ContactRepositoryIT {
             template.createContainerIfNotExists(entityInformation);
         }
         repository.save(TEST_CONTACT);
+        repository.save(TEST_CONTACT2);
+        repository.save(TEST_CONTACT3);
+        repository.save(TEST_CONTACT4);
+        repository.save(TEST_CONTACT5);
         isSetupDone = true;
     }
 
@@ -235,5 +244,21 @@ public class ContactRepositoryIT {
         Assert.assertTrue(contactIterator.hasNext());
         Assert.assertEquals(TEST_CONTACT, contactIterator.next());
         Assert.assertFalse(contactIterator.hasNext());
+    }
+
+    @Test
+    public void testAnnotatedQueries() {
+        String name = "faketitle";
+        List<Contact> valueContacts = repository.contactWithValueTitle(43, name);
+        Assert.assertEquals(valueContacts.size(), 1);
+        Assert.assertEquals(valueContacts.get(0), TEST_CONTACT5);
+
+        List<Contact> contactsWithOffset = repository.contactsWithOffsetLimit(1, 2);
+        Assert.assertEquals(contactsWithOffset.size(), 2);
+        Assert.assertEquals(contactsWithOffset.get(0), TEST_CONTACT2);
+        Assert.assertEquals(contactsWithOffset.get(1), TEST_CONTACT3);
+
+        List<ObjectNode> groupByContacts = repository.selectGroupBy();
+        Assert.assertEquals(groupByContacts.size(), 3);
     }
 }

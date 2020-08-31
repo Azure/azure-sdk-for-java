@@ -15,7 +15,7 @@ import reactor.core.publisher.Mono;
 public abstract class AbstractReactiveCosmosQuery implements RepositoryQuery {
 
     private final ReactiveCosmosQueryMethod method;
-    private final ReactiveCosmosOperations operations;
+    protected final ReactiveCosmosOperations operations;
 
     /**
      * Initialization

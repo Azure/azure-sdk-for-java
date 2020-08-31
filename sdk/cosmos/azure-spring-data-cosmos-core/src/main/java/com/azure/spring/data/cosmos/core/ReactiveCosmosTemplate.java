@@ -578,6 +578,25 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         return mappingCosmosConverter;
     }
 
+    @Override
+    public <T> Flux<T> runQuery(SqlQuerySpec querySpec, Class<?> domainType, Class<T> returnType) {
+        String containerName = domainType.getSimpleName();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        return cosmosAsyncClient.getDatabase(this.databaseName)
+                   .getContainer(containerName)
+                   .queryItems(querySpec, options, returnType)
+                   .byPage()
+                   .flatMap(cosmosItemFeedResponse -> {
+                       CosmosUtils
+                           .fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
+                                                              cosmosItemFeedResponse.getCosmosDiagnostics(),
+                                                              cosmosItemFeedResponse);
+                       return Flux.fromIterable(cosmosItemFeedResponse.getResults());
+                   })
+                   .onErrorResume(throwable ->
+                                      CosmosExceptionUtils.exceptionHandler("Failed to find items", throwable));
+    }
+
     private Mono<Long> getCountValue(CosmosQuery query, String containerName) {
         final SqlQuerySpec querySpec = new CountQueryGenerator().generateCosmos(query);
         final CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
