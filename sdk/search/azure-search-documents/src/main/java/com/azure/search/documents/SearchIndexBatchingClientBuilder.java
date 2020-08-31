@@ -78,7 +78,7 @@ public final class SearchIndexBatchingClientBuilder {
      * client}. All other builder settings are ignored.
      *
      * @return A SearchIndexBatchingClient with the options set from the builder.
-     * @throws NullPointerException If {@code indexName} or {@code endpoint} are {@code null}.
+     * @throws NullPointerException If {@code indexName} or {@code endpoint} are null.
      */
     public SearchIndexBatchingClient buildClient() {
         return new SearchIndexBatchingClient(buildAsyncClient());
@@ -93,7 +93,7 @@ public final class SearchIndexBatchingClientBuilder {
      * client}. All other builder settings are ignored.
      *
      * @return A SearchIndexBatchingAsyncClient with the options set from the builder.
-     * @throws NullPointerException If {@code indexName} or {@code endpoint} are {@code null}.
+     * @throws NullPointerException If {@code indexName} or {@code endpoint} are null.
      */
     public SearchIndexBatchingAsyncClient buildAsyncClient() {
         Objects.requireNonNull(indexName, "'indexName' cannot be null.");
@@ -139,8 +139,8 @@ public final class SearchIndexBatchingClientBuilder {
      *
      * @param credential The {@link AzureKeyCredential} used to authenticate HTTP requests.
      * @return The updated SearchIndexDocumentBatchingClientBuilder object.
-     * @throws NullPointerException If {@code credential} is {@code null}.
-     * @throws IllegalArgumentException If {@link AzureKeyCredential#getKey()} is {@code null} or empty.
+     * @throws NullPointerException If {@code credential} is null.
+     * @throws IllegalArgumentException If {@link AzureKeyCredential#getKey()} is null or empty.
      */
     public SearchIndexBatchingClientBuilder credential(AzureKeyCredential credential) {
         Objects.requireNonNull(credential, "'credential' cannot be null.");
@@ -153,7 +153,7 @@ public final class SearchIndexBatchingClientBuilder {
      *
      * @param indexName Name of the index.
      * @return The updated SearchIndexDocumentBatchingClientBuilder object.
-     * @throws IllegalArgumentException If {@code indexName} is {@code null} or empty.
+     * @throws IllegalArgumentException If {@code indexName} is null or empty.
      */
     public SearchIndexBatchingClientBuilder indexName(String indexName) {
         if (CoreUtils.isNullOrEmpty(indexName)) {
@@ -193,7 +193,7 @@ public final class SearchIndexBatchingClientBuilder {
      *
      * @param policy The pipeline policies to added to the policy list.
      * @return The updated SearchIndexDocumentBatchingClientBuilder object.
-     * @throws NullPointerException If {@code policy} is {@code null}.
+     * @throws NullPointerException If {@code policy} is null.
      */
     public SearchIndexBatchingClientBuilder addPolicy(HttpPipelinePolicy policy) {
         policies.add(Objects.requireNonNull(policy));
@@ -291,7 +291,7 @@ public final class SearchIndexBatchingClientBuilder {
      * Flag determining whether a batching client will automatically flush its document batch based on the
      * configurations of {@link #flushWindow(Duration)} and {@link #batchSize(Integer)}.
      * <p>
-     * If {@code autoFlush} is {@code null} the client will be set to automatically flush.
+     * If {@code autoFlush} is null the client will be set to automatically flush.
      *
      * @param autoFlush Flag determining whether a batching client will automatically flush.
      * @return The updated SearchIndexDocumentBatchingClientBuilder object.
@@ -306,8 +306,7 @@ public final class SearchIndexBatchingClientBuilder {
      * index.
      * <p>
      * If {@code flushWindow} is negative or zero and {@link #autoFlush(Boolean)} is enabled the client will flush when
-     * {@link #batchSize(Integer)} is met. If {@code flushWindow} is {@code null} a default value of 60 seconds is
-     * used.
+     * {@link #batchSize(Integer)} is met. If {@code flushWindow} is null a default value of 60 seconds is used.
      *
      * @param flushWindow Duration that will be waited between document being added to the batch before they will sent
      * to the index.
