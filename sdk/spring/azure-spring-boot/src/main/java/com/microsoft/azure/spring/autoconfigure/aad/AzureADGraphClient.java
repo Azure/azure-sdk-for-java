@@ -78,7 +78,7 @@ public class AzureADGraphClient {
 
     private String getUserMemberships(String accessToken, String urlString) throws IOException {
         URL url = new URL(urlString);
-        final HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+        final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         // Set the appropriate header fields in the request header.
         if (this.aadMicrosoftGraphApiBool) {
             conn.setRequestMethod(HttpMethod.GET.toString());
