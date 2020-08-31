@@ -200,7 +200,30 @@ public class IdentityClientTests {
 
         // test
         IdentityClient client = new IdentityClientBuilder().build();
-        AccessToken token = client.authenticateToManagedIdentityEndpoint(endpoint, secret, request).block();
+        AccessToken token = client.authenticateToManagedIdentityEndpoint(endpoint, secret, "2017-09-01", request).block();
+        Assert.assertEquals("token1", token.getToken());
+        Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
+    }
+
+    @Test
+    public void testValidIdentityEndpointMSICodeFlow() throws Exception {
+        // setup
+        Configuration configuration = Configuration.getGlobalConfiguration();
+        String endpoint = "http://localhost";
+        String secret = "secret";
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        configuration.put("IDENTITY_ENDPOINT", endpoint);
+        configuration.put("IDENTITY_HEADER", secret);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("M/d/yyyy H:mm:ss XXX");
+        String tokenJson = "{ \"access_token\" : \"token1\", \"expires_on\" : \"" + expiresOn.format(dtf) + "\" }";
+
+        // mock
+        mockForMSICodeFlow(tokenJson);
+
+        // test
+        IdentityClient client = new IdentityClientBuilder().build();
+        AccessToken token = client.authenticateToManagedIdentityEndpoint(endpoint, secret, "2019-08-01", request).block();
         Assert.assertEquals("token1", token.getToken());
         Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
     }

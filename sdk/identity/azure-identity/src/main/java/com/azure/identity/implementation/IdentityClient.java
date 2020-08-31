@@ -727,12 +727,12 @@ public class IdentityClient {
     /**
      * Asynchronously acquire a token from the App Service Managed Service Identity endpoint.
      *
-     * @param msiEndpoint the endpoint to acquire token from
-     * @param msiSecret the secret to acquire token with
+     * @param endpoint the endpoint to acquire token from
+     * @param secret the secret to acquire token with
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<AccessToken> authenticateToManagedIdentityEndpoint(String msiEndpoint, String msiSecret,
+    public Mono<AccessToken> authenticateToManagedIdentityEndpoint(String endpoint, String secret, String version,
                                                                    TokenRequestContext request) {
         return Mono.fromCallable(() -> {
             String resource = ScopeUtil.scopesToResource(request.getScopes());
@@ -742,18 +742,22 @@ public class IdentityClient {
             payload.append("resource=");
             payload.append(URLEncoder.encode(resource, "UTF-8"));
             payload.append("&api-version=");
-            payload.append(URLEncoder.encode("2017-09-01", "UTF-8"));
+            payload.append(URLEncoder.encode(version, "UTF-8"));
             if (clientId != null) {
                 payload.append("&clientid=");
                 payload.append(URLEncoder.encode(clientId, "UTF-8"));
             }
             try {
-                URL url = new URL(String.format("%s?%s", msiEndpoint, payload));
+                URL url = new URL(String.format("%s?%s", endpoint, payload));
                 connection = (HttpURLConnection) url.openConnection();
 
                 connection.setRequestMethod("GET");
-                if (msiSecret != null) {
-                    connection.setRequestProperty("Secret", msiSecret);
+                if (secret != null) {
+                    if (version.equals("2019-08-01")) {
+                        connection.setRequestProperty("X-IDENTITY-HEADER", secret);
+                    } else {
+                        connection.setRequestProperty("Secret", secret);
+                    }
                 }
                 connection.setRequestProperty("Metadata", "true");
 

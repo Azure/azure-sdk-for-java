@@ -16,8 +16,9 @@ import reactor.core.publisher.Mono;
  */
 @Immutable
 class AppServiceMsiCredential {
-    private final String msiEndpoint;
-    private final String msiSecret;
+    private final String endpoint;
+    private final String secret;
+    private final String msiVersion;
     private final IdentityClient identityClient;
     private final String clientId;
     private final ClientLogger logger = new ClientLogger(AppServiceMsiCredential.class);
@@ -30,14 +31,26 @@ class AppServiceMsiCredential {
      */
     AppServiceMsiCredential(String clientId, IdentityClient identityClient) {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
-        this.msiEndpoint = configuration.get(Configuration.PROPERTY_MSI_ENDPOINT);
-        this.msiSecret = configuration.get(Configuration.PROPERTY_MSI_SECRET);
+        if (configuration.contains(ManagedIdentityCredential.PROPERTY_IDENTITY_ENDPOINT)) {
+            this.endpoint = configuration.get(ManagedIdentityCredential.PROPERTY_IDENTITY_ENDPOINT);
+            this.secret = configuration.get(ManagedIdentityCredential.PROPERTY_IDENTITY_HEADER);
+            msiVersion = "2019-08-01";
+            if (!(endpoint.startsWith("https") || endpoint.startsWith("http"))) {
+                throw logger.logExceptionAsError(
+                    new IllegalArgumentException("Identity Endpoint should start with 'https' or 'http' scheme."));
+            }
+        } else {
+            this.endpoint = configuration.get(Configuration.PROPERTY_MSI_ENDPOINT);
+            this.secret = configuration.get(Configuration.PROPERTY_MSI_SECRET);
+            msiVersion = "2017-09-01";
+            if (!(endpoint.startsWith("https") || endpoint.startsWith("http"))) {
+                throw logger.logExceptionAsError(
+                    new IllegalArgumentException("MSI Endpoint should start with 'https' or 'http' scheme."));
+            }
+        }
         this.identityClient = identityClient;
         this.clientId = clientId;
-        if (!(msiEndpoint.startsWith("https") || msiEndpoint.startsWith("http"))) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("MSI Endpoint should start with 'https' or 'http' scheme."));
-        }
+
     }
 
     /**
@@ -56,6 +69,6 @@ class AppServiceMsiCredential {
      * @return A publisher that emits an {@link AccessToken}.
      */
     public Mono<AccessToken> authenticate(TokenRequestContext request) {
-        return identityClient.authenticateToManagedIdentityEndpoint(msiEndpoint, msiSecret, request);
+        return identityClient.authenticateToManagedIdentityEndpoint(endpoint, secret, msiVersion, request);
     }
 }
