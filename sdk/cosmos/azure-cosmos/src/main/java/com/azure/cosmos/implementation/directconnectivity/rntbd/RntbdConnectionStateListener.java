@@ -60,6 +60,7 @@ public class RntbdConnectionStateListener {
         }
 
         if (event == RntbdConnectionEvent.READ_EOF || event == RntbdConnectionEvent.READ_FAILURE) {
+
             this.updateAddressCacheAsync(endpoint, request).publishOn(Schedulers.parallel())
                 .doOnError(error -> {
                     logger.warn("Address cache update failed due to ", error);

@@ -40,7 +40,6 @@ import java.util.stream.Stream;
 import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders;
 import static com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient.Options;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
 import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
 

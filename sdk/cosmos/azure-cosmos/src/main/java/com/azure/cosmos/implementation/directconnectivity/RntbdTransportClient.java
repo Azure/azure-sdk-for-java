@@ -278,7 +278,7 @@ public final class RntbdTransportClient extends TransportClient {
 
                 } else {
 
-                    // GoneException was created from the response from the server
+                    // GoneException was created from a response from the server
                     //
                     // This will occur for any of a number of reasons. We care about sub-status code zero because it
                     // indicates the server hosting the targeted endpoint is being discontinued or reconfigured. The
@@ -298,7 +298,7 @@ public final class RntbdTransportClient extends TransportClient {
                     }
                 }
 
-                if (event != null) {
+                if (!(event == null || endpoint.isClosed() || this.isClosed())) {
                     this.connectionStateListener.onConnectionEvent(event, Instant.now(), endpoint, request);
                     final GoneException exception = (GoneException) error;
                     exception.getResponseHeaders().put(BackendHeaders.SUB_STATUS, DISCONTINUING_SERVICE);

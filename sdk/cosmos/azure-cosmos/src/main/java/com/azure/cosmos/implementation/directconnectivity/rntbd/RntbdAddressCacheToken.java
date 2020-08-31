@@ -4,17 +4,20 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
+import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.directconnectivity.AddressResolverExtension;
-import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.SocketAddress;
 import java.net.URI;
 import java.util.Objects;
 
+import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssueUnless;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -22,6 +25,8 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * triggers an event on connection reset by a replica.
  */
 public final class RntbdAddressCacheToken {
+
+    private static Logger logger = LoggerFactory.getLogger(RntbdAddressCacheToken.class);
 
     private final URI addressResolverURI;
     private final RntbdEndpoint endpoint;
@@ -38,11 +43,34 @@ public final class RntbdAddressCacheToken {
 
         this.addressResolverURI = addressResolver.getAddressResolverURI(request);
         this.endpoint = endpoint;
-        this.partitionKeyRangeIdentity = request.getPartitionKeyRangeIdentity();
-    }
 
-    public URI getAddressResolverURI(GlobalAddressResolver resolver) {
-        return this.addressResolverURI;
+        PartitionKeyRangeIdentity partitionKeyRangeIdentity = request.getPartitionKeyRangeIdentity();
+
+        if (partitionKeyRangeIdentity == null) {
+
+            final PartitionKeyRange partitionKeyRange = request.requestContext.resolvedPartitionKeyRange;
+            final String collectionRid = request.requestContext.resolvedCollectionRid;
+
+            if (collectionRid != null) {
+
+                partitionKeyRangeIdentity = partitionKeyRange != null
+                    ? new PartitionKeyRangeIdentity(collectionRid, partitionKeyRange.getId())
+                    : new PartitionKeyRangeIdentity(collectionRid);
+
+            } else {
+
+                // TODO (DANOBLE) This happens on certain operations (e.g., read Database)
+                //  Is there an alternative mechanism for producing a partition key range identity or is this expected?
+
+                reportIssueUnless(logger, partitionKeyRange == null, request.requestContext,
+                    "expected null partitionKeyRange, not {} for '{} {}' operation",
+                    partitionKeyRange,
+                    request.getOperationType(),
+                    request.getResourceType());
+            }
+        }
+
+        this.partitionKeyRangeIdentity = partitionKeyRangeIdentity;
     }
 
     @JsonProperty
