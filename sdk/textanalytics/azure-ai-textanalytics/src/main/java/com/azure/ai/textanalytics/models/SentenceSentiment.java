@@ -7,8 +7,8 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link SentenceSentiment} model that contains a sentiment label of a sentence, confidence score of the
- * sentiment label, length of the sentence and offset of the sentence within a document.
+ * The {@link SentenceSentiment} model that contains a sentiment label of a sentence, confidence scores of the
+ * sentiment label, mined opinions, offset of sentence, and length of sentence within a document.
  */
 @Immutable
 public final class SentenceSentiment {
@@ -45,8 +45,8 @@ public final class SentenceSentiment {
      * Higher values signify higher confidence.
      * @param minedOpinions The mined opinions of the sentence sentiment. This is only returned if you pass the
      * opinion mining parameter to the analyze sentiment APIs.
-     * @param offset The start position for the entity text.
-     * @param length The length for the entity text.
+     * @param offset The start position for the sentence in a document.
+     * @param length The length of sentence.
      */
     public SentenceSentiment(String text, TextSentiment sentiment, SentimentConfidenceScores confidenceScores,
         IterableStream<MinedOpinion> minedOpinions, int offset, int length) {
@@ -61,7 +61,7 @@ public final class SentenceSentiment {
     /**
      * Get the sentence text property.
      *
-     * @return the text property value.
+     * @return The text property value.
      */
     public String getText() {
         return this.text;
@@ -97,18 +97,18 @@ public final class SentenceSentiment {
     }
 
     /**
-     * Get the offset of sentence sentiment match text.
+     * Get the offset of sentence. The start position for the sentence in a document.
      *
-     * @return The offset of sentence sentiment match text.
+     * @return The offset of sentence.
      */
     public int getOffset() {
         return offset;
     }
 
     /**
-     * Get the length of sentence sentiment match text.
+     * Get the length of sentence.
      *
-     * @return The length of sentence sentiment match text.
+     * @return The length of sentence.
      */
     public int getLength() {
         return length;
