@@ -2478,7 +2478,7 @@
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "3677ebb3-54c1-47d2-aa3d-fb4937c7d6a3",
-      "Body" : "{\"primaryKey\":\"8434F43A0E9A31153CDA4B002CE2F8A3\",\"secondaryKey\":\"71DF6F5EF0652AAF8B64E38847DD09EF\"}"
+      "Body" : "{\"primaryKey\":\"***REMOVED***\",\"secondaryKey\":\"***REMOVED***\"}"
     }
   }, {
     "Method" : "GET",
@@ -3345,7 +3345,7 @@
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "9b1c6c6c-9c1d-448b-8206-d04399671585",
-      "Body" : "{\"primaryKey\":\"8434F43A0E9A31153CDA4B002CE2F8A3\",\"secondaryKey\":\"71DF6F5EF0652AAF8B64E38847DD09EF\"}"
+      "Body" : "{\"primaryKey\":\"***REMOVED***\",\"secondaryKey\":\"***REMOVED***\"}"
     }
   }, {
     "Method" : "GET",
@@ -4606,7 +4606,7 @@
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "11e6e50d-3dd0-4921-b5aa-175db2014899",
-      "Body" : "{\"primaryKey\":\"8434F43A0E9A31153CDA4B002CE2F8A3\",\"secondaryKey\":\"71DF6F5EF0652AAF8B64E38847DD09EF\"}"
+      "Body" : "{\"primaryKey\":\"***REMOVED***\",\"secondaryKey\":\"***REMOVED***\"}"
     }
   }, {
     "Method" : "GET",
