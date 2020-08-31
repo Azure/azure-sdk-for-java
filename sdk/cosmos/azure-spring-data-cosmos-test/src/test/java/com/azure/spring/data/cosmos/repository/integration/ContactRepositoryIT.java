@@ -23,6 +23,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -81,9 +82,8 @@ public class ContactRepositoryIT {
         final List<Contact> result = TestUtils.toList(repository.findAll());
 
         assertThat(result.size()).isEqualTo(5);
-        Assert.assertEquals(result,
-                            List.of(TEST_CONTACT, TEST_CONTACT2, TEST_CONTACT3, TEST_CONTACT4,
-                                                    TEST_CONTACT5));
+        Assert.assertEquals(Arrays.asList(TEST_CONTACT, TEST_CONTACT2, TEST_CONTACT3, TEST_CONTACT4,
+                          TEST_CONTACT5), result);
 
         final Contact contact = repository.findById(TEST_CONTACT.getLogicId()).get();
 
@@ -125,7 +125,8 @@ public class ContactRepositoryIT {
         final List<Contact> result = TestUtils.toList(repository.findAll());
 
         assertThat(result.size()).isEqualTo(5);
-        Assert.assertEquals(result, List.of(TEST_CONTACT, TEST_CONTACT2, TEST_CONTACT3, TEST_CONTACT4, TEST_CONTACT5));
+        Assert.assertEquals(Arrays.asList(TEST_CONTACT, TEST_CONTACT2, TEST_CONTACT3, TEST_CONTACT4,
+                                                  TEST_CONTACT5), result);
         assertThat(result.get(0).getLogicId()).isEqualTo(TEST_CONTACT.getLogicId());
         assertThat(result.get(0).getTitle()).isEqualTo(TEST_CONTACT.getTitle());
     }
