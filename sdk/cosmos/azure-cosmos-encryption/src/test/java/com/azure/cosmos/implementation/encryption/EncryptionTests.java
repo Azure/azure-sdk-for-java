@@ -11,7 +11,6 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.encryption.AzureKeyVaultKeyWrapMetadata;
-import com.azure.cosmos.encryption.AzureKeyVaultKeyWrapProvider;
 import com.azure.cosmos.encryption.DecryptionResult;
 import com.azure.cosmos.encryption.EncryptionCosmosAsyncContainer;
 import com.azure.cosmos.encryption.EncryptionItemRequestOptions;

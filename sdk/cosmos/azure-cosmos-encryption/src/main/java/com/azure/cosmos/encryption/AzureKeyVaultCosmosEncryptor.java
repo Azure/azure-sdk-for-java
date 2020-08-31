@@ -5,6 +5,7 @@ package com.azure.cosmos.encryption;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.implementation.encryption.AzureKeyVaultKeyWrapProvider;
 import com.azure.cosmos.implementation.encryption.CosmosDataEncryptionKeyProvider;
 import com.azure.cosmos.implementation.encryption.CosmosEncryptor;
 import com.azure.cosmos.implementation.encryption.DataEncryptionKeyContainer;

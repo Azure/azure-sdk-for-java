@@ -1,22 +1,22 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.encryption;
+package com.azure.cosmos.implementation.encryption;
 
+import com.azure.cosmos.encryption.EncryptionKeyUnwrapResult;
+import com.azure.cosmos.encryption.EncryptionKeyWrapMetadata;
+import com.azure.cosmos.encryption.EncryptionKeyWrapProvider;
+import com.azure.cosmos.encryption.EncryptionKeyWrapResult;
+import com.azure.cosmos.encryption.KeyVaultTokenCredentialFactory;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.encryption.CryptographyClientFactory;
-import com.azure.cosmos.implementation.encryption.EncryptionUtils;
-import com.azure.cosmos.implementation.encryption.KeyClientFactory;
-import com.azure.cosmos.implementation.encryption.KeyVaultAccessClient;
-import com.azure.cosmos.implementation.encryption.KeyVaultConstants;
-import com.azure.cosmos.implementation.encryption.KeyVaultKeyUriProperties;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static com.azure.cosmos.implementation.encryption.ImplementationBridgeHelpers.EncryptionKeyWrapMetadataHelper;
+
 /**
- * TODO: moderakh now this should be internal
  * Provides functionality to wrap (encrypt) and unwrap (decrypt) data encryption keys using master keys stored in Azure Key Vault.
  * Unwrapped data encryption keys will be cached within the client SDK for a period of 1 hour.
  */
@@ -57,13 +57,15 @@ public class AzureKeyVaultKeyWrapProvider implements EncryptionKeyWrapProvider {
     @Override
     public Mono<EncryptionKeyUnwrapResult> unwrapKey(byte[] wrappedKey,
                                                      EncryptionKeyWrapMetadata metadata) {
-        if (!StringUtils.equals(metadata.type, AzureKeyVaultKeyWrapMetadata.TYPE_CONSTANT)) {
+        String metadataType = EncryptionKeyWrapMetadataHelper.getType(metadata);
+        if (!StringUtils.equals(metadataType, KeyVaultConstants.AzureKeyVaultKeyWrapMetadata.TYPE_CONSTANT)) {
             throw new IllegalArgumentException("Invalid metadata metadata");
         }
 
-        if (!StringUtils.equals(metadata.algorithm, KeyVaultConstants.RsaOaep256.toString())) {
+        String metadataAlgo = EncryptionKeyWrapMetadataHelper.getAlgorithm(metadata);
+        if (!StringUtils.equals(metadataAlgo, KeyVaultConstants.RsaOaep256.toString())) {
             throw new IllegalArgumentException(
-                String.format("Unknown encryption key wrap algorithm %s metadata", metadata.algorithm));
+                String.format("Unknown encryption key wrap algorithm %s metadata", metadataAlgo));
         }
 
         AtomicReference<KeyVaultKeyUriProperties> keyVaultUriPropertiesRef =
@@ -87,7 +89,9 @@ public class AzureKeyVaultKeyWrapProvider implements EncryptionKeyWrapProvider {
     @Override
     public Mono<EncryptionKeyWrapResult> wrapKey(byte[] key,
                                                  EncryptionKeyWrapMetadata metadata) {
-        if (!StringUtils.equals(metadata.type, AzureKeyVaultKeyWrapMetadata.TYPE_CONSTANT)) {
+        String metadataType = EncryptionKeyWrapMetadataHelper.getType(metadata);
+
+        if (!StringUtils.equals(metadataType, KeyVaultConstants.AzureKeyVaultKeyWrapMetadata.TYPE_CONSTANT)) {
             throw new IllegalArgumentException("Invalid metadata metadata");
         }
 
@@ -112,7 +116,7 @@ public class AzureKeyVaultKeyWrapProvider implements EncryptionKeyWrapProvider {
                         .map(
                             wrappedDataEncryptionKey -> {  // TODO: what happens if wrappedDataEncryptionKey is null?
                                 EncryptionKeyWrapMetadata responseMetadata =
-                                    new EncryptionKeyWrapMetadata(metadata.type, metadata.value,
+                                    new EncryptionKeyWrapMetadata(metadataType, metadata.value,
                                     KeyVaultConstants.RsaOaep256.toString());
                                 return new EncryptionKeyWrapResult(wrappedDataEncryptionKey, responseMetadata);
                             }

@@ -25,4 +25,8 @@ public class KeyVaultConstants {
             + "+ProtectedSubscription";
         public static final String CustomizedRecoverablePurgeable = "CustomizedRecoverable+Purgeable";
     }
+
+    public static class AzureKeyVaultKeyWrapMetadata {
+        public static final String TYPE_CONSTANT = ImplementationBridgeHelpers.AzureKeyVaultKeyWrapMetadataHelper.getTypeConstant();
+    }
 }

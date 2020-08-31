@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Objects;
 
+import static com.azure.cosmos.implementation.encryption.ImplementationBridgeHelpers.EncryptionKeyWrapMetadataHelper;
+
 
 /**
  * Metadata that a key wrapping provider can use to wrap/unwrap data encryption keys.
@@ -86,5 +88,25 @@ public class EncryptionKeyWrapMetadata {
     @Override
     public int hashCode() {
         return Objects.hash(type, algorithm, value);
+    }
+
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    static {
+        EncryptionKeyWrapMetadataHelper.setEncryptionKeyWrapMetadataAccessor(
+            new EncryptionKeyWrapMetadataHelper.EncryptionKeyWrapMetadataAccessor() {
+                @Override
+                public String getType(EncryptionKeyWrapMetadata metadata) {
+                    return metadata.type;
+                }
+
+                @Override
+                public String getAlgorithm(EncryptionKeyWrapMetadata metadata) {
+                    return metadata.algorithm;
+                }
+            });
     }
 }
