@@ -320,5 +320,14 @@ storage_com.microsoft.azure:azure-storage;8.4.0
 # sdk\spring\azure-spring-boot\pom.xml
 spring_com.microsoft.azure:azure;1.34.0
 
+# sdk\spring\azure-spring-boot-2-2-starter-cosmosdb\pom.xml
+springboot22_com.microsoft.azure:spring-data-cosmosdb;2.2.2.M2
+springboot22_org.springframework.boot:spring-boot-starter;2.2.9.RELEASE
+springboot22_org.springframework.boot:spring-boot;2.2.9.RELEASE
+springboot22_org.springframework.boot:spring-boot-starter-validation;2.2.9.RELEASE
+springboot22_org.springframework.boot:spring-boot-starter-test;2.2.9.RELEASE
+springboot22_org.springframework.boot:spring-boot-starter-actuator;2.2.9.RELEASE
+springboot22_org.springframework.boot:spring-boot-starter-web;2.2.9.RELEASE
+
 # sdk\cosmos
 springdata22_org.springframework.data:spring-data-commons;2.2.9.RELEASE
