@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos.multidatasource.primarydatasource.first;
+package com.azure.spring.data.cosmos.multidatasource.primarydatasource.first;
 
 import com.azure.spring.data.cosmos.repository.ReactiveCosmosRepository;
 import reactor.core.publisher.Flux;
