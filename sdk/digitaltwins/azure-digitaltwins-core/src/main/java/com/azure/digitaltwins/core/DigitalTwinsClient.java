@@ -7,20 +7,14 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.rest.*;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions;
-import com.azure.digitaltwins.core.models.ModelData;
-import com.azure.digitaltwins.core.util.ListModelOptions;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import reactor.core.publisher.Mono;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.azure.core.util.FluxUtil.withContext;
 import com.azure.digitaltwins.core.implementation.models.IncomingRelationship;
+import com.azure.digitaltwins.core.models.ModelData;
 import com.azure.digitaltwins.core.util.DigitalTwinsResponse;
+import com.azure.digitaltwins.core.util.ListModelOptions;
 
 import java.util.List;
 
