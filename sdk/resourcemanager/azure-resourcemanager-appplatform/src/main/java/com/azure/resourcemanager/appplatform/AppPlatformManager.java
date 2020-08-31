@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.appplatform;
 
-
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.appplatform.implementation.SpringServicesImpl;
