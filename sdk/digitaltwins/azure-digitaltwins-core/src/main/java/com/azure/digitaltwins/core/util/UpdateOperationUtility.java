@@ -78,8 +78,8 @@ public class UpdateOperationUtility {
     }
 
     @Fluent
-    // A static inner class is declared as a static member of another class, it is not tied to any instance of the containing class.
-    // An inner class is declared as a non-static member of another class, it is tied to a particular instance of its containing class.
+    // A static inner class is declared as a static member of another class and it is not tied to any instance of the containing class.
+    // An inner class is declared as a non-static member of another class and it is tied to a particular instance of its containing class.
     // An inner class may be static if it doesn't reference its enclosing instance.
     // A static inner class does not keep an implicit reference to its enclosing instance. This prevents a common cause of memory leaks and uses less memory per instance of the class.
     static class UpdateOperation {
