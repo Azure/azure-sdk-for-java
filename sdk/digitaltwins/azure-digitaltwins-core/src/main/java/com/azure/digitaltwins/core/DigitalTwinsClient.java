@@ -15,6 +15,7 @@ import com.azure.digitaltwins.core.implementation.models.IncomingRelationship;
 import com.azure.digitaltwins.core.models.ModelData;
 import com.azure.digitaltwins.core.util.DigitalTwinsResponse;
 import com.azure.digitaltwins.core.util.ListModelOptions;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -365,6 +366,21 @@ public final class DigitalTwinsClient {
         return digitalTwinsAsyncClient.deleteModelWithResponse(modelId, context).block();
     }
 
-    //TODO: Decommission Model APIs (waiting for Abhipsa's change to come in)
+    /**
+     * Decommissions a model.
+     * @param modelId The Id of the model to decommission.
+     * @return Void
+     */
+    public Void decommissionModel(String modelId) {
+        return digitalTwinsAsyncClient.decommissionModel(modelId).block();
+    }
 
+    /**
+     * Decommissions a model.
+     * @param modelId The Id of the model to decommission.
+     * @return The http response.
+     */
+    public Response<Void> decommissionModelWithResponse(String modelId, Context context) {
+        return digitalTwinsAsyncClient.decommissionModelWithResponse(modelId, context).block();
+    }
 }
