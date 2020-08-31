@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono;
 public class SpringAppDeploymentsImpl
     extends ExternalChildResourcesNonCachedImpl<
         SpringAppDeploymentImpl, SpringAppDeployment, DeploymentResourceInner, SpringAppImpl, SpringApp>
-    implements SpringAppDeployments {
+    implements SpringAppDeployments<SpringAppDeploymentImpl> {
 
     SpringAppDeploymentsImpl(SpringAppImpl parent) {
         super(parent, parent.taskGroup(), "SpringAppDeployment");

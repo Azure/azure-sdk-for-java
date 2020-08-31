@@ -4,6 +4,7 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.IterableStream;
 
 /**
  * The {@link SentenceSentiment} model that contains a sentiment label of a sentence, confidence score of the
@@ -14,11 +15,11 @@ public final class SentenceSentiment {
     private final String text;
     private final SentimentConfidenceScores confidenceScores;
     private final TextSentiment sentiment;
+    private final IterableStream<MinedOpinion> minedOpinions;
 
     /**
      * Creates a {@link SentenceSentiment} model that describes the sentiment analysis of sentence.
-     *
-     * @param text The sentence text
+     * @param text The sentence text.
      * @param sentiment The sentiment label of the sentence.
      * @param confidenceScores The sentiment confidence score (Softmax score) between 0 and 1, for each sentiment label.
      *   Higher values signify higher confidence.
@@ -26,13 +27,31 @@ public final class SentenceSentiment {
     public SentenceSentiment(String text, TextSentiment sentiment, SentimentConfidenceScores confidenceScores) {
         this.text = text;
         this.sentiment = sentiment;
+        this.minedOpinions = null;
+        this.confidenceScores = confidenceScores;
+    }
+
+    /**
+     * Creates a {@link SentenceSentiment} model that describes the sentiment analysis of sentence.
+     * @param text The sentence text.
+     * @param sentiment The sentiment label of the sentence.
+     * @param minedOpinions The mined opinions of the sentence sentiment. This is only returned if you pass the
+     * opinion mining parameter to the analyze sentiment APIs.
+     * @param confidenceScores The sentiment confidence score (Softmax score) between 0 and 1, for each sentiment label.
+     *   Higher values signify higher confidence.
+     */
+    public SentenceSentiment(String text, TextSentiment sentiment, IterableStream<MinedOpinion> minedOpinions,
+        SentimentConfidenceScores confidenceScores) {
+        this.text = text;
+        this.sentiment = sentiment;
+        this.minedOpinions = minedOpinions;
         this.confidenceScores = confidenceScores;
     }
 
     /**
      * Get the sentence text property.
      *
-     * @return the text value.
+     * @return the text property value.
      */
     public String getText() {
         return this.text;
@@ -48,8 +67,18 @@ public final class SentenceSentiment {
     }
 
     /**
-     * Get the confidence score of the sentiment label. All score values sum up to 1, higher the score value means
-     * higher confidence the sentiment label represents.
+     * Get the mined opinions of sentence sentiment.
+     * This is only returned if you pass the opinion mining parameter to the analyze sentiment APIs.
+     *
+     * @return The mined opinions of sentence sentiment.
+     */
+    public IterableStream<MinedOpinion> getMinedOpinions() {
+        return minedOpinions;
+    }
+
+    /**
+     * Get the confidence score of the sentiment label. All score values sum up to 1, the higher the score, the
+     * higher the confidence in the sentiment.
      *
      * @return The {@link SentimentConfidenceScores}.
      */
