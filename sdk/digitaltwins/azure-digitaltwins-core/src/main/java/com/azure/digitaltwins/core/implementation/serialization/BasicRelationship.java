@@ -6,6 +6,7 @@ package com.azure.digitaltwins.core.implementation.serialization;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.HashMap;
@@ -16,6 +17,7 @@ import java.util.Map;
  * This is useful to use as a base class to ensure your custom relationships have the necessary properties.
  */
 @Fluent
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class BasicRelationship {
 
     @JsonProperty(value = "$relationshipId", required = true)

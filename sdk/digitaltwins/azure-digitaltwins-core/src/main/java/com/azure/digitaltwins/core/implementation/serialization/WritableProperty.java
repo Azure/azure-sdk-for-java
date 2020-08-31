@@ -20,10 +20,10 @@ public class WritableProperty {
     @JsonProperty(value = "desiredVersion")
     private int desiredVersion;
 
-    @JsonProperty(value = "ackVersion")
+    @JsonProperty(value = "ackVersion", required = true)
     private int ackVersion;
 
-    @JsonProperty(value = "ackCode")
+    @JsonProperty(value = "ackCode", required = true)
     private int ackCode;
 
     @JsonProperty(value = "ackDescription")
