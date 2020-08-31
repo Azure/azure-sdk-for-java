@@ -807,23 +807,6 @@ Async APIs
 
 Sync APIs
 ```java
- /**
-
-    /**
-     * Decommissions a model.
-     * @param modelId The Id of the model to decommission.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void decommissionModel(String modelId) { }
-
-    /**
-     * Decommissions a model.
-     * @param modelId The Id of the model to decommission.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The http response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response decommissionModelWithResponse(String modelId, Context context) { }
 
 ```
 
