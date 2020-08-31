@@ -1549,7 +1549,6 @@ public final class Utils {
      */
     public static void createCertificate(String certPath, String pfxPath,
                                          String alias, String password, String cnName) throws Exception {
-        SdkContext.prepareFileLocation(new File(pfxPath), new File(certPath));
         if (new File(pfxPath).exists()) {
             return;
         }
