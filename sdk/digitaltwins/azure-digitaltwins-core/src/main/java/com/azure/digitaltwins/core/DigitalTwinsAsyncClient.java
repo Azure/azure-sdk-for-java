@@ -17,6 +17,7 @@ import com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOp
 import com.azure.digitaltwins.core.implementation.models.IncomingRelationship;
 import com.azure.digitaltwins.core.implementation.serializer.DigitalTwinsStringSerializer;
 import com.azure.digitaltwins.core.models.ModelData;
+import com.azure.digitaltwins.core.implementation.models.DigitalTwinsGetComponentResponse;
 import com.azure.digitaltwins.core.util.DigitalTwinsResponse;
 import com.azure.digitaltwins.core.util.DigitalTwinsResponseHeaders;
 import com.azure.digitaltwins.core.util.ListModelOptions;
@@ -715,5 +716,119 @@ public final class DigitalTwinsAsyncClient {
             .getUpdateOperations();
 
         return protocolLayer.getDigitalTwinModels().updateWithResponseAsync(modelId, updateOperation, context);
+    }
+
+    //==================================================================================================================================================
+    // Component APIs
+    //==================================================================================================================================================
+
+    /**
+     * Get a component of a digital twin.
+     * @param digitalTwinId The Id of the digital twin to get the component from.
+     * @param componentPath The path of the component on the digital twin to retrieve.
+     * @return The application/json string representing the component of the digital twin.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<String> getComponent(String digitalTwinId, String componentPath) {
+        return getComponentWithResponse(digitalTwinId, componentPath)
+            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
+    }
+
+    /**
+     * Get a component of a digital twin.
+     * @param digitalTwinId The Id of the digital twin to get the component from.
+     * @param componentPath The path of the component on the digital twin to retrieve.
+     * @return A {@link DigitalTwinsResponse} containing the application/json string representing the component of the digital twin.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DigitalTwinsResponse<String>> getComponentWithResponse(String digitalTwinId, String componentPath) {
+        return withContext(context -> getComponentWithResponse(digitalTwinId, componentPath, context));
+    }
+
+    Mono<DigitalTwinsResponse<String>> getComponentWithResponse(String digitalTwinId, String componentPath, Context context) {
+        return protocolLayer.getDigitalTwins().getComponentWithResponseAsync(digitalTwinId, componentPath, context)
+            .flatMap(response -> {
+                try {
+                    String jsonResponse = mapper.writeValueAsString(response.getValue());
+                    DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
+                    return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), jsonResponse, twinHeaders));
+                } catch (JsonProcessingException e) {
+                    return Mono.error(e);
+                }
+            });
+    }
+
+    /**
+     * Get a component of a digital twin.
+     * @param digitalTwinId The Id of the digital twin to get the component from.
+     * @param componentPath The path of the component on the digital twin to retrieve.
+     * @param clazz The class to deserialize the application/json component into.
+     * @param <T> The generic type to deserialize the component to.
+     * @return The deserialized application/json object representing the component of the digital twin.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public <T> Mono<T> getComponent(String digitalTwinId, String componentPath, Class<T> clazz) {
+        return getComponentWithResponse(digitalTwinId, componentPath, clazz)
+            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
+    }
+
+    /**
+     * Get a component of a digital twin.
+     * @param digitalTwinId The Id of the digital twin to get the component from.
+     * @param componentPath The path of the component on the digital twin to retrieve.
+     * @param clazz The class to deserialize the application/json component into.
+     * @param <T> The generic type to deserialize the component to.
+     * @return A {@link DigitalTwinsResponse} containing the deserialized application/json object representing the component of the digital twin.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public <T> Mono<DigitalTwinsResponse<T>> getComponentWithResponse(String digitalTwinId, String componentPath, Class<T> clazz) {
+        return withContext(context -> getComponentWithResponse(digitalTwinId, componentPath, clazz, context));
+    }
+
+    <T> Mono<DigitalTwinsResponse<T>> getComponentWithResponse(String digitalTwinId, String componentPath, Class<T> clazz, Context context) {
+        return protocolLayer.getDigitalTwins().getComponentWithResponseAsync(digitalTwinId, componentPath, context)
+            .flatMap(response -> {
+                T genericResponse = mapper.convertValue(response.getValue(), clazz);
+                DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
+                return Mono.just(new DigitalTwinsResponse<T>(response.getRequest(), response.getStatusCode(), response.getHeaders(), genericResponse, twinHeaders));
+            });
+    }
+
+    /**
+     * Patch a component on a digital twin.
+     * @param digitalTwinId The Id of the digital twin that has the component to patch.
+     * @param componentPath The path of the component on the digital twin.
+     * @param componentUpdateOperations The application json patch to apply to the component. See {@link com.azure.digitaltwins.core.util.UpdateOperationUtility} for building
+     *                                  this argument.
+     * @return An empty Mono.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> updateComponent(String digitalTwinId, String componentPath, List<Object> componentUpdateOperations) {
+        return updateComponentWithResponse(digitalTwinId, componentPath, componentUpdateOperations, new UpdateComponentRequestOptions())
+            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
+    }
+
+    /**
+     * Patch a component on a digital twin.
+     * @param digitalTwinId The Id of the digital twin that has the component to patch.
+     * @param componentPath The path of the component on the digital twin.
+     * @param componentUpdateOperations The application json patch to apply to the component. See {@link com.azure.digitaltwins.core.util.UpdateOperationUtility} for building
+     *                                  this argument.
+     * @param requestOptions The optional parameters for this request.
+     * @return A {@link DigitalTwinsResponse} containing an empty Mono.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DigitalTwinsResponse<Void>> updateComponentWithResponse(String digitalTwinId, String componentPath, List<Object> componentUpdateOperations, UpdateComponentRequestOptions requestOptions) {
+        return withContext(context -> updateComponentWithResponse(digitalTwinId, componentPath, componentUpdateOperations, requestOptions, context));
+    }
+
+    Mono<DigitalTwinsResponse<Void>> updateComponentWithResponse(String digitalTwinId, String componentPath, List<Object> componentUpdateOperations, UpdateComponentRequestOptions requestOptions, Context context) {
+        String ifMatch = requestOptions != null ? requestOptions.getIfMatch() : null;
+
+        return protocolLayer.getDigitalTwins().updateComponentWithResponseAsync(digitalTwinId, componentPath, ifMatch, componentUpdateOperations, context)
+            .flatMap(response -> {
+                DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
+                return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null, twinHeaders));
+            });
     }
 }
