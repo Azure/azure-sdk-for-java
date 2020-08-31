@@ -77,8 +77,20 @@ public final class OcrSkill extends SearchIndexerSkill {
      * orientation detection on or not. Default is false.
      *
      * @return the shouldDetectOrientation value.
+     * @deprecated Use {@link #isShouldDetectOrientation()} instead.
      */
+    @Deprecated
     public Boolean setShouldDetectOrientation() {
+        return this.shouldDetectOrientation;
+    }
+
+    /**
+     * Get the shouldDetectOrientation property: A value indicating to turn
+     * orientation detection on or not. Default is false.
+     *
+     * @return the shouldDetectOrientation value.
+     */
+    public Boolean isShouldDetectOrientation() {
         return this.shouldDetectOrientation;
     }
 

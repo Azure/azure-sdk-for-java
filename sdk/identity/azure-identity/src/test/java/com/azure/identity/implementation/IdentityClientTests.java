@@ -16,6 +16,7 @@ import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
 import com.microsoft.aad.msal4j.IClientCertificate;
 import com.microsoft.aad.msal4j.IClientCredential;
 import com.microsoft.aad.msal4j.IClientSecret;
+import com.microsoft.aad.msal4j.InteractiveRequestParameters;
 import com.microsoft.aad.msal4j.MsalServiceException;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.SilentParameters;
@@ -29,7 +30,6 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;
@@ -55,7 +55,7 @@ import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore({"com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*"})
-@PrepareForTest({CertificateUtil.class, ClientCredentialFactory.class, AuthorizationCodeListener.class, Runtime.class, URL.class, ConfidentialClientApplication.class, ConfidentialClientApplication.Builder.class, PublicClientApplication.class, PublicClientApplication.Builder.class, IdentityClient.class})
+@PrepareForTest({CertificateUtil.class, ClientCredentialFactory.class, Runtime.class, URL.class, ConfidentialClientApplication.class, ConfidentialClientApplication.Builder.class, PublicClientApplication.class, PublicClientApplication.Builder.class, IdentityClient.class})
 public class IdentityClientTests {
 
     private static final String TENANT_ID = "contoso.com";
@@ -303,8 +303,7 @@ public class IdentityClientTests {
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
-        mockForAuthorizationCodeFlow(token, request, expiresOn);
-        mocForBrowserAuthenticationCodeFlow();
+        mocForBrowserAuthenticationCodeFlow(token, request, expiresOn);
 
         // test
         IdentityClientOptions options = new IdentityClientOptions();
@@ -470,12 +469,22 @@ public class IdentityClientTests {
         when(huc.getInputStream()).thenReturn(inputStream);
     }
 
-    private void mocForBrowserAuthenticationCodeFlow() throws Exception {
-        AuthorizationCodeListener authorizationCodeListener = PowerMockito.mock(AuthorizationCodeListener.class);
-        whenNew(AuthorizationCodeListener.class).withAnyArguments().thenReturn((authorizationCodeListener));
-        when(authorizationCodeListener.listen()).thenReturn(Mono.just("auth-Code"));
-        when(authorizationCodeListener.dispose()).thenReturn(Mono.empty());
-        when(authorizationCodeListener.dispose()).thenReturn(Mono.empty());
+    private void mocForBrowserAuthenticationCodeFlow(String token, TokenRequestContext request, OffsetDateTime expiresOn) throws Exception {
+        PublicClientApplication application = PowerMockito.mock(PublicClientApplication.class);
+        when(application.acquireToken(any(InteractiveRequestParameters.class)))
+            .thenAnswer(invocation -> {
+                InteractiveRequestParameters argument = (InteractiveRequestParameters) invocation.getArguments()[0];
+                if (argument.scopes().size() != 1 || request.getScopes().get(0).equals(argument.scopes().iterator().next())) {
+                    return TestUtils.getMockAuthenticationResult(token, expiresOn);
+                } else {
+                    throw new InvalidUseOfMatchersException(String.format("Argument %s does not match", (Object) argument));
+                }
+            });
+        PublicClientApplication.Builder builder = PowerMockito.mock(PublicClientApplication.Builder.class);
+        when(builder.build()).thenReturn(application);
+        when(builder.authority(any())).thenReturn(builder);
+        when(builder.httpClient(any())).thenReturn(builder);
+        whenNew(PublicClientApplication.Builder.class).withArguments(CLIENT_ID).thenReturn(builder);
     }
 
     private void mockForAuthorizationCodeFlow(String token1, TokenRequestContext request, OffsetDateTime expiresAt) throws Exception {
