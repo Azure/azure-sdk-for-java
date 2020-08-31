@@ -9,13 +9,14 @@ import com.azure.data.tables.models.TableItem;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 
 /**
  * Used to access internal methods on models.
  */
-public final class TablesModelHelper {
-    private static EntityCreator entityCreator;
-    private static ItemCreator itemCreator;
+public final class ModelHelper {
+    private static Function<Map<String, Object>, TableEntity> entityCreator;
+    private static Function<TableResponseProperties, TableItem> itemCreator;
 
     static {
         // Force classes' static blocks to execute
@@ -23,23 +24,21 @@ public final class TablesModelHelper {
             Class.forName(TableEntity.class.getName(), true, TableEntity.class.getClassLoader());
             Class.forName(TableItem.class.getName(), true, TableItem.class.getClassLoader());
         } catch (ClassNotFoundException e) {
-            AssertionError err = new AssertionError("Failed to initialize TablesModelHelper dependency classes.", e);
-            new ClientLogger(TablesModelHelper.class).logThrowableAsError(err);
-            throw err;
+            throw new ExceptionInInitializerError(new ClientLogger(ModelHelper.class).logThrowableAsError(e));
         }
     }
 
     /**
-     * Sets the entity accessor.
+     * Sets the entity creator.
      *
-     * @param creator The entity accessor.
-     * @throws IllegalStateException if the accessor has already been set.
+     * @param creator The entity creator.
+     * @throws IllegalStateException if the creator has already been set.
      */
-    public static void setEntityCreator(EntityCreator creator) {
+    public static void setEntityCreator(Function<Map<String, Object>, TableEntity> creator) {
         Objects.requireNonNull(creator, "'creator' cannot be null.");
 
-        if (TablesModelHelper.entityCreator != null) {
-            throw new ClientLogger(TablesModelHelper.class).logExceptionAsError(new IllegalStateException(
+        if (ModelHelper.entityCreator != null) {
+            throw new ClientLogger(ModelHelper.class).logExceptionAsError(new IllegalStateException(
                 "'entityCreator' is already set."));
         }
 
@@ -50,13 +49,13 @@ public final class TablesModelHelper {
      * Sets the item creator.
      *
      * @param creator The item creator.
-     * @throws IllegalStateException if the accessor has already been set.
+     * @throws IllegalStateException if the creator has already been set.
      */
-    public static void setItemCreator(ItemCreator creator) {
+    public static void setItemCreator(Function<TableResponseProperties, TableItem> creator) {
         Objects.requireNonNull(creator, "'creator' cannot be null.");
 
-        if (TablesModelHelper.itemCreator != null) {
-            throw new ClientLogger(TablesModelHelper.class).logExceptionAsError(new IllegalStateException(
+        if (ModelHelper.itemCreator != null) {
+            throw new ClientLogger(ModelHelper.class).logExceptionAsError(new IllegalStateException(
                 "'itemCreator' is already set."));
         }
 
@@ -71,11 +70,11 @@ public final class TablesModelHelper {
      */
     public static TableEntity createEntity(Map<String, Object> properties) {
         if (entityCreator == null) {
-            throw new ClientLogger(TablesModelHelper.class).logExceptionAsError(
+            throw new ClientLogger(ModelHelper.class).logExceptionAsError(
                 new IllegalStateException("'entityCreator' should not be null."));
         }
 
-        return entityCreator.create(properties);
+        return entityCreator.apply(properties);
     }
 
     /**
@@ -86,30 +85,10 @@ public final class TablesModelHelper {
      */
     public static TableItem createItem(TableResponseProperties properties) {
         if (itemCreator == null) {
-            throw new ClientLogger(TablesModelHelper.class).logExceptionAsError(
+            throw new ClientLogger(ModelHelper.class).logExceptionAsError(
                 new IllegalStateException("'itemCreator' should not be null."));
         }
 
-        return itemCreator.create(properties);
-    }
-
-    public interface EntityCreator {
-        /**
-         * Creates a {@link TableEntity}.
-         *
-         * @param properties The properties used to construct the entity
-         * @return The created TableEntity
-         */
-        TableEntity create(Map<String, Object> properties);
-    }
-
-    public interface ItemCreator {
-        /**
-         * Creates a {@link TableItem}.
-         *
-         * @param properties The TableResponseProperties used to construct the table
-         * @return The created TableItem
-         */
-        TableItem create(TableResponseProperties properties);
+        return itemCreator.apply(properties);
     }
 }

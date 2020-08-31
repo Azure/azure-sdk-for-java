@@ -18,7 +18,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.tables.implementation.AzureTableImpl;
 import com.azure.data.tables.implementation.AzureTableImplBuilder;
-import com.azure.data.tables.implementation.TablesModelHelper;
+import com.azure.data.tables.implementation.ModelHelper;
 import com.azure.data.tables.implementation.models.OdataMetadataFormat;
 import com.azure.data.tables.implementation.models.QueryOptions;
 import com.azure.data.tables.implementation.models.ResponseFormat;
@@ -516,7 +516,7 @@ public class TableAsyncClient {
                 }
 
                 final List<TableEntity> entities = entityResponseValue.stream()
-                    .map(TablesModelHelper::createEntity)
+                    .map(ModelHelper::createEntity)
                     .collect(Collectors.toList());
 
                 return Mono.just(new EntityPaged(response, entities,
@@ -629,7 +629,7 @@ public class TableAsyncClient {
 
                 // Deserialize the first entity.
                 // TODO: Potentially update logic to deserialize them all.
-                final TableEntity entity = TablesModelHelper.createEntity(matchingEntities.get(0));
+                final TableEntity entity = ModelHelper.createEntity(matchingEntities.get(0));
                 sink.next(new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                     entity));
             });

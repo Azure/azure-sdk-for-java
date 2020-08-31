@@ -6,7 +6,7 @@ package com.azure.data.tables.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.tables.implementation.TablesConstants;
-import com.azure.data.tables.implementation.TablesModelHelper;
+import com.azure.data.tables.implementation.ModelHelper;
 
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -31,7 +31,7 @@ public class TableEntity {
 
     static {
         // This is used by classes in different packages to get access to private and package-private methods.
-        TablesModelHelper.setEntityCreator(TableEntity::new);
+        ModelHelper.setEntityCreator(TableEntity::new);
     }
 
     /**
