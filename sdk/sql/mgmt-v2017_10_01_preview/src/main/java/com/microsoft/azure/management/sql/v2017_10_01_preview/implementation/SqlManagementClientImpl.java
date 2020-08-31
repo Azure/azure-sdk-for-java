@@ -328,6 +328,19 @@ public class SqlManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The RecoverableManagedDatabasesInner object to access its operations.
+     */
+    private RecoverableManagedDatabasesInner recoverableManagedDatabases;
+
+    /**
+     * Gets the RecoverableManagedDatabasesInner object to access its operations.
+     * @return the RecoverableManagedDatabasesInner object.
+     */
+    public RecoverableManagedDatabasesInner recoverableManagedDatabases() {
+        return this.recoverableManagedDatabases;
+    }
+
+    /**
      * Initializes an instance of SqlManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -377,6 +390,7 @@ public class SqlManagementClientImpl extends AzureServiceClient {
         this.managedInstanceTdeCertificates = new ManagedInstanceTdeCertificatesInner(restClient().retrofit(), this);
         this.managedInstanceKeys = new ManagedInstanceKeysInner(restClient().retrofit(), this);
         this.managedInstanceEncryptionProtectors = new ManagedInstanceEncryptionProtectorsInner(restClient().retrofit(), this);
+        this.recoverableManagedDatabases = new RecoverableManagedDatabasesInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 
