@@ -7,18 +7,6 @@
 - Upgraded core dependency to 1.7.0
 - Removed the default value of 0 for port in `InteractiveBrowserCredential`.
 
-### Breaking Changes
-- Removing Application Authentication APIs for GA release. These will be reintroduced in 1.2.0-beta.1.
-  - Removed class `AuthenticationRecord`
-  - Removed class `AuthenticationRequiredException`
-  - Removed methods `allowUnencryptedCache()` and `enablePersistentCache()` from `ClientCertificateCredentialBuilder`, 
-   `ClientSecretCredentialBuilder`, `InteractiveBrowserCredentialBuilder`, `DeviceCodeCredentialBuilder`,
-    `UsernamePasswordCredentialBuilder` and `ClientCertificateCredentialBuilder`.
-  - Removed methods `allowUnencryptedCache()` and `authenticationRecord(AuthenticationRecord)` from `SharedTokenCacheCredentialBuilder`.
-  - Removed methods `authenticationRecord(AuthenticationRecord)` and `disableAutomaticAuthentication()` from `DeviceCodeCredentialBuilder` and `InteractiveBrowserCredentialBuilder`.
-  - Removed methods `authenticate(TokenRequestContext)` and `authenticate()` from `DeviceCodeCredential`, `InteractiveBrowserCredential`
-    and `UsernamePasswordCredential`.
-    
 
 ## 1.1.0-beta.7 (2020-07-23)
 
