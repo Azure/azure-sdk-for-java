@@ -181,11 +181,10 @@ class PublicIpAddressImpl
     @Override
     public Accepted<PublicIpAddress> beginCreate() {
         return AcceptedImpl.newAccepted(logger,
+            this.manager().inner(),
             () -> this.manager().inner().getPublicIpAddresses()
                 .createOrUpdateWithResponseAsync(resourceGroupName(), name(), this.inner()).block(),
             inner -> new PublicIpAddressImpl(inner.name(), inner, this.manager()),
-            this.manager().inner().getSerializerAdapter(),
-            this.manager().inner().getHttpPipeline(),
             PublicIpAddressInner.class,
             () -> {
                 Flux<Indexable> dependencyTasksAsync =

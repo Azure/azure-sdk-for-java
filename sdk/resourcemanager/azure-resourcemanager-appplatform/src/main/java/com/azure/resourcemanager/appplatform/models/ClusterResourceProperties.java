@@ -21,16 +21,10 @@ public final class ClusterResourceProperties {
     private ProvisioningState provisioningState;
 
     /*
-     * Config server git properties of the Service
+     * Network profile of the Service
      */
-    @JsonProperty(value = "configServerProperties")
-    private ConfigServerProperties configServerProperties;
-
-    /*
-     * Trace properties of the Service
-     */
-    @JsonProperty(value = "trace")
-    private TraceProperties trace;
+    @JsonProperty(value = "networkProfile")
+    private NetworkProfile networkProfile;
 
     /*
      * Version of the Service
@@ -54,42 +48,22 @@ public final class ClusterResourceProperties {
     }
 
     /**
-     * Get the configServerProperties property: Config server git properties of the Service.
+     * Get the networkProfile property: Network profile of the Service.
      *
-     * @return the configServerProperties value.
+     * @return the networkProfile value.
      */
-    public ConfigServerProperties configServerProperties() {
-        return this.configServerProperties;
+    public NetworkProfile networkProfile() {
+        return this.networkProfile;
     }
 
     /**
-     * Set the configServerProperties property: Config server git properties of the Service.
+     * Set the networkProfile property: Network profile of the Service.
      *
-     * @param configServerProperties the configServerProperties value to set.
+     * @param networkProfile the networkProfile value to set.
      * @return the ClusterResourceProperties object itself.
      */
-    public ClusterResourceProperties withConfigServerProperties(ConfigServerProperties configServerProperties) {
-        this.configServerProperties = configServerProperties;
-        return this;
-    }
-
-    /**
-     * Get the trace property: Trace properties of the Service.
-     *
-     * @return the trace value.
-     */
-    public TraceProperties trace() {
-        return this.trace;
-    }
-
-    /**
-     * Set the trace property: Trace properties of the Service.
-     *
-     * @param trace the trace value to set.
-     * @return the ClusterResourceProperties object itself.
-     */
-    public ClusterResourceProperties withTrace(TraceProperties trace) {
-        this.trace = trace;
+    public ClusterResourceProperties withNetworkProfile(NetworkProfile networkProfile) {
+        this.networkProfile = networkProfile;
         return this;
     }
 
@@ -117,11 +91,8 @@ public final class ClusterResourceProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (configServerProperties() != null) {
-            configServerProperties().validate();
-        }
-        if (trace() != null) {
-            trace().validate();
+        if (networkProfile() != null) {
+            networkProfile().validate();
         }
     }
 }

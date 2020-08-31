@@ -18,7 +18,7 @@ import java.util.List;
 final public class ItemOperations {
 
     /**
-     * Note: although this method is public, this API may change in future.
+     * Note: this method is deprecated - please use CosmosContainer.readMany instead
      * <p>
      * Reads many documents.
      *
@@ -35,7 +35,7 @@ final public class ItemOperations {
     }
 
     /**
-     * Note: although this method is public, this API may change in future.
+     * Note: this method is deprecated - please use CosmosAsyncContainer.readMany instead
      * <p>
      * Reads many documents.
      *
@@ -49,19 +49,11 @@ final public class ItemOperations {
                                                           List<Pair<String, PartitionKey>> itemKeyList,
                                                           Class<T> classType) {
 
+        if (container == null) {
+            throw new IllegalArgumentException("Parameter container is required and cannot be null.");
+        }
 
-        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-        options.setMaxDegreeOfParallelism(-1);
-        return readManyInternal(container, itemKeyList, new CosmosQueryRequestOptions(), classType);
-    }
-
-    static <T> Mono<FeedResponse<T>> readManyInternal(CosmosAsyncContainer container,
-                                                      List<Pair<String, PartitionKey>> itemKeyList,
-                                                      CosmosQueryRequestOptions options,
-                                                      Class<T> classType) {
-
-        return CosmosBridgeInternal.getAsyncDocumentClient(container.getDatabase())
-            .readMany(itemKeyList, BridgeInternal.getLink(container), options, classType);
+        return container.readMany(itemKeyList, classType);
     }
 
     private ItemOperations() {}
