@@ -45,7 +45,8 @@ public final class NotebooksImpl {
      * @param client the instance of the service client containing this operation class.
      */
     NotebooksImpl(ArtifactsClientImpl client) {
-        this.service = RestProxy.create(NotebooksService.class, client.getHttpPipeline());
+        this.service =
+                RestProxy.create(NotebooksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -69,7 +70,7 @@ public final class NotebooksImpl {
                 @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
 
         @Put("/notebooks/{notebookName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<NotebookResource>> createOrUpdateNotebook(
                 @HostParam("endpoint") String endpoint,
@@ -90,7 +91,7 @@ public final class NotebooksImpl {
                 Context context);
 
         @Delete("/notebooks/{notebookName}")
-        @ExpectedResponses({200, 204})
+        @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<Void>> deleteNotebook(
                 @HostParam("endpoint") String endpoint,

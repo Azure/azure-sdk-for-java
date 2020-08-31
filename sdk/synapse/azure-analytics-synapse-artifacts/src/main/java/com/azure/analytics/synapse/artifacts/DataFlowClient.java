@@ -15,7 +15,7 @@ import com.azure.core.http.rest.PagedIterable;
 /** Initializes a new instance of the synchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class)
 public final class DataFlowClient {
-    private DataFlowsImpl serviceClient;
+    private final DataFlowsImpl serviceClient;
 
     /** Initializes an instance of DataFlows client. */
     DataFlowClient(DataFlowsImpl serviceClient) {

@@ -14,7 +14,7 @@ public final class Expression {
      * Expression type.
      */
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private ExpressionType type;
 
     /*
      * Expression value.
@@ -22,17 +22,12 @@ public final class Expression {
     @JsonProperty(value = "value", required = true)
     private String value;
 
-    /** Creates an instance of Expression class. */
-    public Expression() {
-        type = "Expression";
-    }
-
     /**
      * Get the type property: Expression type.
      *
      * @return the type value.
      */
-    public String getType() {
+    public ExpressionType getType() {
         return this.type;
     }
 
@@ -42,7 +37,7 @@ public final class Expression {
      * @param type the type value to set.
      * @return the Expression object itself.
      */
-    public Expression setType(String type) {
+    public Expression setType(ExpressionType type) {
         this.type = type;
         return this;
     }

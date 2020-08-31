@@ -20,9 +20,9 @@ import com.azure.core.http.rest.Response;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the asynchronous SparkClient type. */
-@ServiceClient(builder = SparkClientBuilder.class)
+@ServiceClient(builder = SparkClientBuilder.class, isAsync = true)
 public final class SparkSessionAsyncClient {
-    private SparkSessionsImpl serviceClient;
+    private final SparkSessionsImpl serviceClient;
 
     /** Initializes an instance of SparkSessions client. */
     SparkSessionAsyncClient(SparkSessionsImpl serviceClient) {

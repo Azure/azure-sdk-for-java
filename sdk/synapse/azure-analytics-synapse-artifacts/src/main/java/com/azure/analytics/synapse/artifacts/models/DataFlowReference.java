@@ -19,7 +19,7 @@ public final class DataFlowReference {
      * Data flow reference type.
      */
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private DataFlowReferenceType type;
 
     /*
      * Reference data flow name.
@@ -38,17 +38,12 @@ public final class DataFlowReference {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of DataFlowReference class. */
-    public DataFlowReference() {
-        type = "DataFlowReference";
-    }
-
     /**
      * Get the type property: Data flow reference type.
      *
      * @return the type value.
      */
-    public String getType() {
+    public DataFlowReferenceType getType() {
         return this.type;
     }
 
@@ -58,7 +53,7 @@ public final class DataFlowReference {
      * @param type the type value to set.
      * @return the DataFlowReference object itself.
      */
-    public DataFlowReference setType(String type) {
+    public DataFlowReference setType(DataFlowReferenceType type) {
         this.type = type;
         return this;
     }

@@ -16,9 +16,9 @@ import com.azure.core.http.rest.Response;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the asynchronous ArtifactsClient type. */
-@ServiceClient(builder = ArtifactsClientBuilder.class)
+@ServiceClient(builder = ArtifactsClientBuilder.class, isAsync = true)
 public final class NotebookAsyncClient {
-    private NotebooksImpl serviceClient;
+    private final NotebooksImpl serviceClient;
 
     /** Initializes an instance of Notebooks client. */
     NotebookAsyncClient(NotebooksImpl serviceClient) {

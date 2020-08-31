@@ -20,7 +20,7 @@ import com.azure.core.exception.HttpResponseException;
 /** Initializes a new instance of the synchronous SparkClient type. */
 @ServiceClient(builder = SparkClientBuilder.class)
 public final class SparkSessionClient {
-    private SparkSessionsImpl serviceClient;
+    private final SparkSessionsImpl serviceClient;
 
     /** Initializes an instance of SparkSessions client. */
     SparkSessionClient(SparkSessionsImpl serviceClient) {

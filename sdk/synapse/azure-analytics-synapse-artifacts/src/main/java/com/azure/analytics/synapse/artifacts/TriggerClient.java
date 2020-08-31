@@ -16,7 +16,7 @@ import com.azure.core.http.rest.PagedIterable;
 /** Initializes a new instance of the synchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class)
 public final class TriggerClient {
-    private TriggersImpl serviceClient;
+    private final TriggersImpl serviceClient;
 
     /** Initializes an instance of Triggers client. */
     TriggerClient(TriggersImpl serviceClient) {

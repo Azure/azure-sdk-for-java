@@ -17,7 +17,7 @@ import java.util.Map;
 /** Initializes a new instance of the synchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class)
 public final class PipelineClient {
-    private PipelinesImpl serviceClient;
+    private final PipelinesImpl serviceClient;
 
     /** Initializes an instance of Pipelines client. */
     PipelineClient(PipelinesImpl serviceClient) {

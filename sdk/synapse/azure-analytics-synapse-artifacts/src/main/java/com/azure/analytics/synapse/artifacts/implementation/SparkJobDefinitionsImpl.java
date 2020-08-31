@@ -47,7 +47,9 @@ public final class SparkJobDefinitionsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     SparkJobDefinitionsImpl(ArtifactsClientImpl client) {
-        this.service = RestProxy.create(SparkJobDefinitionsService.class, client.getHttpPipeline());
+        this.service =
+                RestProxy.create(
+                        SparkJobDefinitionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 

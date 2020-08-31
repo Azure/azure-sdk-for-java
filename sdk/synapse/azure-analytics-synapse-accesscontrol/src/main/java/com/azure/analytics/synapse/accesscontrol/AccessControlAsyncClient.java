@@ -4,9 +4,9 @@
 
 package com.azure.analytics.synapse.accesscontrol;
 
-import com.azure.analytics.synapse.accesscontrol.implementation.AccessControlsImpl;
-import com.azure.analytics.synapse.accesscontrol.models.AccessControlsGetRoleAssignmentsResponse;
+import com.azure.analytics.synapse.accesscontrol.implementation.AccessControlClientImpl;
 import com.azure.analytics.synapse.accesscontrol.models.ErrorContractException;
+import com.azure.analytics.synapse.accesscontrol.models.GetRoleAssignmentsResponse;
 import com.azure.analytics.synapse.accesscontrol.models.RoleAssignmentDetails;
 import com.azure.analytics.synapse.accesscontrol.models.RoleAssignmentOptions;
 import com.azure.analytics.synapse.accesscontrol.models.SynapseRole;
@@ -20,12 +20,12 @@ import java.util.List;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the asynchronous AccessControlClient type. */
-@ServiceClient(builder = AccessControlClientBuilder.class)
+@ServiceClient(builder = AccessControlClientBuilder.class, isAsync = true)
 public final class AccessControlAsyncClient {
-    private AccessControlsImpl serviceClient;
+    private final AccessControlClientImpl serviceClient;
 
-    /** Initializes an instance of AccessControls client. */
-    AccessControlAsyncClient(AccessControlsImpl serviceClient) {
+    /** Initializes an instance of AccessControlClient client. */
+    AccessControlAsyncClient(AccessControlClientImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
@@ -70,7 +70,7 @@ public final class AccessControlAsyncClient {
      * @return a list of role assignments.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AccessControlsGetRoleAssignmentsResponse> getRoleAssignmentsWithResponse(
+    public Mono<GetRoleAssignmentsResponse> getRoleAssignmentsWithResponse(
             String roleId, String principalId, String continuationToken) {
         return this.serviceClient.getRoleAssignmentsWithResponseAsync(roleId, principalId, continuationToken);
     }

@@ -17,7 +17,7 @@ import com.azure.core.annotation.ServiceMethod;
 /** Initializes a new instance of the synchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class)
 public final class PipelineRunClient {
-    private PipelineRunsImpl serviceClient;
+    private final PipelineRunsImpl serviceClient;
 
     /** Initializes an instance of PipelineRuns client. */
     PipelineRunClient(PipelineRunsImpl serviceClient) {

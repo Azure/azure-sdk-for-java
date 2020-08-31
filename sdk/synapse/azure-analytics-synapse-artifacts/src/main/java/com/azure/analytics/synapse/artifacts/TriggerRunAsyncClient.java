@@ -15,9 +15,9 @@ import com.azure.core.http.rest.Response;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the asynchronous ArtifactsClient type. */
-@ServiceClient(builder = ArtifactsClientBuilder.class)
+@ServiceClient(builder = ArtifactsClientBuilder.class, isAsync = true)
 public final class TriggerRunAsyncClient {
-    private TriggerRunsImpl serviceClient;
+    private final TriggerRunsImpl serviceClient;
 
     /** Initializes an instance of TriggerRuns client. */
     TriggerRunAsyncClient(TriggerRunsImpl serviceClient) {
@@ -52,6 +52,36 @@ public final class TriggerRunAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> rerunTriggerInstance(String triggerName, String runId) {
         return this.serviceClient.rerunTriggerInstanceAsync(triggerName, runId);
+    }
+
+    /**
+     * Cancel single trigger instance by runId.
+     *
+     * @param triggerName The trigger name.
+     * @param runId The pipeline run identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> cancelTriggerInstanceWithResponse(String triggerName, String runId) {
+        return this.serviceClient.cancelTriggerInstanceWithResponseAsync(triggerName, runId);
+    }
+
+    /**
+     * Cancel single trigger instance by runId.
+     *
+     * @param triggerName The trigger name.
+     * @param runId The pipeline run identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> cancelTriggerInstance(String triggerName, String runId) {
+        return this.serviceClient.cancelTriggerInstanceAsync(triggerName, runId);
     }
 
     /**

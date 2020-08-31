@@ -45,7 +45,8 @@ public final class LinkedServicesImpl {
      * @param client the instance of the service client containing this operation class.
      */
     LinkedServicesImpl(ArtifactsClientImpl client) {
-        this.service = RestProxy.create(LinkedServicesService.class, client.getHttpPipeline());
+        this.service =
+                RestProxy.create(LinkedServicesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -63,7 +64,7 @@ public final class LinkedServicesImpl {
                 @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
 
         @Put("/linkedservices/{linkedServiceName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<LinkedServiceResource>> createOrUpdateLinkedService(
                 @HostParam("endpoint") String endpoint,
@@ -84,7 +85,7 @@ public final class LinkedServicesImpl {
                 Context context);
 
         @Delete("/linkedservices/{linkedServiceName}")
-        @ExpectedResponses({200, 204})
+        @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<Void>> deleteLinkedService(
                 @HostParam("endpoint") String endpoint,

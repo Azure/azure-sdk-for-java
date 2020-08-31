@@ -47,7 +47,7 @@ public final class TriggersImpl {
      * @param client the instance of the service client containing this operation class.
      */
     TriggersImpl(ArtifactsClientImpl client) {
-        this.service = RestProxy.create(TriggersService.class, client.getHttpPipeline());
+        this.service = RestProxy.create(TriggersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,7 +65,7 @@ public final class TriggersImpl {
                 @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
 
         @Put("/triggers/{triggerName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<TriggerResource>> createOrUpdateTrigger(
                 @HostParam("endpoint") String endpoint,
@@ -86,7 +86,7 @@ public final class TriggersImpl {
                 Context context);
 
         @Delete("/triggers/{triggerName}")
-        @ExpectedResponses({200, 204})
+        @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<Void>> deleteTrigger(
                 @HostParam("endpoint") String endpoint,

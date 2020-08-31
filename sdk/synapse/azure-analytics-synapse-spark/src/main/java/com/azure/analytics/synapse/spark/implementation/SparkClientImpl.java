@@ -9,6 +9,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 
 /** Initializes a new instance of the SparkClient type. */
 public final class SparkClientImpl {
@@ -60,16 +62,28 @@ public final class SparkClientImpl {
         return this.httpPipeline;
     }
 
-    /** The SparkBatchsImpl object to access its operations. */
-    private final SparkBatchsImpl sparkBatchs;
+    /** The serializer to serialize an object into a string. */
+    private final SerializerAdapter serializerAdapter;
 
     /**
-     * Gets the SparkBatchsImpl object to access its operations.
+     * Gets The serializer to serialize an object into a string.
      *
-     * @return the SparkBatchsImpl object.
+     * @return the serializerAdapter value.
      */
-    public SparkBatchsImpl getSparkBatchs() {
-        return this.sparkBatchs;
+    public SerializerAdapter getSerializerAdapter() {
+        return this.serializerAdapter;
+    }
+
+    /** The SparkBatchesImpl object to access its operations. */
+    private final SparkBatchesImpl sparkBatches;
+
+    /**
+     * Gets the SparkBatchesImpl object to access its operations.
+     *
+     * @return the SparkBatchesImpl object.
+     */
+    public SparkBatchesImpl getSparkBatches() {
+        return this.sparkBatches;
     }
 
     /** The SparkSessionsImpl object to access its operations. */
@@ -90,6 +104,7 @@ public final class SparkClientImpl {
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
+                JacksonAdapter.createDefaultSerializerAdapter(),
                 endpoint,
                 livyApiVersion,
                 sparkPoolName);
@@ -101,11 +116,27 @@ public final class SparkClientImpl {
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
     public SparkClientImpl(HttpPipeline httpPipeline, String endpoint, String livyApiVersion, String sparkPoolName) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, livyApiVersion, sparkPoolName);
+    }
+
+    /**
+     * Initializes an instance of SparkClient client.
+     *
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param serializerAdapter The serializer to serialize an object into a string.
+     */
+    public SparkClientImpl(
+            HttpPipeline httpPipeline,
+            SerializerAdapter serializerAdapter,
+            String endpoint,
+            String livyApiVersion,
+            String sparkPoolName) {
         this.httpPipeline = httpPipeline;
+        this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.livyApiVersion = livyApiVersion;
         this.sparkPoolName = sparkPoolName;
-        this.sparkBatchs = new SparkBatchsImpl(this);
+        this.sparkBatches = new SparkBatchesImpl(this);
         this.sparkSessions = new SparkSessionsImpl(this);
     }
 }

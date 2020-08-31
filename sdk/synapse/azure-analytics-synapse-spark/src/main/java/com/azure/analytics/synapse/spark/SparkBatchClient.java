@@ -4,7 +4,7 @@
 
 package com.azure.analytics.synapse.spark;
 
-import com.azure.analytics.synapse.spark.implementation.SparkBatchsImpl;
+import com.azure.analytics.synapse.spark.implementation.SparkBatchesImpl;
 import com.azure.analytics.synapse.spark.models.SparkBatchJob;
 import com.azure.analytics.synapse.spark.models.SparkBatchJobCollection;
 import com.azure.analytics.synapse.spark.models.SparkBatchJobOptions;
@@ -16,10 +16,10 @@ import com.azure.core.exception.HttpResponseException;
 /** Initializes a new instance of the synchronous SparkClient type. */
 @ServiceClient(builder = SparkClientBuilder.class)
 public final class SparkBatchClient {
-    private SparkBatchsImpl serviceClient;
+    private final SparkBatchesImpl serviceClient;
 
-    /** Initializes an instance of SparkBatchs client. */
-    SparkBatchClient(SparkBatchsImpl serviceClient) {
+    /** Initializes an instance of SparkBatches client. */
+    SparkBatchClient(SparkBatchesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 

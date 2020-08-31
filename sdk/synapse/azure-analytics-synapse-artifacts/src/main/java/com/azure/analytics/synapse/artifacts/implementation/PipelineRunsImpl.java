@@ -41,7 +41,8 @@ public final class PipelineRunsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     PipelineRunsImpl(ArtifactsClientImpl client) {
-        this.service = RestProxy.create(PipelineRunsService.class, client.getHttpPipeline());
+        this.service =
+                RestProxy.create(PipelineRunsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 

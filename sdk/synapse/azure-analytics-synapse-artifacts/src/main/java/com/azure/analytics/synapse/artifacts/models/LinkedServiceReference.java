@@ -15,7 +15,7 @@ public final class LinkedServiceReference {
      * Linked service reference type.
      */
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private Type type;
 
     /*
      * Reference LinkedService name.
@@ -29,17 +29,12 @@ public final class LinkedServiceReference {
     @JsonProperty(value = "parameters")
     private Map<String, Object> parameters;
 
-    /** Creates an instance of LinkedServiceReference class. */
-    public LinkedServiceReference() {
-        type = "LinkedServiceReference";
-    }
-
     /**
      * Get the type property: Linked service reference type.
      *
      * @return the type value.
      */
-    public String getType() {
+    public Type getType() {
         return this.type;
     }
 
@@ -49,7 +44,7 @@ public final class LinkedServiceReference {
      * @param type the type value to set.
      * @return the LinkedServiceReference object itself.
      */
-    public LinkedServiceReference setType(String type) {
+    public LinkedServiceReference setType(Type type) {
         this.type = type;
         return this;
     }

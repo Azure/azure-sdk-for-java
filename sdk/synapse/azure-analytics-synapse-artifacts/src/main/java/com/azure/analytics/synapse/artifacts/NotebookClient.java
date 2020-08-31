@@ -15,7 +15,7 @@ import com.azure.core.http.rest.PagedIterable;
 /** Initializes a new instance of the synchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class)
 public final class NotebookClient {
-    private NotebooksImpl serviceClient;
+    private final NotebooksImpl serviceClient;
 
     /** Initializes an instance of Notebooks client. */
     NotebookClient(NotebooksImpl serviceClient) {

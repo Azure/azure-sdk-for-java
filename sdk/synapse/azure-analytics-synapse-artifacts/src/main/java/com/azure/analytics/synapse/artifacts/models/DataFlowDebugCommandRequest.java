@@ -13,7 +13,7 @@ public final class DataFlowDebugCommandRequest {
     /*
      * The ID of data flow debug session.
      */
-    @JsonProperty(value = "sessionId")
+    @JsonProperty(value = "sessionId", required = true)
     private String sessionId;
 
     /*
@@ -31,7 +31,7 @@ public final class DataFlowDebugCommandRequest {
     /*
      * The command payload object.
      */
-    @JsonProperty(value = "commandPayload")
+    @JsonProperty(value = "commandPayload", required = true)
     private Object commandPayload;
 
     /**

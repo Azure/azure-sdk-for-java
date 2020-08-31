@@ -48,7 +48,8 @@ public final class PipelinesImpl {
      * @param client the instance of the service client containing this operation class.
      */
     PipelinesImpl(ArtifactsClientImpl client) {
-        this.service = RestProxy.create(PipelinesService.class, client.getHttpPipeline());
+        this.service =
+                RestProxy.create(PipelinesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,7 +67,7 @@ public final class PipelinesImpl {
                 @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
 
         @Put("/pipelines/{pipelineName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<PipelineResource>> createOrUpdatePipeline(
                 @HostParam("endpoint") String endpoint,
@@ -87,7 +88,7 @@ public final class PipelinesImpl {
                 Context context);
 
         @Delete("/pipelines/{pipelineName}")
-        @ExpectedResponses({200, 204})
+        @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<Void>> deletePipeline(
                 @HostParam("endpoint") String endpoint,
@@ -96,7 +97,7 @@ public final class PipelinesImpl {
                 Context context);
 
         @Post("/pipelines/{pipelineName}/createRun")
-        @ExpectedResponses({200})
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<CreateRunResponse>> createPipelineRun(
                 @HostParam("endpoint") String endpoint,

@@ -157,7 +157,7 @@ public final class AccessControlClientBuilder {
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
      */
     public AccessControlClient buildClient() {
-        return new AccessControlClient(buildInnerClient().getAccessControls());
+        return new AccessControlClient(buildInnerClient());
     }
 
     /**
@@ -175,7 +175,7 @@ public final class AccessControlClientBuilder {
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
      */
     public AccessControlAsyncClient buildAsyncClient() {
-        return new AccessControlAsyncClient(buildInnerClient().getAccessControls());
+        return new AccessControlAsyncClient(buildInnerClient());
     }
 
     /**

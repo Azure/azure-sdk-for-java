@@ -274,7 +274,7 @@ public final class SparkClientBuilder {
      * @return an instance of SparkBatchAsyncClient.
      */
     public SparkBatchAsyncClient buildSparkBatchAsyncClient() {
-        return new SparkBatchAsyncClient(buildInnerClient().getSparkBatchs());
+        return new SparkBatchAsyncClient(buildInnerClient().getSparkBatches());
     }
 
     /**
@@ -292,7 +292,7 @@ public final class SparkClientBuilder {
      * @return an instance of SparkBatchClient.
      */
     public SparkBatchClient buildSparkBatchClient() {
-        return new SparkBatchClient(buildInnerClient().getSparkBatchs());
+        return new SparkBatchClient(buildInnerClient().getSparkBatches());
     }
 
     /**

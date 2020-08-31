@@ -25,7 +25,7 @@ public final class SqlScript {
      * The type of the SQL script.
      */
     @JsonProperty(value = "type")
-    private String type;
+    private SqlScriptType type;
 
     /*
      * The content of the SQL script.
@@ -37,11 +37,6 @@ public final class SqlScript {
      * SQL script.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
-
-    /** Creates an instance of SqlScript class. */
-    public SqlScript() {
-        type = "SqlQuery";
-    }
 
     /**
      * Get the description property: The description of the SQL script.
@@ -68,7 +63,7 @@ public final class SqlScript {
      *
      * @return the type value.
      */
-    public String getType() {
+    public SqlScriptType getType() {
         return this.type;
     }
 
@@ -78,7 +73,7 @@ public final class SqlScript {
      * @param type the type value to set.
      * @return the SqlScript object itself.
      */
-    public SqlScript setType(String type) {
+    public SqlScript setType(SqlScriptType type) {
         this.type = type;
         return this;
     }

@@ -15,7 +15,7 @@ import com.azure.core.annotation.ServiceMethod;
 /** Initializes a new instance of the synchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class)
 public final class TriggerRunClient {
-    private TriggerRunsImpl serviceClient;
+    private final TriggerRunsImpl serviceClient;
 
     /** Initializes an instance of TriggerRuns client. */
     TriggerRunClient(TriggerRunsImpl serviceClient) {
@@ -34,6 +34,20 @@ public final class TriggerRunClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void rerunTriggerInstance(String triggerName, String runId) {
         this.serviceClient.rerunTriggerInstance(triggerName, runId);
+    }
+
+    /**
+     * Cancel single trigger instance by runId.
+     *
+     * @param triggerName The trigger name.
+     * @param runId The pipeline run identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void cancelTriggerInstance(String triggerName, String runId) {
+        this.serviceClient.cancelTriggerInstance(triggerName, runId);
     }
 
     /**

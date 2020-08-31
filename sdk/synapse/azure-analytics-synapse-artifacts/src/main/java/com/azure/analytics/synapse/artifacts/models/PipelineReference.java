@@ -14,7 +14,7 @@ public final class PipelineReference {
      * Pipeline reference type.
      */
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private PipelineReferenceType type;
 
     /*
      * Reference pipeline name.
@@ -28,17 +28,12 @@ public final class PipelineReference {
     @JsonProperty(value = "name")
     private String name;
 
-    /** Creates an instance of PipelineReference class. */
-    public PipelineReference() {
-        type = "PipelineReference";
-    }
-
     /**
      * Get the type property: Pipeline reference type.
      *
      * @return the type value.
      */
-    public String getType() {
+    public PipelineReferenceType getType() {
         return this.type;
     }
 
@@ -48,7 +43,7 @@ public final class PipelineReference {
      * @param type the type value to set.
      * @return the PipelineReference object itself.
      */
-    public PipelineReference setType(String type) {
+    public PipelineReference setType(PipelineReferenceType type) {
         this.type = type;
         return this;
     }

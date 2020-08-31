@@ -15,7 +15,7 @@ public final class IntegrationRuntimeReference {
      * Type of integration runtime.
      */
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private IntegrationRuntimeReferenceType type;
 
     /*
      * Reference integration runtime name.
@@ -29,17 +29,12 @@ public final class IntegrationRuntimeReference {
     @JsonProperty(value = "parameters")
     private Map<String, Object> parameters;
 
-    /** Creates an instance of IntegrationRuntimeReference class. */
-    public IntegrationRuntimeReference() {
-        type = "IntegrationRuntimeReference";
-    }
-
     /**
      * Get the type property: Type of integration runtime.
      *
      * @return the type value.
      */
-    public String getType() {
+    public IntegrationRuntimeReferenceType getType() {
         return this.type;
     }
 
@@ -49,7 +44,7 @@ public final class IntegrationRuntimeReference {
      * @param type the type value to set.
      * @return the IntegrationRuntimeReference object itself.
      */
-    public IntegrationRuntimeReference setType(String type) {
+    public IntegrationRuntimeReference setType(IntegrationRuntimeReferenceType type) {
         this.type = type;
         return this;
     }

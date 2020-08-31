@@ -16,7 +16,7 @@ import com.azure.core.http.rest.PagedIterable;
 /** Initializes a new instance of the synchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class)
 public final class SparkJobDefinitionClient {
-    private SparkJobDefinitionsImpl serviceClient;
+    private final SparkJobDefinitionsImpl serviceClient;
 
     /** Initializes an instance of SparkJobDefinitions client. */
     SparkJobDefinitionClient(SparkJobDefinitionsImpl serviceClient) {

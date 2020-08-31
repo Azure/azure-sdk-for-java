@@ -15,7 +15,7 @@ import com.azure.core.http.rest.PagedIterable;
 /** Initializes a new instance of the synchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class)
 public final class LinkedServiceClient {
-    private LinkedServicesImpl serviceClient;
+    private final LinkedServicesImpl serviceClient;
 
     /** Initializes an instance of LinkedServices client. */
     LinkedServiceClient(LinkedServicesImpl serviceClient) {

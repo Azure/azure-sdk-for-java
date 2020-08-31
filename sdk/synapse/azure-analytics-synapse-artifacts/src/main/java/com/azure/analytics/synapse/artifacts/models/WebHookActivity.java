@@ -20,7 +20,7 @@ public class WebHookActivity extends Activity {
      * Rest API method for target endpoint.
      */
     @JsonProperty(value = "typeProperties.method", required = true)
-    private String method;
+    private WebHookActivityMethod method;
 
     /*
      * WebHook activity target endpoint and path. Type: string (or Expression
@@ -70,17 +70,12 @@ public class WebHookActivity extends Activity {
     @JsonProperty(value = "typeProperties.reportStatusOnCallBack")
     private Object reportStatusOnCallBack;
 
-    /** Creates an instance of WebHookActivity class. */
-    public WebHookActivity() {
-        method = "POST";
-    }
-
     /**
      * Get the method property: Rest API method for target endpoint.
      *
      * @return the method value.
      */
-    public String getMethod() {
+    public WebHookActivityMethod getMethod() {
         return this.method;
     }
 
@@ -90,7 +85,7 @@ public class WebHookActivity extends Activity {
      * @param method the method value to set.
      * @return the WebHookActivity object itself.
      */
-    public WebHookActivity setMethod(String method) {
+    public WebHookActivity setMethod(WebHookActivityMethod method) {
         this.method = method;
         return this;
     }

@@ -4,6 +4,8 @@
 package com.azure.analytics.synapse.accesscontrol;
 
 import com.azure.analytics.synapse.accesscontrol.models.SynapseRole;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import org.junit.jupiter.api.Test;
 
 public class AccessControlClientTest extends AccessControlClientTestBase {

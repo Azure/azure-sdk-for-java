@@ -23,7 +23,7 @@ public class SsisLogLocation {
      * The type of SSIS log location.
      */
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private SsisLogLocationType type;
 
     /*
      * The package execution log access credential.
@@ -38,11 +38,6 @@ public class SsisLogLocation {
      */
     @JsonProperty(value = "typeProperties.logRefreshInterval")
     private Object logRefreshInterval;
-
-    /** Creates an instance of SsisLogLocation class. */
-    public SsisLogLocation() {
-        type = "File";
-    }
 
     /**
      * Get the logPath property: The SSIS package execution log path. Type: string (or Expression with resultType
@@ -71,7 +66,7 @@ public class SsisLogLocation {
      *
      * @return the type value.
      */
-    public String getType() {
+    public SsisLogLocationType getType() {
         return this.type;
     }
 
@@ -81,7 +76,7 @@ public class SsisLogLocation {
      * @param type the type value to set.
      * @return the SsisLogLocation object itself.
      */
-    public SsisLogLocation setType(String type) {
+    public SsisLogLocation setType(SsisLogLocationType type) {
         this.type = type;
         return this;
     }

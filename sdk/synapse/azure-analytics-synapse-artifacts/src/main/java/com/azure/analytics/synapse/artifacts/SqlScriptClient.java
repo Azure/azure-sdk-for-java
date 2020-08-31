@@ -15,7 +15,7 @@ import com.azure.core.http.rest.PagedIterable;
 /** Initializes a new instance of the synchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class)
 public final class SqlScriptClient {
-    private SqlScriptsImpl serviceClient;
+    private final SqlScriptsImpl serviceClient;
 
     /** Initializes an instance of SqlScripts client. */
     SqlScriptClient(SqlScriptsImpl serviceClient) {

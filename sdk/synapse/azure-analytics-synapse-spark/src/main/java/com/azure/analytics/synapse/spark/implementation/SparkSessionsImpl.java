@@ -46,7 +46,8 @@ public final class SparkSessionsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     SparkSessionsImpl(SparkClientImpl client) {
-        this.service = RestProxy.create(SparkSessionsService.class, client.getHttpPipeline());
+        this.service =
+                RestProxy.create(SparkSessionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 

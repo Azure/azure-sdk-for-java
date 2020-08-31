@@ -34,7 +34,7 @@ public class Db2LinkedService extends LinkedService {
      * AuthenticationType to be used for connection.
      */
     @JsonProperty(value = "typeProperties.authenticationType")
-    private String authenticationType;
+    private Db2AuthenticationType authenticationType;
 
     /*
      * Username for authentication. Type: string (or Expression with resultType
@@ -70,11 +70,6 @@ public class Db2LinkedService extends LinkedService {
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
-
-    /** Creates an instance of Db2LinkedService class. */
-    public Db2LinkedService() {
-        authenticationType = "Basic";
-    }
 
     /**
      * Get the server property: Server name for connection. Type: string (or Expression with resultType string).
@@ -121,7 +116,7 @@ public class Db2LinkedService extends LinkedService {
      *
      * @return the authenticationType value.
      */
-    public String getAuthenticationType() {
+    public Db2AuthenticationType getAuthenticationType() {
         return this.authenticationType;
     }
 
@@ -131,7 +126,7 @@ public class Db2LinkedService extends LinkedService {
      * @param authenticationType the authenticationType value to set.
      * @return the Db2LinkedService object itself.
      */
-    public Db2LinkedService setAuthenticationType(String authenticationType) {
+    public Db2LinkedService setAuthenticationType(Db2AuthenticationType authenticationType) {
         this.authenticationType = authenticationType;
         return this;
     }

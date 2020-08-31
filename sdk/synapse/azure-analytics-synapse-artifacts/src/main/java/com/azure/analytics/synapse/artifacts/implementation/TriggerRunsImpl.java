@@ -38,7 +38,8 @@ public final class TriggerRunsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     TriggerRunsImpl(ArtifactsClientImpl client) {
-        this.service = RestProxy.create(TriggerRunsService.class, client.getHttpPipeline());
+        this.service =
+                RestProxy.create(TriggerRunsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,6 +54,16 @@ public final class TriggerRunsImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<Void>> rerunTriggerInstance(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("triggerName") String triggerName,
+                @PathParam("runId") String runId,
+                @QueryParam("api-version") String apiVersion,
+                Context context);
+
+        @Post("/triggers/{triggerName}/triggerRuns/{runId}/cancel")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        Mono<Response<Void>> cancelTriggerInstance(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("triggerName") String triggerName,
                 @PathParam("runId") String runId,
@@ -114,6 +125,53 @@ public final class TriggerRunsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void rerunTriggerInstance(String triggerName, String runId) {
         rerunTriggerInstanceAsync(triggerName, runId).block();
+    }
+
+    /**
+     * Cancel single trigger instance by runId.
+     *
+     * @param triggerName The trigger name.
+     * @param runId The pipeline run identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> cancelTriggerInstanceWithResponseAsync(String triggerName, String runId) {
+        return FluxUtil.withContext(
+                context ->
+                        service.cancelTriggerInstance(
+                                this.client.getEndpoint(), triggerName, runId, this.client.getApiVersion(), context));
+    }
+
+    /**
+     * Cancel single trigger instance by runId.
+     *
+     * @param triggerName The trigger name.
+     * @param runId The pipeline run identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> cancelTriggerInstanceAsync(String triggerName, String runId) {
+        return cancelTriggerInstanceWithResponseAsync(triggerName, runId).flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Cancel single trigger instance by runId.
+     *
+     * @param triggerName The trigger name.
+     * @param runId The pipeline run identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void cancelTriggerInstance(String triggerName, String runId) {
+        cancelTriggerInstanceAsync(triggerName, runId).block();
     }
 
     /**

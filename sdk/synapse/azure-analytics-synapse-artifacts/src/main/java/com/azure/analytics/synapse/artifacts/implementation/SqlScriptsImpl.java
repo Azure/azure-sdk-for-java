@@ -45,7 +45,8 @@ public final class SqlScriptsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     SqlScriptsImpl(ArtifactsClientImpl client) {
-        this.service = RestProxy.create(SqlScriptsService.class, client.getHttpPipeline());
+        this.service =
+                RestProxy.create(SqlScriptsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 

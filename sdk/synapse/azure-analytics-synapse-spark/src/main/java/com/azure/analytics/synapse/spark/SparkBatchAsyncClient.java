@@ -4,7 +4,7 @@
 
 package com.azure.analytics.synapse.spark;
 
-import com.azure.analytics.synapse.spark.implementation.SparkBatchsImpl;
+import com.azure.analytics.synapse.spark.implementation.SparkBatchesImpl;
 import com.azure.analytics.synapse.spark.models.SparkBatchJob;
 import com.azure.analytics.synapse.spark.models.SparkBatchJobCollection;
 import com.azure.analytics.synapse.spark.models.SparkBatchJobOptions;
@@ -16,12 +16,12 @@ import com.azure.core.http.rest.Response;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the asynchronous SparkClient type. */
-@ServiceClient(builder = SparkClientBuilder.class)
+@ServiceClient(builder = SparkClientBuilder.class, isAsync = true)
 public final class SparkBatchAsyncClient {
-    private SparkBatchsImpl serviceClient;
+    private final SparkBatchesImpl serviceClient;
 
-    /** Initializes an instance of SparkBatchs client. */
-    SparkBatchAsyncClient(SparkBatchsImpl serviceClient) {
+    /** Initializes an instance of SparkBatches client. */
+    SparkBatchAsyncClient(SparkBatchesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 

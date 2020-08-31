@@ -15,7 +15,7 @@ public final class DatasetReference {
      * Dataset reference type.
      */
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private DatasetReferenceType type;
 
     /*
      * Reference dataset name.
@@ -29,17 +29,12 @@ public final class DatasetReference {
     @JsonProperty(value = "parameters")
     private Map<String, Object> parameters;
 
-    /** Creates an instance of DatasetReference class. */
-    public DatasetReference() {
-        type = "DatasetReference";
-    }
-
     /**
      * Get the type property: Dataset reference type.
      *
      * @return the type value.
      */
-    public String getType() {
+    public DatasetReferenceType getType() {
         return this.type;
     }
 
@@ -49,7 +44,7 @@ public final class DatasetReference {
      * @param type the type value to set.
      * @return the DatasetReference object itself.
      */
-    public DatasetReference setType(String type) {
+    public DatasetReference setType(DatasetReferenceType type) {
         this.type = type;
         return this;
     }

@@ -45,7 +45,7 @@ public final class DatasetsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     DatasetsImpl(ArtifactsClientImpl client) {
-        this.service = RestProxy.create(DatasetsService.class, client.getHttpPipeline());
+        this.service = RestProxy.create(DatasetsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -63,7 +63,7 @@ public final class DatasetsImpl {
                 @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
 
         @Put("/datasets/{datasetName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<DatasetResource>> createOrUpdateDataset(
                 @HostParam("endpoint") String endpoint,
@@ -84,7 +84,7 @@ public final class DatasetsImpl {
                 Context context);
 
         @Delete("/datasets/{datasetName}")
-        @ExpectedResponses({200, 204})
+        @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<Void>> deleteDataset(
                 @HostParam("endpoint") String endpoint,

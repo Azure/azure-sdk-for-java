@@ -17,9 +17,9 @@ import com.azure.core.http.rest.Response;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the asynchronous ArtifactsClient type. */
-@ServiceClient(builder = ArtifactsClientBuilder.class)
+@ServiceClient(builder = ArtifactsClientBuilder.class, isAsync = true)
 public final class PipelineRunAsyncClient {
-    private PipelineRunsImpl serviceClient;
+    private final PipelineRunsImpl serviceClient;
 
     /** Initializes an instance of PipelineRuns client. */
     PipelineRunAsyncClient(PipelineRunsImpl serviceClient) {

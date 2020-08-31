@@ -14,7 +14,7 @@ public final class BigDataPoolReference {
      * Big data pool reference type.
      */
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private BigDataPoolReferenceType type;
 
     /*
      * Reference big data pool name.
@@ -22,17 +22,12 @@ public final class BigDataPoolReference {
     @JsonProperty(value = "referenceName", required = true)
     private String referenceName;
 
-    /** Creates an instance of BigDataPoolReference class. */
-    public BigDataPoolReference() {
-        type = "BigDataPoolReference";
-    }
-
     /**
      * Get the type property: Big data pool reference type.
      *
      * @return the type value.
      */
-    public String getType() {
+    public BigDataPoolReferenceType getType() {
         return this.type;
     }
 
@@ -42,7 +37,7 @@ public final class BigDataPoolReference {
      * @param type the type value to set.
      * @return the BigDataPoolReference object itself.
      */
-    public BigDataPoolReference setType(String type) {
+    public BigDataPoolReference setType(BigDataPoolReferenceType type) {
         this.type = type;
         return this;
     }

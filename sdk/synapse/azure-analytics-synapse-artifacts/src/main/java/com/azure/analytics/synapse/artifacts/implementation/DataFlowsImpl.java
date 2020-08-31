@@ -45,7 +45,8 @@ public final class DataFlowsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     DataFlowsImpl(ArtifactsClientImpl client) {
-        this.service = RestProxy.create(DataFlowsService.class, client.getHttpPipeline());
+        this.service =
+                RestProxy.create(DataFlowsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,7 +58,7 @@ public final class DataFlowsImpl {
     @ServiceInterface(name = "ArtifactsClientDataF")
     private interface DataFlowsService {
         @Put("/dataflows/{dataFlowName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<DataFlowResource>> createOrUpdateDataFlow(
                 @HostParam("endpoint") String endpoint,
@@ -78,7 +79,7 @@ public final class DataFlowsImpl {
                 Context context);
 
         @Delete("/dataflows/{dataFlowName}")
-        @ExpectedResponses({200, 204})
+        @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<Void>> deleteDataFlow(
                 @HostParam("endpoint") String endpoint,

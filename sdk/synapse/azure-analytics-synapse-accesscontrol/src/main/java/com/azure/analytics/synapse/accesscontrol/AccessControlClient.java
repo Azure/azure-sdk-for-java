@@ -4,7 +4,7 @@
 
 package com.azure.analytics.synapse.accesscontrol;
 
-import com.azure.analytics.synapse.accesscontrol.implementation.AccessControlsImpl;
+import com.azure.analytics.synapse.accesscontrol.implementation.AccessControlClientImpl;
 import com.azure.analytics.synapse.accesscontrol.models.ErrorContractException;
 import com.azure.analytics.synapse.accesscontrol.models.RoleAssignmentDetails;
 import com.azure.analytics.synapse.accesscontrol.models.RoleAssignmentOptions;
@@ -18,10 +18,10 @@ import java.util.List;
 /** Initializes a new instance of the synchronous AccessControlClient type. */
 @ServiceClient(builder = AccessControlClientBuilder.class)
 public final class AccessControlClient {
-    private AccessControlsImpl serviceClient;
+    private final AccessControlClientImpl serviceClient;
 
-    /** Initializes an instance of AccessControls client. */
-    AccessControlClient(AccessControlsImpl serviceClient) {
+    /** Initializes an instance of AccessControlClient client. */
+    AccessControlClient(AccessControlClientImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
