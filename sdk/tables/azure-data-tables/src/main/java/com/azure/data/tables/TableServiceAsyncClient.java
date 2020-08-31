@@ -8,6 +8,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -25,6 +26,7 @@ import com.azure.data.tables.implementation.models.ResponseFormat;
 import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.implementation.models.TableQueryResponse;
 import com.azure.data.tables.implementation.models.TableResponseProperties;
+import com.azure.data.tables.implementation.models.TableServiceErrorException;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableItem;
 import java.net.URI;
@@ -137,6 +139,39 @@ public class TableServiceAsyncClient {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    /**
+     * creates the table with the given name if it does not exist, otherwise no action is taken.
+     *
+     * @param tableName the name of the table to create
+     * @return mono void
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> createTableIfNotExists(String tableName) {
+        return createTableIfNotExistsWithResponse(tableName).flatMap(response -> Mono.justOrEmpty(response.getValue()));
+    }
+
+    /**
+     * creates the table with the given name if it does not exist, otherwise no action is taken.
+     *
+     * @param tableName the name of the table to create
+     * @return a response
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> createTableIfNotExistsWithResponse(String tableName) {
+        return withContext(context -> createTableIfNotExistsWithResponse(tableName, context));
+    }
+
+    Mono<Response<Void>> createTableIfNotExistsWithResponse(String tableName, Context context) {
+        return createTableWithResponse(tableName, context).onErrorResume(e -> e instanceof TableServiceErrorException
+                && ((TableServiceErrorException) e).getResponse() != null
+                && ((TableServiceErrorException) e).getResponse().getStatusCode() == 409,
+            e -> {
+                HttpResponse response = ((TableServiceErrorException) e).getResponse();
+                return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), null));
+            });
     }
 
     /**
