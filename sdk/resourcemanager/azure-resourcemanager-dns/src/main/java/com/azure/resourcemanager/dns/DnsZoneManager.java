@@ -88,6 +88,7 @@ public final class DnsZoneManager extends Manager<DnsZoneManager, DnsManagementC
             profile,
             new DnsManagementClientBuilder()
                 .pipeline(httpPipeline)
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient(),
             sdkContext);
