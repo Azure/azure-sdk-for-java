@@ -111,6 +111,7 @@ public class IdentityClient {
     private static final String DEFAULT_CONFIDENTIAL_KEYRING_ITEM_NAME = DEFAULT_CONFIDENTIAL_KEYCHAIN_ACCOUNT;
     private static final String DEFAULT_KEYRING_ATTR_NAME = "MsalClientID";
     private static final String DEFAULT_KEYRING_ATTR_VALUE = "Microsoft.Developer.IdentityService";
+    public static final String ADFS_TENANT = "adfs";
     private final ClientLogger logger = new ClientLogger(IdentityClient.class);
 
     private final IdentityClientOptions options;
@@ -337,6 +338,10 @@ public class IdentityClient {
                 }
             } else if (authType.equalsIgnoreCase("DC")) {
 
+                if (isADFSTenant()) {
+                    return Mono.error(new CredentialUnavailableException("IntelliJCredential  "
+                                         + "authentication unavailable. ADFS tenant/authorities are not supported."));
+                }
                 JsonNode intelliJCredentials = cacheAccessor.getDeviceCodeCredentials();
                 String refreshToken = intelliJCredentials.get("refreshToken").textValue();
 
@@ -592,6 +597,10 @@ public class IdentityClient {
      */
     public Mono<MsalToken> authenticateWithVsCodeCredential(TokenRequestContext request, String cloud) {
 
+        if (isADFSTenant()) {
+            return Mono.error(new CredentialUnavailableException("VsCodeCredential  "
+                                         + "authentication unavailable. ADFS tenant/authorities are not supported."));
+        }
         VisualStudioCacheAccessor accessor = new VisualStudioCacheAccessor();
 
         String credential = accessor.getCredentials("VS Code Azure", cloud);
@@ -984,5 +993,9 @@ public class IdentityClient {
      */
     public String getClientId() {
         return clientId;
+    }
+
+    private boolean isADFSTenant() {
+        return this.tenantId.equals(ADFS_TENANT);
     }
 }
