@@ -20,6 +20,7 @@ public class ConnectionStringProperties {
     private static final String TOKEN_VALUE_SEPARATOR = "=";
     private static final String ENDPOINT_SCHEME_SB_PREFIX = "sb://";
     private static final String ENDPOINT_SCHEME_HTTP_PREFIX = "http://";
+    private static final String ENDPOINT_SCHEME_HTTPS_PREFIX = "https://";
     private static final String TOKEN_VALUE_PAIR_DELIMITER = ";";
     private static final String ENDPOINT = "Endpoint";
     private static final String SHARED_ACCESS_KEY_NAME = "SharedAccessKeyName";
@@ -135,18 +136,21 @@ public class ConnectionStringProperties {
     }
 
     /*
-     * The function checks for pre existing scheme of "sb://" and  "http://". If the scheme is not provided in
-     * endpoint, it will set the default scheme to "sb".
+     * The function checks for pre existing scheme of "sb://" , "http://" or "https://". If the scheme is not provided
+     * in endpoint, it will set the default scheme to "sb://".
      */
     private String validateAndUpdateDefaultScheme(final String endpoint, final String connectionString) {
-        String updatedEndpoint = endpoint;
+        String updatedEndpoint = endpoint.trim();
 
         if (CoreUtils.isNullOrEmpty(endpoint)) {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
                 ERROR_MESSAGE_ENDPOINT_FORMAT, connectionString)));
 
         }
-        if (!endpoint.startsWith(ENDPOINT_SCHEME_SB_PREFIX) && !endpoint.startsWith(ENDPOINT_SCHEME_HTTP_PREFIX)) {
+        final String endpointLowerCase = endpoint.toLowerCase(Locale.getDefault());
+        if (!endpointLowerCase.startsWith(ENDPOINT_SCHEME_SB_PREFIX)
+            && !endpointLowerCase.startsWith(ENDPOINT_SCHEME_HTTP_PREFIX)
+            && !endpointLowerCase.startsWith(ENDPOINT_SCHEME_HTTPS_PREFIX)) {
             updatedEndpoint = ENDPOINT_SCHEME_SB_PREFIX + endpoint;
         }
         return updatedEndpoint;
