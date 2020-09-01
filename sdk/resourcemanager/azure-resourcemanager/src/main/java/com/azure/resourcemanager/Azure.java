@@ -624,12 +624,12 @@ public final class Azure {
     //        return batchManager.batchAccounts();
     //    }
 
-        /**
-         * @return entry point to managing traffic manager profiles.
-         */
-        public TrafficManagerProfiles trafficManagerProfiles() {
-            return trafficManager.profiles();
-        }
+    /**
+     * @return entry point to managing traffic manager profiles.
+     */
+    public TrafficManagerProfiles trafficManagerProfiles() {
+        return trafficManager.profiles();
+    }
 
     /** @return entry point to managing Redis Caches. */
     public RedisCaches redisCaches() {
