@@ -8,7 +8,11 @@ import com.azure.ai.anomalydetector.models.LastDetectResponse;
 import com.azure.ai.anomalydetector.models.TimeGranularity;
 import com.azure.ai.anomalydetector.models.TimeSeriesPoint;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.*;
+import com.azure.core.http.ContentType;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.AzureKeyCredentialPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -21,8 +25,17 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Sample for detecting whether the last point of time series is anomaly or not.
+ */
 public class DetectAnomaliesLastPoint {
 
+    /**
+     * Main method to invoke this demo.
+     *
+     * @param args Unused arguments to the program.
+     * @throws IOException Exception thrown when there is an error in reading all the lines from the csv file.
+     */
     public static void main(final String[] args) throws IOException {
         String endpoint = "<anomaly-detector-resource-endpoint>";
         String key = "<anomaly-detector-resource-key>";
@@ -43,15 +56,15 @@ public class DetectAnomaliesLastPoint {
         Path path = Paths.get("./src/samples/java/sample_data/request-data.csv");
         List<String> requestData = Files.readAllLines(path);
         List<TimeSeriesPoint> series = requestData.stream()
-            .map(e -> e.trim())
-            .filter(e -> e.length() > 0)
-            .map(e -> e.split(",", 2))
-            .filter(e -> e.length == 2)
-            .map(e -> {
-                TimeSeriesPoint p = new TimeSeriesPoint();
-                p.setTimestamp(OffsetDateTime.parse(e[0]));
-                p.setValue(Float.parseFloat(e[1]));
-                return p;
+            .map(line -> line.trim())
+            .filter(line -> line.length() > 0)
+            .map(line -> line.split(",", 2))
+            .filter(splits -> splits.length == 2)
+            .map(splits -> {
+                TimeSeriesPoint timeSeriesPoint = new TimeSeriesPoint();
+                timeSeriesPoint.setTimestamp(OffsetDateTime.parse(splits[0]));
+                timeSeriesPoint.setValue(Float.parseFloat(splits[1]));
+                return timeSeriesPoint;
             })
             .collect(Collectors.toList());
 
