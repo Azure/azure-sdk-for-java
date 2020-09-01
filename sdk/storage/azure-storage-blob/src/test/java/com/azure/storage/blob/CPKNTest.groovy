@@ -13,11 +13,9 @@ import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.blob.specialized.PageBlobClient
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
-import spock.lang.Requires
 
 import java.time.OffsetDateTime
 
-@Requires({ playbackMode() })
 class CPKNTest extends APISpec {
 
     String scope1 = "testscope1"
