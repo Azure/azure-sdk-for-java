@@ -87,7 +87,7 @@ public final class QueryMetricsAndActivityLogs {
             // Add some blob transaction events
             addBlobTransactions(storageConnectionString, storageAccount.manager().httpPipeline().getHttpClient());
 
-            OffsetDateTime recordDateTime = OffsetDateTime.now();;
+            OffsetDateTime recordDateTime = OffsetDateTime.now();
             // get metric definitions for storage account.
             for (MetricDefinition metricDefinition : azure.metricDefinitions().listByResource(storageAccount.id())) {
                 // find metric definition for Transactions
