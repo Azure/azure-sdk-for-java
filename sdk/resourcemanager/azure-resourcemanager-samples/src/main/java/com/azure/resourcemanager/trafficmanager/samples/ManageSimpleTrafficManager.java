@@ -122,7 +122,7 @@ public final class ManageSimpleTrafficManager {
             TrafficManagerProfile trafficManagerProfile = profileWithCreate.create();
 
             stopwatch.stop();
-            System.out.println(String.format("Created a traffic manager profile %s\n in %d seconds.", trafficManagerProfile.id(), stopwatch.getTime() / 1000));
+            System.out.printf("Created a traffic manager profile %s in %d seconds.%n", trafficManagerProfile.id(), stopwatch.getTime() / 1000);
 
             //=============================================================
             // Modify the traffic manager to use priority based routing

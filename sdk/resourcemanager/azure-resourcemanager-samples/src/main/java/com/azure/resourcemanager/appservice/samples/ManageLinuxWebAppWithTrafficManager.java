@@ -24,6 +24,7 @@ import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfile;
 import com.azure.resourcemanager.trafficmanager.models.TrafficRoutingMethod;
 
 import java.io.File;
+import java.util.Locale;
 
 
 /**
@@ -102,8 +103,8 @@ public final class ManageLinuxWebAppWithTrafficManager {
             //============================================================
             // Create a self-singed SSL certificate
 
-            pfxPath = ManageLinuxWebAppWithTrafficManager.class.getResource("/").getPath() + "webapp_" + ManageLinuxWebAppWithTrafficManager.class.getSimpleName().toLowerCase() + ".pfx";
-            String cerPath = ManageLinuxWebAppWithTrafficManager.class.getResource("/").getPath() + "webapp_" + ManageLinuxWebAppWithTrafficManager.class.getSimpleName().toLowerCase() + ".cer";
+            pfxPath = ManageLinuxWebAppWithTrafficManager.class.getResource("/").getPath() + "webapp_" + ManageLinuxWebAppWithTrafficManager.class.getSimpleName().toLowerCase(Locale.ROOT) + ".pfx";
+            String cerPath = ManageLinuxWebAppWithTrafficManager.class.getResource("/").getPath() + "webapp_" + ManageLinuxWebAppWithTrafficManager.class.getSimpleName().toLowerCase(Locale.ROOT) + ".cer";
 
             System.out.println("Creating a self-signed certificate " + pfxPath + "...");
 

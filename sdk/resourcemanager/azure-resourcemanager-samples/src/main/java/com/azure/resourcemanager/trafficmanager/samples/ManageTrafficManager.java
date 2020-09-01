@@ -24,6 +24,7 @@ import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfile;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Azure traffic manager sample for managing profiles.
@@ -95,8 +96,8 @@ public final class ManageTrafficManager {
             //============================================================
             // Create a self-singed SSL certificate
 
-            String pfxPath = ManageTrafficManager.class.getResource("/").getPath() + "webapp_" + ManageTrafficManager.class.getSimpleName().toLowerCase() + ".pfx";
-            String cerPath = ManageTrafficManager.class.getResource("/").getPath() + "webapp_" + ManageTrafficManager.class.getSimpleName().toLowerCase() + ".cer";
+            String pfxPath = ManageTrafficManager.class.getResource("/").getPath() + "webapp_" + ManageTrafficManager.class.getSimpleName().toLowerCase(Locale.ROOT) + ".pfx";
+            String cerPath = ManageTrafficManager.class.getResource("/").getPath() + "webapp_" + ManageTrafficManager.class.getSimpleName().toLowerCase(Locale.ROOT) + ".cer";
 
             System.out.println("Creating a self-signed certificate " + pfxPath + "...");
 
