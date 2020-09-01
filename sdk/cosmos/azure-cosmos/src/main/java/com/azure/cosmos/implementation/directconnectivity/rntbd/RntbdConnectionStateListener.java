@@ -16,24 +16,45 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiFunction;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 public class RntbdConnectionStateListener {
 
     // region Fields
 
     private static final Logger logger = LoggerFactory.getLogger(RntbdConnectionStateListener.class);
+
     private final AddressResolverExtension addressResolver;
     private final ConcurrentHashMap<SocketAddress, Set<RntbdAddressCacheToken>> partitionAddressCache;
+    private final BiFunction<RntbdEndpoint, RxDocumentServiceRequest, Mono<Void>> update;
 
     // endregion
 
     // region Constructors
 
-    public RntbdConnectionStateListener(final AddressResolverExtension addressResolver) {
-        this.addressResolver = checkNotNull(addressResolver, "expected non-null addressResolver");
+    public RntbdConnectionStateListener(
+        final AddressResolverExtension addressResolver,
+        final UpdateStrategy updateStrategy) {
+
+        checkNotNull(addressResolver, "expected non-null addressResolver");
+        checkNotNull(updateStrategy, "expected non-null updateStrategy");
+
+        this.addressResolver = addressResolver;
         this.partitionAddressCache = new ConcurrentHashMap<>();
+
+        switch (updateStrategy) {
+            case DEFERRED:
+                this.update = this::removeAddressCache;
+                break;
+            case IMMEDIATE:
+                this.update = this::updateAddressCacheAsync;
+                break;
+            default:
+                throw new IllegalArgumentException(lenientFormat("illegal updateStrategy: %s", updateStrategy));
+        }
     }
 
     // endregion
@@ -79,6 +100,14 @@ public class RntbdConnectionStateListener {
 
     // region Privates
 
+    private Mono<Void> removeAddressCache(final RntbdEndpoint endpoint, final RxDocumentServiceRequest request) {
+        this.partitionAddressCache.computeIfPresent(endpoint.remoteAddress(), (address, tokens) -> {
+            this.addressResolver.removeAddressResolverURI(request);
+            return null;
+        });
+        return Mono.empty();
+    }
+
     @SuppressWarnings("unchecked")
     private Mono<Void> updateAddressCacheAsync(final RntbdEndpoint endpoint, final RxDocumentServiceRequest request) {
 
@@ -106,4 +135,11 @@ public class RntbdConnectionStateListener {
     }
 
     // endregion
+
+    // region Types
+
+    public enum UpdateStrategy{
+        DEFERRED,
+        IMMEDIATE
+    }
 }

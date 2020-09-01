@@ -59,7 +59,7 @@ public final class RntbdAddressCacheToken {
 
             } else {
 
-                // TODO (DANOBLE) This happens on certain operations (e.g., read Database)
+                // TODO (DANOBLE) This happens on master operations (e.g., read Database)
                 //  Is there an alternative mechanism for producing a partition key range identity or is this expected?
 
                 reportIssueUnless(logger, partitionKeyRange == null, request.requestContext,

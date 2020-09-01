@@ -48,6 +48,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
 import com.azure.cosmos.implementation.directconnectivity.WFConstants.BackendHeaders;
+
+import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConnectionStateListener.UpdateStrategy;
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssue;
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssueUnless;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
@@ -91,10 +93,12 @@ public final class RntbdTransportClient extends TransportClient {
         final UserAgentContainer userAgent,
         final AddressResolverExtension addressResolver) {
 
+        // TODO (DANOBLE) expose UpdateStrategy as a configuration option for debug/test purposes
+
         this(
             new Options.Builder(connectionPolicy).userAgent(userAgent).build(),
             configs.getSslContext(),
-            addressResolver == null ? null : new RntbdConnectionStateListener(addressResolver));
+            addressResolver == null ? null : new RntbdConnectionStateListener(addressResolver, UpdateStrategy.IMMEDIATE));
     }
 
     RntbdTransportClient(
@@ -281,10 +285,7 @@ public final class RntbdTransportClient extends TransportClient {
                     // GoneException was created from a response from the server
                     //
                     // This will occur for any of a number of reasons. We care about sub-status code zero because it
-                    // indicates the server hosting the targeted endpoint is being discontinued or reconfigured. The
-                    // cause of the exception should be null. We report an issue if it is not. We choose to reserve
-                    // sub-status code zero for responses from the server. If we detect that we're not honoring that
-                    // contract, we will fix it.
+                    // indicates the server hosting the targeted endpoint is being discontinued or reconfigured.
 
                     final GoneException exception = (GoneException) error;
 
@@ -298,8 +299,10 @@ public final class RntbdTransportClient extends TransportClient {
                     }
                 }
 
-                if (!(event == null || endpoint.isClosed() || this.isClosed())) {
-                    this.connectionStateListener.onConnectionEvent(event, Instant.now(), endpoint, request);
+                if (event != null) {
+                    if (!(endpoint.isClosed() || this.isClosed())) {
+                        this.connectionStateListener.onConnectionEvent(event, Instant.now(), endpoint, request);
+                    }
                     final GoneException exception = (GoneException) error;
                     exception.getResponseHeaders().put(BackendHeaders.SUB_STATUS, DISCONTINUING_SERVICE);
                 }
@@ -691,6 +694,7 @@ public final class RntbdTransportClient extends TransportClient {
                     }
                 } finally {
                     if (options == null) {
+                        logger.info("Using default Direct TCP options: {}", DEFAULT_OPTIONS_PROPERTY_NAME);
                         DEFAULT_OPTIONS = new Options(ConnectionPolicy.getDefaultPolicy());
                     } else {
                         logger.info("Updated default Direct TCP options from system property {}: {}",

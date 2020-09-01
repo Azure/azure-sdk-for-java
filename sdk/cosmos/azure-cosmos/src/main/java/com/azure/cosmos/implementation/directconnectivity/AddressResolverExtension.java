@@ -9,5 +9,6 @@ import java.util.List;
 
 public interface AddressResolverExtension extends IAddressResolver {
     URI getAddressResolverURI(RxDocumentServiceRequest request);
+    boolean removeAddressResolverURI(RxDocumentServiceRequest request);
     Mono<Void> updateAsync(RxDocumentServiceRequest request, List<RntbdAddressCacheToken> tokens);
 }

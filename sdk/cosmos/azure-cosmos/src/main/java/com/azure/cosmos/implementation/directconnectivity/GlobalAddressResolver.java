@@ -11,7 +11,6 @@ import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdAddressCacheToken;
@@ -90,6 +89,17 @@ public class GlobalAddressResolver implements AddressResolverExtension {
     @Override
     public URI getAddressResolverURI(RxDocumentServiceRequest rxDocumentServiceRequest) {
         return this.endpointManager.resolveServiceEndpoint(rxDocumentServiceRequest);
+    }
+
+    @Override
+    public boolean removeAddressResolverURI(RxDocumentServiceRequest request) {
+        final URI uri = this.getAddressResolverURI(request);
+        this.addressCacheByEndpoint.computeIfPresent(uri, (address, cache) -> {
+            // TODO (DANOBLE) What work must be done here?
+            //  Iff nothing to do, then use remove instead.
+            return null;
+        });
+        return true;
     }
 
     @Override
