@@ -60,6 +60,165 @@ public final class DigitalTwinsClient {
     }
 
     /**
+     * Creates a digital twin.
+     *
+     * @param digitalTwinId The Id of the digital twin.
+     * @param digitalTwin The application/json digital twin to create.
+     * @return The application/json digital twin created.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public String createDigitalTwin(String digitalTwinId, String digitalTwin)
+    {
+        return createDigitalTwinWithResponse(digitalTwinId, digitalTwin, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates a digital twin.
+     *
+     * @param digitalTwinId The Id of the digital twin.
+     * @param digitalTwin The application/json digital twin to create.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A Http response containing application/json digital twin created.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<String> createDigitalTwinWithResponse(String digitalTwinId, String digitalTwin, Context context)
+    {
+        return digitalTwinsAsyncClient.createDigitalTwinWithResponse(digitalTwinId, digitalTwin, context).block();
+    }
+
+    /**
+     * Creates a digital twin.
+     *
+     * @param digitalTwinId The Id of the digital twin.
+     * @param clazz The model class to convert the response to.
+     * @param digitalTwin The application/json digital twin to create.
+     * @return The application/json digital twin created.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public <T> T createDigitalTwin(String digitalTwinId, Object digitalTwin, Class<T> clazz)
+    {
+        return createDigitalTwinWithResponse(digitalTwinId, digitalTwin, clazz, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates a digital twin.
+     *
+     * @param digitalTwinId The Id of the digital twin.
+     * @param digitalTwin The application/json digital twin to create.
+     * @param clazz The model class to convert the response to.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A Http response containing application/json digital twin created.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public <T> Response<T> createDigitalTwinWithResponse(String digitalTwinId, Object digitalTwin, Class<T> clazz, Context context)
+    {
+        return digitalTwinsAsyncClient.createDigitalTwinWithResponse(digitalTwinId, digitalTwin, clazz, context).block();
+    }
+
+    /**
+     * Gets a digital twin.
+     *
+     * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
+     * @return The application/json digital twin
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public String getDigitalTwin(String digitalTwinId)
+    {
+        return getDigitalTwinWithResponse(digitalTwinId, Context.NONE).getValue();
+    }
+
+    /**
+     * Gets a digital twin.
+     *
+     * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A Http response containing application/json digital twin
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<String> getDigitalTwinWithResponse(String digitalTwinId, Context context)
+    {
+        return digitalTwinsAsyncClient.getDigitalTwinWithResponse(digitalTwinId, context).block();
+    }
+
+    /**
+     * Gets a digital twin.
+     *
+     * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
+     * @param clazz The model class to convert the response to.
+     * @return The application/json digital twin
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public <T> T getDigitalTwin(String digitalTwinId, Class<T> clazz)
+    {
+        return getDigitalTwinWithResponse(digitalTwinId, clazz, Context.NONE).getValue();
+    }
+
+    /**
+     * Gets a digital twin.
+     *
+     * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
+     * @param clazz The model class to convert the response to.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A Http response containing application/json digital twin
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public <T> Response<T> getDigitalTwinWithResponse(String digitalTwinId, Class<T> clazz, Context context)
+    {
+        return digitalTwinsAsyncClient.getDigitalTwinWithResponse(digitalTwinId, clazz, context).block();
+    }
+
+    /**
+     * Updates a digital twin.
+     *
+     * @param digitalTwinId The Id of the digital twin.
+     * @param digitalTwinUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateDigitalTwin(String digitalTwinId, List<Object> digitalTwinUpdateOperations)
+    {
+        updateDigitalTwinWithResponse(digitalTwinId, digitalTwinUpdateOperations, new RequestOptions(), Context.NONE).getValue();
+    }
+
+    /**
+     * Updates a digital twin.
+     *
+     * @param digitalTwinId The Id of the digital twin.
+     * @param digitalTwinUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin
+     * @param options The optional settings for this request
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A Http response
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DigitalTwinsResponse<Void> updateDigitalTwinWithResponse(String digitalTwinId, List<Object> digitalTwinUpdateOperations, RequestOptions options, Context context)
+    {
+        return digitalTwinsAsyncClient.updateDigitalTwinWithResponse(digitalTwinId, digitalTwinUpdateOperations, options, context).block();
+    }
+
+    /**
+     * Deletes a digital twin. All relationships referencing the digital twin must already be deleted.
+     * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteDigitalTwin(String digitalTwinId)
+    {
+        deleteDigitalTwinWithResponse(digitalTwinId, new RequestOptions(), Context.NONE).getValue();
+    }
+
+    /**
+     * Deletes a digital twin. All relationships referencing the digital twin must already be deleted.
+     *
+     * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
+     * @param options The optional settings for this request
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return The Http response
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteDigitalTwinWithResponse(String digitalTwinId, RequestOptions options, Context context)
+    {
+        return digitalTwinsAsyncClient.deleteDigitalTwinWithResponse(digitalTwinId, options, context).block();
+    }
+
+    /**
      * Creates a relationship on a digital twin.
      *
      * @param digitalTwinId The Id of the source digital twin.
