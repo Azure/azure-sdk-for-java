@@ -327,9 +327,11 @@ public final class DigitalTwinsAsyncClient {
     }
 
     Mono<DigitalTwinsResponse<Void>> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, List<Object> relationshipUpdateOperations, RequestOptions options, Context context) {
+        String ifMatch = options != null ? options.getIfMatch() : null;
+
         return protocolLayer
             .getDigitalTwins()
-            .updateRelationshipWithResponseAsync(digitalTwinId, relationshipId, options.getIfMatch(), relationshipUpdateOperations, context)
+            .updateRelationshipWithResponseAsync(digitalTwinId, relationshipId, ifMatch, relationshipUpdateOperations, context)
             .map(response -> {
                 DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
                 return new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), response.getValue(), twinHeaders);
@@ -363,9 +365,11 @@ public final class DigitalTwinsAsyncClient {
     }
 
     Mono<Response<Void>> deleteRelationshipWithResponse(String digitalTwinId, String relationshipId, RequestOptions options, Context context) {
+        String ifMatch = options != null ? options.getIfMatch() : null;
+
         return protocolLayer
             .getDigitalTwins()
-            .deleteRelationshipWithResponseAsync(digitalTwinId, relationshipId, options.getIfMatch(), context);
+            .deleteRelationshipWithResponseAsync(digitalTwinId, relationshipId, ifMatch, context);
     }
 
     /**
@@ -731,7 +735,7 @@ public final class DigitalTwinsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> getComponent(String digitalTwinId, String componentPath) {
         return getComponentWithResponse(digitalTwinId, componentPath)
-            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
+            .map(response -> response.getValue());
     }
 
     /**
@@ -753,6 +757,7 @@ public final class DigitalTwinsAsyncClient {
                     DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
                     return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), jsonResponse, twinHeaders));
                 } catch (JsonProcessingException e) {
+                    logger.error("Failed to deserialize the returned component object into a string", e);
                     return Mono.error(e);
                 }
             });
@@ -769,7 +774,7 @@ public final class DigitalTwinsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> Mono<T> getComponent(String digitalTwinId, String componentPath, Class<T> clazz) {
         return getComponentWithResponse(digitalTwinId, componentPath, clazz)
-            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
+            .map(response -> response.getValue());
     }
 
     /**
