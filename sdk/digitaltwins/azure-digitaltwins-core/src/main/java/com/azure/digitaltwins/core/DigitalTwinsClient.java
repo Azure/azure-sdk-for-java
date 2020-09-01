@@ -180,7 +180,7 @@ public final class DigitalTwinsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void updateRelationship(String digitalTwinId, String relationshipId, List<Object> relationshipUpdateOperations) {
-        updateRelationshipWithResponse(digitalTwinId, relationshipId, relationshipUpdateOperations, new RequestOptions(), Context.NONE);
+        updateRelationshipWithResponse(digitalTwinId, relationshipId, relationshipUpdateOperations, new UpdateRelationshipRequestOptions(), Context.NONE);
     }
 
     /**
@@ -194,7 +194,7 @@ public final class DigitalTwinsClient {
      * @return The Http response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DigitalTwinsResponse<Void> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, List<Object> relationshipUpdateOperations, RequestOptions options, Context context) {
+    public DigitalTwinsResponse<Void> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, List<Object> relationshipUpdateOperations, UpdateRelationshipRequestOptions options, Context context) {
         return digitalTwinsAsyncClient.updateRelationshipWithResponse(digitalTwinId, relationshipId, relationshipUpdateOperations, options, context).block();
     }
 
@@ -206,7 +206,7 @@ public final class DigitalTwinsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteRelationship(String digitalTwinId, String relationshipId) {
-        deleteRelationshipWithResponse(digitalTwinId, relationshipId, new RequestOptions(), Context.NONE);
+        deleteRelationshipWithResponse(digitalTwinId, relationshipId, new DeleteRelationshipRequestOptions(), Context.NONE);
     }
 
     /**
@@ -219,7 +219,7 @@ public final class DigitalTwinsClient {
      * @return The Http response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteRelationshipWithResponse(String digitalTwinId, String relationshipId, RequestOptions options, Context context) {
+    public Response<Void> deleteRelationshipWithResponse(String digitalTwinId, String relationshipId, DeleteRelationshipRequestOptions options, Context context) {
         return digitalTwinsAsyncClient.deleteRelationshipWithResponse(digitalTwinId, relationshipId, options, context).block();
     }
 
@@ -394,7 +394,7 @@ public final class DigitalTwinsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public String getComponent(String digitalTwinId, String componentPath) {
-        return digitalTwinsAsyncClient.getComponent(digitalTwinId, componentPath).block();
+        return getComponentWithResponse(digitalTwinId, componentPath, Context.NONE).getValue();
     }
 
     /**
@@ -419,7 +419,7 @@ public final class DigitalTwinsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> T getComponent(String digitalTwinId, String componentPath, Class<T> clazz) {
-        return digitalTwinsAsyncClient.getComponent(digitalTwinId, componentPath, clazz).block();
+        return getComponentWithResponse(digitalTwinId, componentPath, clazz, Context.NONE).getValue();
     }
 
     /**
@@ -445,7 +445,7 @@ public final class DigitalTwinsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void updateComponent(String digitalTwinId, String componentPath, List<Object> componentUpdateOperations) {
-        digitalTwinsAsyncClient.updateComponent(digitalTwinId, componentPath, componentUpdateOperations).block();
+        updateComponentWithResponse(digitalTwinId, componentPath, componentUpdateOperations, new UpdateComponentRequestOptions(), Context.NONE).getValue();
     }
 
     /**
@@ -454,12 +454,12 @@ public final class DigitalTwinsClient {
      * @param componentPath The path of the component on the digital twin.
      * @param componentUpdateOperations The application json patch to apply to the component. See {@link com.azure.digitaltwins.core.util.UpdateOperationUtility} for building
      *                                  this argument.
-     * @param requestOptions The optional parameters for this request.
+     * @param options The optional parameters for this request.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The http response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DigitalTwinsResponse<Void> updateComponentWithResponse(String digitalTwinId, String componentPath, List<Object> componentUpdateOperations, UpdateComponentRequestOptions requestOptions, Context context) {
-        return digitalTwinsAsyncClient.updateComponentWithResponse(digitalTwinId, componentPath, componentUpdateOperations, requestOptions, context).block();
+    public DigitalTwinsResponse<Void> updateComponentWithResponse(String digitalTwinId, String componentPath, List<Object> componentUpdateOperations, UpdateComponentRequestOptions options, Context context) {
+        return digitalTwinsAsyncClient.updateComponentWithResponse(digitalTwinId, componentPath, componentUpdateOperations, options, context).block();
     }
 }

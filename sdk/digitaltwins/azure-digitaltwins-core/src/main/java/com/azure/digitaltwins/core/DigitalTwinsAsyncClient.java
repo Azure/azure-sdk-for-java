@@ -308,7 +308,7 @@ public final class DigitalTwinsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateRelationship(String digitalTwinId, String relationshipId, List<Object> relationshipUpdateOperations) {
-        return updateRelationshipWithResponse(digitalTwinId, relationshipId, relationshipUpdateOperations, new RequestOptions())
+        return updateRelationshipWithResponse(digitalTwinId, relationshipId, relationshipUpdateOperations, new UpdateRelationshipRequestOptions())
             .flatMap(voidResponse -> Mono.empty());
     }
 
@@ -322,11 +322,11 @@ public final class DigitalTwinsAsyncClient {
      * @return The Http response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DigitalTwinsResponse<Void>> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, List<Object> relationshipUpdateOperations, RequestOptions options) {
+    public Mono<DigitalTwinsResponse<Void>> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, List<Object> relationshipUpdateOperations, UpdateRelationshipRequestOptions options) {
         return withContext(context -> updateRelationshipWithResponse(digitalTwinId, relationshipId, relationshipUpdateOperations, options, context));
     }
 
-    Mono<DigitalTwinsResponse<Void>> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, List<Object> relationshipUpdateOperations, RequestOptions options, Context context) {
+    Mono<DigitalTwinsResponse<Void>> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, List<Object> relationshipUpdateOperations, UpdateRelationshipRequestOptions options, Context context) {
         String ifMatch = options != null ? options.getIfMatch() : null;
 
         return protocolLayer
@@ -347,7 +347,7 @@ public final class DigitalTwinsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteRelationship(String digitalTwinId, String relationshipId) {
-        return deleteRelationshipWithResponse(digitalTwinId, relationshipId, new RequestOptions())
+        return deleteRelationshipWithResponse(digitalTwinId, relationshipId, new DeleteRelationshipRequestOptions())
             .flatMap(voidResponse -> Mono.empty());
     }
 
@@ -360,11 +360,11 @@ public final class DigitalTwinsAsyncClient {
      * @return The Http response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteRelationshipWithResponse(String digitalTwinId, String relationshipId, RequestOptions options) {
+    public Mono<Response<Void>> deleteRelationshipWithResponse(String digitalTwinId, String relationshipId, DeleteRelationshipRequestOptions options) {
         return withContext(context -> deleteRelationshipWithResponse(digitalTwinId, relationshipId, options, context));
     }
 
-    Mono<Response<Void>> deleteRelationshipWithResponse(String digitalTwinId, String relationshipId, RequestOptions options, Context context) {
+    Mono<Response<Void>> deleteRelationshipWithResponse(String digitalTwinId, String relationshipId, DeleteRelationshipRequestOptions options, Context context) {
         String ifMatch = options != null ? options.getIfMatch() : null;
 
         return protocolLayer
@@ -819,16 +819,16 @@ public final class DigitalTwinsAsyncClient {
      * @param componentPath The path of the component on the digital twin.
      * @param componentUpdateOperations The application json patch to apply to the component. See {@link com.azure.digitaltwins.core.util.UpdateOperationUtility} for building
      *                                  this argument.
-     * @param requestOptions The optional parameters for this request.
+     * @param options The optional parameters for this request.
      * @return A {@link DigitalTwinsResponse} containing an empty Mono.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DigitalTwinsResponse<Void>> updateComponentWithResponse(String digitalTwinId, String componentPath, List<Object> componentUpdateOperations, UpdateComponentRequestOptions requestOptions) {
-        return withContext(context -> updateComponentWithResponse(digitalTwinId, componentPath, componentUpdateOperations, requestOptions, context));
+    public Mono<DigitalTwinsResponse<Void>> updateComponentWithResponse(String digitalTwinId, String componentPath, List<Object> componentUpdateOperations, UpdateComponentRequestOptions options) {
+        return withContext(context -> updateComponentWithResponse(digitalTwinId, componentPath, componentUpdateOperations, options, context));
     }
 
-    Mono<DigitalTwinsResponse<Void>> updateComponentWithResponse(String digitalTwinId, String componentPath, List<Object> componentUpdateOperations, UpdateComponentRequestOptions requestOptions, Context context) {
-        String ifMatch = requestOptions != null ? requestOptions.getIfMatch() : null;
+    Mono<DigitalTwinsResponse<Void>> updateComponentWithResponse(String digitalTwinId, String componentPath, List<Object> componentUpdateOperations, UpdateComponentRequestOptions options, Context context) {
+        String ifMatch = options != null ? options.getIfMatch() : null;
 
         return protocolLayer.getDigitalTwins().updateComponentWithResponseAsync(digitalTwinId, componentPath, ifMatch, componentUpdateOperations, context)
             .flatMap(response -> {
