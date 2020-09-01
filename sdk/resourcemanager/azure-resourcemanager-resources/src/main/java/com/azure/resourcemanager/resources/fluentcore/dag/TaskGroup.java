@@ -10,8 +10,10 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
-import reactor.util.function.Tuple2;
+import reactor.util.function.Tuple3;
+import reactor.util.function.Tuples;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -388,25 +390,36 @@ public class TaskGroup
     @SuppressFBWarnings(value = "BC_UNCONFIRMED_CAST_OF_RETURN_VALUE", justification = "Incorrect spot bugs")
     private Flux<Indexable> invokeReadyTasksAsync(final InvocationContext context) {
         TaskGroupEntry<TaskItem> readyTaskEntry = super.getNext();
-        final List<Flux<Tuple2<Long, Indexable>>> observables = new ArrayList<>();
+        final List<Flux<Tuple3<Long,OffsetDateTime, Indexable>>> observables = new ArrayList<>();
         // Enumerate the ready tasks (those with dependencies resolved) and kickoff them concurrently
         //
         while (readyTaskEntry != null) {
             final TaskGroupEntry<TaskItem> currentEntry = readyTaskEntry;
             final TaskItem currentTaskItem = currentEntry.data();
             if (currentTaskItem instanceof ProxyTaskItem) {
-                observables.add(invokeAfterPostRunAsync(currentEntry, context).index());
+                observables.add(invokeAfterPostRunAsync(currentEntry, context)
+                    .index((index, indexable) -> Tuples.of(index, OffsetDateTime.now(), indexable)));
             } else {
-                observables.add(invokeTaskAsync(currentEntry, context).index());
+                observables.add(invokeTaskAsync(currentEntry, context)
+                    .index((index, indexable) -> Tuples.of(index, OffsetDateTime.now(), indexable)));
             }
             readyTaskEntry = super.getNext();
         }
         return Flux
             .mergeOrdered(
                 32,
-                Comparator.<Tuple2<Long, Indexable>>comparingLong(Tuple2::getT1),
-                (Flux<Tuple2<Long, Indexable>>[]) observables.toArray(new Flux[0]))
-            .map(Tuple2::getT2);
+                Comparator
+                    .<Tuple3<Long, OffsetDateTime, Indexable>, Tuple3<Long, OffsetDateTime, Indexable>>comparing(
+                        x -> x,
+                        (some, other) -> {
+                            if (some.getT1() == 0 || other.getT1() == 0) {
+                                return some.getT1().compareTo(other.getT1());
+                            } else {
+                                return some.getT2().compareTo(other.getT2());
+                            }
+                        }),
+                (Flux<Tuple3<Long, OffsetDateTime, Indexable>>[]) observables.toArray(new Flux[0]))
+            .map(Tuple3::getT3);
     }
 
     /**
