@@ -9,7 +9,6 @@ import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
-import java.time.OffsetDateTime;
 import java.util.function.Function;
 
 /**
@@ -19,7 +18,6 @@ public class SdkContext {
     private Function<String, IdentifierProvider> identifierFunction = name -> new ResourceNamer(name);
     private static DelayProvider delayProvider = new ResourceDelayProvider();
     private static Scheduler reactorScheduler = Schedulers.boundedElastic();
-    private static int longRunningOperationRetryTimeout = 30;
 
     /**
      * Default constructor for SdkContext.
@@ -104,15 +102,6 @@ public class SdkContext {
     }
 
     /**
-     * Wrapper for long-running operation retry timeout.
-     *
-     * @param lroRetryTimeout timeout value in seconds
-     */
-    public static void setLroRetryTimeOut(int lroRetryTimeout) {
-        longRunningOperationRetryTimeout = lroRetryTimeout;
-    }
-
-    /**
      * Wrapper for the duration for delay, based on delayProvider.
      *
      * @param delay the duration of proposed delay.
@@ -121,23 +110,6 @@ public class SdkContext {
     public static Duration getDelayDuration(Duration delay) {
         return delayProvider.getDelayDuration(delay);
     }
-
-    /**
-     * Get long-running operation retry timeout.
-     *
-     * @return the duration
-     */
-    public static Duration getLroRetryDuration() {
-        return delayProvider.getDelayDuration(Duration.ofSeconds(longRunningOperationRetryTimeout));
-    }
-
-    /**
-     * @return the current date time.
-     */
-    public OffsetDateTime dateTimeNow() {
-        return OffsetDateTime.now();
-    }
-
 
     /**
      * Gets the current Rx Scheduler for the SDK framework.

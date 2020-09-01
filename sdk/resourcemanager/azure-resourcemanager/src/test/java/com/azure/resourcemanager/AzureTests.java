@@ -1096,11 +1096,11 @@ public class AzureTests extends ResourceManagerTestBase {
     //        new TestBatch().runTest(azure.batchAccounts(), azure.resourceGroups());
     //    }
 
-    //    @Test
-    //    public void testTrafficManager() throws Exception {
-    //        new TestTrafficManager(azure.publicIPAddresses())
-    //                .runTest(azure.trafficManagerProfiles(), azure.resourceGroups());
-    //    }
+    @Test
+    public void testTrafficManager() throws Exception {
+        new TestTrafficManager(azure.publicIpAddresses())
+                .runTest(azure.trafficManagerProfiles(), azure.resourceGroups());
+    }
 
     @Test
     public void testRedis() throws Exception {
