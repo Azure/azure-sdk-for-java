@@ -14,7 +14,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImageType
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImageVersion;
 import com.azure.resourcemanager.compute.models.VirtualMachinePublisher;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 
 /**
  * List all virtual machine extension image publishers and

@@ -9,8 +9,10 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.digitaltwins.core.implementation.serialization.BasicDigitalTwin;
 import com.azure.digitaltwins.core.implementation.serialization.DigitalTwinMetadata;
 import com.azure.digitaltwins.core.util.DigitalTwinsResponse;
+import com.azure.digitaltwins.core.util.UpdateOperationUtility;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
@@ -117,6 +119,40 @@ public class AsyncSample
 
         boolean created = createTwinsSemaphore.tryAcquire(2, 20, TimeUnit.SECONDS);
         System.out.println("Source twins created: " + created);
+
+        String targetTwin1_Id = "targetTwin_1_" + random.nextInt();
+        String targetTwin_1 = "{\"$metadata\": {\"$model\": \"dtmi:samples:HVAC;1\"}, \"Efficiency\": 10, \"TargetTemperature\": 10, \"TargetHumidity\": 10}";
+
+        String targetTwin2_Id = "targetTwin_2_" + random.nextInt();
+        String targetTwin_2 = "{\"$metadata\": {\"$model\": \"dtmi:samples:HVAC;1\"}, \"Efficiency\": 50, \"TargetTemperature\": 50, \"TargetHumidity\": 50}";
+
+        String targetTwin3_Id = "targetTwin_3_" + random.nextInt();
+        String targetTwin_3 = "{\"$metadata\": {\"$model\": \"dtmi:samples:Floor;1\"}, \"AverageTemperature\": 100}";
+
+        client.createDigitalTwinWithResponse(targetTwin1_Id, targetTwin_1).block();
+        client.createDigitalTwinWithResponse(targetTwin2_Id, targetTwin_2).block();
+        client.createDigitalTwinWithResponse(targetTwin3_Id, targetTwin_3).block();
+
+        String r_id_1 = "r_id_1_" + random.nextInt();
+        String r_id_2 = "r_id_2_" + random.nextInt();
+        String r_id_3 = "r_id_3_" + random.nextInt();
+        String relationship1 = "{\"$relationshipName\": \"isEquippedWith\", \"$targetId\": \"" + targetTwin1_Id + "\"}";
+        String relationship2 = "{\"$relationshipName\": \"isEquippedWith\", \"$targetId\": \"" + targetTwin2_Id + "\"}";
+        String relationship3 = "{\"$relationshipName\": \"has\", \"$targetId\": \"" + targetTwin3_Id + "\"}";
+
+        client.createRelationshipWithResponse(dtId_String, r_id_1, relationship1).block();
+        client.createRelationshipWithResponse(dtId_String, r_id_2, relationship2).block();
+        client.createRelationshipWithResponse(dtId_String, r_id_3, relationship3).block();
+
+        UpdateOperationUtility utility = new UpdateOperationUtility().appendAddOperation("/isAccessRestricted", false);
+        client.updateRelationship(dtId_String, r_id_3, utility.getUpdateOperations()).block();
+
+        String createdRelationship2 = client.getRelationship(dtId_String, r_id_2).block();
+        JsonNode jsonNode = mapper.readTree(createdRelationship2);
+        String etag = jsonNode.path("$etag").textValue();
+
+        client.deleteRelationship(dtId_String, r_id_1).block();
+        client.deleteRelationshipWithResponse(dtId_String, r_id_2, new RequestOptions().setIfMatch(etag)).block();
 
     }
 }

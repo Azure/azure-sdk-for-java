@@ -8,7 +8,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.messaging.servicebus.models.CreateBatchOptions;
 
 import java.time.Duration;
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.Objects;
 
 /**
@@ -176,13 +176,13 @@ public class ServiceBusSenderClient implements AutoCloseable {
      * enqueued and made available to receivers only at the scheduled enqueue time.
      *
      * @param message Message to be sent to the Service Bus Queue or Topic.
-     * @param scheduledEnqueueTime Instant at which the message should appear in the Service Bus queue or topic.
+     * @param scheduledEnqueueTime Datetime at which the message should appear in the Service Bus queue or topic.
      *
      * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
      *
      * @throws NullPointerException if {@code message} or {@code scheduledEnqueueTime} is {@code null}.
      */
-    public Long scheduleMessage(ServiceBusMessage message, Instant scheduledEnqueueTime) {
+    public Long scheduleMessage(ServiceBusMessage message, OffsetDateTime scheduledEnqueueTime) {
         return asyncClient.scheduleMessage(message, scheduledEnqueueTime).block(tryTimeout);
     }
 
@@ -191,7 +191,7 @@ public class ServiceBusSenderClient implements AutoCloseable {
      * enqueued and made available to receivers only at the scheduled enqueue time.
      *
      * @param message Message to be sent to the Service Bus Queue or Topic.
-     * @param scheduledEnqueueTime Instant at which the message should appear in the Service Bus queue or topic.
+     * @param scheduledEnqueueTime Datetime at which the message should appear in the Service Bus queue or topic.
      * @param transactionContext to be set on message before sending to Service Bus.
      *
      * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
@@ -200,7 +200,7 @@ public class ServiceBusSenderClient implements AutoCloseable {
      * {@code transactionContext.transactionId} is {@code null}.
      * @throws NullPointerException if  is null.
      */
-    public Long scheduleMessage(ServiceBusMessage message, Instant scheduledEnqueueTime,
+    public Long scheduleMessage(ServiceBusMessage message, OffsetDateTime scheduledEnqueueTime,
         ServiceBusTransactionContext transactionContext) {
         return asyncClient.scheduleMessage(message, scheduledEnqueueTime, transactionContext).block(tryTimeout);
     }

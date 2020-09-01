@@ -15,7 +15,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

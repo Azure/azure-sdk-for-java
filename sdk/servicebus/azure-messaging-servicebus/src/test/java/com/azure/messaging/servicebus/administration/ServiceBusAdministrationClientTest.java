@@ -12,7 +12,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.QueueProperties;
-import com.azure.messaging.servicebus.administration.models.QueueRuntimeInfo;
+import com.azure.messaging.servicebus.administration.models.QueueRuntimeProperties;
 import com.azure.messaging.servicebus.implementation.EntityHelper;
 import com.azure.messaging.servicebus.implementation.models.QueueDescription;
 import org.junit.jupiter.api.AfterEach;
@@ -43,7 +43,7 @@ class ServiceBusAdministrationClientTest {
     @Mock
     private Response<QueueProperties> queueDescriptionResponse;
     @Mock
-    private Response<QueueRuntimeInfo> queueRuntimeInfoResponse;
+    private Response<QueueRuntimeProperties> queueRuntimePropertiesResponse;
     @Mock
     private Response<Void> voidResponse;
     @Mock
@@ -162,30 +162,30 @@ class ServiceBusAdministrationClientTest {
     }
 
     @Test
-    void getQueueRuntimeInfo() {
+    void getQueueRuntimeProperties() {
         // Arrange
-        final QueueRuntimeInfo result = mock(QueueRuntimeInfo.class);
+        final QueueRuntimeProperties result = mock(QueueRuntimeProperties.class);
 
-        when(asyncClient.getQueueRuntimeInfo(queueName)).thenReturn(Mono.just(result));
+        when(asyncClient.getQueueRuntimeProperties(queueName)).thenReturn(Mono.just(result));
 
         // Act
-        final QueueRuntimeInfo actual = client.getQueueRuntimeInfo(queueName);
+        final QueueRuntimeProperties actual = client.getQueueRuntimeProperties(queueName);
 
         // Assert
         assertEquals(result, actual);
     }
 
     @Test
-    void getQueueRuntimeInfoWithResponse() {
+    void getQueueRuntimePropertiesWithResponse() {
         // Arrange
-        final QueueRuntimeInfo result = mock(QueueRuntimeInfo.class);
+        final QueueRuntimeProperties result = mock(QueueRuntimeProperties.class);
 
-        when(queueRuntimeInfoResponse.getValue()).thenReturn(result);
-        when(asyncClient.<QueueRuntimeInfo>getQueueWithResponse(eq(queueName), eq(context), any()))
-            .thenReturn(Mono.just(queueRuntimeInfoResponse));
+        when(queueRuntimePropertiesResponse.getValue()).thenReturn(result);
+        when(asyncClient.<QueueRuntimeProperties>getQueueWithResponse(eq(queueName), eq(context), any()))
+            .thenReturn(Mono.just(queueRuntimePropertiesResponse));
 
         // Act
-        final Response<QueueRuntimeInfo> actual = client.getQueueRuntimeInfoWithResponse(queueName, context);
+        final Response<QueueRuntimeProperties> actual = client.getQueueRuntimePropertiesWithResponse(queueName, context);
 
         // Assert
         assertEquals(result, actual.getValue());

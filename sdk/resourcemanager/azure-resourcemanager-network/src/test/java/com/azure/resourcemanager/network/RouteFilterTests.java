@@ -15,7 +15,7 @@ public class RouteFilterTests extends NetworkManagementTest {
 
     @Test
     public void canCRUDRouteFilter() throws Exception {
-        String rfName = sdkContext.randomResourceName("rf", 15);
+        String rfName = generateRandomResourceName("rf", 15);
 
         RouteFilter routeFilter =
             networkManager
@@ -40,7 +40,7 @@ public class RouteFilterTests extends NetworkManagementTest {
 
     @Test
     public void canCreateRouteFilterRule() throws Exception {
-        String rfName = sdkContext.randomResourceName("rf", 15);
+        String rfName = generateRandomResourceName("rf", 15);
         String ruleName = "mynewrule";
         RouteFilter routeFilter =
             networkManager
