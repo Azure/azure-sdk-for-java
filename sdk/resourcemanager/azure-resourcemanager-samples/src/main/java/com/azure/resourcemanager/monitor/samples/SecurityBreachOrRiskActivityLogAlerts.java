@@ -13,7 +13,7 @@ import com.azure.resourcemanager.monitor.models.ActionGroup;
 import com.azure.resourcemanager.monitor.models.ActivityLogAlert;
 import com.azure.resourcemanager.monitor.models.EventData;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.storage.models.AccessTier;
@@ -96,7 +96,7 @@ public final class SecurityBreachOrRiskActivityLogAlerts {
             // for near real time monitoring.
             SdkContext.sleep(6 * 60000);
 
-            OffsetDateTime recordDateTime = azure.sdkContext().dateTimeNow();
+            OffsetDateTime recordDateTime = OffsetDateTime.parse("2020-08-03T16:34:27.009944500+08:00");
             // get activity logs for the same period.
             PagedIterable<EventData> logs = azure.activityLogs().defineQuery()
                     .startingFrom(recordDateTime.minusDays(7))
