@@ -25,7 +25,7 @@ public interface ContactRepository extends CosmosRepository<Contact, String> {
     @Query(value = "select * from c where c.title = @title and c.intValue = @value")
     List<Contact> contactWithValueTitle(@Param("value") int value, @Param("title") String name);
 
-    @Query(value = "select * from c offset @offset limit @limit" )
+    @Query(value = "select * from c offset @offset limit @limit")
     List<Contact> contactsWithOffsetLimit(@Param("offset") int offset, @Param("limit") int limit);
 
     @Query(value = "select * from c where c.status= true")
