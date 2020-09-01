@@ -43,10 +43,6 @@ public class ProfileDnsNameUnavailableReason {
             return true;
         }
         ProfileDnsNameUnavailableReason rhs = (ProfileDnsNameUnavailableReason) obj;
-        if (value == null) {
-            return rhs.value == null;
-        } else {
-            return value.equals(rhs.value);
-        }
+        return value.equals(rhs.value);
     }
 }

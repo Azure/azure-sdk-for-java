@@ -48,10 +48,6 @@ public class TargetAzureResourceType {
             return true;
         }
         TargetAzureResourceType rhs = (TargetAzureResourceType) obj;
-        if (value == null) {
-            return rhs.value == null;
-        } else {
-            return value.equals(rhs.value);
-        }
+        return value.equals(rhs.value);
     }
 }

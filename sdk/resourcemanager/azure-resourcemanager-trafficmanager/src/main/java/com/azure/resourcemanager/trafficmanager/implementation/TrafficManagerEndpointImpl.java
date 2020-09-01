@@ -82,15 +82,15 @@ class TrafficManagerEndpointImpl
     @Override
     public Set<String> geographicLocationCodes() {
         if (this.inner().geoMapping() == null) {
-            return Collections.unmodifiableSet(new HashSet<String>());
+            return Collections.unmodifiableSet(new HashSet<>());
         }
-        return Collections.unmodifiableSet(new HashSet<String>(this.inner().geoMapping()));
+        return Collections.unmodifiableSet(new HashSet<>(this.inner().geoMapping()));
     }
 
     @Override
     public Collection<EndpointPropertiesSubnetsItem> subnets() {
         if (this.inner().subnets() == null) {
-            return Collections.unmodifiableList(new ArrayList<EndpointPropertiesSubnetsItem>());
+            return Collections.unmodifiableList(new ArrayList<>());
         } else {
             return Collections.unmodifiableList(this.inner().subnets());
         }
@@ -99,9 +99,9 @@ class TrafficManagerEndpointImpl
     @Override
     public Map<String, String> customHeaders() {
         if (this.inner().customHeaders() == null) {
-            return Collections.unmodifiableMap(new TreeMap<String, String>());
+            return Collections.unmodifiableMap(new TreeMap<>());
         } else {
-            Map<String, String> headers = new TreeMap<String, String>();
+            Map<String, String> headers = new TreeMap<>();
             for (EndpointPropertiesCustomHeadersItem header : this.inner().customHeaders()) {
                 headers.put(header.name(), header.value());
             }
@@ -124,7 +124,7 @@ class TrafficManagerEndpointImpl
     @Override
     public TrafficManagerEndpointImpl toProfile(TrafficManagerProfile nestedProfile) {
         this.inner().withTargetResourceId(nestedProfile.id());
-        this.inner().withMinChildEndpoints(new Long(1));
+        this.inner().withMinChildEndpoints(1L);
         return this;
     }
 
@@ -135,13 +135,13 @@ class TrafficManagerEndpointImpl
 
     @Override
     public TrafficManagerEndpointImpl withMinimumEndpointsToEnableTraffic(int count) {
-        this.inner().withMinChildEndpoints(new Long(count));
+        this.inner().withMinChildEndpoints((long) count);
         return this;
     }
 
     @Override
     public TrafficManagerEndpointImpl withRoutingPriority(int priority) {
-        this.inner().withPriority(new Long(priority));
+        this.inner().withPriority((long) priority);
         return this;
     }
 
@@ -159,7 +159,7 @@ class TrafficManagerEndpointImpl
 
     @Override
     public TrafficManagerEndpointImpl withRoutingWeight(int weight) {
-        this.inner().withWeight(new Long(weight));
+        this.inner().withWeight((long) weight);
         return this;
     }
 
@@ -184,11 +184,11 @@ class TrafficManagerEndpointImpl
     @Override
     public TrafficManagerEndpointImpl withGeographicLocation(String geographicLocationCode) {
         if (this.inner().geoMapping() == null) {
-            this.inner().withGeoMapping(new ArrayList<String>());
+            this.inner().withGeoMapping(new ArrayList<>());
         }
         boolean found = false;
         for (String locationCode : this.inner().geoMapping()) {
-            if (locationCode.toLowerCase().equalsIgnoreCase(geographicLocationCode.toLowerCase())) {
+            if (locationCode.equalsIgnoreCase(geographicLocationCode)) {
                 found = true;
                 break;
             }
@@ -215,7 +215,7 @@ class TrafficManagerEndpointImpl
         int itemIndex = -1;
         int i = 0;
         for (String locationCode : this.inner().geoMapping()) {
-            if (locationCode.toLowerCase().equalsIgnoreCase(geographicLocationCode.toLowerCase())) {
+            if (locationCode.equalsIgnoreCase(geographicLocationCode)) {
                 itemIndex = i;
                 break;
             }
@@ -230,7 +230,7 @@ class TrafficManagerEndpointImpl
     @Override
     public TrafficManagerEndpointImpl withSubnet(String subnetStartIp, int mask) {
         if (this.inner().subnets() == null) {
-            this.inner().withSubnets(new ArrayList<EndpointPropertiesSubnetsItem>());
+            this.inner().withSubnets(new ArrayList<>());
         }
         boolean found = false;
         for (EndpointPropertiesSubnetsItem subnetItem : this.inner().subnets()) {
@@ -250,7 +250,7 @@ class TrafficManagerEndpointImpl
     @Override
     public TrafficManagerEndpointImpl withSubnet(String subnetStartIp, String subnetEndIp) {
         if (this.inner().subnets() == null) {
-            this.inner().withSubnets(new ArrayList<EndpointPropertiesSubnetsItem>());
+            this.inner().withSubnets(new ArrayList<>());
         }
         boolean found = false;
         for (EndpointPropertiesSubnetsItem subnetItem : this.inner().subnets()) {
@@ -273,7 +273,7 @@ class TrafficManagerEndpointImpl
 
     @Override
     public TrafficManagerEndpointImpl withSubnets(List<EndpointPropertiesSubnetsItem> subnets) {
-        this.inner().withSubnets(new ArrayList<EndpointPropertiesSubnetsItem>());
+        this.inner().withSubnets(new ArrayList<>());
         for (EndpointPropertiesSubnetsItem subnet : subnets) {
             this
                 .inner()
@@ -335,7 +335,7 @@ class TrafficManagerEndpointImpl
     @Override
     public TrafficManagerEndpointImpl withCustomHeader(String name, String value) {
         if (this.inner().customHeaders() == null) {
-            this.inner().withCustomHeaders(new ArrayList<EndpointPropertiesCustomHeadersItem>());
+            this.inner().withCustomHeaders(new ArrayList<>());
         }
         boolean found = false;
         for (EndpointPropertiesCustomHeadersItem headersItem : this.inner().customHeaders()) {
@@ -355,7 +355,7 @@ class TrafficManagerEndpointImpl
 
     @Override
     public TrafficManagerEndpointImpl withCustomHeaders(Map<String, String> headers) {
-        this.inner().withCustomHeaders(new ArrayList<EndpointPropertiesCustomHeadersItem>());
+        this.inner().withCustomHeaders(new ArrayList<>());
         for (Map.Entry<String, String> entry : headers.entrySet()) {
             this
                 .inner()
@@ -388,7 +388,6 @@ class TrafficManagerEndpointImpl
 
     @Override
     public Mono<TrafficManagerEndpoint> createResourceAsync() {
-        final TrafficManagerEndpointImpl self = this;
         return this
             .client
             .createOrUpdateAsync(

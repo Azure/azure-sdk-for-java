@@ -194,13 +194,13 @@ class TrafficManagerProfileImpl
 
     @Override
     public TrafficManagerProfileImpl withHttpMonitoring(int port, String path) {
-        this.inner().monitorConfig().withPort(new Long(port)).withPath(path).withProtocol(MonitorProtocol.HTTP);
+        this.inner().monitorConfig().withPort((long) port).withPath(path).withProtocol(MonitorProtocol.HTTP);
         return this;
     }
 
     @Override
     public TrafficManagerProfileImpl withHttpsMonitoring(int port, String path) {
-        this.inner().monitorConfig().withPort(new Long(port)).withPath(path).withProtocol(MonitorProtocol.HTTPS);
+        this.inner().monitorConfig().withPort((long) port).withPath(path).withProtocol(MonitorProtocol.HTTPS);
         return this;
     }
 
@@ -218,7 +218,7 @@ class TrafficManagerProfileImpl
 
     @Override
     public TrafficManagerProfileImpl withTimeToLive(int ttlInSeconds) {
-        this.inner().dnsConfig().withTtl(new Long(ttlInSeconds));
+        this.inner().dnsConfig().withTtl((long) ttlInSeconds);
         return this;
     }
 
