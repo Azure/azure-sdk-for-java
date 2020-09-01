@@ -3,13 +3,17 @@
 
 package com.azure.cosmos.encryption;
 
+import com.azure.cosmos.implementation.encryption.ImplementationBridgeHelpers;
+
 import java.net.URL;
+
+import static com.azure.cosmos.implementation.encryption.ImplementationBridgeHelpers.AzureKeyVaultKeyWrapMetadataHelper;
 
 /**
  * Metadata used by Azure Key Vault to wrap (encrypt) and unwrap (decrypt) keys.
  */
 public final class AzureKeyVaultKeyWrapMetadata extends EncryptionKeyWrapMetadata {
-    static final String TypeConstant = "akv";
+    private static final String TYPE_CONSTANT = "akv";
 
     // TODO: moderakh use URL vs URI?
     /**
@@ -19,6 +23,21 @@ public final class AzureKeyVaultKeyWrapMetadata extends EncryptionKeyWrapMetadat
      */
     public AzureKeyVaultKeyWrapMetadata(URL masterKeyUri) {
         // masterKeyUri.AbsoluteUri
-        super(AzureKeyVaultKeyWrapMetadata.TypeConstant, masterKeyUri.toString());
+        super(AzureKeyVaultKeyWrapMetadata.TYPE_CONSTANT, masterKeyUri.toString());
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    static {
+        AzureKeyVaultKeyWrapMetadataHelper.setAzureKeyVaultKeyWrapMetadataAccessor(
+            new ImplementationBridgeHelpers.AzureKeyVaultKeyWrapMetadataHelper.AzureKeyVaultKeyWrapMetadataAccessor() {
+                @Override
+                public String getTypeConstant() {
+                    return TYPE_CONSTANT;
+                }
+            }
+        );
     }
 }
