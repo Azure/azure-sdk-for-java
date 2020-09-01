@@ -3,17 +3,11 @@ package com.azure.digitaltwins.core;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestBase;
-import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import reactor.core.publisher.Mono;
-
-import java.util.Locale;
 
 public class DigitalTwinsTestBase extends TestBase
 {
