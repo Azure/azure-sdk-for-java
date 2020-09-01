@@ -92,18 +92,19 @@ public class TodoListController {
     public ResponseEntity<String> deleteTodoItem(@PathVariable("id") int id,
                                                  PreAuthenticatedAuthenticationToken authToken) {
         final UserPrincipal current = (UserPrincipal) authToken.getPrincipal();
-
-        if (current.isMemberOf(
-                new UserGroup("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", AADGraphApiObjectType.GROUP, "group1"))) {
-            final TodoItem itemToBeDelete = todoList.stream()
-                                                    .filter(i -> i.getID() == id)
-                                                    .findFirst()
-                                                    .orElse(null);
-            if (itemToBeDelete != null) {
-                todoList.remove(itemToBeDelete);
-                return new ResponseEntity<>("OK", HttpStatus.OK);
-            }
-            return new ResponseEntity<>("Entity not found", HttpStatus.OK);
+        UserGroup userGroup = new UserGroup(
+            "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+            AADGraphApiObjectType.GROUP,
+            "group1");
+        if (current.isMemberOf(userGroup)) {
+            return todoList.stream()
+                           .filter(i -> i.getID() == id)
+                           .findFirst()
+                           .map(item -> {
+                               todoList.remove(item);
+                               return new ResponseEntity<>("OK", HttpStatus.OK);
+                           })
+                           .orElseGet(() -> new ResponseEntity<>("Entity not found", HttpStatus.OK));
         } else {
             return new ResponseEntity<>("Access is denied", HttpStatus.OK);
         }
