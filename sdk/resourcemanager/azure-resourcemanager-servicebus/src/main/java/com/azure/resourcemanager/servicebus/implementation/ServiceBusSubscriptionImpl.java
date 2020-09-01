@@ -1,31 +1,33 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.servicebus.implementation;
 
+import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
+import com.azure.resourcemanager.servicebus.fluent.inner.SubscriptionResourceInner;
 import com.azure.resourcemanager.servicebus.models.EntityStatus;
 import com.azure.resourcemanager.servicebus.models.ServiceBusSubscription;
+import com.azure.resourcemanager.servicebus.models.SubscriptionCreateOrUpdateParameters;
 import com.azure.resourcemanager.servicebus.models.Topic;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
-import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
-import org.joda.time.DateTime;
-import org.joda.time.Period;
-import rx.Observable;
-import rx.functions.Func1;
+import reactor.core.publisher.Mono;
+
+import java.time.Duration;
+import java.time.OffsetDateTime;
 
 /**
  * Implementation for Subscription.
  */
-@LangDefinition
 class ServiceBusSubscriptionImpl extends
-        IndependentChildResourceImpl<ServiceBusSubscription, Topic, SubscriptionInner, ServiceBusSubscriptionImpl, ServiceBusManager>
-        implements
+    IndependentChildResourceImpl<
+        ServiceBusSubscription,
+        Topic,
+        SubscriptionResourceInner,
+        ServiceBusSubscriptionImpl,
+        ServiceBusManager>
+    implements
         ServiceBusSubscription,
         ServiceBusSubscription.Definition,
         ServiceBusSubscription.Update {
@@ -37,7 +39,7 @@ class ServiceBusSubscriptionImpl extends
                      String topicName,
                      String name,
                      Region region,
-                     SubscriptionInner inner,
+                     SubscriptionResourceInner inner,
                      ServiceBusManager manager) {
         super(name, inner, manager);
         this.namespaceName = namespaceName;
@@ -49,17 +51,17 @@ class ServiceBusSubscriptionImpl extends
     }
 
     @Override
-    public DateTime createdAt() {
+    public OffsetDateTime createdAt() {
         return this.inner().createdAt();
     }
 
     @Override
-    public DateTime accessedAt() {
+    public OffsetDateTime accessedAt() {
         return this.inner().accessedAt();
     }
 
     @Override
-    public DateTime updatedAt() {
+    public OffsetDateTime updatedAt() {
         return this.inner().updatedAt();
     }
 
@@ -97,17 +99,11 @@ class ServiceBusSubscriptionImpl extends
     }
 
     @Override
-    public Period defaultMessageTtlDuration() {
+    public Duration defaultMessageTtlDuration() {
         if (this.inner().defaultMessageTimeToLive() == null) {
             return null;
         }
-        TimeSpan timeSpan = TimeSpan.parse(this.inner().defaultMessageTimeToLive());
-        return new Period()
-                .withDays(timeSpan.days())
-                .withHours(timeSpan.hours())
-                .withMinutes(timeSpan.minutes())
-                .withSeconds(timeSpan.seconds())
-                .withMillis(timeSpan.milliseconds());
+        return TimeSpan.parse(this.inner().defaultMessageTimeToLive()).totalMillisDuration();
     }
 
     @Override
@@ -190,8 +186,8 @@ class ServiceBusSubscriptionImpl extends
     }
 
     @Override
-    public ServiceBusSubscriptionImpl withDefaultMessageTTL(Period ttl) {
-        this.inner().withDefaultMessageTimeToLive(TimeSpan.fromPeriod(ttl).toString());
+    public ServiceBusSubscriptionImpl withDefaultMessageTTL(Duration ttl) {
+        this.inner().withDefaultMessageTimeToLive(TimeSpan.fromDuration(ttl).toString());
         return this;
     }
 
@@ -256,8 +252,8 @@ class ServiceBusSubscriptionImpl extends
     }
 
     @Override
-    protected Observable<SubscriptionInner> getInnerAsync() {
-        return this.manager().inner().subscriptions()
+    protected Mono<SubscriptionResourceInner> getInnerAsync() {
+        return this.manager().inner().getSubscriptions()
                 .getAsync(this.resourceGroupName(),
                         this.namespaceName,
                         this.parentName,
@@ -265,20 +261,33 @@ class ServiceBusSubscriptionImpl extends
     }
 
     @Override
-    protected Observable<ServiceBusSubscription> createChildResourceAsync() {
+    protected Mono<ServiceBusSubscription> createChildResourceAsync() {
         final ServiceBusSubscription self = this;
-        return this.manager().inner().subscriptions()
-                .createOrUpdateAsync(this.resourceGroupName(),
-                        this.namespaceName,
-                        this.parentName,
-                        this.name(),
-                        this.inner())
-                .map(new Func1<SubscriptionInner, ServiceBusSubscription>() {
-                    @Override
-                    public ServiceBusSubscription call(SubscriptionInner inner) {
-                        setInner(inner);
-                        return self;
-                    }
-                });
+        return this.manager().inner().getSubscriptions()
+            .createOrUpdateAsync(this.resourceGroupName(),
+                    this.namespaceName,
+                    this.parentName,
+                    this.name(),
+                    prepareForCreate(this.inner()))
+            .map(inner -> {
+                setInner(inner);
+                return self;
+            });
+    }
+
+    private SubscriptionCreateOrUpdateParameters prepareForCreate(SubscriptionResourceInner inner) {
+        return new SubscriptionCreateOrUpdateParameters()
+            .withAutoDeleteOnIdle(inner.autoDeleteOnIdle())
+            .withDefaultMessageTimeToLive(inner.defaultMessageTimeToLive())
+            .withDeadLetteringOnFilterEvaluationExceptions(inner.deadLetteringOnFilterEvaluationExceptions())
+            .withDeadLetteringOnMessageExpiration(inner.deadLetteringOnMessageExpiration())
+            .withEnableBatchedOperations(inner.enableBatchedOperations())
+            .withEntityAvailabilityStatus(inner.entityAvailabilityStatus())
+            .withIsReadOnly(inner.isReadOnly())
+            .withLockDuration(inner.lockDuration())
+            .withMaxDeliveryCount(inner.maxDeliveryCount())
+            .withRequiresSession(inner.requiresSession())
+            .withStatus(inner.status())
+            .withLocation(inner.location());
     }
 }

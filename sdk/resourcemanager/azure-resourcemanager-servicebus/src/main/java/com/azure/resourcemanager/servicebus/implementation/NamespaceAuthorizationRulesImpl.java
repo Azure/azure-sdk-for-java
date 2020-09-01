@@ -1,47 +1,43 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.servicebus.implementation;
 
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
+import com.azure.resourcemanager.servicebus.fluent.NamespacesClient;
+import com.azure.resourcemanager.servicebus.fluent.inner.SharedAccessAuthorizationRuleResourceInner;
 import com.azure.resourcemanager.servicebus.models.NamespaceAuthorizationRule;
 import com.azure.resourcemanager.servicebus.models.NamespaceAuthorizationRules;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
-import com.microsoft.azure.Page;
-import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import com.microsoft.rest.ServiceResponse;
-import rx.Completable;
-import rx.Observable;
+import reactor.core.publisher.Mono;
 
 /**
  * Implementation for NamespaceAuthorizationRules.
  */
-@LangDefinition
 class NamespaceAuthorizationRulesImpl
-        extends ServiceBusChildResourcesImpl<
-    NamespaceAuthorizationRule,
+    extends ServiceBusChildResourcesImpl<
+        NamespaceAuthorizationRule,
         NamespaceAuthorizationRuleImpl,
-        SharedAccessAuthorizationRuleInner,
-        NamespacesInner,
-    ServiceBusManager,
-    ServiceBusNamespace>
-        implements NamespaceAuthorizationRules {
+        SharedAccessAuthorizationRuleResourceInner,
+        NamespacesClient,
+        ServiceBusManager,
+        ServiceBusNamespace>
+    implements NamespaceAuthorizationRules {
     private final String resourceGroupName;
     private final String namespaceName;
     private final Region region;
+
+    private final ClientLogger logger = new ClientLogger(NamespaceAuthorizationRulesImpl.class);
 
     NamespaceAuthorizationRulesImpl(String resourceGroupName,
                                     String namespaceName,
                                     Region region,
                                     ServiceBusManager manager) {
-        super(manager.inner().namespaces(), manager);
+        super(manager.inner().getNamespaces(), manager);
         this.resourceGroupName = resourceGroupName;
         this.namespaceName = namespaceName;
         this.region = region;
@@ -53,33 +49,22 @@ class NamespaceAuthorizationRulesImpl
     }
 
     @Override
-    public Completable deleteByNameAsync(String name) {
-        return this.inner().deleteAuthorizationRuleAsync(this.resourceGroupName,
-                this.namespaceName,
-                name).toCompletable();
+    public Mono<Void> deleteByNameAsync(String name) {
+        return this.inner().deleteAuthorizationRuleAsync(this.resourceGroupName, this.namespaceName, name);
     }
 
     @Override
-    public ServiceFuture<Void> deleteByNameAsync(String name, ServiceCallback<Void> callback) {
-        return this.inner().deleteAuthorizationRuleAsync(this.resourceGroupName,
-                this.namespaceName,
-                name,
-                callback);
-    }
-
-    @Override
-    protected Observable<SharedAccessAuthorizationRuleInner> getInnerByNameAsync(String name) {
+    protected Mono<SharedAccessAuthorizationRuleResourceInner> getInnerByNameAsync(String name) {
         return this.inner().getAuthorizationRuleAsync(this.resourceGroupName, this.namespaceName, name);
     }
 
     @Override
-    protected Observable<ServiceResponse<Page<SharedAccessAuthorizationRuleInner>>> listInnerAsync() {
-        return this.inner().listAuthorizationRulesWithServiceResponseAsync(this.resourceGroupName,
-                this.namespaceName);
+    protected PagedFlux<SharedAccessAuthorizationRuleResourceInner> listInnerAsync() {
+        return this.inner().listAuthorizationRulesAsync(this.resourceGroupName, this.namespaceName);
     }
 
     @Override
-    protected PagedList<SharedAccessAuthorizationRuleInner> listInner() {
+    protected PagedIterable<SharedAccessAuthorizationRuleResourceInner> listInner() {
         return this.inner().listAuthorizationRules(this.resourceGroupName,
                 this.namespaceName);
     }
@@ -90,13 +75,13 @@ class NamespaceAuthorizationRulesImpl
                 this.namespaceName,
                 name,
                 this.region,
-                new SharedAccessAuthorizationRuleInner(),
+                new SharedAccessAuthorizationRuleResourceInner(),
                 this.manager());
     }
 
 
     @Override
-    protected NamespaceAuthorizationRuleImpl wrapModel(SharedAccessAuthorizationRuleInner inner) {
+    protected NamespaceAuthorizationRuleImpl wrapModel(SharedAccessAuthorizationRuleResourceInner inner) {
         if (inner == null) {
             return null;
         }
@@ -110,26 +95,26 @@ class NamespaceAuthorizationRulesImpl
 
 
     @Override
-    public PagedList<NamespaceAuthorizationRule> listByParent(String resourceGroupName, String parentName) {
+    public PagedIterable<NamespaceAuthorizationRule> listByParent(String resourceGroupName, String parentName) {
         // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
         // This method is not exposed to end user from any of the derived types of IndependentChildResourcesImpl
         //
-        throw new UnsupportedOperationException();
+        throw logger.logExceptionAsError(new UnsupportedOperationException());
     }
 
     @Override
-    public Completable deleteByParentAsync(String groupName, String parentName, String name) {
+    public Mono<Void> deleteByParentAsync(String groupName, String parentName, String name) {
         // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
         // This method is not exposed to end user from any of the derived types of IndependentChildResourcesImpl
         //
-        throw new UnsupportedOperationException();
+        throw logger.logExceptionAsError(new UnsupportedOperationException());
     }
 
     @Override
-    public Observable<NamespaceAuthorizationRule> getByParentAsync(String resourceGroup, String parentName, String name) {
+    public Mono<NamespaceAuthorizationRule> getByParentAsync(String resourceGroup, String parentName, String name) {
         // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
         // This method is not exposed to end user from any of the derived types of IndependentChildResourcesImpl
         //
-        throw new UnsupportedOperationException();
+        throw logger.logExceptionAsError(new UnsupportedOperationException());
     }
 }

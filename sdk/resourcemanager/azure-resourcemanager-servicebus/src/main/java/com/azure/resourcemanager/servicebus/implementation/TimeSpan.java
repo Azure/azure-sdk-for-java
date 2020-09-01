@@ -1,13 +1,12 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.servicebus.implementation;
 
-import org.joda.time.Period;
-import rx.functions.Func0;
+import com.azure.core.util.logging.ClientLogger;
+
+import java.time.Duration;
+import java.util.concurrent.Callable;
 
 /**
  * Represents a time interval.
@@ -132,6 +131,14 @@ public class TimeSpan {
     }
 
     /**
+     * @return total number of milliseconds represented by this instance in duration format
+     */
+    public Duration totalMillisDuration() {
+        Double millis = Double.valueOf(totalMilliseconds());
+        return Duration.ofMillis(millis.longValue());
+    }
+
+    /**
      * @return total number of seconds represented by this instance
      */
     public double totalSeconds() {
@@ -146,21 +153,14 @@ public class TimeSpan {
     }
 
     /**
-     * Gets TimeSpan from given period.
+     * Gets TimeSpan from given duration.
      *
-     * @param period duration in period format
+     * @param duration duration
      * @return TimeSpan
      */
-    public static TimeSpan fromPeriod(Period period) {
-        // Normalize (e.g. move weeks to hour part)
-        //
-        Period p = new Period(period.toStandardDuration().getMillis());
-        return TimeSpan.parse((new TimeSpan()
-                .withDays(p.getDays())
-                .withHours(p.getHours())
-                .withMinutes(p.getMinutes())
-                .withSeconds(p.getSeconds())
-                .withMilliseconds(p.getMillis())).toString());
+    public static TimeSpan fromDuration(Duration duration) {
+        Long millis = Long.valueOf(duration.toMillis());
+        return new TimeSpan().withMilliseconds(millis.intValue());
     }
 
     /**
@@ -180,7 +180,8 @@ public class TimeSpan {
      */
     public static TimeSpan parse(String input) {
         if (input == null) {
-            throw new IllegalArgumentException("input cannot be null");
+            throw new ClientLogger(TimeSpan.class)
+                .logExceptionAsError(new IllegalArgumentException("input cannot be null"));
         }
         final String str = input.trim();
         TimeSpan timeSpan = new TimeSpan();
@@ -212,7 +213,7 @@ public class TimeSpan {
             timeSpan.withHours(toInt(token.getRawValue()) * sign);
         }
         if (timeSpan.hours() > 23) {
-            parser.throwOutOfRange();
+            TokenParser.throwOutOfRange();
         }
         // there must be ':' followed by 'dd.hh' or 'hh'
         //
@@ -223,7 +224,7 @@ public class TimeSpan {
         token.throwIfEmpty();
         timeSpan.withMinutes(toInt(token.getRawValue()) * sign);
         if (timeSpan.minutes() > 59) {
-            parser.throwOutOfRange();
+            TokenParser.throwOutOfRange();
         }
         if (token.isTerminalCharNull()) {
             // 'dd.hh:mm\0' or 'hh:mm\0'
@@ -237,7 +238,7 @@ public class TimeSpan {
         token.throwIfEmpty();
         timeSpan.withSeconds(toInt(token.getRawValue()) * sign);
         if (timeSpan.seconds() > 59) {
-            parser.throwOutOfRange();
+            TokenParser.throwOutOfRange();
         }
         if (token.isTerminalCharNull()) {
             // 'dd.hh:mm:ss\0' or 'hh:mm:ss\0'
@@ -251,7 +252,7 @@ public class TimeSpan {
         token.throwIfEmpty();
         String milliStr = "." + token.getRawValue();
         if (milliStr.length() > 8) {
-            parser.throwOutOfRange();
+            TokenParser.throwOutOfRange();
         }
         int milliSeconds = (int) (Double.parseDouble(milliStr) * 1000);
         timeSpan.withMilliseconds(milliSeconds * sign);
@@ -316,7 +317,8 @@ public class TimeSpan {
 class TokenParser {
     private final String str;
     private final int startIndex;
-    private Func0<Token> nextTokenProvider;
+    private Callable<Token> nextTokenProvider;
+    private final ClientLogger logger = new ClientLogger(TokenParser.class);
 
     TokenParser(final String str, final int startIndex) {
         this.str = str;
@@ -333,19 +335,29 @@ class TokenParser {
      * @return next token
      */
     Token nextToken() {
-        return nextTokenProvider.call();
+        try {
+            return nextTokenProvider.call();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw logger.logExceptionAsError(new RuntimeException("TimeSpan::nextToken() failed."));
+        }
     }
 
     static void throwParseError() {
-        throw new IllegalArgumentException("String was not recognized as a valid TimeSpan");
+        throw new ClientLogger(TokenParser.class)
+            .logExceptionAsError(new IllegalArgumentException("String was not recognized as a valid TimeSpan"));
     }
 
     static void throwOutOfRange() {
-        throw new IllegalArgumentException("The TimeSpan could not be parsed because at least one of the numeric components is out of range or contains too many digits");
+        throw new ClientLogger(TokenParser.class)
+            .logExceptionAsError(
+                new IllegalArgumentException(
+                    "The TimeSpan could not be parsed because at least one of the numeric "
+                        + "components is out of range or contains too many digits"));
     }
 
-    private Func0<Token> nextTokenProvider() {
-        return new Func0<Token>() {
+    private Callable<Token> nextTokenProvider() {
+        return new Callable<Token>() {
             int currentIndex = startIndex;
             int length = str.length();
 
@@ -361,7 +373,7 @@ class TokenParser {
                     currentIndex++;
                 }
                 String val = builder.toString();
-                if (val == null) {
+                if (val.isEmpty()) {
                     throwParseError();
                 }
                 try {
@@ -385,6 +397,8 @@ class Token {
     private String rawValue;
     private Character terminalChar;
 
+    private final ClientLogger logger = new ClientLogger(Token.class);
+
     Token(String rawValue, Character terminalChar) {
         this.rawValue = rawValue;
         this.terminalChar = terminalChar;
@@ -407,13 +421,15 @@ class Token {
 
     void throwIfTerminalCharNotMatch(Character matchChar) {
         if (!isTerminalMatched(matchChar)) {
-            throw new IllegalArgumentException("String was not recognized as a valid TimeSpan");
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("String was not recognized as a valid TimeSpan"));
         }
     }
 
     void throwIfEmpty() {
         if (isEmpty()) {
-            throw new IllegalArgumentException("String was not recognized as a valid TimeSpan");
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("String was not recognized as a valid TimeSpan"));
         }
     }
 

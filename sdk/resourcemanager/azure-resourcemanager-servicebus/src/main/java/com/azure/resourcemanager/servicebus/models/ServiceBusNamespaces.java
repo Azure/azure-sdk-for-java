@@ -1,44 +1,39 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.resourcemanager.servicebus.models;
 
-import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
-import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.servicebus.implementation.NamespacesInner;
+import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBatchCreation;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.servicebus.fluent.NamespacesClient;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import rx.Observable;
+import reactor.core.publisher.Mono;
 
 /**
  * Entry point to Service Bus namespace API in Azure.
  */
 @Fluent
 public interface ServiceBusNamespaces extends
-        SupportsCreating<ServiceBusNamespace.DefinitionStages.Blank>,
-        SupportsBatchCreation<ServiceBusNamespace>,
-        SupportsBatchDeletion,
-        SupportsListing<ServiceBusNamespace>,
-        SupportsListingByResourceGroup<ServiceBusNamespace>,
-        SupportsGettingByResourceGroup<ServiceBusNamespace>,
-        SupportsGettingById<ServiceBusNamespace>,
-        SupportsDeletingById,
-        SupportsDeletingByResourceGroup,
-        HasManager<ServiceBusManager>,
-        HasInner<NamespacesInner> {
+    SupportsCreating<ServiceBusNamespace.DefinitionStages.Blank>,
+    SupportsBatchCreation<ServiceBusNamespace>,
+    SupportsBatchDeletion,
+    SupportsListing<ServiceBusNamespace>,
+    SupportsListingByResourceGroup<ServiceBusNamespace>,
+    SupportsGettingByResourceGroup<ServiceBusNamespace>,
+    SupportsGettingById<ServiceBusNamespace>,
+    SupportsDeletingById,
+    SupportsDeletingByResourceGroup,
+    HasManager<ServiceBusManager>,
+    HasInner<NamespacesClient> {
     /**
      * Checks if namespace name is valid and is not in use.
      *
@@ -51,16 +46,8 @@ public interface ServiceBusNamespaces extends
      * Checks if namespace name is valid and is not in use asynchronously.
      *
      * @param name the namespace name to check
-     * @return a representation of the deferred computation of this call, returning whether the name is available or other info if not
+     * @return a representation of the deferred computation of this call,
+     * returning whether the name is available or other info if not
      */
-    Observable<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name);
-
-    /**
-     * Checks if namespace name is valid and is not in use asynchronously.
-     *
-     * @param name the namespace name to check
-     * @param callback the callback to call on success or failure
-     * @return a handle to cancel the request
-     */
-    ServiceFuture<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name, ServiceCallback<CheckNameAvailabilityResult> callback);
+    Mono<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name);
 }

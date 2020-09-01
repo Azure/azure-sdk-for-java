@@ -1,14 +1,11 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.servicebus.models;
 
-import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.servicebus.implementation.CheckNameAvailabilityResultInner;
+import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.servicebus.fluent.inner.CheckNameAvailabilityResultInner;
 
 /**
  * The result of checking for Service Bus namespace name availability.

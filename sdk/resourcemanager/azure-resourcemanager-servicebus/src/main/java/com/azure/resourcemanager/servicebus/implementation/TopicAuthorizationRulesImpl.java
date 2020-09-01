@@ -1,49 +1,45 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.servicebus.implementation;
 
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
+import com.azure.resourcemanager.servicebus.fluent.TopicsClient;
+import com.azure.resourcemanager.servicebus.fluent.inner.SharedAccessAuthorizationRuleResourceInner;
 import com.azure.resourcemanager.servicebus.models.Topic;
 import com.azure.resourcemanager.servicebus.models.TopicAuthorizationRule;
 import com.azure.resourcemanager.servicebus.models.TopicAuthorizationRules;
-import com.microsoft.azure.Page;
-import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import com.microsoft.rest.ServiceResponse;
-import rx.Completable;
-import rx.Observable;
+import reactor.core.publisher.Mono;
 
 /**
  * Implementation for TopicAuthorizationRules.
  */
-@LangDefinition
 class TopicAuthorizationRulesImpl
-        extends ServiceBusChildResourcesImpl<
-    TopicAuthorizationRule,
+    extends ServiceBusChildResourcesImpl<
+        TopicAuthorizationRule,
         TopicAuthorizationRuleImpl,
-        SharedAccessAuthorizationRuleInner,
-        TopicsInner,
-    ServiceBusManager,
-    Topic>
-        implements TopicAuthorizationRules {
+        SharedAccessAuthorizationRuleResourceInner,
+        TopicsClient,
+        ServiceBusManager,
+        Topic>
+    implements TopicAuthorizationRules {
     private final String resourceGroupName;
     private final String namespaceName;
     private final String topicName;
     private final Region region;
+
+    private final ClientLogger logger = new ClientLogger(TopicAuthorizationRulesImpl.class);
 
     TopicAuthorizationRulesImpl(String resourceGroupName,
                                 String namespaceName,
                                 String topicName,
                                 Region region,
                                 ServiceBusManager manager) {
-        super(manager.inner().topics(), manager);
+        super(manager.inner().getTopics(), manager);
         this.resourceGroupName = resourceGroupName;
         this.namespaceName = namespaceName;
         this.topicName = topicName;
@@ -56,24 +52,15 @@ class TopicAuthorizationRulesImpl
     }
 
     @Override
-    public Completable deleteByNameAsync(String name) {
+    public Mono<Void> deleteByNameAsync(String name) {
         return this.inner().deleteAuthorizationRuleAsync(this.resourceGroupName,
                 this.namespaceName,
                 this.topicName,
-                name).toCompletable();
+                name);
     }
 
     @Override
-    public ServiceFuture<Void> deleteByNameAsync(String name, ServiceCallback<Void> callback) {
-        return this.inner().deleteAuthorizationRuleAsync(this.resourceGroupName,
-                this.namespaceName,
-                this.topicName,
-                name,
-                callback);
-    }
-
-    @Override
-    protected Observable<SharedAccessAuthorizationRuleInner> getInnerByNameAsync(String name) {
+    protected Mono<SharedAccessAuthorizationRuleResourceInner> getInnerByNameAsync(String name) {
         return this.inner().getAuthorizationRuleAsync(this.resourceGroupName,
                 this.namespaceName,
                 this.topicName,
@@ -81,14 +68,12 @@ class TopicAuthorizationRulesImpl
     }
 
     @Override
-    protected Observable<ServiceResponse<Page<SharedAccessAuthorizationRuleInner>>> listInnerAsync() {
-        return this.inner().listAuthorizationRulesWithServiceResponseAsync(this.resourceGroupName,
-                this.namespaceName,
-                this.topicName);
+    protected PagedFlux<SharedAccessAuthorizationRuleResourceInner> listInnerAsync() {
+        return this.inner().listAuthorizationRulesAsync(this.resourceGroupName, this.namespaceName, this.topicName);
     }
 
     @Override
-    protected PagedList<SharedAccessAuthorizationRuleInner> listInner() {
+    protected PagedIterable<SharedAccessAuthorizationRuleResourceInner> listInner() {
         return this.inner().listAuthorizationRules(this.resourceGroupName,
                 this.namespaceName,
                 this.topicName);
@@ -101,12 +86,12 @@ class TopicAuthorizationRulesImpl
                 this.topicName,
                 name,
                 this.region,
-                new SharedAccessAuthorizationRuleInner(),
+                new SharedAccessAuthorizationRuleResourceInner(),
                 this.manager());
     }
 
     @Override
-    protected TopicAuthorizationRuleImpl wrapModel(SharedAccessAuthorizationRuleInner inner) {
+    protected TopicAuthorizationRuleImpl wrapModel(SharedAccessAuthorizationRuleResourceInner inner) {
         if (inner == null) {
             return null;
         }
@@ -120,26 +105,26 @@ class TopicAuthorizationRulesImpl
     }
 
     @Override
-    public PagedList<TopicAuthorizationRule> listByParent(String resourceGroupName, String parentName) {
+    public PagedIterable<TopicAuthorizationRule> listByParent(String resourceGroupName, String parentName) {
         // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
         // This method is not exposed to end user from any of the derived types of IndependentChildResourcesImpl
         //
-        throw new UnsupportedOperationException();
+        throw logger.logExceptionAsError(new UnsupportedOperationException());
     }
 
     @Override
-    public Completable deleteByParentAsync(String groupName, String parentName, String name) {
+    public Mono<Void> deleteByParentAsync(String groupName, String parentName, String name) {
         // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
         // This method is not exposed to end user from any of the derived types of IndependentChildResourcesImpl
         //
-        throw new UnsupportedOperationException();
+        throw logger.logExceptionAsError(new UnsupportedOperationException());
     }
 
     @Override
-    public Observable<TopicAuthorizationRule> getByParentAsync(String resourceGroup, String parentName, String name) {
+    public Mono<TopicAuthorizationRule> getByParentAsync(String resourceGroup, String parentName, String name) {
         // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
         // This method is not exposed to end user from any of the derived types of IndependentChildResourcesImpl
         //
-        throw new UnsupportedOperationException();
+        throw logger.logExceptionAsError(new UnsupportedOperationException());
     }
 }

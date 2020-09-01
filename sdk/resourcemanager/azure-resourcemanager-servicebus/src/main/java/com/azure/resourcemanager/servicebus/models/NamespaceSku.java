@@ -1,29 +1,29 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.servicebus.models;
 
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 
 /**
  * Defines values for NamespaceSku.
  */
-@LangDefinition
 public final class NamespaceSku {
     /** Static value NamespaceSku for BASIC. */
-    public static final NamespaceSku BASIC = new NamespaceSku(new Sku().withName(SkuName.BASIC).withTier(SkuTier.BASIC));
+    public static final NamespaceSku BASIC = new NamespaceSku(
+        new Sku().withName(SkuName.BASIC).withTier(SkuTier.BASIC));
     /** Static value NamespaceSku for STANDARD. */
-    public static final NamespaceSku STANDARD = new NamespaceSku(new Sku().withName(SkuName.STANDARD).withTier(SkuTier.STANDARD));
+    public static final NamespaceSku STANDARD = new NamespaceSku(
+        new Sku().withName(SkuName.STANDARD).withTier(SkuTier.STANDARD));
     /** Static value NamespaceSku for PREMIUM_CAPACITY1. */
-    public static final NamespaceSku PREMIUM_CAPACITY1 = new NamespaceSku(new Sku().withCapacity(1).withName(SkuName.PREMIUM).withTier(SkuTier.PREMIUM));
+    public static final NamespaceSku PREMIUM_CAPACITY1 = new NamespaceSku(
+        new Sku().withCapacity(1).withName(SkuName.PREMIUM).withTier(SkuTier.PREMIUM));
     /** Static value NamespaceSku for PREMIUM_CAPACITY2. */
-    public static final NamespaceSku PREMIUM_CAPACITY2 = new NamespaceSku(new Sku().withCapacity(2).withName(SkuName.PREMIUM).withTier(SkuTier.PREMIUM));
+    public static final NamespaceSku PREMIUM_CAPACITY2 = new NamespaceSku(
+        new Sku().withCapacity(2).withName(SkuName.PREMIUM).withTier(SkuTier.PREMIUM));
     /** Static value NamespaceSku for PREMIUM_CAPACITY4. */
-    public static final NamespaceSku PREMIUM_CAPACITY4 = new NamespaceSku(new Sku().withCapacity(4).withName(SkuName.PREMIUM).withTier(SkuTier.PREMIUM));
+    public static final NamespaceSku PREMIUM_CAPACITY4 = new NamespaceSku(
+        new Sku().withCapacity(4).withName(SkuName.PREMIUM).withTier(SkuTier.PREMIUM));
 
     private final Sku sku;
 
@@ -36,8 +36,8 @@ public final class NamespaceSku {
     public NamespaceSku(String name, String tier) {
         this(new Sku()
                 .withCapacity(null)
-                .withName(new SkuName(name))
-                .withTier(new SkuTier(tier)));
+                .withName(SkuName.fromString(name))
+                .withTier(SkuTier.fromString(tier)));
     }
 
     /**
@@ -50,8 +50,8 @@ public final class NamespaceSku {
     public NamespaceSku(String name, String tier, int capacity) {
         this(new Sku()
                 .withCapacity(capacity)
-                .withName(new SkuName(name))
-                .withTier(new SkuTier(tier)));
+                .withName(SkuName.fromString(name))
+                .withTier(SkuTier.fromString(tier)));
     }
 
     /**

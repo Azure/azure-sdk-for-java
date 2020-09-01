@@ -1,30 +1,28 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.servicebus.models;
 
-import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
-import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
-import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.azure.resourcemanager.servicebus.implementation.NamespaceInner;
+import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
+import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
+import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
+import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
+import com.azure.resourcemanager.servicebus.fluent.inner.NamespaceResourceInner;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
-import org.joda.time.DateTime;
+
+import java.time.OffsetDateTime;
 
 /**
  * An immutable client-side representation of an Azure Service Bus namespace.
  */
 @Fluent
 public interface ServiceBusNamespace extends
-        GroupableResource<ServiceBusManager, NamespaceInner>,
-        Refreshable<ServiceBusNamespace>,
-        Updatable<ServiceBusNamespace.Update> {
+    GroupableResource<ServiceBusManager, NamespaceResourceInner>,
+    Refreshable<ServiceBusNamespace>,
+    Updatable<ServiceBusNamespace.Update> {
     /**
      * @return the relative DNS name of the Service Bus namespace
      */
@@ -40,11 +38,11 @@ public interface ServiceBusNamespace extends
     /**
      * @return time the namespace was created
      */
-    DateTime createdAt();
+    OffsetDateTime createdAt();
     /**
      * @return time the namespace was updated
      */
-    DateTime updatedAt();
+    OffsetDateTime updatedAt();
 
     /**
      * @return entry point to manage queue entities in the Service Bus namespace
@@ -159,12 +157,12 @@ public interface ServiceBusNamespace extends
          * for any other optional settings to be specified.
          */
         interface WithCreate extends
-                Creatable<ServiceBusNamespace>,
-                Resource.DefinitionWithTags<WithCreate>,
-                ServiceBusNamespace.DefinitionStages.WithSku,
-                ServiceBusNamespace.DefinitionStages.WithQueue,
-                ServiceBusNamespace.DefinitionStages.WithTopic,
-                ServiceBusNamespace.DefinitionStages.WithAuthorizationRule {
+            Creatable<ServiceBusNamespace>,
+            Resource.DefinitionWithTags<WithCreate>,
+            ServiceBusNamespace.DefinitionStages.WithSku,
+            ServiceBusNamespace.DefinitionStages.WithQueue,
+            ServiceBusNamespace.DefinitionStages.WithTopic,
+            ServiceBusNamespace.DefinitionStages.WithAuthorizationRule {
         }
     }
 
@@ -172,12 +170,12 @@ public interface ServiceBusNamespace extends
      * The template for a Service Bus namespace update operation, containing all the settings that can be modified.
      */
     interface Update extends
-            Appliable<ServiceBusNamespace>,
-            Resource.UpdateWithTags<Update>,
-            ServiceBusNamespace.UpdateStages.WithSku,
-            ServiceBusNamespace.UpdateStages.WithQueue,
-            ServiceBusNamespace.UpdateStages.WithTopic,
-            ServiceBusNamespace.UpdateStages.WithAuthorizationRule {
+        Appliable<ServiceBusNamespace>,
+        Resource.UpdateWithTags<Update>,
+        ServiceBusNamespace.UpdateStages.WithSku,
+        ServiceBusNamespace.UpdateStages.WithQueue,
+        ServiceBusNamespace.UpdateStages.WithTopic,
+        ServiceBusNamespace.UpdateStages.WithAuthorizationRule {
     }
 
     /**
@@ -236,7 +234,7 @@ public interface ServiceBusNamespace extends
              * Removes a topic entity from the Service Bus namespace.
              *
              * @param name topic name
-             * @return  next stage of the Service Bus namespace update
+             * @return next stage of the Service Bus namespace update
              */
             Update withoutTopic(String name);
         }

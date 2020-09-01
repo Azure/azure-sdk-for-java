@@ -1,20 +1,16 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.servicebus.implementation;
 
+import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.resourcemanager.servicebus.fluent.inner.CheckNameAvailabilityResultInner;
 import com.azure.resourcemanager.servicebus.models.CheckNameAvailabilityResult;
 import com.azure.resourcemanager.servicebus.models.UnavailableReason;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 
 /**
  * Implementation for CheckNameAvailabilityResult.
  */
-@LangDefinition
 class CheckNameAvailabilityResultImpl
         extends WrapperImpl<CheckNameAvailabilityResultInner>
         implements CheckNameAvailabilityResult {

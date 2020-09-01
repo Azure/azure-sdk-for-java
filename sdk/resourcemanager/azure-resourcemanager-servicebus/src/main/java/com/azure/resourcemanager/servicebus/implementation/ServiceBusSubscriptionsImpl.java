@@ -1,49 +1,45 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.servicebus.implementation;
 
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
+import com.azure.resourcemanager.servicebus.fluent.SubscriptionsClient;
+import com.azure.resourcemanager.servicebus.fluent.inner.SubscriptionResourceInner;
 import com.azure.resourcemanager.servicebus.models.ServiceBusSubscription;
 import com.azure.resourcemanager.servicebus.models.ServiceBusSubscriptions;
 import com.azure.resourcemanager.servicebus.models.Topic;
-import com.microsoft.azure.Page;
-import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import com.microsoft.rest.ServiceResponse;
-import rx.Completable;
-import rx.Observable;
+import reactor.core.publisher.Mono;
 
 /**
  * Implementation for Subscriptions.
  */
-@LangDefinition
 class ServiceBusSubscriptionsImpl
-        extends ServiceBusChildResourcesImpl<
-    ServiceBusSubscription,
+    extends ServiceBusChildResourcesImpl<
+        ServiceBusSubscription,
         ServiceBusSubscriptionImpl,
-        SubscriptionInner,
-        SubscriptionsInner,
-    ServiceBusManager,
-    Topic>
-        implements ServiceBusSubscriptions {
+        SubscriptionResourceInner,
+        SubscriptionsClient,
+        ServiceBusManager,
+        Topic>
+    implements ServiceBusSubscriptions {
     private final String resourceGroupName;
     private final String namespaceName;
     private final String topicName;
     private final Region region;
+
+    private final ClientLogger logger = new ClientLogger(ServiceBusSubscriptionsImpl.class);
 
     protected ServiceBusSubscriptionsImpl(String resourceGroupName,
                                 String namespaceName,
                                 String topicName,
                                 Region region,
                                 ServiceBusManager manager) {
-        super(manager.inner().subscriptions(), manager);
+        super(manager.inner().getSubscriptions(), manager);
         this.resourceGroupName = resourceGroupName;
         this.namespaceName = namespaceName;
         this.topicName = topicName;
@@ -56,39 +52,26 @@ class ServiceBusSubscriptionsImpl
     }
 
     @Override
-    public Completable deleteByNameAsync(String name) {
+    public Mono<Void> deleteByNameAsync(String name) {
         return this.inner().deleteAsync(this.resourceGroupName,
                 this.namespaceName,
                 this.topicName,
-                name).toCompletable();
+                name);
     }
 
     @Override
-    public ServiceFuture<Void> deleteByNameAsync(String name, ServiceCallback<Void> callback) {
-        return this.inner().deleteAsync(this.resourceGroupName,
-                this.namespaceName,
-                this.topicName,
-                name,
-                callback);
-    }
-
-    @Override
-    protected Observable<SubscriptionInner> getInnerByNameAsync(String name) {
+    protected Mono<SubscriptionResourceInner> getInnerByNameAsync(String name) {
         return this.inner().getAsync(this.resourceGroupName, this.namespaceName, this.topicName, name);
     }
 
     @Override
-    protected Observable<ServiceResponse<Page<SubscriptionInner>>> listInnerAsync() {
-        return this.inner().listByTopicWithServiceResponseAsync(this.resourceGroupName,
-                this.namespaceName,
-                this.topicName);
+    protected PagedFlux<SubscriptionResourceInner> listInnerAsync() {
+        return this.inner().listAllAsync(this.resourceGroupName, this.namespaceName, this.topicName);
     }
 
     @Override
-    protected PagedList<SubscriptionInner> listInner() {
-        return this.inner().listByTopic(this.resourceGroupName,
-                this.namespaceName,
-                this.topicName);
+    protected PagedIterable<SubscriptionResourceInner> listInner() {
+        return this.inner().listAll(this.resourceGroupName, this.namespaceName, this.topicName);
     }
 
     @Override
@@ -98,12 +81,12 @@ class ServiceBusSubscriptionsImpl
                 this.topicName,
                 name,
                 this.region,
-                new SubscriptionInner(),
+                new SubscriptionResourceInner(),
                 this.manager());
     }
 
     @Override
-    protected ServiceBusSubscriptionImpl wrapModel(SubscriptionInner inner) {
+    protected ServiceBusSubscriptionImpl wrapModel(SubscriptionResourceInner inner) {
         return new ServiceBusSubscriptionImpl(this.resourceGroupName,
                 this.namespaceName,
                 this.topicName,
@@ -114,26 +97,26 @@ class ServiceBusSubscriptionsImpl
     }
 
     @Override
-    public PagedList<ServiceBusSubscription> listByParent(String resourceGroupName, String parentName) {
+    public PagedIterable<ServiceBusSubscription> listByParent(String resourceGroupName, String parentName) {
         // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
         // This method is not exposed to end user from any of the derived types of IndependentChildResourcesImpl
         //
-        throw new UnsupportedOperationException();
+        throw logger.logExceptionAsError(new UnsupportedOperationException());
     }
 
     @Override
-    public Completable deleteByParentAsync(String groupName, String parentName, String name) {
+    public Mono<Void> deleteByParentAsync(String groupName, String parentName, String name) {
         // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
         // This method is not exposed to end user from any of the derived types of IndependentChildResourcesImpl
         //
-        throw new UnsupportedOperationException();
+        throw logger.logExceptionAsError(new UnsupportedOperationException());
     }
 
     @Override
-    public Observable<ServiceBusSubscription> getByParentAsync(String resourceGroup, String parentName, String name) {
+    public Mono<ServiceBusSubscription> getByParentAsync(String resourceGroup, String parentName, String name) {
         // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
         // This method is not exposed to end user from any of the derived types of IndependentChildResourcesImpl
         //
-        throw new UnsupportedOperationException();
+        throw logger.logExceptionAsError(new UnsupportedOperationException());
     }
 }

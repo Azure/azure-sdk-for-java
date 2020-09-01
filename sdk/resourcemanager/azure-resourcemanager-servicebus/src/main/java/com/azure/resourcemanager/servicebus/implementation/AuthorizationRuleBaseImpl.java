@@ -1,21 +1,19 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.servicebus.implementation;
 
+import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGroup;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.IndependentChildResource;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
+import com.azure.resourcemanager.servicebus.fluent.inner.ResourceListKeysInner;
+import com.azure.resourcemanager.servicebus.fluent.inner.SharedAccessAuthorizationRuleResourceInner;
 import com.azure.resourcemanager.servicebus.models.AccessRights;
 import com.azure.resourcemanager.servicebus.models.AuthorizationKeys;
 import com.azure.resourcemanager.servicebus.models.Policykey;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.HasResourceGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
-import rx.Observable;
-import rx.functions.Func1;
+import com.azure.resourcemanager.servicebus.models.SharedAccessAuthorizationRuleCreateOrUpdateParameters;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,12 +28,16 @@ import java.util.List;
  * @param <FluentModelImplT> the parent fluent implementation
  * @param <ManagerT> the manager
  */
-@LangDefinition
 abstract class AuthorizationRuleBaseImpl<
         FluentModelT extends IndependentChildResource<ManagerT, InnerModelT>,
         FluentParentModelT extends Resource & HasResourceGroup,
-        InnerModelT extends SharedAccessAuthorizationRuleInner,
-        FluentModelImplT extends IndependentChildResourceImpl<FluentModelT, FluentParentModelT, InnerModelT, FluentModelImplT, ManagerT>,
+        InnerModelT extends SharedAccessAuthorizationRuleResourceInner,
+        FluentModelImplT extends IndependentChildResourceImpl<
+            FluentModelT,
+            FluentParentModelT,
+            InnerModelT,
+            FluentModelImplT,
+            ManagerT>,
         ManagerT> extends IndependentChildResourceImpl<FluentModelT,
         FluentParentModelT,
         InnerModelT,
@@ -48,21 +50,16 @@ abstract class AuthorizationRuleBaseImpl<
     /**
      * @return stream that emits primary, secondary keys and connection strings
      */
-    public Observable<AuthorizationKeys> getKeysAsync() {
+    public Mono<AuthorizationKeys> getKeysAsync() {
         return this.getKeysInnerAsync()
-                .map(new Func1<ResourceListKeysInner, AuthorizationKeys>() {
-                    @Override
-                    public AuthorizationKeys call(ResourceListKeysInner inner) {
-                        return new AuthorizationKeysImpl(inner);
-                    }
-                });
+            .map(inner -> new AuthorizationKeysImpl(inner));
     }
 
     /**
      * @return primary, secondary keys and connection strings
      */
     public AuthorizationKeys getKeys() {
-        return getKeysAsync().toBlocking().last();
+        return getKeysAsync().block();
     }
 
     /**
@@ -71,14 +68,9 @@ abstract class AuthorizationRuleBaseImpl<
      * @param policykey the key to regenerate
      * @return stream that emits primary, secondary keys and connection strings
      */
-    public Observable<AuthorizationKeys> regenerateKeyAsync(Policykey policykey) {
+    public Mono<AuthorizationKeys> regenerateKeyAsync(Policykey policykey) {
         return this.regenerateKeysInnerAsync(policykey)
-                .map(new Func1<ResourceListKeysInner, AuthorizationKeys>() {
-                    @Override
-                    public AuthorizationKeys call(ResourceListKeysInner inner) {
-                        return new AuthorizationKeysImpl(inner);
-                    }
-                });
+            .map(inner -> new AuthorizationKeysImpl(inner));
     }
 
     /**
@@ -88,7 +80,7 @@ abstract class AuthorizationRuleBaseImpl<
      * @return primary, secondary keys and connection strings
      */
     public AuthorizationKeys regenerateKey(Policykey policykey) {
-        return regenerateKeyAsync(policykey).toBlocking().last();
+        return regenerateKeyAsync(policykey).block();
     }
 
     public List<AccessRights> rights() {
@@ -97,7 +89,6 @@ abstract class AuthorizationRuleBaseImpl<
         }
         return Collections.unmodifiableList(this.inner().rights());
     }
-
 
     @SuppressWarnings("unchecked")
     public FluentModelImplT withListeningEnabled() {
@@ -131,6 +122,11 @@ abstract class AuthorizationRuleBaseImpl<
         return (FluentModelImplT) this;
     }
 
-    protected abstract Observable<ResourceListKeysInner> getKeysInnerAsync();
-    protected abstract Observable<ResourceListKeysInner> regenerateKeysInnerAsync(Policykey policykey);
+    protected SharedAccessAuthorizationRuleCreateOrUpdateParameters prepareForCreate(
+        SharedAccessAuthorizationRuleResourceInner inner) {
+        return new SharedAccessAuthorizationRuleCreateOrUpdateParameters().withRights(inner.rights());
+    }
+
+    protected abstract Mono<ResourceListKeysInner> getKeysInnerAsync();
+    protected abstract Mono<ResourceListKeysInner> regenerateKeysInnerAsync(Policykey policykey);
 }

@@ -1,15 +1,12 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.servicebus.models;
 
-import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
-import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.servicebus.implementation.QueuesInner;
+import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.servicebus.fluent.QueuesClient;
 
 /**
  * Entry point to queue authorization rules management API.
@@ -17,6 +14,6 @@ import com.azure.resourcemanager.servicebus.implementation.QueuesInner;
 @Fluent
 public interface QueueAuthorizationRules extends
     AuthorizationRules<QueueAuthorizationRule>,
-        SupportsCreating<QueueAuthorizationRule.DefinitionStages.Blank>,
-        HasInner<QueuesInner> {
+    SupportsCreating<QueueAuthorizationRule.DefinitionStages.Blank>,
+    HasInner<QueuesClient> {
 }

@@ -1,44 +1,40 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.servicebus.implementation;
 
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
+import com.azure.resourcemanager.servicebus.fluent.TopicsClient;
+import com.azure.resourcemanager.servicebus.fluent.inner.TopicResourceInner;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
 import com.azure.resourcemanager.servicebus.models.Topic;
 import com.azure.resourcemanager.servicebus.models.Topics;
-import com.microsoft.azure.Page;
-import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import com.microsoft.rest.ServiceResponse;
-import rx.Completable;
-import rx.Observable;
+import reactor.core.publisher.Mono;
 
 /**
  * Implementation for Topics.
  */
-@LangDefinition
 class TopicsImpl
-        extends ServiceBusChildResourcesImpl<
-    Topic,
+    extends ServiceBusChildResourcesImpl<
+        Topic,
         TopicImpl,
-        TopicInner,
-        TopicsInner,
-    ServiceBusManager,
-    ServiceBusNamespace>
-        implements Topics {
+        TopicResourceInner,
+        TopicsClient,
+        ServiceBusManager,
+        ServiceBusNamespace>
+    implements Topics {
     private final String resourceGroupName;
     private final String namespaceName;
     private final Region region;
 
+    private final ClientLogger logger = new ClientLogger(TopicsImpl.class);
+
     TopicsImpl(String resourceGroupName, String namespaceName, Region region, ServiceBusManager manager) {
-        super(manager.inner().topics(), manager);
+        super(manager.inner().getTopics(), manager);
         this.resourceGroupName = resourceGroupName;
         this.namespaceName = namespaceName;
         this.region = region;
@@ -50,33 +46,25 @@ class TopicsImpl
     }
 
     @Override
-    public Completable deleteByNameAsync(String name) {
+    public Mono<Void> deleteByNameAsync(String name) {
         return this.inner().deleteAsync(this.resourceGroupName,
                 this.namespaceName,
-                name).toCompletable();
+                name);
     }
 
     @Override
-    public ServiceFuture<Void> deleteByNameAsync(String name, ServiceCallback<Void> callback) {
-        return this.inner().deleteAsync(this.resourceGroupName,
-                this.namespaceName,
-                name,
-                callback);
-    }
-
-    @Override
-    protected Observable<TopicInner> getInnerByNameAsync(String name) {
+    protected Mono<TopicResourceInner> getInnerByNameAsync(String name) {
         return this.inner().getAsync(this.resourceGroupName, this.namespaceName, name);
     }
 
     @Override
-    protected Observable<ServiceResponse<Page<TopicInner>>> listInnerAsync() {
-        return this.inner().listByNamespaceWithServiceResponseAsync(this.resourceGroupName, this.namespaceName);
+    protected PagedFlux<TopicResourceInner> listInnerAsync() {
+        return this.inner().listAllAsync(this.resourceGroupName, this.namespaceName);
     }
 
     @Override
-    protected PagedList<TopicInner> listInner() {
-        return this.inner().listByNamespace(this.resourceGroupName,
+    protected PagedIterable<TopicResourceInner> listInner() {
+        return this.inner().listAll(this.resourceGroupName,
                 this.namespaceName);
     }
 
@@ -86,12 +74,12 @@ class TopicsImpl
                 this.namespaceName,
                 name,
                 this.region,
-                new TopicInner(),
+                new TopicResourceInner(),
                 this.manager());
     }
 
     @Override
-    protected TopicImpl wrapModel(TopicInner inner) {
+    protected TopicImpl wrapModel(TopicResourceInner inner) {
         if (inner == null) {
             return null;
         }
@@ -104,26 +92,26 @@ class TopicsImpl
     }
 
     @Override
-    public PagedList<Topic> listByParent(String resourceGroupName, String parentName) {
+    public PagedIterable<Topic> listByParent(String resourceGroupName, String parentName) {
         // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
         // This method is not exposed to end user from any of the derived types of IndependentChildResourcesImpl
         //
-        throw new UnsupportedOperationException();
+        throw logger.logExceptionAsError(new UnsupportedOperationException());
     }
 
     @Override
-    public Completable deleteByParentAsync(String groupName, String parentName, String name) {
+    public Mono<Void> deleteByParentAsync(String groupName, String parentName, String name) {
         // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
         // This method is not exposed to end user from any of the derived types of IndependentChildResourcesImpl
         //
-        throw new UnsupportedOperationException();
+        throw logger.logExceptionAsError(new UnsupportedOperationException());
     }
 
     @Override
-    public Observable<Topic> getByParentAsync(String resourceGroup, String parentName, String name) {
+    public Mono<Topic> getByParentAsync(String resourceGroup, String parentName, String name) {
         // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
         // This method is not exposed to end user from any of the derived types of IndependentChildResourcesImpl
         //
-        throw new UnsupportedOperationException();
+        throw logger.logExceptionAsError(new UnsupportedOperationException());
     }
 }

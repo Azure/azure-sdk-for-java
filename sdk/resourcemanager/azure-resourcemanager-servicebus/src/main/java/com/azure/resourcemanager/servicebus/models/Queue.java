@@ -1,42 +1,40 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.servicebus.models;
 
-import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
-import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
-import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.azure.resourcemanager.servicebus.implementation.QueueInner;
+import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.IndependentChildResource;
+import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
+import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
+import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
+import com.azure.resourcemanager.servicebus.fluent.inner.QueueResourceInner;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
-import org.joda.time.DateTime;
-import org.joda.time.Period;
+
+import java.time.Duration;
+import java.time.OffsetDateTime;
 
 /**
  * Type representing Service Bus queue.
  */
 @Fluent
 public interface Queue extends
-        IndependentChildResource<ServiceBusManager, QueueInner>,
-        Refreshable<Queue>,
-        Updatable<Queue.Update> {
+    IndependentChildResource<ServiceBusManager, QueueResourceInner>,
+    Refreshable<Queue>,
+    Updatable<Queue.Update> {
     /**
      * @return the exact time the queue was created
      */
-    DateTime createdAt();
+    OffsetDateTime createdAt();
     /**
      * @return last time a message was sent, or the last time there was a receive request to this queue
      */
-    DateTime accessedAt();
+    OffsetDateTime accessedAt();
     /**
      * @return the exact time the queue was updated
      */
-    DateTime updatedAt();
+    OffsetDateTime updatedAt();
     /**
      * @return the maximum size of memory allocated for the queue in megabytes
      */
@@ -80,11 +78,11 @@ public interface Queue extends
     /**
      * @return the duration after which the message expires, starting from when the message is sent to queue
      */
-    Period defaultMessageTtlDuration();
+    Duration defaultMessageTtlDuration();
     /**
      * @return the duration of the duplicate detection history
      */
-    Period duplicateMessageDetectionHistoryDuration();
+    Duration duplicateMessageDetectionHistoryDuration();
     /**
      * @return the maximum number of a message delivery before marking it as dead-lettered
      */
@@ -216,7 +214,7 @@ public interface Queue extends
              * @param ttl time to live duration
              * @return the next stage of queue definition
              */
-            WithCreate withDefaultMessageTTL(Period ttl);
+            WithCreate withDefaultMessageTTL(Duration ttl);
         }
 
         /**
@@ -270,7 +268,7 @@ public interface Queue extends
              * @param duplicateDetectionHistoryDuration duration of the history
              * @return the next stage of queue definition
              */
-            WithCreate withDuplicateMessageDetection(Period duplicateDetectionHistoryDuration);
+            WithCreate withDuplicateMessageDetection(Duration duplicateDetectionHistoryDuration);
         }
 
         /**
@@ -335,19 +333,19 @@ public interface Queue extends
          * for any other optional settings to be specified.
          */
         interface WithCreate extends
-                Creatable<Queue>,
-                Queue.DefinitionStages.WithSize,
-                Queue.DefinitionStages.WithPartitioning,
-                Queue.DefinitionStages.WithDeleteOnIdle,
-                Queue.DefinitionStages.WithMessageLockDuration,
-                Queue.DefinitionStages.WithDefaultMessageTTL,
-                Queue.DefinitionStages.WithSession,
-                Queue.DefinitionStages.WithExpressMessage,
-                Queue.DefinitionStages.WithMessageBatching,
-                Queue.DefinitionStages.WithDuplicateMessageDetection,
-                Queue.DefinitionStages.WithExpiredMessageMovedToDeadLetterQueue,
-                Queue.DefinitionStages.WithMessageMovedToDeadLetterQueueOnMaxDeliveryCount,
-                Queue.DefinitionStages.WithAuthorizationRule {
+            Creatable<Queue>,
+            Queue.DefinitionStages.WithSize,
+            Queue.DefinitionStages.WithPartitioning,
+            Queue.DefinitionStages.WithDeleteOnIdle,
+            Queue.DefinitionStages.WithMessageLockDuration,
+            Queue.DefinitionStages.WithDefaultMessageTTL,
+            Queue.DefinitionStages.WithSession,
+            Queue.DefinitionStages.WithExpressMessage,
+            Queue.DefinitionStages.WithMessageBatching,
+            Queue.DefinitionStages.WithDuplicateMessageDetection,
+            Queue.DefinitionStages.WithExpiredMessageMovedToDeadLetterQueue,
+            Queue.DefinitionStages.WithMessageMovedToDeadLetterQueueOnMaxDeliveryCount,
+            Queue.DefinitionStages.WithAuthorizationRule {
         }
     }
 
@@ -355,18 +353,18 @@ public interface Queue extends
      * The template for Service Bus queue update operation, containing all the settings that can be modified.
      */
     interface Update extends
-            Appliable<Queue>,
-            Queue.UpdateStages.WithSize,
-            Queue.UpdateStages.WithDeleteOnIdle,
-            Queue.UpdateStages.WithMessageLockDuration,
-            Queue.UpdateStages.WithDefaultMessageTTL,
-            Queue.UpdateStages.WithSession,
-            Queue.UpdateStages.WithExpressMessage,
-            Queue.UpdateStages.WithMessageBatching,
-            Queue.UpdateStages.WithDuplicateMessageDetection,
-            Queue.UpdateStages.WithExpiredMessageMovedToDeadLetterQueue,
-            Queue.UpdateStages.WithMessageMovedToDeadLetterQueueOnMaxDeliveryCount,
-            Queue.UpdateStages.WithAuthorizationRule {
+        Appliable<Queue>,
+        Queue.UpdateStages.WithSize,
+        Queue.UpdateStages.WithDeleteOnIdle,
+        Queue.UpdateStages.WithMessageLockDuration,
+        Queue.UpdateStages.WithDefaultMessageTTL,
+        Queue.UpdateStages.WithSession,
+        Queue.UpdateStages.WithExpressMessage,
+        Queue.UpdateStages.WithMessageBatching,
+        Queue.UpdateStages.WithDuplicateMessageDetection,
+        Queue.UpdateStages.WithExpiredMessageMovedToDeadLetterQueue,
+        Queue.UpdateStages.WithMessageMovedToDeadLetterQueueOnMaxDeliveryCount,
+        Queue.UpdateStages.WithAuthorizationRule {
     }
 
     /**
@@ -422,7 +420,7 @@ public interface Queue extends
              * @param ttl time to live duration
              * @return the next stage of queue update
              */
-            Update withDefaultMessageTTL(Period ttl);
+            Update withDefaultMessageTTL(Duration ttl);
         }
 
         /**
@@ -497,7 +495,7 @@ public interface Queue extends
              * @param duration duration of the history
              * @return the next stage of queue update
              */
-            Update withDuplicateMessageDetectionHistoryDuration(Period duration);
+            Update withDuplicateMessageDetectionHistoryDuration(Duration duration);
 
             /**
              * Specifies that duplicate message detection needs to be disabled.

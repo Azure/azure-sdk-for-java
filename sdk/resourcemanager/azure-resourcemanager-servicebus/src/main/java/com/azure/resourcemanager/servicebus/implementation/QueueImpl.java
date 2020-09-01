@@ -1,36 +1,37 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.servicebus.implementation;
 
+import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
+import com.azure.resourcemanager.servicebus.fluent.inner.QueueResourceInner;
 import com.azure.resourcemanager.servicebus.models.EntityStatus;
 import com.azure.resourcemanager.servicebus.models.Queue;
 import com.azure.resourcemanager.servicebus.models.QueueAuthorizationRule;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
-import org.joda.time.DateTime;
-import org.joda.time.Period;
-import rx.Completable;
-import rx.Observable;
-import rx.functions.Action0;
-import rx.functions.Func1;
+import com.azure.resourcemanager.servicebus.models.QueueCreateOrUpdateParameters;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Implementation for Queue.
  */
-@LangDefinition
-class QueueImpl extends IndependentChildResourceImpl<Queue, ServiceBusNamespaceImpl, QueueInner, QueueImpl, ServiceBusManager>
-        implements
+class QueueImpl
+    extends IndependentChildResourceImpl<
+        Queue,
+        ServiceBusNamespaceImpl,
+        QueueResourceInner,
+        QueueImpl,
+        ServiceBusManager>
+    implements
         Queue,
         Queue.Definition,
         Queue.Update  {
@@ -41,7 +42,7 @@ class QueueImpl extends IndependentChildResourceImpl<Queue, ServiceBusNamespaceI
               String namespaceName,
               String name,
               Region region,
-              QueueInner inner,
+              QueueResourceInner inner,
               ServiceBusManager manager) {
         super(name, inner, manager);
         this.withExistingParentResource(resourceGroupName, namespaceName);
@@ -52,17 +53,17 @@ class QueueImpl extends IndependentChildResourceImpl<Queue, ServiceBusNamespaceI
     }
 
     @Override
-    public DateTime createdAt() {
+    public OffsetDateTime createdAt() {
         return this.inner().createdAt();
     }
 
     @Override
-    public DateTime accessedAt() {
+    public OffsetDateTime accessedAt() {
         return this.inner().accessedAt();
     }
 
     @Override
-    public DateTime updatedAt() {
+    public OffsetDateTime updatedAt() {
         return this.inner().updatedAt();
     }
 
@@ -125,31 +126,19 @@ class QueueImpl extends IndependentChildResourceImpl<Queue, ServiceBusNamespaceI
     }
 
     @Override
-    public Period defaultMessageTtlDuration() {
+    public Duration defaultMessageTtlDuration() {
         if (this.inner().defaultMessageTimeToLive() == null) {
             return null;
         }
-        TimeSpan timeSpan = TimeSpan.parse(this.inner().defaultMessageTimeToLive());
-        return new Period()
-                .withDays(timeSpan.days())
-                .withHours(timeSpan.hours())
-                .withSeconds(timeSpan.seconds())
-                .withMinutes(timeSpan.minutes())
-                .withMillis(timeSpan.milliseconds());
+        return TimeSpan.parse(this.inner().defaultMessageTimeToLive()).totalMillisDuration();
     }
 
     @Override
-    public Period duplicateMessageDetectionHistoryDuration() {
+    public Duration duplicateMessageDetectionHistoryDuration() {
         if (this.inner().duplicateDetectionHistoryTimeWindow() == null) {
             return null;
         }
-        TimeSpan timeSpan = TimeSpan.parse(this.inner().duplicateDetectionHistoryTimeWindow());
-        return new Period()
-                .withDays(timeSpan.days())
-                .withHours(timeSpan.hours())
-                .withMinutes(timeSpan.minutes())
-                .withSeconds(timeSpan.seconds())
-                .withMillis(timeSpan.milliseconds());
+        return TimeSpan.parse(this.inner().duplicateDetectionHistoryTimeWindow()).totalMillisDuration();
     }
 
     @Override
@@ -254,8 +243,8 @@ class QueueImpl extends IndependentChildResourceImpl<Queue, ServiceBusNamespaceI
     }
 
     @Override
-    public QueueImpl withDefaultMessageTTL(Period ttl) {
-        this.inner().withDefaultMessageTimeToLive(TimeSpan.fromPeriod(ttl).toString());
+    public QueueImpl withDefaultMessageTTL(Duration ttl) {
+        this.inner().withDefaultMessageTimeToLive(TimeSpan.fromDuration(ttl).toString());
         return this;
     }
 
@@ -314,16 +303,16 @@ class QueueImpl extends IndependentChildResourceImpl<Queue, ServiceBusNamespaceI
     }
 
     @Override
-    public QueueImpl withDuplicateMessageDetection(Period duplicateDetectionHistoryDuration) {
+    public QueueImpl withDuplicateMessageDetection(Duration duplicateDetectionHistoryDuration) {
         this.inner().withRequiresDuplicateDetection(true);
         this.inner().withDuplicateDetectionHistoryTimeWindow(TimeSpan
-                .fromPeriod(duplicateDetectionHistoryDuration)
+                .fromDuration(duplicateDetectionHistoryDuration)
                 .toString());
         return this;
     }
 
     @Override
-    public QueueImpl withDuplicateMessageDetectionHistoryDuration(Period duration) {
+    public QueueImpl withDuplicateMessageDetectionHistoryDuration(Duration duration) {
         return withDuplicateMessageDetection(duration);
     }
 
@@ -358,37 +347,30 @@ class QueueImpl extends IndependentChildResourceImpl<Queue, ServiceBusNamespaceI
     }
 
     @Override
-    protected Observable<QueueInner> getInnerAsync() {
-        return this.manager().inner().queues()
+    protected Mono<QueueResourceInner> getInnerAsync() {
+        return this.manager().inner().getQueues()
                 .getAsync(this.resourceGroupName(),
                         this.parentName,
                         this.name());
     }
 
     @Override
-    protected Observable<Queue> createChildResourceAsync() {
-        Completable createQueueCompletable = this.manager().inner().queues()
-                .createOrUpdateAsync(this.resourceGroupName(),
-                        this.parentName,
-                        this.name(),
-                        this.inner())
-                .map(new Func1<QueueInner, QueueInner>() {
-                    @Override
-                    public QueueInner call(QueueInner inner) {
-                        setInner(inner);
-                        return inner;
-                    }
-                }).toCompletable();
-        Completable childrenOperationsCompletable = submitChildrenOperationsAsync();
+    protected Mono<Queue> createChildResourceAsync() {
+
+        Mono<QueueResourceInner> createTask = this.manager().inner().getQueues()
+            .createOrUpdateAsync(this.resourceGroupName(),
+                this.parentName,
+                this.name(),
+                prepareForCreate(this.inner()))
+            .map(inner -> {
+                setInner(inner);
+                return inner;
+            });
+        Flux<Void> childOperationTasks = submitChildrenOperationsAsync();
         final Queue self = this;
-        return Completable.concat(createQueueCompletable, childrenOperationsCompletable)
-                .doOnTerminate(new Action0() {
-                    @Override
-                    public void call() {
-                        initChildrenOperationsCache();
-                    }
-                })
-                .andThen(Observable.just(self));
+        return Flux.concat(createTask, childOperationTasks)
+            .doOnTerminate(() -> initChildrenOperationsCache())
+            .then(Mono.just(self));
     }
 
     private void initChildrenOperationsCache() {
@@ -396,16 +378,37 @@ class QueueImpl extends IndependentChildResourceImpl<Queue, ServiceBusNamespaceI
         this.rulesToDelete = new ArrayList<>();
     }
 
-    private Completable submitChildrenOperationsAsync() {
-        Observable<?> rulesCreateStream = Observable.empty();
+    private Flux<Void> submitChildrenOperationsAsync() {
+        Flux<Void> rulesCreateStream = Flux.empty();
         if (this.rulesToCreate.size() > 0) {
-            rulesCreateStream = this.authorizationRules().createAsync(this.rulesToCreate);
+            rulesCreateStream = this.authorizationRules().createAsync(this.rulesToCreate).then().flux();
         }
-        Observable<?> rulesDeleteStream = Observable.empty();
+        Flux<Void> rulesDeleteStream = Flux.empty();
         if (this.rulesToDelete.size() > 0) {
             rulesDeleteStream = this.authorizationRules().deleteByNameAsync(this.rulesToDelete);
         }
-        return Completable.mergeDelayError(rulesCreateStream.toCompletable(),
-                rulesDeleteStream.toCompletable());
+        return Flux.mergeDelayError(32, rulesCreateStream,
+                rulesDeleteStream);
+    }
+
+    private QueueCreateOrUpdateParameters prepareForCreate(QueueResourceInner inner) {
+        return new QueueCreateOrUpdateParameters()
+            .withLockDuration(inner.lockDuration())
+            .withAutoDeleteOnIdle(inner.autoDeleteOnIdle())
+            .withEntityAvailabilityStatus(inner.entityAvailabilityStatus())
+            .withDefaultMessageTimeToLive(inner.defaultMessageTimeToLive())
+            .withDuplicateDetectionHistoryTimeWindow(inner.duplicateDetectionHistoryTimeWindow())
+            .withEnableBatchedOperations(inner.enableBatchedOperations())
+            .withDeadLetteringOnMessageExpiration(inner.deadLetteringOnMessageExpiration())
+            .withEnableExpress(inner.enableExpress())
+            .withEnablePartitioning(inner.enablePartitioning())
+            .withIsAnonymousAccessible(inner.isAnonymousAccessible())
+            .withMaxDeliveryCount(inner.maxDeliveryCount())
+            .withMaxSizeInMegabytes(inner.maxSizeInMegabytes())
+            .withRequiresDuplicateDetection(inner.requiresDuplicateDetection())
+            .withRequiresSession(inner.requiresSession())
+            .withStatus(inner.status())
+            .withSupportOrdering(inner.supportOrdering())
+            .withLocation(inner.location());
     }
 }

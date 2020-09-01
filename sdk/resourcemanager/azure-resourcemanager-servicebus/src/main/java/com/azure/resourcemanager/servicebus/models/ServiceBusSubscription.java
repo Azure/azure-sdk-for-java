@@ -1,42 +1,40 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.servicebus.models;
 
-import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
-import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
-import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
+import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.IndependentChildResource;
+import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
+import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
+import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
-import com.azure.resourcemanager.servicebus.implementation.SubscriptionInner;
-import org.joda.time.DateTime;
-import org.joda.time.Period;
+import com.azure.resourcemanager.servicebus.fluent.inner.SubscriptionResourceInner;
+
+import java.time.Duration;
+import java.time.OffsetDateTime;
 
 /**
  * Type representing service bus topic subscription.
  */
 @Fluent
 public interface ServiceBusSubscription extends
-        IndependentChildResource<ServiceBusManager, SubscriptionInner>,
-        Refreshable<ServiceBusSubscription>,
-        Updatable<ServiceBusSubscription.Update> {
+    IndependentChildResource<ServiceBusManager, SubscriptionResourceInner>,
+    Refreshable<ServiceBusSubscription>,
+    Updatable<ServiceBusSubscription.Update> {
     /**
      * @return the exact time the message was created
      */
-    DateTime createdAt();
+    OffsetDateTime createdAt();
     /**
      * @return last time there was a receive request to this subscription
      */
-    DateTime accessedAt();
+    OffsetDateTime accessedAt();
     /**
      * @return the exact time the message was updated
      */
-    DateTime updatedAt();
+    OffsetDateTime updatedAt();
     /**
      * @return indicates whether server-side batched operations are enabled
      */
@@ -60,7 +58,7 @@ public interface ServiceBusSubscription extends
     /**
      * @return the duration after which the message expires, starting from when the message is sent to subscription.
      */
-    Period defaultMessageTtlDuration();
+    Duration defaultMessageTtlDuration();
     /**
      * @return the maximum number of a message delivery before marking it as dead-lettered
      */
@@ -95,7 +93,7 @@ public interface ServiceBusSubscription extends
      */
     EntityStatus status();
     /**
-     * @return  indicates whether subscription has dead letter support on filter evaluation exceptions
+     * @return indicates whether subscription has dead letter support on filter evaluation exceptions
      */
     boolean isDeadLetteringEnabledForFilterEvaluationFailedMessages();
 
@@ -158,7 +156,7 @@ public interface ServiceBusSubscription extends
              * @param ttl time to live duration
              * @return the next stage of subscription definition
              */
-            WithCreate withDefaultMessageTTL(Period ttl);
+            WithCreate withDefaultMessageTTL(Duration ttl);
         }
 
         /**
@@ -256,15 +254,16 @@ public interface ServiceBusSubscription extends
          * for any other optional settings to be specified.
          */
         interface WithCreate extends
-                Creatable<ServiceBusSubscription>,
-                ServiceBusSubscription.DefinitionStages.WithDeleteOnIdle,
-                ServiceBusSubscription.DefinitionStages.WithMessageLockDuration,
-                ServiceBusSubscription.DefinitionStages.WithDefaultMessageTTL,
-                ServiceBusSubscription.DefinitionStages.WithSession,
-                ServiceBusSubscription.DefinitionStages.WithMessageBatching,
-                ServiceBusSubscription.DefinitionStages.WithExpiredMessageMovedToDeadLetterSubscription,
-                ServiceBusSubscription.DefinitionStages.WithMessageMovedToDeadLetterSubscriptionOnMaxDeliveryCount,
-                ServiceBusSubscription.DefinitionStages.WithMessageMovedToDeadLetterSubscriptionOnFilterEvaluationException {
+            Creatable<ServiceBusSubscription>,
+            ServiceBusSubscription.DefinitionStages.WithDeleteOnIdle,
+            ServiceBusSubscription.DefinitionStages.WithMessageLockDuration,
+            ServiceBusSubscription.DefinitionStages.WithDefaultMessageTTL,
+            ServiceBusSubscription.DefinitionStages.WithSession,
+            ServiceBusSubscription.DefinitionStages.WithMessageBatching,
+            ServiceBusSubscription.DefinitionStages.WithExpiredMessageMovedToDeadLetterSubscription,
+            ServiceBusSubscription.DefinitionStages.WithMessageMovedToDeadLetterSubscriptionOnMaxDeliveryCount,
+            ServiceBusSubscription.DefinitionStages.
+                WithMessageMovedToDeadLetterSubscriptionOnFilterEvaluationException {
         }
     }
 
@@ -272,15 +271,15 @@ public interface ServiceBusSubscription extends
      * The template for a subscription update operation, containing all the settings that can be modified.
      */
     interface Update extends
-            Appliable<ServiceBusSubscription>,
-            ServiceBusSubscription.UpdateStages.WithDeleteOnIdle,
-            ServiceBusSubscription.UpdateStages.WithMessageLockDuration,
-            ServiceBusSubscription.UpdateStages.WithDefaultMessageTTL,
-            ServiceBusSubscription.UpdateStages.WithSession,
-            ServiceBusSubscription.UpdateStages.WithMessageBatching,
-            ServiceBusSubscription.UpdateStages.WithExpiredMessageMovedToDeadLetterSubscription,
-            ServiceBusSubscription.UpdateStages.WithMessageMovedToDeadLetterQueueOnMaxDeliveryCount,
-            ServiceBusSubscription.UpdateStages.WithMessageMovedToDeadLetterSubscriptionOnFilterEvaluationException {
+        Appliable<ServiceBusSubscription>,
+        ServiceBusSubscription.UpdateStages.WithDeleteOnIdle,
+        ServiceBusSubscription.UpdateStages.WithMessageLockDuration,
+        ServiceBusSubscription.UpdateStages.WithDefaultMessageTTL,
+        ServiceBusSubscription.UpdateStages.WithSession,
+        ServiceBusSubscription.UpdateStages.WithMessageBatching,
+        ServiceBusSubscription.UpdateStages.WithExpiredMessageMovedToDeadLetterSubscription,
+        ServiceBusSubscription.UpdateStages.WithMessageMovedToDeadLetterQueueOnMaxDeliveryCount,
+        ServiceBusSubscription.UpdateStages.WithMessageMovedToDeadLetterSubscriptionOnFilterEvaluationException {
     }
 
     /**
@@ -323,7 +322,7 @@ public interface ServiceBusSubscription extends
              * @param ttl time to live duration
              * @return the next stage of subscription update
              */
-            Update withDefaultMessageTTL(Period ttl);
+            Update withDefaultMessageTTL(Duration ttl);
         }
 
         /**

@@ -1,44 +1,40 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.servicebus.implementation;
 
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
+import com.azure.resourcemanager.servicebus.fluent.QueuesClient;
+import com.azure.resourcemanager.servicebus.fluent.inner.QueueResourceInner;
 import com.azure.resourcemanager.servicebus.models.Queue;
 import com.azure.resourcemanager.servicebus.models.Queues;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
-import com.microsoft.azure.Page;
-import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import com.microsoft.rest.ServiceResponse;
-import rx.Completable;
-import rx.Observable;
+import reactor.core.publisher.Mono;
 
 /**
  * Implementation for Queues.
  */
-@LangDefinition
 class QueuesImpl
-        extends ServiceBusChildResourcesImpl<
-    Queue,
+    extends ServiceBusChildResourcesImpl<
+        Queue,
         QueueImpl,
-        QueueInner,
-        QueuesInner,
-    ServiceBusManager,
-    ServiceBusNamespace>
-        implements Queues {
+        QueueResourceInner,
+        QueuesClient,
+        ServiceBusManager,
+        ServiceBusNamespace>
+    implements Queues {
     private final String resourceGroupName;
     private final String namespaceName;
     private final Region region;
 
+    private final ClientLogger logger = new ClientLogger(QueuesImpl.class);
+
     QueuesImpl(String resourceGroupName, String namespaceName, Region region, ServiceBusManager manager) {
-        super(manager.inner().queues(), manager);
+        super(manager.inner().getQueues(), manager);
         this.resourceGroupName = resourceGroupName;
         this.namespaceName = namespaceName;
         this.region = region;
@@ -50,34 +46,25 @@ class QueuesImpl
     }
 
     @Override
-    public Completable deleteByNameAsync(String name) {
+    public Mono<Void> deleteByNameAsync(String name) {
         return this.inner().deleteAsync(this.resourceGroupName,
                 this.namespaceName,
-                name).toCompletable();
+                name);
     }
 
     @Override
-    public ServiceFuture<Void> deleteByNameAsync(String name, ServiceCallback<Void> callback) {
-        return this.inner().deleteAsync(this.resourceGroupName,
-                this.namespaceName,
-                name,
-                callback);
-    }
-
-    @Override
-    protected Observable<QueueInner> getInnerByNameAsync(String name) {
+    protected Mono<QueueResourceInner> getInnerByNameAsync(String name) {
         return this.inner().getAsync(this.resourceGroupName, this.namespaceName, name);
     }
 
     @Override
-    protected Observable<ServiceResponse<Page<QueueInner>>> listInnerAsync() {
-        return this.inner().listByNamespaceWithServiceResponseAsync(this.resourceGroupName, this.namespaceName);
+    protected PagedFlux<QueueResourceInner> listInnerAsync() {
+        return this.inner().listAllAsync(this.resourceGroupName, this.namespaceName);
     }
 
     @Override
-    protected PagedList<QueueInner> listInner() {
-        return this.inner().listByNamespace(this.resourceGroupName,
-                this.namespaceName);
+    protected PagedIterable<QueueResourceInner> listInner() {
+        return this.inner().listAll(this.resourceGroupName, this.namespaceName);
     }
 
     @Override
@@ -86,12 +73,12 @@ class QueuesImpl
                 this.namespaceName,
                 name,
                 this.region,
-                new QueueInner(),
+                new QueueResourceInner(),
                 this.manager());
     }
 
     @Override
-    protected QueueImpl wrapModel(QueueInner inner) {
+    protected QueueImpl wrapModel(QueueResourceInner inner) {
         if (inner == null) {
             return null;
         }
@@ -104,26 +91,26 @@ class QueuesImpl
     }
 
     @Override
-    public PagedList<Queue> listByParent(String resourceGroupName, String parentName) {
+    public PagedIterable<Queue> listByParent(String resourceGroupName, String parentName) {
         // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
         // This method is not exposed to end user from any of the derived types of IndependentChildResourcesImpl
         //
-        throw new UnsupportedOperationException();
+        throw logger.logExceptionAsError(new UnsupportedOperationException());
     }
 
     @Override
-    public Completable deleteByParentAsync(String groupName, String parentName, String name) {
+    public Mono<Void> deleteByParentAsync(String groupName, String parentName, String name) {
         // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
         // This method is not exposed to end user from any of the derived types of IndependentChildResourcesImpl
         //
-        throw new UnsupportedOperationException();
+        throw logger.logExceptionAsError(new UnsupportedOperationException());
     }
 
     @Override
-    public Observable<Queue> getByParentAsync(String resourceGroup, String parentName, String name) {
+    public Mono<Queue> getByParentAsync(String resourceGroup, String parentName, String name) {
         // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
         // This method is not exposed to end user from any of the derived types of IndependentChildResourcesImpl
         //
-        throw new UnsupportedOperationException();
+        throw logger.logExceptionAsError(new UnsupportedOperationException());
     }
 }

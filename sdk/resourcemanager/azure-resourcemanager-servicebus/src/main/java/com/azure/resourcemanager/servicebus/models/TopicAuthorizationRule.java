@@ -1,15 +1,12 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.servicebus.models;
 
-import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
+import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
+import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 
 /**
  * Type representing authorization rule defined for topic.
@@ -17,7 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 @Fluent
 public interface TopicAuthorizationRule extends
     AuthorizationRule<TopicAuthorizationRule>,
-        Updatable<TopicAuthorizationRule.Update> {
+    Updatable<TopicAuthorizationRule.Update> {
     /**
      * @return the name of the namespace that the parent topic belongs to
      */
@@ -61,7 +58,7 @@ public interface TopicAuthorizationRule extends
      * The entirety of the topic authorization rule update.
      */
     interface Update extends
-            Appliable<TopicAuthorizationRule>,
-            AuthorizationRule.UpdateStages.WithListenOrSendOrManage<TopicAuthorizationRule.Update> {
+        Appliable<TopicAuthorizationRule>,
+        AuthorizationRule.UpdateStages.WithListenOrSendOrManage<TopicAuthorizationRule.Update> {
     }
 }

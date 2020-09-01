@@ -1,40 +1,36 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.servicebus.implementation;
 
+import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
+import com.azure.resourcemanager.servicebus.fluent.inner.NamespaceResourceInner;
 import com.azure.resourcemanager.servicebus.models.NamespaceAuthorizationRule;
+import com.azure.resourcemanager.servicebus.models.NamespaceCreateOrUpdateParameters;
 import com.azure.resourcemanager.servicebus.models.NamespaceSku;
 import com.azure.resourcemanager.servicebus.models.Queue;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
 import com.azure.resourcemanager.servicebus.models.Sku;
 import com.azure.resourcemanager.servicebus.models.Topic;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import org.joda.time.DateTime;
-import rx.Completable;
-import rx.Observable;
-import rx.functions.Action0;
-import rx.functions.Func1;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Implementation for ServiceBusNamespace.
  */
-@LangDefinition
-class ServiceBusNamespaceImpl extends GroupableResourceImpl<
-    ServiceBusNamespace,
-        NamespaceInner,
+class ServiceBusNamespaceImpl
+    extends GroupableResourceImpl<
+        ServiceBusNamespace,
+        NamespaceResourceInner,
         ServiceBusNamespaceImpl,
-    ServiceBusManager>
-        implements
+        ServiceBusManager>
+    implements
         ServiceBusNamespace,
         ServiceBusNamespace.Definition,
         ServiceBusNamespace.Update {
@@ -45,7 +41,7 @@ class ServiceBusNamespaceImpl extends GroupableResourceImpl<
     private List<String> topicsToDelete;
     private List<String> rulesToDelete;
 
-    ServiceBusNamespaceImpl(String name, NamespaceInner inner, ServiceBusManager manager) {
+    ServiceBusNamespaceImpl(String name, NamespaceResourceInner inner, ServiceBusManager manager) {
         super(name, inner, manager);
         this.initChildrenOperationsCache();
     }
@@ -66,12 +62,12 @@ class ServiceBusNamespaceImpl extends GroupableResourceImpl<
     }
 
     @Override
-    public DateTime createdAt() {
+    public OffsetDateTime createdAt() {
         return this.inner().createdAt();
     }
 
     @Override
-    public DateTime updatedAt() {
+    public OffsetDateTime updatedAt() {
         return this.inner().updatedAt();
     }
 
@@ -157,34 +153,27 @@ class ServiceBusNamespaceImpl extends GroupableResourceImpl<
     }
 
     @Override
-    protected Observable<NamespaceInner> getInnerAsync() {
-        return this.manager().inner().namespaces().getByResourceGroupAsync(this.resourceGroupName(),
+    protected Mono<NamespaceResourceInner> getInnerAsync() {
+        return this.manager().inner().getNamespaces().getByResourceGroupAsync(this.resourceGroupName(),
                 this.name());
     }
 
     @Override
-    public Observable<ServiceBusNamespace> createResourceAsync() {
-        Completable createNamespaceCompletable = this.manager().inner().namespaces()
-                .createOrUpdateAsync(this.resourceGroupName(),
-                        this.name(),
-                        this.inner())
-                .map(new Func1<NamespaceInner, NamespaceInner>() {
-                    @Override
-                    public NamespaceInner call(NamespaceInner inner) {
-                        setInner(inner);
-                        return inner;
-                    }
-                }).toCompletable();
-        Completable childrenOperationsCompletable = submitChildrenOperationsAsync();
+    public Mono<ServiceBusNamespace> createResourceAsync() {
+        Mono<NamespaceResourceInner> createTask = this.manager().inner().getNamespaces()
+            .createOrUpdateAsync(this.resourceGroupName(),
+                    this.name(),
+                    prepareForCreate(this.inner()))
+            .map(inner -> {
+                setInner(inner);
+                return inner;
+            });
+
+        Flux<Void> childOperationTasks = submitChildrenOperationsAsync();
         final ServiceBusNamespace self = this;
-        return Completable.concat(createNamespaceCompletable, childrenOperationsCompletable)
-                .doOnTerminate(new Action0() {
-                    @Override
-                    public void call() {
-                        initChildrenOperationsCache();
-                    }
-                })
-                .andThen(Observable.just(self));
+        return Flux.concat(createTask, childOperationTasks)
+            .doOnTerminate(() -> initChildrenOperationsCache())
+            .then(Mono.just(self));
     }
 
     private void initChildrenOperationsCache() {
@@ -196,36 +185,47 @@ class ServiceBusNamespaceImpl extends GroupableResourceImpl<
         this.rulesToDelete = new ArrayList<>();
     }
 
-    private Completable submitChildrenOperationsAsync() {
-        Observable<?> queuesCreateStream = Observable.empty();
+    private Flux<Void> submitChildrenOperationsAsync() {
+        Flux<Void> queuesCreateStream = Flux.empty();
         if (this.queuesToCreate.size() > 0) {
-            queuesCreateStream = this.queues().createAsync(this.queuesToCreate);
+            queuesCreateStream = this.queues().createAsync(this.queuesToCreate).then().flux();
         }
-        Observable<?> topicsCreateStream = Observable.empty();
+        Flux<Void> topicsCreateStream = Flux.empty();
         if (this.topicsToCreate.size() > 0) {
-            topicsCreateStream = this.topics().createAsync(this.topicsToCreate);
+            topicsCreateStream = this.topics().createAsync(this.topicsToCreate).then().flux();
         }
-        Observable<?> rulesCreateStream = Observable.empty();
+        Flux<Void> rulesCreateStream = Flux.empty();
         if (this.rulesToCreate.size() > 0) {
-            rulesCreateStream = this.authorizationRules().createAsync(this.rulesToCreate);
+            rulesCreateStream = this.authorizationRules().createAsync(this.rulesToCreate).then().flux();
         }
-        Observable<?> queuesDeleteStream = Observable.empty();
+        Flux<Void> queuesDeleteStream = Flux.empty();
         if (this.queuesToDelete.size() > 0) {
             queuesDeleteStream = this.queues().deleteByNameAsync(this.queuesToDelete);
         }
-        Observable<?> topicsDeleteStream = Observable.empty();
+        Flux<Void> topicsDeleteStream = Flux.empty();
         if (this.topicsToDelete.size() > 0) {
             topicsDeleteStream = this.topics().deleteByNameAsync(this.topicsToDelete);
         }
-        Observable<?> rulesDeleteStream = Observable.empty();
+        Flux<Void> rulesDeleteStream = Flux.empty();
         if (this.rulesToDelete.size() > 0) {
             rulesDeleteStream = this.authorizationRules().deleteByNameAsync(this.rulesToDelete);
         }
-        return Completable.mergeDelayError(queuesCreateStream.toCompletable(),
-                topicsCreateStream.toCompletable(),
-                rulesCreateStream.toCompletable(),
-                queuesDeleteStream.toCompletable(),
-                topicsDeleteStream.toCompletable(),
-                rulesDeleteStream.toCompletable());
+        return Flux.mergeDelayError(32,
+            queuesCreateStream,
+            topicsCreateStream,
+            rulesCreateStream,
+            queuesDeleteStream,
+            topicsDeleteStream,
+            rulesDeleteStream);
+    }
+
+    private NamespaceCreateOrUpdateParameters prepareForCreate(NamespaceResourceInner inner) {
+        return new NamespaceCreateOrUpdateParameters()
+            .withSku(inner.sku())
+            .withStatus(inner.status())
+            .withEnabled(inner.enabled())
+            .withCreateAcsNamespace(inner.createAcsNamespace())
+            .withLocation(inner.location())
+            .withTags(inner.tags());
     }
 }

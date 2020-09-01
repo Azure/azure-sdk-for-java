@@ -1,37 +1,38 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.servicebus.implementation;
 
+import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
+import com.azure.resourcemanager.servicebus.fluent.inner.TopicResourceInner;
 import com.azure.resourcemanager.servicebus.models.EntityStatus;
 import com.azure.resourcemanager.servicebus.models.ServiceBusSubscription;
 import com.azure.resourcemanager.servicebus.models.Topic;
 import com.azure.resourcemanager.servicebus.models.TopicAuthorizationRule;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
-import org.joda.time.DateTime;
-import org.joda.time.Period;
-import rx.Completable;
-import rx.Observable;
-import rx.functions.Action0;
-import rx.functions.Func1;
+import com.azure.resourcemanager.servicebus.models.TopicCreateOrUpdateParameters;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Implementation for Topic.
  */
-@LangDefinition
-class TopicImpl extends IndependentChildResourceImpl<Topic, ServiceBusNamespaceImpl, TopicInner, TopicImpl, ServiceBusManager>
-        implements
+class TopicImpl
+    extends IndependentChildResourceImpl<
+        Topic,
+        ServiceBusNamespaceImpl,
+        TopicResourceInner,
+        TopicImpl,
+        ServiceBusManager>
+    implements
         Topic,
         Topic.Definition,
         Topic.Update {
@@ -44,7 +45,7 @@ class TopicImpl extends IndependentChildResourceImpl<Topic, ServiceBusNamespaceI
               String namespaceName,
               String name,
               Region region,
-              TopicInner inner,
+              TopicResourceInner inner,
               ServiceBusManager manager) {
         super(name, inner, manager);
         this.withExistingParentResource(resourceGroupName, namespaceName);
@@ -55,17 +56,17 @@ class TopicImpl extends IndependentChildResourceImpl<Topic, ServiceBusNamespaceI
     }
 
     @Override
-    public DateTime createdAt() {
+    public OffsetDateTime createdAt() {
         return this.inner().createdAt();
     }
 
     @Override
-    public DateTime accessedAt() {
+    public OffsetDateTime accessedAt() {
         return this.inner().accessedAt();
     }
 
     @Override
-    public DateTime updatedAt() {
+    public OffsetDateTime updatedAt() {
         return this.inner().updatedAt();
     }
 
@@ -109,31 +110,19 @@ class TopicImpl extends IndependentChildResourceImpl<Topic, ServiceBusNamespaceI
     }
 
     @Override
-    public Period defaultMessageTtlDuration() {
+    public Duration defaultMessageTtlDuration() {
         if (this.inner().defaultMessageTimeToLive() == null) {
             return null;
         }
-        TimeSpan timeSpan = TimeSpan.parse(this.inner().defaultMessageTimeToLive());
-        return new Period()
-                .withDays(timeSpan.days())
-                .withHours(timeSpan.hours())
-                .withMinutes(timeSpan.minutes())
-                .withSeconds(timeSpan.seconds())
-                .withMillis(timeSpan.milliseconds());
+        return TimeSpan.parse(this.inner().defaultMessageTimeToLive()).totalMillisDuration();
     }
 
     @Override
-    public Period duplicateMessageDetectionHistoryDuration() {
+    public Duration duplicateMessageDetectionHistoryDuration() {
         if (this.inner().duplicateDetectionHistoryTimeWindow() == null) {
             return null;
         }
-        TimeSpan timeSpan = TimeSpan.parse(this.inner().duplicateDetectionHistoryTimeWindow());
-        return new Period()
-                .withDays(timeSpan.days())
-                .withHours(timeSpan.hours())
-                .withMinutes(timeSpan.minutes())
-                .withSeconds(timeSpan.seconds())
-                .withMillis(timeSpan.milliseconds());
+        return TimeSpan.parse(this.inner().duplicateDetectionHistoryTimeWindow()).totalMillisDuration();
     }
 
     @Override
@@ -238,8 +227,8 @@ class TopicImpl extends IndependentChildResourceImpl<Topic, ServiceBusNamespaceI
     }
 
     @Override
-    public TopicImpl withDefaultMessageTTL(Period ttl) {
-        this.inner().withDefaultMessageTimeToLive(TimeSpan.fromPeriod(ttl).toString());
+    public TopicImpl withDefaultMessageTTL(Duration ttl) {
+        this.inner().withDefaultMessageTimeToLive(TimeSpan.fromDuration(ttl).toString());
         return this;
     }
 
@@ -268,18 +257,18 @@ class TopicImpl extends IndependentChildResourceImpl<Topic, ServiceBusNamespaceI
     }
 
     @Override
-    public TopicImpl withDuplicateMessageDetection(Period duplicateDetectionHistoryDuration) {
+    public TopicImpl withDuplicateMessageDetection(Duration duplicateDetectionHistoryDuration) {
         this.inner().withRequiresDuplicateDetection(true);
         this.inner().withDuplicateDetectionHistoryTimeWindow(TimeSpan
-                .fromPeriod(duplicateDetectionHistoryDuration)
+                .fromDuration(duplicateDetectionHistoryDuration)
                 .toString());
         return this;
     }
 
     @Override
-    public TopicImpl withDuplicateMessageDetectionHistoryDuration(Period duration) {
+    public TopicImpl withDuplicateMessageDetectionHistoryDuration(Duration duration) {
         this.inner().withDuplicateDetectionHistoryTimeWindow(TimeSpan
-                .fromPeriod(duration)
+                .fromDuration(duration)
                 .toString());
         // Below shortcut cannot be used as 'withRequiresDuplicateDetection' cannot be changed
         // once the topic is created.
@@ -330,37 +319,29 @@ class TopicImpl extends IndependentChildResourceImpl<Topic, ServiceBusNamespaceI
     }
 
     @Override
-    protected Observable<TopicInner> getInnerAsync() {
-        return this.manager().inner().topics()
+    protected Mono<TopicResourceInner> getInnerAsync() {
+        return this.manager().inner().getTopics()
                 .getAsync(this.resourceGroupName(),
                         this.parentName,
                         this.name());
     }
 
     @Override
-    protected Observable<Topic> createChildResourceAsync() {
-        Completable createTopicCompletable = this.manager().inner().topics()
-                .createOrUpdateAsync(this.resourceGroupName(),
-                        this.parentName,
-                        this.name(),
-                        this.inner())
-                .map(new Func1<TopicInner, TopicInner>() {
-                    @Override
-                    public TopicInner call(TopicInner inner) {
-                        setInner(inner);
-                        return inner;
-                    }
-                }).toCompletable();
-        Completable childrenOperationsCompletable = submitChildrenOperationsAsync();
+    protected Mono<Topic> createChildResourceAsync() {
+        Mono<TopicResourceInner> createTask = this.manager().inner().getTopics()
+            .createOrUpdateAsync(this.resourceGroupName(),
+                    this.parentName,
+                    this.name(),
+                    prepareForCreate(this.inner()))
+            .map(inner -> {
+                setInner(inner);
+                return inner;
+            });
+        Flux<Void> childOperationTasks = submitChildrenOperationsAsync();
         final Topic self = this;
-        return Completable.concat(createTopicCompletable, childrenOperationsCompletable)
-                .doOnTerminate(new Action0() {
-                    @Override
-                    public void call() {
-                        initChildrenOperationsCache();
-                    }
-                })
-                .andThen(Observable.just(self));
+        return Flux.concat(createTask, childOperationTasks)
+            .doOnTerminate(() -> initChildrenOperationsCache())
+            .then(Mono.just(self));
     }
 
     private void initChildrenOperationsCache() {
@@ -370,26 +351,46 @@ class TopicImpl extends IndependentChildResourceImpl<Topic, ServiceBusNamespaceI
         this.rulesToDelete = new ArrayList<>();
     }
 
-    private Completable submitChildrenOperationsAsync() {
-        Observable<?> subscriptionsCreateStream = Observable.empty();
+    private Flux<Void> submitChildrenOperationsAsync() {
+        Flux<Void> subscriptionsCreateStream = Flux.empty();
         if (this.subscriptionsToCreate.size() > 0) {
-            subscriptionsCreateStream = this.subscriptions().createAsync(this.subscriptionsToCreate);
+            subscriptionsCreateStream = this.subscriptions().createAsync(this.subscriptionsToCreate).then().flux();
         }
-        Observable<?> rulesCreateStream = Observable.empty();
+        Flux<Void> rulesCreateStream = Flux.empty();
         if (this.rulesToCreate.size() > 0) {
-            rulesCreateStream = this.authorizationRules().createAsync(this.rulesToCreate);
+            rulesCreateStream = this.authorizationRules().createAsync(this.rulesToCreate).then().flux();
         }
-        Observable<?> subscriptionsDeleteStream = Observable.empty();
+        Flux<Void> subscriptionsDeleteStream = Flux.empty();
         if (this.subscriptionsToDelete.size() > 0) {
             subscriptionsDeleteStream = this.subscriptions().deleteByNameAsync(this.subscriptionsToDelete);
         }
-        Observable<?> rulesDeleteStream = Observable.empty();
+        Flux<Void> rulesDeleteStream = Flux.empty();
         if (this.rulesToDelete.size() > 0) {
             rulesDeleteStream = this.authorizationRules().deleteByNameAsync(this.rulesToDelete);
         }
-        return Completable.mergeDelayError(subscriptionsCreateStream.toCompletable(),
-                rulesCreateStream.toCompletable(),
-                subscriptionsDeleteStream.toCompletable(),
-                rulesDeleteStream.toCompletable());
+        return Flux.mergeDelayError(32,
+            subscriptionsCreateStream,
+            rulesCreateStream,
+            subscriptionsDeleteStream,
+            rulesDeleteStream);
+    }
+
+    private TopicCreateOrUpdateParameters prepareForCreate(TopicResourceInner inner) {
+        return new TopicCreateOrUpdateParameters()
+            .withAutoDeleteOnIdle(inner.autoDeleteOnIdle())
+            .withEntityAvailabilityStatus(inner.entityAvailabilityStatus())
+            .withDefaultMessageTimeToLive(inner.defaultMessageTimeToLive())
+            .withDuplicateDetectionHistoryTimeWindow(inner.duplicateDetectionHistoryTimeWindow())
+            .withEnableBatchedOperations(inner.enableBatchedOperations())
+            .withEnableExpress(inner.enableExpress())
+            .withEnablePartitioning(inner.enablePartitioning())
+            .withFilteringMessagesBeforePublishing(inner.filteringMessagesBeforePublishing())
+            .withIsAnonymousAccessible(inner.isAnonymousAccessible())
+            .withIsExpress(inner.isExpress())
+            .withMaxSizeInMegabytes(inner.maxSizeInMegabytes())
+            .withRequiresDuplicateDetection(inner.requiresDuplicateDetection())
+            .withStatus(inner.status())
+            .withSupportOrdering(inner.supportOrdering())
+            .withLocation(inner.location());
     }
 }

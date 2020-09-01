@@ -1,29 +1,26 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.servicebus.implementation;
 
+import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
+import com.azure.resourcemanager.servicebus.fluent.inner.ResourceListKeysInner;
+import com.azure.resourcemanager.servicebus.fluent.inner.SharedAccessAuthorizationRuleResourceInner;
 import com.azure.resourcemanager.servicebus.models.Policykey;
 import com.azure.resourcemanager.servicebus.models.TopicAuthorizationRule;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import rx.Observable;
-import rx.functions.Func1;
+import reactor.core.publisher.Mono;
 
 /**
  * Implementation for TopicAuthorizationRule.
  */
-@LangDefinition
-class TopicAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<TopicAuthorizationRule,
+class TopicAuthorizationRuleImpl
+    extends AuthorizationRuleBaseImpl<TopicAuthorizationRule,
         TopicImpl,
-        SharedAccessAuthorizationRuleInner,
+        SharedAccessAuthorizationRuleResourceInner,
         TopicAuthorizationRuleImpl,
-    ServiceBusManager>
-        implements
+        ServiceBusManager>
+    implements
         TopicAuthorizationRule,
         TopicAuthorizationRule.Definition,
         TopicAuthorizationRule.Update {
@@ -35,7 +32,7 @@ class TopicAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<TopicAuthoriz
                                String topicName,
                                String name,
                                Region region,
-                               SharedAccessAuthorizationRuleInner inner,
+                               SharedAccessAuthorizationRuleResourceInner inner,
                                ServiceBusManager manager) {
         super(name, inner, manager);
         this.namespaceName = namespaceName;
@@ -57,8 +54,8 @@ class TopicAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<TopicAuthoriz
     }
 
     @Override
-    protected Observable<SharedAccessAuthorizationRuleInner> getInnerAsync() {
-        return this.manager().inner().topics()
+    protected Mono<SharedAccessAuthorizationRuleResourceInner> getInnerAsync() {
+        return this.manager().inner().getTopics()
                 .getAuthorizationRuleAsync(this.resourceGroupName(),
                         this.namespaceName(),
                         this.topicName(),
@@ -66,24 +63,22 @@ class TopicAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<TopicAuthoriz
     }
 
     @Override
-    protected Observable<TopicAuthorizationRule> createChildResourceAsync() {
+    protected Mono<TopicAuthorizationRule> createChildResourceAsync() {
         final TopicAuthorizationRule self = this;
-        return this.manager().inner().topics().createOrUpdateAuthorizationRuleAsync(this.resourceGroupName(),
+        return this.manager().inner().getTopics().createOrUpdateAuthorizationRuleAsync(this.resourceGroupName(),
                 this.namespaceName(),
                 this.topicName(),
                 this.name(),
-                this.inner().rights()).map(new Func1<SharedAccessAuthorizationRuleInner, TopicAuthorizationRule>() {
-            @Override
-            public TopicAuthorizationRule call(SharedAccessAuthorizationRuleInner inner) {
+                prepareForCreate(this.inner()))
+            .map(inner -> {
                 setInner(inner);
                 return self;
-            }
-        });
+            });
     }
 
     @Override
-    protected Observable<ResourceListKeysInner> getKeysInnerAsync() {
-        return this.manager().inner().topics()
+    protected Mono<ResourceListKeysInner> getKeysInnerAsync() {
+        return this.manager().inner().getTopics()
                 .listKeysAsync(this.resourceGroupName(),
                         this.namespaceName(),
                         this.topicName(),
@@ -91,8 +86,8 @@ class TopicAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<TopicAuthoriz
     }
 
     @Override
-    protected Observable<ResourceListKeysInner> regenerateKeysInnerAsync(Policykey policykey) {
-        return this.manager().inner().topics().regenerateKeysAsync(this.resourceGroupName(),
+    protected Mono<ResourceListKeysInner> regenerateKeysInnerAsync(Policykey policykey) {
+        return this.manager().inner().getTopics().regenerateKeysAsync(this.resourceGroupName(),
                 this.namespaceName(),
                 this.topicName(),
                 this.name(),

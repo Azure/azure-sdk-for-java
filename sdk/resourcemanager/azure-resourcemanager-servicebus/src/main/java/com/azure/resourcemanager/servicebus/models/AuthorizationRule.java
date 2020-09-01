@@ -1,17 +1,14 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.servicebus.models;
 
-import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
-import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
+import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.IndependentChildResource;
+import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
+import com.azure.resourcemanager.servicebus.fluent.inner.SharedAccessAuthorizationRuleResourceInner;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
-import com.azure.resourcemanager.servicebus.implementation.SharedAccessAuthorizationRuleInner;
-import rx.Observable;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -22,8 +19,8 @@ import java.util.List;
  */
 @Fluent
 public interface AuthorizationRule<RuleT extends AuthorizationRule<RuleT>> extends
-        IndependentChildResource<ServiceBusManager, SharedAccessAuthorizationRuleInner>,
-        Refreshable<RuleT> {
+    IndependentChildResource<ServiceBusManager, SharedAccessAuthorizationRuleResourceInner>,
+    Refreshable<RuleT> {
 
     /**
      * @return rights associated with the rule
@@ -31,9 +28,10 @@ public interface AuthorizationRule<RuleT extends AuthorizationRule<RuleT>> exten
     List<AccessRights> rights();
 
     /**
-     * @return a representation of the deferred computation of this call, returning the primary, secondary keys and the connection strings
+     * @return a representation of the deferred computation of this call,
+     * returning the primary, secondary keys and the connection strings
      */
-    Observable<AuthorizationKeys> getKeysAsync();
+    Mono<AuthorizationKeys> getKeysAsync();
 
     /**
      * @return the primary, secondary keys and connection strings
@@ -44,9 +42,10 @@ public interface AuthorizationRule<RuleT extends AuthorizationRule<RuleT>> exten
      * Regenerates primary or secondary keys.
      *
      * @param policykey the key to regenerate
-     * @return a representation of the deferred computation of this call, returning the primary, secondary keys and the connection strings
+     * @return a representation of the deferred computation of this call,
+     * returning the primary, secondary keys and the connection strings
      */
-    Observable<AuthorizationKeys> regenerateKeyAsync(Policykey policykey);
+    Mono<AuthorizationKeys> regenerateKeyAsync(Policykey policykey);
 
     /**
      * Regenerates primary or secondary keys.

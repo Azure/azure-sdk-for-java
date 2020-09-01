@@ -1,15 +1,12 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.servicebus.models;
 
-import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
+import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
+import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 
 /**
  * Type representing authorization rule defined for queue.
@@ -17,7 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 @Fluent
 public interface QueueAuthorizationRule extends
     AuthorizationRule<QueueAuthorizationRule>,
-        Updatable<QueueAuthorizationRule.Update> {
+    Updatable<QueueAuthorizationRule.Update> {
     /**
      * @return the name of the namespace that the parent queue belongs to
      */
@@ -35,7 +32,8 @@ public interface QueueAuthorizationRule extends
         /**
          * The first stage of queue authorization rule definition.
          */
-        interface Blank extends AuthorizationRule.DefinitionStages.WithListenOrSendOrManage<QueueAuthorizationRule.DefinitionStages.WithCreate> {
+        interface Blank extends AuthorizationRule.DefinitionStages.WithListenOrSendOrManage<
+            QueueAuthorizationRule.DefinitionStages.WithCreate> {
         }
 
         /**
@@ -59,7 +57,7 @@ public interface QueueAuthorizationRule extends
      * The entirety of the queue authorization rule update.
      */
     interface Update extends
-            Appliable<QueueAuthorizationRule>,
-            AuthorizationRule.UpdateStages.WithListenOrSendOrManage<QueueAuthorizationRule.Update> {
+        Appliable<QueueAuthorizationRule>,
+        AuthorizationRule.UpdateStages.WithListenOrSendOrManage<QueueAuthorizationRule.Update> {
     }
 }

@@ -1,35 +1,29 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.servicebus.implementation;
 
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
+import com.azure.resourcemanager.servicebus.fluent.NamespacesClient;
+import com.azure.resourcemanager.servicebus.fluent.inner.NamespaceResourceInner;
 import com.azure.resourcemanager.servicebus.models.CheckNameAvailabilityResult;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespaces;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import rx.Observable;
-import rx.functions.Func1;
+import reactor.core.publisher.Mono;
 
 /**
  * Implementation for ServiceBusNamespaces.
  */
-@LangDefinition
-class ServiceBusNamespacesImpl extends TopLevelModifiableResourcesImpl<
+public final class ServiceBusNamespacesImpl extends TopLevelModifiableResourcesImpl<
     ServiceBusNamespace,
-        ServiceBusNamespaceImpl,
-        NamespaceInner,
-        NamespacesInner,
+    ServiceBusNamespaceImpl,
+    NamespaceResourceInner,
+    NamespacesClient,
     ServiceBusManager>
-        implements ServiceBusNamespaces {
+    implements ServiceBusNamespaces {
 
-    ServiceBusNamespacesImpl(NamespacesInner innerCollection, ServiceBusManager manager) {
+    public ServiceBusNamespacesImpl(NamespacesClient innerCollection, ServiceBusManager manager) {
         super(innerCollection, manager);
     }
 
@@ -40,33 +34,24 @@ class ServiceBusNamespacesImpl extends TopLevelModifiableResourcesImpl<
 
     @Override
     public CheckNameAvailabilityResult checkNameAvailability(String name) {
-        return this.checkNameAvailabilityAsync(name).toBlocking().last();
+        return this.checkNameAvailabilityAsync(name).block();
     }
 
     @Override
-    public Observable<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name) {
-        return this.inner().checkNameAvailabilityMethodAsync(name).map(new Func1<CheckNameAvailabilityResultInner, CheckNameAvailabilityResult>() {
-            @Override
-            public CheckNameAvailabilityResult call(CheckNameAvailabilityResultInner checkNameAvailabilityResultInner) {
-                return new CheckNameAvailabilityResultImpl(checkNameAvailabilityResultInner);
-            }
-        });
-    }
-
-    @Override
-    public ServiceFuture<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name, ServiceCallback<CheckNameAvailabilityResult> callback) {
-        return ServiceFuture.fromBody(this.checkNameAvailabilityAsync(name), callback);
+    public Mono<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name) {
+        return this.inner().checkNameAvailabilityAsync(name)
+            .map(inner -> new CheckNameAvailabilityResultImpl(inner));
     }
 
     @Override
     protected ServiceBusNamespaceImpl wrapModel(String name) {
         return new ServiceBusNamespaceImpl(name,
-                new NamespaceInner(),
+                new NamespaceResourceInner(),
                 this.manager());
     }
 
     @Override
-    protected ServiceBusNamespaceImpl wrapModel(NamespaceInner inner) {
+    protected ServiceBusNamespaceImpl wrapModel(NamespaceResourceInner inner) {
         return new ServiceBusNamespaceImpl(inner.name(),
                 inner,
                 this.manager());

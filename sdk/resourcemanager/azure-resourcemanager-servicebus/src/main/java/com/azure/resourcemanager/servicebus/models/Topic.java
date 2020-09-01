@@ -1,45 +1,43 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.servicebus.models;
 
-import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
-import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
-import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
-import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
+import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.IndependentChildResource;
+import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
+import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
+import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
+import com.azure.resourcemanager.servicebus.fluent.inner.TopicResourceInner;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
-import com.azure.resourcemanager.servicebus.implementation.TopicInner;
-import org.joda.time.DateTime;
-import org.joda.time.Period;
+
+import java.time.Duration;
+import java.time.OffsetDateTime;
 
 /**
  * Type representing Service Bus topic.
  */
 @Fluent
 public interface Topic extends
-        IndependentChildResource<ServiceBusManager, TopicInner>,
-        Refreshable<Topic>,
-        Updatable<Topic.Update>,
-        HasInner<TopicInner> {
+    IndependentChildResource<ServiceBusManager, TopicResourceInner>,
+    Refreshable<Topic>,
+    Updatable<Topic.Update>,
+    HasInner<TopicResourceInner> {
 
     /**
      * @return the exact time the topic was created
      */
-    DateTime createdAt();
+    OffsetDateTime createdAt();
     /**
      * @return last time a message was sent, or the last time there was a receive request to this topic
      */
-    DateTime accessedAt();
+    OffsetDateTime accessedAt();
     /**
      * @return the exact time the topic was updated
      */
-    DateTime updatedAt();
+    OffsetDateTime updatedAt();
     /**
      * @return the maximum size of memory allocated for the topic in megabytes
      */
@@ -71,11 +69,11 @@ public interface Topic extends
     /**
      * @return the duration after which the message expires, starting from when the message is sent to topic
      */
-    Period defaultMessageTtlDuration();
+    Duration defaultMessageTtlDuration();
     /**
      * @return the duration of the duplicate detection history
      */
-    Period duplicateMessageDetectionHistoryDuration();
+    Duration duplicateMessageDetectionHistoryDuration();
     /**
      * @return number of active messages in the topic
      */
@@ -192,7 +190,7 @@ public interface Topic extends
              * @param ttl time to live duration
              * @return the next stage of topic definition
              */
-            WithCreate withDefaultMessageTTL(Period ttl);
+            WithCreate withDefaultMessageTTL(Duration ttl);
         }
 
         /**
@@ -234,7 +232,7 @@ public interface Topic extends
              * @param duplicateDetectionHistoryDuration duration of the history
              * @return the next stage of topic definition
              */
-            WithCreate withDuplicateMessageDetection(Period duplicateDetectionHistoryDuration);
+            WithCreate withDuplicateMessageDetection(Duration duplicateDetectionHistoryDuration);
         }
 
         /**
@@ -284,16 +282,16 @@ public interface Topic extends
          * for any other optional settings to be specified.
          */
         interface WithCreate extends
-                Creatable<Topic>,
-                Topic.DefinitionStages.WithSize,
-                Topic.DefinitionStages.WithPartitioning,
-                Topic.DefinitionStages.WithDeleteOnIdle,
-                Topic.DefinitionStages.WithDefaultMessageTTL,
-                Topic.DefinitionStages.WithExpressMessage,
-                Topic.DefinitionStages.WithMessageBatching,
-                Topic.DefinitionStages.WithDuplicateMessageDetection,
-                Topic.DefinitionStages.WithSubscription,
-                Topic.DefinitionStages.WithAuthorizationRule {
+            Creatable<Topic>,
+            Topic.DefinitionStages.WithSize,
+            Topic.DefinitionStages.WithPartitioning,
+            Topic.DefinitionStages.WithDeleteOnIdle,
+            Topic.DefinitionStages.WithDefaultMessageTTL,
+            Topic.DefinitionStages.WithExpressMessage,
+            Topic.DefinitionStages.WithMessageBatching,
+            Topic.DefinitionStages.WithDuplicateMessageDetection,
+            Topic.DefinitionStages.WithSubscription,
+            Topic.DefinitionStages.WithAuthorizationRule {
         }
     }
 
@@ -301,15 +299,15 @@ public interface Topic extends
      * The template for a Service Bus topic update operation, containing all the settings that can be modified.
      */
     interface Update extends
-            Appliable<Topic>,
-            Topic.UpdateStages.WithSize,
-            Topic.UpdateStages.WithDeleteOnIdle,
-            Topic.UpdateStages.WithDefaultMessageTTL,
-            Topic.UpdateStages.WithExpressMessage,
-            Topic.UpdateStages.WithMessageBatching,
-            Topic.UpdateStages.WithDuplicateMessageDetection,
-            Topic.UpdateStages.WithSubscription,
-            Topic.UpdateStages.WithAuthorizationRule {
+        Appliable<Topic>,
+        Topic.UpdateStages.WithSize,
+        Topic.UpdateStages.WithDeleteOnIdle,
+        Topic.UpdateStages.WithDefaultMessageTTL,
+        Topic.UpdateStages.WithExpressMessage,
+        Topic.UpdateStages.WithMessageBatching,
+        Topic.UpdateStages.WithDuplicateMessageDetection,
+        Topic.UpdateStages.WithSubscription,
+        Topic.UpdateStages.WithAuthorizationRule {
     }
 
     /**
@@ -352,7 +350,7 @@ public interface Topic extends
              * @param ttl time to live duration
              * @return the next stage of topic update
              */
-            Update withDefaultMessageTTL(Period ttl);
+            Update withDefaultMessageTTL(Duration ttl);
         }
 
         /**
@@ -408,7 +406,7 @@ public interface Topic extends
              * @param duration duration of the history
              * @return the next stage of topic update
              */
-            Update withDuplicateMessageDetectionHistoryDuration(Period duration);
+            Update withDuplicateMessageDetectionHistoryDuration(Duration duration);
 
             /**
              * Specifies that duplicate message detection needs to be disabled.

@@ -1,29 +1,25 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.servicebus.implementation;
 
+import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
+import com.azure.resourcemanager.servicebus.fluent.inner.ResourceListKeysInner;
+import com.azure.resourcemanager.servicebus.fluent.inner.SharedAccessAuthorizationRuleResourceInner;
 import com.azure.resourcemanager.servicebus.models.Policykey;
 import com.azure.resourcemanager.servicebus.models.QueueAuthorizationRule;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import rx.Observable;
-import rx.functions.Func1;
+import reactor.core.publisher.Mono;
 
 /**
  * Implementation for QueueAuthorizationRule.
  */
-@LangDefinition
 class QueueAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<QueueAuthorizationRule,
         QueueImpl,
-        SharedAccessAuthorizationRuleInner,
+        SharedAccessAuthorizationRuleResourceInner,
         QueueAuthorizationRuleImpl,
-    ServiceBusManager>
-        implements
+        ServiceBusManager>
+    implements
         QueueAuthorizationRule,
         QueueAuthorizationRule.Definition,
         QueueAuthorizationRule.Update {
@@ -35,7 +31,7 @@ class QueueAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<QueueAuthoriz
                                String queueName,
                                String name,
                                Region region,
-                               SharedAccessAuthorizationRuleInner inner,
+                               SharedAccessAuthorizationRuleResourceInner inner,
                                ServiceBusManager manager) {
         super(name, inner, manager);
         this.namespaceName = namespaceName;
@@ -57,8 +53,8 @@ class QueueAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<QueueAuthoriz
     }
 
     @Override
-    protected Observable<SharedAccessAuthorizationRuleInner> getInnerAsync() {
-        return this.manager().inner().queues()
+    protected Mono<SharedAccessAuthorizationRuleResourceInner> getInnerAsync() {
+        return this.manager().inner().getQueues()
                 .getAuthorizationRuleAsync(this.resourceGroupName(),
                         this.namespaceName(),
                         this.queueName(),
@@ -66,24 +62,22 @@ class QueueAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<QueueAuthoriz
     }
 
     @Override
-    protected Observable<QueueAuthorizationRule> createChildResourceAsync() {
+    protected Mono<QueueAuthorizationRule> createChildResourceAsync() {
         final QueueAuthorizationRule self = this;
-        return this.manager().inner().queues().createOrUpdateAuthorizationRuleAsync(this.resourceGroupName(),
+        return this.manager().inner().getQueues().createOrUpdateAuthorizationRuleAsync(this.resourceGroupName(),
                 this.namespaceName(),
                 this.queueName(),
                 this.name(),
-                this.inner().rights()).map(new Func1<SharedAccessAuthorizationRuleInner, QueueAuthorizationRule>() {
-            @Override
-            public QueueAuthorizationRule call(SharedAccessAuthorizationRuleInner inner) {
+                prepareForCreate(this.inner()))
+            .map(inner -> {
                 setInner(inner);
                 return self;
-            }
-        });
+            });
     }
 
     @Override
-    protected Observable<ResourceListKeysInner> getKeysInnerAsync() {
-        return this.manager().inner().queues()
+    protected Mono<ResourceListKeysInner> getKeysInnerAsync() {
+        return this.manager().inner().getQueues()
                 .listKeysAsync(this.resourceGroupName(),
                         this.namespaceName(),
                         this.queueName(),
@@ -91,8 +85,8 @@ class QueueAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<QueueAuthoriz
     }
 
     @Override
-    protected Observable<ResourceListKeysInner> regenerateKeysInnerAsync(Policykey policykey) {
-        return this.manager().inner().queues()
+    protected Mono<ResourceListKeysInner> regenerateKeysInnerAsync(Policykey policykey) {
+        return this.manager().inner().getQueues()
                 .regenerateKeysAsync(this.resourceGroupName(),
                         this.namespaceName(),
                         this.queueName(),

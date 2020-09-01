@@ -1,29 +1,27 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.resourcemanager.servicebus.models;
 
-import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByNameAsync;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingByName;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
-import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByName;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingByName;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.servicebus.fluent.SubscriptionsClient;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
-import com.azure.resourcemanager.servicebus.implementation.SubscriptionsInner;
 
 /**
  * Entry point to service bus queue management API in Azure.
  */
 @Fluent
 public interface ServiceBusSubscriptions extends
-        SupportsCreating<ServiceBusSubscription.DefinitionStages.Blank>,
-        SupportsListing<ServiceBusSubscription>,
-        SupportsGettingByNameAsync<ServiceBusSubscription>,
-        SupportsDeletingByName,
-        HasManager<ServiceBusManager>,
-        HasInner<SubscriptionsInner> {
+    SupportsCreating<ServiceBusSubscription.DefinitionStages.Blank>,
+    SupportsListing<ServiceBusSubscription>,
+    SupportsGettingByName<ServiceBusSubscription>,
+    SupportsDeletingByName,
+    HasManager<ServiceBusManager>,
+    HasInner<SubscriptionsClient> {
 }
