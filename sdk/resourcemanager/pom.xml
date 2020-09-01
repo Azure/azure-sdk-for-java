@@ -29,6 +29,7 @@
     <module>azure-resourcemanager-redis</module>
     <module>azure-resourcemanager-samples</module>
     <module>azure-resourcemanager-sql</module>
+    <module>azure-resourcemanager-servicebus</module>
     <module>azure-resourcemanager-storage</module>
     <module>azure-resourcemanager-test</module>
   </modules>
