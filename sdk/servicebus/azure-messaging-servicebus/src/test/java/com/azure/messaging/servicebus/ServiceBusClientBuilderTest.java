@@ -27,6 +27,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ServiceBusClientBuilderTest {
     private static final String NAMESPACE_NAME = "dummyNamespaceName";
@@ -35,6 +36,7 @@ class ServiceBusClientBuilderTest {
     private static final String QUEUE_NAME = "test-queue-name";
     private static final String VIA_QUEUE_NAME = "test-via-queue-name";
     private static final String TOPIC_NAME = "test-topic-name";
+    private static final String VIA_TOPIC_NAME = "test-via-queue-name";
     private static final String SHARED_ACCESS_KEY_NAME = "dummySasKeyName";
     private static final String SHARED_ACCESS_KEY = "dummySasKey";
     private static final String ENDPOINT = getUri(ENDPOINT_FORMAT, NAMESPACE_NAME, DEFAULT_DOMAIN_NAME).toString();
@@ -64,6 +66,19 @@ class ServiceBusClientBuilderTest {
     }
 
     @Test
+    void viaTopicNameWithQueueNotAllowed() {
+        // Arrange
+        ServiceBusSenderClientBuilder builder = new ServiceBusClientBuilder()
+            .connectionString(NAMESPACE_CONNECTION_STRING)
+            .sender()
+            .queueName(QUEUE_NAME)
+            .viaTopicName(VIA_TOPIC_NAME);
+
+        // Act & Assert
+        assertThrows(IllegalStateException.class, () -> builder.buildAsyncClient());
+    }
+
+    @Test
     void queueClientWithViaQueueName() {
         // Arrange
         final ServiceBusSenderClientBuilder builder = new ServiceBusClientBuilder()
@@ -77,6 +92,24 @@ class ServiceBusClientBuilderTest {
 
         // Assert
         assertNotNull(client);
+        assertEquals(client.getEntityPath(), QUEUE_NAME);
+    }
+
+    @Test
+    void topicClientWithViaTopicName() {
+        // Arrange
+        final ServiceBusSenderClientBuilder builder = new ServiceBusClientBuilder()
+            .connectionString(NAMESPACE_CONNECTION_STRING)
+            .sender()
+            .topicName(TOPIC_NAME)
+            .viaTopicName(VIA_TOPIC_NAME);
+
+        // Act
+        final ServiceBusSenderAsyncClient client = builder.buildAsyncClient();
+
+        // Assert
+        assertNotNull(client);
+        assertEquals(client.getEntityPath(), TOPIC_NAME);
     }
 
     @Test

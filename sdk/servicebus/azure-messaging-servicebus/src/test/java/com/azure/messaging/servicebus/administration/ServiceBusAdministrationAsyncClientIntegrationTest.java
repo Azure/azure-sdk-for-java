@@ -17,11 +17,11 @@ import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOp
 import com.azure.messaging.servicebus.administration.models.CreateTopicOptions;
 import com.azure.messaging.servicebus.administration.models.EmptyRuleAction;
 import com.azure.messaging.servicebus.administration.models.NamespaceType;
-import com.azure.messaging.servicebus.administration.models.QueueRuntimeInfo;
-import com.azure.messaging.servicebus.administration.models.RuleProperties;
-import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeInfo;
+import com.azure.messaging.servicebus.administration.models.QueueRuntimeProperties;
+import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeProperties;
 import com.azure.messaging.servicebus.administration.models.TopicProperties;
-import com.azure.messaging.servicebus.administration.models.TopicRuntimeInfo;
+import com.azure.messaging.servicebus.administration.models.TopicRuntimeProperties;
+import com.azure.messaging.servicebus.administration.models.RuleProperties;
 import com.azure.messaging.servicebus.administration.models.TrueRuleFilter;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -73,7 +73,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
         final String queueName = testResourceNamer.randomName("test", 10);
         final CreateQueueOptions expected = new CreateQueueOptions()
-            .setMaxSizeInMegabytes(500)
+            .setMaxSizeInMegabytes(1024)
             .setMaxDeliveryCount(7)
             .setLockDuration(Duration.ofSeconds(45))
             .setRequiresSession(true)
@@ -96,10 +96,10 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
                 assertEquals(expected.requiresDuplicateDetection(), actual.requiresDuplicateDetection());
                 assertEquals(expected.requiresSession(), actual.requiresSession());
 
-                final QueueRuntimeInfo runtimeInfo = new QueueRuntimeInfo(actual);
-                assertEquals(0, runtimeInfo.getTotalMessageCount());
-                assertEquals(0, runtimeInfo.getSizeInBytes());
-                assertNotNull(runtimeInfo.getCreatedAt());
+                final QueueRuntimeProperties runtimeProperties = new QueueRuntimeProperties(actual);
+                assertEquals(0, runtimeProperties.getTotalMessageCount());
+                assertEquals(0, runtimeProperties.getSizeInBytes());
+                assertNotNull(runtimeProperties.getCreatedAt());
             })
             .verifyComplete();
     }
@@ -196,10 +196,10 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
                 assertEquals(expected.enablePartitioning(), actual.enablePartitioning());
                 assertEquals(expected.requiresDuplicateDetection(), actual.requiresDuplicateDetection());
 
-                final TopicRuntimeInfo runtimeInfo = new TopicRuntimeInfo(actual);
-                assertEquals(0, runtimeInfo.getSubscriptionCount());
-                assertEquals(0, runtimeInfo.getSizeInBytes());
-                assertNotNull(runtimeInfo.getCreatedAt());
+                final TopicRuntimeProperties runtimeProperties = new TopicRuntimeProperties(actual);
+                assertEquals(0, runtimeProperties.getSubscriptionCount());
+                assertEquals(0, runtimeProperties.getSizeInBytes());
+                assertNotNull(runtimeProperties.getCreatedAt());
             })
             .verifyComplete();
     }
@@ -267,10 +267,10 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
                 assertFalse(queueDescription.requiresSession());
                 assertNotNull(queueDescription.getLockDuration());
 
-                final QueueRuntimeInfo runtimeInfo = new QueueRuntimeInfo(queueDescription);
-                assertNotNull(runtimeInfo.getCreatedAt());
-                assertTrue(nowUtc.isAfter(runtimeInfo.getCreatedAt()));
-                assertNotNull(runtimeInfo.getAccessedAt());
+                final QueueRuntimeProperties runtimeProperties = new QueueRuntimeProperties(queueDescription);
+                assertNotNull(runtimeProperties.getCreatedAt());
+                assertTrue(nowUtc.isAfter(runtimeProperties.getCreatedAt()));
+                assertNotNull(runtimeProperties.getAccessedAt());
             })
             .verifyComplete();
     }
@@ -340,7 +340,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
 
     @ParameterizedTest
     @MethodSource("createHttpClients")
-    void getQueueRuntimeInfo(HttpClient httpClient) {
+    void getQueueRuntimeProperties(HttpClient httpClient) {
         // Arrange
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
         final String queueName = interceptorManager.isPlaybackMode()
@@ -349,13 +349,13 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
 
         // Act & Assert
-        StepVerifier.create(client.getQueueRuntimeInfo(queueName))
-            .assertNext(runtimeInfo -> {
-                assertEquals(queueName, runtimeInfo.getName());
+        StepVerifier.create(client.getQueueRuntimeProperties(queueName))
+            .assertNext(RuntimeProperties -> {
+                assertEquals(queueName, RuntimeProperties.getName());
 
-                assertNotNull(runtimeInfo.getCreatedAt());
-                assertTrue(nowUtc.isAfter(runtimeInfo.getCreatedAt()));
-                assertNotNull(runtimeInfo.getAccessedAt());
+                assertNotNull(RuntimeProperties.getCreatedAt());
+                assertTrue(nowUtc.isAfter(RuntimeProperties.getCreatedAt()));
+                assertNotNull(RuntimeProperties.getAccessedAt());
             })
             .verifyComplete();
     }
@@ -413,10 +413,10 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
                 assertTrue(description.requiresSession());
                 assertNotNull(description.getLockDuration());
 
-                final SubscriptionRuntimeInfo runtimeInfo = new SubscriptionRuntimeInfo(description);
-                assertNotNull(runtimeInfo.getCreatedAt());
-                assertTrue(nowUtc.isAfter(runtimeInfo.getCreatedAt()));
-                assertNotNull(runtimeInfo.getAccessedAt());
+                final SubscriptionRuntimeProperties runtimeProperties = new SubscriptionRuntimeProperties(description);
+                assertNotNull(runtimeProperties.getCreatedAt());
+                assertTrue(nowUtc.isAfter(runtimeProperties.getCreatedAt()));
+                assertNotNull(runtimeProperties.getAccessedAt());
             })
             .verifyComplete();
     }
@@ -469,7 +469,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
 
     @ParameterizedTest
     @MethodSource("createHttpClients")
-    void getSubscriptionRuntimeInfo(HttpClient httpClient) {
+    void getSubscriptionRuntimeProperties(HttpClient httpClient) {
         // Arrange
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
         final String topicName = interceptorManager.isPlaybackMode() ? "topic-1" : getEntityName(getTopicBaseName(), 1);
@@ -479,17 +479,16 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
 
         // Act & Assert
-        StepVerifier.create(client.getSubscriptionRuntimeInfo(topicName, subscriptionName))
+        StepVerifier.create(client.getSubscriptionRuntimeProperties(topicName, subscriptionName))
             .assertNext(description -> {
                 assertEquals(topicName, description.getTopicName());
                 assertEquals(subscriptionName, description.getSubscriptionName());
 
                 assertTrue(description.getTotalMessageCount() >= 0);
                 assertEquals(0, description.getActiveMessageCount());
-                assertEquals(0, description.getScheduledMessageCount());
                 assertEquals(0, description.getTransferDeadLetterMessageCount());
                 assertEquals(0, description.getTransferMessageCount());
-                assertEquals(0, description.getDeadLetterMessageCount());
+                assertTrue(description.getDeadLetterMessageCount() >= 0);
 
                 assertNotNull(description.getCreatedAt());
                 assertTrue(nowUtc.isAfter(description.getCreatedAt()));
@@ -519,10 +518,10 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
                 assertNotNull(topicDescription.getDefaultMessageTimeToLive());
                 assertFalse(topicDescription.enablePartitioning());
 
-                final TopicRuntimeInfo runtimeInfo = new TopicRuntimeInfo(topicDescription);
-                assertNotNull(runtimeInfo.getCreatedAt());
-                assertTrue(nowUtc.isAfter(runtimeInfo.getCreatedAt()));
-                assertNotNull(runtimeInfo.getAccessedAt());
+                final TopicRuntimeProperties runtimeProperties = new TopicRuntimeProperties(topicDescription);
+                assertNotNull(runtimeProperties.getCreatedAt());
+                assertTrue(nowUtc.isAfter(runtimeProperties.getCreatedAt()));
+                assertNotNull(runtimeProperties.getAccessedAt());
             })
             .verifyComplete();
     }
@@ -580,7 +579,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
 
     @ParameterizedTest
     @MethodSource("createHttpClients")
-    void getTopicRuntimeInfo(HttpClient httpClient) {
+    void getTopicRuntimeProperties(HttpClient httpClient) {
         // Arrange
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
         final String topicName = interceptorManager.isPlaybackMode()
@@ -589,20 +588,22 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
 
         // Act & Assert
-        StepVerifier.create(client.getTopicRuntimeInfo(topicName))
-            .assertNext(runtimeInfo -> {
-                assertEquals(topicName, runtimeInfo.getName());
+        StepVerifier.create(client.getTopicRuntimeProperties(topicName))
+            .assertNext(RuntimeProperties -> {
+                assertEquals(topicName, RuntimeProperties.getName());
 
                 if (interceptorManager.isPlaybackMode()) {
-                    assertEquals(3, runtimeInfo.getSubscriptionCount());
+                    assertEquals(3, RuntimeProperties.getSubscriptionCount());
                 } else {
-                    assertTrue(runtimeInfo.getSubscriptionCount() > 1);
+                    assertTrue(RuntimeProperties.getSubscriptionCount() > 1);
                 }
 
-                assertNotNull(runtimeInfo.getCreatedAt());
-                assertTrue(nowUtc.isAfter(runtimeInfo.getCreatedAt()));
-                assertNotNull(runtimeInfo.getAccessedAt());
-                assertTrue(nowUtc.isAfter(runtimeInfo.getAccessedAt()));
+                assertNotNull(RuntimeProperties.getCreatedAt());
+                assertTrue(nowUtc.isAfter(RuntimeProperties.getCreatedAt()));
+                assertNotNull(RuntimeProperties.getAccessedAt());
+                assertTrue(nowUtc.isAfter(RuntimeProperties.getAccessedAt()));
+                assertEquals(0, RuntimeProperties.getScheduledMessageCount());
+
             })
             .verifyComplete();
     }

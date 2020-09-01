@@ -10,10 +10,10 @@ import java.time.OffsetDateTime;
 import java.util.Objects;
 
 /**
- * Runtime information about a subscription.
+ * Runtime properties about a subscription.
  */
 @Immutable
-public class SubscriptionRuntimeInfo {
+public class SubscriptionRuntimeProperties {
     private final String subscriptionName;
     private final String topicName;
     private final long messageCount;
@@ -22,7 +22,6 @@ public class SubscriptionRuntimeInfo {
     private final OffsetDateTime updatedAt;
     private final int activeMessageCount;
     private final int deadLetterMessageCount;
-    private final int scheduledMessageCount;
     private final int transferDeadLetterMessageCount;
     private final int transferMessageCount;
 
@@ -30,11 +29,11 @@ public class SubscriptionRuntimeInfo {
     /**
      * Creates a new instance with runtime properties extracted from the given SubscriptionDescription.
      *
-     * @param subscriptionProperties Subscription description to extract runtime information from.
+     * @param subscriptionProperties Subscription description to extract runtime properties from.
      *
      * @throws NullPointerException if {@code subscriptionDescription} is null.
      */
-    public SubscriptionRuntimeInfo(SubscriptionProperties subscriptionProperties) {
+    public SubscriptionRuntimeProperties(SubscriptionProperties subscriptionProperties) {
         Objects.requireNonNull(subscriptionProperties, "'subscriptionProperties' cannot be null.");
         this.subscriptionName = subscriptionProperties.getSubscriptionName();
         this.topicName = subscriptionProperties.getTopicName();
@@ -46,7 +45,6 @@ public class SubscriptionRuntimeInfo {
         final MessageCountDetails details = subscriptionProperties.getMessageCountDetails();
         this.activeMessageCount = details != null ? details.getActiveMessageCount() : 0;
         this.deadLetterMessageCount = details != null ? details.getDeadLetterMessageCount() : 0;
-        this.scheduledMessageCount = details != null ? details.getScheduledMessageCount() : 0;
         this.transferDeadLetterMessageCount = details != null ? details.getTransferDeadLetterMessageCount() : 0;
         this.transferMessageCount = details != null ? details.getTransferMessageCount() : 0;
     }
@@ -94,15 +92,6 @@ public class SubscriptionRuntimeInfo {
      */
     public long getTotalMessageCount() {
         return messageCount;
-    }
-
-    /**
-     * Get the scheduledMessageCount property: Number of scheduled messages.
-     *
-     * @return the scheduledMessageCount value.
-     */
-    public int getScheduledMessageCount() {
-        return this.scheduledMessageCount;
     }
 
     /**
