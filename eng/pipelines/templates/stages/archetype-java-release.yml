@@ -52,42 +52,42 @@ stages:
         dependsOn: Signing
         condition: and(succeeded(), ne(variables['SetDevVersion'], 'true'), ne(variables['Skip.Release'], 'true'), ne(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-java-pr'))
         jobs:
-          - job: VerifyReleaseVersion
-            displayName: "Verify release version"
-            condition: ne(variables['Skip.VersionVerification'], 'true')
-            variables:
-              - template: ../variables/globals.yml
-            pool:
-              vmImage: ubuntu-18.04
+          # - job: VerifyReleaseVersion
+          #   displayName: "Verify release version"
+          #   condition: ne(variables['Skip.VersionVerification'], 'true')
+          #   variables:
+          #     - template: ../variables/globals.yml
+          #   pool:
+          #     vmImage: ubuntu-18.04
 
-            steps:
-              - task: UsePythonVersion@0
-                displayName: 'Use Python 3.6'
-                inputs:
-                  versionSpec: '3.6'
+          #   steps:
+          #     - task: UsePythonVersion@0
+          #       displayName: 'Use Python 3.6'
+          #       inputs:
+          #         versionSpec: '3.6'
 
-              - script: |
-                  python --version
-                  python eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --vv --ai ${{artifact.name}} --gi ${{artifact.groupId}}
-                displayName: 'Verify version for release'
+          #     - script: |
+          #         python --version
+          #         python eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --vv --ai ${{artifact.name}} --gi ${{artifact.groupId}}
+          #       displayName: 'Verify version for release'
 
-              - pwsh: |
-                  $(Build.SourcesDirectory)/eng/versioning/scan_for_unreleased_dependencies.ps1 ${{artifact.groupId}} ${{artifact.name}} $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
-                displayName: "Verify no unreleased dependencies"
+          #     - pwsh: |
+          #         $(Build.SourcesDirectory)/eng/versioning/scan_for_unreleased_dependencies.ps1 ${{artifact.groupId}} ${{artifact.name}} $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
+          #       displayName: "Verify no unreleased dependencies"
 
-              - ${{if ne(parameters.SDKType, 'data')}}:
-                - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
-                  parameters:
-                    PackageName: ${{artifact.name}}
-                    ServiceName: ${{parameters.ServiceDirectory}}
-                    ForRelease: true
+          #     - ${{if ne(parameters.SDKType, 'data')}}:
+          #       - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
+          #         parameters:
+          #           PackageName: ${{artifact.name}}
+          #           ServiceName: ${{parameters.ServiceDirectory}}
+          #           ForRelease: true
 
 
           - deployment: TagRepository
             displayName: "Create release tag"
             condition: and(succeeded(), ne(variables['Skip.TagRepository'], 'true'))
             environment: github
-            dependsOn: VerifyReleaseVersion
+            #dependsOn: VerifyReleaseVersion
             variables:
               - template: ../variables/globals.yml
             pool:
