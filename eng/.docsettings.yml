@@ -52,6 +52,7 @@ known_presence_issues:
   - ['sdk/core/azure-core-auth', '#2847']
   - ['sdk/core/azure-core-management', '#2847']
   - ['sdk/e2e', '#2847']
+  - ['sdk/eventgrid/azure-messaging-eventgrid', '#2847']
   - ['sdk/eventhubs/microsoft-azure-eventhubs-extensions', '#2847']
   - ['sdk/keyvault/microsoft-azure-keyvault', '#2847']
   - ['sdk/keyvault/microsoft-azure-keyvault-core', '#2847']
@@ -112,6 +113,7 @@ known_presence_issues:
 
 known_content_issues:
   - ['README.md', '#3113']
+  - ['sdk/anomalydetector/azure-ai-anomalydetector/swagger/README.md', '#3113']
   - ['sdk/applicationinsights/microsoft-azure-applicationinsights-query/README.md', '#3113']
   - ['sdk/authorization/microsoft-azure-authentication-msi-token-provider/README.md', '#3113']
   - ['sdk/batch/microsoft-azure-batch/README.md', '#3113']
@@ -127,6 +129,7 @@ known_content_issues:
   - ['sdk/cosmos/azure-cosmos/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-encryption/README.md', '#3113']
   - ['sdk/e2e/README.md', '#3113']
+  - ['sdk/eventgrid/azure-messaging-eventgrid/swagger/README.md', '#3113']
   - ['sdk/eventgrid/microsoft-azure-eventgrid/README.md', '#3113']
   - ['sdk/eventhubs/microsoft-azure-eventhubs-eph/README.md', '#3113']
   - ['sdk/eventhubs/README.md', '#3113']

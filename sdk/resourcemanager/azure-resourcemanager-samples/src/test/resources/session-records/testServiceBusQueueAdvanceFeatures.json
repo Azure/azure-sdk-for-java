@@ -326,7 +326,7 @@
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "c81e69e3-ddb0-43c5-bd95-3e16f03a035e_M5CH3_M5CH3",
-      "Body" : "{\"primaryConnectionString\":\"Endpoint=sb://namespace839795598.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=yFBUOgfUlL0FcO+gOTUk4/pW0VEBokoIKgpMtzTRNao=\",\"secondaryConnectionString\":\"Endpoint=sb://namespace839795598.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=NXIuxEXSYF5cxeOzBrj1l5Gl7p9F37r1k79xbg2plU8=\",\"primaryKey\":\"yFBUOgfUlL0FcO+gOTUk4/pW0VEBokoIKgpMtzTRNao=\",\"secondaryKey\":\"NXIuxEXSYF5cxeOzBrj1l5Gl7p9F37r1k79xbg2plU8=\",\"keyName\":\"RootManageSharedAccessKey\"}"
+      "Body" : "{\"primaryConnectionString\":\"Endpoint=sb://namespace839795598.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=***REMOVED***\",\"secondaryConnectionString\":\"Endpoint=sb://namespace839795598.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=***REMOVED***\",\"primaryKey\":\"***REMOVED***\",\"secondaryKey\":\"***REMOVED***\",\"keyName\":\"RootManageSharedAccessKey\"}"
     }
   }, {
     "Method" : "PUT",

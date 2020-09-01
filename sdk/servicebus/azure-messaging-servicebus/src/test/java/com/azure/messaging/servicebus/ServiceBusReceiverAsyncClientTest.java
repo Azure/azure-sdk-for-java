@@ -14,6 +14,7 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
+import com.azure.messaging.servicebus.administration.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessageWithLockToken;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
@@ -21,7 +22,6 @@ import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorReceiver;
-import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.LockRenewalStatus;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.amqp.messaging.Rejected;
@@ -50,6 +50,8 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -124,7 +126,7 @@ class ServiceBusReceiverAsyncClientTest {
     @Mock
     private Runnable onClientClose;
     @Mock
-    private Function<String, Mono<Instant>> renewalOperation;
+    private Function<String, Mono<OffsetDateTime>> renewalOperation;
 
     @BeforeAll
     static void beforeAll() {
@@ -168,11 +170,11 @@ class ServiceBusReceiverAsyncClientTest {
                     connectionOptions.getRetry()));
 
         receiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, maxAutoLockRenewalDuration), connectionProcessor, CLEANUP_INTERVAL,
+            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH), connectionProcessor, CLEANUP_INTERVAL,
             tracerProvider, messageSerializer, onClientClose);
 
         sessionReceiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, maxAutoLockRenewalDuration, "Some-Session", false, null),
+            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, "Some-Session", false, null),
             connectionProcessor, CLEANUP_INTERVAL, tracerProvider, messageSerializer, onClientClose);
     }
 
@@ -374,7 +376,7 @@ class ServiceBusReceiverAsyncClientTest {
      */
     @Test
     void completeInReceiveAndDeleteMode() {
-        final ReceiverOptions options = new ReceiverOptions(ReceiveMode.RECEIVE_AND_DELETE, PREFETCH, maxAutoLockRenewalDuration);
+        final ReceiverOptions options = new ReceiverOptions(ReceiveMode.RECEIVE_AND_DELETE, PREFETCH);
         ServiceBusReceiverAsyncClient client = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, options, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
             messageSerializer, onClientClose);
@@ -442,7 +444,7 @@ class ServiceBusReceiverAsyncClientTest {
             .setDeadLetterErrorDescription(description)
             .setPropertiesToModify(propertiesToModify);
 
-        final Instant expiration = Instant.now().plus(Duration.ofMinutes(5));
+        final OffsetDateTime expiration = OffsetDateTime.now().plus(Duration.ofMinutes(5));
 
         final MessageWithLockToken message = mock(MessageWithLockToken.class);
 
@@ -473,7 +475,7 @@ class ServiceBusReceiverAsyncClientTest {
         // Arrange
         final String lockToken1 = UUID.randomUUID().toString();
         final String lockToken2 = UUID.randomUUID().toString();
-        final Instant expiration = Instant.now().plus(Duration.ofMinutes(5));
+        final OffsetDateTime expiration = OffsetDateTime.now().plus(Duration.ofMinutes(5));
         final long sequenceNumber = 10L;
         final long sequenceNumber2 = 15L;
 
@@ -613,8 +615,7 @@ class ServiceBusReceiverAsyncClientTest {
         ServiceBusReceiverClientBuilder builder = new ServiceBusClientBuilder()
             .connectionString(NAMESPACE_CONNECTION_STRING)
             .receiver()
-            .topicName("baz").subscriptionName("bar")
-            .maxAutoLockRenewalDuration(Duration.ofSeconds(-1))
+            .topicName("baz").subscriptionName("bar").prefetchCount(-1)
             .receiveMode(ReceiveMode.PEEK_LOCK);
 
         // Act & Assert
@@ -734,7 +735,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(sessionReceiver.renewSessionLock(SESSION_ID))
-            .expectNext(expiry)
+            .expectNext(expiry.atOffset(ZoneOffset.UTC))
             .expectComplete()
             .verify();
     }
@@ -762,7 +763,7 @@ class ServiceBusReceiverAsyncClientTest {
         final Duration maxDuration = Duration.ofSeconds(8);
         final Duration renewalPeriod = Duration.ofSeconds(3);
         final String lockToken = "some-token";
-        final Instant startTime = Instant.now();
+        final OffsetDateTime startTime = OffsetDateTime.now();
 
         // At most 4 times because we renew the lock before it expires (by some seconds).
         final int atMost = 5;
@@ -795,7 +796,7 @@ class ServiceBusReceiverAsyncClientTest {
         final Duration maxDuration = Duration.ofSeconds(8);
         final Duration renewalPeriod = Duration.ofSeconds(3);
         final String sessionId = "some-token";
-        final Instant startTime = Instant.now();
+        final OffsetDateTime startTime = OffsetDateTime.now();
 
         // At most 4 times because we renew the lock before it expires (by some seconds).
         final int atMost = 5;

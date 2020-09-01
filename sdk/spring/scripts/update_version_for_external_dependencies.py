@@ -24,6 +24,7 @@ ROOT_POM_IDS = [
 SKIP_IDS = [
     'org.eclipse.jgit:org.eclipse.jgit'  # Refs: https://github.com/Azure/azure-sdk-for-java/pull/13956/files#r468368271
 ]
+MAVEN_NAME_SPACE = {'maven': 'http://maven.apache.org/POM/4.0.0'}
 
 
 def main():
@@ -33,6 +34,7 @@ def main():
     dependency_dict = {}
     for root_pom_id in ROOT_POM_IDS:
         update_dependency_dict(dependency_dict, root_pom_id)
+    output_version_dict_to_file(dependency_dict)
     update_version_for_external_dependencies(dependency_dict)
     elapsed_time = time.time() - start_time
     log.info('elapsed_time = {}'.format(elapsed_time))
@@ -66,48 +68,36 @@ def update_dependency_dict(dependency_dict, root_pom_id):
     q = queue.Queue()
     q.put(root_pom)
     pom_count = 1
-    log.info('Added root pom: {}, depth = {}.'.format(root_pom.to_url(), root_pom.depth))
+    log.info('Added root pom.depth = {}, url = {}.'.format(root_pom.depth, root_pom.to_url()))
     while not q.empty():
         pom = q.get()
         pom_url = pom.to_url()
-        log.info('Get dependencies from pom: {}, depth = {}.'.format(pom_url, pom.depth))
+        log.info('Get dependencies from pom. depth = {}, url = {}.'.format(pom.depth, pom_url))
         tree = elementTree.ElementTree(file = request.urlopen(pom_url))
         project_element = tree.getroot()
-        name_space = {'maven': 'http://maven.apache.org/POM/4.0.0'}
-        # get properties
-        properties = project_element.find('maven:properties', name_space)
         property_dict = {}
-        # some property contain 'project.version', so put 'project.version' into property_dict.
-        version_element = project_element.find('./maven:version', name_space)
-        if version_element is None:
-            version_element = project_element.find('./maven:parent/maven:version', name_space)
-        project_version = version_element.text.strip()
-        property_dict['project.version'] = project_version
-        # some property contain 'project.groupId', so put 'project.groupId' into property_dict.
-        group_id_element = project_element.find('./maven:groupId', name_space)
-        if group_id_element is None:
-            group_id_element = project_element.find('./maven:parent/maven:groupId', name_space)
-        group_id = group_id_element.text.strip()
-        property_dict['project.groupId'] = group_id
-        if properties is not None:
-            for p in properties:
-                key = p.tag.split('}', 1)[1]
-                value = p.text.strip(' ${}')
-                if value in property_dict:
-                    value = property_dict[value]
-                property_dict[key] = value
-        # sometimes project_version contains '${foo}', so update project_version.
-        if project_version.startswith('${'):
-            property_dict['project.version'] = property_dict[project_version.strip(' ${}')]
+        parent_element = project_element.find('./maven:parent', MAVEN_NAME_SPACE)
+        if parent_element is not None:
+            # get properties from parent
+            parent_group_id = parent_element.find('./maven:groupId', MAVEN_NAME_SPACE).text.strip(' ${}')
+            parent_artifact_id = parent_element.find('./maven:artifactId', MAVEN_NAME_SPACE).text.strip(' ${}')
+            parent_version = parent_element.find('./maven:version', MAVEN_NAME_SPACE).text.strip(' ${}')
+            parent_pom = Pom(parent_group_id, parent_artifact_id, parent_version, pom.depth + 1)
+            parent_pom_url = parent_pom.to_url()
+            parent_tree = elementTree.ElementTree(file = request.urlopen(parent_pom_url))
+            parent_project_element = parent_tree.getroot()
+            log.debug('Get properties from parent pom. parent_pom_url = {}.'.format(parent_pom_url))
+            update_property_dict(parent_project_element, property_dict)
+        update_property_dict(project_element, property_dict)
         # get dependencies
-        dependency_elements = project_element.findall('./maven:dependencyManagement/maven:dependencies/maven:dependency', name_space)
+        dependency_elements = project_element.findall('./maven:dependencyManagement/maven:dependencies/maven:dependency', MAVEN_NAME_SPACE)
         for dependency_element in dependency_elements:
-            group_id = dependency_element.find('./maven:groupId', name_space).text.strip(' ${}')
+            group_id = dependency_element.find('./maven:groupId', MAVEN_NAME_SPACE).text.strip(' ${}')
             # some group_id contain 'project.groupId', so put project_version first.
             if group_id in property_dict:
                 group_id = property_dict[group_id]
-            artifact_id = dependency_element.find('./maven:artifactId', name_space).text.strip(' ')
-            version = dependency_element.find('./maven:version', name_space).text.strip(' ${}')
+            artifact_id = dependency_element.find('./maven:artifactId', MAVEN_NAME_SPACE).text.strip(' ')
+            version = dependency_element.find('./maven:version', MAVEN_NAME_SPACE).text.strip(' ${}')
             key = group_id + ':' + artifact_id
             if version in property_dict:
                 version = property_dict[version]
@@ -116,14 +106,53 @@ def update_dependency_dict(dependency_dict, root_pom_id):
                 log.debug('Dependency version added. key = {}, value = {}'.format(key, version))
             elif version != dependency_dict[key]:
                 log.debug('Dependency version skipped. key = {}, version = {}, dependency_dict[key] = {}.'.format(key, version, dependency_dict[key]))
-            artifact_type = dependency_element.find('./maven:type', name_space)
+            artifact_type = dependency_element.find('./maven:type', MAVEN_NAME_SPACE)
             if artifact_type is not None and artifact_type.text.strip() == 'pom':
                 new_pom = Pom(group_id, artifact_id, version, pom.depth + 1)
                 q.put(new_pom)
                 pom_count = pom_count + 1
-                log.debug('Added new pom: {}, depth = {}.'.format(new_pom.to_url(), new_pom.depth))
-    log.info('Root pom summary: root_pom = {}, pom_count = {}'.format(root_pom.to_url(), pom_count))
+                log.debug('Added new pom. depth = {}, url = {}.'.format(new_pom.to_url(), new_pom.depth))
+    log.info('Root pom summary. pom_count = {}, root_pom_url = {}'.format(pom_count, root_pom.to_url()))
     return dependency_dict
+
+
+def update_property_dict(project_element, property_dict):
+    # get properties
+    properties = project_element.find('maven:properties', MAVEN_NAME_SPACE)
+    # some property contain 'project.version', so put 'project.version' into property_dict.
+    version_element = project_element.find('./maven:version', MAVEN_NAME_SPACE)
+    if version_element is None:
+        version_element = project_element.find('./maven:parent/maven:version', MAVEN_NAME_SPACE)
+    project_version = version_element.text.strip()
+    property_dict['project.version'] = project_version
+    # some property contain 'project.groupId', so put 'project.groupId' into property_dict.
+    group_id_element = project_element.find('./maven:groupId', MAVEN_NAME_SPACE)
+    if group_id_element is None:
+        group_id_element = project_element.find('./maven:parent/maven:groupId', MAVEN_NAME_SPACE)
+    group_id = group_id_element.text.strip()
+    property_dict['project.groupId'] = group_id
+    if properties is not None:
+        for p in properties:
+            key = p.tag.split('}', 1)[1]
+            value_text = p.text
+            if value_text is None:
+                # sometimes we have tag with no text, like: <release.arguments/>
+                continue
+            value = value_text.strip(' ${}')
+            if value in property_dict:
+                value = property_dict[value]
+            property_dict[key] = value
+    # sometimes project_version contains '${foo}', so update project_version.
+    if project_version.startswith('${'):
+        property_dict['project.version'] = property_dict[project_version.strip(' ${}')]
+    return property_dict
+
+
+def output_version_dict_to_file(dependency_dict):
+    output_file = open('sdk/spring/scripts/managed_external_dependencies.txt', 'w''')
+    for key, value in sorted(dependency_dict.items()):
+        output_file.write('{}:{}\n'.format(key, value))
+    output_file.close()
 
 
 def update_version_for_external_dependencies(dependency_dict):

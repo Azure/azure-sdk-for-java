@@ -21,6 +21,8 @@ public class CosmosQuery {
 
     private Pageable pageable = Pageable.unpaged();
 
+    private int limit;
+
     /**
      * Initialization
      *
@@ -55,6 +57,26 @@ public class CosmosQuery {
      */
     public Pageable getPageable() {
         return pageable;
+    }
+
+    /**
+     * To get limit number
+     *
+     * @return int limit
+     */
+    public int getLimit() {
+        return limit;
+    }
+
+    /**
+     * To set limit number
+     *
+     * @param limit int
+     */
+    public void setLimit(int limit) {
+        if (this.limit == 0) {
+            this.limit = limit;
+        }
     }
 
     /**
@@ -109,13 +131,14 @@ public class CosmosQuery {
         }
 
         return partitionKeys.stream().filter(this::isCrossPartitionQuery)
-                .findFirst()
-                .map(p -> true)
-                .orElse(hasKeywordOr());
+                            .findFirst()
+                            .map(p -> true)
+                            .orElse(hasKeywordOr());
     }
 
     /**
      * To get criteria by type
+     *
      * @param criteriaType the criteria type
      * @return Optional
      */
@@ -128,7 +151,7 @@ public class CosmosQuery {
             return Optional.of(criteria);
         }
 
-        for (final Criteria subCriteria: criteria.getSubCriteria()) {
+        for (final Criteria subCriteria : criteria.getSubCriteria()) {
             if (getCriteriaByType(criteriaType, subCriteria).isPresent()) {
                 return Optional.of(subCriteria);
             }

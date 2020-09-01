@@ -13,7 +13,7 @@ public class DdosProtectionPlanTests extends NetworkManagementTest {
 
     @Test
     public void canCRUDDdosProtectionPlan() throws Exception {
-        String ppName = sdkContext.randomResourceName("ddosplan", 15);
+        String ppName = generateRandomResourceName("ddosplan", 15);
 
         DdosProtectionPlan pPlan =
             networkManager

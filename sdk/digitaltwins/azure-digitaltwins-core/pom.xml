@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-client-sdk-parent</artifactId>
+    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
+  </parent>
+
+    <groupId>com.azure</groupId>
+    <artifactId>azure-digitaltwins-core</artifactId>
+    <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-digitaltwins-core;current} -->
+
+  <properties>
+    <!-- These are the code coverage settings that should eventually be removed to inherit them from the parent pom file. for the time being we have a very low code coverage so we are dropping it to a very low setting -->
+    <jacoco.min.linecoverage>0.01</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.01</jacoco.min.branchcoverage>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core</artifactId>
+      <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-netty</artifactId>
+      <version>1.5.4</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>2.11.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
+    </dependency>
+
+    <!-- Test dependencies -->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-test</artifactId>
+      <version>1.4.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-okhttp</artifactId>
+      <version>1.2.5</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>5.6.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.6.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-params</artifactId>
+      <version>5.6.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <includes>
+                <include>com.fasterxml.jackson.core:jackson-annotations:[2.11.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
+              </includes>
+            </bannedDependencies>
+          </rules>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

@@ -4,6 +4,7 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
+import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
@@ -12,6 +13,7 @@ import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
+import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
@@ -21,6 +23,7 @@ import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
+import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -32,6 +35,7 @@ import reactor.core.publisher.Mono;
 import java.util.Collections;
 import java.util.Objects;
 
+import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.mapByIndex;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsException;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -63,6 +67,7 @@ public final class TextAnalyticsAsyncClient {
     final AnalyzeSentimentAsyncClient analyzeSentimentAsyncClient;
     final ExtractKeyPhraseAsyncClient extractKeyPhraseAsyncClient;
     final RecognizeEntityAsyncClient recognizeEntityAsyncClient;
+    final RecognizePiiEntityAsyncClient recognizePiiEntityAsyncClient;
     final RecognizeLinkedEntityAsyncClient recognizeLinkedEntityAsyncClient;
 
     /**
@@ -84,6 +89,7 @@ public final class TextAnalyticsAsyncClient {
         this.analyzeSentimentAsyncClient = new AnalyzeSentimentAsyncClient(service);
         this.extractKeyPhraseAsyncClient = new ExtractKeyPhraseAsyncClient(service);
         this.recognizeEntityAsyncClient = new RecognizeEntityAsyncClient(service);
+        this.recognizePiiEntityAsyncClient = new RecognizePiiEntityAsyncClient(service);
         this.recognizeLinkedEntityAsyncClient = new RecognizeLinkedEntityAsyncClient(service);
     }
 
@@ -125,7 +131,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @return A {@link Mono} containing the {@link DetectedLanguage detected language} of the document.
      *
-     * @throws NullPointerException if the document is {@code null}.
+     * @throws NullPointerException if the document is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -152,7 +158,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @return A {@link Mono} contains a {@link DetectedLanguage detected language} of the document.
      *
-     * @throws NullPointerException if the document is {@code null}.
+     * @throws NullPointerException if the document is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -198,7 +204,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @return A {@link Mono} contains a {@link DetectLanguageResultCollection}.
      *
-     * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws NullPointerException if {@code documents} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DetectLanguageResultCollection> detectLanguageBatch(
@@ -234,7 +240,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @return A {@link Mono} contains a {@link Response} which contains a {@link DetectLanguageResultCollection}.
      *
-     * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws NullPointerException if {@code documents} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DetectLanguageResultCollection>> detectLanguageBatchWithResponse(
@@ -249,7 +255,8 @@ public final class TextAnalyticsAsyncClient {
      *
      * For a list of supported entity types, check: <a href="https://aka.ms/taner">this</a>.
      * For a list of enabled languages, check: <a href="https://aka.ms/talangs">this</a>.
-     * This method will use the default language that sets up in
+     *
+     * This method will use the default language that can be set by using method
      * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
      * the language.
      *
@@ -265,7 +272,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @return A {@link Mono} contains a {@link CategorizedEntityCollection recognized categorized entities collection}.
      *
-     * @throws NullPointerException if {@code document} is {@code null}.
+     * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -293,7 +300,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @return A {@link Mono} contains a {@link CategorizedEntityCollection recognized categorized entities collection}.
      *
-     * @throws NullPointerException if {@code document} is {@code null}.
+     * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -321,7 +328,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @return A {@link Mono} contains a {@link RecognizeEntitiesResultCollection}.
      *
-     * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws NullPointerException if {@code documents} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RecognizeEntitiesResultCollection> recognizeEntitiesBatch(
@@ -356,7 +363,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @return A {@link Mono} contains a {@link Response} which contains a {@link RecognizeEntitiesResultCollection}.
      *
-     * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws NullPointerException if {@code documents} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecognizeEntitiesResultCollection>> recognizeEntitiesBatchWithResponse(
@@ -364,13 +371,138 @@ public final class TextAnalyticsAsyncClient {
         return recognizeEntityAsyncClient.recognizeEntitiesBatch(documents, options);
     }
 
-    // Linked Entity
+    // PII Entity
+
+    /**
+     * Returns a list of Personally Identifiable Information(PII) entities in the provided document.
+     *
+     * For a list of supported entity types, check: <a href="https://aka.ms/tanerpii">this</a>.
+     * For a list of enabled languages, check: <a href="https://aka.ms/talangs">this</a>. This method will use the
+     * default language that is set using {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is
+     * specified, service will use 'en' as the language.
+     *
+     * <p><strong>Code sample</strong></p>
+     * <p>Recognize the PII entities details in a document.
+     * Subscribes to the call asynchronously and prints out the recognized entity details when a response is
+     * received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string}
+     *
+     * @param document The document to recognize PII entities details for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     *
+     * @return A {@link Mono} contains a {@link PiiEntityCollection recognized PII entities collection}.
+     *
+     * @throws NullPointerException if {@code document} is null.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PiiEntityCollection> recognizePiiEntities(String document) {
+        return recognizePiiEntities(document, defaultLanguage);
+    }
+
+    /**
+     * Returns a list of Personally Identifiable Information(PII) entities in the provided document
+     * with provided language code.
+     *
+     * For a list of supported entity types, check: <a href="https://aka.ms/tanerpii">this</a>.
+     * For a list of enabled languages, check: <a href="https://aka.ms/talangs">this</a>.
+     *
+     * <p><strong>Code sample</strong></p>
+     * <p>Recognize the PII entities details in a document with provided language code.
+     * Subscribes to the call asynchronously and prints out the entity details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string-string}
+     *
+     * @param document the text to recognize PII entities details for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
+     *
+     * @return A {@link Mono} contains a {@link PiiEntityCollection recognized PII entities collection}.
+     *
+     * @throws NullPointerException if {@code document} is null.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PiiEntityCollection> recognizePiiEntities(String document, String language) {
+        return recognizePiiEntityAsyncClient.recognizePiiEntities(document, language);
+    }
+
+    /**
+     * Returns a list of Personally Identifiable Information(PII) entities for the provided list of documents with
+     * the provided language code and request options.
+     *
+     * <p><strong>Code sample</strong></p>
+     * <p>Recognize Personally Identifiable Information entities in a document with the provided language code.
+     * Subscribes to the call asynchronously and prints out the entity details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions}
+     *
+     * @param documents A list of documents to recognize PII entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
+     * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
+     * and show statistics.
+     *
+     * @return A {@link Mono} contains a {@link RecognizePiiEntitiesResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RecognizePiiEntitiesResultCollection> recognizePiiEntitiesBatch(
+        Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
+        try {
+            inputDocumentsValidation(documents);
+            return recognizePiiEntitiesBatchWithResponse(
+                mapByIndex(documents, (index, value) -> {
+                    final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+                    textDocumentInput.setLanguage(language);
+                    return textDocumentInput;
+                }), options).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Returns a list of Personally Identifiable Information entities for the provided list of
+     * {@link TextDocumentInput document} with provided request options.
+     *
+     * <p><strong>Code sample</strong></p>
+     * <p>Recognize the PII entities details with http response in a list of {@link TextDocumentInput document}
+     * with provided request options.
+     * Subscribes to the call asynchronously and prints out the entity details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesBatch#Iterable-TextAnalyticsRequestOptions}
+     *
+     * @param documents A list of {@link TextDocumentInput documents} to recognize PII entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
+     * and show statistics.
+     *
+     * @return A {@link Mono} contains a {@link Response} which contains a {@link RecognizePiiEntitiesResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<RecognizePiiEntitiesResultCollection>> recognizePiiEntitiesBatchWithResponse(
+        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
+        return recognizePiiEntityAsyncClient.recognizePiiEntitiesBatch(documents, options);
+    }
+
+    // Linked Entities
 
     /**
      * Returns a list of recognized entities with links to a well-known knowledge base for the provided document. See
      * <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.
      *
-     * This method will use the default language that sets up in
+     * This method will use the default language that can be set by using method
      * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
      * the language.
      *
@@ -385,7 +517,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @return A {@link Mono} contains a {@link LinkedEntityCollection recognized linked entities collection}.
      *
-     * @throws NullPointerException if {@code document} is {@code null}.
+     * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -410,7 +542,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @return A {@link Mono} contains a {@link LinkedEntityCollection recognized linked entities collection}.
      *
-     * @throws NullPointerException if {@code document} is {@code null}.
+     * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -439,7 +571,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @return A {@link Mono} contains a {@link RecognizeLinkedEntitiesResultCollection}.
      *
-     * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws NullPointerException if {@code documents} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RecognizeLinkedEntitiesResultCollection> recognizeLinkedEntitiesBatch(
@@ -476,7 +608,7 @@ public final class TextAnalyticsAsyncClient {
      * @return A {@link Mono} contains a {@link Response} which contains a
      * {@link RecognizeLinkedEntitiesResultCollection}.
      *
-     * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws NullPointerException if {@code documents} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecognizeLinkedEntitiesResultCollection>>
@@ -490,7 +622,7 @@ public final class TextAnalyticsAsyncClient {
     /**
      * Returns a list of strings denoting the key phrases in the document.
      *
-     * This method will use the default language that sets up in
+     * This method will use the default language that can be set by using method
      * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
      * the language.
      *
@@ -505,7 +637,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @return A {@link Mono} contains a {@link KeyPhrasesCollection}.
      *
-     * @throws NullPointerException if {@code document} is {@code null}.
+     * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -531,7 +663,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @return A {@link Mono} contains a {@link KeyPhrasesCollection}
      *
-     * @throws NullPointerException if {@code document} is {@code null}.
+     * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -560,7 +692,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @return A {@link Mono} contains a {@link ExtractKeyPhrasesResultCollection}.
      *
-     * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws NullPointerException if {@code documents} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExtractKeyPhrasesResultCollection> extractKeyPhrasesBatch(
@@ -595,7 +727,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @return A {@link Mono} contains a {@link Response} that contains a {@link ExtractKeyPhrasesResultCollection}.
      *
-     * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws NullPointerException if {@code documents} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExtractKeyPhrasesResultCollection>> extractKeyPhrasesBatchWithResponse(
@@ -609,11 +741,12 @@ public final class TextAnalyticsAsyncClient {
      * Returns a sentiment prediction, as well as confidence scores for each sentiment label (Positive, Negative, and
      * Neutral) for the document and each sentence within it.
      *
-     * This method will use the default language that sets up in
+     * This method will use the default language that can be set by using method
      * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
      * the language.
      *
-     * <p>Analyze sentiment in a list of documents. Subscribes to the call asynchronously and prints out the
+     * <p><strong>Code Sample</strong></p>
+     * <p>Analyze the sentiment in a document. Subscribes to the call asynchronously and prints out the
      * sentiment details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#string}
@@ -624,7 +757,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @return A {@link Mono} contains the {@link DocumentSentiment analyzed document sentiment} of the document.
      *
-     * @throws NullPointerException if {@code document} is {@code null}.
+     * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -636,10 +769,11 @@ public final class TextAnalyticsAsyncClient {
      * Returns a sentiment prediction, as well as confidence scores for each sentiment label (Positive, Negative, and
      * Neutral) for the document and each sentence within it.
      *
-     * <p>Analyze sentiment in a list of documents. Subscribes to the call asynchronously and prints out the
-     * sentiment details when a response is received.</p>
+     * <p><strong>Code Sample</strong></p>
+     * <p>Analyze the sentiments in a document with a provided language representation. Subscribes to the call
+     * asynchronously and prints out the sentiment details when a response is received.</p>
      *
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#string-string}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#String-String}
      *
      * @param document The document to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
@@ -649,14 +783,46 @@ public final class TextAnalyticsAsyncClient {
      *
      * @return A {@link Mono} contains the {@link DocumentSentiment analyzed document sentiment} of the document.
      *
-     * @throws NullPointerException if {@code document} is {@code null}.
+     * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentSentiment> analyzeSentiment(String document, String language) {
+        return analyzeSentiment(document, language, null);
+    }
+
+    /**
+     * Returns a sentiment prediction, as well as confidence scores for each sentiment label (Positive, Negative, and
+     * Neutral) for the document and each sentence within it. If the {@code includeOpinionMining} of
+     * {@link AnalyzeSentimentOptions} set to true, the output will include the opinion mining results. It mines the
+     * opinions of a sentence and conducts more granular analysis around the aspects in the text
+     * (also known as aspect-based sentiment analysis).
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Analyze the sentiment and mine the opinions for each sentence in a document with a provided language
+     * representation and {@link AnalyzeSentimentOptions} options. Subscribes to the call asynchronously and prints
+     * out the sentiment and mined opinions details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#String-String-AnalyzeSentimentOptions}
+     *
+     * @param document The document to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
+     * English as default.
+     * @param options The additional configurable {@link AnalyzeSentimentOptions options} that may be passed when
+     * analyzing sentiments.
+     *
+     * @return A {@link Mono} contains the {@link DocumentSentiment analyzed document sentiment} of the document.
+     *
+     * @throws NullPointerException if {@code document} is null.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DocumentSentiment> analyzeSentiment(String document, String language, AnalyzeSentimentOptions options) {
         try {
             Objects.requireNonNull(document, "'document' cannot be null.");
-            return analyzeSentimentBatch(Collections.singletonList(document), language, null)
+            return analyzeSentimentBatch(Collections.singletonList(document), language, options)
                 .map(sentimentResultCollection -> {
                     DocumentSentiment documentSentiment = null;
                     for (AnalyzeSentimentResult sentimentResult : sentimentResultCollection) {
@@ -693,11 +859,47 @@ public final class TextAnalyticsAsyncClient {
      *
      * @return A {@link Mono} contains a {@link AnalyzeSentimentResultCollection}.
      *
-     * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeSentimentResultCollection> analyzeSentimentBatch(
         Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
+        return analyzeSentimentBatch(documents, language, new AnalyzeSentimentOptions()
+            .setIncludeStatistics(options == null ? false : options.isIncludeStatistics())
+            .setModelVersion(options == null ? null : options.getModelVersion()));
+    }
+
+    /**
+     * Returns a sentiment prediction, as well as confidence scores for each sentiment label (Positive, Negative, and
+     * Neutral) for the document and each sentence within it. If the {@code includeOpinionMining} of
+     * {@link AnalyzeSentimentOptions} set to true, the output will include the opinion mining results. It mines the
+     * opinions of a sentence and conducts more granular analysis around the aspects in the text
+     * (also known as aspect-based sentiment analysis).
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Analyze the sentiments and mine the opinions for each sentence in a list of documents with a provided language
+     * representation and {@link AnalyzeSentimentOptions} options. Subscribes to the call asynchronously and prints out
+     * the sentiment and mined opinions details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentBatch#Iterable-String-AnalyzeSentimentOptions}
+     *
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
+     * English as default.
+     * @param options The additional configurable {@link AnalyzeSentimentOptions options} that may be passed when
+     * analyzing sentiments.
+     *
+     * @return A {@link Mono} contains a {@link AnalyzeSentimentResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AnalyzeSentimentResultCollection> analyzeSentimentBatch(Iterable<String> documents,
+        String language, AnalyzeSentimentOptions options) {
         try {
             return analyzeSentimentBatchWithResponse(
                 mapByIndex(documents, (index, value) -> {
@@ -727,11 +929,45 @@ public final class TextAnalyticsAsyncClient {
      *
      * @return A {@link Mono} contains a {@link Response} that contains a {@link AnalyzeSentimentResultCollection}.
      *
-     * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeSentimentResultCollection>> analyzeSentimentBatchWithResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
+        return analyzeSentimentAsyncClient.analyzeSentimentBatch(documents, new AnalyzeSentimentOptions()
+            .setIncludeStatistics(options == null ? false : options.isIncludeStatistics())
+            .setModelVersion(options == null ? null : options.getModelVersion()));
+    }
+
+    /**
+     * Returns a sentiment prediction, as well as confidence scores for each sentiment label (Positive, Negative, and
+     * Neutral) for the document and each sentence within it. If the {@code includeOpinionMining} of
+     * {@link AnalyzeSentimentOptions} set to true, the output will include the opinion mining results. It mines the
+     * opinions of a sentence and conducts more granular analysis around the aspects in the text
+     * (also known as aspect-based sentiment analysis).
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Analyze sentiment and mine the opinions for each sentence in a list of
+     * {@link TextDocumentInput document} with provided {@link AnalyzeSentimentOptions} options. Subscribes to the call
+     * asynchronously and prints out the sentiment and mined opinions details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentBatch#Iterable-AnalyzeSentimentOptions}
+     *
+     * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * @param options The additional configurable {@link AnalyzeSentimentOptions options} that may be passed when
+     * analyzing sentiments.
+     *
+     * @return A {@link Mono} contains a {@link Response} that contains a {@link AnalyzeSentimentResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<AnalyzeSentimentResultCollection>> analyzeSentimentBatchWithResponse(
+        Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options) {
         return analyzeSentimentAsyncClient.analyzeSentimentBatch(documents, options);
     }
 }

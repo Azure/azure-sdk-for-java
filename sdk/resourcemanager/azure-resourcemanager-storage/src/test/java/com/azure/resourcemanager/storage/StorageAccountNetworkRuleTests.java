@@ -6,7 +6,7 @@ package com.azure.resourcemanager.storage;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.storage.models.DefaultAction;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.junit.jupiter.api.Assertions;

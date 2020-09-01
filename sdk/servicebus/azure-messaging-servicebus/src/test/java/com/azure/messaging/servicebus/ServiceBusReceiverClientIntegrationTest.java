@@ -5,9 +5,9 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.administration.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
-import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
@@ -17,7 +17,7 @@ import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Duration;
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -249,7 +249,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     void receiveTwoMessagesAndComplete(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSenderAndReceiver(entityType, TestUtils.USE_CASE_RECEIVE_MORE_AND_COMPLETE, isSessionEnabled);
-        int maxMessages = 5;
+        int maxMessages = 4;
         int messagesToSend = 4;
 
         final String messageId = UUID.randomUUID().toString();
@@ -604,12 +604,12 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         assertNotNull(receivedMessage);
         assertNotNull(receivedMessage.getLockedUntil());
 
-        final Instant initialLock = receivedMessage.getLockedUntil();
+        final OffsetDateTime initialLock = receivedMessage.getLockedUntil();
         logger.info("Received message. Seq: {}. lockedUntil: {}", receivedMessage.getSequenceNumber(), initialLock);
 
         // Assert & Act
         try {
-            Instant lockedUntil = receiver.renewMessageLock(receivedMessage.getLockToken());
+            OffsetDateTime lockedUntil = receiver.renewMessageLock(receivedMessage.getLockToken());
             assertTrue(lockedUntil.isAfter(initialLock),
                 String.format("Updated lock is not after the initial Lock. updated: [%s]. initial:[%s]",
                     lockedUntil, initialLock));

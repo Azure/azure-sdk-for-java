@@ -22,7 +22,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import java.util.Map;
 
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

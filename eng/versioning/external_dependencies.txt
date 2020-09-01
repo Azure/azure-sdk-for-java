@@ -1,13 +1,13 @@
 # Format;
 # groupId:artifactId;dependency-version
-com.fasterxml.jackson.core:jackson-annotations;2.11.1
-com.fasterxml.jackson.core:jackson-core;2.11.1
-com.fasterxml.jackson.core:jackson-databind;2.11.1
-com.fasterxml.jackson.dataformat:jackson-dataformat-avro;2.11.1
-com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.11.1
-com.fasterxml.jackson.datatype:jackson-datatype-jdk8;2.11.1
-com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.11.1
-com.fasterxml.jackson.module:jackson-module-parameter-names;2.11.1
+com.fasterxml.jackson.core:jackson-annotations;2.11.2
+com.fasterxml.jackson.core:jackson-core;2.11.2
+com.fasterxml.jackson.core:jackson-databind;2.11.2
+com.fasterxml.jackson.dataformat:jackson-dataformat-avro;2.11.2
+com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.11.2
+com.fasterxml.jackson.datatype:jackson-datatype-jdk8;2.11.2
+com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.11.2
+com.fasterxml.jackson.module:jackson-module-parameter-names;2.11.2
 com.github.spotbugs:spotbugs;4.0.0-beta3
 com.github.spotbugs:spotbugs-annotations;4.0.2
 com.github.spotbugs:spotbugs-maven-plugin;3.1.12.2
@@ -23,7 +23,6 @@ com.microsoft.azure:azure-cosmos;3.7.3
 com.microsoft.azure:azure-keyvault-cryptography;1.2.2
 com.microsoft.azure:azure-media;0.9.8
 com.microsoft.azure:azure-servicebus;3.4.0
-com.microsoft.azure:azure-servicebus-jms;0.0.4
 com.microsoft.azure:qpid-proton-j-extensions;1.2.3
 com.microsoft.rest:client-runtime;1.7.4
 com.microsoft.rest.v2:client-runtime;2.1.1
@@ -35,12 +34,14 @@ com.zaxxer:HikariCP;3.4.5
 commons-codec:commons-codec;1.14
 commons-net:commons-net;3.6
 io.fabric8:kubernetes-client;4.10.3
-io.micrometer:micrometer-core;1.5.3
-io.micrometer:micrometer-registry-azure-monitor;1.5.3
-io.micrometer:micrometer-registry-graphite;1.5.3
+io.micrometer:micrometer-core;1.5.4
+io.micrometer:micrometer-registry-azure-monitor;1.5.4
+io.micrometer:micrometer-registry-graphite;1.5.4
 io.netty:netty-buffer;4.1.51.Final
+io.netty:netty-common;4.1.51.Final
 io.netty:netty-codec-http;4.1.51.Final
 io.netty:netty-codec-http2;4.1.51.Final
+io.netty:netty-transport;4.1.51.Final
 io.netty:netty-handler;4.1.51.Final
 io.netty:netty-handler-proxy;4.1.51.Final
 io.netty:netty-tcnative;2.0.31.Final
@@ -48,8 +49,8 @@ io.netty:netty-tcnative-boringssl-static;2.0.31.Final
 io.netty:netty-transport-native-epoll;4.1.51.Final
 io.netty:netty-transport-native-unix-common;4.1.51.Final
 io.netty:netty-transport-native-kqueue;4.1.51.Final
-io.projectreactor.netty:reactor-netty;0.9.10.RELEASE
-io.projectreactor:reactor-core;3.3.8.RELEASE
+io.projectreactor.netty:reactor-netty;0.9.11.RELEASE
+io.projectreactor:reactor-core;3.3.9.RELEASE
 io.reactivex:rxjava;1.3.8
 javax.annotation:javax.annotation-api;1.3.2
 javax.servlet:javax.servlet-api;4.0.1
@@ -66,6 +67,7 @@ org.apache.logging.log4j:log4j-api;2.13.3
 org.apache.logging.log4j:log4j-core;2.13.3
 org.apache.logging.log4j:log4j-slf4j-impl;2.13.3
 org.apache.qpid:proton-j;0.33.4
+org.apache.qpid:qpid-jms-client;0.53.0
 org.apache.tinkerpop:gremlin-driver;3.2.4
 org.asynchttpclient:async-http-client;2.10.5
 org.codehaus.groovy:groovy-eclipse-batch;2.5.8-01
@@ -81,33 +83,33 @@ org.slf4j:slf4j-api;1.7.30
 org.slf4j:slf4j-simple;1.7.30
 
 ## Spring boot dependency versions
-org.springframework.boot:spring-boot-actuator-autoconfigure;2.3.2.RELEASE
-org.springframework.boot:spring-boot-autoconfigure-processor;2.3.2.RELEASE
-org.springframework.boot:spring-boot-autoconfigure;2.3.2.RELEASE
-org.springframework.boot:spring-boot-configuration-processor;2.3.2.RELEASE
-# After you update spring-boot-dependencies's version, please run this script: /sdk/spring/scripts/sync_version_from_spring-boot-dependencies.py
-org.springframework.boot:spring-boot-dependencies;2.3.2.RELEASE
-org.springframework.boot:spring-boot-starter-actuator;2.3.2.RELEASE
-org.springframework.boot:spring-boot-starter-aop;2.3.2.RELEASE
-org.springframework.boot:spring-boot-starter-cache;2.3.2.RELEASE
-org.springframework.boot:spring-boot-starter-data-redis;2.3.2.RELEASE
-org.springframework.boot:spring-boot-starter-parent;2.3.0.RELEASE
-org.springframework.boot:spring-boot-starter-test;2.3.2.RELEASE
-org.springframework.boot:spring-boot-starter-validation;2.3.2.RELEASE
-org.springframework.boot:spring-boot-starter-web;2.3.2.RELEASE
-org.springframework.boot:spring-boot-starter;2.3.2.RELEASE
-org.springframework.boot:spring-boot;2.3.2.RELEASE
-org.springframework.data:spring-data-commons;2.3.2.RELEASE
-org.springframework.data:spring-data-mongodb;3.0.2.RELEASE
-org.springframework.data:spring-data-redis;2.3.2.RELEASE
+# After you update spring-boot-dependencies' version, please run this script: /sdk/spring/scripts/sync_version_from_spring-boot-dependencies.py
+org.springframework.boot:spring-boot-dependencies;2.3.3.RELEASE
+org.springframework.boot:spring-boot-actuator-autoconfigure;2.3.3.RELEASE
+org.springframework.boot:spring-boot-autoconfigure-processor;2.3.3.RELEASE
+org.springframework.boot:spring-boot-autoconfigure;2.3.3.RELEASE
+org.springframework.boot:spring-boot-configuration-processor;2.3.3.RELEASE
+org.springframework.boot:spring-boot-starter-actuator;2.3.3.RELEASE
+org.springframework.boot:spring-boot-starter-aop;2.3.3.RELEASE
+org.springframework.boot:spring-boot-starter-cache;2.3.3.RELEASE
+org.springframework.boot:spring-boot-starter-data-redis;2.3.3.RELEASE
+org.springframework.boot:spring-boot-starter-logging;2.3.3.RELEASE
+org.springframework.boot:spring-boot-starter-test;2.3.3.RELEASE
+org.springframework.boot:spring-boot-starter-validation;2.3.3.RELEASE
+org.springframework.boot:spring-boot-starter-web;2.3.3.RELEASE
+org.springframework.boot:spring-boot-starter;2.3.3.RELEASE
+org.springframework.boot:spring-boot;2.3.3.RELEASE
+org.springframework.data:spring-data-commons;2.3.3.RELEASE
+org.springframework.data:spring-data-mongodb;3.0.3.RELEASE
+org.springframework.data:spring-data-redis;2.3.3.RELEASE
 org.springframework.integration:spring-integration-core;5.3.2.RELEASE
-org.springframework.kafka:spring-kafka;2.5.4.RELEASE
-org.springframework.security:spring-security-config;5.3.3.RELEASE
-org.springframework.security:spring-security-core;5.3.3.RELEASE
-org.springframework.security:spring-security-oauth2-client;5.3.3.RELEASE
-org.springframework.security:spring-security-oauth2-core;5.3.3.RELEASE
-org.springframework.security:spring-security-oauth2-jose;5.3.3.RELEASE
-org.springframework.security:spring-security-web;5.3.3.RELEASE
+org.springframework.kafka:spring-kafka;2.5.5.RELEASE
+org.springframework.security:spring-security-config;5.3.4.RELEASE
+org.springframework.security:spring-security-core;5.3.4.RELEASE
+org.springframework.security:spring-security-oauth2-client;5.3.4.RELEASE
+org.springframework.security:spring-security-oauth2-core;5.3.4.RELEASE
+org.springframework.security:spring-security-oauth2-jose;5.3.4.RELEASE
+org.springframework.security:spring-security-web;5.3.4.RELEASE
 org.springframework:spring-beans;5.2.8.RELEASE
 org.springframework:spring-context-support;5.2.8.RELEASE
 org.springframework:spring-context;5.2.8.RELEASE
@@ -120,10 +122,14 @@ org.springframework:spring-tx;5.2.8.RELEASE
 org.springframework:spring-web;5.2.8.RELEASE
 org.springframework:spring-webmvc;5.2.8.RELEASE
 
+# spring-boot-starter-parent is not managed by spring-boot-dependencies or spring-cloud-dependencies.
+org.springframework.boot:spring-boot-starter-parent;2.3.3.RELEASE
+
+## Spring cloud dependency versions
+# After you update spring-cloud-dependencies' version, please run this script: /sdk/spring/scripts/sync_version_from_spring-boot-dependencies.py
+org.springframework.cloud:spring-cloud-dependencies;Hoxton.SR7
 org.springframework.cloud:spring-cloud-bus;2.2.3.RELEASE
 org.springframework.cloud:spring-cloud-context;2.2.4.RELEASE
-# After you update spring-boot-dependencies's version, please run this script: /sdk/spring/scripts/sync_version_from_spring-boot-dependencies.py
-org.springframework.cloud:spring-cloud-dependencies;Hoxton.SR7
 org.springframework.cloud:spring-cloud-starter-stream-kafka;3.0.7.RELEASE
 org.springframework.cloud:spring-cloud-stream-binder-test;3.0.7.RELEASE
 org.springframework.cloud:spring-cloud-stream;3.0.7.RELEASE
@@ -147,13 +153,13 @@ com.microsoft.azure:azure-mgmt-resources;1.3.0
 com.microsoft.azure:azure-mgmt-search;1.24.1
 com.microsoft.azure:azure-mgmt-storage;1.3.0
 com.microsoft.azure:azure-storage;8.0.0
-com.microsoft.azure:msal4j;1.6.1
+com.microsoft.azure:msal4j;1.6.2
 com.microsoft.azure:msal4j-persistence-extension;1.0.0
 com.sun.activation:jakarta.activation;1.2.2
 io.opentelemetry:opentelemetry-api;0.6.0
 io.opentelemetry:opentelemetry-sdk;0.6.0
 io.grpc:grpc-context;1.30.2
-io.projectreactor:reactor-test;3.3.8.RELEASE
+io.projectreactor:reactor-test;3.3.9.RELEASE
 junit:junit;4.13
 org.apache.maven:maven-compat;3.6.2
 org.apache.maven:maven-embedder;3.6.2
@@ -163,8 +169,8 @@ org.assertj:assertj-core;3.16.1
 org.bouncycastle:bcprov-jdk15on;1.60
 org.eclipse.aether:aether-connector-basic;1.1.0
 org.eclipse.aether:aether-transport-wagon;1.1.0
-org.eclipse.jetty:jetty-http;9.4.30.v20200611
-org.eclipse.jetty:jetty-server;9.4.30.v20200611
+org.eclipse.jetty:jetty-http;9.4.31.v20200723
+org.eclipse.jetty:jetty-server;9.4.31.v20200723
 org.eclipse.jgit:org.eclipse.jgit;4.5.7.201904151645-r
 org.hamcrest:hamcrest-all;1.3
 org.hamcrest:hamcrest-library;2.2
@@ -202,9 +208,9 @@ com.nimbusds:oauth2-oidc-sdk;7.1.1
 com.puppycrawl.tools:checkstyle;8.29
 commons-io:commons-io;2.5
 commons-validator:commons-validator;1.6
-io.dropwizard.metrics:metrics-core;4.1.11
-io.dropwizard.metrics:metrics-graphite;4.1.11
-io.dropwizard.metrics:metrics-jvm;4.1.11
+io.dropwizard.metrics:metrics-core;4.1.12.1
+io.dropwizard.metrics:metrics-graphite;4.1.12.1
+io.dropwizard.metrics:metrics-jvm;4.1.12.1
 io.reactivex.rxjava2:rxjava;2.2.19
 net.java.dev.jna:jna-platform;5.4.0
 net.jonathangiles.tools:dependencyChecker-maven-plugin;1.0.4
@@ -241,7 +247,6 @@ org.eclipse.m2e:lifecycle-mapping;1.0.0
 org.jacoco:jacoco-maven-plugin;0.8.5
 org.jacoco:org.jacoco.agent;0.8.5
 org.mockito:mockito-core;3.3.3
-org.nanohttpd:nanohttpd;2.3.1
 org.revapi:revapi-java;0.20.0
 org.revapi:revapi-maven-plugin;0.11.2
 
@@ -314,5 +319,14 @@ storage_com.microsoft.azure:azure-storage;8.4.0
 # sdk\spring\azure-spring-boot\pom.xml
 spring_com.microsoft.azure:azure;1.34.0
 
+# sdk\spring\azure-spring-boot-2-2-starter-cosmosdb\pom.xml
+springboot22_com.microsoft.azure:spring-data-cosmosdb;2.2.2.M2
+springboot22_org.springframework.boot:spring-boot-starter;2.2.9.RELEASE
+springboot22_org.springframework.boot:spring-boot;2.2.9.RELEASE
+springboot22_org.springframework.boot:spring-boot-starter-validation;2.2.9.RELEASE
+springboot22_org.springframework.boot:spring-boot-starter-test;2.2.9.RELEASE
+springboot22_org.springframework.boot:spring-boot-starter-actuator;2.2.9.RELEASE
+springboot22_org.springframework.boot:spring-boot-starter-web;2.2.9.RELEASE
+
 # sdk\cosmos
-springdata22_org.springframework.data:spring-data-commons;2.2.0.RELEASE
+springdata22_org.springframework.data:spring-data-commons;2.2.9.RELEASE
