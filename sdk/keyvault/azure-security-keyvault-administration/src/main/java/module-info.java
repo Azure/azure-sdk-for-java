@@ -10,4 +10,5 @@ module com.azure.security.keyvault.administration {
     opens com.azure.security.keyvault.administration to com.fasterxml.jackson.databind;
     opens com.azure.security.keyvault.administration.models to com.fasterxml.jackson.databind;
     opens com.azure.security.keyvault.administration.implementation to com.fasterxml.jackson.databind;
+    opens com.azure.security.keyvault.administration.implementation.models to com.fasterxml.jackson.databind;
 }
