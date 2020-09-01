@@ -249,7 +249,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     void receiveTwoMessagesAndComplete(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSenderAndReceiver(entityType, TestUtils.USE_CASE_RECEIVE_MORE_AND_COMPLETE, isSessionEnabled);
-        int maxMessages = 5;
+        int maxMessages = 4;
         int messagesToSend = 4;
 
         final String messageId = UUID.randomUUID().toString();
