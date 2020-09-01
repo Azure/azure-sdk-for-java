@@ -14,9 +14,10 @@ public class UpdateComponentRequestOptions extends RequestOptions {
     // API versions and so that we don't have to expose that new optional parameter for other APIs like updateDigitalTwin,
     // updateRelationship, etc.
 
+    // Need to override this method so that the returned value is of type UpdateComponentRequestOptions instead of type RequestOptions
     @Override
     public UpdateComponentRequestOptions setIfMatch(String ifMatch) {
-        this.ifMatch = ifMatch;
+        super.setIfMatch(ifMatch);
         return this;
     }
 }
