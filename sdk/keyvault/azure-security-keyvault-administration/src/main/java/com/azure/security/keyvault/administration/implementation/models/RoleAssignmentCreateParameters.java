@@ -7,21 +7,21 @@ package com.azure.security.keyvault.administration.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The KeyVaultRoleAssignmentCreateParameters model. */
+/** The RoleAssignmentCreateParameters model. */
 @Fluent
-public final class KeyVaultRoleAssignmentCreateParameters {
+public final class RoleAssignmentCreateParameters {
     /*
      * Role assignment properties.
      */
     @JsonProperty(value = "properties", required = true)
-    private KeyVaultRoleAssignmentProperties properties;
+    private RoleAssignmentProperties properties;
 
     /**
      * Get the properties property: Role assignment properties.
      *
      * @return the properties value.
      */
-    public KeyVaultRoleAssignmentProperties getProperties() {
+    public RoleAssignmentProperties getProperties() {
         return this.properties;
     }
 
@@ -29,9 +29,9 @@ public final class KeyVaultRoleAssignmentCreateParameters {
      * Set the properties property: Role assignment properties.
      *
      * @param properties the properties value to set.
-     * @return the KeyVaultRoleAssignmentCreateParameters object itself.
+     * @return the RoleAssignmentCreateParameters object itself.
      */
-    public KeyVaultRoleAssignmentCreateParameters setProperties(KeyVaultRoleAssignmentProperties properties) {
+    public RoleAssignmentCreateParameters setProperties(RoleAssignmentProperties properties) {
         this.properties = properties;
         return this;
     }

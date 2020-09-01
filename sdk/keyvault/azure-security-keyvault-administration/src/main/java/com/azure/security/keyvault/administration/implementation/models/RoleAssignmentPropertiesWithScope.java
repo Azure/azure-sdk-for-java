@@ -7,9 +7,9 @@ package com.azure.security.keyvault.administration.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The KeyVaultRoleAssignmentPropertiesWithScope model. */
+/** The RoleAssignmentPropertiesWithScope model. */
 @Fluent
-public final class KeyVaultRoleAssignmentPropertiesWithScope {
+public final class RoleAssignmentPropertiesWithScope {
     /*
      * The role assignment scope.
      */
@@ -41,9 +41,9 @@ public final class KeyVaultRoleAssignmentPropertiesWithScope {
      * Set the scope property: The role assignment scope.
      *
      * @param scope the scope value to set.
-     * @return the KeyVaultRoleAssignmentPropertiesWithScope object itself.
+     * @return the RoleAssignmentPropertiesWithScope object itself.
      */
-    public KeyVaultRoleAssignmentPropertiesWithScope setScope(String scope) {
+    public RoleAssignmentPropertiesWithScope setScope(String scope) {
         this.scope = scope;
         return this;
     }
@@ -61,9 +61,9 @@ public final class KeyVaultRoleAssignmentPropertiesWithScope {
      * Set the roleDefinitionId property: The role definition ID.
      *
      * @param roleDefinitionId the roleDefinitionId value to set.
-     * @return the KeyVaultRoleAssignmentPropertiesWithScope object itself.
+     * @return the RoleAssignmentPropertiesWithScope object itself.
      */
-    public KeyVaultRoleAssignmentPropertiesWithScope setRoleDefinitionId(String roleDefinitionId) {
+    public RoleAssignmentPropertiesWithScope setRoleDefinitionId(String roleDefinitionId) {
         this.roleDefinitionId = roleDefinitionId;
         return this;
     }
@@ -81,9 +81,9 @@ public final class KeyVaultRoleAssignmentPropertiesWithScope {
      * Set the principalId property: The principal ID.
      *
      * @param principalId the principalId value to set.
-     * @return the KeyVaultRoleAssignmentPropertiesWithScope object itself.
+     * @return the RoleAssignmentPropertiesWithScope object itself.
      */
-    public KeyVaultRoleAssignmentPropertiesWithScope setPrincipalId(String principalId) {
+    public RoleAssignmentPropertiesWithScope setPrincipalId(String principalId) {
         this.principalId = principalId;
         return this;
     }

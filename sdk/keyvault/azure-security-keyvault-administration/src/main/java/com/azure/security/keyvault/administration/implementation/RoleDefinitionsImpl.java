@@ -20,8 +20,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.security.keyvault.administration.implementation.models.KeyVaultErrorException;
-import com.azure.security.keyvault.administration.implementation.models.KeyVaultRoleDefinition;
-import com.azure.security.keyvault.administration.implementation.models.KeyVaultRoleDefinitionListResult;
+import com.azure.security.keyvault.administration.implementation.models.RoleDefinition;
+import com.azure.security.keyvault.administration.implementation.models.RoleDefinitionListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RoleDefinitions. */
@@ -53,7 +53,7 @@ public final class RoleDefinitionsImpl {
         @Get("/{scope}/providers/Microsoft.Authorization/roleDefinitions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<KeyVaultRoleDefinitionListResult>> list(
+        Mono<Response<RoleDefinitionListResult>> list(
                 @HostParam("vaultBaseUrl") String vaultBaseUrl,
                 @PathParam(value = "scope", encoded = true) String scope,
                 @QueryParam("$filter") String filter,
@@ -63,7 +63,7 @@ public final class RoleDefinitionsImpl {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<KeyVaultRoleDefinitionListResult>> listNext(
+        Mono<Response<RoleDefinitionListResult>> listNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -81,7 +81,7 @@ public final class RoleDefinitionsImpl {
      * @return all role definitions that are applicable at scope and above.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<KeyVaultRoleDefinition>> listSinglePageAsync(
+    public Mono<PagedResponse<RoleDefinition>> listSinglePageAsync(
             String vaultBaseUrl, String scope, String filter, Context context) {
         return service.list(vaultBaseUrl, scope, filter, this.client.getApiVersion(), context)
                 .map(
@@ -106,7 +106,7 @@ public final class RoleDefinitionsImpl {
      * @return role definition list operation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<KeyVaultRoleDefinition>> listNextSinglePageAsync(String nextLink, Context context) {
+    public Mono<PagedResponse<RoleDefinition>> listNextSinglePageAsync(String nextLink, Context context) {
         return service.listNext(nextLink, context)
                 .map(
                         res ->

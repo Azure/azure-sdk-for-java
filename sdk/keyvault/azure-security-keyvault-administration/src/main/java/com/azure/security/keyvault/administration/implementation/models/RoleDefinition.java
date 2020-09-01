@@ -9,10 +9,10 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The KeyVaultRoleDefinition model. */
+/** The RoleDefinition model. */
 @JsonFlatten
 @Fluent
-public class KeyVaultRoleDefinition {
+public class RoleDefinition {
     /*
      * The role definition ID.
      */
@@ -53,7 +53,7 @@ public class KeyVaultRoleDefinition {
      * Role definition permissions.
      */
     @JsonProperty(value = "properties.permissions")
-    private List<KeyVaultPermission> permissions;
+    private List<Permission> permissions;
 
     /*
      * Role definition assignable scopes.
@@ -101,9 +101,9 @@ public class KeyVaultRoleDefinition {
      * Set the roleName property: The role name.
      *
      * @param roleName the roleName value to set.
-     * @return the KeyVaultRoleDefinition object itself.
+     * @return the RoleDefinition object itself.
      */
-    public KeyVaultRoleDefinition setRoleName(String roleName) {
+    public RoleDefinition setRoleName(String roleName) {
         this.roleName = roleName;
         return this;
     }
@@ -121,9 +121,9 @@ public class KeyVaultRoleDefinition {
      * Set the description property: The role definition description.
      *
      * @param description the description value to set.
-     * @return the KeyVaultRoleDefinition object itself.
+     * @return the RoleDefinition object itself.
      */
-    public KeyVaultRoleDefinition setDescription(String description) {
+    public RoleDefinition setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -141,9 +141,9 @@ public class KeyVaultRoleDefinition {
      * Set the roleType property: The role type.
      *
      * @param roleType the roleType value to set.
-     * @return the KeyVaultRoleDefinition object itself.
+     * @return the RoleDefinition object itself.
      */
-    public KeyVaultRoleDefinition setRoleType(String roleType) {
+    public RoleDefinition setRoleType(String roleType) {
         this.roleType = roleType;
         return this;
     }
@@ -153,7 +153,7 @@ public class KeyVaultRoleDefinition {
      *
      * @return the permissions value.
      */
-    public List<KeyVaultPermission> getPermissions() {
+    public List<Permission> getPermissions() {
         return this.permissions;
     }
 
@@ -161,9 +161,9 @@ public class KeyVaultRoleDefinition {
      * Set the permissions property: Role definition permissions.
      *
      * @param permissions the permissions value to set.
-     * @return the KeyVaultRoleDefinition object itself.
+     * @return the RoleDefinition object itself.
      */
-    public KeyVaultRoleDefinition setPermissions(List<KeyVaultPermission> permissions) {
+    public RoleDefinition setPermissions(List<Permission> permissions) {
         this.permissions = permissions;
         return this;
     }
@@ -181,9 +181,9 @@ public class KeyVaultRoleDefinition {
      * Set the assignableScopes property: Role definition assignable scopes.
      *
      * @param assignableScopes the assignableScopes value to set.
-     * @return the KeyVaultRoleDefinition object itself.
+     * @return the RoleDefinition object itself.
      */
-    public KeyVaultRoleDefinition setAssignableScopes(List<String> assignableScopes) {
+    public RoleDefinition setAssignableScopes(List<String> assignableScopes) {
         this.assignableScopes = assignableScopes;
         return this;
     }

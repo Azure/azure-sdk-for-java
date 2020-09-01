@@ -7,6 +7,9 @@ import com.azure.core.util.ExpandableStringEnum;
 
 import java.net.URI;
 
+/**
+ * A class that defines the scope of a role.
+ */
 public final class KeyVaultRoleScope extends ExpandableStringEnum<KeyVaultRoleScope> {
     public static final KeyVaultRoleScope GLOBAL = fromString("/");
     public static final KeyVaultRoleScope KEYS = fromString("/keys");

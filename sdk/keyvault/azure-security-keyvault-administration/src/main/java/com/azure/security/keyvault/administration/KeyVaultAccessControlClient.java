@@ -9,11 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.security.keyvault.administration.implementation.models.KeyVaultErrorException;
-import com.azure.security.keyvault.administration.implementation.models.KeyVaultRoleAssignment;
-import com.azure.security.keyvault.administration.implementation.models.KeyVaultRoleAssignmentProperties;
-import com.azure.security.keyvault.administration.implementation.models.KeyVaultRoleDefinition;
-import com.azure.security.keyvault.administration.models.KeyVaultRoleScope;
+import com.azure.security.keyvault.administration.models.*;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
@@ -54,8 +50,7 @@ public final class KeyVaultAccessControlClient {
      * @param context Additional {@link Context} that is passed through the HTTP pipeline during the service call.
      * @return A {@link PagedIterable} containing the {@link KeyVaultRoleDefinition role definitions} for the given
      * {@link KeyVaultRoleScope scope}.
-     * @throws KeyVaultErrorException if the operation is unsuccessful.
-     * @throws NullPointerException   if the {@link KeyVaultRoleScope scope} is {@code null}.
+     * @throws NullPointerException if the {@link KeyVaultRoleScope scope} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyVaultRoleDefinition> listRoleDefinitions(KeyVaultRoleScope scope, Context context) {
@@ -70,8 +65,7 @@ public final class KeyVaultAccessControlClient {
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return A {@link PagedIterable} containing the {@link KeyVaultRoleAssignment role assignments} for the given
      * {@link KeyVaultRoleScope scope}.
-     * @throws KeyVaultErrorException if the operation is unsuccessful.
-     * @throws NullPointerException   if the {@link KeyVaultRoleScope scope} is {@code null}.
+     * @throws NullPointerException if the {@link KeyVaultRoleScope scope} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyVaultRoleAssignment> listRoleAssignments(KeyVaultRoleScope scope, Context context) {
@@ -84,9 +78,8 @@ public final class KeyVaultAccessControlClient {
      * @param scope      The {@link KeyVaultRoleScope scope} of the {@link KeyVaultRoleAssignment} to create.
      * @param properties Properties for the {@link KeyVaultRoleAssignment}.
      * @return The created {@link KeyVaultRoleAssignment}.
-     * @throws KeyVaultErrorException if the request is rejected by the server.
-     * @throws NullPointerException   if the {@link KeyVaultRoleScope scope} or
-     *                                {@link KeyVaultRoleAssignmentProperties properties} are {@code null}.
+     * @throws NullPointerException if the {@link KeyVaultRoleScope scope} or
+     * {@link KeyVaultRoleAssignmentProperties properties} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultRoleAssignment createRoleAssignment(KeyVaultRoleScope scope,
@@ -101,9 +94,8 @@ public final class KeyVaultAccessControlClient {
      * @param name       The name used to create the {@link KeyVaultRoleAssignment}. It can be any valid UUID.
      * @param properties Properties for the {@link KeyVaultRoleAssignment}.
      * @return The created {@link KeyVaultRoleAssignment}.
-     * @throws KeyVaultErrorException if the request is rejected by the server.
-     * @throws NullPointerException   if the {@link KeyVaultRoleScope scope}, {@link UUID name} or
-     *                                {@link KeyVaultRoleAssignmentProperties properties} are {@code null}.
+     * @throws NullPointerException if the {@link KeyVaultRoleScope scope}, {@link UUID name} or
+     * {@link KeyVaultRoleAssignmentProperties properties} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultRoleAssignment createRoleAssignment(KeyVaultRoleScope scope, UUID name,
@@ -120,9 +112,8 @@ public final class KeyVaultAccessControlClient {
      * @param context    Additional context that is passed through the HTTP pipeline during the service call.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the created
      * {@link KeyVaultRoleAssignment}.
-     * @throws KeyVaultErrorException if the request is rejected by the server.
-     * @throws NullPointerException   if the {@link KeyVaultRoleScope scope}, {@link UUID name} or
-     *                                {@link KeyVaultRoleAssignmentProperties properties} are {@code null}.
+     * @throws NullPointerException if the {@link KeyVaultRoleScope scope}, {@link UUID name} or
+     * {@link KeyVaultRoleAssignmentProperties properties} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultRoleAssignment> createRoleAssignmentWithResponse(KeyVaultRoleScope scope, UUID name,
@@ -137,8 +128,7 @@ public final class KeyVaultAccessControlClient {
      * @param scope The {@link KeyVaultRoleScope scope} of the {@link KeyVaultRoleAssignment}.
      * @param name  The name of the {@link KeyVaultRoleAssignment}.
      * @return The {@link KeyVaultRoleAssignment}.
-     * @throws KeyVaultErrorException if the operation is unsuccessful.
-     * @throws NullPointerException   if the {@link KeyVaultRoleScope scope} or {@link UUID name} are {@code null}.
+     * @throws NullPointerException if the {@link KeyVaultRoleScope scope} or {@link UUID name} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultRoleAssignment getRoleAssignment(KeyVaultRoleScope scope, String name) {
@@ -151,8 +141,7 @@ public final class KeyVaultAccessControlClient {
      * @param scope The {@link KeyVaultRoleScope scope} of the {@link KeyVaultRoleAssignment}.
      * @param name  The name of the {@link KeyVaultRoleAssignment}.
      * @return The {@link KeyVaultRoleAssignment}.
-     * @throws KeyVaultErrorException if the operation is unsuccessful.
-     * @throws NullPointerException   if the {@link KeyVaultRoleScope scope} or {@link UUID name} are {@code null}.
+     * @throws NullPointerException if the {@link KeyVaultRoleScope scope} or {@link UUID name} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultRoleAssignment> getRoleAssignmentWithResponse(KeyVaultRoleScope scope, String name,
@@ -166,8 +155,7 @@ public final class KeyVaultAccessControlClient {
      * @param scope The {@link KeyVaultRoleScope scope} of the {@link KeyVaultRoleAssignment}.
      * @param name  The name of the {@link KeyVaultRoleAssignment}.
      * @return The {@link KeyVaultRoleAssignment}.
-     * @throws KeyVaultErrorException if the operation is unsuccessful.
-     * @throws NullPointerException   if the {@link KeyVaultRoleScope scope} or {@link UUID name} are {@code null}.
+     * @throws NullPointerException if the {@link KeyVaultRoleScope scope} or {@link UUID name} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultRoleAssignment deleteRoleAssignment(KeyVaultRoleScope scope, String name) {
@@ -180,8 +168,7 @@ public final class KeyVaultAccessControlClient {
      * @param scope The {@link KeyVaultRoleScope scope} of the {@link KeyVaultRoleAssignment}.
      * @param name  The name of the {@link KeyVaultRoleAssignment}.
      * @return The {@link KeyVaultRoleAssignment}.
-     * @throws KeyVaultErrorException if the operation is unsuccessful.
-     * @throws NullPointerException   if the {@link KeyVaultRoleScope scope} or {@link UUID name} are {@code null}.
+     * @throws NullPointerException if the {@link KeyVaultRoleScope scope} or {@link UUID name} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultRoleAssignment> deleteRoleAssignmentWithResponse(KeyVaultRoleScope scope, String name,

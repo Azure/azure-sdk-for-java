@@ -8,14 +8,14 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The KeyVaultRoleAssignmentListResult model. */
+/** The RoleAssignmentListResult model. */
 @Fluent
-public final class KeyVaultRoleAssignmentListResult {
+public final class RoleAssignmentListResult {
     /*
      * Role assignment list.
      */
     @JsonProperty(value = "value")
-    private List<KeyVaultRoleAssignment> value;
+    private List<RoleAssignment> value;
 
     /*
      * The URL to use for getting the next set of results.
@@ -28,7 +28,7 @@ public final class KeyVaultRoleAssignmentListResult {
      *
      * @return the value value.
      */
-    public List<KeyVaultRoleAssignment> getValue() {
+    public List<RoleAssignment> getValue() {
         return this.value;
     }
 
@@ -36,9 +36,9 @@ public final class KeyVaultRoleAssignmentListResult {
      * Set the value property: Role assignment list.
      *
      * @param value the value value to set.
-     * @return the KeyVaultRoleAssignmentListResult object itself.
+     * @return the RoleAssignmentListResult object itself.
      */
-    public KeyVaultRoleAssignmentListResult setValue(List<KeyVaultRoleAssignment> value) {
+    public RoleAssignmentListResult setValue(List<RoleAssignment> value) {
         this.value = value;
         return this;
     }
@@ -56,9 +56,9 @@ public final class KeyVaultRoleAssignmentListResult {
      * Set the nextLink property: The URL to use for getting the next set of results.
      *
      * @param nextLink the nextLink value to set.
-     * @return the KeyVaultRoleAssignmentListResult object itself.
+     * @return the RoleAssignmentListResult object itself.
      */
-    public KeyVaultRoleAssignmentListResult setNextLink(String nextLink) {
+    public RoleAssignmentListResult setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }
