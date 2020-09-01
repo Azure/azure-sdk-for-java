@@ -21,6 +21,27 @@ jobs:
       parameters:
         Directory: ""
 
+    
+    # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
+    # reports. This means it is available as part of that, but also so that this is not documented in the project report.
+    - template: ./templates/steps/install-reporting-tools.yml
+      parameters:
+        Options: --batch-mode
+        MavenOptions: $(MemoryOptions) $(LoggingOptions)
+
+    - task: Maven@3
+      displayName: 'Install azure-client-sdk-parent'
+      inputs:
+        mavenPomFile: sdk/parents/azure-client-sdk-parent/pom.xml
+        goals: install
+        options: '$(DefaultOptions)'
+        mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: $(JavaBuildVersion)
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: false
+      condition: succeeded()
+
     - task: PowerShell@2
       # The root pom.xml contains both track 1, data, and track 2, client libraries.
       # This task calls a powershell script that will go through all of the pom files
@@ -41,7 +62,7 @@ jobs:
       displayName: 'Generate Reports'
       inputs:
         mavenPomFile: ClientAggregatePom.xml
-        options: '$(DefaultOptions) -T 1C -Dinclude-non-shipping-modules -Ddependency-checker -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -Dbuildhelper.skipAttach=true'
+        options: '$(DefaultOptions) -T 1C -Ddependency-checker -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -Dbuildhelper.skipAttach=true'
         mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: $(JavaBuildVersion)

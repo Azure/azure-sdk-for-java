@@ -113,6 +113,7 @@ $xmlsettings.OmitXmlDeclaration = $true
 try {
   [xml]$xmlDocument = New-Object XML
   $xmlDocument.LoadXml($BasePomFile)
+  $xmlDocument.NodeInserted = $null
 
   $projectNode = $xmlDocument.project
   $modulesNode = $projectNode["modules"]
