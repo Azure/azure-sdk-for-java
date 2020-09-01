@@ -62,7 +62,7 @@ jobs:
       displayName: 'Generate Reports'
       inputs:
         mavenPomFile: ClientAggregatePom.xml
-        options: '$(DefaultOptions) -T 1C -Ddependency-checker -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -Dbuildhelper.skipAttach=true'
+        options: '$(DefaultOptions) -Ddependency-checker -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -Dbuildhelper.skipAttach=true'
         mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: $(JavaBuildVersion)
