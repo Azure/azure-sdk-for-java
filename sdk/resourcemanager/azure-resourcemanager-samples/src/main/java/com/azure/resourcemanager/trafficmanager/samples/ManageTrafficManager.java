@@ -61,7 +61,6 @@ public final class ManageTrafficManager {
         regions.add(Region.US_WEST2);
         regions.add(Region.US_EAST2);
         regions.add(Region.ASIA_EAST);
-        regions.add(Region.INDIA_WEST);
         regions.add(Region.US_CENTRAL);
 
         try {
