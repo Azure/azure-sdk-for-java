@@ -15,11 +15,15 @@ import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
 import com.azure.messaging.servicebus.administration.models.CreateTopicOptions;
+import com.azure.messaging.servicebus.administration.models.EmptyRuleAction;
 import com.azure.messaging.servicebus.administration.models.NamespaceType;
 import com.azure.messaging.servicebus.administration.models.QueueRuntimeProperties;
 import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeProperties;
 import com.azure.messaging.servicebus.administration.models.TopicProperties;
 import com.azure.messaging.servicebus.administration.models.TopicRuntimeProperties;
+import com.azure.messaging.servicebus.administration.models.RuleProperties;
+import com.azure.messaging.servicebus.administration.models.TopicProperties;
+import com.azure.messaging.servicebus.administration.models.TrueRuleFilter;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
@@ -35,6 +39,7 @@ import java.util.stream.Stream;
 
 import static com.azure.messaging.servicebus.TestUtils.getEntityName;
 import static com.azure.messaging.servicebus.TestUtils.getSessionSubscriptionBaseName;
+import static com.azure.messaging.servicebus.TestUtils.getSubscriptionBaseName;
 import static com.azure.messaging.servicebus.TestUtils.getTopicBaseName;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -358,6 +363,39 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
 
     @ParameterizedTest
     @MethodSource("createHttpClients")
+    void getRule(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
+
+        // There is a single default rule created.
+        final String ruleName = "$Default";
+        final String topicName = interceptorManager.isPlaybackMode()
+            ? "topic-13"
+            : getEntityName(getTopicBaseName(), 13);
+        final String subscriptionName = interceptorManager.isPlaybackMode()
+            ? "subscription"
+            : getSubscriptionBaseName();
+
+        // Act & Assert
+        StepVerifier.create(client.getRuleWithResponse(topicName, subscriptionName, ruleName))
+            .assertNext(response -> {
+                assertEquals(200, response.getStatusCode());
+
+                final RuleProperties contents = response.getValue();
+
+                assertNotNull(contents);
+                assertEquals(ruleName, contents.getName());
+                assertNotNull(contents.getFilter());
+                assertTrue(contents.getFilter() instanceof TrueRuleFilter);
+
+                assertNotNull(contents.getAction());
+                assertTrue(contents.getAction() instanceof EmptyRuleAction);
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
     void getSubscription(HttpClient httpClient) {
         // Arrange
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
@@ -567,6 +605,34 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
                 assertTrue(nowUtc.isAfter(RuntimeProperties.getAccessedAt()));
                 assertEquals(0, RuntimeProperties.getScheduledMessageCount());
 
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void listRules(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
+
+        // There is a single default rule created.
+        final String ruleName = "$Default";
+        final String topicName = interceptorManager.isPlaybackMode()
+            ? "topic-13"
+            : getEntityName(getTopicBaseName(), 13);
+        final String subscriptionName = interceptorManager.isPlaybackMode()
+            ? "subscription"
+            : getSubscriptionBaseName();
+
+        // Act & Assert
+        StepVerifier.create(client.listRules(topicName, subscriptionName))
+            .assertNext(response -> {
+                assertEquals(ruleName, response.getName());
+                assertNotNull(response.getFilter());
+                assertTrue(response.getFilter() instanceof TrueRuleFilter);
+
+                assertNotNull(response.getAction());
+                assertTrue(response.getAction() instanceof EmptyRuleAction);
             })
             .verifyComplete();
     }

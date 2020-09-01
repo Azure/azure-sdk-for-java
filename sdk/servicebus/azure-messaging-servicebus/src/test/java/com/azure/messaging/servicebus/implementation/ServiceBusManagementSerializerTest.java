@@ -12,6 +12,10 @@ import com.azure.messaging.servicebus.administration.models.NamespaceType;
 import com.azure.messaging.servicebus.administration.models.QueueProperties;
 import com.azure.messaging.servicebus.administration.models.QueueRuntimeProperties;
 import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeProperties;
+import com.azure.messaging.servicebus.implementation.models.CorrelationFilterImpl;
+import com.azure.messaging.servicebus.implementation.models.EmptyRuleActionImpl;
+import com.azure.messaging.servicebus.implementation.models.FalseFilterImpl;
+import com.azure.messaging.servicebus.implementation.models.KeyValueImpl;
 import com.azure.messaging.servicebus.implementation.models.MessageCountDetails;
 import com.azure.messaging.servicebus.implementation.models.NamespacePropertiesEntry;
 import com.azure.messaging.servicebus.implementation.models.QueueDescription;
@@ -20,10 +24,17 @@ import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntr
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionFeed;
 import com.azure.messaging.servicebus.implementation.models.ResponseAuthor;
 import com.azure.messaging.servicebus.implementation.models.ResponseLink;
+import com.azure.messaging.servicebus.implementation.models.RuleDescription;
+import com.azure.messaging.servicebus.implementation.models.RuleDescriptionEntry;
+import com.azure.messaging.servicebus.implementation.models.RuleDescriptionEntryContent;
+import com.azure.messaging.servicebus.implementation.models.RuleDescriptionFeed;
+import com.azure.messaging.servicebus.implementation.models.SqlFilterImpl;
+import com.azure.messaging.servicebus.implementation.models.SqlRuleActionImpl;
 import com.azure.messaging.servicebus.implementation.models.SubscriptionDescription;
 import com.azure.messaging.servicebus.implementation.models.SubscriptionDescriptionEntry;
 import com.azure.messaging.servicebus.implementation.models.SubscriptionDescriptionEntryContent;
 import com.azure.messaging.servicebus.implementation.models.SubscriptionDescriptionFeed;
+import com.azure.messaging.servicebus.implementation.models.TrueFilterImpl;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -41,9 +52,12 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -478,6 +492,171 @@ class ServiceBusManagementSerializerTest {
     }
 
     /**
+     * Verify we can deserialize XML from a GET rule.
+     */
+    @Test
+    void deserializeSqlRule() throws IOException {
+        // Arrange
+        final String contents = getContents("SqlRuleFilter.xml");
+        final RuleDescription expectedRule = new RuleDescription()
+            .setName("foo")
+            .setCreatedAt(OffsetDateTime.parse("2020-08-28T04:32:20.9387321Z"))
+            .setAction(new EmptyRuleActionImpl())
+            .setFilter(new SqlFilterImpl()
+                .setCompatibilityLevel("20")
+                .setSqlExpression("type = \"TestType\""));
+        final RuleDescriptionEntry expected = new RuleDescriptionEntry()
+            .setId("sb://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/Rules/foo?api-version=2017-04&enrich=false")
+            .setPublished(OffsetDateTime.parse("2020-08-28T04:32:20Z"))
+            .setUpdated(OffsetDateTime.parse("2020-08-28T04:34:20Z"))
+            .setContent(new RuleDescriptionEntryContent()
+                .setRuleDescription(expectedRule)
+                .setType("application/xml"));
+
+        // Act
+        final RuleDescriptionEntry actual = serializer.deserialize(contents, RuleDescriptionEntry.class);
+
+        // Assert
+        assertRuleEntryEquals(expected, actual);
+    }
+
+    /**
+     * Verify we can deserialize XML from a GET rule that includes an action.
+     */
+    @Test
+    void deserializeSqlRuleWithAction() throws IOException {
+        // Arrange
+        final String contents = getContents("SqlRuleFilterWithAction.xml");
+        final RuleDescription expectedRule = new RuleDescription()
+            .setName("foo")
+            .setCreatedAt(OffsetDateTime.parse("2020-08-28T04:51:24.9967451Z"))
+            .setAction(new SqlRuleActionImpl()
+                .setCompatibilityLevel("20")
+                .setSqlExpression("set FilterTag = 'true'"))
+            .setFilter(new SqlFilterImpl()
+                .setCompatibilityLevel("20")
+                .setSqlExpression("type = \"TestType\""));
+        final RuleDescriptionEntry expected = new RuleDescriptionEntry()
+            .setId("https://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/Rules/foo?api-version=2017-04")
+            .setPublished(OffsetDateTime.parse("2020-08-28T04:51:24Z"))
+            .setUpdated(OffsetDateTime.parse("2020-08-28T04:54:24Z"))
+            .setContent(new RuleDescriptionEntryContent()
+                .setRuleDescription(expectedRule)
+                .setType("application/xml"));
+
+        // Act
+        final RuleDescriptionEntry actual = serializer.deserialize(contents, RuleDescriptionEntry.class);
+
+        // Assert
+        assertRuleEntryEquals(expected, actual);
+    }
+
+    /**
+     * Verify we can deserialize XML from a GET correlation filter rule that includes an action.
+     */
+    @Test
+    void deserializeCorrelationFilterRule() throws IOException {
+        // Arrange
+        final String contents = getContents("CorrelationRuleFilter.xml");
+        final RuleDescription expectedRule = new RuleDescription()
+            .setName("correlation-test")
+            .setCreatedAt(OffsetDateTime.parse("2020-08-28T04:32:50.7697024Z"))
+            .setAction(new EmptyRuleActionImpl())
+            .setFilter(new CorrelationFilterImpl()
+                .setLabel("matching-label"));
+        final RuleDescriptionEntry expected = new RuleDescriptionEntry()
+            .setId("sb://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/Rules/correl?api-version=2017-04&enrich=false")
+            .setPublished(OffsetDateTime.parse("2020-08-28T04:32:50Z"))
+            .setUpdated(OffsetDateTime.parse("2020-08-28T04:34:50Z"))
+            .setContent(new RuleDescriptionEntryContent()
+                .setRuleDescription(expectedRule)
+                .setType("application/xml"));
+
+        // Act
+        final RuleDescriptionEntry actual = serializer.deserialize(contents, RuleDescriptionEntry.class);
+
+        // Assert
+        assertRuleEntryEquals(expected, actual);
+    }
+
+    /**
+     * Verify we can deserialize XML from a GET rule that includes an action.
+     */
+    @Test
+    void deserializeRulesFeed() throws IOException {
+        // Arrange
+        final String contents = getContents("RuleDescriptionFeed.xml");
+
+        final RuleDescription defaultRule = new RuleDescription()
+            .setName("$Default")
+            .setCreatedAt(OffsetDateTime.parse("2020-08-12T18:48:00.1005312Z"))
+            .setAction(new EmptyRuleActionImpl())
+            .setFilter(new TrueFilterImpl().setCompatibilityLevel("20").setSqlExpression("1=1"));
+        final RuleDescriptionEntry defaultRuleEntry = new RuleDescriptionEntry()
+            .setId("https://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/rules/$Default?api-version=2017-04")
+            .setPublished(OffsetDateTime.parse("2020-08-12T18:48:00Z"))
+            .setUpdated(OffsetDateTime.parse("2020-08-12T18:48:00Z"))
+            .setContent(new RuleDescriptionEntryContent()
+                .setRuleDescription(defaultRule)
+                .setType("application/xml"));
+
+        final RuleDescription correlation = new RuleDescription()
+            .setName("correl")
+            .setCreatedAt(OffsetDateTime.parse("2020-08-28T04:32:50.7697024Z"))
+            .setAction(new EmptyRuleActionImpl())
+            .setFilter(new CorrelationFilterImpl()
+                .setLabel("matching-label"));
+        final RuleDescriptionEntry correlationEntry = new RuleDescriptionEntry()
+            .setId("https://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/rules/correl?api-version=2017-04")
+            .setPublished(OffsetDateTime.parse("2020-08-28T04:32:50Z"))
+            .setUpdated(OffsetDateTime.parse("2020-08-28T04:32:50Z"))
+            .setContent(new RuleDescriptionEntryContent()
+                .setRuleDescription(correlation)
+                .setType("application/xml"));
+
+        final RuleDescription sqlRule = new RuleDescription()
+            .setName("foo")
+            .setCreatedAt(OffsetDateTime.parse("2020-08-28T04:51:24.9967451Z"))
+            .setAction(new SqlRuleActionImpl()
+                .setCompatibilityLevel("20")
+                .setSqlExpression("set FilterTag = 'true'"))
+            .setFilter(new SqlFilterImpl()
+                .setCompatibilityLevel("20")
+                .setSqlExpression("type = \"TestType\""));
+        final RuleDescriptionEntry sqlRuleEntry = new RuleDescriptionEntry()
+            .setId("https://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/rules/foo?api-version=2017-04")
+            .setPublished(OffsetDateTime.parse("2020-08-28T04:32:20Z"))
+            .setUpdated(OffsetDateTime.parse("2020-08-28T04:32:20Z"))
+            .setContent(new RuleDescriptionEntryContent()
+                .setRuleDescription(sqlRule)
+                .setType("application/xml"));
+
+        final List<RuleDescriptionEntry> expectedEntries = Arrays.asList(defaultRuleEntry, correlationEntry, sqlRuleEntry);
+        final RuleDescriptionFeed expected = new RuleDescriptionFeed()
+            .setEntry(expectedEntries)
+            .setId("https://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/rules?api-version=2017-04&enrich=false&$skip=0&$top=100")
+            .setUpdated(OffsetDateTime.parse("2020-08-28T14:59:16Z"));
+
+        // Act
+        final RuleDescriptionFeed actual = serializer.deserialize(contents, RuleDescriptionFeed.class);
+
+        // Assert
+        assertNotNull(actual);
+        assertEquals(expected.getId(), actual.getId());
+
+        final List<RuleDescriptionEntry> actualEntries = actual.getEntry();
+        assertNotNull(actualEntries);
+        assertEquals(expectedEntries.size(), actualEntries.size());
+
+        for (int i = 0; i < expected.getEntry().size(); i++) {
+            final RuleDescriptionEntry expectedRule = expectedEntries.get(i);
+            final RuleDescriptionEntry actualRule = actualEntries.get(i);
+
+            assertRuleEntryEquals(expectedRule, actualRule);
+        }
+    }
+
+    /**
      * Given a file name, gets the corresponding resource and its contents as a string.
      *
      * @param fileName Name of file to fetch.
@@ -535,6 +714,111 @@ class ServiceBusManagementSerializerTest {
         assertEquals(expected.getAutoDeleteOnIdle(), actual.getAutoDeleteOnIdle());
 
         assertEquals(expectedStatus, actual.getStatus());
+    }
+
+    private static void assertRuleEntryEquals(RuleDescriptionEntry expected, RuleDescriptionEntry actual) {
+        if (expected == null) {
+            assertNull(actual);
+            return;
+        }
+
+        assertNotNull(actual);
+        assertEquals(expected.getId(), actual.getId());
+
+        if (expected.getContent() == null) {
+            assertNull(actual.getContent());
+            return;
+        }
+
+        assertNotNull(actual.getContent());
+        assertEquals(expected.getContent().getType(), actual.getContent().getType());
+
+        final RuleDescription expectedRule = expected.getContent().getRuleDescription();
+        final RuleDescription actualRule = actual.getContent().getRuleDescription();
+        assertNotNull(actualRule);
+        assertRuleEquals(expectedRule, actualRule);
+    }
+
+    private static void assertRuleEquals(RuleDescription expected, RuleDescription actual) {
+        if (expected == null) {
+            assertNull(actual);
+            return;
+        }
+
+        assertNotNull(actual);
+        assertEquals(expected.getName(), actual.getName());
+
+        // Rule action assertions.
+        if (expected.getAction() instanceof EmptyRuleActionImpl) {
+            assertTrue(actual.getAction() instanceof EmptyRuleActionImpl);
+        } else if (expected.getAction() instanceof SqlRuleActionImpl) {
+            assertTrue(actual.getAction() instanceof SqlRuleActionImpl);
+
+            final SqlRuleActionImpl expectedAction = (SqlRuleActionImpl) expected.getAction();
+            final SqlRuleActionImpl actualAction = (SqlRuleActionImpl) actual.getAction();
+
+            assertEquals(expectedAction.getCompatibilityLevel(), actualAction.getCompatibilityLevel());
+            assertEquals(expectedAction.getSqlExpression(), actualAction.getSqlExpression());
+            assertEquals(expectedAction.isRequiresPreprocessing(), actualAction.isRequiresPreprocessing());
+
+            assertParameters(expectedAction.getParameters(), actualAction.getParameters());
+        }
+
+        // Rule filter assertions.
+        if (expected.getFilter() instanceof TrueFilterImpl) {
+            assertTrue(actual.getFilter() instanceof TrueFilterImpl);
+        } else if (expected.getFilter() instanceof FalseFilterImpl) {
+            assertTrue(actual.getFilter() instanceof FalseFilterImpl);
+        }
+
+        if (expected.getFilter() instanceof SqlFilterImpl) {
+            assertTrue(actual.getFilter() instanceof SqlFilterImpl);
+
+            final SqlFilterImpl expectedFilter = (SqlFilterImpl) expected.getFilter();
+            final SqlFilterImpl actualFilter = (SqlFilterImpl) actual.getFilter();
+
+            assertEquals(expectedFilter.getCompatibilityLevel(), actualFilter.getCompatibilityLevel());
+            assertEquals(expectedFilter.getSqlExpression(), actualFilter.getSqlExpression());
+
+            assertParameters(expectedFilter.getParameters(), actualFilter.getParameters());
+        } else if (expected.getFilter() instanceof CorrelationFilterImpl) {
+            assertTrue(actual.getFilter() instanceof CorrelationFilterImpl);
+
+            final CorrelationFilterImpl expectedFilter = (CorrelationFilterImpl) expected.getFilter();
+            final CorrelationFilterImpl actualFilter = (CorrelationFilterImpl) actual.getFilter();
+
+            assertEquals(expectedFilter.getCorrelationId(), actualFilter.getCorrelationId());
+            assertEquals(expectedFilter.getMessageId(), actualFilter.getMessageId());
+            assertEquals(expectedFilter.getTo(), actualFilter.getTo());
+            assertEquals(expectedFilter.getReplyTo(), actualFilter.getReplyTo());
+            assertEquals(expectedFilter.getReplyToSessionId(), actualFilter.getReplyToSessionId());
+            assertEquals(expectedFilter.getSessionId(), actualFilter.getSessionId());
+            assertEquals(expectedFilter.getContentType(), actualFilter.getContentType());
+
+            assertParameters(expectedFilter.getProperties(), actualFilter.getProperties());
+        }
+    }
+
+    private static void assertParameters(List<KeyValueImpl> expected, List<KeyValueImpl> actual) {
+        if (expected == null) {
+            assertNull(actual);
+            return;
+        }
+
+        assertNotNull(actual);
+        assertEquals(expected.size(), actual.size());
+
+        final Map<String, KeyValueImpl> actualMap = actual.stream()
+            .collect(Collectors.toMap(KeyValueImpl::getKey, Function.identity()));
+
+        for (KeyValueImpl item : expected) {
+            final KeyValueImpl removed = actualMap.remove(item.getKey());
+
+            assertNotNull(removed);
+            assertEquals(item.getValue(), removed.getValue());
+        }
+
+        assertTrue(actualMap.isEmpty());
     }
 
     @SuppressWarnings("unchecked")
