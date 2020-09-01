@@ -6,37 +6,61 @@
 
 package com.microsoft.azure.management;
 
-import com.microsoft.azure.management.resources.core.TestBase;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
-import com.microsoft.azure.management.resources.implementation.ResourceManager;
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.trafficmanager.models.EndpointPropertiesSubnetsItem;
 import com.azure.resourcemanager.trafficmanager.models.GeographicLocation;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerExternalEndpoint;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfile;
 import com.azure.resourcemanager.trafficmanager.models.TrafficRoutingMethod;
 import com.azure.resourcemanager.trafficmanager.TrafficManager;
-import com.microsoft.rest.RestClient;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-public class TrafficManagerTests extends TestBase {
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+
+public class TrafficManagerTests extends ResourceManagerTestBase {
     private static String RG_NAME = null;
-
-    public TrafficManagerTests() {
-        super(TestBase.RunCondition.BOTH);
-    }
 
     protected ResourceManager resourceManager;
     protected TrafficManager trafficManager;
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        resourceManager = ResourceManager
-                .authenticate(restClient)
-                .withSubscription(defaultSubscription);
-        trafficManager = TrafficManager
-                .authenticate(restClient, defaultSubscription);
+    protected HttpPipeline buildHttpPipeline(
+        TokenCredential credential,
+        AzureProfile profile,
+        HttpLogOptions httpLogOptions,
+        List<HttpPipelinePolicy> policies,
+        HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(
+            credential,
+            profile,
+            null,
+            httpLogOptions,
+            null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
+            policies,
+            httpClient);
+    }
+
+    @Override
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
+        SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
+        resourceManager =
+            ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
+        trafficManager = TrafficManager.authenticate(httpPipeline, profile);
     }
 
     @Override
@@ -51,20 +75,20 @@ public class TrafficManagerTests extends TestBase {
         GeographicLocation rootLocation = this.trafficManager
                 .profiles()
                 .getGeographicHierarchyRoot();
-        Assert.assertNotNull(rootLocation);
-        Assert.assertNotNull(rootLocation.code());
-        Assert.assertNotNull(rootLocation.name());
-        Assert.assertNotNull(rootLocation.childLocations());
-        Assert.assertNotNull(rootLocation.descendantLocations());
-        Assert.assertFalse(rootLocation.childLocations().isEmpty());
-        Assert.assertFalse(rootLocation.descendantLocations().isEmpty());
+        Assertions.assertNotNull(rootLocation);
+        Assertions.assertNotNull(rootLocation.code());
+        Assertions.assertNotNull(rootLocation.name());
+        Assertions.assertNotNull(rootLocation.childLocations());
+        Assertions.assertNotNull(rootLocation.descendantLocations());
+        Assertions.assertFalse(rootLocation.childLocations().isEmpty());
+        Assertions.assertFalse(rootLocation.descendantLocations().isEmpty());
     }
 
     @Test
     public void canCreateUpdateProfileWithGeographicEndpoint() {
         RG_NAME = generateRandomResourceName("tmergtest", 15);
         final String tmProfileName = generateRandomResourceName("tmpr", 15);
-        final String tmProfileDnsLabel = SdkContext.randomResourceName("tmdns", 15);
+        final String tmProfileDnsLabel = generateRandomResourceName("tmdns", 15);
 
         GeographicLocation geographicLocation = this.trafficManager
                 .profiles()
@@ -83,8 +107,8 @@ public class TrafficManagerTests extends TestBase {
                 break;
             }
         }
-        Assert.assertNotNull(california);
-        Assert.assertNotNull(bangladesh);
+        Assertions.assertNotNull(california);
+        Assertions.assertNotNull(bangladesh);
 
         TrafficManagerProfile profile = this.trafficManager.profiles().define(tmProfileName)
                 .withNewResourceGroup(RG_NAME, Region.US_EAST)
@@ -100,12 +124,12 @@ public class TrafficManagerTests extends TestBase {
                 .withTimeToLive(500)
                 .create();
 
-        Assert.assertNotNull(profile.inner());
-        Assert.assertTrue(profile.trafficRoutingMethod().equals(TrafficRoutingMethod.GEOGRAPHIC));
-        Assert.assertTrue(profile.externalEndpoints().containsKey("external-ep-1"));
+        Assertions.assertNotNull(profile.inner());
+        Assertions.assertTrue(profile.trafficRoutingMethod().equals(TrafficRoutingMethod.GEOGRAPHIC));
+        Assertions.assertTrue(profile.externalEndpoints().containsKey("external-ep-1"));
         TrafficManagerExternalEndpoint endpoint = profile.externalEndpoints().get("external-ep-1");
-        Assert.assertNotNull(endpoint.geographicLocationCodes());
-        Assert.assertEquals(2, endpoint.geographicLocationCodes().size());
+        Assertions.assertNotNull(endpoint.geographicLocationCodes());
+        Assertions.assertEquals(2, endpoint.geographicLocationCodes().size());
 
         profile.update()
                 .updateExternalTargetEndpoint("external-ep-1")
@@ -113,18 +137,18 @@ public class TrafficManagerTests extends TestBase {
                     .parent()
                 .apply();
 
-        Assert.assertTrue(profile.trafficRoutingMethod().equals(TrafficRoutingMethod.GEOGRAPHIC));
-        Assert.assertTrue(profile.externalEndpoints().containsKey("external-ep-1"));
+        Assertions.assertTrue(profile.trafficRoutingMethod().equals(TrafficRoutingMethod.GEOGRAPHIC));
+        Assertions.assertTrue(profile.externalEndpoints().containsKey("external-ep-1"));
         endpoint = profile.externalEndpoints().get("external-ep-1");
-        Assert.assertNotNull(endpoint.geographicLocationCodes());
-        Assert.assertEquals(1, endpoint.geographicLocationCodes().size());
+        Assertions.assertNotNull(endpoint.geographicLocationCodes());
+        Assertions.assertEquals(1, endpoint.geographicLocationCodes().size());
     }
 
     @Test
     public void canCreateTrafficManagerWithSubnetRouting() {
         RG_NAME = generateRandomResourceName("tmergtest", 15);
         final String tmProfileName = generateRandomResourceName("tmpr", 15);
-        final String tmProfileDnsLabel = SdkContext.randomResourceName("tmdns", 15);
+        final String tmProfileDnsLabel = generateRandomResourceName("tmdns", 15);
 
         EndpointPropertiesSubnetsItem subnetCidr = new EndpointPropertiesSubnetsItem();
         subnetCidr.withFirst("80.83.228.0").withScope(22);
@@ -144,16 +168,16 @@ public class TrafficManagerTests extends TestBase {
                     .attach()
                 .create();
 
-        Assert.assertNotNull(profile.inner());
-        Assert.assertTrue(profile.trafficRoutingMethod().equals(TrafficRoutingMethod.SUBNET));
-        Assert.assertTrue(profile.externalEndpoints().containsKey("external-ep-1"));
+        Assertions.assertNotNull(profile.inner());
+        Assertions.assertEquals(TrafficRoutingMethod.SUBNET, profile.trafficRoutingMethod());
+        Assertions.assertTrue(profile.externalEndpoints().containsKey("external-ep-1"));
         TrafficManagerExternalEndpoint endpoint = profile.externalEndpoints().get("external-ep-1");
-        Assert.assertTrue(endpoint.subnets().size() == 2);
+        Assertions.assertEquals(endpoint.subnets().size(), 2);
         boolean foundCidr = false;
         boolean foundRange = false;
         for (EndpointPropertiesSubnetsItem subnet : endpoint.subnets()) {
             if (subnet.first() != null && subnet.scope() != null) {
-                if (subnet.first().equalsIgnoreCase(subnetCidr.first()) && subnet.scope() == subnetCidr.scope()) {
+                if (subnet.first().equalsIgnoreCase(subnetCidr.first()) && subnet.scope().equals(subnetCidr.scope())) {
                     foundCidr = true;
                 }
             }
@@ -164,8 +188,8 @@ public class TrafficManagerTests extends TestBase {
             }
         }
 
-        Assert.assertTrue(String.format("The subnet %s/%d not found in the endpoint.", subnetCidr.first(), subnetCidr.scope()), foundCidr);
-        Assert.assertTrue(String.format("The subnet range %s-%s not found in the endpoint.", subnetCidr.first(), subnetCidr.last()), foundRange);
+        Assertions.assertTrue(foundCidr, String.format("The subnet %s/%d not found in the endpoint.", subnetCidr.first(), subnetCidr.scope()));
+        Assertions.assertTrue(foundRange, String.format("The subnet range %s-%s not found in the endpoint.", subnetCidr.first(), subnetCidr.last()));
 
         profile = profile.update()
                 .updateExternalTargetEndpoint("external-ep-1")
@@ -174,11 +198,11 @@ public class TrafficManagerTests extends TestBase {
                 .apply();
 
         endpoint = profile.externalEndpoints().get("external-ep-1");
-        Assert.assertTrue(endpoint.subnets().size() == 1);
+        Assertions.assertTrue(endpoint.subnets().size() == 1);
 
         profile = this.trafficManager.profiles().getById(profile.id());
 
         endpoint = profile.externalEndpoints().get("external-ep-1");
-        Assert.assertTrue(endpoint.subnets().size() == 1);
+        Assertions.assertTrue(endpoint.subnets().size() == 1);
     }
 }
