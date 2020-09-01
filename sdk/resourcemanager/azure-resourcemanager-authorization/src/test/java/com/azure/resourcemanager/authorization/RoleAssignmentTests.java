@@ -13,8 +13,8 @@ import org.junit.jupiter.api.Test;
 public class RoleAssignmentTests extends GraphRbacManagementTest {
     @Test
     public void canCRUDRoleAssignment() throws Exception {
-        String roleAssignmentName = sdkContext.randomUuid();
-        String spName = sdkContext.randomResourceName("sp", 20);
+        String roleAssignmentName = generateRandomUuid();
+        String spName = generateRandomResourceName("sp", 20);
 
         ServicePrincipal sp =
             authorizationManager.servicePrincipals().define(spName).withNewApplication("http://" + spName).create();

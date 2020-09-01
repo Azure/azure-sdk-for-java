@@ -13,18 +13,16 @@ import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.models.WebContainer;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.msi.models.Identity;
-import com.azure.resourcemanager.msi.MSIManager;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class WebAppsMsiTests extends AppServiceTest {
-    private MSIManager msiManager;
     private String rgName1 = "";
     private String webappName1 = "";
     private String vaultName = "";
@@ -34,8 +32,6 @@ public class WebAppsMsiTests extends AppServiceTest {
         webappName1 = generateRandomResourceName("java-webapp-", 20);
         rgName1 = generateRandomResourceName("javacsmrg", 20);
         vaultName = generateRandomResourceName("java-vault-", 20);
-        this.msiManager = MSIManager.authenticate(httpPipeline, profile, sdkContext);
-
         super.initializeClients(httpPipeline, profile);
     }
 
