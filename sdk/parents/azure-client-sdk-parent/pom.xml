@@ -21,7 +21,7 @@
     <groupId>com.azure</groupId>
     <artifactId>azure-sdk-parent</artifactId>
     <version>1.6.0</version> <!-- {x-version-update;com.azure:azure-sdk-parent;current} -->
-    <relativePath>../azure-sdk-parent/pom.xml</relativePath>
+    <relativePath>../azure-sdk-parent</relativePath>
   </parent>
 
   <licenses>
@@ -139,9 +139,9 @@
           </dependency>
         </dependencies>
         <configuration>
-          <configLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
-          <suppressionsLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
-          <headerLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
+          <configLocation>${project.parent.relativePath}/../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
+          <suppressionsLocation>${project.parent.relativePath}/../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+          <headerLocation>${project.parent.relativePath}/../../../eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
           <propertyExpansion>samedir=</propertyExpansion>
           <encoding>UTF-8</encoding>
           <consoleOutput>true</consoleOutput>
@@ -769,9 +769,9 @@
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
         <configuration>
-          <configLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
-          <suppressionsLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
-          <headerLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
+          <configLocation>${project.parent.relativePath}/../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
+          <suppressionsLocation>${project.parent.relativePath}/../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+          <headerLocation>${project.parent.relativePath}/../../../eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
           <propertyExpansion>samedir=</propertyExpansion>
           <encoding>UTF-8</encoding>
           <consoleOutput>true</consoleOutput>
@@ -805,7 +805,7 @@
           <threshold>Low</threshold>
           <xmlOutput>true</xmlOutput>
           <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
-          <excludeFilterFile>../../../eng/code-quality-reports/src/main/resources/spotbugs/spotbugs-exclude.xml</excludeFilterFile>
+          <excludeFilterFile>${project.parent.relativePath}/../../../eng/code-quality-reports/src/main/resources/spotbugs/spotbugs-exclude.xml</excludeFilterFile>
           <failOnError>true</failOnError>
           <fork>true</fork>
           <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
@@ -1104,7 +1104,7 @@
           <name>generate-overview</name>
         </property>
         <file>
-          <exists>../../../eng/pipelines/scripts/generate_overview_from_readme.py</exists>
+          <exists>${project.parent.relativePath}/../../../eng/pipelines/scripts/generate_overview_from_readme.py</exists>
         </file>
       </activation>
       <build>
@@ -1124,7 +1124,7 @@
                   <executable>python</executable>
                   <workingDirectory>${project.basedir}</workingDirectory>
                   <arguments>
-                    <argument>../../../eng/pipelines/scripts/generate_overview_from_readme.py</argument>
+                    <argument>${project.parent.relativePath}/../../../eng/pipelines/scripts/generate_overview_from_readme.py</argument>
                     <argument>--rf</argument>
                     <argument>${project.basedir}/README.md</argument>
                     <argument>--v</argument>
@@ -1160,7 +1160,7 @@
           <name>inject-codesnippets</name>
         </property>
         <file>
-          <exists>../../../eng/pipelines/scripts/inject_codesnippets.py</exists>
+          <exists>${project.parent.relativePath}/../../../eng/pipelines/scripts/inject_codesnippets.py</exists>
         </file>
       </activation>
       <build>
@@ -1180,7 +1180,7 @@
                   <executable>python</executable>
                   <workingDirectory>${project.basedir}</workingDirectory>
                   <arguments>
-                    <argument>../../../eng/pipelines/scripts/inject_codesnippets.py</argument>
+                    <argument>${project.parent.relativePath}/../../../eng/pipelines/scripts/inject_codesnippets.py</argument>
                     <argument>--project-dir</argument>
                     <argument>${project.basedir}</argument>
                   </arguments>
