@@ -735,7 +735,7 @@ public final class DigitalTwinsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> getComponent(String digitalTwinId, String componentPath) {
         return getComponentWithResponse(digitalTwinId, componentPath)
-            .map(response -> response.getValue());
+            .map(DigitalTwinsResponse::getValue);
     }
 
     /**
@@ -774,7 +774,7 @@ public final class DigitalTwinsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> Mono<T> getComponent(String digitalTwinId, String componentPath, Class<T> clazz) {
         return getComponentWithResponse(digitalTwinId, componentPath, clazz)
-            .map(response -> response.getValue());
+            .map(DigitalTwinsResponse::getValue);
     }
 
     /**
@@ -810,7 +810,7 @@ public final class DigitalTwinsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateComponent(String digitalTwinId, String componentPath, List<Object> componentUpdateOperations) {
         return updateComponentWithResponse(digitalTwinId, componentPath, componentUpdateOperations, new UpdateComponentRequestOptions())
-            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
+            .map(DigitalTwinsResponse::getValue);
     }
 
     /**
