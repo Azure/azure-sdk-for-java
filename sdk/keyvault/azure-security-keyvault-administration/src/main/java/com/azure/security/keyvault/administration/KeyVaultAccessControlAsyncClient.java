@@ -504,7 +504,7 @@ public final class KeyVaultAccessControlAsyncClient {
             keyVaultRoleDefinitions.add(roleDefinitionToKeyVaultRoleDefinition(roleDefinition));
         }
 
-        return new PagedResponse<>() {
+        return new PagedResponse<KeyVaultRoleDefinition>() {
             @Override
             public void close() throws IOException {
             }
@@ -544,7 +544,7 @@ public final class KeyVaultAccessControlAsyncClient {
     private Response<KeyVaultRoleAssignment> transformRoleAssignmentResponse(Response<RoleAssignment> response) {
         KeyVaultRoleAssignment keyVaultRoleAssignment = roleAssignmentToKeyVaultRoleAssignment(response.getValue());
 
-        return new Response<>() {
+        return new Response<KeyVaultRoleAssignment>() {
             @Override
             public int getStatusCode() {
                 return response.getStatusCode();
@@ -589,7 +589,7 @@ public final class KeyVaultAccessControlAsyncClient {
             keyVaultRoleAssignments.add(roleAssignmentToKeyVaultRoleAssignment(roleAssignment));
         }
 
-        return new PagedResponse<>() {
+        return new PagedResponse<KeyVaultRoleAssignment>() {
             @Override
             public void close() throws IOException {
             }
