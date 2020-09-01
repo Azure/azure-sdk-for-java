@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The HeatMapEndpoint model. */
-@Fluent
 public final class HeatMapEndpoint {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(HeatMapEndpoint.class);
 

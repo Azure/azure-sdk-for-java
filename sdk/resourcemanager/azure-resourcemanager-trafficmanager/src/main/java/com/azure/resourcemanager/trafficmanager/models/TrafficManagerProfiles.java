@@ -5,28 +5,24 @@
  */
 package com.azure.resourcemanager.trafficmanager.models;
 
-import com.azure.resourcemanager.trafficmanager.implementation.ProfilesInner;
+import com.azure.resourcemanager.trafficmanager.fluent.ProfilesClient;
 import com.azure.resourcemanager.trafficmanager.TrafficManager;
-import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
-import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import rx.Observable;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBatchCreation;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import reactor.core.publisher.Mono;
 
 /**
  * Entry point to traffic manager profile management API in Azure.
  */
-@Fluent
 public interface TrafficManagerProfiles extends
         SupportsCreating<TrafficManagerProfile.DefinitionStages.Blank>,
         SupportsListing<TrafficManagerProfile>,
@@ -38,7 +34,7 @@ public interface TrafficManagerProfiles extends
         SupportsBatchCreation<TrafficManagerProfile>,
         SupportsBatchDeletion,
         HasManager<TrafficManager>,
-        HasInner<ProfilesInner> {
+        HasInner<ProfilesClient> {
 
     /**
      * Checks that the DNS name is valid for traffic manager profile and is not in use.
@@ -54,18 +50,7 @@ public interface TrafficManagerProfiles extends
      * @param dnsNameLabel the DNS name to check
      * @return a representation of the deferred computation of this call, returning whether the DNS is available to be used for a traffic manager profile and other info if not
      */
-    Observable<CheckProfileDnsNameAvailabilityResult> checkDnsNameAvailabilityAsync(String dnsNameLabel);
-
-    /**
-     * Asynchronously checks that the DNS name is valid for traffic manager profile and is not in use.
-     *
-     * @param dnsNameLabel the DNS name to check
-     * @param callback the callback to call on success or failure, on success with the result whether the DNS is available
-     *                 to be used for a traffic manager profile and other info if not
-     *
-     * @return a handle to cancel the request
-     */
-    ServiceFuture<CheckProfileDnsNameAvailabilityResult> checkDnsNameAvailabilityAsync(String dnsNameLabel, ServiceCallback<CheckProfileDnsNameAvailabilityResult> callback);
+    Mono<CheckProfileDnsNameAvailabilityResult> checkDnsNameAvailabilityAsync(String dnsNameLabel);
 
     /**
      * @return the default geographic hierarchy used by the Geographic traffic routing method.

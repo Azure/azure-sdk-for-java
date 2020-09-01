@@ -5,20 +5,21 @@
  */
 package com.azure.resourcemanager.trafficmanager.implementation;
 
+import com.azure.resourcemanager.trafficmanager.fluent.EndpointsClient;
+import com.azure.resourcemanager.trafficmanager.fluent.inner.DeleteOperationResultInner;
+import com.azure.resourcemanager.trafficmanager.fluent.inner.EndpointInner;
 import com.azure.resourcemanager.trafficmanager.models.EndpointMonitorStatus;
 import com.azure.resourcemanager.trafficmanager.models.EndpointPropertiesCustomHeadersItem;
 import com.azure.resourcemanager.trafficmanager.models.EndpointPropertiesSubnetsItem;
 import com.azure.resourcemanager.trafficmanager.models.EndpointStatus;
 import com.azure.resourcemanager.trafficmanager.models.EndpointType;
 import com.azure.resourcemanager.trafficmanager.models.GeographicLocation;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
-import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerEndpoint;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfile;
-import rx.Observable;
-import rx.functions.Func1;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,7 +33,6 @@ import java.util.TreeMap;
 /**
  * Implementation for {@link TrafficManagerEndpoint}.
  */
-@LangDefinition
 class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManagerEndpoint,
         EndpointInner,
         TrafficManagerProfileImpl,
@@ -43,13 +43,13 @@ class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManage
         TrafficManagerEndpoint.UpdateAzureEndpoint,
         TrafficManagerEndpoint.UpdateExternalEndpoint,
         TrafficManagerEndpoint.UpdateNestedProfileEndpoint {
-    private final EndpointsInner client;
+    private final EndpointsClient client;
     private EndpointType endpointType;
 
     TrafficManagerEndpointImpl(String name,
                                TrafficManagerProfileImpl parent,
                                EndpointInner inner,
-                               EndpointsInner client) {
+                               EndpointsClient client) {
         super(name, parent, inner);
         this.client = client;
     }
@@ -383,38 +383,31 @@ class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManage
     }
 
     @Override
-    public Observable<TrafficManagerEndpoint> createResourceAsync() {
+    public Mono<TrafficManagerEndpoint> createResourceAsync() {
         final TrafficManagerEndpointImpl self = this;
         return this.client.createOrUpdateAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.endpointType().localName(),
                 this.name(),
                 this.inner())
-                .map(new Func1<EndpointInner, TrafficManagerEndpoint>() {
-                    @Override
-                    public TrafficManagerEndpoint call(EndpointInner inner) {
-                        self.setInner(inner);
-                        return self;
-                    }
+                .map(inner -> {
+                    setInner(inner);
+                    return this;
                 });
     }
 
     @Override
-    public Observable<TrafficManagerEndpoint> updateResourceAsync() {
+    public Mono<TrafficManagerEndpoint> updateResourceAsync() {
         return createResourceAsync();
     }
 
     @Override
-    public Observable<Void> deleteResourceAsync() {
+    public Mono<Void> deleteResourceAsync() {
         return this.client.deleteAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.endpointType().localName(),
-                this.name()).map(new Func1<DeleteOperationResultInner, Void>() {
-            @Override
-            public Void call(DeleteOperationResultInner deleteOperationResultInner) {
-                return null;
-            }
-        });
+                this.name())
+            .then();
     }
 
     @Override
@@ -423,7 +416,7 @@ class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManage
     }
 
     @Override
-    protected Observable<EndpointInner> getInnerAsync() {
+    protected Mono<EndpointInner> getInnerAsync() {
         return this.client.getAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.endpointType().toString(),

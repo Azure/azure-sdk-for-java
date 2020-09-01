@@ -18,7 +18,6 @@ import java.util.List;
 
 /** The Endpoint model. */
 @JsonFlatten
-@Fluent
 public class EndpointInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EndpointInner.class);
 

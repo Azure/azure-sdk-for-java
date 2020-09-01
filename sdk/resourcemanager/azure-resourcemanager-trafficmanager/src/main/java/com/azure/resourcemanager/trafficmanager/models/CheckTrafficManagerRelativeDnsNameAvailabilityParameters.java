@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The CheckTrafficManagerRelativeDnsNameAvailabilityParameters model. */
-@Fluent
 public final class CheckTrafficManagerRelativeDnsNameAvailabilityParameters {
     @JsonIgnore
     private final ClientLogger logger =

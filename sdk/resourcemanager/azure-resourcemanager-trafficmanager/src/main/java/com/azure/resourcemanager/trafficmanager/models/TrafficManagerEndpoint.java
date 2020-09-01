@@ -5,14 +5,12 @@
  */
 package com.azure.resourcemanager.trafficmanager.models;
 
-import com.azure.resourcemanager.trafficmanager.implementation.EndpointInner;
-import com.microsoft.azure.management.apigeneration.Beta;
-import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
-import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
-import com.microsoft.azure.management.resources.fluentcore.model.Settable;
-import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.ExternalChildResource;
+import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
+import com.azure.resourcemanager.resources.fluentcore.model.Settable;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.trafficmanager.fluent.inner.EndpointInner;
 
 import java.util.Collection;
 import java.util.List;
@@ -22,7 +20,6 @@ import java.util.Set;
 /**
  * An immutable client-side representation of an Azure traffic manager profile endpoint.
  */
-@Fluent
 public interface TrafficManagerEndpoint extends
         ExternalChildResource<TrafficManagerEndpoint, TrafficManagerProfile>,
         HasInner<EndpointInner> {
@@ -305,8 +302,7 @@ public interface TrafficManagerEndpoint extends
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
-        @Beta
-        interface WithSubnet<ParentT>  {
+interface WithSubnet<ParentT>  {
             /**
              * Specifies the subnets for the endpoint in CIDR format (start ip, mask).
              *
@@ -314,8 +310,7 @@ public interface TrafficManagerEndpoint extends
              * @param mask the subnet mask
              * @return the next stage of the definition
              */
-            @Beta
-            WithAttach<ParentT> withSubnet(String subnetStartIp, int mask);
+    WithAttach<ParentT> withSubnet(String subnetStartIp, int mask);
 
             /**
              * Specifies the subnets for the endpoint as ip range.
@@ -324,8 +319,7 @@ public interface TrafficManagerEndpoint extends
              * @param subnetEndIp the last ip in the subnet
              * @return the next stage of the definition
              */
-            @Beta
-            WithAttach<ParentT> withSubnet(String subnetStartIp, String subnetEndIp);
+    WithAttach<ParentT> withSubnet(String subnetStartIp, String subnetEndIp);
 
             /**
              * Specifies the subnets for this endpoint.
@@ -334,8 +328,7 @@ public interface TrafficManagerEndpoint extends
              * @param subnets the array of subnet descriptions
              * @return the next stage of the definition
              */
-            @Beta
-            WithAttach<ParentT> withSubnets(List<EndpointPropertiesSubnetsItem> subnets);
+    WithAttach<ParentT> withSubnets(List<EndpointPropertiesSubnetsItem> subnets);
         }
 
         /**
@@ -343,8 +336,7 @@ public interface TrafficManagerEndpoint extends
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
-        @Beta
-        interface WithCustomHeader<ParentT> {
+interface WithCustomHeader<ParentT> {
             /**
              * Add a custom header.
              *
@@ -352,8 +344,7 @@ public interface TrafficManagerEndpoint extends
              * @param value the header value
              * @return the next stage of the definition
              */
-            @Beta
-            WithAttach<ParentT> withCustomHeader(String name, String value);
+    WithAttach<ParentT> withCustomHeader(String name, String value);
 
             /**
              * Add a custom header.
@@ -362,8 +353,7 @@ public interface TrafficManagerEndpoint extends
              * @param headerValues the map containing header name and value pair
              * @return the next stage of the definition
              */
-            @Beta
-            WithAttach<ParentT> withCustomHeaders(Map<String, String> headerValues);
+    WithAttach<ParentT> withCustomHeaders(Map<String, String> headerValues);
         }
 
         /** The final stage of the traffic manager profile endpoint definition.
@@ -654,8 +644,7 @@ public interface TrafficManagerEndpoint extends
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
-        @Beta
-        interface WithCustomHeader<ParentT> {
+interface WithCustomHeader<ParentT> {
             /**
              * Add a custom header.
              *
@@ -663,8 +652,7 @@ public interface TrafficManagerEndpoint extends
              * @param value the header value
              * @return the next stage of the definition
              */
-            @Beta
-            WithAttach<ParentT> withCustomHeader(String name, String value);
+    WithAttach<ParentT> withCustomHeader(String name, String value);
 
             /**
              * Add custom headers.
@@ -673,8 +661,7 @@ public interface TrafficManagerEndpoint extends
              * @param headerValues the map containing header name and value pair
              * @return the next stage of the definition
              */
-            @Beta
-            WithAttach<ParentT> withCustomHeaders(Map<String, String> headerValues);
+    WithAttach<ParentT> withCustomHeaders(Map<String, String> headerValues);
         }
 
         /** The final stage of the traffic manager profile endpoint definition.
@@ -954,8 +941,7 @@ public interface TrafficManagerEndpoint extends
         /**
          * The stage of the traffic manager endpoint update allowing to specify custom headers.
          */
-        @Beta
-        interface WithCustomHeader {
+interface WithCustomHeader {
             /**
              * Add a custom header.
              *
@@ -963,8 +949,7 @@ public interface TrafficManagerEndpoint extends
              * @param value the header value
              * @return the next stage of the update
              */
-            @Beta
-            Update withCustomHeader(String name, String value);
+    Update withCustomHeader(String name, String value);
 
             /**
              * Add custom headers.
@@ -973,8 +958,7 @@ public interface TrafficManagerEndpoint extends
              * @param headers the map containing header name and value pair
              * @return the next stage of the update
              */
-            @Beta
-            Update withCustomHeaders(Map<String, String> headers);
+    Update withCustomHeaders(Map<String, String> headers);
 
             /**
              * Removes a custom header.
@@ -982,8 +966,7 @@ public interface TrafficManagerEndpoint extends
              * @param name the name of the header to remove
              * @return the next stage of the update
              */
-            @Beta
-            Update withoutCustomHeader(String name);
+    Update withoutCustomHeader(String name);
         }
     }
 }

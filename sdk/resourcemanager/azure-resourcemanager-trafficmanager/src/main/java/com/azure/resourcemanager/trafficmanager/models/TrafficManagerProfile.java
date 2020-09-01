@@ -5,23 +5,20 @@
  */
 package com.azure.resourcemanager.trafficmanager.models;
 
-import com.azure.resourcemanager.trafficmanager.implementation.ProfileInner;
 import com.azure.resourcemanager.trafficmanager.TrafficManager;
-import com.microsoft.azure.management.apigeneration.Beta;
-import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
-import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
-import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
+import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
+import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
+import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
+import com.azure.resourcemanager.trafficmanager.fluent.inner.ProfileInner;
 
 import java.util.Map;
 
 /**
  * An immutable client-side representation of an Azure traffic manager profile.
  */
-@Fluent
 public interface TrafficManagerProfile extends
         GroupableResource<TrafficManager, ProfileInner>,
         Refreshable<TrafficManagerProfile>,
@@ -343,8 +340,7 @@ public interface TrafficManagerProfile extends
              * @param maxReturn the maximum number of result to return
              * @return the next stage of the Update
              */
-            @Beta
-            Update withMultiValueBasedRouting(long maxReturn);
+    Update withMultiValueBasedRouting(long maxReturn);
 
             /**
              * Specifies that end user traffic should be routed to the endpoint which is decided based on the end-user
@@ -352,8 +348,7 @@ public interface TrafficManagerProfile extends
              *
              * @return the next stage of the update
              */
-            @Beta
-            Update withSubnetBasedRouting();
+    Update withSubnetBasedRouting();
 
             /**
              * Specifies the traffic routing method for the profile.

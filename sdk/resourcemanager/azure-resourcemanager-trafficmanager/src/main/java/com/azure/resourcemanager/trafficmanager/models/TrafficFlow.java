@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The TrafficFlow model. */
-@Fluent
 public final class TrafficFlow {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TrafficFlow.class);
 

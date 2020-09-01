@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The TrafficManagerNameAvailability model. */
-@Fluent
 public final class TrafficManagerNameAvailabilityInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TrafficManagerNameAvailabilityInner.class);
 

@@ -7,19 +7,19 @@
 package com.azure.resourcemanager.trafficmanager.implementation;
 
 import com.azure.resourcemanager.trafficmanager.TrafficManager;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.resourcemanager.trafficmanager.fluent.GeographicHierarchiesClient;
+import com.azure.resourcemanager.trafficmanager.fluent.inner.TrafficManagerGeographicHierarchyInner;
 import com.azure.resourcemanager.trafficmanager.models.GeographicHierarchies;
 import com.azure.resourcemanager.trafficmanager.models.GeographicLocation;
 
 /**
  * Implementation for GeographicHierarchies.
  */
-@LangDefinition
-class GeographicHierarchiesImpl extends WrapperImpl<GeographicHierarchiesInner> implements GeographicHierarchies {
+class GeographicHierarchiesImpl extends WrapperImpl<GeographicHierarchiesClient> implements GeographicHierarchies {
     private final TrafficManager manager;
 
-    protected GeographicHierarchiesImpl(TrafficManager trafficManager, GeographicHierarchiesInner inner) {
+    protected GeographicHierarchiesImpl(TrafficManager trafficManager, GeographicHierarchiesClient inner) {
         super(inner);
         this.manager = trafficManager;
     }

@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DnsConfig model. */
-@Fluent
 public final class DnsConfig {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DnsConfig.class);
 

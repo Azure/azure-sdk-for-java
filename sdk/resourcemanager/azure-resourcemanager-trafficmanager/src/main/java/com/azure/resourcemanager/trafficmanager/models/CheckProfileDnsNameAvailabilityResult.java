@@ -5,13 +5,11 @@
  */
 package com.azure.resourcemanager.trafficmanager.models;
 
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.azure.resourcemanager.trafficmanager.implementation.TrafficManagerNameAvailabilityInner;
+import com.azure.resourcemanager.trafficmanager.fluent.inner.TrafficManagerNameAvailabilityInner;
 
 /**
  * The result of checking for DNS name availability.
  */
-@LangDefinition
 public class CheckProfileDnsNameAvailabilityResult {
     private TrafficManagerNameAvailabilityInner inner;
 

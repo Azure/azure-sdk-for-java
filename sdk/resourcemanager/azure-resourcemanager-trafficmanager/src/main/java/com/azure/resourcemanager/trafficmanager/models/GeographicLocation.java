@@ -6,16 +6,14 @@
 
 package com.azure.resourcemanager.trafficmanager.models;
 
-import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
-import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 
 import java.util.List;
 
 /**
  * Type representing Geographic Hierarchy region (location).
  */
-@Fluent
 public interface GeographicLocation extends HasName, HasInner<Region> {
     /**
      * @return the location code.

@@ -6,9 +6,10 @@
 package com.azure.resourcemanager.trafficmanager.implementation;
 
 import com.azure.resourcemanager.trafficmanager.TrafficManager;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.trafficmanager.fluent.ProfilesClient;
+import com.azure.resourcemanager.trafficmanager.fluent.inner.ProfileInner;
 import com.azure.resourcemanager.trafficmanager.models.MonitorProtocol;
 import com.azure.resourcemanager.trafficmanager.models.ProfileStatus;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerAzureEndpoint;
@@ -17,9 +18,7 @@ import com.azure.resourcemanager.trafficmanager.models.TrafficManagerNestedProfi
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfile;
 import com.azure.resourcemanager.trafficmanager.models.ProfileMonitorStatus;
 import com.azure.resourcemanager.trafficmanager.models.TrafficRoutingMethod;
-import rx.Completable;
-import rx.Observable;
-import rx.functions.Func1;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Map;
@@ -27,13 +26,12 @@ import java.util.Map;
 /**
  * Implementation for TrafficManagerProfile.
  */
-@LangDefinition
 class TrafficManagerProfileImpl
         extends GroupableResourceImpl<
             TrafficManagerProfile,
             ProfileInner,
             TrafficManagerProfileImpl,
-    TrafficManager>
+            TrafficManager>
         implements
             TrafficManagerProfile,
             TrafficManagerProfile.Definition,
@@ -42,7 +40,7 @@ class TrafficManagerProfileImpl
 
     TrafficManagerProfileImpl(String name, final ProfileInner innerModel, final TrafficManager trafficManager) {
         super(name, innerModel, trafficManager);
-        this.endpoints = new TrafficManagerEndpointsImpl(trafficManager.inner().endpoints(), this);
+        this.endpoints = new TrafficManagerEndpointsImpl(trafficManager.inner().getEndpoints(), this);
         this.endpoints.enablePostRunMode();
     }
 
@@ -104,20 +102,17 @@ class TrafficManagerProfileImpl
     }
 
     @Override
-    public Observable<TrafficManagerProfile> refreshAsync() {
-        return super.refreshAsync().map(new Func1<TrafficManagerProfile, TrafficManagerProfile>() {
-            @Override
-            public TrafficManagerProfile call(TrafficManagerProfile trafficManagerProfile) {
+    public Mono<TrafficManagerProfile> refreshAsync() {
+        return super.refreshAsync().map(trafficManagerProfile -> {
                 TrafficManagerProfileImpl impl = (TrafficManagerProfileImpl) trafficManagerProfile;
                 impl.endpoints.refresh();
                 return impl;
-            }
         });
     }
 
     @Override
-    protected Observable<ProfileInner> getInnerAsync() {
-        return this.manager().inner().profiles().getByResourceGroupAsync(
+    protected Mono<ProfileInner> getInnerAsync() {
+        return this.manager().inner().getProfiles().getByResourceGroupAsync(
                 this.resourceGroupName(), this.name());
     }
 
@@ -253,43 +248,37 @@ class TrafficManagerProfileImpl
     }
 
     @Override
-    public Observable<TrafficManagerProfile> createResourceAsync() {
-        return this.manager().inner().profiles().createOrUpdateAsync(
+    public Mono<TrafficManagerProfile> createResourceAsync() {
+        return this.manager().inner().getProfiles().createOrUpdateAsync(
                 resourceGroupName(), name(), inner())
                 .map(innerToFluentMap(this));
     }
 
     @Override
-    public Observable<TrafficManagerProfile> updateResourceAsync() {
-        final TrafficManagerProfileImpl self = this;
+    public Mono<TrafficManagerProfile> updateResourceAsync() {
         // In update we first commit the endpoints then update profile, the reason is through portal and direct API
         // call one can create endpoints without properties those are not applicable for the profile's current routing
         // method. We cannot update the routing method of the profile until existing endpoints contains the properties
         // required for the new routing method.
-        final ProfilesInner innerCollection = this.manager().inner().profiles();
-        return self.endpoints.commitAndGetAllAsync()
-                .flatMap(new Func1<List<TrafficManagerEndpointImpl>, Observable<? extends TrafficManagerProfile>>() {
-                    public Observable<? extends TrafficManagerProfile> call(List<TrafficManagerEndpointImpl> endpoints) {
-                        inner().withEndpoints(self.endpoints.allEndpointsInners());
+        final ProfilesClient innerCollection = this.manager().inner().getProfiles();
+        return this.endpoints.commitAndGetAllAsync()
+                .flatMap(endpoints -> {
+                        inner().withEndpoints(this.endpoints.allEndpointsInners());
                         return innerCollection.createOrUpdateAsync(resourceGroupName(), name(), inner())
-                            .map(new Func1<ProfileInner, TrafficManagerProfile>() {
-                                    @Override
-                                    public TrafficManagerProfile call(ProfileInner profileInner) {
-                                self.setInner(profileInner);
-                                return self;
-                                }
+                            .map(profileInner -> {
+                                this.setInner(profileInner);
+                                return this;
                                 });
-                    }
                 });
     }
 
     @Override
-    public Completable afterPostRunAsync(final boolean isGroupFaulted) {
+    public Mono<Void> afterPostRunAsync(final boolean isGroupFaulted) {
         this.endpoints.clear();
         if (isGroupFaulted) {
-            return Completable.complete();
+            return Mono.empty();
         } else {
-            return this.refreshAsync().toCompletable();
+            return this.refreshAsync().then();
         }
     }
 

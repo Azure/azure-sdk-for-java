@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The MonitorConfigCustomHeadersItem model. */
-@Fluent
 public final class MonitorConfigCustomHeadersItem {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MonitorConfigCustomHeadersItem.class);
 

@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The QueryExperience model. */
-@Fluent
 public final class QueryExperience {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryExperience.class);
 

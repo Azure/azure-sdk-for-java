@@ -19,7 +19,6 @@ import java.util.List;
 
 /** The Profile model. */
 @JsonFlatten
-@Fluent
 public class ProfileInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ProfileInner.class);
 

@@ -17,7 +17,6 @@ import java.util.List;
 
 /** The HeatMapModel model. */
 @JsonFlatten
-@Fluent
 public class HeatMapModelInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(HeatMapModelInner.class);
 

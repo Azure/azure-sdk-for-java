@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The MonitorConfigExpectedStatusCodeRangesItem model. */
-@Fluent
 public final class MonitorConfigExpectedStatusCodeRangesItem {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MonitorConfigExpectedStatusCodeRangesItem.class);
 

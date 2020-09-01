@@ -5,13 +5,11 @@
  */
 package com.azure.resourcemanager.trafficmanager.models;
 
-import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 
 /**
  * An immutable client-side representation of an Azure traffic manager profile nested profile endpoint.
  */
-@Fluent
 public interface TrafficManagerNestedProfileEndpoint extends TrafficManagerEndpoint {
     /**
      * @return the nested traffic manager profile resource id

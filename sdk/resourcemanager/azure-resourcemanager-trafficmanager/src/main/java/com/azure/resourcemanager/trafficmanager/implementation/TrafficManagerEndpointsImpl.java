@@ -5,14 +5,16 @@
  */
 package com.azure.resourcemanager.trafficmanager.implementation;
 
+import com.azure.resourcemanager.trafficmanager.fluent.EndpointsClient;
+import com.azure.resourcemanager.trafficmanager.fluent.inner.EndpointInner;
 import com.azure.resourcemanager.trafficmanager.models.EndpointType;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerAzureEndpoint;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerEndpoint;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerExternalEndpoint;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerNestedProfileEndpoint;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfile;
+import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,14 +25,13 @@ import java.util.Map;
 /**
  * Represents an endpoint collection associated with a traffic manager profile.
  */
-@LangDefinition
 class TrafficManagerEndpointsImpl extends
         ExternalChildResourcesCachedImpl<TrafficManagerEndpointImpl,
                 TrafficManagerEndpoint,
                 EndpointInner,
                 TrafficManagerProfileImpl,
                 TrafficManagerProfile> {
-    private final EndpointsInner client;
+    private final EndpointsClient client;
 
     /**
      * Creates new EndpointsImpl.
@@ -38,7 +39,7 @@ class TrafficManagerEndpointsImpl extends
      * @param client the client to perform REST calls on endpoints
      * @param parent the parent traffic manager profile of the endpoints
      */
-    TrafficManagerEndpointsImpl(EndpointsInner client, TrafficManagerProfileImpl parent) {
+    TrafficManagerEndpointsImpl(EndpointsClient client, TrafficManagerProfileImpl parent) {
         super(parent, parent.taskGroup(), "Endpoint");
         this.client = client;
         this.cacheCollection();
@@ -61,7 +62,7 @@ class TrafficManagerEndpointsImpl extends
             TrafficManagerEndpointImpl endpoint = entry.getValue();
             if (endpoint.endpointType() == EndpointType.AZURE) {
                 TrafficManagerAzureEndpoint azureEndpoint = new TrafficManagerAzureEndpointImpl(entry.getKey(),
-                        this.parent(),
+                        this.getParent(),
                         endpoint.inner(),
                         this.client);
                 result.put(entry.getKey(), azureEndpoint);
@@ -79,7 +80,7 @@ class TrafficManagerEndpointsImpl extends
             TrafficManagerEndpointImpl endpoint = entry.getValue();
             if (endpoint.endpointType() == EndpointType.EXTERNAL) {
                 TrafficManagerExternalEndpoint externalEndpoint = new TrafficManagerExternalEndpointImpl(entry.getKey(),
-                        this.parent(),
+                        this.getParent(),
                         endpoint.inner(),
                         this.client);
                 result.put(entry.getKey(), externalEndpoint);
@@ -97,7 +98,7 @@ class TrafficManagerEndpointsImpl extends
             TrafficManagerEndpointImpl endpoint = entry.getValue();
             if (endpoint.endpointType() == EndpointType.NESTED_PROFILE) {
                 TrafficManagerNestedProfileEndpoint nestedProfileEndpoint = new TrafficManagerNestedProfileEndpointImpl(entry.getKey(),
-                        this.parent(),
+                        this.getParent(),
                         endpoint.inner(),
                         this.client);
                 result.put(entry.getKey(), nestedProfileEndpoint);
@@ -204,10 +205,10 @@ class TrafficManagerEndpointsImpl extends
     @Override
     protected List<TrafficManagerEndpointImpl> listChildResources() {
         List<TrafficManagerEndpointImpl> childResources = new ArrayList<>();
-        if (parent().inner().endpoints() != null) {
-            for (EndpointInner inner : parent().inner().endpoints()) {
+        if (getParent().inner().endpoints() != null) {
+            for (EndpointInner inner : getParent().inner().endpoints()) {
                 childResources.add(new TrafficManagerEndpointImpl(inner.name(),
-                    this.parent(),
+                    this.getParent(),
                     inner,
                     this.client));
             }
@@ -216,9 +217,14 @@ class TrafficManagerEndpointsImpl extends
     }
 
     @Override
+    protected Flux<TrafficManagerEndpointImpl> listChildResourcesAsync() {
+        return Flux.fromIterable(listChildResources());
+    }
+
+    @Override
     protected TrafficManagerEndpointImpl newChildResource(String name) {
         TrafficManagerEndpointImpl endpoint = new TrafficManagerEndpointImpl(name,
-                this.parent(),
+                this.getParent(),
                 new EndpointInner(),
                 this.client);
         return endpoint

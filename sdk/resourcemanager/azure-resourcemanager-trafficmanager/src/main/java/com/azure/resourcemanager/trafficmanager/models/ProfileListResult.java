@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ProfileListResult model. */
-@Fluent
 public final class ProfileListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ProfileListResult.class);
 

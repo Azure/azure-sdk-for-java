@@ -14,7 +14,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The TrafficManagerGeographicHierarchy model. */
 @JsonFlatten
-@Fluent
 public class TrafficManagerGeographicHierarchyInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TrafficManagerGeographicHierarchyInner.class);
 

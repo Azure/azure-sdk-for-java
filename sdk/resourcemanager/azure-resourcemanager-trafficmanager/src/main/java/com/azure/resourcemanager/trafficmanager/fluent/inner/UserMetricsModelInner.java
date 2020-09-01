@@ -13,7 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The UserMetricsModel model. */
 @JsonFlatten
-@Fluent
 public class UserMetricsModelInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(UserMetricsModelInner.class);
 

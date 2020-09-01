@@ -5,7 +5,12 @@
  */
 package com.azure.resourcemanager.trafficmanager.implementation;
 
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.azure.resourcemanager.trafficmanager.TrafficManager;
+import com.azure.resourcemanager.trafficmanager.fluent.ProfilesClient;
+import com.azure.resourcemanager.trafficmanager.fluent.inner.EndpointInner;
+import com.azure.resourcemanager.trafficmanager.fluent.inner.ProfileInner;
+import com.azure.resourcemanager.trafficmanager.fluent.inner.TrafficManagerNameAvailabilityInner;
 import com.azure.resourcemanager.trafficmanager.models.CheckProfileDnsNameAvailabilityResult;
 import com.azure.resourcemanager.trafficmanager.models.CheckTrafficManagerRelativeDnsNameAvailabilityParameters;
 import com.azure.resourcemanager.trafficmanager.models.DnsConfig;
@@ -14,57 +19,41 @@ import com.azure.resourcemanager.trafficmanager.models.GeographicLocation;
 import com.azure.resourcemanager.trafficmanager.models.MonitorConfig;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfile;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfiles;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import rx.Observable;
-import rx.functions.Func1;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 
 /**
  * Implementation for TrafficManagerProfiles.
  */
-@LangDefinition
-class TrafficManagerProfilesImpl
+public class TrafficManagerProfilesImpl
     extends TopLevelModifiableResourcesImpl<
-    TrafficManagerProfile,
+        TrafficManagerProfile,
         TrafficManagerProfileImpl,
         ProfileInner,
-        ProfilesInner,
-    TrafficManager>
+        ProfilesClient,
+        TrafficManager>
     implements TrafficManagerProfiles {
     private GeographicHierarchies geographicHierarchies;
 
-    TrafficManagerProfilesImpl(final TrafficManager trafficManager) {
-        super(trafficManager.inner().profiles(), trafficManager);
-        this.geographicHierarchies = new GeographicHierarchiesImpl(trafficManager, trafficManager.inner().geographicHierarchies());
+    public TrafficManagerProfilesImpl(final TrafficManager trafficManager) {
+        super(trafficManager.inner().getProfiles(), trafficManager);
+        this.geographicHierarchies = new GeographicHierarchiesImpl(trafficManager, trafficManager.inner().getGeographicHierarchies());
     }
 
     @Override
     public CheckProfileDnsNameAvailabilityResult checkDnsNameAvailability(String dnsNameLabel) {
-        return this.checkDnsNameAvailabilityAsync(dnsNameLabel).toBlocking().last();
+        return this.checkDnsNameAvailabilityAsync(dnsNameLabel).block();
     }
 
     @Override
-    public Observable<CheckProfileDnsNameAvailabilityResult> checkDnsNameAvailabilityAsync(String dnsNameLabel) {
+    public Mono<CheckProfileDnsNameAvailabilityResult> checkDnsNameAvailabilityAsync(String dnsNameLabel) {
         CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameter =
                 new CheckTrafficManagerRelativeDnsNameAvailabilityParameters()
                         .withName(dnsNameLabel)
                         .withType("Microsoft.Network/trafficManagerProfiles");
         return this.inner()
-                .checkTrafficManagerRelativeDnsNameAvailabilityAsync(parameter).map(new Func1<TrafficManagerNameAvailabilityInner, CheckProfileDnsNameAvailabilityResult>() {
-                    @Override
-                    public CheckProfileDnsNameAvailabilityResult call(TrafficManagerNameAvailabilityInner trafficManagerNameAvailabilityInner) {
-                        return new CheckProfileDnsNameAvailabilityResult(trafficManagerNameAvailabilityInner);
-                    }
-                });
-    }
-
-    @Override
-    public ServiceFuture<CheckProfileDnsNameAvailabilityResult> checkDnsNameAvailabilityAsync(String dnsNameLabel, ServiceCallback<CheckProfileDnsNameAvailabilityResult> callback) {
-        return ServiceFuture.fromBody(this.checkDnsNameAvailabilityAsync(dnsNameLabel), callback);
+                .checkTrafficManagerRelativeDnsNameAvailabilityAsync(parameter).map(CheckProfileDnsNameAvailabilityResult::new);
     }
 
     @Override

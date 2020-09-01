@@ -5,21 +5,21 @@
  */
 package com.azure.resourcemanager.trafficmanager.implementation;
 
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
+import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
+import com.azure.resourcemanager.trafficmanager.fluent.EndpointsClient;
+import com.azure.resourcemanager.trafficmanager.fluent.inner.EndpointInner;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerAzureEndpoint;
 import com.azure.resourcemanager.trafficmanager.models.TargetAzureResourceType;
 
 /**
  * Implementation for {@link TrafficManagerAzureEndpoint}.
  */
-@LangDefinition
 class TrafficManagerAzureEndpointImpl extends TrafficManagerEndpointImpl
  implements TrafficManagerAzureEndpoint {
     TrafficManagerAzureEndpointImpl(String name,
                                     TrafficManagerProfileImpl parent,
                                     EndpointInner inner,
-                                    EndpointsInner client) {
+                                    EndpointsClient client) {
         super(name, parent, inner, client);
     }
 

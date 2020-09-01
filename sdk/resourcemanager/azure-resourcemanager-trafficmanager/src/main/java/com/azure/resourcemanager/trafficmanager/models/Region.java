@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The Region model. */
-@Fluent
 public final class Region {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Region.class);
 

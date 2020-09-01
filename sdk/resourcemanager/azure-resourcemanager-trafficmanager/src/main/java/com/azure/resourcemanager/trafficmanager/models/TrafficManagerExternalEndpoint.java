@@ -5,13 +5,11 @@
  */
 package com.azure.resourcemanager.trafficmanager.models;
 
-import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 
 /**
  * An immutable client-side representation of an Azure traffic manager profile external endpoint.
  */
-@Fluent
 public interface TrafficManagerExternalEndpoint extends TrafficManagerEndpoint {
     /**
      * @return the fully qualified DNS name of the external endpoint
