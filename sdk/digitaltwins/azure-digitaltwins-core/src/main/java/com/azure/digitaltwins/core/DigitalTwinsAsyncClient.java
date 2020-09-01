@@ -94,7 +94,7 @@ public final class DigitalTwinsAsyncClient {
      *
      * @param digitalTwinId The Id of the digital twin.
      * @param digitalTwin The application/json digital twin to create.
-     * @return The the application/json string representing the digital twin created.
+     * @return The application/json string representing the digital twin created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> createDigitalTwin(String digitalTwinId, String digitalTwin)
@@ -125,7 +125,7 @@ public final class DigitalTwinsAsyncClient {
                     DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
                     return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), jsonResponse, twinHeaders));
                 } catch (JsonProcessingException e) {
-                    logger.error("JsonProcessingException occurred while creating a digital twin: ", e);
+                    logger.error("JsonProcessingException occurred while serializing json object into string ", e);
                     return Mono.error(e);
                 }
             });
@@ -207,7 +207,7 @@ public final class DigitalTwinsAsyncClient {
                     DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
                     return Mono.justOrEmpty(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), jsonResponse, twinHeaders));
                 } catch (JsonProcessingException e) {
-                    logger.error("JsonProcessingException occurred while retrieving a digital twin: ", e);
+                    logger.error("JsonProcessingException occurred while serializing json object into string: ", e);
                     return Mono.error(e);
                 }
             });
@@ -282,9 +282,10 @@ public final class DigitalTwinsAsyncClient {
     }
 
     Mono<DigitalTwinsResponse<Void>> updateDigitalTwinWithResponse(String digitalTwinId, List<Object> digitalTwinUpdateOperations, UpdateDigitalTwinRequestOptions options, Context context) {
+        String ifMatch = options != null ? options.getIfMatch() : null;
         return protocolLayer
             .getDigitalTwins()
-            .updateWithResponseAsync(digitalTwinId, digitalTwinUpdateOperations, options.getIfMatch(), context)
+            .updateWithResponseAsync(digitalTwinId, digitalTwinUpdateOperations, ifMatch, context)
             .map(response -> {
                 DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
                 return new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), response.getValue(), twinHeaders);
@@ -317,9 +318,10 @@ public final class DigitalTwinsAsyncClient {
     }
 
     Mono<Response<Void>> deleteDigitalTwinWithResponse(String digitalTwinId, DeleteDigitalTwinRequestOptions options, Context context) {
+        String ifMatch = options != null ? options.getIfMatch() : null;
         return protocolLayer
             .getDigitalTwins()
-            .deleteWithResponseAsync(digitalTwinId, options.getIfMatch(), context);
+            .deleteWithResponseAsync(digitalTwinId, ifMatch, context);
     }
 
     /**
