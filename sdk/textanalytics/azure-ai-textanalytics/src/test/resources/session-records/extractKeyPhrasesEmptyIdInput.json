@@ -1,22 +1,22 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.1//keyPhrases",
+    "Uri" : "https://REDACTED.azure-api.net/text/analytics/v3.1-preview.2//keyPhrases",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "77772418-c085-44ac-bbf4-f072a55afe39",
+      "x-ms-client-request-id" : "3319688d-b19e-4d41-b6fb-8c3b86134a3b",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "884",
+      "x-envoy-upstream-service-time" : "5",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "51bbd2ed-6f77-4261-8312-bedefb60bb1c",
+      "apim-request-id" : "4d9f002e-bb5b-4999-92de-bc9b6de6c5fe",
       "retry-after" : "0",
       "StatusCode" : "400",
       "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"message\":\"Invalid document in request.\",\"innererror\":{\"code\":\"InvalidDocument\",\"message\":\"At least one document is missing an Id attribute.\"}}}",
-      "Date" : "Fri, 21 Aug 2020 17:15:44 GMT",
+      "Date" : "Tue, 01 Sep 2020 05:38:32 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

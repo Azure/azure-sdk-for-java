@@ -182,11 +182,12 @@ class AnalyzeSentimentAsyncClient {
      */
     private Mono<Response<AnalyzeSentimentResultCollection>> getAnalyzedSentimentResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
-        // TODO: add opinion mining in the following PR
+        // TODO: add opinion mining in the following PR and String index type PR
         return service.sentimentWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
             options == null ? null : options.getModelVersion(),
             options == null ? null : options.isIncludeStatistics(),
+            null,
             null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))

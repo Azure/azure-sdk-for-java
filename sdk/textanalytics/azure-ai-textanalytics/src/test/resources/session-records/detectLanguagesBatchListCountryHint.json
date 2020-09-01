@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.1//languages",
+    "Uri" : "https://REDACTED.azure-api.net/text/analytics/v3.1-preview.2//languages",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "1dadde91-c611-4113-b4dd-cb220ff76d93",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7d92141a-c922-42ad-8d09-1a17570c5dda",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -13,11 +13,11 @@
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
       "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=3",
-      "apim-request-id" : "63831bed-228f-4060-8075-0290c388cec3",
+      "apim-request-id" : "4aa03735-5862-479f-8edc-0e0dba199b8f",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"documents\":[{\"id\":\"0\",\"detectedLanguage\":{\"name\":\"English\",\"iso6391Name\":\"en\",\"confidenceScore\":1.0},\"warnings\":[]},{\"id\":\"1\",\"detectedLanguage\":{\"name\":\"Spanish\",\"iso6391Name\":\"es\",\"confidenceScore\":1.0},\"warnings\":[]},{\"id\":\"2\",\"detectedLanguage\":{\"name\":\"(Unknown)\",\"iso6391Name\":\"(Unknown)\",\"confidenceScore\":0.0},\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2019-10-01\"}",
-      "Date" : "Wed, 15 Jul 2020 04:14:39 GMT",
+      "Body" : "{\"documents\":[{\"id\":\"0\",\"detectedLanguage\":{\"name\":\"English\",\"iso6391Name\":\"en\",\"confidenceScore\":1.0},\"warnings\":[]},{\"id\":\"1\",\"detectedLanguage\":{\"name\":\"Spanish\",\"iso6391Name\":\"es\",\"confidenceScore\":1.0},\"warnings\":[]},{\"id\":\"2\",\"detectedLanguage\":{\"name\":\"Polish\",\"iso6391Name\":\"pl\",\"confidenceScore\":0.4},\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-07-01\"}",
+      "Date" : "Tue, 01 Sep 2020 05:38:39 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
