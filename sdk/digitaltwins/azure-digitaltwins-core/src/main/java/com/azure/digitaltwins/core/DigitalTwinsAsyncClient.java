@@ -20,6 +20,7 @@ import com.azure.digitaltwins.core.models.ModelData;
 import com.azure.digitaltwins.core.util.DigitalTwinsResponse;
 import com.azure.digitaltwins.core.util.DigitalTwinsResponseHeaders;
 import com.azure.digitaltwins.core.util.ListModelOptions;
+import com.azure.digitaltwins.core.util.UpdateOperationUtility;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -593,8 +594,8 @@ public final class DigitalTwinsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ModelData> getModel(String modelId) {
-        return withContext(context -> getModelWithResponse(modelId, context))
-            .flatMap(response -> Mono.just(response.getValue()));
+        return getModelWithResponse(modelId)
+            .map(Response::getValue);
     }
 
     /**
@@ -665,8 +666,8 @@ public final class DigitalTwinsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteModel(String modelId) {
-        return withContext(context -> deleteModelWithResponse(modelId, context))
-            .flatMap(response -> Mono.just(response.getValue()));
+        return deleteModelWithResponse(modelId)
+            .map(Response::getValue);
     }
 
     /**
@@ -683,11 +684,36 @@ public final class DigitalTwinsAsyncClient {
         return protocolLayer.getDigitalTwinModels().deleteWithResponseAsync(modelId, context);
     }
 
-    //TODO: Decommission Model APIs (waiting for Abhipsa's change to come in)
     PagedFlux<String> listRelationships(String digitalTwinId, String relationshipName, Context context) {
         return new PagedFlux<>(
             () -> listRelationshipsFirstPage(digitalTwinId, relationshipName, context),
             nextLink -> listRelationshipsNextPage(nextLink, context));
     }
 
+    /**
+     * Decommissions a model.
+     * @param modelId The Id of the model to decommission.
+     * @return an empty Mono
+     */
+    public Mono<Void> decommissionModel(String modelId) {
+        return decommissionModelWithResponse(modelId)
+            .map(Response::getValue);
+    }
+
+    /**
+     * Decommissions a model.
+     * @param modelId The Id of the model to decommission.
+     * @return The http response.
+     */
+    public Mono<Response<Void>> decommissionModelWithResponse(String modelId) {
+        return withContext(context -> decommissionModelWithResponse(modelId, context));
+    }
+
+    Mono<Response<Void>> decommissionModelWithResponse(String modelId, Context context) {
+        List<Object> updateOperation = new UpdateOperationUtility()
+            .appendReplaceOperation("/decommissioned", true)
+            .getUpdateOperations();
+
+        return protocolLayer.getDigitalTwinModels().updateWithResponseAsync(modelId, updateOperation, context);
+    }
 }
