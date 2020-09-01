@@ -92,29 +92,29 @@ public class UpdateOperationUtility {
         @JsonProperty(value = "value")
         private Object value;
 
-        public String getOperation() {
+        String getOperation() {
             return operation;
         }
 
-        public UpdateOperation setOperation(String operation) {
+        UpdateOperation setOperation(String operation) {
             this.operation = operation;
             return this;
         }
 
-        public String getPath() {
+        String getPath() {
             return path;
         }
 
-        public UpdateOperation setPath(String path) {
+        UpdateOperation setPath(String path) {
             this.path = path;
             return this;
         }
 
-        public Object getValue() {
+        Object getValue() {
             return value;
         }
 
-        public UpdateOperation setValue(Object value) {
+        UpdateOperation setValue(Object value) {
             this.value = value;
             return this;
         }

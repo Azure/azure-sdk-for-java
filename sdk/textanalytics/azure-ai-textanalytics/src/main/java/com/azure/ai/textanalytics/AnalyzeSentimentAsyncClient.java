@@ -44,7 +44,6 @@ import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
-import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExist;
 import static com.azure.ai.textanalytics.implementation.Utility.toBatchStatistics;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsError;
@@ -160,9 +159,11 @@ class AnalyzeSentimentAsyncClient {
                 final SentenceSentimentValue sentenceSentimentValue = sentenceSentiment.getSentiment();
                 return new SentenceSentiment(sentenceSentiment.getText(),
                     TextSentiment.fromString(sentenceSentimentValue == null ? null : sentenceSentimentValue.toString()),
-                    toMinedOpinionList(sentenceSentiment, documentSentimentList),
                     new SentimentConfidenceScores(confidenceScorePerSentence.getNegative(),
-                        confidenceScorePerSentence.getNeutral(), confidenceScorePerSentence.getPositive())
+                        confidenceScorePerSentence.getNeutral(), confidenceScorePerSentence.getPositive()),
+                    toMinedOpinionList(sentenceSentiment, documentSentimentList),
+                    sentenceSentiment.getOffset(),
+                    sentenceSentiment.getLength()
                 );
             }).collect(Collectors.toList());
 

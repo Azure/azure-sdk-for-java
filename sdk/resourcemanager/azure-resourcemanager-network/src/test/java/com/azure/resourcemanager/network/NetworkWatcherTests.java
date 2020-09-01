@@ -17,7 +17,7 @@ public class NetworkWatcherTests extends NetworkManagementTest {
     @Test
     @Disabled("https://github.com/Azure/azure-rest-api-specs/issues/7579")
     public void canListProvidersAndGetReachabilityReport() throws Exception {
-        String nwName = sdkContext.randomResourceName("nw", 8);
+        String nwName = generateRandomResourceName("nw", 8);
         Region region = Region.US_WEST;
         // make sure Network Watcher is disabled in current subscription and region as only one can exist
         PagedIterable<NetworkWatcher> nwList = networkManager.networkWatchers().list();

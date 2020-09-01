@@ -55,9 +55,9 @@ public final class PiiEntity {
         this.text = text;
         this.category = category;
         this.subcategory = subcategory;
+        this.confidenceScore = confidenceScore;
         this.offset = offset;
         this.length = length;
-        this.confidenceScore = confidenceScore;
     }
 
     /**

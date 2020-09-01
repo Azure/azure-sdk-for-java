@@ -6,16 +6,20 @@ package com.azure.digitaltwins.core.implementation.serialization;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.fasterxml.jackson.annotation.JsonInclude.*;
 
 /**
  * Although relationships have a user-defined schema, these properties should exist on every instance.
  * This is useful to use as a base class to ensure your custom relationships have the necessary properties.
  */
 @Fluent
+@JsonInclude(Include.NON_NULL)
 public class BasicRelationship {
 
     @JsonProperty(value = "$relationshipId", required = true)
