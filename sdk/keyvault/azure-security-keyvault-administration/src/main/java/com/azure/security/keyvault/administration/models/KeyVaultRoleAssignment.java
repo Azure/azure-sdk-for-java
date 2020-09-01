@@ -11,7 +11,7 @@ public class KeyVaultRoleAssignment {
     private String name;
     private String type;
     private KeyVaultRoleAssignmentProperties properties;
-    private KeyVaultRoleScope scope;
+    private KeyVaultRoleAssignmentScope scope;
 
     /**
      * Creates a new {@link KeyVaultRoleAssignment role assignment} with the specified details.
@@ -21,10 +21,11 @@ public class KeyVaultRoleAssignment {
      * @param type       The type of this {@link KeyVaultRoleAssignment role assignment}.
      * @param properties {@link KeyVaultRoleAssignmentProperties properties} of this {@link KeyVaultRoleAssignment
      *                   role assignment}.
-     * @param roleScope  The {@link KeyVaultRoleScope scope} of this {@link KeyVaultRoleAssignment role assignment}.
+     * @param roleScope  The {@link KeyVaultRoleAssignmentScope scope} of this {@link KeyVaultRoleAssignment role
+     * assignment}.
      */
     public KeyVaultRoleAssignment(String id, String name, String type, KeyVaultRoleAssignmentProperties properties,
-                                  KeyVaultRoleScope roleScope) {
+                                  KeyVaultRoleAssignmentScope roleScope) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -69,11 +70,11 @@ public class KeyVaultRoleAssignment {
     }
 
     /**
-     * Get the {@link KeyVaultRoleAssignment role assignment} {@link KeyVaultRoleScope scope}.
+     * Get the {@link KeyVaultRoleAssignment role assignment} {@link KeyVaultRoleAssignmentScope scope}.
      *
-     * @return The {@link KeyVaultRoleAssignment role assignment} {@link KeyVaultRoleScope scope}.
+     * @return The {@link KeyVaultRoleAssignment role assignment} {@link KeyVaultRoleAssignmentScope scope}.
      */
-    public KeyVaultRoleScope getScope() {
+    public KeyVaultRoleAssignmentScope getScope() {
         return scope;
     }
 }
