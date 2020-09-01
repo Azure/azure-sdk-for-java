@@ -127,6 +127,29 @@ public final class SqlScriptsImpl {
     /**
      * Lists sql scripts.
      *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of sql scripts resources.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<SqlScriptResource>> getSqlScriptsByWorkspaceSinglePageAsync(Context context) {
+        return service.getSqlScriptsByWorkspace(this.client.getEndpoint(), this.client.getApiVersion(), context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
+    }
+
+    /**
+     * Lists sql scripts.
+     *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of sql scripts resources.
@@ -141,6 +164,22 @@ public final class SqlScriptsImpl {
     /**
      * Lists sql scripts.
      *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of sql scripts resources.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SqlScriptResource> getSqlScriptsByWorkspaceAsync(Context context) {
+        return new PagedFlux<>(
+                () -> getSqlScriptsByWorkspaceSinglePageAsync(context),
+                nextLink -> getSqlScriptsByWorkspaceNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Lists sql scripts.
+     *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of sql scripts resources.
@@ -148,6 +187,20 @@ public final class SqlScriptsImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SqlScriptResource> getSqlScriptsByWorkspace() {
         return new PagedIterable<>(getSqlScriptsByWorkspaceAsync());
+    }
+
+    /**
+     * Lists sql scripts.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of sql scripts resources.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SqlScriptResource> getSqlScriptsByWorkspace(Context context) {
+        return new PagedIterable<>(getSqlScriptsByWorkspaceAsync(context));
     }
 
     /**
@@ -183,6 +236,26 @@ public final class SqlScriptsImpl {
      * @param sqlScript Sql Script resource type.
      * @param ifMatch ETag of the SQL script entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sql Script resource type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SqlScriptResource>> createOrUpdateSqlScriptWithResponseAsync(
+            String sqlScriptName, SqlScriptResource sqlScript, String ifMatch, Context context) {
+        return service.createOrUpdateSqlScript(
+                this.client.getEndpoint(), sqlScriptName, this.client.getApiVersion(), ifMatch, sqlScript, context);
+    }
+
+    /**
+     * Creates or updates a Sql Script.
+     *
+     * @param sqlScriptName The sql script name.
+     * @param sqlScript Sql Script resource type.
+     * @param ifMatch ETag of the SQL script entity. Should only be specified for update, for which it should match
+     *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -192,6 +265,33 @@ public final class SqlScriptsImpl {
     public Mono<SqlScriptResource> createOrUpdateSqlScriptAsync(
             String sqlScriptName, SqlScriptResource sqlScript, String ifMatch) {
         return createOrUpdateSqlScriptWithResponseAsync(sqlScriptName, sqlScript, ifMatch)
+                .flatMap(
+                        (Response<SqlScriptResource> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Creates or updates a Sql Script.
+     *
+     * @param sqlScriptName The sql script name.
+     * @param sqlScript Sql Script resource type.
+     * @param ifMatch ETag of the SQL script entity. Should only be specified for update, for which it should match
+     *     existing entity or can be * for unconditional update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sql Script resource type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SqlScriptResource> createOrUpdateSqlScriptAsync(
+            String sqlScriptName, SqlScriptResource sqlScript, String ifMatch, Context context) {
+        return createOrUpdateSqlScriptWithResponseAsync(sqlScriptName, sqlScript, ifMatch, context)
                 .flatMap(
                         (Response<SqlScriptResource> res) -> {
                             if (res.getValue() != null) {
@@ -263,6 +363,25 @@ public final class SqlScriptsImpl {
     }
 
     /**
+     * Creates or updates a Sql Script.
+     *
+     * @param sqlScriptName The sql script name.
+     * @param sqlScript Sql Script resource type.
+     * @param ifMatch ETag of the SQL script entity. Should only be specified for update, for which it should match
+     *     existing entity or can be * for unconditional update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sql Script resource type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SqlScriptResource> createOrUpdateSqlScriptWithResponse(
+            String sqlScriptName, SqlScriptResource sqlScript, String ifMatch, Context context) {
+        return createOrUpdateSqlScriptWithResponseAsync(sqlScriptName, sqlScript, ifMatch, context).block();
+    }
+
+    /**
      * Gets a sql script.
      *
      * @param sqlScriptName The sql script name.
@@ -291,6 +410,25 @@ public final class SqlScriptsImpl {
      * @param sqlScriptName The sql script name.
      * @param ifNoneMatch ETag of the sql compute entity. Should only be specified for get. If the ETag matches the
      *     existing entity tag, or if * was provided, then no content will be returned.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a sql script.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SqlScriptResource>> getSqlScriptWithResponseAsync(
+            String sqlScriptName, String ifNoneMatch, Context context) {
+        return service.getSqlScript(
+                this.client.getEndpoint(), sqlScriptName, this.client.getApiVersion(), ifNoneMatch, context);
+    }
+
+    /**
+     * Gets a sql script.
+     *
+     * @param sqlScriptName The sql script name.
+     * @param ifNoneMatch ETag of the sql compute entity. Should only be specified for get. If the ETag matches the
+     *     existing entity tag, or if * was provided, then no content will be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -299,6 +437,31 @@ public final class SqlScriptsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SqlScriptResource> getSqlScriptAsync(String sqlScriptName, String ifNoneMatch) {
         return getSqlScriptWithResponseAsync(sqlScriptName, ifNoneMatch)
+                .flatMap(
+                        (Response<SqlScriptResource> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Gets a sql script.
+     *
+     * @param sqlScriptName The sql script name.
+     * @param ifNoneMatch ETag of the sql compute entity. Should only be specified for get. If the ETag matches the
+     *     existing entity tag, or if * was provided, then no content will be returned.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a sql script.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SqlScriptResource> getSqlScriptAsync(String sqlScriptName, String ifNoneMatch, Context context) {
+        return getSqlScriptWithResponseAsync(sqlScriptName, ifNoneMatch, context)
                 .flatMap(
                         (Response<SqlScriptResource> res) -> {
                             if (res.getValue() != null) {
@@ -366,6 +529,24 @@ public final class SqlScriptsImpl {
     }
 
     /**
+     * Gets a sql script.
+     *
+     * @param sqlScriptName The sql script name.
+     * @param ifNoneMatch ETag of the sql compute entity. Should only be specified for get. If the ETag matches the
+     *     existing entity tag, or if * was provided, then no content will be returned.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a sql script.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SqlScriptResource> getSqlScriptWithResponse(
+            String sqlScriptName, String ifNoneMatch, Context context) {
+        return getSqlScriptWithResponseAsync(sqlScriptName, ifNoneMatch, context).block();
+    }
+
+    /**
      * Deletes a Sql Script.
      *
      * @param sqlScriptName The sql script name.
@@ -386,6 +567,21 @@ public final class SqlScriptsImpl {
      * Deletes a Sql Script.
      *
      * @param sqlScriptName The sql script name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteSqlScriptWithResponseAsync(String sqlScriptName, Context context) {
+        return service.deleteSqlScript(this.client.getEndpoint(), sqlScriptName, this.client.getApiVersion(), context);
+    }
+
+    /**
+     * Deletes a Sql Script.
+     *
+     * @param sqlScriptName The sql script name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -394,6 +590,21 @@ public final class SqlScriptsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteSqlScriptAsync(String sqlScriptName) {
         return deleteSqlScriptWithResponseAsync(sqlScriptName).flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Deletes a Sql Script.
+     *
+     * @param sqlScriptName The sql script name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteSqlScriptAsync(String sqlScriptName, Context context) {
+        return deleteSqlScriptWithResponseAsync(sqlScriptName, context).flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -410,6 +621,21 @@ public final class SqlScriptsImpl {
     }
 
     /**
+     * Deletes a Sql Script.
+     *
+     * @param sqlScriptName The sql script name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteSqlScriptWithResponse(String sqlScriptName, Context context) {
+        return deleteSqlScriptWithResponseAsync(sqlScriptName, context).block();
+    }
+
+    /**
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
@@ -421,6 +647,31 @@ public final class SqlScriptsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SqlScriptResource>> getSqlScriptsByWorkspaceNextSinglePageAsync(String nextLink) {
         return FluxUtil.withContext(context -> service.getSqlScriptsByWorkspaceNext(nextLink, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of sql scripts resources.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<SqlScriptResource>> getSqlScriptsByWorkspaceNextSinglePageAsync(
+            String nextLink, Context context) {
+        return service.getSqlScriptsByWorkspaceNext(nextLink, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

@@ -16,6 +16,8 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 
 /** Initializes a new instance of the synchronous SparkClient type. */
 @ServiceClient(builder = SparkClientBuilder.class)
@@ -56,6 +58,24 @@ public final class SparkSessionClient {
     }
 
     /**
+     * List all spark sessions which are running under a particular spark pool.
+     *
+     * @param from Optional param specifying which index the list should begin from.
+     * @param size Optional param specifying the size of the returned list. By default it is 20 and that is the maximum.
+     * @param detailed Optional query param specifying whether detailed response is returned beyond plain livy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SparkSessionCollection> getSparkSessionsWithResponse(
+            Integer from, Integer size, Boolean detailed, Context context) {
+        return this.serviceClient.getSparkSessionsWithResponse(from, size, detailed, context);
+    }
+
+    /**
      * Create new spark session.
      *
      * @param sparkSessionOptions Livy compatible batch job request payload.
@@ -82,6 +102,23 @@ public final class SparkSessionClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SparkSession createSparkSession(SparkSessionOptions sparkSessionOptions) {
         return this.serviceClient.createSparkSession(sparkSessionOptions);
+    }
+
+    /**
+     * Create new spark session.
+     *
+     * @param sparkSessionOptions Livy compatible batch job request payload.
+     * @param detailed Optional query param specifying whether detailed response is returned beyond plain livy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SparkSession> createSparkSessionWithResponse(
+            SparkSessionOptions sparkSessionOptions, Boolean detailed, Context context) {
+        return this.serviceClient.createSparkSessionWithResponse(sparkSessionOptions, detailed, context);
     }
 
     /**
@@ -114,6 +151,22 @@ public final class SparkSessionClient {
     }
 
     /**
+     * Gets a single spark session.
+     *
+     * @param sessionId Identifier for the session.
+     * @param detailed Optional query param specifying whether detailed response is returned beyond plain livy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single spark session.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SparkSession> getSparkSessionWithResponse(int sessionId, Boolean detailed, Context context) {
+        return this.serviceClient.getSparkSessionWithResponse(sessionId, detailed, context);
+    }
+
+    /**
      * Cancels a running spark session.
      *
      * @param sessionId Identifier for the session.
@@ -124,6 +177,21 @@ public final class SparkSessionClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancelSparkSession(int sessionId) {
         this.serviceClient.cancelSparkSession(sessionId);
+    }
+
+    /**
+     * Cancels a running spark session.
+     *
+     * @param sessionId Identifier for the session.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> cancelSparkSessionWithResponse(int sessionId, Context context) {
+        return this.serviceClient.cancelSparkSessionWithResponse(sessionId, context);
     }
 
     /**
@@ -140,6 +208,21 @@ public final class SparkSessionClient {
     }
 
     /**
+     * Sends a keep alive call to the current session to reset the session timeout.
+     *
+     * @param sessionId Identifier for the session.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> resetSparkSessionTimeoutWithResponse(int sessionId, Context context) {
+        return this.serviceClient.resetSparkSessionTimeoutWithResponse(sessionId, context);
+    }
+
+    /**
      * Gets a list of statements within a spark session.
      *
      * @param sessionId Identifier for the session.
@@ -151,6 +234,21 @@ public final class SparkSessionClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SparkStatementCollection getSparkStatements(int sessionId) {
         return this.serviceClient.getSparkStatements(sessionId);
+    }
+
+    /**
+     * Gets a list of statements within a spark session.
+     *
+     * @param sessionId Identifier for the session.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of statements within a spark session.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SparkStatementCollection> getSparkStatementsWithResponse(int sessionId, Context context) {
+        return this.serviceClient.getSparkStatementsWithResponse(sessionId, context);
     }
 
     /**
@@ -169,6 +267,23 @@ public final class SparkSessionClient {
     }
 
     /**
+     * Create statement within a spark session.
+     *
+     * @param sessionId Identifier for the session.
+     * @param sparkStatementOptions Livy compatible batch job request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SparkStatement> createSparkStatementWithResponse(
+            int sessionId, SparkStatementOptions sparkStatementOptions, Context context) {
+        return this.serviceClient.createSparkStatementWithResponse(sessionId, sparkStatementOptions, context);
+    }
+
+    /**
      * Gets a single statement within a spark session.
      *
      * @param sessionId Identifier for the session.
@@ -184,6 +299,22 @@ public final class SparkSessionClient {
     }
 
     /**
+     * Gets a single statement within a spark session.
+     *
+     * @param sessionId Identifier for the session.
+     * @param statementId Identifier for the statement.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single statement within a spark session.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SparkStatement> getSparkStatementWithResponse(int sessionId, int statementId, Context context) {
+        return this.serviceClient.getSparkStatementWithResponse(sessionId, statementId, context);
+    }
+
+    /**
      * Kill a statement within a session.
      *
      * @param sessionId Identifier for the session.
@@ -196,5 +327,22 @@ public final class SparkSessionClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SparkStatementCancellationResult cancelSparkStatement(int sessionId, int statementId) {
         return this.serviceClient.cancelSparkStatement(sessionId, statementId);
+    }
+
+    /**
+     * Kill a statement within a session.
+     *
+     * @param sessionId Identifier for the session.
+     * @param statementId Identifier for the statement.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SparkStatementCancellationResult> cancelSparkStatementWithResponse(
+            int sessionId, int statementId, Context context) {
+        return this.serviceClient.cancelSparkStatementWithResponse(sessionId, statementId, context);
     }
 }

@@ -103,6 +103,24 @@ public final class TriggerRunsImpl {
      *
      * @param triggerName The trigger name.
      * @param runId The pipeline run identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> rerunTriggerInstanceWithResponseAsync(
+            String triggerName, String runId, Context context) {
+        return service.rerunTriggerInstance(
+                this.client.getEndpoint(), triggerName, runId, this.client.getApiVersion(), context);
+    }
+
+    /**
+     * Rerun single trigger instance by runId.
+     *
+     * @param triggerName The trigger name.
+     * @param runId The pipeline run identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -118,6 +136,23 @@ public final class TriggerRunsImpl {
      *
      * @param triggerName The trigger name.
      * @param runId The pipeline run identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> rerunTriggerInstanceAsync(String triggerName, String runId, Context context) {
+        return rerunTriggerInstanceWithResponseAsync(triggerName, runId, context)
+                .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Rerun single trigger instance by runId.
+     *
+     * @param triggerName The trigger name.
+     * @param runId The pipeline run identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -125,6 +160,22 @@ public final class TriggerRunsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void rerunTriggerInstance(String triggerName, String runId) {
         rerunTriggerInstanceAsync(triggerName, runId).block();
+    }
+
+    /**
+     * Rerun single trigger instance by runId.
+     *
+     * @param triggerName The trigger name.
+     * @param runId The pipeline run identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> rerunTriggerInstanceWithResponse(String triggerName, String runId, Context context) {
+        return rerunTriggerInstanceWithResponseAsync(triggerName, runId, context).block();
     }
 
     /**
@@ -150,6 +201,24 @@ public final class TriggerRunsImpl {
      *
      * @param triggerName The trigger name.
      * @param runId The pipeline run identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> cancelTriggerInstanceWithResponseAsync(
+            String triggerName, String runId, Context context) {
+        return service.cancelTriggerInstance(
+                this.client.getEndpoint(), triggerName, runId, this.client.getApiVersion(), context);
+    }
+
+    /**
+     * Cancel single trigger instance by runId.
+     *
+     * @param triggerName The trigger name.
+     * @param runId The pipeline run identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -165,6 +234,23 @@ public final class TriggerRunsImpl {
      *
      * @param triggerName The trigger name.
      * @param runId The pipeline run identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> cancelTriggerInstanceAsync(String triggerName, String runId, Context context) {
+        return cancelTriggerInstanceWithResponseAsync(triggerName, runId, context)
+                .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Cancel single trigger instance by runId.
+     *
+     * @param triggerName The trigger name.
+     * @param runId The pipeline run identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -172,6 +258,22 @@ public final class TriggerRunsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancelTriggerInstance(String triggerName, String runId) {
         cancelTriggerInstanceAsync(triggerName, runId).block();
+    }
+
+    /**
+     * Cancel single trigger instance by runId.
+     *
+     * @param triggerName The trigger name.
+     * @param runId The pipeline run identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> cancelTriggerInstanceWithResponse(String triggerName, String runId, Context context) {
+        return cancelTriggerInstanceWithResponseAsync(triggerName, runId, context).block();
     }
 
     /**
@@ -190,6 +292,23 @@ public final class TriggerRunsImpl {
                 context ->
                         service.queryTriggerRunsByWorkspace(
                                 this.client.getEndpoint(), this.client.getApiVersion(), filterParameters, context));
+    }
+
+    /**
+     * Query trigger runs.
+     *
+     * @param filterParameters Query parameters for listing runs.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of trigger runs.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<TriggerRunsQueryResponse>> queryTriggerRunsByWorkspaceWithResponseAsync(
+            RunFilterParameters filterParameters, Context context) {
+        return service.queryTriggerRunsByWorkspace(
+                this.client.getEndpoint(), this.client.getApiVersion(), filterParameters, context);
     }
 
     /**
@@ -218,6 +337,30 @@ public final class TriggerRunsImpl {
      * Query trigger runs.
      *
      * @param filterParameters Query parameters for listing runs.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of trigger runs.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TriggerRunsQueryResponse> queryTriggerRunsByWorkspaceAsync(
+            RunFilterParameters filterParameters, Context context) {
+        return queryTriggerRunsByWorkspaceWithResponseAsync(filterParameters, context)
+                .flatMap(
+                        (Response<TriggerRunsQueryResponse> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Query trigger runs.
+     *
+     * @param filterParameters Query parameters for listing runs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -226,5 +369,21 @@ public final class TriggerRunsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TriggerRunsQueryResponse queryTriggerRunsByWorkspace(RunFilterParameters filterParameters) {
         return queryTriggerRunsByWorkspaceAsync(filterParameters).block();
+    }
+
+    /**
+     * Query trigger runs.
+     *
+     * @param filterParameters Query parameters for listing runs.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of trigger runs.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TriggerRunsQueryResponse> queryTriggerRunsByWorkspaceWithResponse(
+            RunFilterParameters filterParameters, Context context) {
+        return queryTriggerRunsByWorkspaceWithResponseAsync(filterParameters, context).block();
     }
 }

@@ -12,6 +12,8 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 
 /** Initializes a new instance of the synchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class)
@@ -33,6 +35,20 @@ public final class TriggerClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TriggerResource> getTriggersByWorkspace() {
         return this.serviceClient.getTriggersByWorkspace();
+    }
+
+    /**
+     * Lists triggers.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of trigger resources.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<TriggerResource> getTriggersByWorkspace(Context context) {
+        return this.serviceClient.getTriggersByWorkspace(context);
     }
 
     /**
@@ -68,6 +84,25 @@ public final class TriggerClient {
     }
 
     /**
+     * Creates or updates a trigger.
+     *
+     * @param triggerName The trigger name.
+     * @param trigger Trigger resource type.
+     * @param ifMatch ETag of the trigger entity. Should only be specified for update, for which it should match
+     *     existing entity or can be * for unconditional update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return trigger resource type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TriggerResource> createOrUpdateTriggerWithResponse(
+            String triggerName, TriggerResource trigger, String ifMatch, Context context) {
+        return this.serviceClient.createOrUpdateTriggerWithResponse(triggerName, trigger, ifMatch, context);
+    }
+
+    /**
      * Gets a trigger.
      *
      * @param triggerName The trigger name.
@@ -98,6 +133,23 @@ public final class TriggerClient {
     }
 
     /**
+     * Gets a trigger.
+     *
+     * @param triggerName The trigger name.
+     * @param ifNoneMatch ETag of the trigger entity. Should only be specified for get. If the ETag matches the existing
+     *     entity tag, or if * was provided, then no content will be returned.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a trigger.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TriggerResource> getTriggerWithResponse(String triggerName, String ifNoneMatch, Context context) {
+        return this.serviceClient.getTriggerWithResponse(triggerName, ifNoneMatch, context);
+    }
+
+    /**
      * Deletes a trigger.
      *
      * @param triggerName The trigger name.
@@ -108,6 +160,21 @@ public final class TriggerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteTrigger(String triggerName) {
         this.serviceClient.deleteTrigger(triggerName);
+    }
+
+    /**
+     * Deletes a trigger.
+     *
+     * @param triggerName The trigger name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteTriggerWithResponse(String triggerName, Context context) {
+        return this.serviceClient.deleteTriggerWithResponse(triggerName, context);
     }
 
     /**
@@ -125,6 +192,22 @@ public final class TriggerClient {
     }
 
     /**
+     * Subscribe event trigger to events.
+     *
+     * @param triggerName The trigger name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the response of a trigger subscription operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TriggerSubscriptionOperationStatus> subscribeTriggerToEventsWithResponse(
+            String triggerName, Context context) {
+        return this.serviceClient.subscribeTriggerToEventsWithResponse(triggerName, context);
+    }
+
+    /**
      * Get a trigger's event subscription status.
      *
      * @param triggerName The trigger name.
@@ -136,6 +219,22 @@ public final class TriggerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TriggerSubscriptionOperationStatus getEventSubscriptionStatus(String triggerName) {
         return this.serviceClient.getEventSubscriptionStatus(triggerName);
+    }
+
+    /**
+     * Get a trigger's event subscription status.
+     *
+     * @param triggerName The trigger name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a trigger's event subscription status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TriggerSubscriptionOperationStatus> getEventSubscriptionStatusWithResponse(
+            String triggerName, Context context) {
+        return this.serviceClient.getEventSubscriptionStatusWithResponse(triggerName, context);
     }
 
     /**
@@ -153,6 +252,22 @@ public final class TriggerClient {
     }
 
     /**
+     * Unsubscribe event trigger from events.
+     *
+     * @param triggerName The trigger name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the response of a trigger subscription operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TriggerSubscriptionOperationStatus> unsubscribeTriggerFromEventsWithResponse(
+            String triggerName, Context context) {
+        return this.serviceClient.unsubscribeTriggerFromEventsWithResponse(triggerName, context);
+    }
+
+    /**
      * Starts a trigger.
      *
      * @param triggerName The trigger name.
@@ -166,6 +281,21 @@ public final class TriggerClient {
     }
 
     /**
+     * Starts a trigger.
+     *
+     * @param triggerName The trigger name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> startTriggerWithResponse(String triggerName, Context context) {
+        return this.serviceClient.startTriggerWithResponse(triggerName, context);
+    }
+
+    /**
      * Stops a trigger.
      *
      * @param triggerName The trigger name.
@@ -176,5 +306,20 @@ public final class TriggerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stopTrigger(String triggerName) {
         this.serviceClient.stopTrigger(triggerName);
+    }
+
+    /**
+     * Stops a trigger.
+     *
+     * @param triggerName The trigger name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> stopTriggerWithResponse(String triggerName, Context context) {
+        return this.serviceClient.stopTriggerWithResponse(triggerName, context);
     }
 }

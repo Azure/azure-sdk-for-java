@@ -11,6 +11,8 @@ import com.azure.analytics.synapse.artifacts.models.TriggerRunsQueryResponse;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 
 /** Initializes a new instance of the synchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class)
@@ -37,6 +39,22 @@ public final class TriggerRunClient {
     }
 
     /**
+     * Rerun single trigger instance by runId.
+     *
+     * @param triggerName The trigger name.
+     * @param runId The pipeline run identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> rerunTriggerInstanceWithResponse(String triggerName, String runId, Context context) {
+        return this.serviceClient.rerunTriggerInstanceWithResponse(triggerName, runId, context);
+    }
+
+    /**
      * Cancel single trigger instance by runId.
      *
      * @param triggerName The trigger name.
@@ -51,6 +69,22 @@ public final class TriggerRunClient {
     }
 
     /**
+     * Cancel single trigger instance by runId.
+     *
+     * @param triggerName The trigger name.
+     * @param runId The pipeline run identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> cancelTriggerInstanceWithResponse(String triggerName, String runId, Context context) {
+        return this.serviceClient.cancelTriggerInstanceWithResponse(triggerName, runId, context);
+    }
+
+    /**
      * Query trigger runs.
      *
      * @param filterParameters Query parameters for listing runs.
@@ -62,5 +96,21 @@ public final class TriggerRunClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TriggerRunsQueryResponse queryTriggerRunsByWorkspace(RunFilterParameters filterParameters) {
         return this.serviceClient.queryTriggerRunsByWorkspace(filterParameters);
+    }
+
+    /**
+     * Query trigger runs.
+     *
+     * @param filterParameters Query parameters for listing runs.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of trigger runs.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TriggerRunsQueryResponse> queryTriggerRunsByWorkspaceWithResponse(
+            RunFilterParameters filterParameters, Context context) {
+        return this.serviceClient.queryTriggerRunsByWorkspaceWithResponse(filterParameters, context);
     }
 }

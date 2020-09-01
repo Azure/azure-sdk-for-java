@@ -12,6 +12,8 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 
 /** Initializes a new instance of the synchronous SparkClient type. */
 @ServiceClient(builder = SparkClientBuilder.class)
@@ -52,6 +54,24 @@ public final class SparkBatchClient {
     }
 
     /**
+     * List all spark batch jobs which are running under a particular spark pool.
+     *
+     * @param from Optional param specifying which index the list should begin from.
+     * @param size Optional param specifying the size of the returned list. By default it is 20 and that is the maximum.
+     * @param detailed Optional query param specifying whether detailed response is returned beyond plain livy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for batch list operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SparkBatchJobCollection> getSparkBatchJobsWithResponse(
+            Integer from, Integer size, Boolean detailed, Context context) {
+        return this.serviceClient.getSparkBatchJobsWithResponse(from, size, detailed, context);
+    }
+
+    /**
      * Create new spark batch job.
      *
      * @param sparkBatchJobOptions Livy compatible batch job request payload.
@@ -78,6 +98,23 @@ public final class SparkBatchClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SparkBatchJob createSparkBatchJob(SparkBatchJobOptions sparkBatchJobOptions) {
         return this.serviceClient.createSparkBatchJob(sparkBatchJobOptions);
+    }
+
+    /**
+     * Create new spark batch job.
+     *
+     * @param sparkBatchJobOptions Livy compatible batch job request payload.
+     * @param detailed Optional query param specifying whether detailed response is returned beyond plain livy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SparkBatchJob> createSparkBatchJobWithResponse(
+            SparkBatchJobOptions sparkBatchJobOptions, Boolean detailed, Context context) {
+        return this.serviceClient.createSparkBatchJobWithResponse(sparkBatchJobOptions, detailed, context);
     }
 
     /**
@@ -110,6 +147,22 @@ public final class SparkBatchClient {
     }
 
     /**
+     * Gets a single spark batch job.
+     *
+     * @param batchId Identifier for the batch job.
+     * @param detailed Optional query param specifying whether detailed response is returned beyond plain livy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single spark batch job.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SparkBatchJob> getSparkBatchJobWithResponse(int batchId, Boolean detailed, Context context) {
+        return this.serviceClient.getSparkBatchJobWithResponse(batchId, detailed, context);
+    }
+
+    /**
      * Cancels a running spark batch job.
      *
      * @param batchId Identifier for the batch job.
@@ -120,5 +173,20 @@ public final class SparkBatchClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancelSparkBatchJob(int batchId) {
         this.serviceClient.cancelSparkBatchJob(batchId);
+    }
+
+    /**
+     * Cancels a running spark batch job.
+     *
+     * @param batchId Identifier for the batch job.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> cancelSparkBatchJobWithResponse(int batchId, Context context) {
+        return this.serviceClient.cancelSparkBatchJobWithResponse(batchId, context);
     }
 }

@@ -148,6 +148,31 @@ public final class SparkJobDefinitionsImpl {
     /**
      * Lists spark job definitions.
      *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of spark job definitions resources.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<SparkJobDefinitionResource>> getSparkJobDefinitionsByWorkspaceSinglePageAsync(
+            Context context) {
+        return service.getSparkJobDefinitionsByWorkspace(
+                        this.client.getEndpoint(), this.client.getApiVersion(), context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
+    }
+
+    /**
+     * Lists spark job definitions.
+     *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of spark job definitions resources.
@@ -162,6 +187,22 @@ public final class SparkJobDefinitionsImpl {
     /**
      * Lists spark job definitions.
      *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of spark job definitions resources.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SparkJobDefinitionResource> getSparkJobDefinitionsByWorkspaceAsync(Context context) {
+        return new PagedFlux<>(
+                () -> getSparkJobDefinitionsByWorkspaceSinglePageAsync(context),
+                nextLink -> getSparkJobDefinitionsByWorkspaceNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Lists spark job definitions.
+     *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of spark job definitions resources.
@@ -169,6 +210,20 @@ public final class SparkJobDefinitionsImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SparkJobDefinitionResource> getSparkJobDefinitionsByWorkspace() {
         return new PagedIterable<>(getSparkJobDefinitionsByWorkspaceAsync());
+    }
+
+    /**
+     * Lists spark job definitions.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of spark job definitions resources.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SparkJobDefinitionResource> getSparkJobDefinitionsByWorkspace(Context context) {
+        return new PagedIterable<>(getSparkJobDefinitionsByWorkspaceAsync(context));
     }
 
     /**
@@ -204,6 +259,34 @@ public final class SparkJobDefinitionsImpl {
      * @param sparkJobDefinition Spark job definition resource type.
      * @param ifMatch ETag of the Spark Job Definition entity. Should only be specified for update, for which it should
      *     match existing entity or can be * for unconditional update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return spark job definition resource type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SparkJobDefinitionResource>> createOrUpdateSparkJobDefinitionWithResponseAsync(
+            String sparkJobDefinitionName,
+            SparkJobDefinitionResource sparkJobDefinition,
+            String ifMatch,
+            Context context) {
+        return service.createOrUpdateSparkJobDefinition(
+                this.client.getEndpoint(),
+                sparkJobDefinitionName,
+                this.client.getApiVersion(),
+                ifMatch,
+                sparkJobDefinition,
+                context);
+    }
+
+    /**
+     * Creates or updates a Spark Job Definition.
+     *
+     * @param sparkJobDefinitionName The spark job definition name.
+     * @param sparkJobDefinition Spark job definition resource type.
+     * @param ifMatch ETag of the Spark Job Definition entity. Should only be specified for update, for which it should
+     *     match existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -213,6 +296,37 @@ public final class SparkJobDefinitionsImpl {
     public Mono<SparkJobDefinitionResource> createOrUpdateSparkJobDefinitionAsync(
             String sparkJobDefinitionName, SparkJobDefinitionResource sparkJobDefinition, String ifMatch) {
         return createOrUpdateSparkJobDefinitionWithResponseAsync(sparkJobDefinitionName, sparkJobDefinition, ifMatch)
+                .flatMap(
+                        (Response<SparkJobDefinitionResource> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Creates or updates a Spark Job Definition.
+     *
+     * @param sparkJobDefinitionName The spark job definition name.
+     * @param sparkJobDefinition Spark job definition resource type.
+     * @param ifMatch ETag of the Spark Job Definition entity. Should only be specified for update, for which it should
+     *     match existing entity or can be * for unconditional update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return spark job definition resource type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SparkJobDefinitionResource> createOrUpdateSparkJobDefinitionAsync(
+            String sparkJobDefinitionName,
+            SparkJobDefinitionResource sparkJobDefinition,
+            String ifMatch,
+            Context context) {
+        return createOrUpdateSparkJobDefinitionWithResponseAsync(
+                        sparkJobDefinitionName, sparkJobDefinition, ifMatch, context)
                 .flatMap(
                         (Response<SparkJobDefinitionResource> res) -> {
                             if (res.getValue() != null) {
@@ -286,6 +400,30 @@ public final class SparkJobDefinitionsImpl {
     }
 
     /**
+     * Creates or updates a Spark Job Definition.
+     *
+     * @param sparkJobDefinitionName The spark job definition name.
+     * @param sparkJobDefinition Spark job definition resource type.
+     * @param ifMatch ETag of the Spark Job Definition entity. Should only be specified for update, for which it should
+     *     match existing entity or can be * for unconditional update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return spark job definition resource type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SparkJobDefinitionResource> createOrUpdateSparkJobDefinitionWithResponse(
+            String sparkJobDefinitionName,
+            SparkJobDefinitionResource sparkJobDefinition,
+            String ifMatch,
+            Context context) {
+        return createOrUpdateSparkJobDefinitionWithResponseAsync(
+                        sparkJobDefinitionName, sparkJobDefinition, ifMatch, context)
+                .block();
+    }
+
+    /**
      * Gets a Spark Job Definition.
      *
      * @param sparkJobDefinitionName The spark job definition name.
@@ -315,6 +453,25 @@ public final class SparkJobDefinitionsImpl {
      * @param sparkJobDefinitionName The spark job definition name.
      * @param ifNoneMatch ETag of the Spark Job Definition entity. Should only be specified for get. If the ETag matches
      *     the existing entity tag, or if * was provided, then no content will be returned.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Spark Job Definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SparkJobDefinitionResource>> getSparkJobDefinitionWithResponseAsync(
+            String sparkJobDefinitionName, String ifNoneMatch, Context context) {
+        return service.getSparkJobDefinition(
+                this.client.getEndpoint(), sparkJobDefinitionName, this.client.getApiVersion(), ifNoneMatch, context);
+    }
+
+    /**
+     * Gets a Spark Job Definition.
+     *
+     * @param sparkJobDefinitionName The spark job definition name.
+     * @param ifNoneMatch ETag of the Spark Job Definition entity. Should only be specified for get. If the ETag matches
+     *     the existing entity tag, or if * was provided, then no content will be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -324,6 +481,32 @@ public final class SparkJobDefinitionsImpl {
     public Mono<SparkJobDefinitionResource> getSparkJobDefinitionAsync(
             String sparkJobDefinitionName, String ifNoneMatch) {
         return getSparkJobDefinitionWithResponseAsync(sparkJobDefinitionName, ifNoneMatch)
+                .flatMap(
+                        (Response<SparkJobDefinitionResource> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Gets a Spark Job Definition.
+     *
+     * @param sparkJobDefinitionName The spark job definition name.
+     * @param ifNoneMatch ETag of the Spark Job Definition entity. Should only be specified for get. If the ETag matches
+     *     the existing entity tag, or if * was provided, then no content will be returned.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Spark Job Definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SparkJobDefinitionResource> getSparkJobDefinitionAsync(
+            String sparkJobDefinitionName, String ifNoneMatch, Context context) {
+        return getSparkJobDefinitionWithResponseAsync(sparkJobDefinitionName, ifNoneMatch, context)
                 .flatMap(
                         (Response<SparkJobDefinitionResource> res) -> {
                             if (res.getValue() != null) {
@@ -391,6 +574,24 @@ public final class SparkJobDefinitionsImpl {
     }
 
     /**
+     * Gets a Spark Job Definition.
+     *
+     * @param sparkJobDefinitionName The spark job definition name.
+     * @param ifNoneMatch ETag of the Spark Job Definition entity. Should only be specified for get. If the ETag matches
+     *     the existing entity tag, or if * was provided, then no content will be returned.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Spark Job Definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SparkJobDefinitionResource> getSparkJobDefinitionWithResponse(
+            String sparkJobDefinitionName, String ifNoneMatch, Context context) {
+        return getSparkJobDefinitionWithResponseAsync(sparkJobDefinitionName, ifNoneMatch, context).block();
+    }
+
+    /**
      * Deletes a Spark Job Definition.
      *
      * @param sparkJobDefinitionName The spark job definition name.
@@ -414,6 +615,23 @@ public final class SparkJobDefinitionsImpl {
      * Deletes a Spark Job Definition.
      *
      * @param sparkJobDefinitionName The spark job definition name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteSparkJobDefinitionWithResponseAsync(
+            String sparkJobDefinitionName, Context context) {
+        return service.deleteSparkJobDefinition(
+                this.client.getEndpoint(), sparkJobDefinitionName, this.client.getApiVersion(), context);
+    }
+
+    /**
+     * Deletes a Spark Job Definition.
+     *
+     * @param sparkJobDefinitionName The spark job definition name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -429,6 +647,22 @@ public final class SparkJobDefinitionsImpl {
      * Deletes a Spark Job Definition.
      *
      * @param sparkJobDefinitionName The spark job definition name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteSparkJobDefinitionAsync(String sparkJobDefinitionName, Context context) {
+        return deleteSparkJobDefinitionWithResponseAsync(sparkJobDefinitionName, context)
+                .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Deletes a Spark Job Definition.
+     *
+     * @param sparkJobDefinitionName The spark job definition name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -436,6 +670,21 @@ public final class SparkJobDefinitionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteSparkJobDefinition(String sparkJobDefinitionName) {
         deleteSparkJobDefinitionAsync(sparkJobDefinitionName).block();
+    }
+
+    /**
+     * Deletes a Spark Job Definition.
+     *
+     * @param sparkJobDefinitionName The spark job definition name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteSparkJobDefinitionWithResponse(String sparkJobDefinitionName, Context context) {
+        return deleteSparkJobDefinitionWithResponseAsync(sparkJobDefinitionName, context).block();
     }
 
     /**
@@ -456,6 +705,23 @@ public final class SparkJobDefinitionsImpl {
                                 sparkJobDefinitionName,
                                 this.client.getApiVersion(),
                                 context));
+    }
+
+    /**
+     * Executes the spark job definition.
+     *
+     * @param sparkJobDefinitionName The spark job definition name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SparkBatchJob>> executeSparkJobDefinitionWithResponseAsync(
+            String sparkJobDefinitionName, Context context) {
+        return service.executeSparkJobDefinition(
+                this.client.getEndpoint(), sparkJobDefinitionName, this.client.getApiVersion(), context);
     }
 
     /**
@@ -484,6 +750,29 @@ public final class SparkJobDefinitionsImpl {
      * Executes the spark job definition.
      *
      * @param sparkJobDefinitionName The spark job definition name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SparkBatchJob> executeSparkJobDefinitionAsync(String sparkJobDefinitionName, Context context) {
+        return executeSparkJobDefinitionWithResponseAsync(sparkJobDefinitionName, context)
+                .flatMap(
+                        (Response<SparkBatchJob> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Executes the spark job definition.
+     *
+     * @param sparkJobDefinitionName The spark job definition name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -492,6 +781,22 @@ public final class SparkJobDefinitionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SparkBatchJob executeSparkJobDefinition(String sparkJobDefinitionName) {
         return executeSparkJobDefinitionAsync(sparkJobDefinitionName).block();
+    }
+
+    /**
+     * Executes the spark job definition.
+     *
+     * @param sparkJobDefinitionName The spark job definition name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SparkBatchJob> executeSparkJobDefinitionWithResponse(
+            String sparkJobDefinitionName, Context context) {
+        return executeSparkJobDefinitionWithResponseAsync(sparkJobDefinitionName, context).block();
     }
 
     /**
@@ -513,6 +818,23 @@ public final class SparkJobDefinitionsImpl {
                                 this.client.getApiVersion(),
                                 sparkJobDefinitionAzureResource,
                                 context));
+    }
+
+    /**
+     * Debug the spark job definition.
+     *
+     * @param sparkJobDefinitionAzureResource Spark job definition resource type.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SparkBatchJob>> debugSparkJobDefinitionWithResponseAsync(
+            SparkJobDefinitionResource sparkJobDefinitionAzureResource, Context context) {
+        return service.debugSparkJobDefinition(
+                this.client.getEndpoint(), this.client.getApiVersion(), sparkJobDefinitionAzureResource, context);
     }
 
     /**
@@ -542,6 +864,30 @@ public final class SparkJobDefinitionsImpl {
      * Debug the spark job definition.
      *
      * @param sparkJobDefinitionAzureResource Spark job definition resource type.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SparkBatchJob> debugSparkJobDefinitionAsync(
+            SparkJobDefinitionResource sparkJobDefinitionAzureResource, Context context) {
+        return debugSparkJobDefinitionWithResponseAsync(sparkJobDefinitionAzureResource, context)
+                .flatMap(
+                        (Response<SparkBatchJob> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Debug the spark job definition.
+     *
+     * @param sparkJobDefinitionAzureResource Spark job definition resource type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -550,6 +896,22 @@ public final class SparkJobDefinitionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SparkBatchJob debugSparkJobDefinition(SparkJobDefinitionResource sparkJobDefinitionAzureResource) {
         return debugSparkJobDefinitionAsync(sparkJobDefinitionAzureResource).block();
+    }
+
+    /**
+     * Debug the spark job definition.
+     *
+     * @param sparkJobDefinitionAzureResource Spark job definition resource type.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SparkBatchJob> debugSparkJobDefinitionWithResponse(
+            SparkJobDefinitionResource sparkJobDefinitionAzureResource, Context context) {
+        return debugSparkJobDefinitionWithResponseAsync(sparkJobDefinitionAzureResource, context).block();
     }
 
     /**
@@ -565,6 +927,31 @@ public final class SparkJobDefinitionsImpl {
     public Mono<PagedResponse<SparkJobDefinitionResource>> getSparkJobDefinitionsByWorkspaceNextSinglePageAsync(
             String nextLink) {
         return FluxUtil.withContext(context -> service.getSparkJobDefinitionsByWorkspaceNext(nextLink, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of spark job definitions resources.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<SparkJobDefinitionResource>> getSparkJobDefinitionsByWorkspaceNextSinglePageAsync(
+            String nextLink, Context context) {
+        return service.getSparkJobDefinitionsByWorkspaceNext(nextLink, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

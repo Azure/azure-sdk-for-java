@@ -133,6 +133,26 @@ public final class DataFlowsImpl {
      * @param dataFlow Data flow resource type.
      * @param ifMatch ETag of the data flow entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data flow resource type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<DataFlowResource>> createOrUpdateDataFlowWithResponseAsync(
+            String dataFlowName, DataFlowResource dataFlow, String ifMatch, Context context) {
+        return service.createOrUpdateDataFlow(
+                this.client.getEndpoint(), dataFlowName, this.client.getApiVersion(), ifMatch, dataFlow, context);
+    }
+
+    /**
+     * Creates or updates a data flow.
+     *
+     * @param dataFlowName The data flow name.
+     * @param dataFlow Data flow resource type.
+     * @param ifMatch ETag of the data flow entity. Should only be specified for update, for which it should match
+     *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -142,6 +162,33 @@ public final class DataFlowsImpl {
     public Mono<DataFlowResource> createOrUpdateDataFlowAsync(
             String dataFlowName, DataFlowResource dataFlow, String ifMatch) {
         return createOrUpdateDataFlowWithResponseAsync(dataFlowName, dataFlow, ifMatch)
+                .flatMap(
+                        (Response<DataFlowResource> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Creates or updates a data flow.
+     *
+     * @param dataFlowName The data flow name.
+     * @param dataFlow Data flow resource type.
+     * @param ifMatch ETag of the data flow entity. Should only be specified for update, for which it should match
+     *     existing entity or can be * for unconditional update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data flow resource type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DataFlowResource> createOrUpdateDataFlowAsync(
+            String dataFlowName, DataFlowResource dataFlow, String ifMatch, Context context) {
+        return createOrUpdateDataFlowWithResponseAsync(dataFlowName, dataFlow, ifMatch, context)
                 .flatMap(
                         (Response<DataFlowResource> res) -> {
                             if (res.getValue() != null) {
@@ -212,6 +259,25 @@ public final class DataFlowsImpl {
     }
 
     /**
+     * Creates or updates a data flow.
+     *
+     * @param dataFlowName The data flow name.
+     * @param dataFlow Data flow resource type.
+     * @param ifMatch ETag of the data flow entity. Should only be specified for update, for which it should match
+     *     existing entity or can be * for unconditional update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data flow resource type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DataFlowResource> createOrUpdateDataFlowWithResponse(
+            String dataFlowName, DataFlowResource dataFlow, String ifMatch, Context context) {
+        return createOrUpdateDataFlowWithResponseAsync(dataFlowName, dataFlow, ifMatch, context).block();
+    }
+
+    /**
      * Gets a data flow.
      *
      * @param dataFlowName The data flow name.
@@ -240,6 +306,25 @@ public final class DataFlowsImpl {
      * @param dataFlowName The data flow name.
      * @param ifNoneMatch ETag of the data flow entity. Should only be specified for get. If the ETag matches the
      *     existing entity tag, or if * was provided, then no content will be returned.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a data flow.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<DataFlowResource>> getDataFlowWithResponseAsync(
+            String dataFlowName, String ifNoneMatch, Context context) {
+        return service.getDataFlow(
+                this.client.getEndpoint(), dataFlowName, this.client.getApiVersion(), ifNoneMatch, context);
+    }
+
+    /**
+     * Gets a data flow.
+     *
+     * @param dataFlowName The data flow name.
+     * @param ifNoneMatch ETag of the data flow entity. Should only be specified for get. If the ETag matches the
+     *     existing entity tag, or if * was provided, then no content will be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -248,6 +333,31 @@ public final class DataFlowsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataFlowResource> getDataFlowAsync(String dataFlowName, String ifNoneMatch) {
         return getDataFlowWithResponseAsync(dataFlowName, ifNoneMatch)
+                .flatMap(
+                        (Response<DataFlowResource> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Gets a data flow.
+     *
+     * @param dataFlowName The data flow name.
+     * @param ifNoneMatch ETag of the data flow entity. Should only be specified for get. If the ETag matches the
+     *     existing entity tag, or if * was provided, then no content will be returned.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a data flow.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DataFlowResource> getDataFlowAsync(String dataFlowName, String ifNoneMatch, Context context) {
+        return getDataFlowWithResponseAsync(dataFlowName, ifNoneMatch, context)
                 .flatMap(
                         (Response<DataFlowResource> res) -> {
                             if (res.getValue() != null) {
@@ -315,6 +425,24 @@ public final class DataFlowsImpl {
     }
 
     /**
+     * Gets a data flow.
+     *
+     * @param dataFlowName The data flow name.
+     * @param ifNoneMatch ETag of the data flow entity. Should only be specified for get. If the ETag matches the
+     *     existing entity tag, or if * was provided, then no content will be returned.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a data flow.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DataFlowResource> getDataFlowWithResponse(
+            String dataFlowName, String ifNoneMatch, Context context) {
+        return getDataFlowWithResponseAsync(dataFlowName, ifNoneMatch, context).block();
+    }
+
+    /**
      * Deletes a data flow.
      *
      * @param dataFlowName The data flow name.
@@ -335,6 +463,21 @@ public final class DataFlowsImpl {
      * Deletes a data flow.
      *
      * @param dataFlowName The data flow name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteDataFlowWithResponseAsync(String dataFlowName, Context context) {
+        return service.deleteDataFlow(this.client.getEndpoint(), dataFlowName, this.client.getApiVersion(), context);
+    }
+
+    /**
+     * Deletes a data flow.
+     *
+     * @param dataFlowName The data flow name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -349,6 +492,21 @@ public final class DataFlowsImpl {
      * Deletes a data flow.
      *
      * @param dataFlowName The data flow name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteDataFlowAsync(String dataFlowName, Context context) {
+        return deleteDataFlowWithResponseAsync(dataFlowName, context).flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Deletes a data flow.
+     *
+     * @param dataFlowName The data flow name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -356,6 +514,21 @@ public final class DataFlowsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteDataFlow(String dataFlowName) {
         deleteDataFlowAsync(dataFlowName).block();
+    }
+
+    /**
+     * Deletes a data flow.
+     *
+     * @param dataFlowName The data flow name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteDataFlowWithResponse(String dataFlowName, Context context) {
+        return deleteDataFlowWithResponseAsync(dataFlowName, context).block();
     }
 
     /**
@@ -385,6 +558,29 @@ public final class DataFlowsImpl {
     /**
      * Lists data flows.
      *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of data flow resources.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<DataFlowResource>> getDataFlowsByWorkspaceSinglePageAsync(Context context) {
+        return service.getDataFlowsByWorkspace(this.client.getEndpoint(), this.client.getApiVersion(), context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
+    }
+
+    /**
+     * Lists data flows.
+     *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of data flow resources.
@@ -394,6 +590,22 @@ public final class DataFlowsImpl {
         return new PagedFlux<>(
                 () -> getDataFlowsByWorkspaceSinglePageAsync(),
                 nextLink -> getDataFlowsByWorkspaceNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists data flows.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of data flow resources.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<DataFlowResource> getDataFlowsByWorkspaceAsync(Context context) {
+        return new PagedFlux<>(
+                () -> getDataFlowsByWorkspaceSinglePageAsync(context),
+                nextLink -> getDataFlowsByWorkspaceNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -409,6 +621,20 @@ public final class DataFlowsImpl {
     }
 
     /**
+     * Lists data flows.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of data flow resources.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DataFlowResource> getDataFlowsByWorkspace(Context context) {
+        return new PagedIterable<>(getDataFlowsByWorkspaceAsync(context));
+    }
+
+    /**
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
@@ -420,6 +646,31 @@ public final class DataFlowsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DataFlowResource>> getDataFlowsByWorkspaceNextSinglePageAsync(String nextLink) {
         return FluxUtil.withContext(context -> service.getDataFlowsByWorkspaceNext(nextLink, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of data flow resources.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<DataFlowResource>> getDataFlowsByWorkspaceNextSinglePageAsync(
+            String nextLink, Context context) {
+        return service.getDataFlowsByWorkspaceNext(nextLink, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

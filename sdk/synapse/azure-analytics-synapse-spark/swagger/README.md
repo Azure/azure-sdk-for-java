@@ -38,6 +38,6 @@ license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: models
 custom-types-subpackage: models
-context-client-method-parameter: false
+context-client-method-parameter: true
 required-parameter-client-methods: true
 ```

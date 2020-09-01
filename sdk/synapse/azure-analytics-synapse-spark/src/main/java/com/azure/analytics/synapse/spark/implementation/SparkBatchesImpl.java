@@ -130,6 +130,31 @@ public final class SparkBatchesImpl {
      * @param from Optional param specifying which index the list should begin from.
      * @param size Optional param specifying the size of the returned list. By default it is 20 and that is the maximum.
      * @param detailed Optional query param specifying whether detailed response is returned beyond plain livy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for batch list operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SparkBatchJobCollection>> getSparkBatchJobsWithResponseAsync(
+            Integer from, Integer size, Boolean detailed, Context context) {
+        return service.getSparkBatchJobs(
+                this.client.getEndpoint(),
+                this.client.getLivyApiVersion(),
+                this.client.getSparkPoolName(),
+                from,
+                size,
+                detailed,
+                context);
+    }
+
+    /**
+     * List all spark batch jobs which are running under a particular spark pool.
+     *
+     * @param from Optional param specifying which index the list should begin from.
+     * @param size Optional param specifying the size of the returned list. By default it is 20 and that is the maximum.
+     * @param detailed Optional query param specifying whether detailed response is returned beyond plain livy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -138,6 +163,32 @@ public final class SparkBatchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SparkBatchJobCollection> getSparkBatchJobsAsync(Integer from, Integer size, Boolean detailed) {
         return getSparkBatchJobsWithResponseAsync(from, size, detailed)
+                .flatMap(
+                        (Response<SparkBatchJobCollection> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * List all spark batch jobs which are running under a particular spark pool.
+     *
+     * @param from Optional param specifying which index the list should begin from.
+     * @param size Optional param specifying the size of the returned list. By default it is 20 and that is the maximum.
+     * @param detailed Optional query param specifying whether detailed response is returned beyond plain livy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for batch list operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SparkBatchJobCollection> getSparkBatchJobsAsync(
+            Integer from, Integer size, Boolean detailed, Context context) {
+        return getSparkBatchJobsWithResponseAsync(from, size, detailed, context)
                 .flatMap(
                         (Response<SparkBatchJobCollection> res) -> {
                             if (res.getValue() != null) {
@@ -205,6 +256,24 @@ public final class SparkBatchesImpl {
     }
 
     /**
+     * List all spark batch jobs which are running under a particular spark pool.
+     *
+     * @param from Optional param specifying which index the list should begin from.
+     * @param size Optional param specifying the size of the returned list. By default it is 20 and that is the maximum.
+     * @param detailed Optional query param specifying whether detailed response is returned beyond plain livy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for batch list operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SparkBatchJobCollection> getSparkBatchJobsWithResponse(
+            Integer from, Integer size, Boolean detailed, Context context) {
+        return getSparkBatchJobsWithResponseAsync(from, size, detailed, context).block();
+    }
+
+    /**
      * Create new spark batch job.
      *
      * @param sparkBatchJobOptions Livy compatible batch job request payload.
@@ -233,6 +302,29 @@ public final class SparkBatchesImpl {
      *
      * @param sparkBatchJobOptions Livy compatible batch job request payload.
      * @param detailed Optional query param specifying whether detailed response is returned beyond plain livy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SparkBatchJob>> createSparkBatchJobWithResponseAsync(
+            SparkBatchJobOptions sparkBatchJobOptions, Boolean detailed, Context context) {
+        return service.createSparkBatchJob(
+                this.client.getEndpoint(),
+                this.client.getLivyApiVersion(),
+                this.client.getSparkPoolName(),
+                detailed,
+                sparkBatchJobOptions,
+                context);
+    }
+
+    /**
+     * Create new spark batch job.
+     *
+     * @param sparkBatchJobOptions Livy compatible batch job request payload.
+     * @param detailed Optional query param specifying whether detailed response is returned beyond plain livy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -241,6 +333,31 @@ public final class SparkBatchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SparkBatchJob> createSparkBatchJobAsync(SparkBatchJobOptions sparkBatchJobOptions, Boolean detailed) {
         return createSparkBatchJobWithResponseAsync(sparkBatchJobOptions, detailed)
+                .flatMap(
+                        (Response<SparkBatchJob> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Create new spark batch job.
+     *
+     * @param sparkBatchJobOptions Livy compatible batch job request payload.
+     * @param detailed Optional query param specifying whether detailed response is returned beyond plain livy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SparkBatchJob> createSparkBatchJobAsync(
+            SparkBatchJobOptions sparkBatchJobOptions, Boolean detailed, Context context) {
+        return createSparkBatchJobWithResponseAsync(sparkBatchJobOptions, detailed, context)
                 .flatMap(
                         (Response<SparkBatchJob> res) -> {
                             if (res.getValue() != null) {
@@ -307,6 +424,23 @@ public final class SparkBatchesImpl {
     }
 
     /**
+     * Create new spark batch job.
+     *
+     * @param sparkBatchJobOptions Livy compatible batch job request payload.
+     * @param detailed Optional query param specifying whether detailed response is returned beyond plain livy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SparkBatchJob> createSparkBatchJobWithResponse(
+            SparkBatchJobOptions sparkBatchJobOptions, Boolean detailed, Context context) {
+        return createSparkBatchJobWithResponseAsync(sparkBatchJobOptions, detailed, context).block();
+    }
+
+    /**
      * Gets a single spark batch job.
      *
      * @param batchId Identifier for the batch job.
@@ -334,6 +468,29 @@ public final class SparkBatchesImpl {
      *
      * @param batchId Identifier for the batch job.
      * @param detailed Optional query param specifying whether detailed response is returned beyond plain livy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single spark batch job.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SparkBatchJob>> getSparkBatchJobWithResponseAsync(
+            int batchId, Boolean detailed, Context context) {
+        return service.getSparkBatchJob(
+                this.client.getEndpoint(),
+                this.client.getLivyApiVersion(),
+                this.client.getSparkPoolName(),
+                batchId,
+                detailed,
+                context);
+    }
+
+    /**
+     * Gets a single spark batch job.
+     *
+     * @param batchId Identifier for the batch job.
+     * @param detailed Optional query param specifying whether detailed response is returned beyond plain livy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -342,6 +499,30 @@ public final class SparkBatchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SparkBatchJob> getSparkBatchJobAsync(int batchId, Boolean detailed) {
         return getSparkBatchJobWithResponseAsync(batchId, detailed)
+                .flatMap(
+                        (Response<SparkBatchJob> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Gets a single spark batch job.
+     *
+     * @param batchId Identifier for the batch job.
+     * @param detailed Optional query param specifying whether detailed response is returned beyond plain livy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single spark batch job.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SparkBatchJob> getSparkBatchJobAsync(int batchId, Boolean detailed, Context context) {
+        return getSparkBatchJobWithResponseAsync(batchId, detailed, context)
                 .flatMap(
                         (Response<SparkBatchJob> res) -> {
                             if (res.getValue() != null) {
@@ -408,6 +589,22 @@ public final class SparkBatchesImpl {
     }
 
     /**
+     * Gets a single spark batch job.
+     *
+     * @param batchId Identifier for the batch job.
+     * @param detailed Optional query param specifying whether detailed response is returned beyond plain livy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single spark batch job.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SparkBatchJob> getSparkBatchJobWithResponse(int batchId, Boolean detailed, Context context) {
+        return getSparkBatchJobWithResponseAsync(batchId, detailed, context).block();
+    }
+
+    /**
      * Cancels a running spark batch job.
      *
      * @param batchId Identifier for the batch job.
@@ -432,6 +629,26 @@ public final class SparkBatchesImpl {
      * Cancels a running spark batch job.
      *
      * @param batchId Identifier for the batch job.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> cancelSparkBatchJobWithResponseAsync(int batchId, Context context) {
+        return service.cancelSparkBatchJob(
+                this.client.getEndpoint(),
+                this.client.getLivyApiVersion(),
+                this.client.getSparkPoolName(),
+                batchId,
+                context);
+    }
+
+    /**
+     * Cancels a running spark batch job.
+     *
+     * @param batchId Identifier for the batch job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -446,6 +663,21 @@ public final class SparkBatchesImpl {
      * Cancels a running spark batch job.
      *
      * @param batchId Identifier for the batch job.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> cancelSparkBatchJobAsync(int batchId, Context context) {
+        return cancelSparkBatchJobWithResponseAsync(batchId, context).flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Cancels a running spark batch job.
+     *
+     * @param batchId Identifier for the batch job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -453,5 +685,20 @@ public final class SparkBatchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancelSparkBatchJob(int batchId) {
         cancelSparkBatchJobAsync(batchId).block();
+    }
+
+    /**
+     * Cancels a running spark batch job.
+     *
+     * @param batchId Identifier for the batch job.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> cancelSparkBatchJobWithResponse(int batchId, Context context) {
+        return cancelSparkBatchJobWithResponseAsync(batchId, context).block();
     }
 }
