@@ -734,7 +734,6 @@ class ServiceBusReceiverAsyncClientTest {
         final Duration maxDuration = Duration.ofSeconds(8);
         final Duration renewalPeriod = Duration.ofSeconds(3);
         final String lockToken = "some-token";
-        final OffsetDateTime startTime = OffsetDateTime.now();
 
         // At most 4 times because we renew the lock before it expires (by some seconds).
         final int atMost = 5;
@@ -753,9 +752,8 @@ class ServiceBusReceiverAsyncClientTest {
         verify(managementNode, Mockito.atMost(atMost)).renewMessageLock(lockToken, null);
     }
 
-
     /**
-     * Verifies that we can auto-renew a message lock.
+     * Verifies that we can auto-renew a session lock.
      */
     @Test
     void autoRenewSessionLock() {
@@ -763,7 +761,6 @@ class ServiceBusReceiverAsyncClientTest {
         final Duration maxDuration = Duration.ofSeconds(8);
         final Duration renewalPeriod = Duration.ofSeconds(3);
         final String sessionId = "some-token";
-        final OffsetDateTime startTime = OffsetDateTime.now();
 
         // At most 4 times because we renew the lock before it expires (by some seconds).
         final int atMost = 5;
@@ -776,7 +773,8 @@ class ServiceBusReceiverAsyncClientTest {
         StepVerifier.create(sessionReceiver.getAutoRenewSessionLock(sessionId, maxDuration))
             .thenAwait(totalSleepPeriod)
             .then(() -> logger.info("Finished renewals for first sleep."))
-            .expectComplete().verify(Duration.ofSeconds(5));
+            .expectComplete()
+            .verify(Duration.ofSeconds(5));
 
         verify(managementNode, Mockito.atMost(atMost)).renewSessionLock(sessionId, null);
     }
