@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.util.Collection;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -281,6 +282,8 @@ public final class Region {
      * @return the newly created region
      */
     public static Region create(String name, String label) {
+        Objects.requireNonNull(name, "'name' cannot be null.");
+
         Region region = VALUES_BY_NAME.get(name.toLowerCase(Locale.ROOT));
         if (region != null) {
             return region;
@@ -310,25 +313,9 @@ public final class Region {
     }
 
     /**
-     * Finds a region based on a label or name.
-     * <p>
-     * A region name is lower-cased label with spaces removed.
-     *
-     * @param labelOrName the region name or label
-     * @return the found region or null if there's no such region
-     */
-    public static Region findByLabelOrName(String labelOrName) {
-        if (labelOrName == null) {
-            return null;
-        }
-
-        return VALUES_BY_NAME.get(labelOrName.toLowerCase(Locale.ROOT).replace(" ", ""));
-    }
-
-    /**
      * Parses a name into a Region object and creates a new Region instance if not found among the existing ones.
      *
-     * @param name a region name
+     * @param name the name of the region
      * @return the parsed or created region
      */
     public static Region fromName(String name) {
