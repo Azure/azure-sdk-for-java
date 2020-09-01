@@ -36,7 +36,19 @@ public class ImplementationBridgeHelpers {
             return accessor.getAlgorithm(metadata);
         }
 
+        public static EncryptionKeyWrapMetadata create(String type, String value, String algorithm) {
+            return accessor.create(type, value, algorithm);
+        }
+
+        public static EncryptionKeyWrapMetadata create(String type, String value) {
+            return accessor.create(type, value);
+        }
+
         public interface EncryptionKeyWrapMetadataAccessor {
+
+            EncryptionKeyWrapMetadata create(String type, String value, String algorithm);
+
+            EncryptionKeyWrapMetadata create(String type, String value);
 
             String getType(EncryptionKeyWrapMetadata metadata);
 

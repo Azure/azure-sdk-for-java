@@ -68,6 +68,7 @@ import java.util.function.Consumer;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 import static com.azure.cosmos.encryption.KeyVaultAccessClientTests.*;
+import static com.azure.cosmos.implementation.encryption.ImplementationBridgeHelpers.EncryptionKeyWrapMetadataHelper;
 
 // TODO: moderakh fix/update the comments on the key wrap/unwrap tests.
 public class EncryptionTests extends TestSuiteBase {
@@ -738,7 +739,7 @@ public class EncryptionTests extends TestSuiteBase {
     public void validateNullWrappedKeyResult() throws Exception {
         URI keyUri =
             new URI("https://testdemo.vault.azure.net/keys/testkey1/" + KeyVaultTestConstants.ValidateNullWrappedKey);
-        EncryptionKeyWrapMetadata invalidWrapMetadata = new EncryptionKeyWrapMetadata("akv", keyUri.toString());
+        EncryptionKeyWrapMetadata invalidWrapMetadata = EncryptionKeyWrapMetadataHelper.create("akv", keyUri.toString());
 
         EncryptionKeyWrapResult keyWrapResponse = azureKeyVaultKeyWrapProvider.wrapKey(
             rawDekForKeyVault,
@@ -751,7 +752,7 @@ public class EncryptionTests extends TestSuiteBase {
         expectedExceptionsMessageRegExp = "keyVaultAccessClient.unwrapKey returned no bytes: dataEncryptionKey is null")
     public void validateNullUnwrappedKeyResult() throws Exception {
         URI keyUri = new URI("https://testdemo.vault.azure.net/keys/testkey1/" + KeyVaultTestConstants.ValidateNullUnwrappedKey);
-        EncryptionKeyWrapMetadata invalidWrapMetadata = new EncryptionKeyWrapMetadata("akv", keyUri.toString(), KeyVaultConstants.RsaOaep256.toString());
+        EncryptionKeyWrapMetadata invalidWrapMetadata = EncryptionKeyWrapMetadataHelper.create("akv", keyUri.toString(), KeyVaultConstants.RsaOaep256.toString());
 
         EncryptionKeyWrapResult wrappedKey = EncryptionTests.wrapDekKeyVaultAsync(rawDekForKeyVault, azureKeyVaultKeyWrapMetadata).block();
         byte[] wrappedDek = wrappedKey.getWrappedDataEncryptionKey();
@@ -770,7 +771,7 @@ public class EncryptionTests extends TestSuiteBase {
             + "protection enabled.")
     public void validateKeyClientReturnsNullKeyVaultResponse() throws Exception {
         URI keyUri = new URI("https://testdemo.vault.azure.net/keys/" + KeyVaultTestConstants.ValidateNullKeyVaultKey + "47d306aeaae74baab294672354603ca3");
-        EncryptionKeyWrapMetadata invalidWrapMetadata = new EncryptionKeyWrapMetadata("akv", keyUri.toString());
+        EncryptionKeyWrapMetadata invalidWrapMetadata = EncryptionKeyWrapMetadataHelper.create("akv", keyUri.toString());
         EncryptionKeyWrapResult keyWrapResponse =  EncryptionTests.wrapDekKeyVaultAsync(rawDekForKeyVault, invalidWrapMetadata).block();
     }
 
@@ -797,7 +798,7 @@ public class EncryptionTests extends TestSuiteBase {
         URI keyUri =
             new URI("https://testdemo.vault.azure.net/keys/" + KeyVaultTestConstants.ValidateRequestFailedEx +
                 "47d306aeaae74baab294672354603ca3");
-        EncryptionKeyWrapMetadata invalidWrapMetadata = new EncryptionKeyWrapMetadata("akv", keyUri.toString());
+        EncryptionKeyWrapMetadata invalidWrapMetadata = EncryptionKeyWrapMetadataHelper.create("akv", keyUri.toString());
         EncryptionKeyWrapResult keyWrapResponse = EncryptionTests.wrapDekKeyVaultAsync(rawDekForKeyVault,
             invalidWrapMetadata).block();
     }
@@ -841,7 +842,7 @@ public class EncryptionTests extends TestSuiteBase {
 
         assertThat(new EncryptionKeyWrapMetadata(EncryptionTests.metadata2.value + EncryptionTests.metadataUpdateSuffix)).isEqualTo(dekProperties.encryptionKeyWrapMetadata);
         //        Assert.AreEqual(
-        //            new EncryptionKeyWrapMetadata(EncryptionTests.metadata2.Value + EncryptionTests
+        //            EncryptionKeyWrapMetadataHelper.create(EncryptionTests.metadata2.Value + EncryptionTests
         //            .metadataUpdateSuffix),
         //            dekProperties.EncryptionKeyWrapMetadata);
 
@@ -871,7 +872,7 @@ public class EncryptionTests extends TestSuiteBase {
 
     public void wrapKeyUsingKeyVaultInValidTypeConstants() throws Exception {
         URI keyUri = new URI("https://testdemo.vault.azure.net/keys/testkey1/47d306aeaae74baab294672354603ca3");
-        EncryptionKeyWrapMetadata invalidWrapMetadata = new EncryptionKeyWrapMetadata("incorrectConstant",
+        EncryptionKeyWrapMetadata invalidWrapMetadata = EncryptionKeyWrapMetadataHelper.create("incorrectConstant",
             keyUri.toString());
         EncryptionKeyWrapResult keyWrapResponse = EncryptionTests.wrapDekKeyVaultAsync(rawDekForKeyVault,
             invalidWrapMetadata).block();
@@ -885,7 +886,7 @@ public class EncryptionTests extends TestSuiteBase {
     @Test(groups = { "encryption" }, timeOut = TIMEOUT, expectedExceptions = {RuntimeException.class})
     public void validateKeyClientReturnNullArgument()
     {
-        EncryptionKeyWrapMetadata invalidWrapMetadata = new EncryptionKeyWrapMetadata("akv", null);
+        EncryptionKeyWrapMetadata invalidWrapMetadata = EncryptionKeyWrapMetadataHelper.create("akv", null);
         EncryptionKeyWrapResult keyWrapResponse = EncryptionTests.wrapDekKeyVaultAsync(rawDekForKeyVault, invalidWrapMetadata).block();
     }
 
@@ -895,7 +896,7 @@ public class EncryptionTests extends TestSuiteBase {
     @Test(groups = { "encryption" }, timeOut = TIMEOUT, expectedExceptions = {RuntimeException.class})
     public void wrapKeyUsingKeyVaultInValidValue() throws Exception {
         URI keyUri = new URI("https://testdemo.vault.azure.net/key/testkey1/47d306aeaae74baab294672354603ca3");
-        EncryptionKeyWrapMetadata invalidWrapMetadata = new EncryptionKeyWrapMetadata("akv", keyUri.toString());
+        EncryptionKeyWrapMetadata invalidWrapMetadata = EncryptionKeyWrapMetadataHelper.create("akv", keyUri.toString());
         EncryptionKeyWrapResult keyWrapResponse = EncryptionTests.wrapDekKeyVaultAsync(rawDekForKeyVault, invalidWrapMetadata).block();
     }
 

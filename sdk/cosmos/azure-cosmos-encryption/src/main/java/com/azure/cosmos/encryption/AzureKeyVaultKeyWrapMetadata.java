@@ -13,7 +13,7 @@ import static com.azure.cosmos.implementation.encryption.ImplementationBridgeHel
  * Metadata used by Azure Key Vault to wrap (encrypt) and unwrap (decrypt) keys.
  */
 public final class AzureKeyVaultKeyWrapMetadata extends EncryptionKeyWrapMetadata {
-    static final String TYPE_CONSTANT = "akv";
+    private static final String TYPE_CONSTANT = "akv";
 
     // TODO: moderakh use URL vs URI?
     /**

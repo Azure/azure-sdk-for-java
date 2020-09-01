@@ -40,14 +40,14 @@ public class KeyVaultAccessClient {
     }
 
     /**
-     * TODO: this doesn't need to be public moderakh Initializes a new instance of the {@link KeyVaultAccessClient}
+     * Initializes a new instance of the {@link KeyVaultAccessClient}
      * class Invokes internal factory Methods.
      *
      * @param keyVaultTokenCredentialFactory TokenCredential
      * @param keyClientFactory KeyClient Factory
      * @param cryptographyClientFactory KeyClient Factory
      */
-    public KeyVaultAccessClient(KeyVaultTokenCredentialFactory keyVaultTokenCredentialFactory,
+    KeyVaultAccessClient(KeyVaultTokenCredentialFactory keyVaultTokenCredentialFactory,
                                 KeyClientFactory keyClientFactory,
                                 CryptographyClientFactory cryptographyClientFactory) {
         this.keyVaultTokenCredentialFactory = keyVaultTokenCredentialFactory;
@@ -142,10 +142,10 @@ public class KeyVaultAccessClient {
                                  }
 
                                  return Mono.just(keyDeletionRecoveryLevel != null && (
-                                     keyDeletionRecoveryLevel.contains(KeyVaultConstants.DeletionRecoveryLevel.Recoverable)
-                                         || keyDeletionRecoveryLevel.contains(KeyVaultConstants.DeletionRecoveryLevel.RecoverableProtectedSubscription)
-                                         || keyDeletionRecoveryLevel.contains(KeyVaultConstants.DeletionRecoveryLevel.CustomizedRecoverable)
-                                         || keyDeletionRecoveryLevel.contains(KeyVaultConstants.DeletionRecoveryLevel.CustomizedRecoverableProtectedSubscription)));
+                                     keyDeletionRecoveryLevel.contains(KeyVaultConstants.DeletionRecoveryLevel.RECOVERABLE)
+                                         || keyDeletionRecoveryLevel.contains(KeyVaultConstants.DeletionRecoveryLevel.RECOVERABLE_PROTECTED_SUBSCRIPTION)
+                                         || keyDeletionRecoveryLevel.contains(KeyVaultConstants.DeletionRecoveryLevel.CUSTOMIZED_RECOVERABLE)
+                                         || keyDeletionRecoveryLevel.contains(KeyVaultConstants.DeletionRecoveryLevel.CUSTOMIZED_RECOVERABLE_PROTECTED_SUBSCRIPTION)));
                              }
                          )
         ).onErrorResume(

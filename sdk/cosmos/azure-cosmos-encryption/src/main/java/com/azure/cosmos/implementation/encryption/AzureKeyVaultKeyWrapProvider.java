@@ -116,7 +116,7 @@ public class AzureKeyVaultKeyWrapProvider implements EncryptionKeyWrapProvider {
                         .map(
                             wrappedDataEncryptionKey -> {  // TODO: what happens if wrappedDataEncryptionKey is null?
                                 EncryptionKeyWrapMetadata responseMetadata =
-                                    new EncryptionKeyWrapMetadata(metadataType, metadata.value,
+                                    EncryptionKeyWrapMetadataHelper.create(metadataType, metadata.value,
                                     KeyVaultConstants.RsaOaep256.toString());
                                 return new EncryptionKeyWrapResult(wrappedDataEncryptionKey, responseMetadata);
                             }

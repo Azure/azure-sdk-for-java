@@ -44,13 +44,11 @@ public class EncryptionKeyWrapMetadata {
         this.value = source.value;
     }
 
-    // TODO: this doen't need to be public. only for test FIXME moderakh
-    public EncryptionKeyWrapMetadata(String type, String value) {
+    EncryptionKeyWrapMetadata(String type, String value) {
         this(type, value, null);
     }
 
-    // TODO: this doen't need to be public. only for test FIXME moderakh
-    public EncryptionKeyWrapMetadata(String type, String value, String algorithm) {
+    EncryptionKeyWrapMetadata(String type, String value, String algorithm) {
         Preconditions.checkNotNull(type, "type is null");
         Preconditions.checkNotNull(value, "value is null");
         this.type = type;
@@ -98,6 +96,16 @@ public class EncryptionKeyWrapMetadata {
     static {
         EncryptionKeyWrapMetadataHelper.setEncryptionKeyWrapMetadataAccessor(
             new EncryptionKeyWrapMetadataHelper.EncryptionKeyWrapMetadataAccessor() {
+                @Override
+                public EncryptionKeyWrapMetadata create(String type, String value, String algorithm) {
+                    return new EncryptionKeyWrapMetadata(type, value, algorithm);
+                }
+
+                @Override
+                public EncryptionKeyWrapMetadata create(String type, String value) {
+                    return new EncryptionKeyWrapMetadata(type, value);
+                }
+
                 @Override
                 public String getType(EncryptionKeyWrapMetadata metadata) {
                     return metadata.type;

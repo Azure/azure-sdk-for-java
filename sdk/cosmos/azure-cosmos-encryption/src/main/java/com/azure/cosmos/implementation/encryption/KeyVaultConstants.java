@@ -7,23 +7,21 @@ import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 
 public class KeyVaultConstants {
     // TODO: "keys/"? check with dotnet
-    public static final String KeysSegment = "keys";
-    public static final String AuthenticationChallengePrefix = "Bearer ";
-    public static final String AuthenticationResponseHeaderName = "WWW-Authenticate";
-    public static final String AuthenticationParameter = "authorization";
-    // TODO: this doesn't need to be public FiXME
+    public static final String KEYS_SEGMENT = "keys";
+    public static final String AUTHENTICATION_CHALLENGE_PREFIX = "Bearer ";
+    public static final String AUTHENTICATION_RESPONSE_HEADER_NAME = "WWW-Authenticate";
+    public static final String AUTHENTICATION_PARAMETER = "authorization";
     public static final KeyWrapAlgorithm RsaOaep256 = KeyWrapAlgorithm.RSA_OAEP_256;
 
-
     public static class DeletionRecoveryLevel {
-        public static final String Purgeable = "Purgeable";
-        public static final String Recoverable = "Recoverable";
-        public static final String RecoverableProtectedSubscription = "Recoverable+ProtectedSubscription";
-        public static final String RecoverablePurgeable = "Recoverable+Purgeable";
-        public static final String CustomizedRecoverable = "CustomizedRecoverable";
-        public static final String CustomizedRecoverableProtectedSubscription = "CustomizedRecoverable"
+        public static final String PURGEABLE = "Purgeable";
+        public static final String RECOVERABLE = "Recoverable";
+        public static final String RECOVERABLE_PROTECTED_SUBSCRIPTION = "Recoverable+ProtectedSubscription";
+        public static final String RECOVERABLE_PURGEABLE = "Recoverable+Purgeable";
+        public static final String CUSTOMIZED_RECOVERABLE = "CustomizedRecoverable";
+        public static final String CUSTOMIZED_RECOVERABLE_PROTECTED_SUBSCRIPTION = "CustomizedRecoverable"
             + "+ProtectedSubscription";
-        public static final String CustomizedRecoverablePurgeable = "CustomizedRecoverable+Purgeable";
+        public static final String CUSTOMIZED_RECOVERABLE_PURGEABLE = "CustomizedRecoverable+Purgeable";
     }
 
     public static class AzureKeyVaultKeyWrapMetadata {

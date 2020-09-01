@@ -11,8 +11,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.concurrent.atomic.AtomicReference;
 
-
-//  TODO: this also doesn't need to be public, it is public because of test FIXME
 public class KeyVaultKeyUriProperties {
     private final static Logger logger = LoggerFactory.getLogger(KeyVaultKeyUriProperties.class);
     private final URI keyUri;
@@ -58,7 +56,7 @@ public class KeyVaultKeyUriProperties {
         // https://testdemo1.vault.azure.net/keys/testkey1/47d306aeaae74baab294672354603ca3
 
         // https://testdemo1.vault.azure.net/keys/testkey1/47d306aeaae74baab294672354603ca3
-        if (!((segments.length == 3) && StringUtils.equalsIgnoreCase(segments[0], KeyVaultConstants.KeysSegment))) {
+        if (!((segments.length == 3) && StringUtils.equalsIgnoreCase(segments[0], KeyVaultConstants.KEYS_SEGMENT))) {
             return false;
         }
 
