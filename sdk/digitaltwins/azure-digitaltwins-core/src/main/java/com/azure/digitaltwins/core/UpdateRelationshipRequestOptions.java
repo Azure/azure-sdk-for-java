@@ -13,4 +13,10 @@ public class UpdateRelationshipRequestOptions extends RequestOptions {
     // This class exists to be added to later if the updateRelationship APIs get a new optional parameter in later service
     // API versions and so that we don't have to expose that new optional parameter for other APIs like updateDigitalTwin,
     // updateComponent, etc.
+
+    @Override
+    public UpdateRelationshipRequestOptions setIfMatch(String ifMatch) {
+        this.ifMatch = ifMatch;
+        return this;
+    }
 }
