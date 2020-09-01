@@ -1,5 +1,7 @@
 # Release History
 
+## 2.0.0-beta.2 (unreleased)
+
 ## 2.0.0-beta.1 (2020-09-09): 
 
 Initial preview of the Event Grid library with an effort to create a Java idiomatic
