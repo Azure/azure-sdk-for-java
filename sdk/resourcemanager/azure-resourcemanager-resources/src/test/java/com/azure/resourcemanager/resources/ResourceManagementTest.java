@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.resourcemanager.redis;
+package com.azure.resourcemanager.resources;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -9,28 +9,20 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
-import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-/** The base for Redis cache manager tests. */
-public class RedisManagementTest extends ResourceManagerTestBase {
-    protected ResourceManager resourceManager;
-    protected RedisManager redisManager;
-    protected StorageManager storageManager;
-    protected String rgName = "";
-    protected String rgNameSecond = "";
-    protected String rrName = "";
-    protected String rrNameSecond = "";
-    protected String rrNameThird = "";
-    protected String saName = "";
+/**
+ * The base for resource manager tests.
+ */
+class ResourceManagementTest extends ResourceManagerTestBase {
+    protected ResourceManager resourceClient;
 
     @Override
     protected HttpPipeline buildHttpPipeline(
@@ -52,29 +44,14 @@ public class RedisManagementTest extends ResourceManagerTestBase {
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
-        rgName = generateRandomResourceName("javacsmrg", 15);
-        rrName = generateRandomResourceName("javacsmrc", 15);
-        rgNameSecond = rgName + "Second";
-        rrNameSecond = rrName + "Second";
-        rrNameThird = rrName + "Third";
-        saName = generateRandomResourceName("javacsmsa", 15);
-
         SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
-        resourceManager =
-            ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
-        redisManager = RedisManager.authenticate(httpPipeline, profile);
-        storageManager = StorageManager.authenticate(httpPipeline, profile);
+        resourceClient = ResourceManager
+            .authenticate(httpPipeline, profile)
+            .withDefaultSubscription();
     }
 
     @Override
     protected void cleanUpResources() {
-        try {
-            resourceManager.resourceGroups().beginDeleteByName(rgName);
-        } catch (Exception e) {
-        }
-        try {
-            resourceManager.resourceGroups().beginDeleteByName(rgNameSecond);
-        } catch (Exception e) {
-        }
+
     }
 }

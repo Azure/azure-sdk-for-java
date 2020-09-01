@@ -38,8 +38,8 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
 
     @Test
     public void canCRUDApplicationGatewayWithWAF() throws Exception {
-        String appGatewayName = sdkContext.randomResourceName("agwaf", 15);
-        String appPublicIp = sdkContext.randomResourceName("pip", 15);
+        String appGatewayName = generateRandomResourceName("agwaf", 15);
+        String appPublicIp = generateRandomResourceName("pip", 15);
         PublicIpAddress pip =
             networkManager
                 .publicIpAddresses()
@@ -132,9 +132,9 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
     @Test
     @Disabled("Need client id for key vault usage")
     public void canCreateApplicationGatewayWithSecret() throws Exception {
-        String appGatewayName = sdkContext.randomResourceName("agwaf", 15);
-        String appPublicIp = sdkContext.randomResourceName("pip", 15);
-        String identityName = sdkContext.randomResourceName("id", 10);
+        String appGatewayName = generateRandomResourceName("agwaf", 15);
+        String appPublicIp = generateRandomResourceName("pip", 15);
+        String identityName = generateRandomResourceName("id", 10);
 
         PublicIpAddress pip =
             networkManager
@@ -200,8 +200,8 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
     }
 
     private Secret createKeyVaultSecret(String servicePrincipal, String identityPrincipal) throws Exception {
-        String vaultName = sdkContext.randomResourceName("vlt", 10);
-        String secretName = sdkContext.randomResourceName("srt", 10);
+        String vaultName = generateRandomResourceName("vlt", 10);
+        String secretName = generateRandomResourceName("srt", 10);
         String secretValue =
             Files
                 .readFirstLine(

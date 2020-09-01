@@ -14,7 +14,7 @@ public class ApplicationSecurityGroupTests extends NetworkManagementTest {
 
     @Test
     public void canCRUDApplicationSecurityGroup() throws Exception {
-        String asgName = sdkContext.randomResourceName("asg", 15);
+        String asgName = generateRandomResourceName("asg", 15);
 
         ApplicationSecurityGroup applicationSecurityGroup =
             networkManager
