@@ -7,7 +7,6 @@ import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.PublicIpAddresses;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.trafficmanager.models.EndpointType;
 import com.azure.resourcemanager.trafficmanager.models.TargetAzureResourceType;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerAzureEndpoint;
@@ -80,7 +79,7 @@ public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, Traf
        Assertions.assertEquals(nestedProfile.azureEndpoints().size(), 0);
        Assertions.assertEquals(nestedProfile.nestedProfileEndpoints().size(), 0);
        Assertions.assertEquals(nestedProfile.externalEndpoints().size(), 1);
-       Assertions.assertEquals(nestedProfile.fqdn(), nestedTmProfileDnsLabel + ".trafficmanager.models.net");
+       Assertions.assertEquals(nestedProfile.fqdn(), nestedTmProfileDnsLabel + ".trafficmanager.net");
        Assertions.assertEquals(nestedProfile.timeToLive(), 500);
 
        // Creates a public ip to be used as an Azure endpoint
@@ -168,7 +167,7 @@ public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, Traf
        Assertions.assertEquals(profile.azureEndpoints().size(), 1);
        Assertions.assertEquals(profile.nestedProfileEndpoints().size(), 1);
        Assertions.assertEquals(profile.externalEndpoints().size(), 2);
-       Assertions.assertEquals(profile.fqdn(), tmProfileDnsLabel + ".trafficmanager.models.net");
+       Assertions.assertEquals(profile.fqdn(), tmProfileDnsLabel + ".trafficmanager.net");
        Assertions.assertEquals(profile.timeToLive(), 300); // Default
 
        profile = profile.refresh();
