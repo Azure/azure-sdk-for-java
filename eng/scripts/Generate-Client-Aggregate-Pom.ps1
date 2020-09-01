@@ -59,7 +59,7 @@ $BasePomFile = @"
 "@
 
 $ParentConfiguration = @"
-<parent>
+<parent xmlns="http://maven.apache.org/POM/4.0.0">
   <groupId>com.azure</groupId>
   <artifactId>azure-client-sdk-parent</artifactId>
   <version>1.7.0</version>
@@ -68,7 +68,7 @@ $ParentConfiguration = @"
 "@
 
 $JacocoAggregateConfiguration = @"
-<build>
+<build xmlns="http://maven.apache.org/POM/4.0.0">
   <plugins>
     <plugin>
       <groupId>org.jacoco</groupId>
@@ -122,7 +122,8 @@ try {
     [xml]$parent = New-Object xml
     $parent.LoadXml($ParentConfiguration)
 
-    $projectNode.PrependChild($xmlDocument.ImportNode($parent.parent, $true))
+    [System.Xml.XmlElement]$parentNode = $xmlDocument.ImportNode($parent.parent, $true)
+    $projectNode.PrependChild($parentNode)
     $dependenciesNode = $xmlDocument.CreateElement("dependencies", $xmlDocument.DocumentElement.NamespaceURI)
     $projectNode.AppendChild($dependenciesNode)
   }
