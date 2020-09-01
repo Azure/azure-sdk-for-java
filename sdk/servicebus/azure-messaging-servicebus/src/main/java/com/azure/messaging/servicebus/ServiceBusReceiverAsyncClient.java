@@ -1042,7 +1042,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     private Mono<Void> updateDisposition(ServiceBusReceivedMessage message, DispositionStatus dispositionStatus,
-        String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify, ServiceBusTransactionContext transactionContext) {
+        String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify,
+        ServiceBusTransactionContext transactionContext) {
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, dispositionStatus.getValue())));
