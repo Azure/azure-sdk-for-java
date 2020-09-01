@@ -14,7 +14,7 @@ import java.util.function.Consumer;
 /**
  * Optional parameters for Update Access Control Recursive.
  */
-public class UpdateAccessControlRecursiveOptions {
+public class DirectoryUpdateAccessControlRecursiveOptions {
     private final List<PathAccessControlEntry> accessControlList;
     private Integer batchSize;
     private Integer maxBatches;
@@ -26,7 +26,7 @@ public class UpdateAccessControlRecursiveOptions {
      * Constructs a new options object.
      * @param accessControlList The POSIX access control list for the file or directory.
      */
-    public UpdateAccessControlRecursiveOptions(List<PathAccessControlEntry> accessControlList) {
+    public DirectoryUpdateAccessControlRecursiveOptions(List<PathAccessControlEntry> accessControlList) {
         this.accessControlList = Collections.unmodifiableList(accessControlList);
     }
 
@@ -60,7 +60,7 @@ public class UpdateAccessControlRecursiveOptions {
      * @param batchSize The size of the batch.
      * @return The updated object.
      */
-    public UpdateAccessControlRecursiveOptions setBatchSize(Integer batchSize) {
+    public DirectoryUpdateAccessControlRecursiveOptions setBatchSize(Integer batchSize) {
         this.batchSize = batchSize;
         return this;
     }
@@ -86,7 +86,7 @@ public class UpdateAccessControlRecursiveOptions {
      * @param maxBatches The maximum number of batches.
      * @return The updated object.
      */
-    public UpdateAccessControlRecursiveOptions setMaxBatches(Integer maxBatches) {
+    public DirectoryUpdateAccessControlRecursiveOptions setMaxBatches(Integer maxBatches) {
         this.maxBatches = maxBatches;
         return this;
     }
@@ -108,7 +108,7 @@ public class UpdateAccessControlRecursiveOptions {
      * @param progressHandler The progress handler.
      * @return The updated object.
      */
-    public UpdateAccessControlRecursiveOptions setProgressHandler(
+    public DirectoryUpdateAccessControlRecursiveOptions setProgressHandler(
         Consumer<Response<AccessControlChanges>> progressHandler) {
         this.progressHandler = progressHandler;
         return this;
@@ -129,7 +129,7 @@ public class UpdateAccessControlRecursiveOptions {
      * @param continuationToken A token that can be used to resume previously stopped operation.
      * @return The updated object.
      */
-    public UpdateAccessControlRecursiveOptions setContinuationToken(String continuationToken) {
+    public DirectoryUpdateAccessControlRecursiveOptions setContinuationToken(String continuationToken) {
         this.continuationToken = continuationToken;
         return this;
     }
@@ -155,7 +155,7 @@ public class UpdateAccessControlRecursiveOptions {
      * @param continueOnFailure Whether the operation should continue on user failure.
      * @return The updated object.
      */
-    public UpdateAccessControlRecursiveOptions setContinueOnFailure(boolean continueOnFailure) {
+    public DirectoryUpdateAccessControlRecursiveOptions setContinueOnFailure(boolean continueOnFailure) {
         this.continueOnFailure = continueOnFailure;
         return this;
     }

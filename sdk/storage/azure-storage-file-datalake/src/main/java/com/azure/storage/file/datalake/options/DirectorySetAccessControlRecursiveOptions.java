@@ -5,17 +5,17 @@ package com.azure.storage.file.datalake.options;
 
 import com.azure.core.http.rest.Response;
 import com.azure.storage.file.datalake.models.AccessControlChanges;
-import com.azure.storage.file.datalake.models.RemovePathAccessControlEntry;
+import com.azure.storage.file.datalake.models.PathAccessControlEntry;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * Optional parameters for Remove Access Control Recursive.
+ * Optional parameters for Set Access Control Recursive.
  */
-public class RemoveAccessControlRecursiveOptions {
-    private final List<RemovePathAccessControlEntry> accessControlList;
+public class DirectorySetAccessControlRecursiveOptions {
+    private final List<PathAccessControlEntry> accessControlList;
     private Integer batchSize;
     private Integer maxBatches;
     private Consumer<Response<AccessControlChanges>> progressHandler;
@@ -26,7 +26,7 @@ public class RemoveAccessControlRecursiveOptions {
      * Constructs a new options object.
      * @param accessControlList The POSIX access control list for the file or directory.
      */
-    public RemoveAccessControlRecursiveOptions(List<RemovePathAccessControlEntry> accessControlList) {
+    public DirectorySetAccessControlRecursiveOptions(List<PathAccessControlEntry> accessControlList) {
         this.accessControlList = Collections.unmodifiableList(accessControlList);
     }
 
@@ -35,7 +35,7 @@ public class RemoveAccessControlRecursiveOptions {
      *
      * @return The POSIX access control list for the file or directory.
      */
-    public List<RemovePathAccessControlEntry> getAccessControlList() {
+    public List<PathAccessControlEntry> getAccessControlList() {
         return accessControlList;
     }
 
@@ -60,7 +60,7 @@ public class RemoveAccessControlRecursiveOptions {
      * @param batchSize The size of the batch.
      * @return The updated object.
      */
-    public RemoveAccessControlRecursiveOptions setBatchSize(Integer batchSize) {
+    public DirectorySetAccessControlRecursiveOptions setBatchSize(Integer batchSize) {
         this.batchSize = batchSize;
         return this;
     }
@@ -86,7 +86,7 @@ public class RemoveAccessControlRecursiveOptions {
      * @param maxBatches The maximum number of batches.
      * @return The updated object.
      */
-    public RemoveAccessControlRecursiveOptions setMaxBatches(Integer maxBatches) {
+    public DirectorySetAccessControlRecursiveOptions setMaxBatches(Integer maxBatches) {
         this.maxBatches = maxBatches;
         return this;
     }
@@ -108,7 +108,7 @@ public class RemoveAccessControlRecursiveOptions {
      * @param progressHandler The progress handler.
      * @return The updated object.
      */
-    public RemoveAccessControlRecursiveOptions setProgressHandler(
+    public DirectorySetAccessControlRecursiveOptions setProgressHandler(
         Consumer<Response<AccessControlChanges>> progressHandler) {
         this.progressHandler = progressHandler;
         return this;
@@ -129,7 +129,7 @@ public class RemoveAccessControlRecursiveOptions {
      * @param continuationToken A token that can be used to resume previously stopped operation.
      * @return The updated object.
      */
-    public RemoveAccessControlRecursiveOptions setContinuationToken(String continuationToken) {
+    public DirectorySetAccessControlRecursiveOptions setContinuationToken(String continuationToken) {
         this.continuationToken = continuationToken;
         return this;
     }
@@ -155,7 +155,7 @@ public class RemoveAccessControlRecursiveOptions {
      * @param continueOnFailure Whether the operation should continue on user failure.
      * @return The updated object.
      */
-    public RemoveAccessControlRecursiveOptions setContinueOnFailure(boolean continueOnFailure) {
+    public DirectorySetAccessControlRecursiveOptions setContinueOnFailure(boolean continueOnFailure) {
         this.continueOnFailure = continueOnFailure;
         return this;
     }

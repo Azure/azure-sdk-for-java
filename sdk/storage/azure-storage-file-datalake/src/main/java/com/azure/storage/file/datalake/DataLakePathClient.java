@@ -30,9 +30,9 @@ import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.RemovePathAccessControlEntry;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
-import com.azure.storage.file.datalake.options.RemoveAccessControlRecursiveOptions;
-import com.azure.storage.file.datalake.options.SetAccessControlRecursiveOptions;
-import com.azure.storage.file.datalake.options.UpdateAccessControlRecursiveOptions;
+import com.azure.storage.file.datalake.options.DirectoryRemoveAccessControlRecursiveOptions;
+import com.azure.storage.file.datalake.options.DirectorySetAccessControlRecursiveOptions;
+import com.azure.storage.file.datalake.options.DirectoryUpdateAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
@@ -376,7 +376,7 @@ public class DataLakePathClient {
      * @return The result of the operation.
      */
     public AccessControlChangeResult setAccessControlRecursive(List<PathAccessControlEntry> accessControlList) {
-        return setAccessControlRecursiveWithResponse(new SetAccessControlRecursiveOptions(accessControlList), null,
+        return setAccessControlRecursiveWithResponse(new DirectorySetAccessControlRecursiveOptions(accessControlList), null,
             Context.NONE).getValue();
     }
 
@@ -390,13 +390,13 @@ public class DataLakePathClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
      *
-     * @param options {@link SetAccessControlRecursiveOptions}
+     * @param options {@link DirectorySetAccessControlRecursiveOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the result of the operation.
      */
     public Response<AccessControlChangeResult> setAccessControlRecursiveWithResponse(
-        SetAccessControlRecursiveOptions options, Duration timeout, Context context) {
+        DirectorySetAccessControlRecursiveOptions options, Duration timeout, Context context) {
         Mono<Response<AccessControlChangeResult>> response =
             dataLakePathAsyncClient.setAccessControlRecursiveWithResponse(
                 PathAccessControlEntry.serializeList(options.getAccessControlList()), options.getProgressHandler(),
@@ -420,7 +420,7 @@ public class DataLakePathClient {
      * @return The result of the operation.
      */
     public AccessControlChangeResult updateAccessControlRecursive(List<PathAccessControlEntry> accessControlList) {
-        return updateAccessControlRecursiveWithResponse(new UpdateAccessControlRecursiveOptions(accessControlList),
+        return updateAccessControlRecursiveWithResponse(new DirectoryUpdateAccessControlRecursiveOptions(accessControlList),
             null, Context.NONE).getValue();
     }
 
@@ -434,13 +434,13 @@ public class DataLakePathClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
      *
-     * @param options {@link UpdateAccessControlRecursiveOptions}
+     * @param options {@link DirectoryUpdateAccessControlRecursiveOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the result of the operation.
      */
     public Response<AccessControlChangeResult> updateAccessControlRecursiveWithResponse(
-        UpdateAccessControlRecursiveOptions options, Duration timeout, Context context) {
+        DirectoryUpdateAccessControlRecursiveOptions options, Duration timeout, Context context) {
         Mono<Response<AccessControlChangeResult>> response =
             dataLakePathAsyncClient.setAccessControlRecursiveWithResponse(
                 PathAccessControlEntry.serializeList(options.getAccessControlList()), options.getProgressHandler(),
@@ -465,7 +465,7 @@ public class DataLakePathClient {
      */
     public AccessControlChangeResult removeAccessControlRecursive(
         List<RemovePathAccessControlEntry> accessControlList) {
-        return removeAccessControlRecursiveWithResponse(new RemoveAccessControlRecursiveOptions(accessControlList),
+        return removeAccessControlRecursiveWithResponse(new DirectoryRemoveAccessControlRecursiveOptions(accessControlList),
             null, Context.NONE).getValue();
     }
 
@@ -479,13 +479,13 @@ public class DataLakePathClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
      *
-     * @param options {@link RemoveAccessControlRecursiveOptions}
+     * @param options {@link DirectoryRemoveAccessControlRecursiveOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A  response containing the result of the operation.
      */
     public Response<AccessControlChangeResult> removeAccessControlRecursiveWithResponse(
-        RemoveAccessControlRecursiveOptions options, Duration timeout, Context context) {
+        DirectoryRemoveAccessControlRecursiveOptions options, Duration timeout, Context context) {
         Mono<Response<AccessControlChangeResult>> response =
             dataLakePathAsyncClient.setAccessControlRecursiveWithResponse(
                 RemovePathAccessControlEntry.serializeList(options.getAccessControlList()), options.getProgressHandler(),
