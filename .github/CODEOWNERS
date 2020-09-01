@@ -63,6 +63,9 @@
 # PRLabel: %Storage
 /sdk/storage/                                       @amishra-dev @rickle-msft @jaschrep-msft @gapra-msft @alzimmermsft @kasobol-msft
 
+# PRLabel: %EngSys
+/sdk/template/                                      @Azure/azure-sdk-eng
+
 # PRLabel: %Cognitive - Text Analytics
 /sdk/textanalytics/                                 @samvaity @mssfang
 
