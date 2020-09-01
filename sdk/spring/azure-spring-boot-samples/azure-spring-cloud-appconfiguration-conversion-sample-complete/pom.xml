@@ -11,7 +11,7 @@
 
   <artifactId>spring-cloud-azure-appconfiguration-convert-sample-complete</artifactId>
   <groupId>com.microsoft.azure</groupId>
-  <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-appconfiguration-convert-sample-complete;dependency} -->
+  <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-appconfiguration-convert-sample-complete;current} -->
   <name>Azure Spring Cloud App Configuration Conversion Sample</name>
   <description>Sample project to show conversion to Azure App Configuration</description>
 
@@ -31,7 +31,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-cosmosdb-spring-boot-starter</artifactId>
-      <version>2.3.3</version> <!-- {x-version-update;com.microsoft.azure:azure-cosmosdb-spring-boot-starter;dependency} -->
+      <version>2.4.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-cosmosdb-spring-boot-starter;current} -->
     </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>
@@ -41,7 +41,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>spring-cloud-starter-azure-appconfiguration-config</artifactId>
-      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-starter-azure-appconfiguration-config;dependency} -->
+      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-starter-azure-appconfiguration-config;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

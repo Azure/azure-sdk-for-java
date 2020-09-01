@@ -38,4 +38,5 @@ java:
     models-subpackage: implementation.models
     custom-types-subpackage: models
     custom-types: ModelData
+    context-client-method-parameter: true
 ```
