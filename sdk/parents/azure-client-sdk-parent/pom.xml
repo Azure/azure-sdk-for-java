@@ -585,6 +585,10 @@
                 <packages>com.azure.core.serializer.json.jackson*</packages>
               </group>
               <group>
+                <title>Azure Anomaly Detector</title>
+                <packages>com.azure.ai.anomalydetector*</packages>
+              </group>
+              <group>
                 <title>Azure App Configuration</title>
                 <packages>com.azure.data.appconfiguration*</packages>
               </group>
@@ -1094,6 +1098,7 @@
                 --add-reads com.azure.core.amqp=ALL-UNNAMED
 
                 <!-- JUnit5 and Mockito use reflection to create objects. -->
+
                 --add-opens com.azure.core/com.azure.core=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.http.rest=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util.logging=ALL-UNNAMED

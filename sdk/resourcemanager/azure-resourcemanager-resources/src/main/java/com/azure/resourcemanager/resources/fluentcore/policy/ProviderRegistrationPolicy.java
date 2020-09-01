@@ -111,6 +111,6 @@ public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
         return provider.registrationState().equalsIgnoreCase("Registered");
     }
 
-    private class ProviderUnregisteredException extends RuntimeException {
+    private static class ProviderUnregisteredException extends RuntimeException {
     }
 }

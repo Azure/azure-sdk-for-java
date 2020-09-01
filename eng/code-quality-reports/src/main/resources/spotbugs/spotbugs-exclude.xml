@@ -633,7 +633,6 @@
           name="com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials$AuthorizationHeaderProvider"/>
       <Class name="com.azure.messaging.eventhubs.EventData$SystemProperties"/>
       <Class name="com.azure.messaging.eventhubs.implementation.ReactorSender$WeightedDeliveryTag"/>
-      <Class name="com.azure.identity.implementation.AuthorizationCodeListener"/>
     </Or>
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
   </Match>
@@ -732,6 +731,7 @@
       <Class name="com.azure.core.implementation.http.UrlBuilder"/>
       <Class name="com.azure.storage.blob.implementation.models.AppendBlobAppendBlockFromUrlHeaders"/>
       <Class name="com.azure.storage.file.share.implementation.models.FileGetPropertiesHeaders"/>
+      <Class name="com.azure.storage.file.datalake.implementation.models.PathAppendDataHeaders"/>
     </Or>
     <Bug pattern="NM_CONFUSING"/>
   </Match>
@@ -809,6 +809,11 @@
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
 
+  <Match>
+    <Class name="com.azure.cosmos.implementation.BaseAuthorizationTokenProvider"/>
+    <Method name="reInitializeIfPossible"/>
+    <Bug pattern="ES_COMPARING_STRINGS_WITH_EQ"/>
+  </Match>
 
   <Match>
     <Class name="com.azure.cosmos.implementation.encryption.SecurityUtility"/>
@@ -858,6 +863,30 @@
     <Class name="com.azure.cosmos.implementation.directconnectivity.GoneAndRetryWithRetryPolicy" />
     <Method name="shouldRetry"/>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.cosmos.encryption.KeyVaultAccessClient" />
+    <Method name="unwrapKeyAsync"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.cosmos.encryption.KeyVaultAccessClient" />
+    <Method name="wrapKeyAsync"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.cosmos.encryption.AzureKeyVaultKeyWrapProvider" />
+    <Method name="unwrapKey"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.cosmos.encryption.AzureKeyVaultKeyWrapProvider" />
+    <Method name="wrapKey"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 
   <!-- DB is retrieved synchronously (Flux::block()) after creating it, so no chance of null  -->
@@ -1484,6 +1513,13 @@
     <Bug pattern="RV_RETURN_VALUE_IGNORED_INFERRED"/>
   </Match>
 
+    <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9092 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.QueryMetrics"/>
+    <Method name="mergeQueryMetricsMap"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_INFERRED"/>
+  </Match>
+
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9093 -->
   <Match>
     <Class name="com.azure.cosmos.implementation.PathsHelper"/>
@@ -2103,7 +2139,7 @@
   <Match>
     <Package name="~com\.azure\.resourcemanager(\.[^.]+)*\.samples(\.[^.]+)*"/>
     <Bug pattern="REC_CATCH_EXCEPTION,
-                  RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE, 
+                  RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE,
                   RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
 
@@ -2211,5 +2247,10 @@
           <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/> <!-- false positive -->
           <Bug pattern="UI_INHERITANCE_UNSAFE_GETRESOURCE"/>
       </Or>
+  </Match>
+
+  <Match>
+    <Bug pattern="EI_EXPOSE_REP"/>
+    <Class name="com.azure.core.implementation.AccessibleByteArrayOutputStream"/>
   </Match>
 </FindBugsFilter>

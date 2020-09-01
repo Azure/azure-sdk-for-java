@@ -620,7 +620,8 @@ class CosmosDBAccountImpl
                                     .flatMap(
                                         index -> {
                                             data.set(0, data.get(0) + 30);
-                                            return Mono.delay(SdkContext.getDelayDuration(Duration.ofSeconds(30)));
+                                            return Mono.delay(SdkContext.getDelayDuration(
+                                                manager().inner().getDefaultPollInterval()));
                                         }));
                 });
     }

@@ -44,7 +44,7 @@ public class EventHubPartitionConsumerWithBackpressure {
                 public void onSubscribe(Subscription subscription) {
                     this.subscription = subscription;
                     // Request one event from the service
-                    subscription.request(0);
+                    subscription.request(1);
                 }
 
                 @Override
