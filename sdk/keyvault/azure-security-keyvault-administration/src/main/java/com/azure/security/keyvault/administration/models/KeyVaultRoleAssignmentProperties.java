@@ -10,7 +10,7 @@ import java.util.Objects;
 /**
  * A class that defines a role assignment's properties.
  */
-public class KeyVaultRoleAssignmentProperties {
+public final class KeyVaultRoleAssignmentProperties {
     private String roleDefinitionId;
     private String principalId;
 

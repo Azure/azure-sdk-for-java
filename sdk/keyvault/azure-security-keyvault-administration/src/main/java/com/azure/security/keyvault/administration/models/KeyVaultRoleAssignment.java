@@ -6,7 +6,7 @@ package com.azure.security.keyvault.administration.models;
 /**
  * A class that defines a role assignment.
  */
-public class KeyVaultRoleAssignment {
+public final class KeyVaultRoleAssignment {
     private String id;
     private String name;
     private String type;

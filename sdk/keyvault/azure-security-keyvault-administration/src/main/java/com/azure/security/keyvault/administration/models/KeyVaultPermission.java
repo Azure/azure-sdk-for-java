@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * A class describing allowed and denied actions and data actions of a {@link KeyVaultRoleDefinition}.
  */
-public class KeyVaultPermission {
+public final class KeyVaultPermission {
     private List<String> actions;
     private List<String> deniedActions;
     private List<String> dataActions;

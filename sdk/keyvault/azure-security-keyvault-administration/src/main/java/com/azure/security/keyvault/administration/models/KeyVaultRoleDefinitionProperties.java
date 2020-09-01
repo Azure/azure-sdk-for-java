@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * A class that defines a role definition's properties.
  */
-public class KeyVaultRoleDefinitionProperties {
+public final class KeyVaultRoleDefinitionProperties {
     private String roleName;
     private String description;
     private String roleType;

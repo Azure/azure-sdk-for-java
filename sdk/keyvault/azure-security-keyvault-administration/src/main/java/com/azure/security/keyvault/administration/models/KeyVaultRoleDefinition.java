@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * A class that defines a role.
  */
-public class KeyVaultRoleDefinition {
+public final class KeyVaultRoleDefinition {
     private String id;
     private String name;
     private String type;
