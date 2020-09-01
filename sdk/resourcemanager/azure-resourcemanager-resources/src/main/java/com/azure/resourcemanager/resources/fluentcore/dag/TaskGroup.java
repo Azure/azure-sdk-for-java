@@ -10,9 +10,11 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
+import reactor.util.function.Tuple2;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -386,20 +388,25 @@ public class TaskGroup
     @SuppressFBWarnings(value = "BC_UNCONFIRMED_CAST_OF_RETURN_VALUE", justification = "Incorrect spot bugs")
     private Flux<Indexable> invokeReadyTasksAsync(final InvocationContext context) {
         TaskGroupEntry<TaskItem> readyTaskEntry = super.getNext();
-        final List<Flux<Indexable>> observables = new ArrayList<>();
+        final List<Flux<Tuple2<Long, Indexable>>> observables = new ArrayList<>();
         // Enumerate the ready tasks (those with dependencies resolved) and kickoff them concurrently
         //
         while (readyTaskEntry != null) {
             final TaskGroupEntry<TaskItem> currentEntry = readyTaskEntry;
             final TaskItem currentTaskItem = currentEntry.data();
             if (currentTaskItem instanceof ProxyTaskItem) {
-                observables.add(invokeAfterPostRunAsync(currentEntry, context));
+                observables.add(invokeAfterPostRunAsync(currentEntry, context).index());
             } else {
-                observables.add(invokeTaskAsync(currentEntry, context));
+                observables.add(invokeTaskAsync(currentEntry, context).index());
             }
             readyTaskEntry = super.getNext();
         }
-        return Flux.mergeDelayError(32, observables.toArray(new Flux[0]));
+        return Flux
+            .mergeOrdered(
+                32,
+                Comparator.<Tuple2<Long, Indexable>>comparingLong(Tuple2::getT1),
+                (Flux<Tuple2<Long, Indexable>>[]) observables.toArray(new Flux[0]))
+            .map(Tuple2::getT2);
     }
 
     /**
