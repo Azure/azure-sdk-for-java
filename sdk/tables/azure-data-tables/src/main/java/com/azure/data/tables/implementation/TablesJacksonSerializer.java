@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -24,6 +25,53 @@ import java.util.Map;
  */
 public class TablesJacksonSerializer extends JacksonAdapter {
     private final ClientLogger logger = new ClientLogger(TablesJacksonSerializer.class);
+
+    @Override
+    public void serialize(Object object, SerializerEncoding encoding, OutputStream outputStream) throws IOException {
+        if (object instanceof Map) {
+            super.serialize(insertTypeProperties(object), encoding, outputStream);
+        } else {
+            super.serialize(object, encoding, outputStream);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private Map<String, Object> insertTypeProperties(Object o) {
+        Map<String, Object> map = (Map<String, Object>) o;
+        Map<String, Object> result = new HashMap<>();
+
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            String propertyName = entry.getKey();
+            Object propertyValue = entry.getValue();
+
+            // Skip entries with null values
+            if (propertyValue == null) {
+                continue;
+            }
+
+            if (propertyValue instanceof Long) {
+                // Long values must be represented as a JSON string with a type annotation
+                result.put(propertyName, String.valueOf(propertyValue));
+            } else {
+                result.put(propertyName, propertyValue);
+            }
+
+            if (TablesConstants.METADATA_KEYS.contains(propertyName)
+                || propertyName.endsWith(TablesConstants.ODATA_TYPE_KEY_SUFFIX)) {
+                continue;
+            }
+
+            EntityDataModelType typeToTag = EntityDataModelType.forClass(propertyValue.getClass());
+            if (typeToTag == null) {
+                continue;
+            }
+
+            // Use putIfAbsent to avoid overwriting a user's custom OData type annotation
+            result.putIfAbsent(propertyName + TablesConstants.ODATA_TYPE_KEY_SUFFIX, typeToTag.getEdmType());
+        }
+
+        return result;
+    }
 
     @Override
     public <U> U deserialize(String value, Type type, SerializerEncoding serializerEncoding) throws IOException {
