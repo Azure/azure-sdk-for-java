@@ -1,68 +1,50 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.resourcemanager.trafficmanager.models;
 
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ExternalChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 import com.azure.resourcemanager.trafficmanager.fluent.inner.EndpointInner;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * An immutable client-side representation of an Azure traffic manager profile endpoint.
- */
-public interface TrafficManagerEndpoint extends
-        ExternalChildResource<TrafficManagerEndpoint, TrafficManagerProfile>,
-        HasInner<EndpointInner> {
-    /**
-     * @return the endpoint type
-     */
+/** An immutable client-side representation of an Azure traffic manager profile endpoint. */
+public interface TrafficManagerEndpoint
+    extends ExternalChildResource<TrafficManagerEndpoint, TrafficManagerProfile>, HasInner<EndpointInner> {
+    /** @return the endpoint type */
     EndpointType endpointType();
 
-    /**
-     * @return the monitor status of the endpoint
-     */
+    /** @return the monitor status of the endpoint */
     EndpointMonitorStatus monitorStatus();
 
-    /**
-     * @return true if the endpoint is enabled, false otherwise
-     */
+    /** @return true if the endpoint is enabled, false otherwise */
     boolean isEnabled();
 
     /**
-     * @return the weight of the endpoint which is used when traffic manager profile is configured with
-     * Weighted traffic-routing method
+     * @return the weight of the endpoint which is used when traffic manager profile is configured with Weighted
+     *     traffic-routing method
      */
     long routingWeight();
 
     /**
-     * @return the priority of the endpoint which is used when traffic manager profile is configured with
-     * Priority traffic-routing method
+     * @return the priority of the endpoint which is used when traffic manager profile is configured with Priority
+     *     traffic-routing method
      */
     long routingPriority();
 
-    /**
-     * @return the geographic location codes indicating the locations to which traffic will be distributed.
-     */
+    /** @return the geographic location codes indicating the locations to which traffic will be distributed. */
     Set<String> geographicLocationCodes();
 
-    /**
-     * @return the list of subnets, IP addresses, and/or address ranges mapped to this endpoint.
-     */
+    /** @return the list of subnets, IP addresses, and/or address ranges mapped to this endpoint. */
     Collection<EndpointPropertiesSubnetsItem> subnets();
 
-    /**
-     * @return custom headers associated with the endpoint as key-value pair.
-     */
+    /** @return custom headers associated with the endpoint as key-value pair. */
     Map<String, String> customHeaders();
 
     /**
@@ -70,8 +52,8 @@ public interface TrafficManagerEndpoint extends
      *
      * @param <ParentT> the return type of the final {@link Attachable#attach()}
      */
-    interface Definition<ParentT> extends
-            DefinitionStages.AzureTargetEndpointBlank<ParentT>,
+    interface Definition<ParentT>
+        extends DefinitionStages.AzureTargetEndpointBlank<ParentT>,
             DefinitionStages.ExternalTargetEndpointBlank<ParentT>,
             DefinitionStages.NestedProfileTargetEndpointBlank<ParentT>,
             DefinitionStages.WithAzureResource<ParentT>,
@@ -83,8 +65,8 @@ public interface TrafficManagerEndpoint extends
     }
 
     /**
-     * Grouping of traffic manager profile endpoint definition stages as a part of parent traffic manager
-     * profile definition.
+     * Grouping of traffic manager profile endpoint definition stages as a part of parent traffic manager profile
+     * definition.
      */
     interface DefinitionStages {
         /**
@@ -112,16 +94,16 @@ public interface TrafficManagerEndpoint extends
         }
 
         /**
-         * The stage of the traffic manager profile Azure endpoint definition allowing to specify the ID
-         * of the target Azure resource.
+         * The stage of the traffic manager profile Azure endpoint definition allowing to specify the ID of the target
+         * Azure resource.
          *
          * @param <ParentT> the return type of {@link UpdateDefinitionStages.WithAttach#attach()}
          */
         interface WithAzureResource<ParentT> {
             /**
              * Specifies the resource ID of an Azure resource.
-             * <p>
-             * supported Azure resources are cloud service, web app or public ip
+             *
+             * <p>supported Azure resources are cloud service, web app or public ip
              *
              * @param resourceId the Azure resource id
              * @return the next stage of the definition
@@ -130,8 +112,7 @@ public interface TrafficManagerEndpoint extends
         }
 
         /**
-         * The stage of the traffic manager profile external endpoint definition allowing to specify
-         * the FQDN.
+         * The stage of the traffic manager profile external endpoint definition allowing to specify the FQDN.
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
@@ -178,8 +159,8 @@ public interface TrafficManagerEndpoint extends
         }
 
         /**
-         * The stage of the traffic manager endpoint definition allowing to specify the location of the nested
-         * profile endpoint.
+         * The stage of the traffic manager endpoint definition allowing to specify the location of the nested profile
+         * endpoint.
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
@@ -195,12 +176,12 @@ public interface TrafficManagerEndpoint extends
         }
 
         /**
-         * The stage of the nested traffic manager profile endpoint definition allowing to specify the minimum
-         * endpoints to be online in the nested profile to consider it as not degraded.
+         * The stage of the nested traffic manager profile endpoint definition allowing to specify the minimum endpoints
+         * to be online in the nested profile to consider it as not degraded.
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
-        interface WithEndpointThreshold<ParentT>  extends WithAttach<ParentT> {
+        interface WithEndpointThreshold<ParentT> extends WithAttach<ParentT> {
             /**
              * Specifies the minimum number of endpoints to be online for the nested profile to be considered healthy.
              *
@@ -239,7 +220,7 @@ public interface TrafficManagerEndpoint extends
              * @param priority the endpoint priority
              * @return the next stage of the definition
              */
-            WithAttach<ParentT>  withRoutingPriority(int priority);
+            WithAttach<ParentT> withRoutingPriority(int priority);
         }
 
         /**
@@ -249,13 +230,13 @@ public interface TrafficManagerEndpoint extends
          */
         interface WithGeographicLocation<ParentT> {
             /**
-             * Specifies the geographic location for the endpoint that will be used when the parent profile is configured
-             * with geographic based routing method {@link TrafficRoutingMethod#GEOGRAPHIC}.
+             * Specifies the geographic location for the endpoint that will be used when the parent profile is
+             * configured with geographic based routing method {@link TrafficRoutingMethod#GEOGRAPHIC}.
              *
              * @param geographicLocation the geographic location
              * @return the next stage of the definition
              */
-            WithAttach<ParentT>  withGeographicLocation(GeographicLocation geographicLocation);
+            WithAttach<ParentT> withGeographicLocation(GeographicLocation geographicLocation);
 
             /**
              * Specifies the list of geographic location for the endpoint that will be used when the parent profile is
@@ -266,13 +247,13 @@ public interface TrafficManagerEndpoint extends
              */
             WithAttach<ParentT> withGeographicLocations(List<GeographicLocation> geographicLocations);
             /**
-             * Specifies the geographic location for the endpoint that will be used when the parent profile is configured
-             * with geographic based routing method {@link TrafficRoutingMethod#GEOGRAPHIC}.
+             * Specifies the geographic location for the endpoint that will be used when the parent profile is
+             * configured with geographic based routing method {@link TrafficRoutingMethod#GEOGRAPHIC}.
              *
              * @param geographicLocationCode the geographic location code
              * @return the next stage of the definition
              */
-            WithAttach<ParentT>  withGeographicLocation(String geographicLocationCode);
+            WithAttach<ParentT> withGeographicLocation(String geographicLocationCode);
             /**
              * Specifies the list of geographic location for the endpoint that will be used when the parent profile is
              * configured with geographic based routing method {@link TrafficRoutingMethod#GEOGRAPHIC}.
@@ -302,7 +283,7 @@ public interface TrafficManagerEndpoint extends
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
-interface WithSubnet<ParentT>  {
+        interface WithSubnet<ParentT> {
             /**
              * Specifies the subnets for the endpoint in CIDR format (start ip, mask).
              *
@@ -310,7 +291,7 @@ interface WithSubnet<ParentT>  {
              * @param mask the subnet mask
              * @return the next stage of the definition
              */
-    WithAttach<ParentT> withSubnet(String subnetStartIp, int mask);
+            WithAttach<ParentT> withSubnet(String subnetStartIp, int mask);
 
             /**
              * Specifies the subnets for the endpoint as ip range.
@@ -319,16 +300,15 @@ interface WithSubnet<ParentT>  {
              * @param subnetEndIp the last ip in the subnet
              * @return the next stage of the definition
              */
-    WithAttach<ParentT> withSubnet(String subnetStartIp, String subnetEndIp);
+            WithAttach<ParentT> withSubnet(String subnetStartIp, String subnetEndIp);
 
             /**
-             * Specifies the subnets for this endpoint.
-             * This method replaces current subnets with the provided subnets.
+             * Specifies the subnets for this endpoint. This method replaces current subnets with the provided subnets.
              *
              * @param subnets the array of subnet descriptions
              * @return the next stage of the definition
              */
-    WithAttach<ParentT> withSubnets(List<EndpointPropertiesSubnetsItem> subnets);
+            WithAttach<ParentT> withSubnets(List<EndpointPropertiesSubnetsItem> subnets);
         }
 
         /**
@@ -336,7 +316,7 @@ interface WithSubnet<ParentT>  {
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
-interface WithCustomHeader<ParentT> {
+        interface WithCustomHeader<ParentT> {
             /**
              * Add a custom header.
              *
@@ -344,26 +324,28 @@ interface WithCustomHeader<ParentT> {
              * @param value the header value
              * @return the next stage of the definition
              */
-    WithAttach<ParentT> withCustomHeader(String name, String value);
+            WithAttach<ParentT> withCustomHeader(String name, String value);
 
             /**
-             * Add a custom header.
-             * This method replaces the current headers with the provided headers.
+             * Add a custom header. This method replaces the current headers with the provided headers.
              *
              * @param headerValues the map containing header name and value pair
              * @return the next stage of the definition
              */
-    WithAttach<ParentT> withCustomHeaders(Map<String, String> headerValues);
+            WithAttach<ParentT> withCustomHeaders(Map<String, String> headerValues);
         }
 
-        /** The final stage of the traffic manager profile endpoint definition.
-         * <p>
-         * At this stage, any remaining optional settings can be specified, or the traffic manager profile endpoint
-         * definition can be attached to the parent traffic manager profile definition using {@link TrafficManagerEndpoint.DefinitionStages.WithAttach#attach()}.
+        /**
+         * The final stage of the traffic manager profile endpoint definition.
+         *
+         * <p>At this stage, any remaining optional settings can be specified, or the traffic manager profile endpoint
+         * definition can be attached to the parent traffic manager profile definition using {@link
+         * TrafficManagerEndpoint.DefinitionStages.WithAttach#attach()}.
+         *
          * @param <ParentT> the return type of {@link TrafficManagerEndpoint.DefinitionStages.WithAttach#attach()}
          */
-        interface WithAttach<ParentT> extends
-                Attachable.InDefinition<ParentT>,
+        interface WithAttach<ParentT>
+            extends Attachable.InDefinition<ParentT>,
                 DefinitionStages.WithRoutingWeight<ParentT>,
                 DefinitionStages.WithRoutingPriority<ParentT>,
                 DefinitionStages.WithGeographicLocation<ParentT>,
@@ -378,8 +360,8 @@ interface WithCustomHeader<ParentT> {
      *
      * @param <ParentT> the return type of the final {@link Attachable#attach()}
      */
-    interface UpdateDefinition<ParentT> extends
-            UpdateDefinitionStages.AzureTargetEndpointBlank<ParentT>,
+    interface UpdateDefinition<ParentT>
+        extends UpdateDefinitionStages.AzureTargetEndpointBlank<ParentT>,
             UpdateDefinitionStages.ExternalTargetEndpointBlank<ParentT>,
             UpdateDefinitionStages.NestedProfileTargetEndpointBlank<ParentT>,
             UpdateDefinitionStages.WithAzureResource<ParentT>,
@@ -391,8 +373,8 @@ interface WithCustomHeader<ParentT> {
     }
 
     /**
-     * Grouping of traffic manager profile endpoint definition stages as a part of parent traffic manager
-     * profile update.
+     * Grouping of traffic manager profile endpoint definition stages as a part of parent traffic manager profile
+     * update.
      */
     interface UpdateDefinitionStages {
         /**
@@ -420,16 +402,16 @@ interface WithCustomHeader<ParentT> {
         }
 
         /**
-         * The stage of the traffic manager profile Azure endpoint definition allowing to specify the ID
-         * of the target Azure resource.
+         * The stage of the traffic manager profile Azure endpoint definition allowing to specify the ID of the target
+         * Azure resource.
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithAzureResource<ParentT> {
             /**
              * Specifies the resource ID of an Azure resource.
-             * <p>
-             * supported Azure resources are cloud service, web app or public ip
+             *
+             * <p>supported Azure resources are cloud service, web app or public ip
              *
              * @param resourceId the Azure resource id
              * @return the next stage of the definition
@@ -438,8 +420,7 @@ interface WithCustomHeader<ParentT> {
         }
 
         /**
-         * The stage of the traffic manager profile external endpoint definition allowing to specify
-         * the FQDN.
+         * The stage of the traffic manager profile external endpoint definition allowing to specify the FQDN.
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
@@ -486,8 +467,7 @@ interface WithCustomHeader<ParentT> {
         }
 
         /**
-         * The stage of the traffic manager endpoint definition allowing to specify the location of the nested
-         * endpoint.
+         * The stage of the traffic manager endpoint definition allowing to specify the location of the nested endpoint.
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
@@ -503,12 +483,12 @@ interface WithCustomHeader<ParentT> {
         }
 
         /**
-         * The stage of the nested traffic manager profile endpoint definition allowing to specify the minimum
-         * endpoints to be online in the nested profile to consider it as not degraded.
+         * The stage of the nested traffic manager profile endpoint definition allowing to specify the minimum endpoints
+         * to be online in the nested profile to consider it as not degraded.
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
-        interface WithEndpointThreshold<ParentT>  extends WithAttach<ParentT> {
+        interface WithEndpointThreshold<ParentT> extends WithAttach<ParentT> {
             /**
              * Specifies the minimum number of endpoints to be online for the nested profile to be considered healthy.
              *
@@ -525,8 +505,8 @@ interface WithCustomHeader<ParentT> {
          */
         interface WithRoutingWeight<ParentT> {
             /**
-             * Specifies the weight for the endpoint that will be used when the weight-based routing method
-             * {@link TrafficRoutingMethod#WEIGHTED} is enabled on the profile.
+             * Specifies the weight for the endpoint that will be used when the weight-based routing method {@link
+             * TrafficRoutingMethod#WEIGHTED} is enabled on the profile.
              *
              * @param weight the endpoint weight
              * @return the next stage of the definition
@@ -541,14 +521,14 @@ interface WithCustomHeader<ParentT> {
          */
         interface WithRoutingPriority<ParentT> {
             /**
-             * Specifies the weight for the endpoint that will be used when priority-based routing method
-             * is {@link TrafficRoutingMethod#PRIORITY} enabled on the profile.
+             * Specifies the weight for the endpoint that will be used when priority-based routing method is {@link
+             * TrafficRoutingMethod#PRIORITY} enabled on the profile.
              *
-             * @param priority priority of this endpoint. Possible values are from 1 to 1000, lower
-             *                 values represent higher priority.
+             * @param priority priority of this endpoint. Possible values are from 1 to 1000, lower values represent
+             *     higher priority.
              * @return the next stage of the definition
              */
-            WithAttach<ParentT>  withRoutingPriority(int priority);
+            WithAttach<ParentT> withRoutingPriority(int priority);
         }
 
         /**
@@ -558,13 +538,13 @@ interface WithCustomHeader<ParentT> {
          */
         interface WithGeographicLocation<ParentT> {
             /**
-             * Specifies the geographic location for the endpoint that will be used when the parent profile is configured
-             * with geographic based routing method.
+             * Specifies the geographic location for the endpoint that will be used when the parent profile is
+             * configured with geographic based routing method.
              *
              * @param geographicLocation the geographic location
              * @return the next stage of the definition
              */
-            WithAttach<ParentT>  withGeographicLocation(GeographicLocation geographicLocation);
+            WithAttach<ParentT> withGeographicLocation(GeographicLocation geographicLocation);
             /**
              * Specifies the list of geographic location for the endpoint that will be used when the parent profile is
              * configured with geographic based routing method.
@@ -574,13 +554,13 @@ interface WithCustomHeader<ParentT> {
              */
             WithAttach<ParentT> withGeographicLocations(List<GeographicLocation> geographicLocations);
             /**
-             * Specifies the geographic location for the endpoint that will be used when the parent profile is configured
-             * with geographic based routing method.
+             * Specifies the geographic location for the endpoint that will be used when the parent profile is
+             * configured with geographic based routing method.
              *
              * @param geographicLocationCode the geographic location code
              * @return the next stage of the definition
              */
-            WithAttach<ParentT>  withGeographicLocation(String geographicLocationCode);
+            WithAttach<ParentT> withGeographicLocation(String geographicLocationCode);
             /**
              * Specifies the list of geographic location for the endpoint that will be used when the parent profile is
              * configured with geographic based routing method.
@@ -610,7 +590,7 @@ interface WithCustomHeader<ParentT> {
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
-        interface WithSubnet<ParentT>  {
+        interface WithSubnet<ParentT> {
             /**
              * Specifies the subnet for the endpoint in CIDR format (start ip, mask).
              *
@@ -630,8 +610,8 @@ interface WithCustomHeader<ParentT> {
             WithAttach<ParentT> withSubnet(String subnetStartIp, String subnetEndIp);
 
             /**
-             * Specifies the usbnets for this endpoint.
-             * This method replaces the current subnets with the provided subnets.
+             * Specifies the usbnets for this endpoint. This method replaces the current subnets with the provided
+             * subnets.
              *
              * @param subnets the array of subnets description
              * @return the next stage of the definition
@@ -644,7 +624,7 @@ interface WithCustomHeader<ParentT> {
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
-interface WithCustomHeader<ParentT> {
+        interface WithCustomHeader<ParentT> {
             /**
              * Add a custom header.
              *
@@ -652,26 +632,28 @@ interface WithCustomHeader<ParentT> {
              * @param value the header value
              * @return the next stage of the definition
              */
-    WithAttach<ParentT> withCustomHeader(String name, String value);
+            WithAttach<ParentT> withCustomHeader(String name, String value);
 
             /**
-             * Add custom headers.
-             * This method replaces the current headers with the provided headers.
+             * Add custom headers. This method replaces the current headers with the provided headers.
              *
              * @param headerValues the map containing header name and value pair
              * @return the next stage of the definition
              */
-    WithAttach<ParentT> withCustomHeaders(Map<String, String> headerValues);
+            WithAttach<ParentT> withCustomHeaders(Map<String, String> headerValues);
         }
 
-        /** The final stage of the traffic manager profile endpoint definition.
-         * <p>
-         * At this stage, any remaining optional settings can be specified, or the traffic manager profile endpoint
-         * definition can be attached to the parent traffic manager profile update using {@link TrafficManagerEndpoint.DefinitionStages.WithAttach#attach()}.
+        /**
+         * The final stage of the traffic manager profile endpoint definition.
+         *
+         * <p>At this stage, any remaining optional settings can be specified, or the traffic manager profile endpoint
+         * definition can be attached to the parent traffic manager profile update using {@link
+         * TrafficManagerEndpoint.DefinitionStages.WithAttach#attach()}.
+         *
          * @param <ParentT> the return type of {@link TrafficManagerEndpoint.DefinitionStages.WithAttach#attach()}
          */
-        interface WithAttach<ParentT> extends
-                Attachable.InUpdate<ParentT>,
+        interface WithAttach<ParentT>
+            extends Attachable.InUpdate<ParentT>,
                 UpdateDefinitionStages.WithRoutingWeight<ParentT>,
                 UpdateDefinitionStages.WithRoutingPriority<ParentT>,
                 UpdateDefinitionStages.WithGeographicLocation<ParentT>,
@@ -681,37 +663,25 @@ interface WithCustomHeader<ParentT> {
         }
     }
 
-    /**
-     * The entirety of an Azure endpoint update as a part of parent traffic manager profile profile update.
-     */
-    interface UpdateAzureEndpoint extends
-            UpdateStages.WithAzureResource,
-            Update {
+    /** The entirety of an Azure endpoint update as a part of parent traffic manager profile profile update. */
+    interface UpdateAzureEndpoint extends UpdateStages.WithAzureResource, Update {
+    }
+
+    /** The entirety of an external endpoint update as a part of parent traffic manager profile profile update. */
+    interface UpdateExternalEndpoint extends UpdateStages.WithFqdn, UpdateStages.WithSourceTrafficRegion, Update {
+    }
+
+    /** The entirety of a nested profile endpoint update as a part of parent traffic manager profile profile update. */
+    interface UpdateNestedProfileEndpoint
+        extends UpdateStages.WithNestedProfileConfig, UpdateStages.WithSourceTrafficRegion, Update {
     }
 
     /**
-     * The entirety of an external endpoint update as a part of parent traffic manager profile profile update.
+     * the set of configurations that can be updated for all endpoint irrespective of their type (Azure, external,
+     * nested profile).
      */
-    interface UpdateExternalEndpoint extends
-            UpdateStages.WithFqdn,
-            UpdateStages.WithSourceTrafficRegion,
-            Update {
-    }
-
-    /**
-     * The entirety of a nested profile endpoint update as a part of parent traffic manager profile profile update.
-     */
-    interface UpdateNestedProfileEndpoint extends
-            UpdateStages.WithNestedProfileConfig,
-            UpdateStages.WithSourceTrafficRegion,
-            Update {
-    }
-
-    /**
-     * the set of configurations that can be updated for all endpoint irrespective of their type (Azure, external, nested profile).
-     */
-    interface Update extends
-            Settable<TrafficManagerProfile.Update>,
+    interface Update
+        extends Settable<TrafficManagerProfile.Update>,
             UpdateStages.WithRoutingWeight,
             UpdateStages.WithRoutingPriority,
             UpdateStages.WithGeographicLocation,
@@ -720,18 +690,14 @@ interface WithCustomHeader<ParentT> {
             UpdateStages.WithCustomHeader {
     }
 
-    /**
-     * Grouping of traffic manager profile endpoint update stages.
-     */
+    /** Grouping of traffic manager profile endpoint update stages. */
     interface UpdateStages {
-        /**
-         * The stage of an Azure endpoint update allowing to specify the target Azure resource.
-         */
+        /** The stage of an Azure endpoint update allowing to specify the target Azure resource. */
         interface WithAzureResource {
             /**
              * Specifies the resource ID of an Azure resource.
-             * <p>
-             * supported Azure resources are cloud service, web app or public ip
+             *
+             * <p>supported Azure resources are cloud service, web app or public ip
              *
              * @param resourceId the Azure resource id
              * @return the next stage of the update
@@ -739,9 +705,7 @@ interface WithCustomHeader<ParentT> {
             Update toResourceId(String resourceId);
         }
 
-        /**
-         * The stage of an external endpoint update allowing to specify the FQDN.
-         */
+        /** The stage of an external endpoint update allowing to specify the FQDN. */
         interface WithFqdn {
             /**
              * Specifies the FQDN of an external endpoint that is not hosted in Azure.
@@ -752,10 +716,7 @@ interface WithCustomHeader<ParentT> {
             UpdateExternalEndpoint toFqdn(String externalFqdn);
         }
 
-        /**
-         * The stage of an nested profile endpoint update allowing to specify profile and
-         * minimum child endpoint.
-         */
+        /** The stage of an nested profile endpoint update allowing to specify profile and minimum child endpoint. */
         interface WithNestedProfileConfig {
             /**
              * Specifies a nested traffic manager profile for the endpoint.
@@ -768,20 +729,20 @@ interface WithCustomHeader<ParentT> {
             /**
              * Specifies the minimum number of endpoints to be online for the nested profile to be considered healthy.
              *
-             * @param count  number of endpoints
+             * @param count number of endpoints
              * @return the next stage of the endpoint update
              */
             UpdateNestedProfileEndpoint withMinimumEndpointsToEnableTraffic(int count);
         }
 
         /**
-         * The stage of the traffic manager endpoint update allowing to specify the location of the external
-         * or nested profile endpoints.
+         * The stage of the traffic manager endpoint update allowing to specify the location of the external or nested
+         * profile endpoints.
          */
         interface WithSourceTrafficRegion {
             /**
-             * Specifies the region of the endpoint that will be used when the performance-based routing method
-             * {@link TrafficRoutingMethod#PERFORMANCE} is enabled on the profile.
+             * Specifies the region of the endpoint that will be used when the performance-based routing method {@link
+             * TrafficRoutingMethod#PERFORMANCE} is enabled on the profile.
              *
              * @param location the location
              * @return the next stage of the endpoint update
@@ -789,13 +750,11 @@ interface WithCustomHeader<ParentT> {
             Update fromRegion(Region location);
         }
 
-        /**
-         * The stage of the traffic manager profile endpoint update allowing to specify the endpoint weight.
-         */
+        /** The stage of the traffic manager profile endpoint update allowing to specify the endpoint weight. */
         interface WithRoutingWeight {
             /**
-             * Specifies the weight for the endpoint that will be used when the weight-based routing method
-             * {@link TrafficRoutingMethod#WEIGHTED} is enabled on the profile.
+             * Specifies the weight for the endpoint that will be used when the weight-based routing method {@link
+             * TrafficRoutingMethod#WEIGHTED} is enabled on the profile.
              *
              * @param weight the endpoint weight
              * @return the next stage of the update
@@ -803,27 +762,23 @@ interface WithCustomHeader<ParentT> {
             Update withRoutingWeight(int weight);
         }
 
-        /**
-         * The stage of the traffic manager profile endpoint update allowing to specify the endpoint priority.
-         */
+        /** The stage of the traffic manager profile endpoint update allowing to specify the endpoint priority. */
         interface WithRoutingPriority {
             /**
-             * Specifies the weight for the endpoint that will be used when priority-based routing method
-             * is {@link TrafficRoutingMethod#PRIORITY} enabled on the profile.
+             * Specifies the weight for the endpoint that will be used when priority-based routing method is {@link
+             * TrafficRoutingMethod#PRIORITY} enabled on the profile.
              *
              * @param priority the endpoint priority
              * @return the next stage of the update
              */
-            Update  withRoutingPriority(int priority);
+            Update withRoutingPriority(int priority);
         }
 
-        /**
-         * The stage of the traffic manager update definition allowing to specify the geographic region.
-         */
+        /** The stage of the traffic manager update definition allowing to specify the geographic region. */
         interface WithGeographicLocation {
             /**
-             * Specifies the geographic location for the endpoint that will be used when the parent profile is configured
-             * with geographic based routing method.
+             * Specifies the geographic location for the endpoint that will be used when the parent profile is
+             * configured with geographic based routing method.
              *
              * @param geographicLocation the geographic location
              * @return the next stage of the update
@@ -845,8 +800,8 @@ interface WithCustomHeader<ParentT> {
              */
             Update withoutGeographicLocation(GeographicLocation geographicLocation);
             /**
-             * Specifies the geographic location for the endpoint that will be used when the parent profile is configured
-             * with geographic based routing method.
+             * Specifies the geographic location for the endpoint that will be used when the parent profile is
+             * configured with geographic based routing method.
              *
              * @param geographicLocationCode the geographic location code
              * @return the next stage of the update
@@ -870,9 +825,7 @@ interface WithCustomHeader<ParentT> {
             Update withoutGeographicLocation(String geographicLocationCode);
         }
 
-        /**
-         * The stage of the traffic manager profile endpoint update allowing to enable or disable it.
-         */
+        /** The stage of the traffic manager profile endpoint update allowing to enable or disable it. */
         interface WithTrafficDisabledOrEnabled {
             /**
              * Specifies that the endpoint should be excluded from receiving traffic.
@@ -889,10 +842,8 @@ interface WithCustomHeader<ParentT> {
             Update withTrafficEnabled();
         }
 
-        /**
-         * The stage of the traffic manager endpoint update allowing to specify subnets.
-         */
-        interface WithSubnet  {
+        /** The stage of the traffic manager endpoint update allowing to specify subnets. */
+        interface WithSubnet {
             /**
              * Specifies the subnets for the endpoint in CIDR format (start ip, mask).
              *
@@ -938,10 +889,8 @@ interface WithCustomHeader<ParentT> {
             Update withoutSubnet(String subnetStartIp, String subnetEndIp);
         }
 
-        /**
-         * The stage of the traffic manager endpoint update allowing to specify custom headers.
-         */
-interface WithCustomHeader {
+        /** The stage of the traffic manager endpoint update allowing to specify custom headers. */
+        interface WithCustomHeader {
             /**
              * Add a custom header.
              *
@@ -949,16 +898,15 @@ interface WithCustomHeader {
              * @param value the header value
              * @return the next stage of the update
              */
-    Update withCustomHeader(String name, String value);
+            Update withCustomHeader(String name, String value);
 
             /**
-             * Add custom headers.
-             * This method replaces the current headers with the provided headers.
+             * Add custom headers. This method replaces the current headers with the provided headers.
              *
              * @param headers the map containing header name and value pair
              * @return the next stage of the update
              */
-    Update withCustomHeaders(Map<String, String> headers);
+            Update withCustomHeaders(Map<String, String> headers);
 
             /**
              * Removes a custom header.
@@ -966,7 +914,7 @@ interface WithCustomHeader {
              * @param name the name of the header to remove
              * @return the next stage of the update
              */
-    Update withoutCustomHeader(String name);
+            Update withoutCustomHeader(String name);
         }
     }
 }

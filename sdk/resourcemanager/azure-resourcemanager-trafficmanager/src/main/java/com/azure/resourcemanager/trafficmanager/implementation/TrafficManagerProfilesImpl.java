@@ -1,8 +1,6 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.resourcemanager.trafficmanager.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
@@ -10,7 +8,6 @@ import com.azure.resourcemanager.trafficmanager.TrafficManager;
 import com.azure.resourcemanager.trafficmanager.fluent.ProfilesClient;
 import com.azure.resourcemanager.trafficmanager.fluent.inner.EndpointInner;
 import com.azure.resourcemanager.trafficmanager.fluent.inner.ProfileInner;
-import com.azure.resourcemanager.trafficmanager.fluent.inner.TrafficManagerNameAvailabilityInner;
 import com.azure.resourcemanager.trafficmanager.models.CheckProfileDnsNameAvailabilityResult;
 import com.azure.resourcemanager.trafficmanager.models.CheckTrafficManagerRelativeDnsNameAvailabilityParameters;
 import com.azure.resourcemanager.trafficmanager.models.DnsConfig;
@@ -19,26 +16,20 @@ import com.azure.resourcemanager.trafficmanager.models.GeographicLocation;
 import com.azure.resourcemanager.trafficmanager.models.MonitorConfig;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfile;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfiles;
+import java.util.ArrayList;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
-
-/**
- * Implementation for TrafficManagerProfiles.
- */
+/** Implementation for TrafficManagerProfiles. */
 public class TrafficManagerProfilesImpl
     extends TopLevelModifiableResourcesImpl<
-        TrafficManagerProfile,
-        TrafficManagerProfileImpl,
-        ProfileInner,
-        ProfilesClient,
-        TrafficManager>
+        TrafficManagerProfile, TrafficManagerProfileImpl, ProfileInner, ProfilesClient, TrafficManager>
     implements TrafficManagerProfiles {
     private GeographicHierarchies geographicHierarchies;
 
     public TrafficManagerProfilesImpl(final TrafficManager trafficManager) {
         super(trafficManager.inner().getProfiles(), trafficManager);
-        this.geographicHierarchies = new GeographicHierarchiesImpl(trafficManager, trafficManager.inner().getGeographicHierarchies());
+        this.geographicHierarchies =
+            new GeographicHierarchiesImpl(trafficManager, trafficManager.inner().getGeographicHierarchies());
     }
 
     @Override
@@ -49,11 +40,13 @@ public class TrafficManagerProfilesImpl
     @Override
     public Mono<CheckProfileDnsNameAvailabilityResult> checkDnsNameAvailabilityAsync(String dnsNameLabel) {
         CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameter =
-                new CheckTrafficManagerRelativeDnsNameAvailabilityParameters()
-                        .withName(dnsNameLabel)
-                        .withType("Microsoft.Network/trafficManagerProfiles");
-        return this.inner()
-                .checkTrafficManagerRelativeDnsNameAvailabilityAsync(parameter).map(CheckProfileDnsNameAvailabilityResult::new);
+            new CheckTrafficManagerRelativeDnsNameAvailabilityParameters()
+                .withName(dnsNameLabel)
+                .withType("Microsoft.Network/trafficManagerProfiles");
+        return this
+            .inner()
+            .checkTrafficManagerRelativeDnsNameAvailabilityAsync(parameter)
+            .map(CheckProfileDnsNameAvailabilityResult::new);
     }
 
     @Override

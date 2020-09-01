@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.management;
 
@@ -19,17 +16,16 @@ import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
+import com.azure.resourcemanager.trafficmanager.TrafficManager;
 import com.azure.resourcemanager.trafficmanager.models.EndpointPropertiesSubnetsItem;
 import com.azure.resourcemanager.trafficmanager.models.GeographicLocation;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerExternalEndpoint;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfile;
 import com.azure.resourcemanager.trafficmanager.models.TrafficRoutingMethod;
-import com.azure.resourcemanager.trafficmanager.TrafficManager;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class TrafficManagerTests extends ResourceManagerTestBase {
     private String rgName = null;
@@ -44,22 +40,22 @@ public class TrafficManagerTests extends ResourceManagerTestBase {
         HttpLogOptions httpLogOptions,
         List<HttpPipelinePolicy> policies,
         HttpClient httpClient) {
-        return HttpPipelineProvider.buildHttpPipeline(
-            credential,
-            profile,
-            null,
-            httpLogOptions,
-            null,
-            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
-            policies,
-            httpClient);
+        return HttpPipelineProvider
+            .buildHttpPipeline(
+                credential,
+                profile,
+                null,
+                httpLogOptions,
+                null,
+                new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
+                policies,
+                httpClient);
     }
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
-        resourceManager =
-            ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
+        resourceManager = ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
         trafficManager = TrafficManager.authenticate(httpPipeline, profile);
     }
 
@@ -72,9 +68,7 @@ public class TrafficManagerTests extends ResourceManagerTestBase {
 
     @Test
     public void canGetGeographicHierarchy() {
-        GeographicLocation rootLocation = this.trafficManager
-                .profiles()
-                .getGeographicHierarchyRoot();
+        GeographicLocation rootLocation = this.trafficManager.profiles().getGeographicHierarchyRoot();
         Assertions.assertNotNull(rootLocation);
         Assertions.assertNotNull(rootLocation.code());
         Assertions.assertNotNull(rootLocation.name());
@@ -90,9 +84,7 @@ public class TrafficManagerTests extends ResourceManagerTestBase {
         final String tmProfileName = generateRandomResourceName("tmpr", 15);
         final String tmProfileDnsLabel = generateRandomResourceName("tmdns", 15);
 
-        GeographicLocation geographicLocation = this.trafficManager
-                .profiles()
-                .getGeographicHierarchyRoot();
+        GeographicLocation geographicLocation = this.trafficManager.profiles().getGeographicHierarchyRoot();
 
         GeographicLocation california = null;
         GeographicLocation bangladesh = null;
@@ -110,16 +102,20 @@ public class TrafficManagerTests extends ResourceManagerTestBase {
         Assertions.assertNotNull(california);
         Assertions.assertNotNull(bangladesh);
 
-        TrafficManagerProfile profile = this.trafficManager.profiles().define(tmProfileName)
+        TrafficManagerProfile profile =
+            this
+                .trafficManager
+                .profiles()
+                .define(tmProfileName)
                 .withNewResourceGroup(rgName, Region.US_EAST)
                 .withLeafDomainLabel(tmProfileDnsLabel)
                 .withGeographicBasedRouting()
                 .defineExternalTargetEndpoint("external-ep-1")
-                    .toFqdn("www.gitbook.com")
-                    .fromRegion(Region.ASIA_EAST)
-                    .withGeographicLocation(california)
-                    .withGeographicLocation(bangladesh)
-                    .attach()
+                .toFqdn("www.gitbook.com")
+                .fromRegion(Region.ASIA_EAST)
+                .withGeographicLocation(california)
+                .withGeographicLocation(bangladesh)
+                .attach()
                 .withHttpsMonitoring()
                 .withTimeToLive(500)
                 .create();
@@ -131,11 +127,12 @@ public class TrafficManagerTests extends ResourceManagerTestBase {
         Assertions.assertNotNull(endpoint.geographicLocationCodes());
         Assertions.assertEquals(2, endpoint.geographicLocationCodes().size());
 
-        profile.update()
-                .updateExternalTargetEndpoint("external-ep-1")
-                    .withoutGeographicLocation(california)
-                    .parent()
-                .apply();
+        profile
+            .update()
+            .updateExternalTargetEndpoint("external-ep-1")
+            .withoutGeographicLocation(california)
+            .parent()
+            .apply();
 
         Assertions.assertTrue(profile.trafficRoutingMethod().equals(TrafficRoutingMethod.GEOGRAPHIC));
         Assertions.assertTrue(profile.externalEndpoints().containsKey("external-ep-1"));
@@ -156,16 +153,20 @@ public class TrafficManagerTests extends ResourceManagerTestBase {
         EndpointPropertiesSubnetsItem subnetRange = new EndpointPropertiesSubnetsItem();
         subnetRange.withFirst("25.26.27.28").withLast("29.30.31.32");
 
-        TrafficManagerProfile profile = this.trafficManager.profiles().define(tmProfileName)
+        TrafficManagerProfile profile =
+            this
+                .trafficManager
+                .profiles()
+                .define(tmProfileName)
                 .withNewResourceGroup(rgName, Region.US_EAST)
                 .withLeafDomainLabel(tmProfileDnsLabel)
                 .withTrafficRoutingMethod(TrafficRoutingMethod.SUBNET)
                 .defineExternalTargetEndpoint("external-ep-1")
-                    .toFqdn("www.gitbook.com")
-                    .fromRegion(Region.ASIA_EAST)
-                    .withSubnet(subnetCidr.first(), subnetCidr.scope())
-                    .withSubnet(subnetRange.first(), subnetRange.last())
-                    .attach()
+                .toFqdn("www.gitbook.com")
+                .fromRegion(Region.ASIA_EAST)
+                .withSubnet(subnetCidr.first(), subnetCidr.scope())
+                .withSubnet(subnetRange.first(), subnetRange.last())
+                .attach()
                 .create();
 
         Assertions.assertNotNull(profile.inner());
@@ -182,19 +183,30 @@ public class TrafficManagerTests extends ResourceManagerTestBase {
                 }
             }
             if (subnet.first() != null && subnet.last() != null) {
-                if (subnet.first().equalsIgnoreCase(subnetRange.first()) && subnet.last().equalsIgnoreCase(subnetRange.last())) {
+                if (subnet.first().equalsIgnoreCase(subnetRange.first())
+                    && subnet.last().equalsIgnoreCase(subnetRange.last())) {
                     foundRange = true;
                 }
             }
         }
 
-        Assertions.assertTrue(foundCidr, String.format("The subnet %s/%d not found in the endpoint.", subnetCidr.first(), subnetCidr.scope()));
-        Assertions.assertTrue(foundRange, String.format("The subnet range %s-%s not found in the endpoint.", subnetCidr.first(), subnetCidr.last()));
+        Assertions
+            .assertTrue(
+                foundCidr,
+                String.format("The subnet %s/%d not found in the endpoint.", subnetCidr.first(), subnetCidr.scope()));
+        Assertions
+            .assertTrue(
+                foundRange,
+                String
+                    .format(
+                        "The subnet range %s-%s not found in the endpoint.", subnetCidr.first(), subnetCidr.last()));
 
-        profile = profile.update()
+        profile =
+            profile
+                .update()
                 .updateExternalTargetEndpoint("external-ep-1")
-                    .withoutSubnet(subnetRange.first(), subnetRange.last())
-                    .parent()
+                .withoutSubnet(subnetRange.first(), subnetRange.last())
+                .parent()
                 .apply();
 
         endpoint = profile.externalEndpoints().get("external-ep-1");

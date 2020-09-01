@@ -1,22 +1,16 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.trafficmanager.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import com.azure.resourcemanager.trafficmanager.models.GeographicLocation;
 import com.azure.resourcemanager.trafficmanager.models.Region;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Implementation for GeographicLocation.
- */
+/** Implementation for GeographicLocation. */
 class GeographicLocationImpl extends WrapperImpl<Region> implements GeographicLocation {
     protected GeographicLocationImpl(Region innerRegion) {
         super(innerRegion);

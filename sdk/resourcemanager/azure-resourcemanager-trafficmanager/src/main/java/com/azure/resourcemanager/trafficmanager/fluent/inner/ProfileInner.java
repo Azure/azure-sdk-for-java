@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.trafficmanager.fluent.inner;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;

@@ -1,21 +1,18 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.resourcemanager.trafficmanager.models;
 
-/**
- * The reason for unavailability of traffic manager profile DNS name.
- */
+/** The reason for unavailability of traffic manager profile DNS name. */
 public class ProfileDnsNameUnavailableReason {
     /** Static value Invalid for ProfileDnsNameUnavailableReason. */
     public static final ProfileDnsNameUnavailableReason INVALID = new ProfileDnsNameUnavailableReason("Invalid");
 
     /** Static value AlreadyExists for ProfileDnsNameUnavailableReason. */
-    public static final ProfileDnsNameUnavailableReason ALREADYEXISTS = new ProfileDnsNameUnavailableReason("AlreadyExists");
+    public static final ProfileDnsNameUnavailableReason ALREADYEXISTS =
+        new ProfileDnsNameUnavailableReason("AlreadyExists");
 
-    private String value;
+    private final String value;
 
     /**
      * Creates ProfileDnsNameUnavailableReason.

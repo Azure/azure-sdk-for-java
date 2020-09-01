@@ -1,36 +1,36 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.resourcemanager.trafficmanager.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
 import com.azure.resourcemanager.trafficmanager.fluent.EndpointsClient;
 import com.azure.resourcemanager.trafficmanager.fluent.inner.EndpointInner;
 import com.azure.resourcemanager.trafficmanager.models.EndpointType;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerAzureEndpoint;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerEndpoint;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerExternalEndpoint;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerNestedProfileEndpoint;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfile;
-import reactor.core.publisher.Flux;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import reactor.core.publisher.Flux;
 
-/**
- * Represents an endpoint collection associated with a traffic manager profile.
- */
-class TrafficManagerEndpointsImpl extends
-        ExternalChildResourcesCachedImpl<TrafficManagerEndpointImpl,
-                TrafficManagerEndpoint,
-                EndpointInner,
-                TrafficManagerProfileImpl,
-                TrafficManagerProfile> {
+/** Represents an endpoint collection associated with a traffic manager profile. */
+class TrafficManagerEndpointsImpl
+    extends ExternalChildResourcesCachedImpl<
+        TrafficManagerEndpointImpl,
+        TrafficManagerEndpoint,
+        EndpointInner,
+        TrafficManagerProfileImpl,
+        TrafficManagerProfile> {
+
+    private final ClientLogger logger = new ClientLogger(this.getClass());
+
     private final EndpointsClient client;
 
     /**
@@ -53,54 +53,45 @@ class TrafficManagerEndpointsImpl extends
         return allEndpoints;
     }
 
-    /**
-     * @return the azure endpoints as a map indexed by name.
-     */
+    /** @return the azure endpoints as a map indexed by name. */
     Map<String, TrafficManagerAzureEndpoint> azureEndpointsAsMap() {
         Map<String, TrafficManagerAzureEndpoint> result = new HashMap<>();
         for (Map.Entry<String, TrafficManagerEndpointImpl> entry : this.collection().entrySet()) {
             TrafficManagerEndpointImpl endpoint = entry.getValue();
             if (endpoint.endpointType() == EndpointType.AZURE) {
-                TrafficManagerAzureEndpoint azureEndpoint = new TrafficManagerAzureEndpointImpl(entry.getKey(),
-                        this.getParent(),
-                        endpoint.inner(),
-                        this.client);
+                TrafficManagerAzureEndpoint azureEndpoint =
+                    new TrafficManagerAzureEndpointImpl(
+                        entry.getKey(), this.getParent(), endpoint.inner(), this.client);
                 result.put(entry.getKey(), azureEndpoint);
             }
         }
         return Collections.unmodifiableMap(result);
     }
 
-    /**
-     * @return the external endpoints as a map indexed by name.
-     */
+    /** @return the external endpoints as a map indexed by name. */
     Map<String, TrafficManagerExternalEndpoint> externalEndpointsAsMap() {
         Map<String, TrafficManagerExternalEndpoint> result = new HashMap<>();
         for (Map.Entry<String, TrafficManagerEndpointImpl> entry : this.collection().entrySet()) {
             TrafficManagerEndpointImpl endpoint = entry.getValue();
             if (endpoint.endpointType() == EndpointType.EXTERNAL) {
-                TrafficManagerExternalEndpoint externalEndpoint = new TrafficManagerExternalEndpointImpl(entry.getKey(),
-                        this.getParent(),
-                        endpoint.inner(),
-                        this.client);
+                TrafficManagerExternalEndpoint externalEndpoint =
+                    new TrafficManagerExternalEndpointImpl(
+                        entry.getKey(), this.getParent(), endpoint.inner(), this.client);
                 result.put(entry.getKey(), externalEndpoint);
             }
         }
         return Collections.unmodifiableMap(result);
     }
 
-    /**
-     * @return the nested profile endpoints as a map indexed by name.
-     */
+    /** @return the nested profile endpoints as a map indexed by name. */
     Map<String, TrafficManagerNestedProfileEndpoint> nestedProfileEndpointsAsMap() {
         Map<String, TrafficManagerNestedProfileEndpoint> result = new HashMap<>();
         for (Map.Entry<String, TrafficManagerEndpointImpl> entry : this.collection().entrySet()) {
             TrafficManagerEndpointImpl endpoint = entry.getValue();
             if (endpoint.endpointType() == EndpointType.NESTED_PROFILE) {
-                TrafficManagerNestedProfileEndpoint nestedProfileEndpoint = new TrafficManagerNestedProfileEndpointImpl(entry.getKey(),
-                        this.getParent(),
-                        endpoint.inner(),
-                        this.client);
+                TrafficManagerNestedProfileEndpoint nestedProfileEndpoint =
+                    new TrafficManagerNestedProfileEndpointImpl(
+                        entry.getKey(), this.getParent(), endpoint.inner(), this.client);
                 result.put(entry.getKey(), nestedProfileEndpoint);
             }
         }
@@ -152,7 +143,8 @@ class TrafficManagerEndpointsImpl extends
     public TrafficManagerEndpointImpl updateAzureEndpoint(String name) {
         TrafficManagerEndpointImpl endpoint = this.prepareInlineUpdate(name);
         if (endpoint.endpointType() != EndpointType.AZURE) {
-            throw new IllegalArgumentException("An azure endpoint with name " + name + " not found in the profile");
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("An azure endpoint with name " + name + " not found in the profile"));
         }
         return endpoint;
     }
@@ -166,7 +158,8 @@ class TrafficManagerEndpointsImpl extends
     public TrafficManagerEndpointImpl updateExternalEndpoint(String name) {
         TrafficManagerEndpointImpl endpoint = this.prepareInlineUpdate(name);
         if (endpoint.endpointType() != EndpointType.EXTERNAL) {
-            throw new IllegalArgumentException("An external endpoint with name " + name + " not found in the profile");
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("An external endpoint with name " + name + " not found in the profile"));
         }
         return endpoint;
     }
@@ -180,7 +173,8 @@ class TrafficManagerEndpointsImpl extends
     public TrafficManagerEndpointImpl updateNestedProfileEndpoint(String name) {
         TrafficManagerEndpointImpl endpoint = this.prepareInlineUpdate(name);
         if (endpoint.endpointType() != EndpointType.NESTED_PROFILE) {
-            throw new IllegalArgumentException("A nested profile endpoint with name " + name + " not found in the profile");
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "A nested profile endpoint with name " + name + " not found in the profile"));
         }
         return endpoint;
     }
@@ -207,10 +201,7 @@ class TrafficManagerEndpointsImpl extends
         List<TrafficManagerEndpointImpl> childResources = new ArrayList<>();
         if (getParent().inner().endpoints() != null) {
             for (EndpointInner inner : getParent().inner().endpoints()) {
-                childResources.add(new TrafficManagerEndpointImpl(inner.name(),
-                    this.getParent(),
-                    inner,
-                    this.client));
+                childResources.add(new TrafficManagerEndpointImpl(inner.name(), this.getParent(), inner, this.client));
             }
         }
         return childResources;
@@ -223,12 +214,8 @@ class TrafficManagerEndpointsImpl extends
 
     @Override
     protected TrafficManagerEndpointImpl newChildResource(String name) {
-        TrafficManagerEndpointImpl endpoint = new TrafficManagerEndpointImpl(name,
-                this.getParent(),
-                new EndpointInner(),
-                this.client);
-        return endpoint
-                .withRoutingWeight(1)
-                .withTrafficEnabled();
+        TrafficManagerEndpointImpl endpoint =
+            new TrafficManagerEndpointImpl(name, this.getParent(), new EndpointInner(), this.client);
+        return endpoint.withRoutingWeight(1).withTrafficEnabled();
     }
 }

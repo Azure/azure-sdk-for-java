@@ -1,12 +1,12 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.resourcemanager.trafficmanager.implementation;
 
+import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.resourcemanager.trafficmanager.fluent.EndpointsClient;
-import com.azure.resourcemanager.trafficmanager.fluent.inner.DeleteOperationResultInner;
 import com.azure.resourcemanager.trafficmanager.fluent.inner.EndpointInner;
 import com.azure.resourcemanager.trafficmanager.models.EndpointMonitorStatus;
 import com.azure.resourcemanager.trafficmanager.models.EndpointPropertiesCustomHeadersItem;
@@ -14,13 +14,8 @@ import com.azure.resourcemanager.trafficmanager.models.EndpointPropertiesSubnets
 import com.azure.resourcemanager.trafficmanager.models.EndpointStatus;
 import com.azure.resourcemanager.trafficmanager.models.EndpointType;
 import com.azure.resourcemanager.trafficmanager.models.GeographicLocation;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerEndpoint;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfile;
-import reactor.core.publisher.Mono;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -29,15 +24,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for {@link TrafficManagerEndpoint}.
- */
-class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManagerEndpoint,
-        EndpointInner,
-        TrafficManagerProfileImpl,
-        TrafficManagerProfile>
-        implements TrafficManagerEndpoint,
+/** Implementation for {@link TrafficManagerEndpoint}. */
+class TrafficManagerEndpointImpl
+    extends ExternalChildResourceImpl<
+        TrafficManagerEndpoint, EndpointInner, TrafficManagerProfileImpl, TrafficManagerProfile>
+    implements TrafficManagerEndpoint,
         TrafficManagerEndpoint.Definition<TrafficManagerProfile.DefinitionStages.WithCreate>,
         TrafficManagerEndpoint.UpdateDefinition<TrafficManagerProfile.Update>,
         TrafficManagerEndpoint.UpdateAzureEndpoint,
@@ -46,10 +39,8 @@ class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManage
     private final EndpointsClient client;
     private EndpointType endpointType;
 
-    TrafficManagerEndpointImpl(String name,
-                               TrafficManagerProfileImpl parent,
-                               EndpointInner inner,
-                               EndpointsClient client) {
+    TrafficManagerEndpointImpl(
+        String name, TrafficManagerProfileImpl parent, EndpointInner inner, EndpointsClient client) {
         super(name, parent, inner);
         this.client = client;
     }
@@ -264,14 +255,18 @@ class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManage
         boolean found = false;
         for (EndpointPropertiesSubnetsItem subnetItem : this.inner().subnets()) {
             if (subnetItem.first() != null && subnetItem.last() != null) {
-                if (subnetItem.first().equalsIgnoreCase(subnetStartIp) && subnetItem.last().equalsIgnoreCase(subnetEndIp)) {
+                if (subnetItem.first().equalsIgnoreCase(subnetStartIp)
+                    && subnetItem.last().equalsIgnoreCase(subnetEndIp)) {
                     found = true;
                     break;
                 }
             }
         }
         if (!found) {
-            this.inner().subnets().add(new EndpointPropertiesSubnetsItem().withFirst(subnetStartIp).withLast(subnetEndIp));
+            this
+                .inner()
+                .subnets()
+                .add(new EndpointPropertiesSubnetsItem().withFirst(subnetStartIp).withLast(subnetEndIp));
         }
         return this;
     }
@@ -280,10 +275,14 @@ class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManage
     public TrafficManagerEndpointImpl withSubnets(List<EndpointPropertiesSubnetsItem> subnets) {
         this.inner().withSubnets(new ArrayList<EndpointPropertiesSubnetsItem>());
         for (EndpointPropertiesSubnetsItem subnet : subnets) {
-            this.inner().subnets().add(new EndpointPropertiesSubnetsItem()
-                    .withFirst(subnet.first())
-                    .withLast(subnet.last())
-                    .withScope(subnet.scope()));
+            this
+                .inner()
+                .subnets()
+                .add(
+                    new EndpointPropertiesSubnetsItem()
+                        .withFirst(subnet.first())
+                        .withLast(subnet.last())
+                        .withScope(subnet.scope()));
         }
         return this;
     }
@@ -319,7 +318,8 @@ class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManage
         int i = 0;
         for (EndpointPropertiesSubnetsItem subnetItem : this.inner().subnets()) {
             if (subnetItem.first() != null && subnetItem.last() != null) {
-                if (subnetItem.first().equalsIgnoreCase(subnetStartIp) && subnetItem.last().equalsIgnoreCase(subnetEndIp)) {
+                if (subnetItem.first().equalsIgnoreCase(subnetStartIp)
+                    && subnetItem.last().equalsIgnoreCase(subnetEndIp)) {
                     foundIndex = i;
                     break;
                 }
@@ -332,7 +332,6 @@ class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManage
         return this;
     }
 
-
     @Override
     public TrafficManagerEndpointImpl withCustomHeader(String name, String value) {
         if (this.inner().customHeaders() == null) {
@@ -340,8 +339,10 @@ class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManage
         }
         boolean found = false;
         for (EndpointPropertiesCustomHeadersItem headersItem : this.inner().customHeaders()) {
-            if (headersItem.name() != null && headersItem.name().equalsIgnoreCase(name)
-                    && headersItem.value() != null && headersItem.value().equalsIgnoreCase(value)) {
+            if (headersItem.name() != null
+                && headersItem.name().equalsIgnoreCase(name)
+                && headersItem.value() != null
+                && headersItem.value().equalsIgnoreCase(value)) {
                 found = true;
                 break;
             }
@@ -356,7 +357,10 @@ class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManage
     public TrafficManagerEndpointImpl withCustomHeaders(Map<String, String> headers) {
         this.inner().withCustomHeaders(new ArrayList<EndpointPropertiesCustomHeadersItem>());
         for (Map.Entry<String, String> entry : headers.entrySet()) {
-            this.inner().customHeaders().add(new EndpointPropertiesCustomHeadersItem().withName(entry.getKey()).withValue(entry.getValue()));
+            this
+                .inner()
+                .customHeaders()
+                .add(new EndpointPropertiesCustomHeadersItem().withName(entry.getKey()).withValue(entry.getValue()));
         }
         return this;
     }
@@ -385,12 +389,16 @@ class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManage
     @Override
     public Mono<TrafficManagerEndpoint> createResourceAsync() {
         final TrafficManagerEndpointImpl self = this;
-        return this.client.createOrUpdateAsync(this.parent().resourceGroupName(),
+        return this
+            .client
+            .createOrUpdateAsync(
+                this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.endpointType().localName(),
                 this.name(),
                 this.inner())
-                .map(inner -> {
+            .map(
+                inner -> {
                     setInner(inner);
                     return this;
                 });
@@ -403,10 +411,10 @@ class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManage
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return this.client.deleteAsync(this.parent().resourceGroupName(),
-                this.parent().name(),
-                this.endpointType().localName(),
-                this.name())
+        return this
+            .client
+            .deleteAsync(
+                this.parent().resourceGroupName(), this.parent().name(), this.endpointType().localName(), this.name())
             .then();
     }
 
@@ -417,10 +425,10 @@ class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManage
 
     @Override
     protected Mono<EndpointInner> getInnerAsync() {
-        return this.client.getAsync(this.parent().resourceGroupName(),
-                this.parent().name(),
-                this.endpointType().toString(),
-                this.name());
+        return this
+            .client
+            .getAsync(
+                this.parent().resourceGroupName(), this.parent().name(), this.endpointType().toString(), this.name());
     }
 
     void withEndpointType(EndpointType endpointType) {

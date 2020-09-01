@@ -1,41 +1,28 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.resourcemanager.trafficmanager.implementation;
 
-import com.azure.resourcemanager.trafficmanager.TrafficManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.trafficmanager.TrafficManager;
 import com.azure.resourcemanager.trafficmanager.fluent.ProfilesClient;
 import com.azure.resourcemanager.trafficmanager.fluent.inner.ProfileInner;
 import com.azure.resourcemanager.trafficmanager.models.MonitorProtocol;
+import com.azure.resourcemanager.trafficmanager.models.ProfileMonitorStatus;
 import com.azure.resourcemanager.trafficmanager.models.ProfileStatus;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerAzureEndpoint;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerExternalEndpoint;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerNestedProfileEndpoint;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfile;
-import com.azure.resourcemanager.trafficmanager.models.ProfileMonitorStatus;
 import com.azure.resourcemanager.trafficmanager.models.TrafficRoutingMethod;
+import java.util.Map;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
-import java.util.Map;
-
-/**
- * Implementation for TrafficManagerProfile.
- */
+/** Implementation for TrafficManagerProfile. */
 class TrafficManagerProfileImpl
-        extends GroupableResourceImpl<
-            TrafficManagerProfile,
-            ProfileInner,
-            TrafficManagerProfileImpl,
-            TrafficManager>
-        implements
-            TrafficManagerProfile,
-            TrafficManagerProfile.Definition,
-            TrafficManagerProfile.Update {
+    extends GroupableResourceImpl<TrafficManagerProfile, ProfileInner, TrafficManagerProfileImpl, TrafficManager>
+    implements TrafficManagerProfile, TrafficManagerProfile.Definition, TrafficManagerProfile.Update {
     private TrafficManagerEndpointsImpl endpoints;
 
     TrafficManagerProfileImpl(String name, final ProfileInner innerModel, final TrafficManager trafficManager) {
@@ -84,8 +71,6 @@ class TrafficManagerProfileImpl
         return this.inner().monitorConfig().path();
     }
 
-    // TODO Expose monitoring protocol
-
     @Override
     public Map<String, TrafficManagerExternalEndpoint> externalEndpoints() {
         return this.endpoints.externalEndpointsAsMap();
@@ -103,17 +88,19 @@ class TrafficManagerProfileImpl
 
     @Override
     public Mono<TrafficManagerProfile> refreshAsync() {
-        return super.refreshAsync().map(trafficManagerProfile -> {
-                TrafficManagerProfileImpl impl = (TrafficManagerProfileImpl) trafficManagerProfile;
-                impl.endpoints.refresh();
-                return impl;
-        });
+        return super
+            .refreshAsync()
+            .map(
+                trafficManagerProfile -> {
+                    TrafficManagerProfileImpl impl = (TrafficManagerProfileImpl) trafficManagerProfile;
+                    impl.endpoints.refresh();
+                    return impl;
+                });
     }
 
     @Override
     protected Mono<ProfileInner> getInnerAsync() {
-        return this.manager().inner().getProfiles().getByResourceGroupAsync(
-                this.resourceGroupName(), this.name());
+        return this.manager().inner().getProfiles().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -207,19 +194,13 @@ class TrafficManagerProfileImpl
 
     @Override
     public TrafficManagerProfileImpl withHttpMonitoring(int port, String path) {
-        this.inner().monitorConfig()
-            .withPort(new Long(port))
-            .withPath(path)
-            .withProtocol(MonitorProtocol.HTTP);
+        this.inner().monitorConfig().withPort(new Long(port)).withPath(path).withProtocol(MonitorProtocol.HTTP);
         return this;
     }
 
     @Override
     public TrafficManagerProfileImpl withHttpsMonitoring(int port, String path) {
-        this.inner().monitorConfig()
-            .withPort(new Long(port))
-            .withPath(path)
-            .withProtocol(MonitorProtocol.HTTPS);
+        this.inner().monitorConfig().withPort(new Long(port)).withPath(path).withProtocol(MonitorProtocol.HTTPS);
         return this;
     }
 
@@ -249,9 +230,12 @@ class TrafficManagerProfileImpl
 
     @Override
     public Mono<TrafficManagerProfile> createResourceAsync() {
-        return this.manager().inner().getProfiles().createOrUpdateAsync(
-                resourceGroupName(), name(), inner())
-                .map(innerToFluentMap(this));
+        return this
+            .manager()
+            .inner()
+            .getProfiles()
+            .createOrUpdateAsync(resourceGroupName(), name(), inner())
+            .map(innerToFluentMap(this));
     }
 
     @Override
@@ -261,14 +245,19 @@ class TrafficManagerProfileImpl
         // method. We cannot update the routing method of the profile until existing endpoints contains the properties
         // required for the new routing method.
         final ProfilesClient innerCollection = this.manager().inner().getProfiles();
-        return this.endpoints.commitAndGetAllAsync()
-                .flatMap(endpoints -> {
-                        inner().withEndpoints(this.endpoints.allEndpointsInners());
-                        return innerCollection.createOrUpdateAsync(resourceGroupName(), name(), inner())
-                            .map(profileInner -> {
+        return this
+            .endpoints
+            .commitAndGetAllAsync()
+            .flatMap(
+                endpoints -> {
+                    inner().withEndpoints(this.endpoints.allEndpointsInners());
+                    return innerCollection
+                        .createOrUpdateAsync(resourceGroupName(), name(), inner())
+                        .map(
+                            profileInner -> {
                                 this.setInner(profileInner);
                                 return this;
-                                });
+                            });
                 });
     }
 

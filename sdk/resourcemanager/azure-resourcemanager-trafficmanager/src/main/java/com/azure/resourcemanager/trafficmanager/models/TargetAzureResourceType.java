@@ -1,24 +1,22 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.resourcemanager.trafficmanager.models;
 
-/**
- * Target Azure resource types supported for an Azure endpoint in a traffic manager profile.
- */
+/** Target Azure resource types supported for an Azure endpoint in a traffic manager profile. */
 public class TargetAzureResourceType {
     /** Static value Microsoft.Network/publicIPAddresses for TargetAzureResourceType. */
-    public static final TargetAzureResourceType PUBLICIP = new TargetAzureResourceType("Microsoft.Network", "publicIPAddresses");
+    public static final TargetAzureResourceType PUBLICIP =
+        new TargetAzureResourceType("Microsoft.Network", "publicIPAddresses");
 
     /** Static value Microsoft.Web/sites for TargetAzureResourceType. */
     public static final TargetAzureResourceType WEBAPP = new TargetAzureResourceType("Microsoft.Web", "sites");
 
     /** Static value Microsoft.ClassicCompute/domainNames for TargetAzureResourceType. */
-    public static final TargetAzureResourceType  CLOUDSERVICE = new TargetAzureResourceType("Microsoft.ClassicCompute", "domainNames");
+    public static final TargetAzureResourceType CLOUDSERVICE =
+        new TargetAzureResourceType("Microsoft.ClassicCompute", "domainNames");
 
-    private String value;
+    private final String value;
 
     /**
      * Creates TargetAzureResourceType.

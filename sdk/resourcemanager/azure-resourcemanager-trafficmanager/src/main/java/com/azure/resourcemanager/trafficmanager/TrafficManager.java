@@ -1,8 +1,6 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.resourcemanager.trafficmanager;
 
 import com.azure.core.credential.TokenCredential;
@@ -16,16 +14,13 @@ import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.trafficmanager.implementation.TrafficManagerProfilesImpl;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfiles;
 
-/**
- * Entry point to Azure traffic manager management.
- */
+/** Entry point to Azure traffic manager management. */
 public final class TrafficManager extends Manager<TrafficManager, TrafficManagerManagementClient> {
     // Collections
     private TrafficManagerProfiles profiles;
 
     /**
-     * Get a Configurable instance that can be used to create {@link TrafficManager}
-     * with optional configuration.
+     * Get a Configurable instance that can be used to create {@link TrafficManager} with optional configuration.
      *
      * @return the instance allowing configurations
      */
@@ -67,9 +62,7 @@ public final class TrafficManager extends Manager<TrafficManager, TrafficManager
         return new TrafficManager(httpPipeline, profile, sdkContext);
     }
 
-    /**
-     * The interface allowing configurations to be set.
-     */
+    /** The interface allowing configurations to be set. */
     public interface Configurable extends AzureConfigurable<Configurable> {
         /**
          * Creates an instance of TrafficManager that exposes traffic manager management API entry points.
@@ -81,12 +74,8 @@ public final class TrafficManager extends Manager<TrafficManager, TrafficManager
         TrafficManager authenticate(TokenCredential credential, AzureProfile profile);
     }
 
-    /**
-     * The implementation for Configurable interface.
-     */
-    private static class ConfigurableImpl
-            extends AzureConfigurableImpl<Configurable>
-            implements Configurable {
+    /** The implementation for Configurable interface. */
+    private static class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         public TrafficManager authenticate(TokenCredential credential, AzureProfile profile) {
             return TrafficManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
@@ -104,9 +93,7 @@ public final class TrafficManager extends Manager<TrafficManager, TrafficManager
             sdkContext);
     }
 
-    /**
-     * @return entry point to traffic manager profile management
-     */
+    /** @return entry point to traffic manager profile management */
     public TrafficManagerProfiles profiles() {
         if (this.profiles == null) {
             this.profiles = new TrafficManagerProfilesImpl(this);

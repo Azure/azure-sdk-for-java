@@ -1,33 +1,24 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.trafficmanager.implementation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The resource model definition for a ARM proxy resource. It will have
- * everything other than required location and tags.
+ * The resource model definition for a ARM proxy resource. It will have everything other than required location and
+ * tags.
  */
 public class ProxyResourceInner {
-    /**
-     * Gets or sets the ID.
-     */
+    /** Gets or sets the ID. */
     @JsonProperty(value = "id")
     private String id;
 
-    /**
-     * Gets or sets the name.
-     */
+    /** Gets or sets the name. */
     @JsonProperty(value = "name")
     private String name;
 
-    /**
-     * Gets or sets the type.
-     */
+    /** Gets or sets the type. */
     @JsonProperty(value = "type")
     private String type;
 
