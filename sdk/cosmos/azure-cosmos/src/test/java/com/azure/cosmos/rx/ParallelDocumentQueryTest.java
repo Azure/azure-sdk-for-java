@@ -74,15 +74,19 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         return new Object[][]{
             {true},
             {false},
+            {null}
         };
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
-    public void queryDocuments(boolean qmEnabled) {
+    public void queryDocuments(Boolean qmEnabled) {
         String query = "SELECT * from c where c.prop = 99";
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
-        options.setQueryMetricsEnabled(qmEnabled);
+        if (qmEnabled != null) {
+            options.setQueryMetricsEnabled(qmEnabled);
+        }
+
         options.setMaxDegreeOfParallelism(2);
         CosmosPagedFlux<InternalObjectNode> queryObservable = createdCollection.queryItems(query, options, InternalObjectNode.class);
 
@@ -682,7 +686,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
                 new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(createdDocuments.get(i), "mypk"))));
         }
         FeedResponse<JsonNode> documentFeedResponse =
-            ItemOperations.readManyAsync(createdCollection, pairList, JsonNode.class).block();
+            createdCollection.readMany(pairList, JsonNode.class).block();
         assertThat(documentFeedResponse.getResults().size()).isEqualTo(pairList.size());
         assertThat(documentFeedResponse.getResults().stream().map(jsonNode -> jsonNode.get("id").textValue()).collect(Collectors.toList()))
             .containsAll(pairList.stream().map(p -> p.getLeft()).collect(Collectors.toList()));
@@ -703,7 +707,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
                 new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(newItems.get(i), "id"))));
         }
         FeedResponse<JsonNode> documentFeedResponse =
-            ItemOperations.readManyAsync(containerWithIdAsPartitionKey, pairList, JsonNode.class).block();
+            containerWithIdAsPartitionKey.readMany(pairList, JsonNode.class).block();
         assertThat(documentFeedResponse.getResults().size()).isEqualTo(pairList.size());
         assertThat(documentFeedResponse.getResults().stream().map(jsonNode -> jsonNode.get("id").textValue()).collect(Collectors.toList()))
             .containsAll(pairList.stream().map(p -> p.getLeft()).collect(Collectors.toList()));

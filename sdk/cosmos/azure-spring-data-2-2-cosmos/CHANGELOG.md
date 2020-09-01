@@ -1,10 +1,13 @@
 # Release History
 
-## 3.0.0-beta.1 (Unreleased)
+## 3.0.0-beta.2 (Unreleased)
+
+
+## 3.0.0-beta.1 (2020-08-17)
 ### New features
 * Updated group id to `com.azure`.
 * Updated artifact id to `azure-spring-data-2-2-cosmos`.
-* Updated azure-cosmos SDK dependency to `4.3.1`.
+* Updated azure-cosmos SDK dependency to `4.3.2-beta.2`.
 * Support for auditing entities - automatic management of createdBy, createdDate, lastModifiedBy and lastModifiedDate annotated fields.
 * `@GeneratedValue` annotation support for automatic id generation for id fields of `String` type.
 * Multi-database configuration support for single cosmos account with multiple databases and multiple cosmos accounts with multiple databases.

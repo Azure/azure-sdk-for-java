@@ -17,26 +17,19 @@ import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.hybridcompute.v2019_12_12.ErrorResponseException;
 import com.microsoft.azure.management.hybridcompute.v2019_12_12.InstanceViewTypes;
-import com.microsoft.azure.management.hybridcompute.v2019_12_12.MachineReconnect;
-import com.microsoft.azure.management.hybridcompute.v2019_12_12.MachineUpdate;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
-import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.ResponseBody;
-import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.HTTP;
-import retrofit2.http.PATCH;
 import retrofit2.http.Path;
-import retrofit2.http.POST;
-import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 import retrofit2.Response;
@@ -69,14 +62,6 @@ public class MachinesInner implements InnerSupportsGet<MachineInner>, InnerSuppo
      * used by Retrofit to perform actually REST calls.
      */
     interface MachinesService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hybridcompute.v2019_12_12.Machines createOrUpdate" })
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{name}")
-        Observable<Response<ResponseBody>> createOrUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Query("api-version") String apiVersion, @Body MachineInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hybridcompute.v2019_12_12.Machines update" })
-        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{name}")
-        Observable<Response<ResponseBody>> update(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Query("api-version") String apiVersion, @Body MachineUpdate parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hybridcompute.v2019_12_12.Machines delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{name}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -84,10 +69,6 @@ public class MachinesInner implements InnerSupportsGet<MachineInner>, InnerSuppo
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hybridcompute.v2019_12_12.Machines getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{name}")
         Observable<Response<ResponseBody>> getByResourceGroup(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Query("api-version") String apiVersion, @Query("$expand") InstanceViewTypes expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hybridcompute.v2019_12_12.Machines reconnect" })
-        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{name}/reconnect")
-        Observable<Response<ResponseBody>> reconnect(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Query("api-version") String apiVersion, @Body MachineReconnect parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hybridcompute.v2019_12_12.Machines listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines")
@@ -105,194 +86,6 @@ public class MachinesInner implements InnerSupportsGet<MachineInner>, InnerSuppo
         @GET
         Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-    }
-
-    /**
-     * The operation to create or update a hybrid machine resource identity in Azure.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the hybrid machine.
-     * @param parameters Parameters supplied to the Create hybrid machine operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the MachineInner object if successful.
-     */
-    public MachineInner createOrUpdate(String resourceGroupName, String name, MachineInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().body();
-    }
-
-    /**
-     * The operation to create or update a hybrid machine resource identity in Azure.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the hybrid machine.
-     * @param parameters Parameters supplied to the Create hybrid machine operation.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<MachineInner> createOrUpdateAsync(String resourceGroupName, String name, MachineInner parameters, final ServiceCallback<MachineInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
-    }
-
-    /**
-     * The operation to create or update a hybrid machine resource identity in Azure.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the hybrid machine.
-     * @param parameters Parameters supplied to the Create hybrid machine operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MachineInner object
-     */
-    public Observable<MachineInner> createOrUpdateAsync(String resourceGroupName, String name, MachineInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, parameters).map(new Func1<ServiceResponse<MachineInner>, MachineInner>() {
-            @Override
-            public MachineInner call(ServiceResponse<MachineInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * The operation to create or update a hybrid machine resource identity in Azure.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the hybrid machine.
-     * @param parameters Parameters supplied to the Create hybrid machine operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MachineInner object
-     */
-    public Observable<ServiceResponse<MachineInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String name, MachineInner parameters) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        if (parameters == null) {
-            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
-        }
-        Validator.validate(parameters);
-        return service.createOrUpdate(this.client.subscriptionId(), resourceGroupName, name, this.client.apiVersion(), parameters, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MachineInner>>>() {
-                @Override
-                public Observable<ServiceResponse<MachineInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<MachineInner> clientResponse = createOrUpdateDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<MachineInner> createOrUpdateDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<MachineInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<MachineInner>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
-    }
-
-    /**
-     * The operation to update a hybrid machine.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the hybrid machine.
-     * @param parameters Parameters supplied to the Update hybrid machine operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the MachineInner object if successful.
-     */
-    public MachineInner update(String resourceGroupName, String name, MachineUpdate parameters) {
-        return updateWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().body();
-    }
-
-    /**
-     * The operation to update a hybrid machine.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the hybrid machine.
-     * @param parameters Parameters supplied to the Update hybrid machine operation.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<MachineInner> updateAsync(String resourceGroupName, String name, MachineUpdate parameters, final ServiceCallback<MachineInner> serviceCallback) {
-        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
-    }
-
-    /**
-     * The operation to update a hybrid machine.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the hybrid machine.
-     * @param parameters Parameters supplied to the Update hybrid machine operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MachineInner object
-     */
-    public Observable<MachineInner> updateAsync(String resourceGroupName, String name, MachineUpdate parameters) {
-        return updateWithServiceResponseAsync(resourceGroupName, name, parameters).map(new Func1<ServiceResponse<MachineInner>, MachineInner>() {
-            @Override
-            public MachineInner call(ServiceResponse<MachineInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * The operation to update a hybrid machine.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the hybrid machine.
-     * @param parameters Parameters supplied to the Update hybrid machine operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MachineInner object
-     */
-    public Observable<ServiceResponse<MachineInner>> updateWithServiceResponseAsync(String resourceGroupName, String name, MachineUpdate parameters) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        if (parameters == null) {
-            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
-        }
-        Validator.validate(parameters);
-        return service.update(this.client.subscriptionId(), resourceGroupName, name, this.client.apiVersion(), parameters, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MachineInner>>>() {
-                @Override
-                public Observable<ServiceResponse<MachineInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<MachineInner> clientResponse = updateDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<MachineInner> updateDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<MachineInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<MachineInner>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
     }
 
     /**
@@ -545,100 +338,6 @@ public class MachinesInner implements InnerSupportsGet<MachineInner>, InnerSuppo
     }
 
     private ServiceResponse<MachineInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<MachineInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<MachineInner>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
-    }
-
-    /**
-     * The operation to reconnect a hybrid machine resource to its identity in Azure.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the hybrid machine.
-     * @param parameters Parameters supplied to the Reconnect hybrid machine operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the MachineInner object if successful.
-     */
-    public MachineInner reconnect(String resourceGroupName, String name, MachineReconnect parameters) {
-        return reconnectWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().body();
-    }
-
-    /**
-     * The operation to reconnect a hybrid machine resource to its identity in Azure.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the hybrid machine.
-     * @param parameters Parameters supplied to the Reconnect hybrid machine operation.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<MachineInner> reconnectAsync(String resourceGroupName, String name, MachineReconnect parameters, final ServiceCallback<MachineInner> serviceCallback) {
-        return ServiceFuture.fromResponse(reconnectWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
-    }
-
-    /**
-     * The operation to reconnect a hybrid machine resource to its identity in Azure.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the hybrid machine.
-     * @param parameters Parameters supplied to the Reconnect hybrid machine operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MachineInner object
-     */
-    public Observable<MachineInner> reconnectAsync(String resourceGroupName, String name, MachineReconnect parameters) {
-        return reconnectWithServiceResponseAsync(resourceGroupName, name, parameters).map(new Func1<ServiceResponse<MachineInner>, MachineInner>() {
-            @Override
-            public MachineInner call(ServiceResponse<MachineInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * The operation to reconnect a hybrid machine resource to its identity in Azure.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the hybrid machine.
-     * @param parameters Parameters supplied to the Reconnect hybrid machine operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MachineInner object
-     */
-    public Observable<ServiceResponse<MachineInner>> reconnectWithServiceResponseAsync(String resourceGroupName, String name, MachineReconnect parameters) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        if (parameters == null) {
-            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
-        }
-        Validator.validate(parameters);
-        return service.reconnect(this.client.subscriptionId(), resourceGroupName, name, this.client.apiVersion(), parameters, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MachineInner>>>() {
-                @Override
-                public Observable<ServiceResponse<MachineInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<MachineInner> clientResponse = reconnectDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<MachineInner> reconnectDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<MachineInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<MachineInner>() { }.getType())
                 .registerError(ErrorResponseException.class)

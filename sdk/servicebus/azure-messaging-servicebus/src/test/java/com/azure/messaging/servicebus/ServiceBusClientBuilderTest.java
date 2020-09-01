@@ -10,6 +10,7 @@ import com.azure.core.util.Configuration;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSenderClientBuilder;
 import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.SubQueue;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -25,6 +26,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ServiceBusClientBuilderTest {
     private static final String NAMESPACE_NAME = "dummyNamespaceName";
@@ -36,6 +38,8 @@ class ServiceBusClientBuilderTest {
     private static final String SHARED_ACCESS_KEY_NAME = "dummySasKeyName";
     private static final String SHARED_ACCESS_KEY = "dummySasKey";
     private static final String ENDPOINT = getUri(ENDPOINT_FORMAT, NAMESPACE_NAME, DEFAULT_DOMAIN_NAME).toString();
+    private static final String DEAD_LETTER_QUEUE_NAME_SUFFIX = "/$deadletterqueue";
+    private static final String TRANSFER_DEAD_LETTER_QUEUE_NAME_SUFFIX = "/$Transfer/$deadletterqueue";
 
     private static final String PROXY_HOST = "127.0.0.1";
     private static final String PROXY_PORT = "3128";
@@ -73,6 +77,38 @@ class ServiceBusClientBuilderTest {
 
         // Assert
         assertNotNull(client);
+    }
+
+    @Test
+    void deadLetterqueueClient() {
+        // Arrange
+        final ServiceBusReceiverClientBuilder builder = new ServiceBusClientBuilder()
+            .connectionString(NAMESPACE_CONNECTION_STRING)
+            .receiver()
+            .queueName(QUEUE_NAME)
+            .subQueue(SubQueue.DEAD_LETTER_QUEUE);
+
+        // Act
+        final ServiceBusReceiverAsyncClient client = builder.buildAsyncClient();
+
+        // Assert
+        assertTrue(client.getEntityPath().endsWith(DEAD_LETTER_QUEUE_NAME_SUFFIX));
+    }
+
+    @Test
+    void transferDeadLetterqueueClient() {
+        // Arrange
+        final ServiceBusReceiverClientBuilder builder = new ServiceBusClientBuilder()
+            .connectionString(NAMESPACE_CONNECTION_STRING)
+            .receiver()
+            .queueName(QUEUE_NAME)
+            .subQueue(SubQueue.TRANSFER_DEAD_LETTER_QUEUE);
+
+        // Act
+        final ServiceBusReceiverAsyncClient client = builder.buildAsyncClient();
+
+        // Assert
+        assertTrue(client.getEntityPath().endsWith(TRANSFER_DEAD_LETTER_QUEUE_NAME_SUFFIX));
     }
 
     @Test

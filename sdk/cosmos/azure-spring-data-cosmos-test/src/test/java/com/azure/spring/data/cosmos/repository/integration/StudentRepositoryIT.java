@@ -32,16 +32,20 @@ public class StudentRepositoryIT {
     public static final String ID_1 = "id-1";
     public static final String ID_2 = "id-2";
     public static final String ID_3 = "id-3";
+    public static final String ID_4 = "id-4";
+    public static final String ID_5 = "id-5";
 
     public static final String FIRST_NAME_0 = "Mary";
     public static final String FIRST_NAME_1 = "Cheng";
     public static final String FIRST_NAME_2 = "Zheng";
     public static final String FIRST_NAME_3 = "Zhen";
+    public static final String FIRST_NAME_4 = "Jack";
 
     public static final String LAST_NAME_0 = "Chen";
     public static final String LAST_NAME_1 = "Ch";
     public static final String LAST_NAME_2 = "N";
     public static final String LAST_NAME_3 = "H";
+    public static final String LAST_NAME_4 = "lu";
 
     public static final String SUB_FIRST_NAME = "eng";
 
@@ -49,7 +53,10 @@ public class StudentRepositoryIT {
     private static final Student STUDENT_1 = new Student(ID_1, FIRST_NAME_1, LAST_NAME_1);
     private static final Student STUDENT_2 = new Student(ID_2, FIRST_NAME_2, LAST_NAME_2);
     private static final Student STUDENT_3 = new Student(ID_3, FIRST_NAME_3, LAST_NAME_3);
-    private static final List<Student> PEOPLE = Arrays.asList(STUDENT_0, STUDENT_1, STUDENT_2, STUDENT_3);
+    private static final Student STUDENT_4 = new Student(ID_4, FIRST_NAME_4, LAST_NAME_4);
+    private static final Student STUDENT_5 = new Student(ID_5, FIRST_NAME_4, FIRST_NAME_4);
+    private static final List<Student> PEOPLE =
+        Arrays.asList(STUDENT_0, STUDENT_1, STUDENT_2, STUDENT_3, STUDENT_4, STUDENT_5);
 
     private static final CosmosEntityInformation<Student, String> entityInformation =
         new CosmosEntityInformation<>(Student.class);
@@ -111,7 +118,7 @@ public class StudentRepositoryIT {
     @Test
     public void testFindByNot() {
         final List<Student> people = TestUtils.toList(repository.findByFirstNameNot("Mary"));
-        final List<Student> reference = Arrays.asList(STUDENT_1, STUDENT_2, STUDENT_3);
+        final List<Student> reference = Arrays.asList(STUDENT_1, STUDENT_2, STUDENT_3, STUDENT_4, STUDENT_5);
 
         assertPeopleEquals(people, reference);
     }
@@ -142,7 +149,7 @@ public class StudentRepositoryIT {
     public void testFindByStartsWithOrContaining() {
         List<Student> people = TestUtils.toList(repository.findByFirstNameStartsWithOrLastNameContaining("Zhen", "C"));
 
-        assertPeopleEquals(people, PEOPLE);
+        assertPeopleEquals(people, Arrays.asList(STUDENT_0, STUDENT_1, STUDENT_2, STUDENT_3));
 
         people = TestUtils.toList(repository.findByFirstNameStartsWithOrLastNameContaining("M", "N"));
 
@@ -219,5 +226,22 @@ public class StudentRepositoryIT {
             .findByLastNameStartsWithOrFirstNameStartsWithAllIgnoreCase(
                 LAST_NAME_0.toLowerCase().substring(0, 2), FIRST_NAME_1.toLowerCase().substring(0, 3)));
         assertPeopleEquals(people, Arrays.asList(STUDENT_0, STUDENT_1));
+    }
+
+    @Test
+    public void testLimitingQuery() {
+        List<Student> people = TestUtils.toList(repository.findFirstByFirstName(FIRST_NAME_4));
+        assertPeopleEquals(people, Arrays.asList(STUDENT_4));
+        people = TestUtils.toList(repository.findFirst1ByFirstName(FIRST_NAME_4));
+        assertPeopleEquals(people, Arrays.asList(STUDENT_4));
+        people = TestUtils.toList(repository.findFirst2ByFirstName(FIRST_NAME_4));
+        assertPeopleEquals(people, Arrays.asList(STUDENT_4, STUDENT_5));
+
+        people = TestUtils.toList(repository.findTopByFirstName(FIRST_NAME_4));
+        assertPeopleEquals(people, Arrays.asList(STUDENT_4));
+        people = TestUtils.toList(repository.findTop1ByFirstName(FIRST_NAME_4));
+        assertPeopleEquals(people, Arrays.asList(STUDENT_4));
+        people = TestUtils.toList(repository.findTop2ByFirstName(FIRST_NAME_4));
+        assertPeopleEquals(people, Arrays.asList(STUDENT_4, STUDENT_5));
     }
 }

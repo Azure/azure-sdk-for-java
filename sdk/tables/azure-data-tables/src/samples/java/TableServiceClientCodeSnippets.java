@@ -4,10 +4,11 @@ package com.azure.data.tables;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.tables.models.Entity;
-import com.azure.data.tables.models.QueryParams;
-import com.azure.data.tables.models.Table;
+import com.azure.data.tables.models.ListEntitiesOptions;
+import com.azure.data.tables.models.ListTablesOptions;
+import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableErrorCode;
+import com.azure.data.tables.models.TableItem;
 import com.azure.data.tables.models.TableStorageException;
 import com.azure.data.tables.models.UpdateMode;
 
@@ -25,7 +26,7 @@ public class TableServiceClientCodeSnippets {
             .connectionString("connectionString")
             .buildClient();
         try {
-            Table officeSuppliesTable = tableServiceClient.createTable("OfficeSupplies");
+            tableServiceClient.createTable("OfficeSupplies");
         } catch (TableStorageException e) {
             if (e.getErrorCode() == TableErrorCode.TABLE_ALREADY_EXISTS) {
                 System.err.println("Create Table Unsuccessful. Table already exists.");
@@ -64,10 +65,10 @@ public class TableServiceClientCodeSnippets {
             .connectionString("connectionString")
             .buildClient();
 
-        QueryParams queryParams = new QueryParams().setFilter("TableName eq OfficeSupplies");
+        ListTablesOptions options = new ListTablesOptions().setFilter("TableName eq OfficeSupplies");
 
         try {
-            PagedIterable<Table> tablePagedIterable = tableServiceClient.listTables(queryParams);
+            PagedIterable<TableItem> tablePagedIterable = tableServiceClient.listTables(options);
         } catch (TableStorageException e) {
             System.err.println("Table Query Unsuccessful. Error: " + e);
         }
@@ -82,10 +83,10 @@ public class TableServiceClientCodeSnippets {
             .tableName("OfficeSupplies")
             .buildClient();
 
-        Entity entity = new Entity("markers", "crayolaMarkers");
+        TableEntity entity = new TableEntity("markers", "crayolaMarkers");
 
         try {
-            entity = tableClient.createEntity(entity);
+            tableClient.createEntity(entity);
         } catch (TableStorageException e) {
             if (e.getErrorCode() == TableErrorCode.ENTITY_ALREADY_EXISTS) {
                 System.err.println("Create Entity Unsuccessful. Entity already exists.");
@@ -109,10 +110,10 @@ public class TableServiceClientCodeSnippets {
         String partitionKey = "markers";
         String rowKey = "crayolaMarkers";
         try {
-            Entity entity = tableClient.getEntity(partitionKey, rowKey);
+            TableEntity entity = tableClient.getEntity(partitionKey, rowKey);
 
-            //ifUnchanged being true means the eTags must match to delete
-            tableClient.deleteEntity(entity, true);
+            //supplying the eTag means the eTags must match to delete
+            tableClient.deleteEntity(partitionKey, rowKey, entity.getETag());
         } catch (TableStorageException e) {
             if (e.getErrorCode() == TableErrorCode.ENTITY_NOT_FOUND) {
                 System.err.println("Delete Entity Unsuccessful. Entity not found.");
@@ -134,7 +135,7 @@ public class TableServiceClientCodeSnippets {
         String partitionKey = "markers";
         String rowKey = "crayolaMarkers";
         try {
-            Entity entity = tableClient.getEntity(partitionKey, rowKey);
+            TableEntity entity = tableClient.getEntity(partitionKey, rowKey);
 
             //default is for UpdateMode is UpdateMode.MERGE, which means it merges if exists; fails if not
             //ifUnchanged being false means the eTags must not match
@@ -160,7 +161,7 @@ public class TableServiceClientCodeSnippets {
         String partitionKey = "markers";
         String rowKey = "crayolaMarkers";
         try {
-            Entity entity = tableClient.getEntity(partitionKey, rowKey);
+            TableEntity entity = tableClient.getEntity(partitionKey, rowKey);
 
             //default is for UpdateMode is UpdateMode.REPLACE, which means it replaces if exists; inserts if not
             //always upsert because if no ifUnchanged boolean present the "*" in request.
@@ -183,11 +184,11 @@ public class TableServiceClientCodeSnippets {
             .tableName("OfficeSupplies")
             .buildClient();
 
-        QueryParams queryParams = new QueryParams()
+        ListEntitiesOptions options = new ListEntitiesOptions()
             .setFilter("Product eq markers")
             .setSelect("Seller, Price");
         try {
-            PagedIterable<Entity> tableEntities = tableClient.listEntities(queryParams);
+            PagedIterable<TableEntity> tableEntities = tableClient.listEntities(options);
         } catch (TableStorageException e) {
             System.err.println("Query Table Entities Unsuccessful. Error: " + e);
         }
@@ -205,7 +206,7 @@ public class TableServiceClientCodeSnippets {
         String partitionKey = "markers";
         String rowKey = "crayolaMarkers";
         try {
-            Entity entity = tableClient.getEntity(partitionKey, rowKey);
+            TableEntity entity = tableClient.getEntity(partitionKey, rowKey);
         } catch (TableStorageException e) {
             System.err.println("Get Entity Unsuccessful. Entity may not exist: " + e);
         }

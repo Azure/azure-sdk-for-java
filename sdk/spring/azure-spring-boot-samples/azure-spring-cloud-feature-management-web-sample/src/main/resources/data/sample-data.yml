@@ -1,0 +1,4 @@
+.appconfig:
+  featureflag/Beta: >-
+    {"id":"Beta","description":"Test
+    Feature","enabled":true,"conditions":{"client_filters":[{"name":"Random","parameters":{"chance":"50"}}]}}

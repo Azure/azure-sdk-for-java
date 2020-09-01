@@ -27,7 +27,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.ManagerBase;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
@@ -41,7 +41,7 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
     // The sdk clients
     private final ResourceManagementClient resourceManagementClient;
     private final FeatureClient featureClient;
-//    private final SubscriptionClientImpl subscriptionClientClient;
+    private final SubscriptionClient subscriptionClient;
     private final PolicyClient policyClient;
     // The collections
     private ResourceGroups resourceGroups;
@@ -51,6 +51,8 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
     private Providers providers;
     private PolicyDefinitions policyDefinitions;
     private PolicyAssignments policyAssignments;
+    private Subscriptions subscriptions;
+    private Tenants tenants;
 
     /**
      * Creates an instance of ResourceManager that exposes resource management API entry points.
@@ -164,7 +166,7 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
             this.sdkContext = new SdkContext();
             this.subscriptionClient = new SubscriptionClientBuilder()
                     .pipeline(httpPipeline)
-                    .endpoint(profile.environment().getResourceManagerEndpoint())
+                    .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                     .buildClient();
         }
 
@@ -191,15 +193,15 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
         @Override
         public ResourceManager withSubscription(String subscriptionId) {
             Objects.requireNonNull(subscriptionId);
-            profile = new AzureProfile(profile.tenantId(), subscriptionId, profile.environment());
+            profile = new AzureProfile(profile.getTenantId(), subscriptionId, profile.getEnvironment());
             return new ResourceManager(httpPipeline, profile, sdkContext);
         }
 
         @Override
         public ResourceManager withDefaultSubscription() {
-            if (profile.subscriptionId() == null) {
+            if (profile.getSubscriptionId() == null) {
                 String subscriptionId = Utils.defaultSubscription(this.subscriptions().list());
-                profile = new AzureProfile(profile.tenantId(), subscriptionId, profile.environment());
+                profile = new AzureProfile(profile.getTenantId(), subscriptionId, profile.getEnvironment());
             }
             return new ResourceManager(httpPipeline, profile, sdkContext);
         }
@@ -210,26 +212,25 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
         super.withResourceManager(this);
         this.resourceManagementClient = new ResourceManagementClientBuilder()
                 .pipeline(httpPipeline)
-                .endpoint(profile.environment().getResourceManagerEndpoint())
-                .subscriptionId(profile.subscriptionId())
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
                 .buildClient();
 
         this.featureClient = new FeatureClientBuilder()
                 .pipeline(httpPipeline)
-                .endpoint(profile.environment().getResourceManagerEndpoint())
-                .subscriptionId(profile.subscriptionId())
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
                 .buildClient();
 
-        // Unread in spot bugs
-//        this.subscriptionClientClient = new SubscriptionClientBuilder()
-//                .pipeline(restClient.getHttpPipeline())
-//                .host(restClient.getBaseUrl().toString())
-//                .buildClient();
+        this.subscriptionClient = new SubscriptionClientBuilder()
+                .pipeline(httpPipeline)
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .buildClient();
 
         this.policyClient = new PolicyClientBuilder()
                 .pipeline(httpPipeline)
-                .endpoint(profile.environment().getResourceManagerEndpoint())
-                .subscriptionId(profile.subscriptionId())
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
                 .buildClient();
     }
 
@@ -301,6 +302,26 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
             policyAssignments = new PolicyAssignmentsImpl(policyClient.getPolicyAssignments());
         }
         return policyAssignments;
+    }
+
+    /**
+     * @return the subscription management API entry point
+     */
+    public Subscriptions subscriptions() {
+        if (subscriptions == null) {
+            subscriptions = new SubscriptionsImpl(subscriptionClient.getSubscriptions());
+        }
+        return subscriptions;
+    }
+
+    /**
+     * @return the tenant management API entry point
+     */
+    public Tenants tenants() {
+        if (tenants == null) {
+            tenants = new TenantsImpl(subscriptionClient.getTenants());
+        }
+        return tenants;
     }
 
     @Override

@@ -1139,6 +1139,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         return new Object[][]{
             {true},
             {false},
+            {null}
         };
     }
 

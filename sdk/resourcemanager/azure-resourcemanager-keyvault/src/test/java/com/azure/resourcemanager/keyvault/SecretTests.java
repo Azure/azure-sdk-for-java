@@ -3,9 +3,9 @@
 
 package com.azure.resourcemanager.keyvault;
 
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.keyvault.models.Secret;
 import com.azure.resourcemanager.keyvault.models.Vault;
-import com.azure.resourcemanager.resources.core.TestBase;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import org.junit.jupiter.api.Assertions;
@@ -13,14 +13,15 @@ import org.junit.jupiter.api.Test;
 
 public class SecretTests extends KeyVaultManagementTest {
 
-    public SecretTests() {
-        super(TestBase.RunCondition.LIVE_ONLY);
-    }
-
     @Test
+    @DoNotRecord
     public void canCRUDSecret() throws Exception {
-        String vaultName = sdkContext.randomResourceName("vault", 20);
-        String secretName = sdkContext.randomResourceName("secret", 20);
+        if (skipInPlayback()) {
+            return;
+        }
+
+        String vaultName = generateRandomResourceName("vault", 20);
+        String secretName = generateRandomResourceName("secret", 20);
 
         Vault vault =
             keyVaultManager

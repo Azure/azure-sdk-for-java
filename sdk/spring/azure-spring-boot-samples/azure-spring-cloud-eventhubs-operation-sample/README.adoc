@@ -1,0 +1,106 @@
+= Spring Cloud Azure Event Hub Operation Code Sample shared library for Java
+
+== Key concepts
+== Getting started
+
+This code sample demonstrates how to use https://github.com/Microsoft/spring-cloud-azure/blob/master/spring-integration-azure/spring-integration-eventhub/src/main/java/com/microsoft/azure/spring/integration/eventhub/EventHubOperation.java[Event Hub Operation].
+
+Running this sample will be charged by Azure.
+You can check the usage and bill at https://azure.microsoft.com/en-us/account/[this link].
+
+We have several ways to config the Azure Event Hub.
+You can choose anyone of them.
+
+=== Method 1: Connection string based usage
+
+1. Create https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-create[Azure Event Hubs].
+Please note `Basic` tier is unsupported.
+
+2. Create https://docs.microsoft.com/en-us/azure/storage/[Azure Storage] for checkpoint use.
+
+3. Update link:src/main/resources/application.properties[application.properties]
+
++
+....
+# Fill event hub namespace connection string copied from portal
+spring.cloud.azure.eventhub.connection-string=[eventhub-namespace-connection-string]
+
+# Fill checkpoint storage account name, accese key and container
+spring.cloud.azure.eventhub.checkpoint-storage-account=[checkpoint-storage-account]
+spring.cloud.azure.eventhub.checkpoint-access-key=[checkpoint-accesskey]
+spring.cloud.azure.eventhub.checkpoint-container=[checkpoint-container]
+....
+
+=== Method 2: Credential file based usage
+
+1. Create Azure credential file.
+Please see https://github.com/Azure/azure-libraries-for-java/blob/master/AUTH.md[how
+to create credential file]
++
+....
+$  az login
+$  az account set --subscription <name or id>
+$  az ad sp create-for-rbac --sdk-auth > my.azureauth
+....
++
+Make sure `my.azureauth` is encoded with UTF-8.
+
+2. Put credential file under `src/main/resources/`.
+
+3. Create https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-create[Azure Event Hubs] and https://docs.microsoft.com/en-us/azure/storage/[Azure Storage].
+Please note event hub `Basic` tier is unsupported.
+Or enable auto create resources feature in link:src/main/resources/application.properties[application.properties]:
++
+....
+spring.cloud.azure.auto-create-resources=true
+
+# Example region is westUS, northchina
+spring.cloud.azure.region=[region]
+....
+
+4. Update credential file based properties in link:src/main/resources/application.properties[application.properties]
++
+....
+# Enter 'my.azureauth' here if following step 1 and 2
+spring.cloud.azure.credential-file-path=[credential-file-path]
+spring.cloud.azure.resource-group=[resource-group]
+
+spring.cloud.azure.eventhub.namespace=[eventhub-namespace]
+spring.cloud.azure.eventhub.checkpoint-storage-account=[checkpoint-storage-account]
+spring.cloud.azure.eventhub.checkpoint-container=[checkpoint-container]
+....
+
+=== How to run
+
+4. Update environment if not is Global in link:src/main/resources/application.properties[application.properties]
+
++
+....
+# Default environment is GLOBAL. Provide your own if in another environment
+# Example environment is China, GLOBAL
+# spring.cloud.azure.environment=[environment]
+....
+
+5. Update event hub name and consumer group in link:src/main/java/com/example/WebController.java#L29[WebController].
+
+6. Run the `mvn clean spring-boot:run` in the root of the code sample to get the app running.
+
+7. Send a POST request
++
+....
+$ curl -X POST http://localhost:8080/messages?message=hello
+....
+
+8. Verify in your app's logs that a similar message was posted:
++
+....
+New message received: 'hello'
+Message 'hello' successfully checkpointed
+....
+
+9. Delete the resources on http://ms.portal.azure.com/[Azure Portal] to avoid unexpected charges.
+
+== Examples
+== Troubleshooting
+== Next steps
+== Contributing
