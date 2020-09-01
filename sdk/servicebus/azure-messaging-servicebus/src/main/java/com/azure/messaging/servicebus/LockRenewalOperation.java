@@ -23,7 +23,7 @@ import java.util.function.Function;
 /**
  * Represents a renewal session or message lock renewal operation that.
  */
-public class LockRenewalOperation implements AutoCloseable {
+class LockRenewalOperation implements AutoCloseable {
     private final ClientLogger logger = new ClientLogger(LockRenewalOperation.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final AtomicReference<OffsetDateTime> lockedUntil = new AtomicReference<>();
@@ -81,7 +81,7 @@ public class LockRenewalOperation implements AutoCloseable {
      *
      * @return the datetime the message or session is locked until.
      */
-    public OffsetDateTime getLockedUntil() {
+    OffsetDateTime getLockedUntil() {
         return lockedUntil.get();
     }
 
@@ -90,7 +90,7 @@ public class LockRenewalOperation implements AutoCloseable {
      *
      * @return The message lock token or {@code null} if a session is being renewed instead.
      */
-    public String getLockToken() {
+    String getLockToken() {
         return isSession ? null : lockToken;
     }
 
@@ -99,7 +99,7 @@ public class LockRenewalOperation implements AutoCloseable {
      *
      * @return The session id or {@code null} if it is not a session renewal.
      */
-    public String getSessionId() {
+    String getSessionId() {
         return isSession ? lockToken : null;
     }
 
@@ -108,7 +108,7 @@ public class LockRenewalOperation implements AutoCloseable {
      *
      * @return The current status of the renewal operation.
      */
-    public LockRenewalStatus getStatus() {
+    LockRenewalStatus getStatus() {
         return status.get();
     }
 
@@ -117,7 +117,7 @@ public class LockRenewalOperation implements AutoCloseable {
      *
      * @return the exception if an error occurred whilst renewing the message or session lock, otherwise {@code null}.
      */
-    public Throwable getThrowable() {
+    Throwable getThrowable() {
         return throwable.get();
     }
 
