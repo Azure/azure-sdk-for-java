@@ -287,7 +287,7 @@ public class PathAsyncClientJavaDocCodeSamples {
         client.updateAccessControlRecursive(pathAccessControlEntries).subscribe(
             response -> System.out.printf("Successful changed file operations: %d",
                 response.getCounters().getChangedFilesCount()));
-        // END: com.azure.storage.file.datalake.DataLakePathAsyncClientWithResponse.updateAccessControlRecursive#PathUpdateAccessControlRecursiveOptions
+        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.updateAccessControlRecursiveWithResponse#PathUpdateAccessControlRecursiveOptions
     }
 
     /**
@@ -334,7 +334,7 @@ public class PathAsyncClientJavaDocCodeSamples {
         client.removeAccessControlRecursive(pathAccessControlEntries).subscribe(
             response -> System.out.printf("Successful changed file operations: %d",
                 response.getCounters().getChangedFilesCount()));
-        // END: com.azure.storage.file.datalake.DataLakePathAsyncClientWithResponse.removeAccessControlRecursive#PathRemoveAccessControlRecursiveOptions
+        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.removeAccessControlRecursiveWithResponse#PathRemoveAccessControlRecursiveOptions
     }
 
     /**
