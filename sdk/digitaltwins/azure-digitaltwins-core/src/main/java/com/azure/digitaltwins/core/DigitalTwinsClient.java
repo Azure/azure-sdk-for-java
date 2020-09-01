@@ -91,6 +91,7 @@ public final class DigitalTwinsClient {
      *
      * @param digitalTwinId The Id of the digital twin.
      * @param clazz The model class to deserialize the response with.
+     * @param <T> The generic type to deserialize the digital twin with.
      * @param digitalTwin The application/json digital twin to create.
      * @return The deserialized application/json object representing the digital twin created.
      */
@@ -106,6 +107,7 @@ public final class DigitalTwinsClient {
      * @param digitalTwinId The Id of the digital twin.
      * @param digitalTwin The application/json digital twin to create.
      * @param clazz The model class to deserialize the response with.
+     * @param <T> The generic type to deserialize the digital twin with.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link DigitalTwinsResponse} containing the deserialized application/json object representing the digital twin created.
      */
