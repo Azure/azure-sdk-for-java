@@ -205,9 +205,6 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
 
     @Test
     public void canCRUDLinkedServers() throws Exception {
-        if (isPlaybackMode()) {
-            return; // TODO: fix playback random fail
-        }
 
         RedisCache rgg =
             redisManager

@@ -1115,17 +1115,11 @@ public class AzureTests extends ResourceManagerTestBase {
 
     @Test
     public void testDnsZones() throws Exception {
-        if (isPlaybackMode()) {
-            return; // TODO: fix playback random fail
-        }
         new TestDns().runTest(azure.dnsZones(), azure.resourceGroups());
     }
 
     @Test
     public void testPrivateDnsZones() throws Exception {
-        if (isPlaybackMode()) {
-            return; // TODO: fix playback random fail
-        }
         new TestPrivateDns().runTest(azure.privateDnsZones(), azure.resourceGroups());
     }
 

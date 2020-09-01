@@ -120,9 +120,6 @@ public class DnsZoneRecordSetETagTests extends ResourceManagerTestBase {
 
     @Test
     public void canCreateRecordSetsWithDefaultETag() throws Exception {
-        if (isPlaybackMode()) {
-            return; // TODO: fix playback random fail
-        }
         final Region region = Region.US_EAST;
         final String topLevelDomain = "www.contoso" + generateRandomResourceName("z", 10) + ".com";
 
