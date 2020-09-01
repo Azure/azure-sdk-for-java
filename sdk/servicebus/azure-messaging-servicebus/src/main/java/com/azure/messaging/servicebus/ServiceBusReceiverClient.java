@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 /**
  * A <b>synchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage} from a specific queue or
@@ -259,8 +260,11 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@code lockToken} is an empty string.
      * @throws IllegalStateException if the receiver is a session receiver or the receiver is disposed.
      */
-    public LockRenewalOperation getAutoRenewMessageLock(String lockToken, Duration maxLockRenewalDuration) {
-        return asyncClient.getAutoRenewMessageLock(lockToken, maxLockRenewalDuration);
+    public void getAutoRenewMessageLock(String lockToken, Duration maxLockRenewalDuration, Consumer<Throwable> onError) {
+        final Consumer<Throwable> throwableConsumer = onError != null ? onError : e -> {
+
+        };
+        asyncClient.getAutoRenewMessageLock(lockToken, maxLockRenewalDuration);
     }
 
     /**
@@ -273,7 +277,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@code lockToken} is an empty string.
      * @throws IllegalStateException if the receiver is a non-session receiver or the receiver is disposed.
      */
-    public LockRenewalOperation getAutoRenewSessionLock(String sessionId, Duration maxLockRenewalDuration) {
+    public void getAutoRenewSessionLock(String sessionId, Duration maxLockRenewalDuration, Consumer<Throwable> onError) {
         return asyncClient.getAutoRenewSessionLock(sessionId, maxLockRenewalDuration);
     }
 

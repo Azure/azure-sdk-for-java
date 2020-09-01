@@ -73,7 +73,9 @@ class LockRenewalOperation implements AutoCloseable {
         }
 
         this.lockedUntil.set(lockedUntil);
+
         final Flux<Instant> renewLockOperation = getRenewLockOperation(lockedUntil, maxLockRenewalDuration);
+        this.completionMono = renewLockOperation.then();
         this.subscription = renewLockOperation.subscribe(until -> this.lockedUntil.set(until),
             error -> {
                 logger.error("token[{}]. Error occurred while renewing lock token.", error);
@@ -87,8 +89,6 @@ class LockRenewalOperation implements AutoCloseable {
 
                 cancellationProcessor.onComplete();
             });
-
-        this.completionMono = renewLockOperation.then();
     }
 
     /**
