@@ -4,19 +4,19 @@
     "Uri" : "https://REDACTED.azure-api.net/text/analytics/v3.1-preview.2//entities/recognition/general",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "12fde0e1-fd48-43d2-9f98-9d2ebecb619a",
+      "x-ms-client-request-id" : "d8e39933-b7b4-4b1a-a5c0-e4b8563d94bc",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "5",
+      "x-envoy-upstream-service-time" : "4",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "77a811cc-9f36-430f-a719-a1027cbd8b90",
+      "apim-request-id" : "dd302e52-4716-46ba-97d1-023aecede465",
       "retry-after" : "0",
       "StatusCode" : "400",
       "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"message\":\"Invalid document in request.\",\"innererror\":{\"code\":\"InvalidDocument\",\"message\":\"At least one document is missing an Id attribute.\"}}}",
-      "Date" : "Tue, 01 Sep 2020 05:38:36 GMT",
+      "Date" : "Tue, 01 Sep 2020 06:14:51 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

@@ -4,7 +4,7 @@
     "Uri" : "https://REDACTED.azure-api.net/text/analytics/v3.1-preview.2//languages",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "b4c0f68e-450d-442b-ba8b-499915f2f436",
+      "x-ms-client-request-id" : "efae7fbe-55cf-4b26-8592-45f9c021ef90",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -13,11 +13,11 @@
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
       "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1",
-      "apim-request-id" : "2d572ac2-49e4-4ea3-b635-592a42bfe45a",
+      "apim-request-id" : "63266073-b00e-4161-87e1-8846c1172735",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"documents\":[{\"id\":\"0\",\"detectedLanguage\":{\"name\":\"Spanish\",\"iso6391Name\":\"es\",\"confidenceScore\":1.0},\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-07-01\"}",
-      "Date" : "Tue, 01 Sep 2020 05:38:32 GMT",
+      "Date" : "Tue, 01 Sep 2020 06:14:47 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

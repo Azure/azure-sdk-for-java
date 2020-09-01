@@ -4,20 +4,20 @@
     "Uri" : "https://REDACTED.azure-api.net/text/analytics/v3.1-preview.2//sentiment",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "d306a147-7152-4e8d-b29d-ed3b90872d3f",
+      "x-ms-client-request-id" : "c057e80e-5a57-42dc-9469-2dfa25c91aba",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "105",
+      "x-envoy-upstream-service-time" : "206",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
       "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1",
-      "apim-request-id" : "178c918c-c35a-4e0b-bfd2-9beb229dfa67",
+      "apim-request-id" : "6d7782f2-7989-4d93-9c4a-e7466926b0a5",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"documents\":[{\"id\":\"0\",\"sentiment\":\"mixed\",\"confidenceScores\":{\"positive\":0.5,\"neutral\":0.0,\"negative\":0.5},\"sentences\":[{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"neutral\":0.0,\"negative\":1.0},\"offset\":0,\"length\":31,\"text\":\"The hotel was dark and unclean.\"},{\"sentiment\":\"positive\",\"confidenceScores\":{\"positive\":1.0,\"neutral\":0.0,\"negative\":0.0},\"offset\":32,\"length\":35,\"text\":\"The restaurant had amazing gnocchi.\"}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-04-01\"}",
-      "Date" : "Tue, 01 Sep 2020 05:38:38 GMT",
+      "Date" : "Tue, 01 Sep 2020 06:14:54 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

@@ -4,7 +4,7 @@
     "Uri" : "https://REDACTED.azure-api.net/text/analytics/v3.1-preview.2//sentiment",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "2e138250-1af5-46cd-b6e0-b27f7c89ff7f",
+      "x-ms-client-request-id" : "208b2306-5b68-4fc0-8674-39fefac24071",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -12,11 +12,11 @@
       "x-envoy-upstream-service-time" : "5",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "6c7ebe6c-68fe-4248-bf9b-12910332325d",
+      "apim-request-id" : "316f5103-3b95-490f-b47b-231e8f7df047",
       "retry-after" : "0",
       "StatusCode" : "400",
       "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"message\":\"Invalid document in request.\",\"innererror\":{\"code\":\"InvalidDocument\",\"message\":\"At least one document is missing an Id attribute.\"}}}",
-      "Date" : "Tue, 01 Sep 2020 05:38:34 GMT",
+      "Date" : "Tue, 01 Sep 2020 06:14:50 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

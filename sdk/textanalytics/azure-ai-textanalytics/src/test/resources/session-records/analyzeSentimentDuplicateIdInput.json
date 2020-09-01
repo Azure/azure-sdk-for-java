@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.azure-api.net/text/analytics/v3.1-preview.2//sentiment",
+    "Uri" : "https://REDACTED.azure-api.net/text/analytics/v3.1-preview.2//sentiment?showStats=false&opinionMining=false",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "1b9bb117-94c1-4dce-bbae-c3178f230bb8",
+      "x-ms-client-request-id" : "256847f5-efb4-40b9-b51c-a88cae4e76e2",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -12,11 +12,11 @@
       "x-envoy-upstream-service-time" : "5",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "2fe811ac-7699-4de6-b462-f54fc521163b",
+      "apim-request-id" : "3db31293-1719-4b68-b699-8144b55a8a1c",
       "retry-after" : "0",
       "StatusCode" : "400",
       "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"message\":\"Invalid document in request.\",\"innererror\":{\"code\":\"InvalidDocument\",\"message\":\"Request contains duplicated Ids. Make sure each document has a unique Id.\"}}}",
-      "Date" : "Tue, 01 Sep 2020 05:38:33 GMT",
+      "Date" : "Tue, 01 Sep 2020 06:14:49 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

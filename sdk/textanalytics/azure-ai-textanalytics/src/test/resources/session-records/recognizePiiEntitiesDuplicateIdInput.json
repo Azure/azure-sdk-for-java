@@ -4,7 +4,7 @@
     "Uri" : "https://REDACTED.azure-api.net/text/analytics/v3.1-preview.2//entities/recognition/pii",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f03b845d-22c3-4bbb-b771-a139a1c28305",
+      "x-ms-client-request-id" : "b5ed6bd4-6fcf-47cd-84ae-73d08d40fa2d",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -12,11 +12,11 @@
       "x-envoy-upstream-service-time" : "5",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "2e4f5794-8bb5-4a8b-8cea-beab6d2ebd95",
+      "apim-request-id" : "bbd8e25d-3284-425b-a53b-2ffdc3035a5a",
       "retry-after" : "0",
       "StatusCode" : "400",
       "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"message\":\"Invalid document in request.\",\"innererror\":{\"code\":\"InvalidDocument\",\"message\":\"Request contains duplicated Ids. Make sure each document has a unique Id.\"}}}",
-      "Date" : "Tue, 01 Sep 2020 05:38:33 GMT",
+      "Date" : "Tue, 01 Sep 2020 06:14:49 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

@@ -47,6 +47,10 @@ import com.azure.resourcemanager.cosmos.CosmosManager;
 import com.azure.resourcemanager.cosmos.models.CosmosDBAccounts;
 import com.azure.resourcemanager.dns.DnsZoneManager;
 import com.azure.resourcemanager.dns.models.DnsZones;
+import com.azure.resourcemanager.eventhubs.EventHubsManager;
+import com.azure.resourcemanager.eventhubs.models.EventHubDisasterRecoveryPairings;
+import com.azure.resourcemanager.eventhubs.models.EventHubNamespaces;
+import com.azure.resourcemanager.eventhubs.models.EventHubs;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
 import com.azure.resourcemanager.keyvault.models.Vaults;
 import com.azure.resourcemanager.monitor.MonitorManager;
@@ -83,7 +87,7 @@ import com.azure.resourcemanager.redis.models.RedisCaches;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
@@ -132,7 +136,7 @@ public final class Azure {
     //    private final AuthorizationManager authorizationManager;
     private final MSIManager msiManager;
     private final MonitorManager monitorManager;
-    //    private final EventHubManager eventHubManager;
+    private final EventHubsManager eventHubsManager;
     private final AppPlatformManager appPlatformManager;
     private final PrivateDnsZoneManager privateDnsZoneManager;
     private final Authenticated authenticated;
@@ -270,9 +274,9 @@ public final class Azure {
             this.resourceManagerAuthenticated = ResourceManager.authenticate(httpPipeline, profile);
             this.authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile);
             this.httpPipeline = httpPipeline;
-            this.tenantId = profile.tenantId();
-            this.subscriptionId = profile.subscriptionId();
-            this.environment = profile.environment();
+            this.tenantId = profile.getTenantId();
+            this.subscriptionId = profile.getSubscriptionId();
+            this.environment = profile.getEnvironment();
             this.sdkContext = new SdkContext();
         }
 
@@ -381,12 +385,12 @@ public final class Azure {
         //        this.authorizationManager = AuthorizationManager.authenticate(restClient, subscriptionId, sdkContext);
         this.msiManager = MSIManager.authenticate(httpPipeline, profile, sdkContext);
         this.monitorManager = MonitorManager.authenticate(httpPipeline, profile, sdkContext);
-        //        this.eventHubManager = EventHubManager.authenticate(restClient, subscriptionId, sdkContext);
+        this.eventHubsManager = EventHubsManager.authenticate(httpPipeline, profile, sdkContext);
         this.appPlatformManager = AppPlatformManager.authenticate(httpPipeline, profile, sdkContext);
         this.privateDnsZoneManager = PrivateDnsZoneManager.authenticate(httpPipeline, profile, sdkContext);
         this.authenticated = authenticated;
-        this.subscriptionId = profile.subscriptionId();
-        this.tenantId = profile.tenantId();
+        this.subscriptionId = profile.getSubscriptionId();
+        this.tenantId = profile.getTenantId();
     }
 
     /** @return the currently selected subscription ID this client is authenticated to work with */
@@ -768,30 +772,27 @@ public final class Azure {
     public AutoscaleSettings autoscaleSettings() {
         return this.monitorManager.autoscaleSettings();
     }
-    //
-    //    /**
-    //     * @return entry point to managing event hub namespaces.
-    //     */
-    //    @Beta(SinceVersion.V1_7_0)
-    //    public EventHubNamespaces eventHubNamespaces() {
-    //        return this.eventHubManager.namespaces();
-    //    }
-    //
-    //    /**
-    //     * @return entry point to managing event hubs.
-    //     */
-    //    @Beta(SinceVersion.V1_7_0)
-    //    public EventHubs eventHubs() {
-    //        return this.eventHubManager.eventHubs();
-    //    }
-    //
-    //    /**
-    //     * @return entry point to managing event hub namespace geo disaster recovery.
-    //     */
-    //    @Beta(SinceVersion.V1_7_0)
-    //    public EventHubDisasterRecoveryPairings eventHubDisasterRecoveryPairings() {
-    //        return this.eventHubManager.eventHubDisasterRecoveryPairings();
-    //    }
+
+    /**
+     * @return entry point to managing event hub namespaces.
+     */
+    public EventHubNamespaces eventHubNamespaces() {
+        return this.eventHubsManager.namespaces();
+    }
+
+    /**
+     * @return entry point to managing event hubs.
+     */
+    public EventHubs eventHubs() {
+        return this.eventHubsManager.eventHubs();
+    }
+
+    /**
+     * @return entry point to managing event hub namespace geo disaster recovery.
+     */
+    public EventHubDisasterRecoveryPairings eventHubDisasterRecoveryPairings() {
+        return this.eventHubsManager.eventHubDisasterRecoveryPairings();
+    }
 
     /** @return entry point to manage compute galleries. */
     public Galleries galleries() {

@@ -4,19 +4,19 @@
     "Uri" : "https://REDACTED.azure-api.net/text/analytics/v3.1-preview.2//entities/recognition/pii",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "55c92735-36c1-4e6f-ba6a-6753f895c4a1",
+      "x-ms-client-request-id" : "8ab62a2b-4265-4c0d-9e67-f35b787a7976",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "5",
+      "x-envoy-upstream-service-time" : "6",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "f35e5d83-1716-454d-9762-af7c06d5552e",
+      "apim-request-id" : "dc35794f-8cf3-4f2a-94d0-61266818fbaf",
       "retry-after" : "0",
       "StatusCode" : "400",
       "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"message\":\"Invalid document in request.\",\"innererror\":{\"code\":\"InvalidDocumentBatch\",\"message\":\"Batch request contains too many records. Max 5 records are permitted.\"}}}",
-      "Date" : "Tue, 01 Sep 2020 05:38:37 GMT",
+      "Date" : "Tue, 01 Sep 2020 06:14:54 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

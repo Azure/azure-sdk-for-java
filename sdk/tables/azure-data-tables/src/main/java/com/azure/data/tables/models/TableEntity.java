@@ -5,14 +5,13 @@ package com.azure.data.tables.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.tables.implementation.TableEntityHelper;
-import com.azure.data.tables.implementation.TableConstants;
+import com.azure.data.tables.implementation.TablesConstants;
+import com.azure.data.tables.implementation.ModelHelper;
+
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
-import static com.azure.data.tables.implementation.TableConstants.PARTITION_KEY;
-import static com.azure.data.tables.implementation.TableConstants.ROW_KEY;
 
 /**
  * table entity class
@@ -22,13 +21,17 @@ public class TableEntity {
     private final ClientLogger logger = new ClientLogger(TableEntity.class);
     private final String partitionKey;
     private final String rowKey;
-    private final Map<String, Object> properties = new HashMap<>();
+    private final Map<String, Object> properties;
 
-    private String eTag;
+    private final OffsetDateTime timestamp;
+    private final String eTag;
+    private final String odataType;
+    private final String odataId;
+    private final String odataEditLink;
 
     static {
         // This is used by classes in different packages to get access to private and package-private methods.
-        TableEntityHelper.setEntityAccessor((entity, name) -> entity.setETag(name));
+        ModelHelper.setEntityCreator(TableEntity::new);
     }
 
     /**
@@ -38,12 +41,80 @@ public class TableEntity {
      * @param rowKey the row key
      */
     public TableEntity(String partitionKey, String rowKey) {
-        this.rowKey = Objects.requireNonNull(rowKey, "'rowKey' cannot be null.");
-        this.partitionKey = Objects.requireNonNull(partitionKey, "'partitionKey' cannot be null.");
-        Objects.requireNonNull(properties, "'properties' cannot be null.");
+        if (partitionKey == null || partitionKey.isEmpty()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+                "'%s' is an empty value.", TablesConstants.PARTITION_KEY)));
+        }
+        this.partitionKey = partitionKey;
 
-        properties.put(PARTITION_KEY, partitionKey);
-        properties.put(TableConstants.ROW_KEY, rowKey);
+        if (rowKey == null || rowKey.isEmpty()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+                "'%s' is an empty value.", TablesConstants.ROW_KEY)));
+        }
+        this.rowKey = rowKey;
+
+        this.timestamp = null;
+        this.eTag = null;
+        this.odataEditLink = null;
+        this.odataId = null;
+        this.odataType = null;
+
+        this.properties = new HashMap<>();
+        properties.put(TablesConstants.PARTITION_KEY, partitionKey);
+        properties.put(TablesConstants.ROW_KEY, rowKey);
+    }
+
+    TableEntity(Map<String, Object> properties) {
+        Object partitionKey =  properties.get(TablesConstants.PARTITION_KEY);
+        if (partitionKey != null && (!(partitionKey instanceof String) || ((String) partitionKey).isEmpty())) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+                "'%s' is an empty value or is of the wrong type.", TablesConstants.PARTITION_KEY)));
+        }
+        this.partitionKey = (String) partitionKey;
+
+        Object rowKey = properties.get(TablesConstants.ROW_KEY);
+        if (rowKey != null && (!(rowKey instanceof String) || ((String) rowKey).isEmpty())) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+                "'%s' is an empty value or is of the wrong type.", TablesConstants.ROW_KEY)));
+        }
+        this.rowKey = (String) rowKey;
+
+        Object timestamp = properties.get(TablesConstants.TIMESTAMP_KEY);
+        if (timestamp != null && !(timestamp instanceof OffsetDateTime)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+                "'%s' value is of the wrong type.", TablesConstants.TIMESTAMP_KEY)));
+        }
+        this.timestamp = (OffsetDateTime) timestamp;
+
+        Object eTag = properties.get(TablesConstants.ODATA_ETAG_KEY);
+        if (eTag != null && !(eTag instanceof String)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+                "'%s' value is of the wrong type.", TablesConstants.ODATA_ETAG_KEY)));
+        }
+        this.eTag = (String) eTag;
+
+        Object odataEditLink = properties.get(TablesConstants.ODATA_EDIT_LINK_KEY);
+        if (odataEditLink != null && !(odataEditLink instanceof String)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+                "'%s' value is of the wrong type.", TablesConstants.ODATA_EDIT_LINK_KEY)));
+        }
+        this.odataEditLink = (String) odataEditLink;
+
+        Object odataId = properties.get(TablesConstants.ODATA_ID_KEY);
+        if (odataId != null && !(odataId instanceof String)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+                "'%s' value is of the wrong type.", TablesConstants.ODATA_ID_KEY)));
+        }
+        this.odataId = (String) odataId;
+
+        Object odataType = properties.get(TablesConstants.ODATA_TYPE_KEY);
+        if (odataType != null && !(odataType instanceof String)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+                "'%s' value is of the wrong type.", TablesConstants.ODATA_TYPE_KEY)));
+        }
+        this.odataType = (String) odataType;
+
+        this.properties = properties;
     }
 
     /**
@@ -67,12 +138,12 @@ public class TableEntity {
     public TableEntity addProperty(String key, Object value) {
         Objects.requireNonNull(key, "'key' cannot be null.");
 
-        if (PARTITION_KEY.equals(key)) {
+        if (TablesConstants.PARTITION_KEY.equals(key)) {
             throw logger.logExceptionAsError(
-                new IllegalArgumentException(PARTITION_KEY + " cannot be set after object creation."));
-        } else if (ROW_KEY.equals(key)) {
+                new IllegalArgumentException(TablesConstants.PARTITION_KEY + " cannot be set after object creation."));
+        } else if (TablesConstants.ROW_KEY.equals(key)) {
             throw logger.logExceptionAsError(
-                new IllegalArgumentException(ROW_KEY + " cannot be set after object creation."));
+                new IllegalArgumentException(TablesConstants.ROW_KEY + " cannot be set after object creation."));
         }
 
         properties.put(key, value);
@@ -98,6 +169,15 @@ public class TableEntity {
     }
 
     /**
+     * gets the Timestamp
+     *
+     * @return the Timestamp for the entity
+     */
+    public OffsetDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    /**
      * gets the etag
      *
      * @return the etag for the entity
@@ -107,11 +187,29 @@ public class TableEntity {
     }
 
     /**
-     * Sets the ETag on the Entity.
+     * returns the type of this entity
      *
-     * @param eTag ETag to set.
+     * @return type
      */
-    void setETag(String eTag) {
-        this.eTag = eTag;
+    String getOdataType() {
+        return odataType;
+    }
+
+    /**
+     * returns the ID of this entity
+     *
+     * @return ID
+     */
+    String getOdataId() {
+        return odataId;
+    }
+
+    /**
+     * returns the edit link of this entity
+     *
+     * @return edit link
+     */
+    String getOdataEditLink() {
+        return odataEditLink;
     }
 }

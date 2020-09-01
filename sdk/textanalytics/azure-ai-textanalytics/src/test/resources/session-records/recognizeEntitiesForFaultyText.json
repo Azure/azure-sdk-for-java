@@ -4,20 +4,20 @@
     "Uri" : "https://REDACTED.azure-api.net/text/analytics/v3.1-preview.2//entities/recognition/general",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "a3170f80-3d48-44fa-9b89-9ab77b085959",
+      "x-ms-client-request-id" : "b4900447-c2a4-4f4e-8696-f1b142cffacf",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "61",
+      "x-envoy-upstream-service-time" : "62",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
       "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1",
-      "apim-request-id" : "3e918e4c-9538-4c26-bbd8-0637eca5f3dd",
+      "apim-request-id" : "e2232377-29c9-4a06-980b-6cd7b69421c8",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"documents\":[{\"id\":\"0\",\"entities\":[],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-04-01\"}",
-      "Date" : "Tue, 01 Sep 2020 05:38:37 GMT",
+      "Date" : "Tue, 01 Sep 2020 06:14:53 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

@@ -46,7 +46,7 @@ public final class Utility {
      *
      * @param documents A list of documents.
      *
-     * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
      */
     public static void inputDocumentsValidation(Iterable<?> documents) {

@@ -4,7 +4,7 @@
     "Uri" : "https://REDACTED.azure-api.net/text/analytics/v3.1-preview.2//entities/recognition/general",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "8fa6fdad-3abc-49cc-a92f-559feba91c1e",
+      "x-ms-client-request-id" : "87d04faf-e3d8-44cf-aee1-89d614112486",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -12,11 +12,11 @@
       "x-envoy-upstream-service-time" : "2",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "5675d6fa-300d-429e-869f-f0c91e450a5f",
+      "apim-request-id" : "936eccbc-00ac-4f83-b355-81878dd83529",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"documents\":[],\"errors\":[{\"id\":\"2\",\"error\":{\"code\":\"InvalidArgument\",\"message\":\"Invalid document in request.\",\"innererror\":{\"code\":\"InvalidDocument\",\"message\":\"Document text is empty.\"}}}],\"modelVersion\":\"2020-04-01\"}",
-      "Date" : "Tue, 01 Sep 2020 05:38:34 GMT",
+      "Date" : "Tue, 01 Sep 2020 06:14:50 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
