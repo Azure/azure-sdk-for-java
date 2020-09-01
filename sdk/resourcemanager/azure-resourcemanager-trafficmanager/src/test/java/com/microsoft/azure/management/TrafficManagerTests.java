@@ -32,7 +32,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 public class TrafficManagerTests extends ResourceManagerTestBase {
-    private static String RG_NAME = null;
+    private String rgName = null;
 
     protected ResourceManager resourceManager;
     protected TrafficManager trafficManager;
@@ -65,8 +65,8 @@ public class TrafficManagerTests extends ResourceManagerTestBase {
 
     @Override
     protected void cleanUpResources() {
-        if (RG_NAME != null) {
-            resourceManager.resourceGroups().beginDeleteByName(RG_NAME);
+        if (rgName != null) {
+            resourceManager.resourceGroups().beginDeleteByName(rgName);
         }
     }
 
@@ -86,7 +86,7 @@ public class TrafficManagerTests extends ResourceManagerTestBase {
 
     @Test
     public void canCreateUpdateProfileWithGeographicEndpoint() {
-        RG_NAME = generateRandomResourceName("tmergtest", 15);
+        rgName = generateRandomResourceName("tmergtest", 15);
         final String tmProfileName = generateRandomResourceName("tmpr", 15);
         final String tmProfileDnsLabel = generateRandomResourceName("tmdns", 15);
 
@@ -111,7 +111,7 @@ public class TrafficManagerTests extends ResourceManagerTestBase {
         Assertions.assertNotNull(bangladesh);
 
         TrafficManagerProfile profile = this.trafficManager.profiles().define(tmProfileName)
-                .withNewResourceGroup(RG_NAME, Region.US_EAST)
+                .withNewResourceGroup(rgName, Region.US_EAST)
                 .withLeafDomainLabel(tmProfileDnsLabel)
                 .withGeographicBasedRouting()
                 .defineExternalTargetEndpoint("external-ep-1")
@@ -146,7 +146,7 @@ public class TrafficManagerTests extends ResourceManagerTestBase {
 
     @Test
     public void canCreateTrafficManagerWithSubnetRouting() {
-        RG_NAME = generateRandomResourceName("tmergtest", 15);
+        rgName = generateRandomResourceName("tmergtest", 15);
         final String tmProfileName = generateRandomResourceName("tmpr", 15);
         final String tmProfileDnsLabel = generateRandomResourceName("tmdns", 15);
 
@@ -157,7 +157,7 @@ public class TrafficManagerTests extends ResourceManagerTestBase {
         subnetRange.withFirst("25.26.27.28").withLast("29.30.31.32");
 
         TrafficManagerProfile profile = this.trafficManager.profiles().define(tmProfileName)
-                .withNewResourceGroup(RG_NAME, Region.US_EAST)
+                .withNewResourceGroup(rgName, Region.US_EAST)
                 .withLeafDomainLabel(tmProfileDnsLabel)
                 .withTrafficRoutingMethod(TrafficRoutingMethod.SUBNET)
                 .defineExternalTargetEndpoint("external-ep-1")
