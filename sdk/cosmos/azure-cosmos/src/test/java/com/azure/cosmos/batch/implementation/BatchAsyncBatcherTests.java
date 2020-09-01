@@ -141,7 +141,9 @@ public class BatchAsyncBatcherTests {
         throw expectedException;
     }
 
-    private void reBatchAsync(ItemBatchOperation<?> operation)  {
+    private CompletableFuture<Void> reBatchAsync(ItemBatchOperation<?> operation)  {
+        return CompletableFuture.runAsync(() -> {
+        });
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT, expectedExceptions = IllegalArgumentException.class)
@@ -345,7 +347,7 @@ public class BatchAsyncBatcherTests {
         operation1.attachContext(new ItemBatchOperationContext("", retryPolicy1));
         operation2.attachContext(new ItemBatchOperationContext("", retryPolicy2));
 
-        BatchAsyncBatcherRetrier retryDelegate = Mockito.mock(BatchAsyncBatcherRetrier.class);
+        BatchAsyncBatcherRetrier retryDelegate = Mockito.mock(BatchAsyncBatcherRetrier.class, Mockito.RETURNS_DEEP_STUBS);
 
         BatchAsyncBatcher batchAsyncBatcher = new BatchAsyncBatcher(2, 1000, this::executorWithSplit, retryDelegate);
         assertTrue(batchAsyncBatcher.tryAdd(operation1));
@@ -372,7 +374,7 @@ public class BatchAsyncBatcherTests {
         operation1.attachContext(new ItemBatchOperationContext(""));
         operation2.attachContext(new ItemBatchOperationContext(""));
 
-        BatchAsyncBatcherRetrier retryDelegate = Mockito.mock(BatchAsyncBatcherRetrier.class);
+        BatchAsyncBatcherRetrier retryDelegate = Mockito.mock(BatchAsyncBatcherRetrier.class, Mockito.RETURNS_DEEP_STUBS);
         BatchAsyncBatcherExecutor executorDelegate = Mockito.mock(BatchAsyncBatcherExecutor.class);
 
         BatchAsyncBatcherThatOverflows batchAsyncBatcher = new BatchAsyncBatcherThatOverflows(2, 1000, executorDelegate, retryDelegate);

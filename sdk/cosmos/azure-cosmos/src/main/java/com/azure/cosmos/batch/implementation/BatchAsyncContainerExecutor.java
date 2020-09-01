@@ -42,7 +42,7 @@ import static com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper
  */
 public class BatchAsyncContainerExecutor implements AutoCloseable {
 
-    private static final int DEFAULT_MAX_DEGREE_OF_CONCURRENCY = 50;
+    private static final int DEFAULT_MAX_DEGREE_OF_CONCURRENCY = 150;
     private final HashedWheelTimer timer = new HashedWheelTimer();
     private final ConcurrentHashMap<String, Semaphore> limiters = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, BatchAsyncStreamer> streamers = new ConcurrentHashMap<>();
@@ -78,7 +78,7 @@ public class BatchAsyncContainerExecutor implements AutoCloseable {
         CompletableFuture<TransactionalBatchOperationResult<?>> future = this.validateAndMaterializeOperation(operation, options)
             .thenComposeAsync(
                 t -> this.resolvePartitionKeyRangeIdAsync(operation)
-                    .thenCompose(
+                    .toFuture().thenCompose(
                         (String resolvedPartitionKeyRangeId) -> {
 
                             BatchAsyncStreamer streamer = this.getOrAddStreamerForPartitionKeyRange(resolvedPartitionKeyRangeId);
@@ -142,10 +142,10 @@ public class BatchAsyncContainerExecutor implements AutoCloseable {
                 throttlingRetryOptions.getMaxRetryWaitTime()));
     }
 
-    private void reBatchAsync(ItemBatchOperation<?> operation) {
+    private CompletableFuture<Void> reBatchAsync(ItemBatchOperation<?> operation) {
 
-        CompletableFuture.runAsync(() -> {
-            this.resolvePartitionKeyRangeIdAsync(operation).thenAccept(
+        return CompletableFuture.runAsync(() -> {
+            this.resolvePartitionKeyRangeIdAsync(operation).subscribe(
                 (String resolvedPartitionKeyRangeId) -> {
                     BatchAsyncStreamer streamer = this.getOrAddStreamerForPartitionKeyRange(resolvedPartitionKeyRangeId);
                     streamer.add(operation);
@@ -153,7 +153,7 @@ public class BatchAsyncContainerExecutor implements AutoCloseable {
         });
     }
 
-    private CompletableFuture<String> resolvePartitionKeyRangeIdAsync(final ItemBatchOperation<?> operation) {
+    private Mono<String> resolvePartitionKeyRangeIdAsync(final ItemBatchOperation<?> operation) {
 
         checkNotNull(operation, "expected non-null operation");
 
@@ -170,15 +170,12 @@ public class BatchAsyncContainerExecutor implements AutoCloseable {
             throw new IllegalStateException("EPK is not supported");
         }
 
-        String pkRangeId = null;
-        DocumentCollection collection = this.container.getCollectionInfoAsync().block();
-
-        if (collection != null) {
+        Mono<String> pkRangeIdMono = this.container.getCollectionInfoAsync().flatMap(collection -> {
             PartitionKeyDefinition definition = collection.getPartitionKey();
             PartitionKeyInternal partitionKeyInternal = getPartitionKeyInternal(operation, definition);
             operation.setPartitionKeyJson(partitionKeyInternal.toJson());
 
-            pkRangeId = this.docClientWrapper.getPartitionKeyRangeCache()
+            return this.docClientWrapper.getPartitionKeyRangeCache()
                 .tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(null), collection.getResourceId(), null, null)
                 .map((Utils.ValueHolder<CollectionRoutingMap> routingMap) -> {
 
@@ -186,10 +183,10 @@ public class BatchAsyncContainerExecutor implements AutoCloseable {
                         getEffectivePartitionKeyString(
                             partitionKeyInternal,
                             definition)).getId();
-                }).block();
-        }
+                });
+        });
 
-        return CompletableFuture.completedFuture(pkRangeId);
+        return pkRangeIdMono;
     }
 
     private static void validateOperationEpk(

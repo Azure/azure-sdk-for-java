@@ -73,7 +73,9 @@ public class BatchAsyncStreamerTests {
         throw expectedException;
      }
 
-    private void reBatchAsync(ItemBatchOperation<?> operation) {
+    private CompletableFuture<Void> reBatchAsync(ItemBatchOperation<?> operation)  {
+        return CompletableFuture.runAsync(() -> {
+        });
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT, expectedExceptions = IllegalArgumentException.class)

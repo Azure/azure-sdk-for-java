@@ -60,7 +60,7 @@ public final class PartitionKeyRangeServerBatchRequest extends ServerBatchReques
         request.setShouldContinueOnError(true);
 
         return CompletableFuture.completedFuture(request.createBodyStreamAsync(operations, ensureContinuousOperationIndexes))
-                .thenApplyAsync(pendingOperations -> new ServerOperationBatchRequest(request, pendingOperations));
+                .thenApply(pendingOperations -> new ServerOperationBatchRequest(request, pendingOperations));
     }
 
     /**

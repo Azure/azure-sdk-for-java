@@ -1153,7 +1153,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return addPartitionKeyInformation(request, content, document, options, collectionObs);
     }
 
-    private Mono<RxDocumentServiceRequest> getBatchDocumentRequest(DocumentClientRetryPolicy requestRetryPolicy,
+    private RxDocumentServiceRequest getBatchDocumentRequest(DocumentClientRetryPolicy requestRetryPolicy,
                                                                    String documentCollectionLink,
                                                                    ServerBatchRequest serverBatchRequest,
                                                                    RequestOptions options,
@@ -1189,7 +1189,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
         }
 
-        return Mono.just(addBatchHeaders(request, serverBatchRequest));
+        return addBatchHeaders(request, serverBatchRequest);
     }
 
     private RxDocumentServiceRequest addBatchHeaders(RxDocumentServiceRequest request,
@@ -2188,10 +2188,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         try {
             logger.debug("Executing a Batch request with number of operations {}", serverBatchRequest.getOperations().size());
 
-            Mono<RxDocumentServiceRequest> requestObs = getBatchDocumentRequest(requestRetryPolicy, collectionLink, serverBatchRequest, options, disableAutomaticIdGeneration);
-            Mono<RxDocumentServiceResponse> responseObservable = requestObs.flatMap(request -> {
-                return create(request, requestRetryPolicy);
-            });
+            RxDocumentServiceRequest documentServiceRequest = getBatchDocumentRequest(requestRetryPolicy, collectionLink, serverBatchRequest, options, disableAutomaticIdGeneration);
+            Mono<RxDocumentServiceResponse> responseObservable = create(documentServiceRequest, requestRetryPolicy);
 
             return responseObservable
                 .flatMap(serviceResponse -> TransactionalBatchResponse.fromResponseMessageAsync(serviceResponse, serverBatchRequest, true))

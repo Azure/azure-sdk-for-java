@@ -179,13 +179,14 @@ public class BatchAsyncStreamer implements AutoCloseable {
                     // We got a throttle so we need to back off on the degree of concurrency.
                     try {
                         for (int i = 0; i < decreaseCount; i++) {
-                            this.limiter.acquire(decreaseCount);
+                            this.limiter.acquire();
                         }
                     } catch (Exception ex) {
                         logger.error("Congestion control limiter acquire failed {}", ex.getMessage());
                     }
 
                     this.congestionDegreeOfConcurrency -= decreaseCount;
+
                     // In case of throttling increase the wait time, so as to converge max degreeOfConcurrency
                     this.congestionWaitTimeInMilliseconds += 100;
                 }

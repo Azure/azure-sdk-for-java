@@ -26,8 +26,7 @@ import java.util.*;
 import java.util.stream.Stream;
 
 import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders.*;
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.*;
 
 /**
  * Response of a {@link com.azure.cosmos.batch.TransactionalBatch} request.
@@ -181,6 +180,9 @@ public class TransactionalBatchResponse implements AutoCloseable, List<Transacti
 
             response.createAndPopulateResults(request.getOperations(), retryAfterMilliseconds);
         }
+
+        checkState(response.results.size() == request.getOperations().size(),
+            "Number of responses should be equal to number of operations in request.");
 
         return Mono.just(response);
     }

@@ -103,6 +103,7 @@ public class BatchAsyncBatcher {
 
         this.createBatchRequestAsync()
             .exceptionally(exception -> {
+                logger.error("exception: {} {}", exception.getMessage(), exception.getStackTrace());
 
                 // Exceptions happening during request creation, fail the entire list
                 this.failBatchOperations(this.operations, exception);
@@ -116,7 +117,10 @@ public class BatchAsyncBatcher {
                 try {
                     // Any overflow goes to a new batch
                     for (ItemBatchOperation<?> batchOperation : batchPendingOperations) {
-                        this.retrier.apply(batchOperation);
+                        this.retrier.apply(batchOperation).exceptionally((exception) -> {
+                            batchOperation.getContext().fail(this, exception);
+                            return null;
+                        });
                     }
                 } catch (Exception exception) {
                     // If retrier throws some exception, fail the pending operation but try out the serverRequest
@@ -132,6 +136,7 @@ public class BatchAsyncBatcher {
                 }
             })
             .exceptionally(throwable -> {
+                logger.error("Exception encountered in executing batch: {} {}", throwable.getMessage(), throwable.getStackTrace());
                 // At the end of every exception, so as dispatcher doesn't return or throws any exception
                 this.operations.clear();
                 this.dispatched = true;
@@ -166,7 +171,7 @@ public class BatchAsyncBatcher {
                 partitionMetric.add(
                     executionResult.getServerResponse().size(),
                     Duration.between(startBatchExecution, Instant.now()).toMillis(),
-                    throttled ? 1: 0);
+                    throttled ? 1 : 0);
 
                 PartitionKeyRangeBatchResponse batchResponse = new PartitionKeyRangeBatchResponse(
                     serverRequest.getOperations().size(),
@@ -183,7 +188,10 @@ public class BatchAsyncBatcher {
                         context.shouldRetry(operationResult).subscribe(
                             result -> {
                                 if (result.shouldRetry) {
-                                    this.retrier.apply(itemBatchOperation);
+                                    this.retrier.apply(itemBatchOperation).exceptionally((exception) -> {
+                                        context.fail(this, exception);
+                                        return null;
+                                    });
                                 } else {
                                     context.complete(this, operationResult);
                                 }

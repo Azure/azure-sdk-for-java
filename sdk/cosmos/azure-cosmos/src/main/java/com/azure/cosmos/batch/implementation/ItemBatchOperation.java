@@ -257,9 +257,12 @@ public final class ItemBatchOperation<TResource> implements AutoCloseable {
             if (this.resource instanceof AutoCloseable) {
                 ((AutoCloseable) this.resource).close();  // assumes an idempotent close implementation
             }
+            this.resource = null;
         } catch (Exception ex) {
             //
         }
+
+        this.materialisedResource = null;
     }
 
     public static final class Builder<TResource> {

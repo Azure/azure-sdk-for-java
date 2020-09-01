@@ -26,7 +26,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  *
  * @param <TResource> the type parameter
  */
-public class TransactionalBatchOperationResult<TResource> {
+public class TransactionalBatchOperationResult<TResource> implements AutoCloseable {
 
     private String eTag;
     private double requestCharge;
@@ -340,5 +340,19 @@ public class TransactionalBatchOperationResult<TResource> {
 
     public void setResourceObject(ObjectNode resourceObject) {
         this.resourceObject = resourceObject;
+    }
+
+    @Override
+    public void close() {
+        try {
+            if (this.resource instanceof AutoCloseable) {
+                ((AutoCloseable) this.resource).close();  // assumes an idempotent close implementation
+            }
+        } catch (Exception ex) {
+            //
+        }
+
+        this.resource = null;
+        this.resourceObject = null;
     }
 }
