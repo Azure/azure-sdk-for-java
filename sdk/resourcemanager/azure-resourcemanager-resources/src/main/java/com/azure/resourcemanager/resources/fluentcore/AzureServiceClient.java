@@ -83,7 +83,7 @@ public abstract class AzureServiceClient {
      *
      * @return the defaultPollInterval value.
      */
-    abstract Duration getDefaultPollInterval();
+    public abstract Duration getDefaultPollInterval();
 
     /**
      * Gets default client context.
