@@ -445,7 +445,7 @@ public final class DigitalTwinsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void updateComponent(String digitalTwinId, String componentPath, List<Object> componentUpdateOperations) {
-        updateComponentWithResponse(digitalTwinId, componentPath, componentUpdateOperations, new UpdateComponentRequestOptions(), Context.NONE).getValue();
+        updateComponentWithResponse(digitalTwinId, componentPath, componentUpdateOperations, new UpdateComponentRequestOptions(), Context.NONE);
     }
 
     /**
