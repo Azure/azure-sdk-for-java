@@ -58,6 +58,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -103,7 +104,6 @@ class ServiceBusReceiverAsyncClientTest {
     private ServiceBusConnectionProcessor connectionProcessor;
     private ServiceBusReceiverAsyncClient receiver;
     private ServiceBusReceiverAsyncClient sessionReceiver;
-    private Duration maxAutoLockRenewalDuration;
 
     @Mock
     private ServiceBusReactorReceiver amqpReceiveLink;
@@ -127,6 +127,8 @@ class ServiceBusReceiverAsyncClientTest {
     private Runnable onClientClose;
     @Mock
     private Function<String, Mono<OffsetDateTime>> renewalOperation;
+    @Mock
+    private Consumer<Throwable> onErrorConsumer;
 
     @BeforeAll
     static void beforeAll() {
@@ -752,7 +754,7 @@ class ServiceBusReceiverAsyncClientTest {
             .thenReturn(Mono.fromCallable(() -> Instant.now().plus(renewalPeriod)));
 
         // Act & Assert
-        final LockRenewalOperation operation = receiver.getAutoRenewMessageLock(lockToken, maxDuration);
+        receiver.getAutoRenewMessageLock(lockToken, maxDuration, );
         Thread.sleep(totalSleepPeriod.toMillis());
         logger.info("Finished renewals for first sleep.");
 

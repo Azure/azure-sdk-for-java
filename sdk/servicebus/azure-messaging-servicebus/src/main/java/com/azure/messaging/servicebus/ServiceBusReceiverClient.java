@@ -255,16 +255,18 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @param lockToken Lock token of the message.
      * @param maxLockRenewalDuration Maximum duration to keep renewing the lock token.
-     * @return A lock renewal operation for the message.
      * @throws NullPointerException if {@code lockToken} or {@code maxLockRenewalDuration} is null.
      * @throws IllegalArgumentException if {@code lockToken} is an empty string.
      * @throws IllegalStateException if the receiver is a session receiver or the receiver is disposed.
      */
     public void getAutoRenewMessageLock(String lockToken, Duration maxLockRenewalDuration, Consumer<Throwable> onError) {
-        final Consumer<Throwable> throwableConsumer = onError != null ? onError : e -> {
+        final Consumer<Throwable> throwableConsumer = onError != null
+            ? onError :
+            error -> logger.warning("Exception occurred while renewing lock token: '{}'.", lockToken, error);
 
-        };
-        asyncClient.getAutoRenewMessageLock(lockToken, maxLockRenewalDuration);
+        asyncClient.getAutoRenewMessageLock(lockToken, maxLockRenewalDuration).subscribe(
+            v -> logger.verbose("Completed renewing lock token: '{}'", lockToken),
+            throwableConsumer);
     }
 
     /**
@@ -272,13 +274,18 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @param sessionId Id for the session to renew.
      * @param maxLockRenewalDuration Maximum duration to keep renewing the lock token.
-     * @return A lock renewal operation for the message.
      * @throws NullPointerException if {@code sessionId} or {@code maxLockRenewalDuration} is null.
      * @throws IllegalArgumentException if {@code lockToken} is an empty string.
      * @throws IllegalStateException if the receiver is a non-session receiver or the receiver is disposed.
      */
     public void getAutoRenewSessionLock(String sessionId, Duration maxLockRenewalDuration, Consumer<Throwable> onError) {
-        return asyncClient.getAutoRenewSessionLock(sessionId, maxLockRenewalDuration);
+        final Consumer<Throwable> throwableConsumer = onError != null
+            ? onError :
+            error -> logger.warning("Exception occurred while renewing session: '{}'.", sessionId, error);
+
+        asyncClient.getAutoRenewSessionLock(sessionId, maxLockRenewalDuration).subscribe(
+            v -> logger.verbose("Completed renewing session: '{}'", sessionId),
+            throwableConsumer);
     }
 
     /**
