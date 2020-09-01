@@ -229,7 +229,7 @@ public class PathClientJavaDocCodeSamples {
      * Code snippets for {@link DataLakePathClient#setAccessControlRecursiveWithResponse(com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions, Duration, Context)}
      */
     public void setAccessControlRecursiveWithResponseCodeSnippets() {
-        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.setAccessControlRecursiveWithResponse#PathUpdateAccessControlRecursiveOptions-Duration-Context
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.setAccessControlRecursiveWithResponse#PathSetAccessControlRecursiveOptions-Duration-Context
         DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().setLeaseId(leaseId);
         PathAccessControlEntry pathAccessControlEntry = new PathAccessControlEntry()
             .setEntityId("entityId")
@@ -308,7 +308,7 @@ public class PathClientJavaDocCodeSamples {
             new Context(key2, value2));
         System.out.printf("Successful changed file operations: %d",
             response.getValue().getCounters().getChangedFilesCount());
-        // END: com.azure.storage.file.datalake.DataLakePathClient.setAccessControlRecursiveWithResponse#PathUpdateAccessControlRecursiveOptions-Duration-Context
+        // END: com.azure.storage.file.datalake.DataLakePathClient.updateAccessControlRecursiveWithResponse#PathUpdateAccessControlRecursiveOptions-Duration-Context
     }
 
     /**
