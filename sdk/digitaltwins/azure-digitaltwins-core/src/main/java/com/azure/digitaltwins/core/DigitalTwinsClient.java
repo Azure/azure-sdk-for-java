@@ -350,8 +350,8 @@ public final class DigitalTwinsClient {
      * @return Void
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void deleteModel(String modelId) {
-        return digitalTwinsAsyncClient.deleteModel(modelId).block();
+    public void deleteModel(String modelId) {
+        deleteModelWithResponse(modelId, Context.NONE);
     }
 
     /**
@@ -370,8 +370,8 @@ public final class DigitalTwinsClient {
      * @param modelId The Id of the model to decommission.
      * @return Void
      */
-    public Void decommissionModel(String modelId) {
-        return digitalTwinsAsyncClient.decommissionModel(modelId).block();
+    public void decommissionModel(String modelId) {
+        decommissionModelWithResponse(modelId, Context.NONE);
     }
 
     /**
