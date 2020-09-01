@@ -347,7 +347,6 @@ public final class DigitalTwinsClient {
     /**
      * Deletes a model.
      * @param modelId The Id for the model. The Id is globally unique and case sensitive.
-     * @return Void
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteModel(String modelId) {
@@ -368,7 +367,6 @@ public final class DigitalTwinsClient {
     /**
      * Decommissions a model.
      * @param modelId The Id of the model to decommission.
-     * @return Void
      */
     public void decommissionModel(String modelId) {
         decommissionModelWithResponse(modelId, Context.NONE);
@@ -377,6 +375,7 @@ public final class DigitalTwinsClient {
     /**
      * Decommissions a model.
      * @param modelId The Id of the model to decommission.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The http response.
      */
     public Response<Void> decommissionModelWithResponse(String modelId, Context context) {
