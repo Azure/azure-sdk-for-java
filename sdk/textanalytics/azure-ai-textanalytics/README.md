@@ -222,7 +222,11 @@ documentSentiment.getSentences().forEach(sentenceSentiment ->
     System.out.printf("Analyzed sentence sentiment: %s.%n", sentenceSentiment.getSentiment()));
 ```
 For samples on using the production recommended option `AnalyzeSentimentBatch` see [here][analyze_sentiment_sample].
-For samples on sentiment analysis with opinion mining see [here][analyze_sentiment_with_opinion_mining_sample].
+
+To get more granular information about the opinions related to aspects of a product/service, also knows as Aspect-based
+Sentiment Analysis in Natural Language Processing (NLP), see sample on sentiment analysis with opinion mining see 
+[here][analyze_sentiment_with_opinion_mining_sample].
+
 Please refer to the service documentation for a conceptual discussion of [sentiment analysis][sentiment_analysis].
 
 ### Detect language
@@ -397,7 +401,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/README.md
 [detect_language_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/DetectLanguageBatchDocuments.java
 [analyze_sentiment_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/AnalyzeSentimentBatchDocuments.java
-[analyze_sentiment_with_opinion_mining_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/AnalyzeSentimentBatchDocumentsWithOpinionMining.java
+[analyze_sentiment_with_opinion_mining_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/AnalyzeSentimentWithOpinionMining.java
 [extract_key_phrases_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/ExtractKeyPhrasesBatchDocuments.java
 [recognize_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeEntitiesBatchDocuments.java
 [recognize_pii_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizePiiEntitiesBatchDocuments.java
