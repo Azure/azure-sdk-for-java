@@ -13,9 +13,7 @@ import com.azure.spring.data.cosmos.repository.query.ReactiveCosmosQueryMethod;
 import org.springframework.data.repository.query.ResultProcessor;
 import reactor.core.publisher.Flux;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter.toCosmosDbValue;
@@ -24,7 +22,6 @@ import static com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter.t
  * Cosmos query class to handle the annotated queries. This overrides the execution and runs the query directly
  */
 public class StringBasedReactiveCosmosQuery extends AbstractReactiveCosmosQuery {
-    private static final Pattern PLACEHOLDER = Pattern.compile("@");
     private final String query;
 
     /**
@@ -49,9 +46,7 @@ public class StringBasedReactiveCosmosQuery extends AbstractReactiveCosmosQuery 
                                                                                               parameters);
         final ResultProcessor processor = getQueryMethod().getResultProcessor().withDynamicProjection(accessor);
 
-        List<SqlParameter> sqlParameters = new ArrayList<>();
-
-        sqlParameters = getQueryMethod().getParameters().stream()
+        List<SqlParameter> sqlParameters = getQueryMethod().getParameters().stream()
                             .map(p -> new SqlParameter("@" + p.getName().get(),
                                                        toCosmosDbValue(parameters[p.getIndex()])))
                             .collect(Collectors.toList());
