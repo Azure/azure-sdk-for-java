@@ -449,7 +449,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@code lockToken} is an empty string.
      * @throws IllegalStateException if the receiver is a session receiver or the receiver is disposed.
      */
-    public LockRenewalOperation getAutoRenewMessageLock(String lockToken, Duration maxLockRenewalDuration) {
+    public Mono<Void> getAutoRenewMessageLock(String lockToken, Duration maxLockRenewalDuration) {
         if (isDisposed.get()) {
             throw logger.logExceptionAsError(new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "getAutoRenewMessageLock")));
@@ -470,7 +470,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         final LockRenewalOperation operation = new LockRenewalOperation(lockToken, maxLockRenewalDuration, false,
             this::renewMessageLock);
         renewalContainer.addOrUpdate(lockToken, Instant.now().plus(maxLockRenewalDuration), operation);
-        return operation;
+
+        return operation.getCompletionOperation();
     }
 
     /**
@@ -484,7 +485,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@code lockToken} is an empty string.
      * @throws IllegalStateException if the receiver is a non-session receiver or the receiver is disposed.
      */
-    public LockRenewalOperation getAutoRenewSessionLock(String sessionId, Duration maxLockRenewalDuration) {
+    public Mono<Void> getAutoRenewSessionLock(String sessionId, Duration maxLockRenewalDuration) {
         if (isDisposed.get()) {
             throw logger.logExceptionAsError(new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "getAutoRenewSessionLock")));
@@ -506,7 +507,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             this::renewSessionLock);
 
         renewalContainer.addOrUpdate(sessionId, Instant.now().plus(maxLockRenewalDuration), operation);
-        return operation;
+        return operation.getCompletionOperation();
     }
 
     /**
