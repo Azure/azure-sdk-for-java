@@ -21,11 +21,27 @@ jobs:
       parameters:
         Directory: ""
 
+    - task: PowerShell@2
+      # The root pom.xml contains both track 1, data, and track 2, client libraries.
+      # This task calls a powershell script that will go through all of the pom files
+      # in the repository looking, specifically, for ones whose parent is
+      # azure-client-sdk-parent and create a temporary pom file with just those libraries.
+      # Note: It excludes items within the /eng directory otherwise we'd be picking up
+      # jacoco and spotbugs which are unnecessary for the Aggregate Reports run.
+      displayName: 'Generate Aggregate Pom for Aggregate Reports'
+      inputs:
+        pwsh: true
+        workingDirectory: $(Agent.BuildDirectory)
+        filePath: eng/scripts/Generate-Client-Aggregate-Pom.ps1
+        arguments: >
+          -AggregateReport $true
+      condition: succeeded()
+
     - task: Maven@3
       displayName: 'Generate Reports'
       inputs:
-        mavenPomFile: pom.xml
-        options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Ddependency-checker -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl com.azure:jacoco-test-coverage -am'
+        mavenPomFile: ClientAggregatePom.xml
+        options: '$(DefaultOptions) -T 1C -Dinclude-non-shipping-modules -Ddependency-checker -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -Dbuildhelper.skipAttach=true'
         mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: $(JavaBuildVersion)
@@ -61,16 +77,16 @@ jobs:
       displayName: Generate Interdependency Report Data
 
     - pwsh: |
-        Copy-Item eng/jacoco-test-coverage/target/staging $(Build.ArtifactStagingDirectory) -Recurse
-        Copy-Item eng/jacoco-test-coverage/target/dependency-allowlist.json $(Build.ArtifactStagingDirectory)/staging
-        Copy-Item eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
-        Copy-Item eng/code-quality-reports/src/main/resources/dependency-allowlist.html $(Build.ArtifactStagingDirectory)/staging
+        Copy-Item $(Build.SourcesDirectory)/target/staging $(Build.ArtifactStagingDirectory) -Recurse
+        Copy-Item $(Build.SourcesDirectory)/target/dependency-allowlist.json $(Build.ArtifactStagingDirectory)/staging
+        Copy-Item $(Build.SourcesDirectory)/eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
+        Copy-Item $(Build.SourcesDirectory)/eng/code-quality-reports/src/main/resources/dependency-allowlist.html $(Build.ArtifactStagingDirectory)/staging
 
         # What is this?
         # copy output/pom.client.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
 
-        Copy-Item eng/common/InterdependencyGraph.html $(Build.ArtifactStagingDirectory)/staging
-        Copy-Item data.js $(Build.ArtifactStagingDirectory)/staging
+        Copy-Item $(Build.SourcesDirectory)/eng/common/InterdependencyGraph.html $(Build.ArtifactStagingDirectory)/staging
+        Copy-Item $(Build.SourcesDirectory)/data.js $(Build.ArtifactStagingDirectory)/staging
       displayName: 'Copy reports to artifact staging'
 
     - publish: $(Build.ArtifactStagingDirectory)
