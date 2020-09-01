@@ -6,12 +6,14 @@ package com.azure.ai.textanalytics.implementation;
 
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.EntityLinkingResult;
+import com.azure.ai.textanalytics.implementation.models.ErrorResponseException;
 import com.azure.ai.textanalytics.implementation.models.KeyPhraseResult;
 import com.azure.ai.textanalytics.implementation.models.LanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.LanguageResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
+import com.azure.ai.textanalytics.implementation.models.PiiEntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
-import com.azure.ai.textanalytics.implementation.models.TextAnalyticsErrorException;
+import com.azure.ai.textanalytics.implementation.models.StringIndexType;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Host;
@@ -89,43 +91,46 @@ public final class TextAnalyticsClientImpl {
      * The interface defining all the services for TextAnalyticsClient to be used by the proxy service to perform REST
      * calls.
      */
-    @Host("{Endpoint}/text/analytics/v3.1-preview.1")
+    @Host("{Endpoint}/text/analytics/v3.1-preview.2")
     @ServiceInterface(name = "TextAnalyticsClient")
     private interface TextAnalyticsClientService {
         @Post("/entities/recognition/general")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(TextAnalyticsErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<EntitiesResult>> entitiesRecognitionGeneral(
                 @HostParam("Endpoint") String endpoint,
                 @QueryParam("model-version") String modelVersion,
                 @QueryParam("showStats") Boolean showStats,
+                @QueryParam("stringIndexType") StringIndexType stringIndexType,
                 @BodyParam("application/json") MultiLanguageBatchInput input,
                 Context context);
 
         @Post("/entities/recognition/pii")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(TextAnalyticsErrorException.class)
-        Mono<Response<EntitiesResult>> entitiesRecognitionPii(
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<PiiEntitiesResult>> entitiesRecognitionPii(
                 @HostParam("Endpoint") String endpoint,
                 @QueryParam("model-version") String modelVersion,
                 @QueryParam("showStats") Boolean showStats,
                 @QueryParam("domain") String domain,
+                @QueryParam("stringIndexType") StringIndexType stringIndexType,
                 @BodyParam("application/json") MultiLanguageBatchInput input,
                 Context context);
 
         @Post("/entities/linking")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(TextAnalyticsErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<EntityLinkingResult>> entitiesLinking(
                 @HostParam("Endpoint") String endpoint,
                 @QueryParam("model-version") String modelVersion,
                 @QueryParam("showStats") Boolean showStats,
+                @QueryParam("stringIndexType") StringIndexType stringIndexType,
                 @BodyParam("application/json") MultiLanguageBatchInput input,
                 Context context);
 
         @Post("/keyPhrases")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(TextAnalyticsErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<KeyPhraseResult>> keyPhrases(
                 @HostParam("Endpoint") String endpoint,
                 @QueryParam("model-version") String modelVersion,
@@ -135,7 +140,7 @@ public final class TextAnalyticsClientImpl {
 
         @Post("/languages")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(TextAnalyticsErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<LanguageResult>> languages(
                 @HostParam("Endpoint") String endpoint,
                 @QueryParam("model-version") String modelVersion,
@@ -145,12 +150,13 @@ public final class TextAnalyticsClientImpl {
 
         @Post("/sentiment")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(TextAnalyticsErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<SentimentResponse>> sentiment(
                 @HostParam("Endpoint") String endpoint,
                 @QueryParam("model-version") String modelVersion,
                 @QueryParam("showStats") Boolean showStats,
                 @QueryParam("opinionMining") Boolean opinionMining,
+                @QueryParam("stringIndexType") StringIndexType stringIndexType,
                 @BodyParam("application/json") MultiLanguageBatchInput input,
                 Context context);
     }
@@ -164,17 +170,25 @@ public final class TextAnalyticsClientImpl {
      * @param input Contains a set of input documents to be analyzed by the service.
      * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is
      *     not specified, the API should default to the latest, non-preview version.
-     * @param showStats (Optional) if set to true, response will contain input and document level statistics.
+     * @param showStats (Optional) if set to true, response will contain request and document level statistics.
+     * @param stringIndexType (Optional) Specifies the method used to interpret string offsets. Defaults to Text
+     *     Elements (Graphemes) according to Unicode v8.0.0. For additional information see
+     *     https://aka.ms/text-analytics-offsets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TextAnalyticsErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<EntitiesResult>> entitiesRecognitionGeneralWithResponseAsync(
-            MultiLanguageBatchInput input, String modelVersion, Boolean showStats, Context context) {
-        return service.entitiesRecognitionGeneral(this.getEndpoint(), modelVersion, showStats, input, context);
+            MultiLanguageBatchInput input,
+            String modelVersion,
+            Boolean showStats,
+            StringIndexType stringIndexType,
+            Context context) {
+        return service.entitiesRecognitionGeneral(
+                this.getEndpoint(), modelVersion, showStats, stringIndexType, input, context);
     }
 
     /**
@@ -186,18 +200,27 @@ public final class TextAnalyticsClientImpl {
      * @param input Contains a set of input documents to be analyzed by the service.
      * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is
      *     not specified, the API should default to the latest, non-preview version.
-     * @param showStats (Optional) if set to true, response will contain input and document level statistics.
+     * @param showStats (Optional) if set to true, response will contain request and document level statistics.
      * @param domain (Optional) if set to 'PHI', response will contain only PHI entities.
+     * @param stringIndexType (Optional) Specifies the method used to interpret string offsets. Defaults to Text
+     *     Elements (Graphemes) according to Unicode v8.0.0. For additional information see
+     *     https://aka.ms/text-analytics-offsets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TextAnalyticsErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<EntitiesResult>> entitiesRecognitionPiiWithResponseAsync(
-            MultiLanguageBatchInput input, String modelVersion, Boolean showStats, String domain, Context context) {
-        return service.entitiesRecognitionPii(this.getEndpoint(), modelVersion, showStats, domain, input, context);
+    public Mono<Response<PiiEntitiesResult>> entitiesRecognitionPiiWithResponseAsync(
+            MultiLanguageBatchInput input,
+            String modelVersion,
+            Boolean showStats,
+            String domain,
+            StringIndexType stringIndexType,
+            Context context) {
+        return service.entitiesRecognitionPii(
+                this.getEndpoint(), modelVersion, showStats, domain, stringIndexType, input, context);
     }
 
     /**
@@ -208,17 +231,24 @@ public final class TextAnalyticsClientImpl {
      * @param input Contains a set of input documents to be analyzed by the service.
      * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is
      *     not specified, the API should default to the latest, non-preview version.
-     * @param showStats (Optional) if set to true, response will contain input and document level statistics.
+     * @param showStats (Optional) if set to true, response will contain request and document level statistics.
+     * @param stringIndexType (Optional) Specifies the method used to interpret string offsets. Defaults to Text
+     *     Elements (Graphemes) according to Unicode v8.0.0. For additional information see
+     *     https://aka.ms/text-analytics-offsets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TextAnalyticsErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<EntityLinkingResult>> entitiesLinkingWithResponseAsync(
-            MultiLanguageBatchInput input, String modelVersion, Boolean showStats, Context context) {
-        return service.entitiesLinking(this.getEndpoint(), modelVersion, showStats, input, context);
+            MultiLanguageBatchInput input,
+            String modelVersion,
+            Boolean showStats,
+            StringIndexType stringIndexType,
+            Context context) {
+        return service.entitiesLinking(this.getEndpoint(), modelVersion, showStats, stringIndexType, input, context);
     }
 
     /**
@@ -229,10 +259,10 @@ public final class TextAnalyticsClientImpl {
      * @param input Contains a set of input documents to be analyzed by the service.
      * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is
      *     not specified, the API should default to the latest, non-preview version.
-     * @param showStats (Optional) if set to true, response will contain input and document level statistics.
+     * @param showStats (Optional) if set to true, response will contain request and document level statistics.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TextAnalyticsErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -247,13 +277,13 @@ public final class TextAnalyticsClientImpl {
      * certainty that the identified language is true. See the &lt;a href="https://aka.ms/talangs"&gt;Supported
      * languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
      *
-     * @param input Collection of documents to analyze.
+     * @param input Collection of documents to analyze for language endpoint.
      * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is
      *     not specified, the API should default to the latest, non-preview version.
-     * @param showStats (Optional) if set to true, response will contain input and document level statistics.
+     * @param showStats (Optional) if set to true, response will contain request and document level statistics.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TextAnalyticsErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -270,12 +300,15 @@ public final class TextAnalyticsClientImpl {
      * @param input Contains a set of input documents to be analyzed by the service.
      * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is
      *     not specified, the API should default to the latest, non-preview version.
-     * @param showStats (Optional) if set to true, response will contain input and document level statistics.
+     * @param showStats (Optional) if set to true, response will contain request and document level statistics.
      * @param opinionMining (Optional) if set to true, response will contain input and document level statistics
      *     including aspect-based sentiment analysis results.
+     * @param stringIndexType (Optional) Specifies the method used to interpret string offsets. Defaults to Text
+     *     Elements (Graphemes) according to Unicode v8.0.0. For additional information see
+     *     https://aka.ms/text-analytics-offsets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TextAnalyticsErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -285,7 +318,9 @@ public final class TextAnalyticsClientImpl {
             String modelVersion,
             Boolean showStats,
             Boolean opinionMining,
+            StringIndexType stringIndexType,
             Context context) {
-        return service.sentiment(this.getEndpoint(), modelVersion, showStats, opinionMining, input, context);
+        return service.sentiment(
+                this.getEndpoint(), modelVersion, showStats, opinionMining, stringIndexType, input, context);
     }
 }

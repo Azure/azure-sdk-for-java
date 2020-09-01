@@ -400,21 +400,9 @@ public Mono<Response<Void>> deleteDigitalTwinWithResponse(String digitalTwinId, 
  *
  * @param digitalTwinId The Id of the digital twin.
  * @param digitalTwinUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin
- * @return The updated application/json digital twin.
  */
 @ServiceMethod(returns = ReturnType.SINGLE)
-public Mono<String> updateDigitalTwin(String digitalTwinId, List<Object> digitalTwinUpdateOperations)
-
- /**
- * Updates a digital twin.
- *
- * @param digitalTwinId The Id of the digital twin.
- * @param digitalTwinUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin
- * @param classType The model class to convert the response to.
- * @return The updated application/json digital twin.
- */
-@ServiceMethod(returns = ReturnType.SINGLE)
-public <T> Mono<T> updateDigitalTwin(String digitalTwinId, List<Object> digitalTwinUpdateOperations, Class<T> classType)
+public Mono<Void> updateDigitalTwin(String digitalTwinId, List<Object> digitalTwinUpdateOperations)
 
 /**
  * Updates a digital twin.
@@ -422,22 +410,11 @@ public <T> Mono<T> updateDigitalTwin(String digitalTwinId, List<Object> digitalT
  * @param digitalTwinId The Id of the digital twin.
  * @param digitalTwinUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin
  * @param options The optional settings for this request
- * @return A Http response containing updated application/json digital twin.
+ * @return A Http response
  */
 @ServiceMethod(returns = ReturnType.SINGLE)
-public Mono<Response<String>> updateDigitalTwinWithResponse(String digitalTwinId, List<Object> digitalTwinUpdateOperations, RequestOptions options)
+public Mono<Response<Void>> updateDigitalTwinWithResponse(String digitalTwinId, List<Object> digitalTwinUpdateOperations, RequestOptions options)
 
- /**
- * Updates a digital twin.
- *
- * @param digitalTwinId The Id of the digital twin.
- * @param digitalTwinUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin
- * @param classType The model class to convert the response to.
- * @param options The optional settings for this request
- * @return A Http response containing updated application/json digital twin.
- */
-@ServiceMethod(returns = ReturnType.SINGLE)
-public <T> Mono<Response<T>> updateDigitalTwinWithResponse(String digitalTwinId, List<Object> digitalTwinUpdateOperations, RequestOptions options, Class<T> classType)
 ```
 
 </details>
@@ -555,21 +532,9 @@ public Response<Void> deleteDigitalTwinWithResponse(String digitalTwinId, Reques
  *
  * @param digitalTwinId The Id of the digital twin.
  * @param digitalTwinUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin
- * @return The updated application/json digital twin.
  */
 @ServiceMethod(returns = ReturnType.SINGLE)
-public String updateDigitalTwin(String digitalTwinId, List<Object> digitalTwinUpdateOperations)
-
- /**
- * Updates a digital twin.
- *
- * @param digitalTwinId The Id of the digital twin.
- * @param digitalTwinUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin
- * @param classType The model class to convert the response to.
- * @return The updated application/json digital twin.
- */
-@ServiceMethod(returns = ReturnType.SINGLE)
-public <T> updateDigitalTwin(String digitalTwinId, List<Object> digitalTwinUpdateOperations, Class<T> classType)
+public void updateDigitalTwin(String digitalTwinId, List<Object> digitalTwinUpdateOperations)
 
 /**
  * Updates a digital twin.
@@ -578,23 +543,11 @@ public <T> updateDigitalTwin(String digitalTwinId, List<Object> digitalTwinUpdat
  * @param digitalTwinUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin
  * @param options The optional settings for this request
  * @param context Additional context that is passed through the Http pipeline during the service call.
- * @return A Http response containing updated application/json digital twin.
+ * @return A Http response
  */
 @ServiceMethod(returns = ReturnType.SINGLE)
-public Response<String> updateDigitalTwinWithResponse(String digitalTwinId, List<Object> digitalTwinUpdateOperations, RequestOptions options, Context context)
+public Response<Void> updateDigitalTwinWithResponse(String digitalTwinId, List<Object> digitalTwinUpdateOperations, RequestOptions options, Context context)
 
-/**
- * Updates a digital twin.
- *
- * @param digitalTwinId The Id of the digital twin.
- * @param digitalTwinUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin
- * @param options The optional settings for this request
- * @param classType The model class to convert the response to.
- * @param context Additional context that is passed through the Http pipeline during the service call.
- * @return A Http response containing updated application/json digital twin.
- */
-@ServiceMethod(returns = ReturnType.SINGLE)
-public <T> Response<T> updateDigitalTwinWithResponse(String digitalTwinId, List<Object> digitalTwinUpdateOperations, RequestOptions options, Class<T> classType, Context context)
 ```
 </details>
 
@@ -676,14 +629,145 @@ When updating a component, the patch string follows the below format
 </details>
 
 
-<details>
-<summary><b>APIs</b></summary>
+<details><summary><b>Async APIs</b></summary>
 
+These APIs are invoked via DigitalTwinsAsyncClient.
 
 ```java
-TODO:
+/**
+ * Get a component of a digital twin.
+ * @param digitalTwinId The Id of the digital twin to get the component from.
+ * @param componentPath The path of the component on the digital twin to retrieve.
+ * @return The application/json string representing the component of the digital twin.
+ */
+@ServiceMethod(returns = ReturnType.SINGLE)
+public Mono<String> getComponent(String digitalTwinId, String componentPath)
+
+/**
+ * Get a component of a digital twin.
+ * @param digitalTwinId The Id of the digital twin to get the component from.
+ * @param componentPath The path of the component on the digital twin to retrieve.
+ * @return A {@link DigitalTwinsResponse} containing the application/json string representing the component of the digital twin.
+ */
+@ServiceMethod(returns = ReturnType.SINGLE)
+public Mono<DigitalTwinsResponse<String>> getComponentWithResponse(String digitalTwinId, String componentPath)
+
+/**
+ * Get a component of a digital twin.
+ * @param digitalTwinId The Id of the digital twin to get the component from.
+ * @param componentPath The path of the component on the digital twin to retrieve.
+ * @param clazz The class to deserialize the application/json component into.
+ * @param <T> The generic type to deserialize the component to.
+ * @return The deserialized application/json object representing the component of the digital twin.
+ */
+@ServiceMethod(returns = ReturnType.SINGLE)
+public <T> Mono<T> getComponent(String digitalTwinId, String componentPath, Class<T> clazz)
+
+/**
+ * Get a component of a digital twin.
+ * @param digitalTwinId The Id of the digital twin to get the component from.
+ * @param componentPath The path of the component on the digital twin to retrieve.
+ * @param clazz The class to deserialize the application/json component into.
+ * @param <T> The generic type to deserialize the component to.
+ * @return A {@link DigitalTwinsResponse} containing the deserialized application/json object representing the component of the digital twin.
+ */
+@ServiceMethod(returns = ReturnType.SINGLE)
+public <T> Mono<DigitalTwinsResponse<T>> getComponentWithResponse(String digitalTwinId, String componentPath, Class<T> clazz)
+
+/**
+ * Patch a component on a digital twin.
+ * @param digitalTwinId The Id of the digital twin that has the component to patch.
+ * @param componentPath The path of the component on the digital twin.
+ * @param componentUpdateOperations The application json patch to apply to the component. See {@link com.azure.digitaltwins.core.util.UpdateOperationUtility} for building
+ *                                  this argument.
+ */
+@ServiceMethod(returns = ReturnType.SINGLE)
+public Mono<Void> updateComponent(String digitalTwinId, String componentPath, List<Object> componentUpdateOperations)
+
+/**
+ * Patch a component on a digital twin.
+ * @param digitalTwinId The Id of the digital twin that has the component to patch.
+ * @param componentPath The path of the component on the digital twin.
+ * @param componentUpdateOperations The application json patch to apply to the component. See {@link com.azure.digitaltwins.core.util.UpdateOperationUtility} for building
+ *                                  this argument.
+ * @param requestOptions The optional parameters for this request.
+ * @return A {@link DigitalTwinsResponse} containing an empty Mono.
+ */
+@ServiceMethod(returns = ReturnType.SINGLE)
+public Mono<DigitalTwinsResponse<Void>> updateComponentWithResponse(String digitalTwinId, String componentPath, List<Object> componentUpdateOperations, UpdateComponentRequestOptions requestOptions)
 ```
 
+</details>
+
+<details><summary><b>Sync APIs</b></summary>
+
+These APIs are invoked via DigitalTwinsClient.
+
+```java
+/**
+ * Get a component of a digital twin.
+ * @param digitalTwinId The Id of the digital twin to get the component from.
+ * @param componentPath The path of the component on the digital twin to retrieve.
+ * @return The application/json string representing the component of the digital twin.
+ */
+@ServiceMethod(returns = ReturnType.SINGLE)
+public String getComponent(String digitalTwinId, String componentPath)
+
+/**
+ * Get a component of a digital twin.
+ * @param digitalTwinId The Id of the digital twin to get the component from.
+ * @param componentPath The path of the component on the digital twin to retrieve.
+ * @param context Additional context that is passed through the Http pipeline during the service call.
+ * @return A {@link DigitalTwinsResponse} containing the application/json string representing the component of the digital twin.
+ */
+@ServiceMethod(returns = ReturnType.SINGLE)
+public DigitalTwinsResponse<String> getComponentWithResponse(String digitalTwinId, String componentPath, Context context)
+
+/**
+ * Get a component of a digital twin.
+ * @param digitalTwinId The Id of the digital twin to get the component from.
+ * @param componentPath The path of the component on the digital twin to retrieve.
+ * @param clazz The class to deserialize the application/json component into.
+ * @param <T> The generic type to deserialize the component to.
+ * @return The deserialized application/json object representing the component of the digital twin.
+ */
+@ServiceMethod(returns = ReturnType.SINGLE)
+public <T> T getComponent(String digitalTwinId, String componentPath, Class<T> clazz)
+
+/**
+ * Get a component of a digital twin.
+ * @param digitalTwinId The Id of the digital twin to get the component from.
+ * @param componentPath The path of the component on the digital twin to retrieve.
+ * @param clazz The class to deserialize the application/json component into.
+ * @param context Additional context that is passed through the Http pipeline during the service call.
+ * @param <T> The generic type to deserialize the component to.
+ * @return A {@link DigitalTwinsResponse} containing the deserialized application/json object representing the component of the digital twin.
+ */
+@ServiceMethod(returns = ReturnType.SINGLE)
+public <T> DigitalTwinsResponse<T> getComponentWithResponse(String digitalTwinId, String componentPath, Class<T> clazz, Context context)
+
+/**
+ * Patch a component on a digital twin.
+ * @param digitalTwinId The Id of the digital twin that has the component to patch.
+ * @param componentPath The path of the component on the digital twin.
+ * @param componentUpdateOperations The application json patch to apply to the component. See {@link com.azure.digitaltwins.core.util.UpdateOperationUtility} for building
+ *                                  this argument.
+ */
+@ServiceMethod(returns = ReturnType.SINGLE)
+public void updateComponent(String digitalTwinId, String componentPath, List<Object> componentUpdateOperations)
+
+/**
+ * Patch a component on a digital twin.
+ * @param digitalTwinId The Id of the digital twin that has the component to patch.
+ * @param componentPath The path of the component on the digital twin.
+ * @param componentUpdateOperations The application json patch to apply to the component. See {@link com.azure.digitaltwins.core.util.UpdateOperationUtility} for building
+ *                                  this argument.
+ * @param requestOptions The optional parameters for this request.
+ * @return The http response.
+ */
+@ServiceMethod(returns = ReturnType.SINGLE)
+public DigitalTwinsResponse<Void> updateComponentWithResponse(String digitalTwinId, String componentPath, List<Object> componentUpdateOperations, UpdateComponentRequestOptions requestOptions, Context context)
+```
 </details>
 
 ## Query
