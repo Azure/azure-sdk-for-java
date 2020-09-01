@@ -275,7 +275,7 @@ document. It recognizes and categorizes PII entities in its input text, such as
 Social Security Numbers, bank account information, credit card numbers, and more. This endpoint is only supported for
 API versions v3.1-preview.1 and above.
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L158-L161 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L158-L162 -->
 ```java
 String document = "My SSN is 859-98-0987";
 textAnalyticsClient.recognizePiiEntities(document).forEach(entity -> System.out.printf(
