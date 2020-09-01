@@ -48,11 +48,19 @@ public class DetectChangePoints {
 
         HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(HttpClient.createDefault())
             .policies(authPolicy, addHeadersPolicy).build();
+        // Instantiate a client that will be used to call the service.
         AnomalyDetectorClient anomalyDetectorClient = new AnomalyDetectorClientBuilder()
             .pipeline(httpPipeline)
             .endpoint(endpoint)
             .buildClient();
 
+        // Read the time series from csv file and organize the time series into list of TimeSeriesPoint.
+        // The sample csv file has no header, and it contains 2 columns, namely timestamp and value.
+        // The following is a snippet of the sample csv file:
+        //      2018-03-01T00:00:00Z,32858923
+        //      2018-03-02T00:00:00Z,29615278
+        //      2018-03-03T00:00:00Z,22839355
+        //      2018-03-04T00:00:00Z,25948736
         Path path = Paths.get("./src/samples/java/sample_data/request-data.csv");
         List<String> requestData = Files.readAllLines(path);
         List<TimeSeriesPoint> series = requestData.stream()
@@ -71,6 +79,7 @@ public class DetectChangePoints {
         System.out.println("Detecting change points...");
         ChangePointDetectRequest request = new ChangePointDetectRequest();
         request.setSeries(series);
+        // Set the granularity to be DAILY since the minimal interval in time of the sample data is one day.
         request.setGranularity(TimeGranularity.DAILY);
         ChangePointDetectResponse response = anomalyDetectorClient.detectChangePoint(request);
         if (response.getIsChangePoint().contains(true)) {
