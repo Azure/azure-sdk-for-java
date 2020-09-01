@@ -4,6 +4,7 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
+import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
@@ -163,11 +164,10 @@ class RecognizePiiEntityAsyncClient {
             ));
         });
         // Document errors
-        entitiesResult.getErrors().forEach(documentError -> {
-            recognizeEntitiesResults.add(
-                new RecognizePiiEntitiesResult(documentError.getId(), null,
-                    toTextAnalyticsError(documentError.getError()), null));
-        });
+        for (DocumentError documentError : entitiesResult.getErrors()) {
+            recognizeEntitiesResults.add(new RecognizePiiEntitiesResult(documentError.getId(), null,
+                toTextAnalyticsError(documentError.getError()), null));
+        }
 
         return new SimpleResponse<>(response,
             new RecognizePiiEntitiesResultCollection(recognizeEntitiesResults, entitiesResult.getModelVersion(),

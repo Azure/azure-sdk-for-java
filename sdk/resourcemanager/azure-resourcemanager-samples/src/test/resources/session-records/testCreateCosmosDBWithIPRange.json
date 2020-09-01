@@ -1268,7 +1268,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-store, no-cache",
       "x-ms-request-id" : "8d8ddc23-f484-404e-9562-e2b853e98e36",
-      "Body" : "{\"primaryMasterKey\":\"v0tDudm3GbrUFmroSZ8OrPDMDRDBXKnFTCASLPKQBa7lwUyGpqOTKqWRXLU4PduhNPndN1RAwFdyD5a9HoLUSw==\",\"secondaryMasterKey\":\"eelokRguKR3yslgJwVemq5t2UVLupPLrQiM9Je8KC8aWY77qdfi5EH5ld6bX2Le00d4LB3CwJPNpHy6HzYJMsA==\",\"primaryReadonlyMasterKey\":\"FlsRhs6yXEJUKl3vzT12dGarjcOaB1M1cmI5MRJidaT6CVEhDu3wA6bnkZklBNrI0SbZ33IJENEhtFSy3fl1Mw==\",\"secondaryReadonlyMasterKey\":\"OUhyx3qdnLQwOpWw6qlEB4LW0Hx7QjoGEOPZVyeaQdHHD4jc4mdsoMeSlOvuDCCdfJEu6iUPPW0Xuh9uc8kYRg==\"}"
+      "Body" : "{\"primaryMasterKey\":\"***REMOVED***\",\"secondaryMasterKey\":\"***REMOVED***\",\"primaryReadonlyMasterKey\":\"***REMOVED***\",\"secondaryReadonlyMasterKey\":\"***REMOVED***\"}"
     }
   }, {
     "Method" : "POST",
@@ -1294,7 +1294,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-store, no-cache",
       "x-ms-request-id" : "cec1719c-a57a-47b0-99ab-e9ac266b8958",
-      "Body" : "{\"primaryReadonlyMasterKey\":\"FlsRhs6yXEJUKl3vzT12dGarjcOaB1M1cmI5MRJidaT6CVEhDu3wA6bnkZklBNrI0SbZ33IJENEhtFSy3fl1Mw==\",\"secondaryReadonlyMasterKey\":\"OUhyx3qdnLQwOpWw6qlEB4LW0Hx7QjoGEOPZVyeaQdHHD4jc4mdsoMeSlOvuDCCdfJEu6iUPPW0Xuh9uc8kYRg==\"}"
+      "Body" : "{\"primaryReadonlyMasterKey\":\"***REMOVED***\",\"secondaryReadonlyMasterKey\":\"***REMOVED***\"}"
     }
   }, {
     "Method" : "DELETE",

@@ -1,0 +1,29 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.8; Mac OS X; 10.15.6)",
+      "x-ms-client-request-id" : "460c0b0d-4ff4-4aab-b4b8-5a973ac1dc5e",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Thu, 27 Aug 2020 22:54:28 GMT",
+      "Cache-Control" : "no-cache",
+      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/Tables('test46374d0f85')",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "0aebf3ba-1002-006c-44c5-7c21cb000000",
+      "Preference-Applied" : "return-no-content",
+      "x-ms-client-request-id" : "460c0b0d-4ff4-4aab-b4b8-5a973ac1dc5e",
+      "Location" : "https://brsiegelsample.table.core.windows.net/Tables('test46374d0f85')"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "test46374d0f85" ]
+}

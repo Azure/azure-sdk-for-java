@@ -1,810 +1,752 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgnemv_263763384311?api-version=2017-05-10",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgnemv_0d844955bd37?api-version=2020-06-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:f82fa839f6b46fd84edc56e01cf7c8c6d4faaa2190534aff5c1d17095f0a3c13 Java:1.8.0_144 (ResourceManagementClient, 2017-05-10)",
-      "Content-Type" : "application/json; charset=utf-8"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Fri, 23 Feb 2018 00:42:10 GMT",
-      "content-length" : "192",
+      "date" : "Fri, 28 Aug 2020 06:01:30 GMT",
+      "content-length" : "326",
       "expires" : "-1",
       "x-ms-ratelimit-remaining-subscription-writes" : "1199",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "8944c5e4-d96f-4a89-8dfe-23876562734c",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "2270dcb2-fe7f-4ede-aa50-32566a993bb7",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "WESTUS2:20180223T004211Z:8944c5e4-d96f-4a89-8dfe-23876562734c",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200828T060131Z:2270dcb2-fe7f-4ede-aa50-32566a993bb7",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "8944c5e4-d96f-4a89-8dfe-23876562734c",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_263763384311\",\"name\":\"rgnemv_263763384311\",\"location\":\"eastus2\",\"properties\":{\"provisioningState\":\"Succeeded\"}}"
+      "x-ms-request-id" : "2270dcb2-fe7f-4ede-aa50-32566a993bb7",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37\",\"name\":\"rgnemv_0d844955bd37\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"eastus2\",\"tags\":{\"date\":\"2020-08-28T06:01:27.477412700Z\",\"product\":\"javasdk\",\"cause\":\"automation\"},\"properties\":{\"provisioningState\":\"Succeeded\"}}"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_263763384311/providers/Microsoft.EventHub/namespaces/nsba561500fa?api-version=2017-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.EventHub/namespaces/ns0b03701968?api-version=2017-04-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:f82fa839f6b46fd84edc56e01cf7c8c6d4faaa2190534aff5c1d17095f0a3c13 Java:1.8.0_144 (EventHubManagementClient, 2017-04-01)",
-      "Content-Type" : "application/json; charset=utf-8"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.eventhubs/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Fri, 23 Feb 2018 00:42:12 GMT",
-      "server" : "Service-Bus-Resource-Provider/SN1",
-      "content-length" : "635",
+      "date" : "Fri, 28 Aug 2020 06:01:40 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "651",
+      "expires" : "-1",
+      "server-sb" : "Service-Bus-Resource-Provider/CH3",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "5d00363f-69cb-49d8-81c8-7c0ef97e7e57",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "49",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200828T060141Z:5d00363f-69cb-49d8-81c8-7c0ef97e7e57",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "dd9023ad-5d68-4d20-8f5e-bd592b9345de_M8CH3_M8CH3",
+      "Body" : "{\"sku\":{\"name\":\"Standard\",\"tier\":\"Standard\",\"capacity\":1},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.EventHub/namespaces/ns0b03701968\",\"name\":\"ns0b03701968\",\"type\":\"Microsoft.EventHub/Namespaces\",\"location\":\"East US 2\",\"tags\":{},\"properties\":{\"isAutoInflateEnabled\":false,\"maximumThroughputUnits\":0,\"kafkaEnabled\":true,\"provisioningState\":\"Created\",\"metricId\":\"00000000-0000-0000-0000-000000000000:ns0b03701968\",\"createdAt\":\"2020-08-28T06:01:38.7Z\",\"updatedAt\":\"2020-08-28T06:01:38.7Z\",\"serviceBusEndpoint\":\"https://ns0b03701968.servicebus.windows.net:443/\",\"status\":\"Activating\"}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.EventHub/namespaces/ns0b03701968?api-version=2017-04-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Fri, 28 Aug 2020 06:02:11 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "651",
+      "expires" : "-1",
+      "server-sb" : "Service-Bus-Resource-Provider/CH3",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11999",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "0582e022-fcde-4b1d-9402-383a1373393d",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200828T060212Z:0582e022-fcde-4b1d-9402-383a1373393d",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "31180da4-faf6-4060-81d4-3e841374a3f5_M4CH3_M4CH3",
+      "Body" : "{\"sku\":{\"name\":\"Standard\",\"tier\":\"Standard\",\"capacity\":1},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.EventHub/namespaces/ns0b03701968\",\"name\":\"ns0b03701968\",\"type\":\"Microsoft.EventHub/Namespaces\",\"location\":\"East US 2\",\"tags\":{},\"properties\":{\"isAutoInflateEnabled\":false,\"maximumThroughputUnits\":0,\"kafkaEnabled\":true,\"provisioningState\":\"Created\",\"metricId\":\"00000000-0000-0000-0000-000000000000:ns0b03701968\",\"createdAt\":\"2020-08-28T06:01:38.7Z\",\"updatedAt\":\"2020-08-28T06:01:38.7Z\",\"serviceBusEndpoint\":\"https://ns0b03701968.servicebus.windows.net:443/\",\"status\":\"Activating\"}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.EventHub/namespaces/ns0b03701968?api-version=2017-04-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Fri, 28 Aug 2020 06:02:42 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "651",
       "expires" : "-1",
       "server-sb" : "Service-Bus-Resource-Provider/SN1",
-      "transfer-encoding" : "chunked",
-      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11998",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "a2e427cd-36cf-4fee-98ba-100d4115a4bd",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200828T060242Z:a2e427cd-36cf-4fee-98ba-100d4115a4bd",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "9f055c25-04b0-4c98-af3e-5d5d15e1aa11_M1SN1_M1SN1",
+      "Body" : "{\"sku\":{\"name\":\"Standard\",\"tier\":\"Standard\",\"capacity\":1},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.EventHub/namespaces/ns0b03701968\",\"name\":\"ns0b03701968\",\"type\":\"Microsoft.EventHub/Namespaces\",\"location\":\"East US 2\",\"tags\":{},\"properties\":{\"isAutoInflateEnabled\":false,\"maximumThroughputUnits\":0,\"kafkaEnabled\":true,\"provisioningState\":\"Succeeded\",\"metricId\":\"00000000-0000-0000-0000-000000000000:ns0b03701968\",\"createdAt\":\"2020-08-28T06:01:38.7Z\",\"updatedAt\":\"2020-08-28T06:02:29.683Z\",\"serviceBusEndpoint\":\"https://ns0b03701968.servicebus.windows.net:443/\",\"status\":\"Active\"}}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.Storage/storageAccounts/stg328161738?api-version=2019-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.storage/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Fri, 28 Aug 2020 06:02:52 GMT",
+      "server" : "Microsoft-Azure-Storage-Resource-Provider/1.0,Microsoft-HTTPAPI/2.0 Microsoft-HTTPAPI/2.0",
+      "content-length" : "0",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1198",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "5b200a24-1563-4b84-a34c-a9148b393de9",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200828T060252Z:5b200a24-1563-4b84-a34c-a9148b393de9",
+      "content-type" : "text/plain; charset=utf-8",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus2/asyncoperations/6fac29af-8281-4fb7-870b-d13ac8568015?monitor=true&api-version=2019-06-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "6fac29af-8281-4fb7-870b-d13ac8568015",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus2/asyncoperations/6fac29af-8281-4fb7-870b-d13ac8568015?monitor=true&api-version=2019-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Fri, 28 Aug 2020 06:03:08 GMT",
+      "server" : "Microsoft-Azure-Storage-Resource-Provider/1.0,Microsoft-HTTPAPI/2.0 Microsoft-HTTPAPI/2.0",
+      "content-length" : "0",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11996",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "d1c8061c-1a49-4b91-b0f7-f9ddf7b768df",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200828T060309Z:d1c8061c-1a49-4b91-b0f7-f9ddf7b768df",
+      "content-type" : "text/plain; charset=utf-8",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus2/asyncoperations/6fac29af-8281-4fb7-870b-d13ac8568015?monitor=true&api-version=2019-06-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "9ed88ae5-d618-4516-b6bd-0a1b83dc7559",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus2/asyncoperations/6fac29af-8281-4fb7-870b-d13ac8568015?monitor=true&api-version=2019-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Fri, 28 Aug 2020 06:03:12 GMT",
+      "server" : "Microsoft-Azure-Storage-Resource-Provider/1.0,Microsoft-HTTPAPI/2.0 Microsoft-HTTPAPI/2.0",
+      "content-length" : "1114",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11998",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "8fa4016d-e41e-415d-a2e1-e42653906996",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200828T060313Z:8fa4016d-e41e-415d-a2e1-e42653906996",
+      "content-type" : "application/json",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "56e8a8f4-43ad-405b-9572-1d19582c272a",
+      "Body" : "{\"sku\":{\"name\":\"Standard_LRS\",\"tier\":\"Standard\"},\"kind\":\"Storage\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.Storage/storageAccounts/stg328161738\",\"name\":\"stg328161738\",\"type\":\"Microsoft.Storage/storageAccounts\",\"location\":\"eastus2\",\"tags\":{},\"properties\":{\"privateEndpointConnections\":[],\"networkAcls\":{\"bypass\":\"AzureServices\",\"virtualNetworkRules\":[],\"ipRules\":[],\"defaultAction\":\"Allow\"},\"supportsHttpsTrafficOnly\":true,\"encryption\":{\"services\":{\"file\":{\"keyType\":\"Account\",\"enabled\":true,\"lastEnabledTime\":\"2020-08-28T06:02:51.7676050Z\"},\"blob\":{\"keyType\":\"Account\",\"enabled\":true,\"lastEnabledTime\":\"2020-08-28T06:02:51.7676050Z\"}},\"keySource\":\"Microsoft.Storage\"},\"provisioningState\":\"Succeeded\",\"creationTime\":\"2020-08-28T06:02:51.6738252Z\",\"primaryEndpoints\":{\"blob\":\"https://stg328161738.blob.core.windows.net/\",\"queue\":\"https://stg328161738.queue.core.windows.net/\",\"table\":\"https://stg328161738.table.core.windows.net/\",\"file\":\"https://stg328161738.file.core.windows.net/\"},\"primaryLocation\":\"eastus2\",\"statusOfPrimary\":\"available\"}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.Storage/storageAccounts/stg328161738?api-version=2019-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.storage/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Fri, 28 Aug 2020 06:03:12 GMT",
+      "server" : "Microsoft-Azure-Storage-Resource-Provider/1.0,Microsoft-HTTPAPI/2.0 Microsoft-HTTPAPI/2.0",
+      "content-length" : "1114",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11985",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "fb4e8473-0506-4dbe-8305-cddb59e2f028",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200828T060313Z:fb4e8473-0506-4dbe-8305-cddb59e2f028",
+      "content-type" : "application/json",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "0cca187e-b004-4662-a9e2-c5fdc91743a1",
+      "Body" : "{\"sku\":{\"name\":\"Standard_LRS\",\"tier\":\"Standard\"},\"kind\":\"Storage\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.Storage/storageAccounts/stg328161738\",\"name\":\"stg328161738\",\"type\":\"Microsoft.Storage/storageAccounts\",\"location\":\"eastus2\",\"tags\":{},\"properties\":{\"privateEndpointConnections\":[],\"networkAcls\":{\"bypass\":\"AzureServices\",\"virtualNetworkRules\":[],\"ipRules\":[],\"defaultAction\":\"Allow\"},\"supportsHttpsTrafficOnly\":true,\"encryption\":{\"services\":{\"file\":{\"keyType\":\"Account\",\"enabled\":true,\"lastEnabledTime\":\"2020-08-28T06:02:51.7676050Z\"},\"blob\":{\"keyType\":\"Account\",\"enabled\":true,\"lastEnabledTime\":\"2020-08-28T06:02:51.7676050Z\"}},\"keySource\":\"Microsoft.Storage\"},\"provisioningState\":\"Succeeded\",\"creationTime\":\"2020-08-28T06:02:51.6738252Z\",\"primaryEndpoints\":{\"blob\":\"https://stg328161738.blob.core.windows.net/\",\"queue\":\"https://stg328161738.queue.core.windows.net/\",\"table\":\"https://stg328161738.table.core.windows.net/\",\"file\":\"https://stg328161738.file.core.windows.net/\"},\"primaryLocation\":\"eastus2\",\"statusOfPrimary\":\"available\"}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.Storage/storageAccounts/stg328161738/blobServices/default/containers/datacpt?api-version=2019-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.storage/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Fri, 28 Aug 2020 06:03:13 GMT",
+      "server" : "Microsoft-Azure-Storage-Resource-Provider/1.0,Microsoft-HTTPAPI/2.0 Microsoft-HTTPAPI/2.0",
+      "content-length" : "181",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11997",
+      "StatusCode" : "404",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "9069871a-6d7e-4e3e-a61c-20bb84ea3814",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200828T060313Z:9069871a-6d7e-4e3e-a61c-20bb84ea3814",
+      "content-type" : "application/json",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "fa4e003c-46cd-494d-a6d5-8822907444d4",
+      "Body" : "{\"error\":{\"code\":\"ContainerOperationFailure\",\"message\":\"The specified container does not exist.\\nRequestId:a4902940-f01e-005b-2f00-7deeb4000000\\nTime:2020-08-28T06:03:13.6925491Z\"}}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.Storage/storageAccounts/stg328161738/blobServices/default/containers/datacpt?api-version=2019-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.storage/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Fri, 28 Aug 2020 06:03:14 GMT",
+      "server" : "Microsoft-Azure-Storage-Resource-Provider/1.0,Microsoft-HTTPAPI/2.0 Microsoft-HTTPAPI/2.0",
+      "content-length" : "412",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1197",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "e87c2093-29af-45b7-991d-a0b6eb6f39ae",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200828T060314Z:e87c2093-29af-45b7-991d-a0b6eb6f39ae",
+      "etag" : "\"0x8D84B180D0D2A76\"",
+      "content-type" : "application/json",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "9b9ced5d-a521-400f-9cc7-6e8d95a91b31",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.Storage/storageAccounts/stg328161738/blobServices/default/containers/datacpt\",\"name\":\"datacpt\",\"type\":\"Microsoft.Storage/storageAccounts/blobServices/containers\",\"properties\":{\"deleted\":false,\"remainingRetentionDays\":0,\"publicAccess\":\"Container\",\"hasImmutabilityPolicy\":false,\"hasLegalHold\":false}}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.EventHub/namespaces/ns0b03701968/eventhubs/eh85878709e9?api-version=2017-04-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.eventhubs/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Fri, 28 Aug 2020 06:03:17 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "939",
+      "expires" : "-1",
+      "server-sb" : "Service-Bus-Resource-Provider/CH3",
       "x-ms-ratelimit-remaining-subscription-writes" : "1198",
       "retry-after" : "0",
       "StatusCode" : "200",
       "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "3e90c452-d41e-4127-8ab4-d08410af44a8",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "091398be-b5fc-4933-a813-45ebc263ff4b",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "WESTUS2:20180223T004213Z:091398be-b5fc-4933-a813-45ebc263ff4b",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200828T060317Z:3e90c452-d41e-4127-8ab4-d08410af44a8",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "523dd2cd-629a-47a1-a010-00aef6feeb97_M1SN1_M1SN1",
-      "Body" : "{\"sku\":{\"name\":\"Standard\",\"tier\":\"Standard\",\"capacity\":1},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_263763384311/providers/Microsoft.EventHub/namespaces/nsba561500fa\",\"name\":\"nsba561500fa\",\"type\":\"Microsoft.EventHub/Namespaces\",\"location\":\"East US 2\",\"tags\":{},\"properties\":{\"isAutoInflateEnabled\":false,\"maximumThroughputUnits\":0,\"provisioningState\":\"Created\",\"metricId\":\"00000000-0000-0000-0000-000000000000:nsba561500fa\",\"createdAt\":\"2018-02-23T00:42:10.847Z\",\"updatedAt\":\"2018-02-23T00:42:10.847Z\",\"serviceBusEndpoint\":\"https://nsba561500fa.servicebus.windows.net:443/\",\"status\":\"Activating\"}}"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_263763384311/providers/Microsoft.EventHub/namespaces/nsba561500fa?api-version=2017-04-01",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:f82fa839f6b46fd84edc56e01cf7c8c6d4faaa2190534aff5c1d17095f0a3c13 Java:1.8.0_144 (EventHubManagementClient, 2017-04-01)"
-    },
-    "Response" : {
-      "date" : "Fri, 23 Feb 2018 00:42:13 GMT",
-      "server" : "Service-Bus-Resource-Provider/SN1",
-      "content-length" : "635",
-      "expires" : "-1",
-      "server-sb" : "Service-Bus-Resource-Provider/SN1",
-      "transfer-encoding" : "chunked",
-      "vary" : "Accept-Encoding",
-      "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14998",
-      "StatusCode" : "200",
-      "pragma" : "no-cache",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "58672c2c-1b82-47c6-8373-ad5c55526a96",
-      "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "WESTUS2:20180223T004214Z:58672c2c-1b82-47c6-8373-ad5c55526a96",
-      "content-type" : "application/json; charset=utf-8",
-      "cache-control" : "no-cache",
-      "x-ms-request-id" : "5682ac20-d09f-42a4-82f3-155f488e5b8e_M1SN1_M1SN1",
-      "Body" : "{\"sku\":{\"name\":\"Standard\",\"tier\":\"Standard\",\"capacity\":1},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_263763384311/providers/Microsoft.EventHub/namespaces/nsba561500fa\",\"name\":\"nsba561500fa\",\"type\":\"Microsoft.EventHub/Namespaces\",\"location\":\"East US 2\",\"tags\":{},\"properties\":{\"isAutoInflateEnabled\":false,\"maximumThroughputUnits\":0,\"provisioningState\":\"Created\",\"metricId\":\"00000000-0000-0000-0000-000000000000:nsba561500fa\",\"createdAt\":\"2018-02-23T00:42:10.847Z\",\"updatedAt\":\"2018-02-23T00:42:10.847Z\",\"serviceBusEndpoint\":\"https://nsba561500fa.servicebus.windows.net:443/\",\"status\":\"Activating\"}}"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_263763384311/providers/Microsoft.EventHub/namespaces/nsba561500fa?api-version=2017-04-01",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:f82fa839f6b46fd84edc56e01cf7c8c6d4faaa2190534aff5c1d17095f0a3c13 Java:1.8.0_144 (EventHubManagementClient, 2017-04-01)"
-    },
-    "Response" : {
-      "date" : "Fri, 23 Feb 2018 00:42:43 GMT",
-      "server" : "Service-Bus-Resource-Provider/SN1",
-      "content-length" : "633",
-      "expires" : "-1",
-      "server-sb" : "Service-Bus-Resource-Provider/SN1",
-      "transfer-encoding" : "chunked",
-      "vary" : "Accept-Encoding",
-      "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14997",
-      "StatusCode" : "200",
-      "pragma" : "no-cache",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "ee36506a-f329-4e53-bcf3-a2df0cc1d3c5",
-      "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "WESTUS2:20180223T004244Z:ee36506a-f329-4e53-bcf3-a2df0cc1d3c5",
-      "content-type" : "application/json; charset=utf-8",
-      "cache-control" : "no-cache",
-      "x-ms-request-id" : "36f89d60-7731-47ab-ab0f-85ae68378d97_M1SN1_M1SN1",
-      "Body" : "{\"sku\":{\"name\":\"Standard\",\"tier\":\"Standard\",\"capacity\":1},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_263763384311/providers/Microsoft.EventHub/namespaces/nsba561500fa\",\"name\":\"nsba561500fa\",\"type\":\"Microsoft.EventHub/Namespaces\",\"location\":\"East US 2\",\"tags\":{},\"properties\":{\"isAutoInflateEnabled\":false,\"maximumThroughputUnits\":0,\"provisioningState\":\"Succeeded\",\"metricId\":\"00000000-0000-0000-0000-000000000000:nsba561500fa\",\"createdAt\":\"2018-02-23T00:42:10.847Z\",\"updatedAt\":\"2018-02-23T00:42:37.973Z\",\"serviceBusEndpoint\":\"https://nsba561500fa.servicebus.windows.net:443/\",\"status\":\"Active\"}}"
+      "x-ms-request-id" : "1e38bcfb-8572-4a56-a279-25458a3f2af4_M10CH3_M10CH3",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.EventHub/namespaces/ns0b03701968/eventhubs/eh85878709e9\",\"name\":\"eh85878709e9\",\"type\":\"Microsoft.EventHub/Namespaces/EventHubs\",\"location\":\"East US 2\",\"properties\":{\"messageRetentionInDays\":7,\"partitionCount\":4,\"status\":\"Active\",\"createdAt\":\"2020-08-28T06:03:16.467Z\",\"updatedAt\":\"2020-08-28T06:03:16.773Z\",\"partitionIds\":[\"0\",\"1\",\"2\",\"3\"],\"captureDescription\":{\"enabled\":true,\"encoding\":\"Avro\",\"destination\":{\"name\":\"EventHubArchive.AzureBlockBlob\",\"properties\":{\"storageAccountResourceId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.Storage/storageAccounts/stg328161738\",\"blobContainer\":\"datacpt\",\"archiveNameFormat\":\"{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}\"}},\"intervalInSeconds\":300,\"sizeLimitInBytes\":104857600}}}"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_263763384311/providers/Microsoft.Storage/storageAccounts/stg0b6106413?api-version=2017-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.EventHub/namespaces/ns0b03701968/eventhubs/eh85878709e9/consumergroups/cg1?api-version=2017-04-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:f82fa839f6b46fd84edc56e01cf7c8c6d4faaa2190534aff5c1d17095f0a3c13 Java:1.8.0_144 (StorageManagementClient, 2017-10-01)",
-      "Content-Type" : "application/json; charset=utf-8"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.eventhubs/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Fri, 23 Feb 2018 00:42:45 GMT",
-      "content-length" : "0",
-      "server" : "Microsoft-Azure-Storage-Resource-Provider/1.0,Microsoft-HTTPAPI/2.0 Microsoft-HTTPAPI/2.0",
+      "date" : "Fri, 28 Aug 2020 06:03:18 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "419",
       "expires" : "-1",
+      "server-sb" : "Service-Bus-Resource-Provider/SN1",
       "x-ms-ratelimit-remaining-subscription-writes" : "1197",
       "retry-after" : "0",
-      "StatusCode" : "202",
-      "pragma" : "no-cache",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "5f2cc419-1199-484d-9d6f-5b5852093770",
-      "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "WESTUS2:20180223T004246Z:5f2cc419-1199-484d-9d6f-5b5852093770",
-      "content-type" : "text/plain; charset=utf-8",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus2/asyncoperations/5de2e0bd-6d0c-4463-95d0-e629d5865291?monitor=true&api-version=2017-10-01",
-      "cache-control" : "no-cache",
-      "x-ms-request-id" : "5de2e0bd-6d0c-4463-95d0-e629d5865291",
-      "Body" : ""
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus2/asyncoperations/5de2e0bd-6d0c-4463-95d0-e629d5865291?monitor=true&api-version=2017-10-01",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:f82fa839f6b46fd84edc56e01cf7c8c6d4faaa2190534aff5c1d17095f0a3c13 Java:1.8.0_144 (StorageManagementClient, 2017-10-01)"
-    },
-    "Response" : {
-      "date" : "Fri, 23 Feb 2018 00:42:45 GMT",
-      "content-length" : "0",
-      "server" : "Microsoft-Azure-Storage-Resource-Provider/1.0,Microsoft-HTTPAPI/2.0 Microsoft-HTTPAPI/2.0",
-      "expires" : "-1",
-      "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14996",
-      "StatusCode" : "202",
-      "pragma" : "no-cache",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "d257ca3f-37b2-4e87-88b1-dbcc0c7c6c00",
-      "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "WESTUS2:20180223T004246Z:d257ca3f-37b2-4e87-88b1-dbcc0c7c6c00",
-      "content-type" : "text/plain; charset=utf-8",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus2/asyncoperations/5de2e0bd-6d0c-4463-95d0-e629d5865291?monitor=true&api-version=2017-10-01",
-      "cache-control" : "no-cache",
-      "x-ms-request-id" : "fc484adf-5c4f-4292-98d5-48ba64e8c2e6",
-      "Body" : ""
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus2/asyncoperations/5de2e0bd-6d0c-4463-95d0-e629d5865291?monitor=true&api-version=2017-10-01",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:f82fa839f6b46fd84edc56e01cf7c8c6d4faaa2190534aff5c1d17095f0a3c13 Java:1.8.0_144 (StorageManagementClient, 2017-10-01)"
-    },
-    "Response" : {
-      "date" : "Fri, 23 Feb 2018 00:43:03 GMT",
-      "content-length" : "0",
-      "server" : "Microsoft-Azure-Storage-Resource-Provider/1.0,Microsoft-HTTPAPI/2.0 Microsoft-HTTPAPI/2.0",
-      "expires" : "-1",
-      "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14995",
-      "StatusCode" : "202",
-      "pragma" : "no-cache",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "3fe2ef1b-9cc9-44ee-a7f3-4e82c87d0f0e",
-      "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "WESTUS2:20180223T004303Z:3fe2ef1b-9cc9-44ee-a7f3-4e82c87d0f0e",
-      "content-type" : "text/plain; charset=utf-8",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus2/asyncoperations/5de2e0bd-6d0c-4463-95d0-e629d5865291?monitor=true&api-version=2017-10-01",
-      "cache-control" : "no-cache",
-      "x-ms-request-id" : "334b8dad-5e47-4e53-871e-058983d7cf6c",
-      "Body" : ""
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus2/asyncoperations/5de2e0bd-6d0c-4463-95d0-e629d5865291?monitor=true&api-version=2017-10-01",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:f82fa839f6b46fd84edc56e01cf7c8c6d4faaa2190534aff5c1d17095f0a3c13 Java:1.8.0_144 (StorageManagementClient, 2017-10-01)"
-    },
-    "Response" : {
-      "date" : "Fri, 23 Feb 2018 00:43:20 GMT",
-      "server" : "Microsoft-Azure-Storage-Resource-Provider/1.0,Microsoft-HTTPAPI/2.0 Microsoft-HTTPAPI/2.0",
-      "content-length" : "1105",
-      "expires" : "-1",
-      "transfer-encoding" : "chunked",
-      "vary" : "Accept-Encoding",
-      "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14994",
       "StatusCode" : "200",
       "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "6f9e5577-cfed-4dd2-8f0f-3c9789f2a82a",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "5af1b3b6-037d-41a0-a09f-69e31e2f0f8a",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "WESTUS2:20180223T004320Z:5af1b3b6-037d-41a0-a09f-69e31e2f0f8a",
-      "content-type" : "application/json",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200828T060319Z:6f9e5577-cfed-4dd2-8f0f-3c9789f2a82a",
+      "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "ec5dc401-4a28-4618-be59-b247ad843fa0",
-      "Body" : "{\"sku\":{\"name\":\"Standard_LRS\",\"tier\":\"Standard\"},\"kind\":\"Storage\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_263763384311/providers/Microsoft.Storage/storageAccounts/stg0b6106413\",\"name\":\"stg0b6106413\",\"type\":\"Microsoft.Storage/storageAccounts\",\"location\":\"eastus2\",\"tags\":{},\"properties\":{\"networkAcls\":{\"bypass\":\"AzureServices\",\"virtualNetworkRules\":[],\"ipRules\":[],\"defaultAction\":\"Allow\"},\"trustedDirectories\":[\"00000000-0000-0000-0000-000000000000\"],\"supportsHttpsTrafficOnly\":false,\"encryption\":{\"services\":{\"file\":{\"enabled\":true,\"lastEnabledTime\":\"2018-02-23T00:42:46.5547986Z\"},\"blob\":{\"enabled\":true,\"lastEnabledTime\":\"2018-02-23T00:42:46.5547986Z\"}},\"keySource\":\"Microsoft.Storage\"},\"provisioningState\":\"Succeeded\",\"creationTime\":\"2018-02-23T00:42:46.5235455Z\",\"primaryEndpoints\":{\"blob\":\"https://stg0b6106413.blob.core.windows.net/\",\"queue\":\"https://stg0b6106413.queue.core.windows.net/\",\"table\":\"https://stg0b6106413.table.core.windows.net/\",\"file\":\"https://stg0b6106413.file.core.windows.net/\"},\"primaryLocation\":\"eastus2\",\"statusOfPrimary\":\"available\"}}"
+      "x-ms-request-id" : "9d8a7db6-fe1e-4841-949b-da8f6a9f6ff9_M1SN1_M1SN1",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.EventHub/namespaces/ns0b03701968/eventhubs/eh85878709e9/consumergroups/cg1\",\"name\":\"cg1\",\"type\":\"Microsoft.EventHub/Namespaces/EventHubs/ConsumerGroups\",\"location\":\"East US 2\",\"properties\":{\"createdAt\":\"2020-08-28T06:03:19.2749937Z\",\"updatedAt\":\"2020-08-28T06:03:19.2749937Z\",\"userMetadata\":\"sometadata\"}}"
     }
   }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_263763384311/providers/Microsoft.Storage/storageAccounts/stg0b6106413?api-version=2017-10-01",
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.EventHub/namespaces/ns0b03701968/eventhubs/eh85878709e9/authorizationRules/listenrule1?api-version=2017-04-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:f82fa839f6b46fd84edc56e01cf7c8c6d4faaa2190534aff5c1d17095f0a3c13 Java:1.8.0_144 (StorageManagementClient, 2017-10-01)",
-      "Content-Type" : "application/json; charset=utf-8"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.eventhubs/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Fri, 23 Feb 2018 00:43:20 GMT",
-      "server" : "Microsoft-Azure-Storage-Resource-Provider/1.0,Microsoft-HTTPAPI/2.0 Microsoft-HTTPAPI/2.0",
-      "content-length" : "1105",
+      "date" : "Fri, 28 Aug 2020 06:03:21 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "349",
       "expires" : "-1",
-      "transfer-encoding" : "chunked",
-      "vary" : "Accept-Encoding",
-      "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14993",
-      "StatusCode" : "200",
-      "pragma" : "no-cache",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "21c39ddc-47ea-4407-b13a-d1bfb1085f6c",
-      "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "WESTUS2:20180223T004321Z:21c39ddc-47ea-4407-b13a-d1bfb1085f6c",
-      "content-type" : "application/json",
-      "cache-control" : "no-cache",
-      "x-ms-request-id" : "82ae133e-844d-4a9d-bd5a-98d32ef111f8",
-      "Body" : "{\"sku\":{\"name\":\"Standard_LRS\",\"tier\":\"Standard\"},\"kind\":\"Storage\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_263763384311/providers/Microsoft.Storage/storageAccounts/stg0b6106413\",\"name\":\"stg0b6106413\",\"type\":\"Microsoft.Storage/storageAccounts\",\"location\":\"eastus2\",\"tags\":{},\"properties\":{\"networkAcls\":{\"bypass\":\"AzureServices\",\"virtualNetworkRules\":[],\"ipRules\":[],\"defaultAction\":\"Allow\"},\"trustedDirectories\":[\"00000000-0000-0000-0000-000000000000\"],\"supportsHttpsTrafficOnly\":false,\"encryption\":{\"services\":{\"file\":{\"enabled\":true,\"lastEnabledTime\":\"2018-02-23T00:42:46.5547986Z\"},\"blob\":{\"enabled\":true,\"lastEnabledTime\":\"2018-02-23T00:42:46.5547986Z\"}},\"keySource\":\"Microsoft.Storage\"},\"provisioningState\":\"Succeeded\",\"creationTime\":\"2018-02-23T00:42:46.5235455Z\",\"primaryEndpoints\":{\"blob\":\"https://stg0b6106413.blob.core.windows.net/\",\"queue\":\"https://stg0b6106413.queue.core.windows.net/\",\"table\":\"https://stg0b6106413.table.core.windows.net/\",\"file\":\"https://stg0b6106413.file.core.windows.net/\"},\"primaryLocation\":\"eastus2\",\"statusOfPrimary\":\"available\"}}"
-    }
-  }, {
-    "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_263763384311/providers/Microsoft.Storage/storageAccounts/stg0b6106413/listKeys?api-version=2017-10-01",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:f82fa839f6b46fd84edc56e01cf7c8c6d4faaa2190534aff5c1d17095f0a3c13 Java:1.8.0_144 (StorageManagementClient, 2017-10-01)",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Response" : {
-      "date" : "Fri, 23 Feb 2018 00:43:21 GMT",
-      "server" : "Microsoft-Azure-Storage-Resource-Provider/1.0,Microsoft-HTTPAPI/2.0 Microsoft-HTTPAPI/2.0",
-      "content-length" : "288",
-      "expires" : "-1",
-      "transfer-encoding" : "chunked",
-      "vary" : "Accept-Encoding",
+      "server-sb" : "Service-Bus-Resource-Provider/CH3",
       "x-ms-ratelimit-remaining-subscription-writes" : "1196",
       "retry-after" : "0",
       "StatusCode" : "200",
       "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "d01bf3f2-8ec5-4d60-8208-c3b6cc45c26d",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "7a4c0261-9059-47a5-9e39-e16169a525e6",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "WESTUS2:20180223T004321Z:7a4c0261-9059-47a5-9e39-e16169a525e6",
-      "content-type" : "application/json",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200828T060321Z:d01bf3f2-8ec5-4d60-8208-c3b6cc45c26d",
+      "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "c174ab01-deb2-400b-8d08-d92c2f7b1958",
-      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"}]}"
+      "x-ms-request-id" : "dc2e2c46-49a1-4b41-b249-514872c4667c_M7CH3_M7CH3",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.EventHub/namespaces/ns0b03701968/eventhubs/eh85878709e9/authorizationRules/listenrule1\",\"name\":\"listenrule1\",\"type\":\"Microsoft.EventHub/Namespaces/EventHubs/AuthorizationRules\",\"location\":\"East US 2\",\"properties\":{\"rights\":[\"Listen\"]}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.EventHub/namespaces/ns0b03701968/eventhubs/eh85878709e9/consumergroups?api-version=2017-04-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.eventhubs/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Fri, 28 Aug 2020 06:03:21 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "813",
+      "expires" : "-1",
+      "server-sb" : "Service-Bus-Resource-Provider/SN1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11994",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "84fb8ead-5e84-47c7-8ee7-4b3c55b1fc98",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200828T060322Z:84fb8ead-5e84-47c7-8ee7-4b3c55b1fc98",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-inline-count" : "",
+      "x-ms-request-id" : "55ab8038-ec76-4c00-9609-b8d03b1ab7d6_M1SN1_M1SN1",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.EventHub/namespaces/ns0b03701968/eventhubs/eh85878709e9/consumergroups/$Default\",\"name\":\"$Default\",\"type\":\"Microsoft.EventHub/Namespaces/EventHubs/ConsumerGroups\",\"location\":\"East US 2\",\"properties\":{\"createdAt\":\"2020-08-28T06:03:16.5Z\",\"updatedAt\":\"2020-08-28T06:03:16.5Z\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.EventHub/namespaces/ns0b03701968/eventhubs/eh85878709e9/consumergroups/cg1\",\"name\":\"cg1\",\"type\":\"Microsoft.EventHub/Namespaces/EventHubs/ConsumerGroups\",\"location\":\"East US 2\",\"properties\":{\"createdAt\":\"2020-08-28T06:03:19.265Z\",\"updatedAt\":\"2020-08-28T06:03:19.265Z\",\"userMetadata\":\"sometadata\"}}]}"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_263763384311/providers/Microsoft.EventHub/namespaces/nsba561500fa/eventhubs/ehde106942d5?api-version=2017-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.EventHub/namespaces/ns0b03701968/eventhubs/eh0c329685b9?api-version=2017-04-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:f82fa839f6b46fd84edc56e01cf7c8c6d4faaa2190534aff5c1d17095f0a3c13 Java:1.8.0_144 (EventHubManagementClient, 2017-04-01)",
-      "Content-Type" : "application/json; charset=utf-8"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.eventhubs/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Fri, 23 Feb 2018 00:43:35 GMT",
-      "server" : "Service-Bus-Resource-Provider/SN1",
-      "content-length" : "939",
+      "date" : "Fri, 28 Aug 2020 06:03:25 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "454",
       "expires" : "-1",
-      "server-sb" : "Service-Bus-Resource-Provider/SN1",
-      "transfer-encoding" : "chunked",
-      "vary" : "Accept-Encoding",
+      "server-sb" : "Service-Bus-Resource-Provider/CH3",
       "x-ms-ratelimit-remaining-subscription-writes" : "1195",
       "retry-after" : "0",
       "StatusCode" : "200",
       "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "f484b63e-e791-4dde-9c5a-5ab6bb2b4957",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "581d996c-d130-4f9e-b96e-26a742d3d6a6",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "WESTUS2:20180223T004336Z:581d996c-d130-4f9e-b96e-26a742d3d6a6",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200828T060325Z:f484b63e-e791-4dde-9c5a-5ab6bb2b4957",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "0621dc06-c362-476a-b311-68df2698cfea_M1SN1_M1SN1",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_263763384311/providers/Microsoft.EventHub/namespaces/nsba561500fa/eventhubs/ehde106942d5\",\"name\":\"ehde106942d5\",\"type\":\"Microsoft.EventHub/Namespaces/EventHubs\",\"location\":\"East US 2\",\"properties\":{\"messageRetentionInDays\":7,\"partitionCount\":4,\"status\":\"Active\",\"createdAt\":\"2018-02-23T00:43:26.993Z\",\"updatedAt\":\"2018-02-23T00:43:37.277Z\",\"partitionIds\":[\"0\",\"1\",\"2\",\"3\"],\"captureDescription\":{\"enabled\":true,\"encoding\":\"Avro\",\"destination\":{\"name\":\"EventHubArchive.AzureBlockBlob\",\"properties\":{\"storageAccountResourceId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_263763384311/providers/Microsoft.Storage/storageAccounts/stg0b6106413\",\"blobContainer\":\"datacpt\",\"archiveNameFormat\":\"{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}\"}},\"intervalInSeconds\":300,\"sizeLimitInBytes\":104857600}}}"
+      "x-ms-request-id" : "78b22b2a-7817-42be-972e-c5221668f11d_M1CH3_M1CH3",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.EventHub/namespaces/ns0b03701968/eventhubs/eh0c329685b9\",\"name\":\"eh0c329685b9\",\"type\":\"Microsoft.EventHub/Namespaces/EventHubs\",\"location\":\"East US 2\",\"properties\":{\"messageRetentionInDays\":7,\"partitionCount\":4,\"status\":\"Active\",\"createdAt\":\"2020-08-28T06:03:25.053Z\",\"updatedAt\":\"2020-08-28T06:03:25.25Z\",\"partitionIds\":[\"0\",\"1\",\"2\",\"3\"]}}"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_263763384311/providers/Microsoft.EventHub/namespaces/nsba561500fa/eventhubs/ehde106942d5/consumergroups/cg1?api-version=2017-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.EventHub/namespaces/ns0b03701968/eventhubs/eh0c329685b9/consumergroups/cg2?api-version=2017-04-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:f82fa839f6b46fd84edc56e01cf7c8c6d4faaa2190534aff5c1d17095f0a3c13 Java:1.8.0_144 (EventHubManagementClient, 2017-04-01)",
-      "Content-Type" : "application/json; charset=utf-8"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.eventhubs/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Fri, 23 Feb 2018 00:43:36 GMT",
-      "server" : "Service-Bus-Resource-Provider/SN1",
+      "date" : "Fri, 28 Aug 2020 06:03:27 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
       "content-length" : "419",
       "expires" : "-1",
-      "server-sb" : "Service-Bus-Resource-Provider/SN1",
-      "transfer-encoding" : "chunked",
-      "vary" : "Accept-Encoding",
-      "x-ms-ratelimit-remaining-subscription-writes" : "1194",
+      "server-sb" : "Service-Bus-Resource-Provider/CH3",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1197",
       "retry-after" : "0",
       "StatusCode" : "200",
       "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "3cc6da05-03a7-4ae4-86e1-b8eb6416dd3f",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "697af20c-da84-4d4c-80b6-f9692524600f",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "WESTUS2:20180223T004337Z:697af20c-da84-4d4c-80b6-f9692524600f",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200828T060327Z:3cc6da05-03a7-4ae4-86e1-b8eb6416dd3f",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "8cad65de-6b50-49e2-8263-8d365d2d65b5_M1SN1_M1SN1",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_263763384311/providers/Microsoft.EventHub/namespaces/nsba561500fa/eventhubs/ehde106942d5/consumergroups/cg1\",\"name\":\"cg1\",\"type\":\"Microsoft.EventHub/Namespaces/EventHubs/ConsumerGroups\",\"location\":\"East US 2\",\"properties\":{\"createdAt\":\"2018-02-23T00:43:37.8459399Z\",\"updatedAt\":\"2018-02-23T00:43:37.8459399Z\",\"userMetadata\":\"sometadata\"}}"
-    }
-  }, {
-    "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_263763384311/providers/Microsoft.EventHub/namespaces/nsba561500fa/eventhubs/ehde106942d5/authorizationRules/listenrule1?api-version=2017-04-01",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:f82fa839f6b46fd84edc56e01cf7c8c6d4faaa2190534aff5c1d17095f0a3c13 Java:1.8.0_144 (EventHubManagementClient, 2017-04-01)",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Response" : {
-      "date" : "Fri, 23 Feb 2018 00:43:38 GMT",
-      "server" : "Service-Bus-Resource-Provider/SN1",
-      "content-length" : "349",
-      "expires" : "-1",
-      "server-sb" : "Service-Bus-Resource-Provider/SN1",
-      "transfer-encoding" : "chunked",
-      "vary" : "Accept-Encoding",
-      "x-ms-ratelimit-remaining-subscription-writes" : "1193",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "pragma" : "no-cache",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "053ebe8a-e537-4ac5-a2db-8869753b10e4",
-      "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "WESTUS2:20180223T004338Z:053ebe8a-e537-4ac5-a2db-8869753b10e4",
-      "content-type" : "application/json; charset=utf-8",
-      "cache-control" : "no-cache",
-      "x-ms-request-id" : "c7b7fe3b-6a43-4f17-8248-f4025098aa3d_M1SN1_M1SN1",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_263763384311/providers/Microsoft.EventHub/namespaces/nsba561500fa/eventhubs/ehde106942d5/authorizationRules/listenrule1\",\"name\":\"listenrule1\",\"type\":\"Microsoft.EventHub/Namespaces/EventHubs/AuthorizationRules\",\"location\":\"East US 2\",\"properties\":{\"rights\":[\"Listen\"]}}"
+      "x-ms-request-id" : "791c9c53-f8f3-4517-8a94-2c921c070726_M10CH3_M10CH3",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.EventHub/namespaces/ns0b03701968/eventhubs/eh0c329685b9/consumergroups/cg2\",\"name\":\"cg2\",\"type\":\"Microsoft.EventHub/Namespaces/EventHubs/ConsumerGroups\",\"location\":\"East US 2\",\"properties\":{\"createdAt\":\"2020-08-28T06:03:27.3593283Z\",\"updatedAt\":\"2020-08-28T06:03:27.3593283Z\",\"userMetadata\":\"sometadata\"}}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_263763384311/providers/Microsoft.EventHub/namespaces/nsba561500fa/eventhubs/ehde106942d5/consumergroups?api-version=2017-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.EventHub/namespaces/ns0b03701968/eventhubs/eh0c329685b9/consumergroups?api-version=2017-04-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:f82fa839f6b46fd84edc56e01cf7c8c6d4faaa2190534aff5c1d17095f0a3c13 Java:1.8.0_144 (EventHubManagementClient, 2017-04-01)",
-      "Content-Type" : "application/json; charset=utf-8"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.eventhubs/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Fri, 23 Feb 2018 00:43:39 GMT",
-      "server" : "Service-Bus-Resource-Provider/SN1",
-      "content-length" : "829",
+      "date" : "Fri, 28 Aug 2020 06:03:27 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "817",
       "expires" : "-1",
       "server-sb" : "Service-Bus-Resource-Provider/SN1",
-      "transfer-encoding" : "chunked",
-      "vary" : "Accept-Encoding",
       "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14992",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11993",
       "StatusCode" : "200",
       "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "27e14388-babe-4748-98a4-bea90f5c834b",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "992ef541-d514-45c0-9cf6-40de063b7bd9",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "WESTUS2:20180223T004339Z:992ef541-d514-45c0-9cf6-40de063b7bd9",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200828T060328Z:27e14388-babe-4748-98a4-bea90f5c834b",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
       "x-ms-inline-count" : "",
-      "x-ms-request-id" : "3efcce6f-985f-4335-8c91-98549d1a2592_M1SN1_M1SN1",
-      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_263763384311/providers/Microsoft.EventHub/namespaces/nsba561500fa/eventhubs/ehde106942d5/consumergroups/$Default\",\"name\":\"$Default\",\"type\":\"Microsoft.EventHub/Namespaces/EventHubs/ConsumerGroups\",\"location\":\"East US 2\",\"properties\":{\"createdAt\":\"2018-02-23T00:43:32.6102444\",\"updatedAt\":\"2018-02-23T00:43:32.6102444\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_263763384311/providers/Microsoft.EventHub/namespaces/nsba561500fa/eventhubs/ehde106942d5/consumergroups/cg1\",\"name\":\"cg1\",\"type\":\"Microsoft.EventHub/Namespaces/EventHubs/ConsumerGroups\",\"location\":\"East US 2\",\"properties\":{\"createdAt\":\"2018-02-23T00:43:37.8447883\",\"updatedAt\":\"2018-02-23T00:43:37.8447883\",\"userMetadata\":\"sometadata\"}}]}"
+      "x-ms-request-id" : "c9b0823d-4dce-4cfe-ba4c-203f77c23f76_M1SN1_M1SN1",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.EventHub/namespaces/ns0b03701968/eventhubs/eh0c329685b9/consumergroups/$Default\",\"name\":\"$Default\",\"type\":\"Microsoft.EventHub/Namespaces/EventHubs/ConsumerGroups\",\"location\":\"East US 2\",\"properties\":{\"createdAt\":\"2020-08-28T06:03:25.109Z\",\"updatedAt\":\"2020-08-28T06:03:25.109Z\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.EventHub/namespaces/ns0b03701968/eventhubs/eh0c329685b9/consumergroups/cg2\",\"name\":\"cg2\",\"type\":\"Microsoft.EventHub/Namespaces/EventHubs/ConsumerGroups\",\"location\":\"East US 2\",\"properties\":{\"createdAt\":\"2020-08-28T06:03:27.359Z\",\"updatedAt\":\"2020-08-28T06:03:27.359Z\",\"userMetadata\":\"sometadata\"}}]}"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_263763384311/providers/Microsoft.EventHub/namespaces/nsba561500fa/eventhubs/eh17a4325774?api-version=2017-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.EventHub/namespaces/nse5d368290c?api-version=2017-04-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:f82fa839f6b46fd84edc56e01cf7c8c6d4faaa2190534aff5c1d17095f0a3c13 Java:1.8.0_144 (EventHubManagementClient, 2017-04-01)",
-      "Content-Type" : "application/json; charset=utf-8"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.eventhubs/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Fri, 23 Feb 2018 00:43:41 GMT",
-      "server" : "Service-Bus-Resource-Provider/SN1",
-      "content-length" : "455",
+      "date" : "Fri, 28 Aug 2020 06:03:35 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "655",
       "expires" : "-1",
-      "server-sb" : "Service-Bus-Resource-Provider/SN1",
-      "transfer-encoding" : "chunked",
-      "vary" : "Accept-Encoding",
-      "x-ms-ratelimit-remaining-subscription-writes" : "1192",
+      "server-sb" : "Service-Bus-Resource-Provider/CH3",
       "retry-after" : "0",
       "StatusCode" : "200",
       "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "47f51ff6-874f-4f67-bd0e-9db59a7e77db",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "7920cbe8-531a-4211-a65f-c1b632a9a497",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "WESTUS2:20180223T004341Z:7920cbe8-531a-4211-a65f-c1b632a9a497",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "48",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200828T060336Z:47f51ff6-874f-4f67-bd0e-9db59a7e77db",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "4a41b8fb-ba5e-4299-b679-00207c7ee07c_M1SN1_M1SN1",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_263763384311/providers/Microsoft.EventHub/namespaces/nsba561500fa/eventhubs/eh17a4325774\",\"name\":\"eh17a4325774\",\"type\":\"Microsoft.EventHub/Namespaces/EventHubs\",\"location\":\"East US 2\",\"properties\":{\"messageRetentionInDays\":7,\"partitionCount\":4,\"status\":\"Active\",\"createdAt\":\"2018-02-23T00:43:42.213Z\",\"updatedAt\":\"2018-02-23T00:43:42.417Z\",\"partitionIds\":[\"0\",\"1\",\"2\",\"3\"]}}"
-    }
-  }, {
-    "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_263763384311/providers/Microsoft.EventHub/namespaces/nsba561500fa/eventhubs/eh17a4325774/consumergroups/cg2?api-version=2017-04-01",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:f82fa839f6b46fd84edc56e01cf7c8c6d4faaa2190534aff5c1d17095f0a3c13 Java:1.8.0_144 (EventHubManagementClient, 2017-04-01)",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Response" : {
-      "date" : "Fri, 23 Feb 2018 00:43:42 GMT",
-      "server" : "Service-Bus-Resource-Provider/SN1",
-      "content-length" : "419",
-      "expires" : "-1",
-      "server-sb" : "Service-Bus-Resource-Provider/SN1",
-      "transfer-encoding" : "chunked",
-      "vary" : "Accept-Encoding",
-      "x-ms-ratelimit-remaining-subscription-writes" : "1191",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "pragma" : "no-cache",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "715a48af-fdd3-49dc-a46b-03116e048dca",
-      "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "WESTUS2:20180223T004342Z:715a48af-fdd3-49dc-a46b-03116e048dca",
-      "content-type" : "application/json; charset=utf-8",
-      "cache-control" : "no-cache",
-      "x-ms-request-id" : "538e78a0-eb5d-4eed-aa77-6ece1590172d_M1SN1_M1SN1",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_263763384311/providers/Microsoft.EventHub/namespaces/nsba561500fa/eventhubs/eh17a4325774/consumergroups/cg2\",\"name\":\"cg2\",\"type\":\"Microsoft.EventHub/Namespaces/EventHubs/ConsumerGroups\",\"location\":\"East US 2\",\"properties\":{\"createdAt\":\"2018-02-23T00:43:42.9725475Z\",\"updatedAt\":\"2018-02-23T00:43:42.9725475Z\",\"userMetadata\":\"sometadata\"}}"
+      "x-ms-request-id" : "563bf712-25fc-4c27-bde0-413d2cb3dbc4_M6CH3_M6CH3",
+      "Body" : "{\"sku\":{\"name\":\"Standard\",\"tier\":\"Standard\",\"capacity\":1},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.EventHub/namespaces/nse5d368290c\",\"name\":\"nse5d368290c\",\"type\":\"Microsoft.EventHub/Namespaces\",\"location\":\"East US 2\",\"tags\":{},\"properties\":{\"isAutoInflateEnabled\":false,\"maximumThroughputUnits\":0,\"kafkaEnabled\":true,\"provisioningState\":\"Created\",\"metricId\":\"00000000-0000-0000-0000-000000000000:nse5d368290c\",\"createdAt\":\"2020-08-28T06:03:33.943Z\",\"updatedAt\":\"2020-08-28T06:03:33.943Z\",\"serviceBusEndpoint\":\"https://nse5d368290c.servicebus.windows.net:443/\",\"status\":\"Activating\"}}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_263763384311/providers/Microsoft.EventHub/namespaces/nsba561500fa/eventhubs/eh17a4325774/consumergroups?api-version=2017-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.EventHub/namespaces/nse5d368290c?api-version=2017-04-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:f82fa839f6b46fd84edc56e01cf7c8c6d4faaa2190534aff5c1d17095f0a3c13 Java:1.8.0_144 (EventHubManagementClient, 2017-04-01)",
-      "Content-Type" : "application/json; charset=utf-8"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
     },
     "Response" : {
-      "date" : "Fri, 23 Feb 2018 00:43:43 GMT",
-      "server" : "Service-Bus-Resource-Provider/SN1",
-      "content-length" : "829",
+      "date" : "Fri, 28 Aug 2020 06:04:06 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "655",
       "expires" : "-1",
-      "server-sb" : "Service-Bus-Resource-Provider/SN1",
-      "transfer-encoding" : "chunked",
-      "vary" : "Accept-Encoding",
+      "server-sb" : "Service-Bus-Resource-Provider/CH3",
       "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14991",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11991",
       "StatusCode" : "200",
       "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "2d3694d1-259f-43fd-88f4-05dbc82062c3",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "7d541223-c063-4809-9a47-2914c516a5eb",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "WESTUS2:20180223T004343Z:7d541223-c063-4809-9a47-2914c516a5eb",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200828T060406Z:2d3694d1-259f-43fd-88f4-05dbc82062c3",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "f6124deb-9b07-40ab-a4f8-a586566b491e_M3CH3_M3CH3",
+      "Body" : "{\"sku\":{\"name\":\"Standard\",\"tier\":\"Standard\",\"capacity\":1},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.EventHub/namespaces/nse5d368290c\",\"name\":\"nse5d368290c\",\"type\":\"Microsoft.EventHub/Namespaces\",\"location\":\"East US 2\",\"tags\":{},\"properties\":{\"isAutoInflateEnabled\":false,\"maximumThroughputUnits\":0,\"kafkaEnabled\":true,\"provisioningState\":\"Created\",\"metricId\":\"00000000-0000-0000-0000-000000000000:nse5d368290c\",\"createdAt\":\"2020-08-28T06:03:33.943Z\",\"updatedAt\":\"2020-08-28T06:03:33.943Z\",\"serviceBusEndpoint\":\"https://nse5d368290c.servicebus.windows.net:443/\",\"status\":\"Activating\"}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.EventHub/namespaces/nse5d368290c?api-version=2017-04-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Fri, 28 Aug 2020 06:04:36 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "653",
+      "expires" : "-1",
+      "server-sb" : "Service-Bus-Resource-Provider/CH3",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11983",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "06f02bd0-0861-42a9-ae34-a45145797af1",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200828T060436Z:06f02bd0-0861-42a9-ae34-a45145797af1",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "cef3c39f-39d0-467c-a8f2-c688db66e2fd_M4CH3_M4CH3",
+      "Body" : "{\"sku\":{\"name\":\"Standard\",\"tier\":\"Standard\",\"capacity\":1},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.EventHub/namespaces/nse5d368290c\",\"name\":\"nse5d368290c\",\"type\":\"Microsoft.EventHub/Namespaces\",\"location\":\"East US 2\",\"tags\":{},\"properties\":{\"isAutoInflateEnabled\":false,\"maximumThroughputUnits\":0,\"kafkaEnabled\":true,\"provisioningState\":\"Succeeded\",\"metricId\":\"00000000-0000-0000-0000-000000000000:nse5d368290c\",\"createdAt\":\"2020-08-28T06:03:33.943Z\",\"updatedAt\":\"2020-08-28T06:04:21.447Z\",\"serviceBusEndpoint\":\"https://nse5d368290c.servicebus.windows.net:443/\",\"status\":\"Active\"}}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.EventHub/namespaces/nse5d368290c/eventhubs/eh0c329685b9?api-version=2017-04-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.eventhubs/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Fri, 28 Aug 2020 06:04:40 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "453",
+      "expires" : "-1",
+      "server-sb" : "Service-Bus-Resource-Provider/CH3",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1196",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "108df65e-f219-421c-aad7-026cede0c9ea",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200828T060440Z:108df65e-f219-421c-aad7-026cede0c9ea",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "d21f554b-816b-4599-abb0-b99bdb7b0963_M4CH3_M4CH3",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.EventHub/namespaces/nse5d368290c/eventhubs/eh0c329685b9\",\"name\":\"eh0c329685b9\",\"type\":\"Microsoft.EventHub/Namespaces/EventHubs\",\"location\":\"East US 2\",\"properties\":{\"messageRetentionInDays\":7,\"partitionCount\":4,\"status\":\"Active\",\"createdAt\":\"2020-08-28T06:04:39.77Z\",\"updatedAt\":\"2020-08-28T06:04:40.01Z\",\"partitionIds\":[\"0\",\"1\",\"2\",\"3\"]}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.EventHub/namespaces/nse5d368290c/eventhubs?api-version=2017-04-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.eventhubs/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Fri, 28 Aug 2020 06:04:41 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "463",
+      "expires" : "-1",
+      "server-sb" : "Service-Bus-Resource-Provider/CH3",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11989",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "5911bfb7-93cc-4c84-bfc5-73441d9c3def",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200828T060441Z:5911bfb7-93cc-4c84-bfc5-73441d9c3def",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
       "x-ms-inline-count" : "",
-      "x-ms-request-id" : "fe390df6-66e7-4f3a-a998-7795e4b6c791_M1SN1_M1SN1",
-      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_263763384311/providers/Microsoft.EventHub/namespaces/nsba561500fa/eventhubs/eh17a4325774/consumergroups/$Default\",\"name\":\"$Default\",\"type\":\"Microsoft.EventHub/Namespaces/EventHubs/ConsumerGroups\",\"location\":\"East US 2\",\"properties\":{\"createdAt\":\"2018-02-23T00:43:40.7166475\",\"updatedAt\":\"2018-02-23T00:43:40.7166475\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_263763384311/providers/Microsoft.EventHub/namespaces/nsba561500fa/eventhubs/eh17a4325774/consumergroups/cg2\",\"name\":\"cg2\",\"type\":\"Microsoft.EventHub/Namespaces/EventHubs/ConsumerGroups\",\"location\":\"East US 2\",\"properties\":{\"createdAt\":\"2018-02-23T00:43:42.9826852\",\"updatedAt\":\"2018-02-23T00:43:42.9826852\",\"userMetadata\":\"sometadata\"}}]}"
-    }
-  }, {
-    "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_263763384311/providers/Microsoft.EventHub/namespaces/ns7eb947293b?api-version=2017-04-01",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:f82fa839f6b46fd84edc56e01cf7c8c6d4faaa2190534aff5c1d17095f0a3c13 Java:1.8.0_144 (EventHubManagementClient, 2017-04-01)",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Response" : {
-      "date" : "Fri, 23 Feb 2018 00:43:44 GMT",
-      "server" : "Service-Bus-Resource-Provider/SN1",
-      "content-length" : "633",
-      "expires" : "-1",
-      "server-sb" : "Service-Bus-Resource-Provider/SN1",
-      "transfer-encoding" : "chunked",
-      "vary" : "Accept-Encoding",
-      "x-ms-ratelimit-remaining-subscription-writes" : "1190",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "pragma" : "no-cache",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "a3158bdb-41ea-4071-9742-6dfd57be0bfe",
-      "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "WESTUS2:20180223T004344Z:a3158bdb-41ea-4071-9742-6dfd57be0bfe",
-      "content-type" : "application/json; charset=utf-8",
-      "cache-control" : "no-cache",
-      "x-ms-request-id" : "8b214332-326b-4342-b16a-6c6eac7e0eac_M1SN1_M1SN1",
-      "Body" : "{\"sku\":{\"name\":\"Standard\",\"tier\":\"Standard\",\"capacity\":1},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_263763384311/providers/Microsoft.EventHub/namespaces/ns7eb947293b\",\"name\":\"ns7eb947293b\",\"type\":\"Microsoft.EventHub/Namespaces\",\"location\":\"East US 2\",\"tags\":{},\"properties\":{\"isAutoInflateEnabled\":false,\"maximumThroughputUnits\":0,\"provisioningState\":\"Created\",\"metricId\":\"00000000-0000-0000-0000-000000000000:ns7eb947293b\",\"createdAt\":\"2018-02-23T00:43:42.51Z\",\"updatedAt\":\"2018-02-23T00:43:42.51Z\",\"serviceBusEndpoint\":\"https://ns7eb947293b.servicebus.windows.net:443/\",\"status\":\"Activating\"}}"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_263763384311/providers/Microsoft.EventHub/namespaces/ns7eb947293b?api-version=2017-04-01",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:f82fa839f6b46fd84edc56e01cf7c8c6d4faaa2190534aff5c1d17095f0a3c13 Java:1.8.0_144 (EventHubManagementClient, 2017-04-01)"
-    },
-    "Response" : {
-      "date" : "Fri, 23 Feb 2018 00:43:44 GMT",
-      "server" : "Service-Bus-Resource-Provider/SN1",
-      "content-length" : "633",
-      "expires" : "-1",
-      "server-sb" : "Service-Bus-Resource-Provider/SN1",
-      "transfer-encoding" : "chunked",
-      "vary" : "Accept-Encoding",
-      "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14990",
-      "StatusCode" : "200",
-      "pragma" : "no-cache",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "b053dae3-94e8-41d0-8f81-ef2f3f887af6",
-      "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "WESTUS2:20180223T004344Z:b053dae3-94e8-41d0-8f81-ef2f3f887af6",
-      "content-type" : "application/json; charset=utf-8",
-      "cache-control" : "no-cache",
-      "x-ms-request-id" : "6c802091-1a98-4efd-af6d-446a78c1ea31_M1SN1_M1SN1",
-      "Body" : "{\"sku\":{\"name\":\"Standard\",\"tier\":\"Standard\",\"capacity\":1},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_263763384311/providers/Microsoft.EventHub/namespaces/ns7eb947293b\",\"name\":\"ns7eb947293b\",\"type\":\"Microsoft.EventHub/Namespaces\",\"location\":\"East US 2\",\"tags\":{},\"properties\":{\"isAutoInflateEnabled\":false,\"maximumThroughputUnits\":0,\"provisioningState\":\"Created\",\"metricId\":\"00000000-0000-0000-0000-000000000000:ns7eb947293b\",\"createdAt\":\"2018-02-23T00:43:42.51Z\",\"updatedAt\":\"2018-02-23T00:43:42.51Z\",\"serviceBusEndpoint\":\"https://ns7eb947293b.servicebus.windows.net:443/\",\"status\":\"Activating\"}}"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_263763384311/providers/Microsoft.EventHub/namespaces/ns7eb947293b?api-version=2017-04-01",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:f82fa839f6b46fd84edc56e01cf7c8c6d4faaa2190534aff5c1d17095f0a3c13 Java:1.8.0_144 (EventHubManagementClient, 2017-04-01)"
-    },
-    "Response" : {
-      "date" : "Fri, 23 Feb 2018 00:44:17 GMT",
-      "server" : "Service-Bus-Resource-Provider/SN1",
-      "content-length" : "632",
-      "expires" : "-1",
-      "server-sb" : "Service-Bus-Resource-Provider/SN1",
-      "transfer-encoding" : "chunked",
-      "vary" : "Accept-Encoding",
-      "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14989",
-      "StatusCode" : "200",
-      "pragma" : "no-cache",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "685c9bd2-7218-47e9-95f6-50f1585505fd",
-      "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "WESTUS2:20180223T004417Z:685c9bd2-7218-47e9-95f6-50f1585505fd",
-      "content-type" : "application/json; charset=utf-8",
-      "cache-control" : "no-cache",
-      "x-ms-request-id" : "1f9c1593-0c29-458a-83ad-b74d5ce39a01_M1SN1_M1SN1",
-      "Body" : "{\"sku\":{\"name\":\"Standard\",\"tier\":\"Standard\",\"capacity\":1},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_263763384311/providers/Microsoft.EventHub/namespaces/ns7eb947293b\",\"name\":\"ns7eb947293b\",\"type\":\"Microsoft.EventHub/Namespaces\",\"location\":\"East US 2\",\"tags\":{},\"properties\":{\"isAutoInflateEnabled\":false,\"maximumThroughputUnits\":0,\"provisioningState\":\"Succeeded\",\"metricId\":\"00000000-0000-0000-0000-000000000000:ns7eb947293b\",\"createdAt\":\"2018-02-23T00:43:42.51Z\",\"updatedAt\":\"2018-02-23T00:44:08.557Z\",\"serviceBusEndpoint\":\"https://ns7eb947293b.servicebus.windows.net:443/\",\"status\":\"Active\"}}"
-    }
-  }, {
-    "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_263763384311/providers/Microsoft.EventHub/namespaces/ns7eb947293b/eventhubs/eh17a4325774?api-version=2017-04-01",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:f82fa839f6b46fd84edc56e01cf7c8c6d4faaa2190534aff5c1d17095f0a3c13 Java:1.8.0_144 (EventHubManagementClient, 2017-04-01)",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Response" : {
-      "date" : "Fri, 23 Feb 2018 00:44:24 GMT",
-      "server" : "Service-Bus-Resource-Provider/SN1",
-      "content-length" : "454",
-      "expires" : "-1",
-      "server-sb" : "Service-Bus-Resource-Provider/SN1",
-      "transfer-encoding" : "chunked",
-      "vary" : "Accept-Encoding",
-      "x-ms-ratelimit-remaining-subscription-writes" : "1189",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "pragma" : "no-cache",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "e17d3069-1a0d-4a71-a32f-8aceaefd7fd4",
-      "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "WESTUS2:20180223T004424Z:e17d3069-1a0d-4a71-a32f-8aceaefd7fd4",
-      "content-type" : "application/json; charset=utf-8",
-      "cache-control" : "no-cache",
-      "x-ms-request-id" : "eda64847-adf0-4f57-ab0c-04f72cd34860_M1SN1_M1SN1",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_263763384311/providers/Microsoft.EventHub/namespaces/ns7eb947293b/eventhubs/eh17a4325774\",\"name\":\"eh17a4325774\",\"type\":\"Microsoft.EventHub/Namespaces/EventHubs\",\"location\":\"East US 2\",\"properties\":{\"messageRetentionInDays\":7,\"partitionCount\":4,\"status\":\"Active\",\"createdAt\":\"2018-02-23T00:44:21.433Z\",\"updatedAt\":\"2018-02-23T00:44:25.56Z\",\"partitionIds\":[\"0\",\"1\",\"2\",\"3\"]}}"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_263763384311/providers/Microsoft.EventHub/namespaces/ns7eb947293b/eventhubs?api-version=2017-04-01",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:f82fa839f6b46fd84edc56e01cf7c8c6d4faaa2190534aff5c1d17095f0a3c13 Java:1.8.0_144 (EventHubManagementClient, 2017-04-01)",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Response" : {
-      "date" : "Fri, 23 Feb 2018 00:44:25 GMT",
-      "server" : "Service-Bus-Resource-Provider/SN1",
-      "content-length" : "464",
-      "expires" : "-1",
-      "server-sb" : "Service-Bus-Resource-Provider/SN1",
-      "transfer-encoding" : "chunked",
-      "vary" : "Accept-Encoding",
-      "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14988",
-      "StatusCode" : "200",
-      "pragma" : "no-cache",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "95bc3768-9655-4cd8-8a2f-3e4726eaed55",
-      "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "WESTUS2:20180223T004425Z:95bc3768-9655-4cd8-8a2f-3e4726eaed55",
-      "content-type" : "application/json; charset=utf-8",
-      "cache-control" : "no-cache",
-      "x-ms-inline-count" : "",
-      "x-ms-request-id" : "6e81602f-f7e3-4a83-bae3-784123f813e6_M1SN1_M1SN1",
-      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_263763384311/providers/Microsoft.EventHub/namespaces/ns7eb947293b/eventhubs/eh17a4325774\",\"name\":\"eh17a4325774\",\"type\":\"Microsoft.EventHub/Namespaces/EventHubs\",\"location\":\"East US 2\",\"properties\":{\"messageRetentionInDays\":7,\"partitionCount\":4,\"status\":\"Active\",\"createdAt\":\"2018-02-23T00:44:21.433\",\"updatedAt\":\"2018-02-23T00:44:25.56\",\"partitionIds\":[\"0\",\"1\",\"2\",\"3\"]}}]}"
+      "x-ms-request-id" : "fd5a1ddf-7827-4c15-9e8c-925e183a342b_M11CH3_M11CH3",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_0d844955bd37/providers/Microsoft.EventHub/namespaces/nse5d368290c/eventhubs/eh0c329685b9\",\"name\":\"eh0c329685b9\",\"type\":\"Microsoft.EventHub/Namespaces/EventHubs\",\"location\":\"East US 2\",\"properties\":{\"messageRetentionInDays\":7,\"partitionCount\":4,\"status\":\"Active\",\"createdAt\":\"2020-08-28T06:04:39.77\",\"updatedAt\":\"2020-08-28T06:04:40.01\",\"partitionIds\":[\"0\",\"1\",\"2\",\"3\"]}}]}"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgnemv_263763384311?api-version=2017-05-10",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgnemv_0d844955bd37?api-version=2020-06-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:f82fa839f6b46fd84edc56e01cf7c8c6d4faaa2190534aff5c1d17095f0a3c13 Java:1.8.0_144 (ResourceManagementClient, 2017-05-10)",
-      "Content-Type" : "application/json; charset=utf-8"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Fri, 23 Feb 2018 00:44:26 GMT",
+      "date" : "Fri, 28 Aug 2020 06:04:46 GMT",
       "content-length" : "0",
       "expires" : "-1",
-      "x-ms-ratelimit-remaining-subscription-writes" : "1188",
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14998",
       "retry-after" : "0",
       "StatusCode" : "202",
       "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "f646b8aa-6708-4f9d-bb30-eaf2d78913b0",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "22c69290-0b94-4139-b00e-4776cec73df7",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "WESTUS2:20180223T004426Z:22c69290-0b94-4139-b00e-4776cec73df7",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUYyNjM3NjMzODQzMTEtRUFTVFVTMiIsImpvYkxvY2F0aW9uIjoiZWFzdHVzMiJ9?api-version=2017-05-10",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200828T060446Z:f646b8aa-6708-4f9d-bb30-eaf2d78913b0",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUYwRDg0NDk1NUJEMzctRUFTVFVTMiIsImpvYkxvY2F0aW9uIjoiZWFzdHVzMiJ9?api-version=2020-06-01",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "22c69290-0b94-4139-b00e-4776cec73df7",
+      "x-ms-request-id" : "f646b8aa-6708-4f9d-bb30-eaf2d78913b0",
       "Body" : ""
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUYyNjM3NjMzODQzMTEtRUFTVFVTMiIsImpvYkxvY2F0aW9uIjoiZWFzdHVzMiJ9?api-version=2017-05-10",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUYwRDg0NDk1NUJEMzctRUFTVFVTMiIsImpvYkxvY2F0aW9uIjoiZWFzdHVzMiJ9?api-version=2020-06-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:f82fa839f6b46fd84edc56e01cf7c8c6d4faaa2190534aff5c1d17095f0a3c13 Java:1.8.0_144 (ResourceManagementClient, 2017-05-10)"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
     },
     "Response" : {
-      "date" : "Fri, 23 Feb 2018 00:44:26 GMT",
+      "date" : "Fri, 28 Aug 2020 06:05:01 GMT",
       "content-length" : "0",
       "expires" : "-1",
       "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14987",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11993",
       "StatusCode" : "202",
       "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "af33aacc-1a3c-4bc0-9c20-9269c67c757f",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "4058dfcf-a284-4109-96bb-5399f19cad7e",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "WESTUS2:20180223T004426Z:4058dfcf-a284-4109-96bb-5399f19cad7e",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUYyNjM3NjMzODQzMTEtRUFTVFVTMiIsImpvYkxvY2F0aW9uIjoiZWFzdHVzMiJ9?api-version=2017-05-10",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200828T060501Z:af33aacc-1a3c-4bc0-9c20-9269c67c757f",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUYwRDg0NDk1NUJEMzctRUFTVFVTMiIsImpvYkxvY2F0aW9uIjoiZWFzdHVzMiJ9?api-version=2020-06-01",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "4058dfcf-a284-4109-96bb-5399f19cad7e",
+      "x-ms-request-id" : "af33aacc-1a3c-4bc0-9c20-9269c67c757f",
       "Body" : ""
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUYyNjM3NjMzODQzMTEtRUFTVFVTMiIsImpvYkxvY2F0aW9uIjoiZWFzdHVzMiJ9?api-version=2017-05-10",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUYwRDg0NDk1NUJEMzctRUFTVFVTMiIsImpvYkxvY2F0aW9uIjoiZWFzdHVzMiJ9?api-version=2020-06-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:f82fa839f6b46fd84edc56e01cf7c8c6d4faaa2190534aff5c1d17095f0a3c13 Java:1.8.0_144 (ResourceManagementClient, 2017-05-10)"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
     },
     "Response" : {
-      "date" : "Fri, 23 Feb 2018 00:44:41 GMT",
+      "date" : "Fri, 28 Aug 2020 06:05:17 GMT",
       "content-length" : "0",
       "expires" : "-1",
       "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14986",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11992",
       "StatusCode" : "202",
       "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "ae37c438-bb95-4517-8c9a-ac7b43553d39",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "27ccae37-a88a-437b-b4da-5ad3466d779b",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "WESTUS2:20180223T004442Z:27ccae37-a88a-437b-b4da-5ad3466d779b",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUYyNjM3NjMzODQzMTEtRUFTVFVTMiIsImpvYkxvY2F0aW9uIjoiZWFzdHVzMiJ9?api-version=2017-05-10",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200828T060517Z:ae37c438-bb95-4517-8c9a-ac7b43553d39",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUYwRDg0NDk1NUJEMzctRUFTVFVTMiIsImpvYkxvY2F0aW9uIjoiZWFzdHVzMiJ9?api-version=2020-06-01",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "27ccae37-a88a-437b-b4da-5ad3466d779b",
+      "x-ms-request-id" : "ae37c438-bb95-4517-8c9a-ac7b43553d39",
       "Body" : ""
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUYyNjM3NjMzODQzMTEtRUFTVFVTMiIsImpvYkxvY2F0aW9uIjoiZWFzdHVzMiJ9?api-version=2017-05-10",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUYwRDg0NDk1NUJEMzctRUFTVFVTMiIsImpvYkxvY2F0aW9uIjoiZWFzdHVzMiJ9?api-version=2020-06-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:f82fa839f6b46fd84edc56e01cf7c8c6d4faaa2190534aff5c1d17095f0a3c13 Java:1.8.0_144 (ResourceManagementClient, 2017-05-10)"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
     },
     "Response" : {
-      "date" : "Fri, 23 Feb 2018 00:44:56 GMT",
+      "date" : "Fri, 28 Aug 2020 06:05:32 GMT",
       "content-length" : "0",
       "expires" : "-1",
       "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14985",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11986",
       "StatusCode" : "202",
       "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "ead70dce-c541-4ed4-b751-841ca5560273",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "4b407bfe-aefd-4fe4-bd22-1ec269823816",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "WESTUS2:20180223T004457Z:4b407bfe-aefd-4fe4-bd22-1ec269823816",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUYyNjM3NjMzODQzMTEtRUFTVFVTMiIsImpvYkxvY2F0aW9uIjoiZWFzdHVzMiJ9?api-version=2017-05-10",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200828T060533Z:ead70dce-c541-4ed4-b751-841ca5560273",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUYwRDg0NDk1NUJEMzctRUFTVFVTMiIsImpvYkxvY2F0aW9uIjoiZWFzdHVzMiJ9?api-version=2020-06-01",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "4b407bfe-aefd-4fe4-bd22-1ec269823816",
+      "x-ms-request-id" : "ead70dce-c541-4ed4-b751-841ca5560273",
       "Body" : ""
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUYyNjM3NjMzODQzMTEtRUFTVFVTMiIsImpvYkxvY2F0aW9uIjoiZWFzdHVzMiJ9?api-version=2017-05-10",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUYwRDg0NDk1NUJEMzctRUFTVFVTMiIsImpvYkxvY2F0aW9uIjoiZWFzdHVzMiJ9?api-version=2020-06-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:f82fa839f6b46fd84edc56e01cf7c8c6d4faaa2190534aff5c1d17095f0a3c13 Java:1.8.0_144 (ResourceManagementClient, 2017-05-10)"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
     },
     "Response" : {
-      "date" : "Fri, 23 Feb 2018 00:45:11 GMT",
+      "date" : "Fri, 28 Aug 2020 06:05:48 GMT",
       "content-length" : "0",
       "expires" : "-1",
       "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14984",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11985",
       "StatusCode" : "202",
       "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "949e43c9-341e-4980-8450-2ab9907c0089",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "63353f34-cc41-422e-bfff-b10553de15cc",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "WESTUS2:20180223T004512Z:63353f34-cc41-422e-bfff-b10553de15cc",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUYyNjM3NjMzODQzMTEtRUFTVFVTMiIsImpvYkxvY2F0aW9uIjoiZWFzdHVzMiJ9?api-version=2017-05-10",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200828T060549Z:949e43c9-341e-4980-8450-2ab9907c0089",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUYwRDg0NDk1NUJEMzctRUFTVFVTMiIsImpvYkxvY2F0aW9uIjoiZWFzdHVzMiJ9?api-version=2020-06-01",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "63353f34-cc41-422e-bfff-b10553de15cc",
+      "x-ms-request-id" : "949e43c9-341e-4980-8450-2ab9907c0089",
       "Body" : ""
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUYyNjM3NjMzODQzMTEtRUFTVFVTMiIsImpvYkxvY2F0aW9uIjoiZWFzdHVzMiJ9?api-version=2017-05-10",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUYwRDg0NDk1NUJEMzctRUFTVFVTMiIsImpvYkxvY2F0aW9uIjoiZWFzdHVzMiJ9?api-version=2020-06-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:f82fa839f6b46fd84edc56e01cf7c8c6d4faaa2190534aff5c1d17095f0a3c13 Java:1.8.0_144 (ResourceManagementClient, 2017-05-10)"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
     },
     "Response" : {
-      "date" : "Fri, 23 Feb 2018 00:45:26 GMT",
+      "date" : "Fri, 28 Aug 2020 06:06:04 GMT",
       "content-length" : "0",
       "expires" : "-1",
       "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14983",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11984",
       "StatusCode" : "202",
       "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "60be1720-9f56-45cb-bf03-4c521228daf8",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "daeb34cd-33d7-4521-b201-a06aee249228",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "WESTUS2:20180223T004527Z:daeb34cd-33d7-4521-b201-a06aee249228",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUYyNjM3NjMzODQzMTEtRUFTVFVTMiIsImpvYkxvY2F0aW9uIjoiZWFzdHVzMiJ9?api-version=2017-05-10",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200828T060604Z:60be1720-9f56-45cb-bf03-4c521228daf8",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUYwRDg0NDk1NUJEMzctRUFTVFVTMiIsImpvYkxvY2F0aW9uIjoiZWFzdHVzMiJ9?api-version=2020-06-01",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "daeb34cd-33d7-4521-b201-a06aee249228",
+      "x-ms-request-id" : "60be1720-9f56-45cb-bf03-4c521228daf8",
       "Body" : ""
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUYyNjM3NjMzODQzMTEtRUFTVFVTMiIsImpvYkxvY2F0aW9uIjoiZWFzdHVzMiJ9?api-version=2017-05-10",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUYwRDg0NDk1NUJEMzctRUFTVFVTMiIsImpvYkxvY2F0aW9uIjoiZWFzdHVzMiJ9?api-version=2020-06-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:f82fa839f6b46fd84edc56e01cf7c8c6d4faaa2190534aff5c1d17095f0a3c13 Java:1.8.0_144 (ResourceManagementClient, 2017-05-10)"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
     },
     "Response" : {
-      "date" : "Fri, 23 Feb 2018 00:45:42 GMT",
+      "date" : "Fri, 28 Aug 2020 06:06:20 GMT",
       "content-length" : "0",
       "expires" : "-1",
       "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14982",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11988",
       "StatusCode" : "202",
       "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "dc469fed-f33b-4c02-9968-9e282ef55c06",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "b7cc17bb-0ba0-4fa7-968c-c9759f34c83f",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "WESTUS2:20180223T004542Z:b7cc17bb-0ba0-4fa7-968c-c9759f34c83f",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUYyNjM3NjMzODQzMTEtRUFTVFVTMiIsImpvYkxvY2F0aW9uIjoiZWFzdHVzMiJ9?api-version=2017-05-10",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200828T060620Z:dc469fed-f33b-4c02-9968-9e282ef55c06",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUYwRDg0NDk1NUJEMzctRUFTVFVTMiIsImpvYkxvY2F0aW9uIjoiZWFzdHVzMiJ9?api-version=2020-06-01",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "b7cc17bb-0ba0-4fa7-968c-c9759f34c83f",
+      "x-ms-request-id" : "dc469fed-f33b-4c02-9968-9e282ef55c06",
       "Body" : ""
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUYyNjM3NjMzODQzMTEtRUFTVFVTMiIsImpvYkxvY2F0aW9uIjoiZWFzdHVzMiJ9?api-version=2017-05-10",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUYwRDg0NDk1NUJEMzctRUFTVFVTMiIsImpvYkxvY2F0aW9uIjoiZWFzdHVzMiJ9?api-version=2020-06-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:f82fa839f6b46fd84edc56e01cf7c8c6d4faaa2190534aff5c1d17095f0a3c13 Java:1.8.0_144 (ResourceManagementClient, 2017-05-10)"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
     },
     "Response" : {
-      "date" : "Fri, 23 Feb 2018 00:45:57 GMT",
+      "date" : "Fri, 28 Aug 2020 06:06:36 GMT",
       "content-length" : "0",
       "expires" : "-1",
       "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14981",
-      "StatusCode" : "202",
-      "pragma" : "no-cache",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "964f62c4-3a24-4d1c-9304-bc58486deb7e",
-      "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "WESTUS2:20180223T004557Z:964f62c4-3a24-4d1c-9304-bc58486deb7e",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUYyNjM3NjMzODQzMTEtRUFTVFVTMiIsImpvYkxvY2F0aW9uIjoiZWFzdHVzMiJ9?api-version=2017-05-10",
-      "cache-control" : "no-cache",
-      "x-ms-request-id" : "964f62c4-3a24-4d1c-9304-bc58486deb7e",
-      "Body" : ""
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR05FTVY6NUYyNjM3NjMzODQzMTEtRUFTVFVTMiIsImpvYkxvY2F0aW9uIjoiZWFzdHVzMiJ9?api-version=2017-05-10",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:f82fa839f6b46fd84edc56e01cf7c8c6d4faaa2190534aff5c1d17095f0a3c13 Java:1.8.0_144 (ResourceManagementClient, 2017-05-10)"
-    },
-    "Response" : {
-      "date" : "Fri, 23 Feb 2018 00:46:12 GMT",
-      "content-length" : "0",
-      "expires" : "-1",
-      "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14980",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11983",
       "StatusCode" : "200",
-      "pragma" : "no-cache",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "0948c661-b826-42ce-b92d-e97865952622",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "3e85a3ae-3ca3-4bd7-b195-b1c1fd7fa4a6",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "WESTUS2:20180223T004613Z:0948c661-b826-42ce-b92d-e97865952622",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200828T060636Z:3e85a3ae-3ca3-4bd7-b195-b1c1fd7fa4a6",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "0948c661-b826-42ce-b92d-e97865952622",
+      "x-ms-request-id" : "3e85a3ae-3ca3-4bd7-b195-b1c1fd7fa4a6",
       "Body" : ""
     }
   } ],
-  "variables" : [ "rgnemv_263763384311", "nsba561500fa", "ns7eb947293b", "stg0b6106413", "ehde106942d5", "eh17a4325774", "80ac137e-e7f1-40ed-bd2c-6a9cddb6f423", "d2081e5e-da8b-42f1-a6c8-4e14b27b7b8a", "74225f15-502b-4cc4-a645-7341483ccf90", "87d32f48-ab6e-420e-9c41-da1d12a30957", "317309ea-6614-452d-b720-edc46dbfee2d", "7031b36a-bd52-4640-a091-449d1702caa3", "7cc9f9f9-1a31-46a1-910f-46ad9015b5ac", "d682d080-9d5f-4ad8-9fec-d21db46e4f3a", "7d16eae9-5d94-4cb5-ada9-b8f75a1df9f6", "bc7fd634-5072-4641-b36c-4704807e60d7", "2edf7357-8a20-4ec5-be53-da88618e14f3", "fb802d58-bdad-4a89-aa15-abd558f97a93", "0a0eb84f-613b-47c4-b8a2-aa24a7b3a08e", "663ae923-1e37-4450-acbc-98236f9bd120", "7e6c4cdb-f7e0-4dc3-b1be-625d7230f989", "c84e5aab-9a93-4b78-82c8-98a7fb97d3d9", "f730a413-5741-41c4-bfa8-f88d7045f3aa", "f329d904-636d-49d9-b251-df5ca7c5a578", "3950aa53-6220-47c5-b19b-127a875ce9d5" ]
+  "variables" : [ "rgnemv_0d844955bd37", "ns0b03701968", "nse5d368290c", "stg328161738", "eh85878709e9", "eh0c329685b9" ]
 }

@@ -9,7 +9,7 @@ import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -54,7 +54,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
 
     @Test
     public void canEnableBootDiagnosticsWithCreatableStorageOnManagedVMCreation() {
-        final String storageName = sdkContext.randomResourceName("st", 14);
+        final String storageName = generateRandomResourceName("st", 14);
         Creatable<StorageAccount> creatableStorageAccount =
             storageManager.storageAccounts().define(storageName).withRegion(region).withNewResourceGroup(rgName);
 
@@ -80,7 +80,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
 
     @Test
     public void canEnableBootDiagnosticsWithExplicitStorageOnManagedVMCreation() {
-        final String storageName = sdkContext.randomResourceName("st", 14);
+        final String storageName = generateRandomResourceName("st", 14);
         StorageAccount storageAccount =
             storageManager
                 .storageAccounts()
@@ -171,7 +171,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
 
     @Test
     public void bootDiagnosticsShouldUseUnManagedDisksExplicitStorage() {
-        final String storageName = sdkContext.randomResourceName("st", 14);
+        final String storageName = generateRandomResourceName("st", 14);
         StorageAccount storageAccount =
             storageManager
                 .storageAccounts()
@@ -252,7 +252,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
 
     @Test
     public void canEnableBootDiagnosticsWithCreatableStorageOnUnManagedVMCreation() {
-        final String storageName = sdkContext.randomResourceName("st", 14);
+        final String storageName = generateRandomResourceName("st", 14);
         Creatable<StorageAccount> creatableStorageAccount =
             storageManager.storageAccounts().define(storageName).withRegion(region).withNewResourceGroup(rgName);
 

@@ -12,7 +12,7 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.resourcemanager.resources.core.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.models.Deployment;
 import com.azure.resourcemanager.resources.models.DeploymentMode;
@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-public class DeploymentsTests extends ResourceManagerTestBase {
+public class DeploymentsTests extends ResourceManagementTest {
     private ResourceGroups resourceGroups;
     private ResourceGroup resourceGroup;
 
@@ -44,7 +44,7 @@ public class DeploymentsTests extends ResourceManagerTestBase {
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         super.initializeClients(httpPipeline, profile);
-        testId = sdkContext.randomResourceName("", 9);
+        testId = generateRandomResourceName("", 9);
         resourceGroups = resourceClient.resourceGroups();
         rgName = "rg" + testId;
         resourceGroup = resourceGroups.define(rgName)
@@ -300,7 +300,7 @@ public class DeploymentsTests extends ResourceManagerTestBase {
         Deployment deployment = acceptedDeployment.getFinalResult();
         Assertions.assertEquals("Succeeded", deployment.provisioningState());
 
-        final String newRgName = sdkContext.randomResourceName("rg", 10);
+        final String newRgName = generateRandomResourceName("rg", 10);
         try {
             final String dp2 = "dpF" + testId;
 

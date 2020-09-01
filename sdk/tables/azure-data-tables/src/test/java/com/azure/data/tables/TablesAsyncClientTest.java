@@ -12,8 +12,9 @@ import com.azure.core.test.TestBase;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.UpdateMode;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -21,6 +22,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -245,6 +247,7 @@ public class TablesAsyncClientTest extends TestBase {
                 assertEquals(tableEntity.getPartitionKey(), entity.getPartitionKey());
                 assertEquals(tableEntity.getRowKey(), entity.getRowKey());
 
+                assertNotNull(entity.getTimestamp());
                 assertNotNull(entity.getETag());
                 assertNotNull(entity.getProperties());
             })
@@ -301,29 +304,54 @@ public class TablesAsyncClientTest extends TestBase {
             .verifyComplete();
     }
 
-    @Disabled("List not working yet.")
     @Test
-    void listEntityWithFilterAsync() {
+    @Tag("ListEntities")
+    void listEntitiesAsync() {
         // Arrange
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
-        final TableEntity entity = new TableEntity(partitionKeyValue, rowKeyValue);
-        ListEntitiesOptions options = new ListEntitiesOptions().setFilter("PartitionKey eq '" + entity.getPartitionKey() + "'");
-        tableClient.createEntity(entity).block(TIMEOUT);
+        final String rowKeyValue2 = testResourceNamer.randomName("rowKey", 20);
+        Mono.when(
+            tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue)),
+            tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue2))
+        ).block(TIMEOUT);
+
+        // Act & Assert
+        StepVerifier.create(tableClient.listEntities())
+            .expectNextCount(2)
+            .thenConsumeWhile(x -> true)
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
+    @Tag("ListEntities")
+    void listEntitiesWithFilterAsync() {
+        // Arrange
+        final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
+        final String rowKeyValue2 = testResourceNamer.randomName("rowKey", 20);
+        ListEntitiesOptions options = new ListEntitiesOptions().setFilter("RowKey eq '" + rowKeyValue + "'");
+        Mono.when(
+            tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue)),
+            tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue2))
+        ).block(TIMEOUT);
 
         // Act & Assert
         StepVerifier.create(tableClient.listEntities(options))
             .assertNext(returnEntity -> {
                 assertEquals(partitionKeyValue, returnEntity.getPartitionKey());
-                assertEquals(entity.getRowKey(), returnEntity.getRowKey());
+                assertEquals(rowKeyValue, returnEntity.getRowKey());
             })
+            .expectNextCount(0)
+            .thenConsumeWhile(x -> true)
             .expectComplete()
             .verify();
     }
 
-    @Disabled("List not working yet.")
     @Test
-    void listEntityWithSelectAsync() {
+    @Tag("ListEntities")
+    void listEntitiesWithSelectAsync() {
         // Arrange
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
@@ -331,30 +359,41 @@ public class TablesAsyncClientTest extends TestBase {
             .addProperty("propertyC", "valueC")
             .addProperty("propertyD", "valueD");
         ListEntitiesOptions options = new ListEntitiesOptions()
-            .setFilter("PartitionKey eq '" + entity.getPartitionKey() + "'")
             .setSelect("propertyC");
         tableClient.createEntity(entity).block(TIMEOUT);
 
         // Act & Assert
         StepVerifier.create(tableClient.listEntities(options))
             .assertNext(returnEntity -> {
-                assertEquals(entity.getRowKey(), returnEntity.getRowKey());
-                assertEquals(entity.getPartitionKey(), returnEntity.getPartitionKey());
+                assertNull(returnEntity.getRowKey());
+                assertNull(returnEntity.getPartitionKey());
                 assertEquals("valueC", returnEntity.getProperties().get("propertyC"));
-                assertEquals(3, returnEntity.getProperties().size());
+                assertNull(returnEntity.getProperties().get("propertyD"));
             })
             .expectComplete()
             .verify();
     }
 
     @Test
-    void listEntityWithTopAsync() {
+    @Tag("ListEntities")
+    void listEntitiesWithTopAsync() {
         // Arrange
-        ListEntitiesOptions options = new ListEntitiesOptions()
-            .setTop(1);
+        final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
+        final String rowKeyValue2 = testResourceNamer.randomName("rowKey", 20);
+        final String rowKeyValue3 = testResourceNamer.randomName("rowKey", 20);
+        ListEntitiesOptions options = new ListEntitiesOptions().setTop(2);
+        Mono.when(
+            tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue)),
+            tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue2)),
+            tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue3))
+        ).block(TIMEOUT);
 
         // Act & Assert
         StepVerifier.create(tableClient.listEntities(options))
-            .expectNextCount(2);
+            .expectNextCount(2)
+            .thenConsumeWhile(x -> true)
+            .expectComplete()
+            .verify();
     }
 }

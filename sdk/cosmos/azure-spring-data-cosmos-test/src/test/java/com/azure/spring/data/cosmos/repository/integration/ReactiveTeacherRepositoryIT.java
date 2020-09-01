@@ -4,7 +4,7 @@
 package com.azure.spring.data.cosmos.repository.integration;
 
 import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
-import com.azure.spring.data.cosmos.domain.Teacher;
+import com.azure.spring.data.cosmos.domain.ReactiveTeacher;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.ReactiveTeacherRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
@@ -32,10 +32,10 @@ public class ReactiveTeacherRepositoryIT {
 
     private static final String DEPARTMENT_LAST_NAME_1 = "LastName1";
 
-    private static final Teacher TEACHER_1 = new Teacher(TEACHER_ID_1, TEACHER_FIRST_NAME_1, DEPARTMENT_LAST_NAME_1);
+    private static final ReactiveTeacher TEACHER_1 = new ReactiveTeacher(TEACHER_ID_1, TEACHER_FIRST_NAME_1, DEPARTMENT_LAST_NAME_1);
 
-    private static final CosmosEntityInformation<Teacher, String> entityInformation =
-        new CosmosEntityInformation<>(Teacher.class);
+    private static final CosmosEntityInformation<ReactiveTeacher, String> entityInformation =
+        new CosmosEntityInformation<>(ReactiveTeacher.class);
 
     private static ReactiveCosmosTemplate staticTemplate;
     private static boolean isSetupDone;
@@ -52,8 +52,8 @@ public class ReactiveTeacherRepositoryIT {
             staticTemplate = template;
             template.createContainerIfNotExists(entityInformation);
         }
-        final Flux<Teacher> savedFlux = repository.saveAll(Arrays.asList(TEACHER_1));
-        StepVerifier.create(savedFlux).thenConsumeWhile(Teacher -> true).expectComplete().verify();
+        final Flux<ReactiveTeacher> savedFlux = repository.saveAll(Arrays.asList(TEACHER_1));
+        StepVerifier.create(savedFlux).thenConsumeWhile(ReactiveTeacher -> true).expectComplete().verify();
         isSetupDone = true;
     }
 
@@ -73,11 +73,11 @@ public class ReactiveTeacherRepositoryIT {
         final Mono<Void> deletedMono = repository.deleteAll();
         StepVerifier.create(deletedMono).thenAwait().verifyComplete();
         String teacherId = TEACHER_ID_1 + "-Other";
-        final Teacher teacher = new Teacher(teacherId, TEACHER_FIRST_NAME_1, null);
-        final Mono<Teacher> saveSecond = repository.save(teacher);
+        final ReactiveTeacher teacher = new ReactiveTeacher(teacherId, TEACHER_FIRST_NAME_1, null);
+        final Mono<ReactiveTeacher> saveSecond = repository.save(teacher);
         StepVerifier.create(saveSecond).expectNext(teacher).verifyComplete();
 
-        final Mono<Teacher> idMono = repository.findById(teacherId);
+        final Mono<ReactiveTeacher> idMono = repository.findById(teacherId);
         StepVerifier.create(idMono).expectNext(teacher).expectComplete().verify();
 
         final Mono<Boolean> existFirstNameMono = repository.existsByFirstNameIsNotNull();
