@@ -94,7 +94,7 @@ public final class DigitalTwinsAsyncClient {
      *
      * @param digitalTwinId The Id of the digital twin.
      * @param digitalTwin The application/json digital twin to create.
-     * @return The application/json digital twin created.
+     * @return The the application/json string representing the digital twin created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> createDigitalTwin(String digitalTwinId, String digitalTwin)
@@ -108,7 +108,7 @@ public final class DigitalTwinsAsyncClient {
      *
      * @param digitalTwinId The Id of the digital twin.
      * @param digitalTwin The application/json digital twin to create.
-     * @return A Http response containing application/json digital twin created.
+     * @return A {@link DigitalTwinsResponse} containing the application/json string representing the digital twin created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsResponse<String>> createDigitalTwinWithResponse(String digitalTwinId, String digitalTwin) {
@@ -136,9 +136,9 @@ public final class DigitalTwinsAsyncClient {
      *
      * @param digitalTwinId The Id of the digital twin.
      * @param digitalTwin The application/json digital twin to create.
-     * @param clazz The model class to convert the response to.
-     * @param <T> The generic type to convert the response to.
-     * @return The application/json digital twin created.
+     * @param clazz The model class to deserialize the response with.
+     * @param <T> The generic type to deserialize the digital twin with.
+     * @return The deserialized application/json object representing the digital twin created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> Mono<T> createDigitalTwin(String digitalTwinId, Object digitalTwin, Class<T> clazz)
@@ -152,9 +152,9 @@ public final class DigitalTwinsAsyncClient {
      *
      * @param digitalTwinId The Id of the digital twin.
      * @param digitalTwin The application/json digital twin to create.
-     * @param clazz The model class to convert the response to.
-     * @param <T> The generic type to convert the response to.
-     * @return A Http response containing application/json digital twin created.
+     * @param clazz The model class to deserialize the response with.
+     * @param <T> The generic type to deserialize the digital twin with.
+     * @return A {@link DigitalTwinsResponse} containing the deserialized application/json object representing the digital twin created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> Mono<DigitalTwinsResponse<T>> createDigitalTwinWithResponse(String digitalTwinId, Object digitalTwin, Class<T> clazz) {
@@ -176,7 +176,7 @@ public final class DigitalTwinsAsyncClient {
      * Gets a digital twin.
      *
      * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
-     * @return The application/json digital twin
+     * @return The application/json string representing the digital twin.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> getDigitalTwin(String digitalTwinId)
@@ -189,7 +189,7 @@ public final class DigitalTwinsAsyncClient {
      * Gets a digital twin.
      *
      * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
-     * @return A Http response containing the application/json digital twin
+     * @return A {@link DigitalTwinsResponse} containing the application/json string representing the digital twin.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsResponse<String>> getDigitalTwinWithResponse(String digitalTwinId)
@@ -207,7 +207,7 @@ public final class DigitalTwinsAsyncClient {
                     DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
                     return Mono.justOrEmpty(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), jsonResponse, twinHeaders));
                 } catch (JsonProcessingException e) {
-                    logger.error("JsonProcessingException occurred while retrieving a relationship: ", e);
+                    logger.error("JsonProcessingException occurred while retrieving a digital twin: ", e);
                     return Mono.error(e);
                 }
             });
@@ -217,9 +217,9 @@ public final class DigitalTwinsAsyncClient {
      * Gets a digital twin.
      *
      * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
-     * @param clazz The model class to convert the response to.
-     * @param <T> The generic type to convert the response to.
-     * @return The application/json digital twin
+     * @param clazz The model class to deserialize the response with.
+     * @param <T> The generic type to deserialize the digital twin with.
+     * @return The deserialized application/json object representing the digital twin
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> Mono<T> getDigitalTwin(String digitalTwinId, Class<T> clazz)
@@ -232,9 +232,9 @@ public final class DigitalTwinsAsyncClient {
      * Gets a digital twin.
      *
      * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
-     * @param clazz The model class to convert the response to.
-     * @param <T> The generic type to convert the response to.
-     * @return A Http response containing the application/json digital twin
+     * @param clazz The model class to deserialize the response with.
+     * @param <T> The generic type to deserialize the digital twin with.
+     * @return A {@link DigitalTwinsResponse} containing the deserialized application/json object representing the digital twin.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> Mono<DigitalTwinsResponse<T>> getDigitalTwinWithResponse(String digitalTwinId, Class<T> clazz)
@@ -258,12 +258,12 @@ public final class DigitalTwinsAsyncClient {
      *
      * @param digitalTwinId The Id of the digital twin.
      * @param digitalTwinUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin
-     * @return an empty Mono
+     * @return An empty Mono
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateDigitalTwin(String digitalTwinId, List<Object> digitalTwinUpdateOperations)
     {
-        return updateDigitalTwinWithResponse(digitalTwinId, digitalTwinUpdateOperations, new RequestOptions())
+        return updateDigitalTwinWithResponse(digitalTwinId, digitalTwinUpdateOperations, new UpdateDigitalTwinRequestOptions())
             .flatMap(voidResponse -> Mono.empty());
     }
 
@@ -273,15 +273,15 @@ public final class DigitalTwinsAsyncClient {
      * @param digitalTwinId The Id of the digital twin.
      * @param digitalTwinUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin
      * @param options The optional settings for this request
-     * @return A Http response
+     * @return A {@link DigitalTwinsResponse}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DigitalTwinsResponse<Void>> updateDigitalTwinWithResponse(String digitalTwinId, List<Object> digitalTwinUpdateOperations, RequestOptions options)
+    public Mono<DigitalTwinsResponse<Void>> updateDigitalTwinWithResponse(String digitalTwinId, List<Object> digitalTwinUpdateOperations, UpdateDigitalTwinRequestOptions options)
     {
         return withContext(context -> updateDigitalTwinWithResponse(digitalTwinId, digitalTwinUpdateOperations, options, context));
     }
 
-    Mono<DigitalTwinsResponse<Void>> updateDigitalTwinWithResponse(String digitalTwinId, List<Object> digitalTwinUpdateOperations, RequestOptions options, Context context) {
+    Mono<DigitalTwinsResponse<Void>> updateDigitalTwinWithResponse(String digitalTwinId, List<Object> digitalTwinUpdateOperations, UpdateDigitalTwinRequestOptions options, Context context) {
         return protocolLayer
             .getDigitalTwins()
             .updateWithResponseAsync(digitalTwinId, digitalTwinUpdateOperations, options.getIfMatch(), context)
@@ -294,12 +294,12 @@ public final class DigitalTwinsAsyncClient {
     /**
      * Deletes a digital twin. All relationships referencing the digital twin must already be deleted.
      * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
-     * @return an empty Mono
+     * @return An empty Mono
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteDigitalTwin(String digitalTwinId)
     {
-        return deleteDigitalTwinWithResponse(digitalTwinId, new RequestOptions())
+        return deleteDigitalTwinWithResponse(digitalTwinId, new DeleteDigitalTwinRequestOptions())
             .flatMap(voidResponse -> Mono.empty());
     }
 
@@ -311,12 +311,12 @@ public final class DigitalTwinsAsyncClient {
      * @return The Http response
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteDigitalTwinWithResponse(String digitalTwinId, RequestOptions options)
+    public Mono<Response<Void>> deleteDigitalTwinWithResponse(String digitalTwinId, DeleteDigitalTwinRequestOptions options)
     {
         return withContext(context -> deleteDigitalTwinWithResponse(digitalTwinId, options, context));
     }
 
-    Mono<Response<Void>> deleteDigitalTwinWithResponse(String digitalTwinId, RequestOptions options, Context context) {
+    Mono<Response<Void>> deleteDigitalTwinWithResponse(String digitalTwinId, DeleteDigitalTwinRequestOptions options, Context context) {
         return protocolLayer
             .getDigitalTwins()
             .deleteWithResponseAsync(digitalTwinId, options.getIfMatch(), context);
