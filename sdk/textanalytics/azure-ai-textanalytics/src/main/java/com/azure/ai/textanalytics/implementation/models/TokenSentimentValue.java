@@ -7,31 +7,34 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for AspectRelationType. */
-public enum AspectRelationType {
-    /** Enum value opinion. */
-    OPINION("opinion"),
+/** Defines values for TokenSentimentValue. */
+public enum TokenSentimentValue {
+    /** Enum value positive. */
+    POSITIVE("positive"),
 
-    /** Enum value aspect. */
-    ASPECT("aspect");
+    /** Enum value mixed. */
+    MIXED("mixed"),
 
-    /** The actual serialized value for a AspectRelationType instance. */
+    /** Enum value negative. */
+    NEGATIVE("negative");
+
+    /** The actual serialized value for a TokenSentimentValue instance. */
     private final String value;
 
-    AspectRelationType(String value) {
+    TokenSentimentValue(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a AspectRelationType instance.
+     * Parses a serialized value to a TokenSentimentValue instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed AspectRelationType object, or null if unable to parse.
+     * @return the parsed TokenSentimentValue object, or null if unable to parse.
      */
     @JsonCreator
-    public static AspectRelationType fromString(String value) {
-        AspectRelationType[] items = AspectRelationType.values();
-        for (AspectRelationType item : items) {
+    public static TokenSentimentValue fromString(String value) {
+        TokenSentimentValue[] items = TokenSentimentValue.values();
+        for (TokenSentimentValue item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
