@@ -9,12 +9,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** The ModelData model. */
+/**
+ * The DigitalTwinModelData representing the model and its corresponding metadata.
+ */
 @Fluent
 public class DigitalTwinModelData {
 
     private final ObjectMapper mapper;
 
+    /**
+     * Creates a new instance of DigitalTwinModelData.
+     * @param modelData The model data.
+     */
     public DigitalTwinModelData(ModelData modelData) {
         mapper = new ObjectMapper();
 
@@ -24,23 +30,6 @@ public class DigitalTwinModelData {
             .setDescription(modelData.getDescription())
             .setDecommissioned(modelData.isDecommissioned())
             .setModel(mapper.convertValue(modelData.getModel(), String.class));
-    }
-
-    public ModelData convertToModelData(){
-        Object objectModelData = null;
-
-        try {
-            objectModelData = mapper.readValue(this.model, Object.class);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return new ModelData()
-            .setId(this.id)
-            .setUploadTime(this.uploadTime)
-            .setDisplayName(this.displayName)
-            .setDescription(this.description)
-            .setDecommissioned(this.decommissioned)
-            .setModel(objectModelData);
     }
 
     /*
