@@ -53,18 +53,18 @@ class LockRenewalOperation implements AutoCloseable {
      * Creates a new lock renewal operation.
      *
      * @param lockToken Lock or session id to renew.
-     * @param lockedUntil The initial period the message or session is locked until.
+     * @param tokenLockedUntil The initial period the message or session is locked until.
      * @param maxLockRenewalDuration The maximum duration this lock should be renewed.
      * @param isSession Whether the lock represents a session lock or message lock.
      * @param renewalOperation The renewal operation to call.
      */
     LockRenewalOperation(String lockToken, Duration maxLockRenewalDuration, boolean isSession,
-        Function<String, Mono<OffsetDateTime>> renewalOperation, OffsetDateTime lockedUntil) {
+        Function<String, Mono<OffsetDateTime>> renewalOperation, OffsetDateTime tokenLockedUntil) {
         this.lockToken = Objects.requireNonNull(lockToken, "'lockToken' cannot be null.");
         this.renewalOperation = Objects.requireNonNull(renewalOperation, "'renewalOperation' cannot be null.");
         this.isSession = isSession;
 
-        Objects.requireNonNull(lockedUntil, "'lockedUntil cannot be null.'");
+        Objects.requireNonNull(tokenLockedUntil, "'lockedUntil cannot be null.'");
         Objects.requireNonNull(maxLockRenewalDuration, "'maxLockRenewalDuration' cannot be null.");
 
         if (maxLockRenewalDuration.isNegative()) {
@@ -72,9 +72,9 @@ class LockRenewalOperation implements AutoCloseable {
                 "'maxLockRenewalDuration' cannot be negative."));
         }
 
-        this.lockedUntil.set(lockedUntil);
+        this.lockedUntil.set(tokenLockedUntil);
 
-        final Flux<Instant> renewLockOperation = getRenewLockOperation(lockedUntil, maxLockRenewalDuration);
+        final Flux<OffsetDateTime> renewLockOperation = getRenewLockOperation(tokenLockedUntil, maxLockRenewalDuration);
         this.completionMono = renewLockOperation.then();
         this.subscription = renewLockOperation.subscribe(until -> this.lockedUntil.set(until),
             error -> {
