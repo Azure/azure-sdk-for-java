@@ -44,19 +44,19 @@ public final class TrafficManager extends Manager<TrafficManager, TrafficManager
      *
      * @param httpPipeline the RestClient to be used for API calls.
      * @param profile the profile to use
-     * @return the StorageManager
+     * @return the TrafficManager
      */
     public static TrafficManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         return authenticate(httpPipeline, profile, new SdkContext());
     }
 
     /**
-     * Creates an instance of TrafficManager that exposes storage resource management API entry points.
+     * Creates an instance of TrafficManager that exposes traffic manager resource management API entry points.
      *
      * @param httpPipeline the RestClient to be used for API calls.
      * @param profile the profile to use
      * @param sdkContext the sdk context
-     * @return the StorageManager
+     * @return the TrafficManager
      */
     public static TrafficManager authenticate(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
         return new TrafficManager(httpPipeline, profile, sdkContext);
@@ -69,7 +69,7 @@ public final class TrafficManager extends Manager<TrafficManager, TrafficManager
          *
          * @param credential the credential to use
          * @param profile the profile to use
-         * @return the interface exposing storage management API entry points that work across subscriptions
+         * @return the interface exposing traffic manager management API entry points that work across subscriptions
          */
         TrafficManager authenticate(TokenCredential credential, AzureProfile profile);
     }
