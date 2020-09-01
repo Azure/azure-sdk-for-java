@@ -42,11 +42,11 @@ import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathProperties;
-import com.azure.storage.file.datalake.models.RemovePathAccessControlEntry;
+import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
-import com.azure.storage.file.datalake.options.DirectoryRemoveAccessControlRecursiveOptions;
-import com.azure.storage.file.datalake.options.DirectorySetAccessControlRecursiveOptions;
-import com.azure.storage.file.datalake.options.DirectoryUpdateAccessControlRecursiveOptions;
+import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions;
+import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions;
+import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
@@ -664,7 +664,7 @@ public class DataLakePathAsyncClient {
      */
     public Mono<AccessControlChangeResult> setAccessControlRecursive(List<PathAccessControlEntry> accessControlList) {
         try {
-            return setAccessControlRecursiveWithResponse(new DirectorySetAccessControlRecursiveOptions(accessControlList))
+            return setAccessControlRecursiveWithResponse(new PathSetAccessControlRecursiveOptions(accessControlList))
                 .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -676,16 +676,16 @@ public class DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setAccessControlRecursive#SetAccessControlRecursiveOptions}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setAccessControlRecursive#PathSetAccessControlRecursiveOptions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
      *
-     * @param options {@link DirectorySetAccessControlRecursiveOptions}
+     * @param options {@link PathSetAccessControlRecursiveOptions}
      * @return A reactive response containing the result of the operation.
      */
     public Mono<Response<AccessControlChangeResult>> setAccessControlRecursiveWithResponse(
-        DirectorySetAccessControlRecursiveOptions options) {
+        PathSetAccessControlRecursiveOptions options) {
         try {
             return withContext(context -> setAccessControlRecursiveWithResponse(
                 PathAccessControlEntry.serializeList(options.getAccessControlList()), options.getProgressHandler(),
@@ -712,7 +712,7 @@ public class DataLakePathAsyncClient {
     public Mono<AccessControlChangeResult> updateAccessControlRecursive(List<PathAccessControlEntry> accessControlList)
     {
         try {
-            return updateAccessControlRecursiveWithResponse(new DirectoryUpdateAccessControlRecursiveOptions(accessControlList))
+            return updateAccessControlRecursiveWithResponse(new PathUpdateAccessControlRecursiveOptions(accessControlList))
                 .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -724,16 +724,16 @@ public class DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.updateAccessControlRecursive#UpdateAccessControlRecursiveOptions}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.updateAccessControlRecursive#PathUpdateAccessControlRecursiveOptions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
      *
-     * @param options {@link DirectoryUpdateAccessControlRecursiveOptions}
+     * @param options {@link PathUpdateAccessControlRecursiveOptions}
      * @return A reactive response containing the result of the operation.
      */
     public Mono<Response<AccessControlChangeResult>> updateAccessControlRecursiveWithResponse(
-        DirectoryUpdateAccessControlRecursiveOptions options) {
+        PathUpdateAccessControlRecursiveOptions options) {
         try {
             return withContext(context -> setAccessControlRecursiveWithResponse(
                 PathAccessControlEntry.serializeList(options.getAccessControlList()), options.getProgressHandler(),
@@ -758,9 +758,9 @@ public class DataLakePathAsyncClient {
      * @return A reactive response containing the result of the operation.
      */
     public Mono<AccessControlChangeResult> removeAccessControlRecursive(
-        List<RemovePathAccessControlEntry> accessControlList) {
+        List<PathRemoveAccessControlEntry> accessControlList) {
         try {
-            return removeAccessControlRecursiveWithResponse(new DirectoryRemoveAccessControlRecursiveOptions(accessControlList))
+            return removeAccessControlRecursiveWithResponse(new PathRemoveAccessControlRecursiveOptions(accessControlList))
                 .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -772,19 +772,19 @@ public class DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.removeAccessControlRecursive#RemoveAccessControlRecursiveOptions}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.removeAccessControlRecursive#PathRemoveAccessControlRecursiveOptions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
      *
-     * @param options {@link DirectoryRemoveAccessControlRecursiveOptions}
+     * @param options {@link PathRemoveAccessControlRecursiveOptions}
      * @return A reactive response containing the result of the operation.
      */
     public Mono<Response<AccessControlChangeResult>> removeAccessControlRecursiveWithResponse(
-        DirectoryRemoveAccessControlRecursiveOptions options) {
+        PathRemoveAccessControlRecursiveOptions options) {
         try {
             return withContext(context -> setAccessControlRecursiveWithResponse(
-                RemovePathAccessControlEntry.serializeList(options.getAccessControlList()), options.getProgressHandler(),
+                PathRemoveAccessControlEntry.serializeList(options.getAccessControlList()), options.getProgressHandler(),
                 PathSetAccessControlRecursiveMode.REMOVE, options.getBatchSize(), options.getMaxBatches(),
                 options.isContinuingOnFailure(), options.getContinuationToken(), context));
         } catch (RuntimeException ex) {

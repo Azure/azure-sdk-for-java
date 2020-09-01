@@ -5,17 +5,17 @@ package com.azure.storage.file.datalake.options;
 
 import com.azure.core.http.rest.Response;
 import com.azure.storage.file.datalake.models.AccessControlChanges;
-import com.azure.storage.file.datalake.models.PathAccessControlEntry;
+import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * Optional parameters for Update Access Control Recursive.
+ * Optional parameters for Remove Access Control Recursive.
  */
-public class DirectoryUpdateAccessControlRecursiveOptions {
-    private final List<PathAccessControlEntry> accessControlList;
+public class PathRemoveAccessControlRecursiveOptions {
+    private final List<PathRemoveAccessControlEntry> accessControlList;
     private Integer batchSize;
     private Integer maxBatches;
     private Consumer<Response<AccessControlChanges>> progressHandler;
@@ -26,7 +26,7 @@ public class DirectoryUpdateAccessControlRecursiveOptions {
      * Constructs a new options object.
      * @param accessControlList The POSIX access control list for the file or directory.
      */
-    public DirectoryUpdateAccessControlRecursiveOptions(List<PathAccessControlEntry> accessControlList) {
+    public PathRemoveAccessControlRecursiveOptions(List<PathRemoveAccessControlEntry> accessControlList) {
         this.accessControlList = Collections.unmodifiableList(accessControlList);
     }
 
@@ -35,7 +35,7 @@ public class DirectoryUpdateAccessControlRecursiveOptions {
      *
      * @return The POSIX access control list for the file or directory.
      */
-    public List<PathAccessControlEntry> getAccessControlList() {
+    public List<PathRemoveAccessControlEntry> getAccessControlList() {
         return accessControlList;
     }
 
@@ -60,7 +60,7 @@ public class DirectoryUpdateAccessControlRecursiveOptions {
      * @param batchSize The size of the batch.
      * @return The updated object.
      */
-    public DirectoryUpdateAccessControlRecursiveOptions setBatchSize(Integer batchSize) {
+    public PathRemoveAccessControlRecursiveOptions setBatchSize(Integer batchSize) {
         this.batchSize = batchSize;
         return this;
     }
@@ -86,7 +86,7 @@ public class DirectoryUpdateAccessControlRecursiveOptions {
      * @param maxBatches The maximum number of batches.
      * @return The updated object.
      */
-    public DirectoryUpdateAccessControlRecursiveOptions setMaxBatches(Integer maxBatches) {
+    public PathRemoveAccessControlRecursiveOptions setMaxBatches(Integer maxBatches) {
         this.maxBatches = maxBatches;
         return this;
     }
@@ -108,7 +108,7 @@ public class DirectoryUpdateAccessControlRecursiveOptions {
      * @param progressHandler The progress handler.
      * @return The updated object.
      */
-    public DirectoryUpdateAccessControlRecursiveOptions setProgressHandler(
+    public PathRemoveAccessControlRecursiveOptions setProgressHandler(
         Consumer<Response<AccessControlChanges>> progressHandler) {
         this.progressHandler = progressHandler;
         return this;
@@ -129,7 +129,7 @@ public class DirectoryUpdateAccessControlRecursiveOptions {
      * @param continuationToken A token that can be used to resume previously stopped operation.
      * @return The updated object.
      */
-    public DirectoryUpdateAccessControlRecursiveOptions setContinuationToken(String continuationToken) {
+    public PathRemoveAccessControlRecursiveOptions setContinuationToken(String continuationToken) {
         this.continuationToken = continuationToken;
         return this;
     }
@@ -155,7 +155,7 @@ public class DirectoryUpdateAccessControlRecursiveOptions {
      * @param continueOnFailure Whether the operation should continue on user failure.
      * @return The updated object.
      */
-    public DirectoryUpdateAccessControlRecursiveOptions setContinueOnFailure(boolean continueOnFailure) {
+    public PathRemoveAccessControlRecursiveOptions setContinueOnFailure(boolean continueOnFailure) {
         this.continueOnFailure = continueOnFailure;
         return this;
     }

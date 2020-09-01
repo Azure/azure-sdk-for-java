@@ -30,6 +30,7 @@ import com.azure.storage.file.datalake.models.PathAccessControl
 import com.azure.storage.file.datalake.models.PathAccessControlEntry
 import com.azure.storage.file.datalake.models.PathHttpHeaders
 import com.azure.storage.file.datalake.models.PathPermissions
+import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry
 import com.azure.storage.file.datalake.models.RolePermissions
 import com.azure.storage.file.datalake.options.FileQueryOptions
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions
@@ -468,6 +469,42 @@ class FileAPITest extends APISpec {
 
         then:
         thrown(DataLakeStorageException)
+    }
+
+    def "Set ACL recursive"() {
+        when:
+        def response = fc.setAccessControlRecursive(pathAccessControlEntries)
+
+        then:
+        response.getCounters().getChangedDirectoriesCount() == 0
+        response.getCounters().getChangedFilesCount() == 1
+        response.getCounters().getFailedChangesCount() == 0
+    }
+
+    def "Update ACL recursive"() {
+        when:
+        def response = fc.updateAccessControlRecursive(pathAccessControlEntries)
+
+        then:
+        response.getCounters().getChangedDirectoriesCount() == 0
+        response.getCounters().getChangedFilesCount() == 1
+        response.getCounters().getFailedChangesCount() == 0
+    }
+
+    def "Remove ACL recursive"() {
+        setup:
+        def removeAccessControlEntries = PathRemoveAccessControlEntry.parseList("mask," +
+            "default:user,default:group," +
+            "user:ec3595d6-2c17-4696-8caa-7e139758d24a,group:ec3595d6-2c17-4696-8caa-7e139758d24a," +
+            "default:user:ec3595d6-2c17-4696-8caa-7e139758d24a,default:group:ec3595d6-2c17-4696-8caa-7e139758d24a")
+
+        when:
+        def response = fc.removeAccessControlRecursive(removeAccessControlEntries)
+
+        then:
+        response.getCounters().getChangedDirectoriesCount() == 0
+        response.getCounters().getChangedFilesCount() == 1
+        response.getCounters().getFailedChangesCount() == 0
     }
 
     def "Get access control min"() {

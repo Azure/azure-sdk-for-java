@@ -7,9 +7,9 @@ import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
 
 import com.azure.storage.file.datalake.models.*
-import com.azure.storage.file.datalake.options.DirectoryRemoveAccessControlRecursiveOptions
-import com.azure.storage.file.datalake.options.DirectorySetAccessControlRecursiveOptions
-import com.azure.storage.file.datalake.options.DirectoryUpdateAccessControlRecursiveOptions
+import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions
+import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions
+import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions
 import spock.lang.Unroll
 
 import java.util.function.Consumer
@@ -25,7 +25,7 @@ class DirectoryAPITest extends APISpec {
 
     List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx")
     List<PathAccessControlEntry> executeOnlyAccessControlEntries = PathAccessControlEntry.parseList("user::--x,group::--x,other::--x")
-    List<RemovePathAccessControlEntry> removeAccessControlEntries = RemovePathAccessControlEntry.parseList("mask," +
+    List<PathRemoveAccessControlEntry> removeAccessControlEntries = PathRemoveAccessControlEntry.parseList("mask," +
         "default:user,default:group," +
         "user:ec3595d6-2c17-4696-8caa-7e139758d24a,group:ec3595d6-2c17-4696-8caa-7e139758d24a," +
         "default:user:ec3595d6-2c17-4696-8caa-7e139758d24a,default:group:ec3595d6-2c17-4696-8caa-7e139758d24a")
@@ -462,7 +462,7 @@ class DirectoryAPITest extends APISpec {
         setup:
         setupStandardRecursiveAclTest()
 
-        def options = new DirectorySetAccessControlRecursiveOptions(pathAccessControlEntries)
+        def options = new PathSetAccessControlRecursiveOptions(pathAccessControlEntries)
             .setBatchSize(2)
 
         when:
@@ -479,7 +479,7 @@ class DirectoryAPITest extends APISpec {
         setup:
         setupStandardRecursiveAclTest()
 
-        def options = new DirectorySetAccessControlRecursiveOptions(pathAccessControlEntries)
+        def options = new PathSetAccessControlRecursiveOptions(pathAccessControlEntries)
             .setBatchSize(2).setMaxBatches(1)
 
         when:
@@ -502,7 +502,7 @@ class DirectoryAPITest extends APISpec {
 
         def progress = new InMemoryAccessControlRecursiveChangeProgress()
 
-        def options = new DirectorySetAccessControlRecursiveOptions(pathAccessControlEntries)
+        def options = new PathSetAccessControlRecursiveOptions(pathAccessControlEntries)
             .setBatchSize(2).setProgressHandler(progress)
 
         when:
@@ -529,7 +529,7 @@ class DirectoryAPITest extends APISpec {
         setup:
         setupStandardRecursiveAclTest()
 
-        def options = new DirectorySetAccessControlRecursiveOptions(pathAccessControlEntries)
+        def options = new PathSetAccessControlRecursiveOptions(pathAccessControlEntries)
             .setBatchSize(2).setMaxBatches(2)
 
         when:
@@ -581,7 +581,7 @@ class DirectoryAPITest extends APISpec {
 
         when:
         def result = topDirOauthClient.setAccessControlRecursiveWithResponse(
-            new DirectorySetAccessControlRecursiveOptions(pathAccessControlEntries).setProgressHandler(progress), null, null)
+            new PathSetAccessControlRecursiveOptions(pathAccessControlEntries).setProgressHandler(progress), null, null)
 
         then:
         result.getValue().getCounters().getFailedChangesCount() == 1
@@ -620,7 +620,7 @@ class DirectoryAPITest extends APISpec {
 
         when:
         def result = topDirOauthClient.setAccessControlRecursiveWithResponse(
-            new DirectorySetAccessControlRecursiveOptions(pathAccessControlEntries).setContinueOnFailure(true), null, null)
+            new PathSetAccessControlRecursiveOptions(pathAccessControlEntries).setContinueOnFailure(true), null, null)
 
         then:
         result.getValue().getCounters().getChangedDirectoriesCount() == 3
@@ -660,7 +660,7 @@ class DirectoryAPITest extends APISpec {
         def subdir4 = topDirOauthClient.createSubdirectory(generatePathName())
         def file9 = subdir4.createFile(generatePathName())
 
-        def options = new DirectorySetAccessControlRecursiveOptions(pathAccessControlEntries)
+        def options = new PathSetAccessControlRecursiveOptions(pathAccessControlEntries)
             .setBatchSize(2).setContinueOnFailure(true).setMaxBatches(1)
 
         when:
@@ -690,7 +690,7 @@ class DirectoryAPITest extends APISpec {
 
         when:
         topDirOauthClient.setAccessControlRecursiveWithResponse(
-            new DirectorySetAccessControlRecursiveOptions(pathAccessControlEntries), null, null)
+            new PathSetAccessControlRecursiveOptions(pathAccessControlEntries), null, null)
 
         then:
         thrown(DataLakeStorageException)
@@ -713,7 +713,7 @@ class DirectoryAPITest extends APISpec {
         setup:
         setupStandardRecursiveAclTest()
 
-        def options = new DirectoryUpdateAccessControlRecursiveOptions(pathAccessControlEntries)
+        def options = new PathUpdateAccessControlRecursiveOptions(pathAccessControlEntries)
             .setBatchSize(2)
 
         when:
@@ -730,7 +730,7 @@ class DirectoryAPITest extends APISpec {
         setup:
         setupStandardRecursiveAclTest()
 
-        def options = new DirectoryUpdateAccessControlRecursiveOptions(pathAccessControlEntries)
+        def options = new PathUpdateAccessControlRecursiveOptions(pathAccessControlEntries)
             .setBatchSize(2).setMaxBatches(1)
 
         when:
@@ -753,7 +753,7 @@ class DirectoryAPITest extends APISpec {
 
         def progress = new InMemoryAccessControlRecursiveChangeProgress()
 
-        def options = new DirectoryUpdateAccessControlRecursiveOptions(pathAccessControlEntries)
+        def options = new PathUpdateAccessControlRecursiveOptions(pathAccessControlEntries)
             .setBatchSize(2).setProgressHandler(progress)
 
         when:
@@ -780,7 +780,7 @@ class DirectoryAPITest extends APISpec {
         setup:
         setupStandardRecursiveAclTest()
 
-        def options = new DirectoryUpdateAccessControlRecursiveOptions(pathAccessControlEntries)
+        def options = new PathUpdateAccessControlRecursiveOptions(pathAccessControlEntries)
             .setBatchSize(2).setMaxBatches(2)
 
         when:
@@ -832,7 +832,7 @@ class DirectoryAPITest extends APISpec {
 
         when:
         def result = topDirOauthClient.updateAccessControlRecursiveWithResponse(
-            new DirectoryUpdateAccessControlRecursiveOptions(pathAccessControlEntries).setProgressHandler(progress), null, null)
+            new PathUpdateAccessControlRecursiveOptions(pathAccessControlEntries).setProgressHandler(progress), null, null)
 
         then:
         result.getValue().getCounters().getFailedChangesCount() == 1
@@ -871,7 +871,7 @@ class DirectoryAPITest extends APISpec {
 
         when:
         def result = topDirOauthClient.updateAccessControlRecursiveWithResponse(
-            new DirectoryUpdateAccessControlRecursiveOptions(pathAccessControlEntries).setContinueOnFailure(true), null, null)
+            new PathUpdateAccessControlRecursiveOptions(pathAccessControlEntries).setContinueOnFailure(true), null, null)
 
         then:
         result.getValue().getCounters().getChangedDirectoriesCount() == 3
@@ -911,7 +911,7 @@ class DirectoryAPITest extends APISpec {
         def subdir4 = topDirOauthClient.createSubdirectory(generatePathName())
         def file9 = subdir4.createFile(generatePathName())
 
-        def options = new DirectoryUpdateAccessControlRecursiveOptions(pathAccessControlEntries)
+        def options = new PathUpdateAccessControlRecursiveOptions(pathAccessControlEntries)
             .setBatchSize(2).setContinueOnFailure(true).setMaxBatches(1)
 
         when:
@@ -941,7 +941,7 @@ class DirectoryAPITest extends APISpec {
 
         when:
         topDirOauthClient.updateAccessControlRecursiveWithResponse(
-            new DirectoryUpdateAccessControlRecursiveOptions(pathAccessControlEntries), null, null)
+            new PathUpdateAccessControlRecursiveOptions(pathAccessControlEntries), null, null)
 
         then:
         thrown(DataLakeStorageException)
@@ -964,7 +964,7 @@ class DirectoryAPITest extends APISpec {
         setup:
         setupStandardRecursiveAclTest()
 
-        def options = new DirectoryRemoveAccessControlRecursiveOptions(removeAccessControlEntries)
+        def options = new PathRemoveAccessControlRecursiveOptions(removeAccessControlEntries)
             .setBatchSize(2)
 
         when:
@@ -981,7 +981,7 @@ class DirectoryAPITest extends APISpec {
         setup:
         setupStandardRecursiveAclTest()
 
-        def options = new DirectoryRemoveAccessControlRecursiveOptions(removeAccessControlEntries)
+        def options = new PathRemoveAccessControlRecursiveOptions(removeAccessControlEntries)
             .setBatchSize(2).setMaxBatches(1)
 
         when:
@@ -1004,7 +1004,7 @@ class DirectoryAPITest extends APISpec {
 
         def progress = new InMemoryAccessControlRecursiveChangeProgress()
 
-        def options = new DirectoryRemoveAccessControlRecursiveOptions(removeAccessControlEntries)
+        def options = new PathRemoveAccessControlRecursiveOptions(removeAccessControlEntries)
             .setBatchSize(2).setProgressHandler(progress)
 
         when:
@@ -1031,7 +1031,7 @@ class DirectoryAPITest extends APISpec {
         setup:
         setupStandardRecursiveAclTest()
 
-        def options = new DirectoryRemoveAccessControlRecursiveOptions(removeAccessControlEntries)
+        def options = new PathRemoveAccessControlRecursiveOptions(removeAccessControlEntries)
             .setBatchSize(2).setMaxBatches(2)
 
         when:
@@ -1083,7 +1083,7 @@ class DirectoryAPITest extends APISpec {
 
         when:
         def result = topDirOauthClient.removeAccessControlRecursiveWithResponse(
-            new DirectoryRemoveAccessControlRecursiveOptions(removeAccessControlEntries).setProgressHandler(progress), null, null)
+            new PathRemoveAccessControlRecursiveOptions(removeAccessControlEntries).setProgressHandler(progress), null, null)
 
         then:
         result.getValue().getCounters().getFailedChangesCount() == 1
@@ -1122,7 +1122,7 @@ class DirectoryAPITest extends APISpec {
 
         when:
         def result = topDirOauthClient.removeAccessControlRecursiveWithResponse(
-            new DirectoryRemoveAccessControlRecursiveOptions(removeAccessControlEntries).setContinueOnFailure(true), null, null)
+            new PathRemoveAccessControlRecursiveOptions(removeAccessControlEntries).setContinueOnFailure(true), null, null)
 
         then:
         result.getValue().getCounters().getChangedDirectoriesCount() == 3
@@ -1162,7 +1162,7 @@ class DirectoryAPITest extends APISpec {
         def subdir4 = topDirOauthClient.createSubdirectory(generatePathName())
         def file9 = subdir4.createFile(generatePathName())
 
-        def options = new DirectoryRemoveAccessControlRecursiveOptions(removeAccessControlEntries)
+        def options = new PathRemoveAccessControlRecursiveOptions(removeAccessControlEntries)
             .setBatchSize(2).setContinueOnFailure(true).setMaxBatches(1)
 
         when:
@@ -1192,7 +1192,7 @@ class DirectoryAPITest extends APISpec {
 
         when:
         topDirOauthClient.removeAccessControlRecursiveWithResponse(
-            new DirectoryRemoveAccessControlRecursiveOptions(removeAccessControlEntries), null, null)
+            new PathRemoveAccessControlRecursiveOptions(removeAccessControlEntries), null, null)
 
         then:
         thrown(DataLakeStorageException)
