@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SynonymMap model. */
@@ -16,21 +15,21 @@ public final class SynonymMap {
     /*
      * The name of the synonym map.
      */
-    @JsonProperty(value = "name", required = true)
+    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The format of the synonym map. Only the 'solr' format is currently
      * supported.
      */
-    @JsonProperty(value = "format", required = true)
+    @JsonProperty(value = "format")
     private String format;
 
     /*
      * A series of synonym rules in the specified synonym map format. The rules
      * must be separated by newlines.
      */
-    @JsonProperty(value = "synonyms", required = true)
+    @JsonProperty(value = "synonyms")
     private String synonyms;
 
     /*
@@ -55,15 +54,8 @@ public final class SynonymMap {
     private String eTag;
 
     /** Creates an instance of SynonymMap class. */
-    @JsonCreator
-    public SynonymMap(
-            @JsonProperty(value = "name") String name,
-            @JsonProperty(value = "format") String format,
-            @JsonProperty(value = "synonyms") String synonyms) {
+    public SynonymMap() {
         format = "solr";
-        this.name = name;
-        this.format = format;
-        this.synonyms = synonyms;
     }
 
     /**
@@ -81,6 +73,11 @@ public final class SynonymMap {
      * @param name the name value to set.
      * @return the SynonymMap object itself.
      */
+    public SynonymMap setName(String name) {
+        this.name = name;
+        return this;
+    }
+
     /**
      * Get the format property: The format of the synonym map. Only the 'solr' format is currently supported.
      *
@@ -96,6 +93,11 @@ public final class SynonymMap {
      * @param format the format value to set.
      * @return the SynonymMap object itself.
      */
+    public SynonymMap setFormat(String format) {
+        this.format = format;
+        return this;
+    }
+
     /**
      * Get the synonyms property: A series of synonym rules in the specified synonym map format. The rules must be
      * separated by newlines.
@@ -113,6 +115,11 @@ public final class SynonymMap {
      * @param synonyms the synonyms value to set.
      * @return the SynonymMap object itself.
      */
+    public SynonymMap setSynonyms(String synonyms) {
+        this.synonyms = synonyms;
+        return this;
+    }
+
     /**
      * Get the encryptionKey property: A description of an encryption key that you create in Azure Key Vault. This key
      * is used to provide an additional level of encryption-at-rest for your data when you want full assurance that no
@@ -163,22 +170,5 @@ public final class SynonymMap {
     public SynonymMap setETag(String eTag) {
         this.eTag = eTag;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getName() == null) {
-            throw new IllegalArgumentException("Missing required property name in model SynonymMap");
-        }
-        if (getSynonyms() == null) {
-            throw new IllegalArgumentException("Missing required property synonyms in model SynonymMap");
-        }
-        if (getEncryptionKey() != null) {
-            getEncryptionKey().validate();
-        }
     }
 }

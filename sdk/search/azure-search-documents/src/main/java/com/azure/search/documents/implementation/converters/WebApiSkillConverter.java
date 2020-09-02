@@ -24,8 +24,7 @@ public final class WebApiSkillConverter {
             return null;
         }
 
-        List<OutputFieldMappingEntry> outputs = obj.getOutputs() == null ? null
-            : obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
+        List<OutputFieldMappingEntry> outputs = obj.getOutputs() == null ? null : obj.getOutputs();
 
         List<InputFieldMappingEntry> inputs = obj.getInputs() == null ? null
             : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
@@ -69,9 +68,7 @@ public final class WebApiSkillConverter {
         if (obj == null) {
             return null;
         }
-        List<com.azure.search.documents.indexes.implementation.models.OutputFieldMappingEntry> outputs =
-            obj.getOutputs() == null ? null
-                : obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
+        List<OutputFieldMappingEntry> outputs = obj.getOutputs() == null ? null : obj.getOutputs();
 
         List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
             obj.getOutputs() == null ? null
@@ -106,7 +103,7 @@ public final class WebApiSkillConverter {
 
         Integer degreeOfParallelism = obj.getDegreeOfParallelism();
         webApiSkill.setDegreeOfParallelism(degreeOfParallelism);
-        webApiSkill.validate();
+
         return webApiSkill;
     }
 

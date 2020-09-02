@@ -71,9 +71,13 @@ public class TokenFilter {
     @JsonProperty(value = "name", required = true)
     private String name;
 
-    /** Creates an instance of TokenFilter class. */
+    /**
+     * Creates an instance of TokenFilter class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
-    public TokenFilter(@JsonProperty(value = "name") String name) {
+    public TokenFilter(@JsonProperty(value = "name", required = true) String name) {
         this.name = name;
     }
 
@@ -85,23 +89,5 @@ public class TokenFilter {
      */
     public String getName() {
         return this.name;
-    }
-
-    /**
-     * Set the name property: The name of the token filter. It must only contain letters, digits, spaces, dashes or
-     * underscores, can only start and end with alphanumeric characters, and is limited to 128 characters.
-     *
-     * @param name the name value to set.
-     * @return the TokenFilter object itself.
-     */
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getName() == null) {
-            throw new IllegalArgumentException("Missing required property name in model TokenFilter");
-        }
     }
 }

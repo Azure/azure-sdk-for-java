@@ -83,14 +83,4 @@ public class BM25Similarity extends Similarity {
         this.b = b;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-    }
 }

@@ -43,7 +43,7 @@ public final class KeepTokenFilterConverter {
 
         Boolean lowerCaseKeepWords = obj.areLowerCaseKeepWords();
         keepTokenFilter.setLowerCaseKeepWords(lowerCaseKeepWords);
-        keepTokenFilter.validate();
+
         return keepTokenFilter;
     }
 

@@ -11,10 +11,11 @@ import com.azure.search.documents.indexes.models.StemmerOverrideTokenFilter;
  */
 public final class StemmerOverrideTokenFilterConverter {
     /**
-     * Maps from {@link com.azure.search.documents.indexes.implementation.models.StemmerOverrideTokenFilter} to
-     * {@link StemmerOverrideTokenFilter}.
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.StemmerOverrideTokenFilter} to {@link
+     * StemmerOverrideTokenFilter}.
      */
-    public static StemmerOverrideTokenFilter map(com.azure.search.documents.indexes.implementation.models.StemmerOverrideTokenFilter obj) {
+    public static StemmerOverrideTokenFilter map(
+        com.azure.search.documents.indexes.implementation.models.StemmerOverrideTokenFilter obj) {
         if (obj == null) {
             return null;
         }
@@ -22,19 +23,16 @@ public final class StemmerOverrideTokenFilterConverter {
     }
 
     /**
-     * Maps from {@link StemmerOverrideTokenFilter} to
-     * {@link com.azure.search.documents.indexes.implementation.models.StemmerOverrideTokenFilter}.
+     * Maps from {@link StemmerOverrideTokenFilter} to {@link com.azure.search.documents.indexes.implementation.models.StemmerOverrideTokenFilter}.
      */
-    public static com.azure.search.documents.indexes.implementation.models.StemmerOverrideTokenFilter map(StemmerOverrideTokenFilter obj) {
+    public static com.azure.search.documents.indexes.implementation.models.StemmerOverrideTokenFilter map(
+        StemmerOverrideTokenFilter obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.indexes.implementation.models.StemmerOverrideTokenFilter stemmerOverrideTokenFilter =
-            new com.azure.search.documents.indexes.implementation.models.StemmerOverrideTokenFilter(obj.getName(),
-                obj.getRules());
 
-        stemmerOverrideTokenFilter.validate();
-        return stemmerOverrideTokenFilter;
+        return new com.azure.search.documents.indexes.implementation.models.StemmerOverrideTokenFilter(obj.getName(),
+            obj.getRules());
     }
 
     private StemmerOverrideTokenFilterConverter() {

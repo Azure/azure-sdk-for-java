@@ -7,6 +7,7 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.models.AutocompleteMode;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -257,11 +258,4 @@ public final class AutocompleteOptions {
         this.top = top;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {}
 }

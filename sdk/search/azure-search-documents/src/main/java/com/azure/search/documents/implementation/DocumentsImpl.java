@@ -24,25 +24,27 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.search.documents.implementation.models.AutocompleteMode;
 import com.azure.search.documents.implementation.models.AutocompleteOptions;
 import com.azure.search.documents.implementation.models.AutocompleteRequest;
-import com.azure.search.documents.implementation.models.AutocompleteResult;
 import com.azure.search.documents.implementation.models.IndexBatch;
 import com.azure.search.documents.implementation.models.IndexDocumentsResult;
-import com.azure.search.documents.implementation.models.QueryType;
 import com.azure.search.documents.implementation.models.RequestOptions;
+import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.implementation.models.SearchDocumentsResult;
 import com.azure.search.documents.implementation.models.SearchErrorException;
-import com.azure.search.documents.implementation.models.SearchMode;
 import com.azure.search.documents.implementation.models.SearchOptions;
 import com.azure.search.documents.implementation.models.SearchRequest;
 import com.azure.search.documents.implementation.models.SuggestDocumentsResult;
 import com.azure.search.documents.implementation.models.SuggestOptions;
 import com.azure.search.documents.implementation.models.SuggestRequest;
+import com.azure.search.documents.models.AutocompleteMode;
+import com.azure.search.documents.models.AutocompleteResult;
+import com.azure.search.documents.models.QueryType;
+import com.azure.search.documents.models.SearchMode;
+import reactor.core.publisher.Mono;
+
 import java.util.List;
 import java.util.UUID;
-import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Documents. */
 public final class DocumentsImpl {
@@ -69,7 +71,7 @@ public final class DocumentsImpl {
      */
     @Host("{endpoint}/indexes('{indexName}')")
     @ServiceInterface(name = "SearchIndexClientDoc")
-    private interface DocumentsService {
+    public interface DocumentsService {
         @Get("/docs/$count")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
@@ -101,6 +103,8 @@ public final class DocumentsImpl {
                 @QueryParam("scoringProfile") String scoringProfile,
                 @QueryParam("searchFields") String searchFields,
                 @QueryParam("searchMode") SearchMode searchMode,
+                @QueryParam("scoringStatistics") ScoringStatistics scoringStatistics,
+                @QueryParam("sessionId") String sessionId,
                 @QueryParam("$select") String select,
                 @QueryParam("$skip") Integer skip,
                 @QueryParam("$top") Integer top,
@@ -226,19 +230,6 @@ public final class DocumentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Long>> countWithResponseAsync(RequestOptions requestOptions, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getIndexName() == null) {
-            return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getIndexName() is required and cannot be null."));
-        }
-        if (requestOptions != null) {
-            requestOptions.validate();
-        }
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -269,22 +260,6 @@ public final class DocumentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchDocumentsResult>> searchGetWithResponseAsync(
             String searchText, SearchOptions searchOptions, RequestOptions requestOptions, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getIndexName() == null) {
-            return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getIndexName() is required and cannot be null."));
-        }
-        if (searchOptions != null) {
-            searchOptions.validate();
-        }
-        if (requestOptions != null) {
-            requestOptions.validate();
-        }
         final String accept = "application/json; odata.metadata=none";
         Boolean includeTotalResultCountInternal = null;
         if (searchOptions != null) {
@@ -351,6 +326,16 @@ public final class DocumentsImpl {
             searchModeInternal = searchOptions.getSearchMode();
         }
         SearchMode searchMode = searchModeInternal;
+        ScoringStatistics scoringStatisticsInternal = null;
+        if (searchOptions != null) {
+            scoringStatisticsInternal = searchOptions.getScoringStatistics();
+        }
+        ScoringStatistics scoringStatistics = scoringStatisticsInternal;
+        String sessionIdInternal = null;
+        if (searchOptions != null) {
+            sessionIdInternal = searchOptions.getSessionId();
+        }
+        String sessionId = sessionIdInternal;
         List<String> selectInternal = null;
         if (searchOptions != null) {
             selectInternal = searchOptions.getSelect();
@@ -400,6 +385,8 @@ public final class DocumentsImpl {
                 scoringProfile,
                 searchFieldsConverted,
                 searchMode,
+                scoringStatistics,
+                sessionId,
                 selectConverted,
                 skip,
                 top,
@@ -423,24 +410,6 @@ public final class DocumentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchDocumentsResult>> searchPostWithResponseAsync(
             SearchRequest searchRequest, RequestOptions requestOptions, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getIndexName() == null) {
-            return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getIndexName() is required and cannot be null."));
-        }
-        if (searchRequest == null) {
-            return Mono.error(new IllegalArgumentException("Parameter searchRequest is required and cannot be null."));
-        } else {
-            searchRequest.validate();
-        }
-        if (requestOptions != null) {
-            requestOptions.validate();
-        }
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -472,22 +441,6 @@ public final class DocumentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> getWithResponseAsync(
             String key, List<String> selectedFields, RequestOptions requestOptions, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getIndexName() == null) {
-            return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getIndexName() is required and cannot be null."));
-        }
-        if (key == null) {
-            return Mono.error(new IllegalArgumentException("Parameter key is required and cannot be null."));
-        }
-        if (requestOptions != null) {
-            requestOptions.validate();
-        }
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -529,28 +482,6 @@ public final class DocumentsImpl {
             SuggestOptions suggestOptions,
             RequestOptions requestOptions,
             Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getIndexName() == null) {
-            return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getIndexName() is required and cannot be null."));
-        }
-        if (searchText == null) {
-            return Mono.error(new IllegalArgumentException("Parameter searchText is required and cannot be null."));
-        }
-        if (suggesterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter suggesterName is required and cannot be null."));
-        }
-        if (suggestOptions != null) {
-            suggestOptions.validate();
-        }
-        if (requestOptions != null) {
-            requestOptions.validate();
-        }
         final String accept = "application/json; odata.metadata=none";
         String filterInternal = null;
         if (suggestOptions != null) {
@@ -642,24 +573,6 @@ public final class DocumentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SuggestDocumentsResult>> suggestPostWithResponseAsync(
             SuggestRequest suggestRequest, RequestOptions requestOptions, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getIndexName() == null) {
-            return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getIndexName() is required and cannot be null."));
-        }
-        if (suggestRequest == null) {
-            return Mono.error(new IllegalArgumentException("Parameter suggestRequest is required and cannot be null."));
-        } else {
-            suggestRequest.validate();
-        }
-        if (requestOptions != null) {
-            requestOptions.validate();
-        }
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -690,24 +603,6 @@ public final class DocumentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IndexDocumentsResult>> indexWithResponseAsync(
             IndexBatch batch, RequestOptions requestOptions, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getIndexName() == null) {
-            return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getIndexName() is required and cannot be null."));
-        }
-        if (batch == null) {
-            return Mono.error(new IllegalArgumentException("Parameter batch is required and cannot be null."));
-        } else {
-            batch.validate();
-        }
-        if (requestOptions != null) {
-            requestOptions.validate();
-        }
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -745,28 +640,6 @@ public final class DocumentsImpl {
             RequestOptions requestOptions,
             AutocompleteOptions autocompleteOptions,
             Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getIndexName() == null) {
-            return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getIndexName() is required and cannot be null."));
-        }
-        if (searchText == null) {
-            return Mono.error(new IllegalArgumentException("Parameter searchText is required and cannot be null."));
-        }
-        if (suggesterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter suggesterName is required and cannot be null."));
-        }
-        if (autocompleteOptions != null) {
-            autocompleteOptions.validate();
-        }
-        if (requestOptions != null) {
-            requestOptions.validate();
-        }
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -848,25 +721,6 @@ public final class DocumentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AutocompleteResult>> autocompletePostWithResponseAsync(
             AutocompleteRequest autocompleteRequest, RequestOptions requestOptions, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getIndexName() == null) {
-            return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getIndexName() is required and cannot be null."));
-        }
-        if (autocompleteRequest == null) {
-            return Mono.error(
-                    new IllegalArgumentException("Parameter autocompleteRequest is required and cannot be null."));
-        } else {
-            autocompleteRequest.validate();
-        }
-        if (requestOptions != null) {
-            requestOptions.validate();
-        }
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {

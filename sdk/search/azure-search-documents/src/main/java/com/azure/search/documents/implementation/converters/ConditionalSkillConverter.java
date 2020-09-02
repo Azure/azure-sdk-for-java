@@ -5,7 +5,6 @@ package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.ConditionalSkill;
 import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
-import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,9 +25,7 @@ public final class ConditionalSkillConverter {
         List<InputFieldMappingEntry> inputs = obj.getInputs() == null ? null
             : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
 
-        List<OutputFieldMappingEntry> outputs = obj.getOutputs() == null ? null
-            : obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-        ConditionalSkill conditionalSkill = new ConditionalSkill(inputs, outputs);
+        ConditionalSkill conditionalSkill = new ConditionalSkill(inputs, obj.getOutputs());
 
 
         String name = obj.getName();
@@ -53,11 +50,8 @@ public final class ConditionalSkillConverter {
             obj.getInputs() == null ? null
                 : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
 
-        List<com.azure.search.documents.indexes.implementation.models.OutputFieldMappingEntry> outputs =
-            obj.getOutputs() == null ? null
-                : obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
         com.azure.search.documents.indexes.implementation.models.ConditionalSkill conditionalSkill =
-            new com.azure.search.documents.indexes.implementation.models.ConditionalSkill(inputs, outputs);
+            new com.azure.search.documents.indexes.implementation.models.ConditionalSkill(inputs, obj.getOutputs());
 
         String name = obj.getName();
         conditionalSkill.setName(name);
@@ -67,7 +61,7 @@ public final class ConditionalSkillConverter {
 
         String description = obj.getDescription();
         conditionalSkill.setDescription(description);
-        conditionalSkill.validate();
+
         return conditionalSkill;
     }
 

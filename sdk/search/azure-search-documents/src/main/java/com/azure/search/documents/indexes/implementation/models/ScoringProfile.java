@@ -7,6 +7,8 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.indexes.models.ScoringFunctionAggregation;
+import com.azure.search.documents.indexes.models.TextWeights;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -41,9 +43,13 @@ public final class ScoringProfile {
     @JsonProperty(value = "functionAggregation")
     private ScoringFunctionAggregation functionAggregation;
 
-    /** Creates an instance of ScoringProfile class. */
+    /**
+     * Creates an instance of ScoringProfile class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
-    public ScoringProfile(@JsonProperty(value = "name") String name) {
+    public ScoringProfile(@JsonProperty(value = "name", required = true) String name) {
         this.name = name;
     }
 
@@ -56,12 +62,6 @@ public final class ScoringProfile {
         return this.name;
     }
 
-    /**
-     * Set the name property: The name of the scoring profile.
-     *
-     * @param name the name value to set.
-     * @return the ScoringProfile object itself.
-     */
     /**
      * Get the textWeights property: Parameters that boost scoring based on text matches in certain index fields.
      *
@@ -122,22 +122,5 @@ public final class ScoringProfile {
     public ScoringProfile setFunctionAggregation(ScoringFunctionAggregation functionAggregation) {
         this.functionAggregation = functionAggregation;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getName() == null) {
-            throw new IllegalArgumentException("Missing required property name in model ScoringProfile");
-        }
-        if (getTextWeights() != null) {
-            getTextWeights().validate();
-        }
-        if (getFunctions() != null) {
-            getFunctions().forEach(e -> e.validate());
-        }
     }
 }

@@ -68,7 +68,7 @@ public final class ShingleTokenFilterConverter {
 
         String tokenSeparator = obj.getTokenSeparator();
         shingleTokenFilter.setTokenSeparator(tokenSeparator);
-        shingleTokenFilter.validate();
+
         return shingleTokenFilter;
     }
 

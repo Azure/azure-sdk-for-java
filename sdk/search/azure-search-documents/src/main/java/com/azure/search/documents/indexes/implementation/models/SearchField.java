@@ -7,6 +7,8 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
+import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -160,10 +162,16 @@ public final class SearchField {
     @JsonProperty(value = "fields")
     private List<SearchField> fields;
 
-    /** Creates an instance of SearchField class. */
+    /**
+     * Creates an instance of SearchField class.
+     *
+     * @param name the name value to set.
+     * @param type the type value to set.
+     */
     @JsonCreator
     public SearchField(
-            @JsonProperty(value = "name") String name, @JsonProperty(value = "type") SearchFieldDataType type) {
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "type", required = true) SearchFieldDataType type) {
         this.name = name;
         this.type = type;
     }
@@ -179,13 +187,6 @@ public final class SearchField {
     }
 
     /**
-     * Set the name property: The name of the field, which must be unique within the fields collection of the index or
-     * parent field.
-     *
-     * @param name the name value to set.
-     * @return the SearchField object itself.
-     */
-    /**
      * Get the type property: The data type of the field.
      *
      * @return the type value.
@@ -194,12 +195,6 @@ public final class SearchField {
         return this.type;
     }
 
-    /**
-     * Set the type property: The data type of the field.
-     *
-     * @param type the type value to set.
-     * @return the SearchField object itself.
-     */
     /**
      * Get the key property: A value indicating whether the field uniquely identifies documents in the index. Exactly
      * one top-level field in each index must be chosen as the key field and it must be of type Edm.String. Key fields
@@ -508,22 +503,5 @@ public final class SearchField {
     public SearchField setFields(List<SearchField> fields) {
         this.fields = fields;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getName() == null) {
-            throw new IllegalArgumentException("Missing required property name in model SearchField");
-        }
-        if (getType() == null) {
-            throw new IllegalArgumentException("Missing required property type in model SearchField");
-        }
-        if (getFields() != null) {
-            getFields().forEach(e -> e.validate());
-        }
     }
 }

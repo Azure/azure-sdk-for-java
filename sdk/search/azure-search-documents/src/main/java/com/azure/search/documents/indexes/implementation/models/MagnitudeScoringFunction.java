@@ -23,12 +23,18 @@ public final class MagnitudeScoringFunction extends ScoringFunction {
     @JsonProperty(value = "magnitude", required = true)
     private MagnitudeScoringParameters parameters;
 
-    /** Creates an instance of MagnitudeScoringFunction class. */
+    /**
+     * Creates an instance of MagnitudeScoringFunction class.
+     *
+     * @param fieldName the fieldName value to set.
+     * @param boost the boost value to set.
+     * @param parameters the parameters value to set.
+     */
     @JsonCreator
     public MagnitudeScoringFunction(
-            @JsonProperty(value = "fieldName") String fieldName,
-            @JsonProperty(value = "boost") double boost,
-            @JsonProperty(value = "magnitude") MagnitudeScoringParameters parameters) {
+            @JsonProperty(value = "fieldName", required = true) String fieldName,
+            @JsonProperty(value = "boost", required = true) double boost,
+            @JsonProperty(value = "magnitude", required = true) MagnitudeScoringParameters parameters) {
         super(fieldName, boost);
         this.parameters = parameters;
     }
@@ -40,27 +46,5 @@ public final class MagnitudeScoringFunction extends ScoringFunction {
      */
     public MagnitudeScoringParameters getParameters() {
         return this.parameters;
-    }
-
-    /**
-     * Set the parameters property: Parameter values for the magnitude scoring function.
-     *
-     * @param parameters the parameters value to set.
-     * @return the MagnitudeScoringFunction object itself.
-     */
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (getParameters() == null) {
-            throw new IllegalArgumentException(
-                    "Missing required property parameters in model MagnitudeScoringFunction");
-        } else {
-            getParameters().validate();
-        }
     }
 }

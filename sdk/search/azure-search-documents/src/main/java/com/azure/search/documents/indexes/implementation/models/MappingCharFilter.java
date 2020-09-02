@@ -27,10 +27,16 @@ public class MappingCharFilter extends CharFilter {
     @JsonProperty(value = "mappings", required = true)
     private List<String> mappings;
 
-    /** Creates an instance of MappingCharFilter class. */
+    /**
+     * Creates an instance of MappingCharFilter class.
+     *
+     * @param name the name value to set.
+     * @param mappings the mappings value to set.
+     */
     @JsonCreator
     public MappingCharFilter(
-            @JsonProperty(value = "name") String name, @JsonProperty(value = "mappings") List<String> mappings) {
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "mappings", required = true) List<String> mappings) {
         super(name);
         this.mappings = mappings;
     }
@@ -43,25 +49,5 @@ public class MappingCharFilter extends CharFilter {
      */
     public List<String> getMappings() {
         return this.mappings;
-    }
-
-    /**
-     * Set the mappings property: A list of mappings of the following format: "a=&gt;b" (all occurrences of the
-     * character "a" will be replaced with character "b").
-     *
-     * @param mappings the mappings value to set.
-     * @return the MappingCharFilter object itself.
-     */
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (getMappings() == null) {
-            throw new IllegalArgumentException("Missing required property mappings in model MappingCharFilter");
-        }
     }
 }

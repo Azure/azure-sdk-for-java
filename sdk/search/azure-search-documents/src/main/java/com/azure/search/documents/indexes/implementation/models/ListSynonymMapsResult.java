@@ -20,9 +20,15 @@ public final class ListSynonymMapsResult {
     @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private List<SynonymMap> synonymMaps;
 
-    /** Creates an instance of ListSynonymMapsResult class. */
+    /**
+     * Creates an instance of ListSynonymMapsResult class.
+     *
+     * @param synonymMaps the synonymMaps value to set.
+     */
     @JsonCreator
-    public ListSynonymMapsResult(@JsonProperty(value = "value") List<SynonymMap> synonymMaps) {
+    public ListSynonymMapsResult(
+            @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    List<SynonymMap> synonymMaps) {
         this.synonymMaps = synonymMaps;
     }
 
@@ -33,16 +39,5 @@ public final class ListSynonymMapsResult {
      */
     public List<SynonymMap> getSynonymMaps() {
         return this.synonymMaps;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getSynonymMaps() != null) {
-            getSynonymMaps().forEach(e -> e.validate());
-        }
     }
 }

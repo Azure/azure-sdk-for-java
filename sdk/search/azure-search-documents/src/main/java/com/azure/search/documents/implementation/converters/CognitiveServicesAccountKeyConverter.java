@@ -40,7 +40,6 @@ public final class CognitiveServicesAccountKeyConverter {
         String description = obj.getDescription();
         cognitiveServicesAccountKey.setDescription(description);
 
-        cognitiveServicesAccountKey.validate();
         return cognitiveServicesAccountKey;
     }
 

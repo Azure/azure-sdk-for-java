@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.search.documents.indexes.models.MicrosoftTokenizerLanguage;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -43,9 +44,13 @@ public class MicrosoftLanguageTokenizer extends LexicalTokenizer {
     @JsonProperty(value = "language")
     private MicrosoftTokenizerLanguage language;
 
-    /** Creates an instance of MicrosoftLanguageTokenizer class. */
+    /**
+     * Creates an instance of MicrosoftLanguageTokenizer class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
-    public MicrosoftLanguageTokenizer(@JsonProperty(value = "name") String name) {
+    public MicrosoftLanguageTokenizer(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 
@@ -113,15 +118,5 @@ public class MicrosoftLanguageTokenizer extends LexicalTokenizer {
     public MicrosoftLanguageTokenizer setLanguage(MicrosoftTokenizerLanguage language) {
         this.language = language;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
     }
 }

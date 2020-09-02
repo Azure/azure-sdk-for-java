@@ -32,9 +32,13 @@ public class NGramTokenFilterV2 extends TokenFilter {
     @JsonProperty(value = "maxGram")
     private Integer maxGram;
 
-    /** Creates an instance of NGramTokenFilterV2 class. */
+    /**
+     * Creates an instance of NGramTokenFilterV2 class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
-    public NGramTokenFilterV2(@JsonProperty(value = "name") String name) {
+    public NGramTokenFilterV2(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 
@@ -78,15 +82,5 @@ public class NGramTokenFilterV2 extends TokenFilter {
     public NGramTokenFilterV2 setMaxGram(Integer maxGram) {
         this.maxGram = maxGram;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
     }
 }

@@ -5,7 +5,6 @@ package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.MergeSkill;
-import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,11 +21,9 @@ public final class MergeSkillConverter {
             return null;
         }
 
-        List<OutputFieldMappingEntry> outputs = obj.getOutputs() == null ? null
-            : obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
         List<InputFieldMappingEntry> inputs = obj.getInputs() == null ? null
             : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-        MergeSkill mergeSkill = new MergeSkill(inputs, outputs);
+        MergeSkill mergeSkill = new MergeSkill(inputs, obj.getOutputs());
 
         String name = obj.getName();
         mergeSkill.setName(name);
@@ -53,15 +50,11 @@ public final class MergeSkillConverter {
             return null;
         }
 
-        List<com.azure.search.documents.indexes.implementation.models.OutputFieldMappingEntry> outputs =
-            obj.getOutputs() == null ? null
-                : obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-
         List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
             obj.getInputs() == null ? null
                 : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
         com.azure.search.documents.indexes.implementation.models.MergeSkill mergeSkill =
-            new com.azure.search.documents.indexes.implementation.models.MergeSkill(inputs, outputs);
+            new com.azure.search.documents.indexes.implementation.models.MergeSkill(inputs, obj.getOutputs());
 
         String name = obj.getName();
         mergeSkill.setName(name);
@@ -77,7 +70,7 @@ public final class MergeSkillConverter {
 
         String insertPreTag = obj.getInsertPreTag();
         mergeSkill.setInsertPreTag(insertPreTag);
-        mergeSkill.validate();
+
         return mergeSkill;
     }
 

@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.indexes.models.ScoringFunctionInterpolation;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -48,10 +49,16 @@ public class ScoringFunction {
     @JsonProperty(value = "interpolation")
     private ScoringFunctionInterpolation interpolation;
 
-    /** Creates an instance of ScoringFunction class. */
+    /**
+     * Creates an instance of ScoringFunction class.
+     *
+     * @param fieldName the fieldName value to set.
+     * @param boost the boost value to set.
+     */
     @JsonCreator
     public ScoringFunction(
-            @JsonProperty(value = "fieldName") String fieldName, @JsonProperty(value = "boost") double boost) {
+            @JsonProperty(value = "fieldName", required = true) String fieldName,
+            @JsonProperty(value = "boost", required = true) double boost) {
         this.fieldName = fieldName;
         this.boost = boost;
     }
@@ -66,12 +73,6 @@ public class ScoringFunction {
     }
 
     /**
-     * Set the fieldName property: The name of the field used as input to the scoring function.
-     *
-     * @param fieldName the fieldName value to set.
-     * @return the ScoringFunction object itself.
-     */
-    /**
      * Get the boost property: A multiplier for the raw score. Must be a positive number not equal to 1.0.
      *
      * @return the boost value.
@@ -80,12 +81,6 @@ public class ScoringFunction {
         return this.boost;
     }
 
-    /**
-     * Set the boost property: A multiplier for the raw score. Must be a positive number not equal to 1.0.
-     *
-     * @param boost the boost value to set.
-     * @return the ScoringFunction object itself.
-     */
     /**
      * Get the interpolation property: A value indicating how boosting will be interpolated across document scores;
      * defaults to "Linear".
@@ -106,16 +101,5 @@ public class ScoringFunction {
     public ScoringFunction setInterpolation(ScoringFunctionInterpolation interpolation) {
         this.interpolation = interpolation;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getFieldName() == null) {
-            throw new IllegalArgumentException("Missing required property fieldName in model ScoringFunction");
-        }
     }
 }

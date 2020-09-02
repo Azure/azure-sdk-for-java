@@ -8,6 +8,8 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.TextTranslationSkillLanguage;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -43,12 +45,19 @@ public class TextTranslationSkill extends SearchIndexerSkill {
     @JsonProperty(value = "suggestedFrom")
     private TextTranslationSkillLanguage suggestedFrom;
 
-    /** Creates an instance of TextTranslationSkill class. */
+    /**
+     * Creates an instance of TextTranslationSkill class.
+     *
+     * @param inputs the inputs value to set.
+     * @param outputs the outputs value to set.
+     * @param defaultToLanguageCode the defaultToLanguageCode value to set.
+     */
     @JsonCreator
     public TextTranslationSkill(
-            @JsonProperty(value = "inputs") List<InputFieldMappingEntry> inputs,
-            @JsonProperty(value = "outputs") List<OutputFieldMappingEntry> outputs,
-            @JsonProperty(value = "defaultToLanguageCode") TextTranslationSkillLanguage defaultToLanguageCode) {
+            @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,
+            @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs,
+            @JsonProperty(value = "defaultToLanguageCode", required = true)
+                    TextTranslationSkillLanguage defaultToLanguageCode) {
         super(inputs, outputs);
         this.defaultToLanguageCode = defaultToLanguageCode;
     }
@@ -63,13 +72,6 @@ public class TextTranslationSkill extends SearchIndexerSkill {
         return this.defaultToLanguageCode;
     }
 
-    /**
-     * Set the defaultToLanguageCode property: The language code to translate documents into for documents that don't
-     * specify the to language explicitly.
-     *
-     * @param defaultToLanguageCode the defaultToLanguageCode value to set.
-     * @return the TextTranslationSkill object itself.
-     */
     /**
      * Get the defaultFromLanguageCode property: The language code to translate documents from for documents that don't
      * specify the from language explicitly.
@@ -114,19 +116,5 @@ public class TextTranslationSkill extends SearchIndexerSkill {
     public TextTranslationSkill setSuggestedFrom(TextTranslationSkillLanguage suggestedFrom) {
         this.suggestedFrom = suggestedFrom;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (getDefaultToLanguageCode() == null) {
-            throw new IllegalArgumentException(
-                    "Missing required property defaultToLanguageCode in model TextTranslationSkill");
-        }
     }
 }

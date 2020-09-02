@@ -33,12 +33,18 @@ public final class Suggester {
     @JsonProperty(value = "sourceFields", required = true)
     private List<String> sourceFields;
 
-    /** Creates an instance of Suggester class. */
+    /**
+     * Creates an instance of Suggester class.
+     *
+     * @param name the name value to set.
+     * @param searchMode the searchMode value to set.
+     * @param sourceFields the sourceFields value to set.
+     */
     @JsonCreator
     public Suggester(
-            @JsonProperty(value = "name") String name,
-            @JsonProperty(value = "searchMode") String searchMode,
-            @JsonProperty(value = "sourceFields") List<String> sourceFields) {
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "searchMode", required = true) String searchMode,
+            @JsonProperty(value = "sourceFields", required = true) List<String> sourceFields) {
         searchMode = "analyzingInfixMatching";
         this.name = name;
         this.searchMode = searchMode;
@@ -55,12 +61,6 @@ public final class Suggester {
     }
 
     /**
-     * Set the name property: The name of the suggester.
-     *
-     * @param name the name value to set.
-     * @return the Suggester object itself.
-     */
-    /**
      * Get the searchMode property: A value indicating the capabilities of the suggester.
      *
      * @return the searchMode value.
@@ -70,12 +70,6 @@ public final class Suggester {
     }
 
     /**
-     * Set the searchMode property: A value indicating the capabilities of the suggester.
-     *
-     * @param searchMode the searchMode value to set.
-     * @return the Suggester object itself.
-     */
-    /**
      * Get the sourceFields property: The list of field names to which the suggester applies. Each field must be
      * searchable.
      *
@@ -83,26 +77,5 @@ public final class Suggester {
      */
     public List<String> getSourceFields() {
         return this.sourceFields;
-    }
-
-    /**
-     * Set the sourceFields property: The list of field names to which the suggester applies. Each field must be
-     * searchable.
-     *
-     * @param sourceFields the sourceFields value to set.
-     * @return the Suggester object itself.
-     */
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getName() == null) {
-            throw new IllegalArgumentException("Missing required property name in model Suggester");
-        }
-        if (getSourceFields() == null) {
-            throw new IllegalArgumentException("Missing required property sourceFields in model Suggester");
-        }
     }
 }

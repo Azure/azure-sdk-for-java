@@ -40,7 +40,6 @@ public final class IndexingResultConverter {
         String errorMessage = obj.getErrorMessage();
         PrivateFieldAccessHelper.set(indexingResult, "errorMessage", errorMessage);
 
-        indexingResult.validate();
         return indexingResult;
     }
 

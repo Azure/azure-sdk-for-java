@@ -7,6 +7,9 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.models.QueryType;
+import com.azure.search.documents.models.ScoringStatistics;
+import com.azure.search.documents.models.SearchMode;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -85,6 +88,28 @@ public final class SearchRequest {
      */
     @JsonProperty(value = "queryType")
     private QueryType queryType;
+
+    /*
+     * A value that specifies whether we want to calculate scoring statistics
+     * (such as document frequency) globally for more consistent scoring, or
+     * locally, for lower latency. The default is 'local'. Use 'global' to
+     * aggregate scoring statistics globally before scoring. Using global
+     * scoring statistics can increase latency of search queries.
+     */
+    @JsonProperty(value = "scoringStatistics")
+    private ScoringStatistics scoringStatistics;
+
+    /*
+     * A value to be used to create a sticky session, which can help getting
+     * more consistent results. As long as the same sessionId is used, a
+     * best-effort attempt will be made to target the same replica set. Be wary
+     * that reusing the same sessionID values repeatedly can interfere with the
+     * load balancing of the requests across replicas and adversely affect the
+     * performance of the search service. The value used as sessionId cannot
+     * start with a '_' character.
+     */
+    @JsonProperty(value = "sessionId")
+    private String sessionId;
 
     /*
      * The list of parameter values to be used in scoring functions (for
@@ -359,6 +384,60 @@ public final class SearchRequest {
     }
 
     /**
+     * Get the scoringStatistics property: A value that specifies whether we want to calculate scoring statistics (such
+     * as document frequency) globally for more consistent scoring, or locally, for lower latency. The default is
+     * 'local'. Use 'global' to aggregate scoring statistics globally before scoring. Using global scoring statistics
+     * can increase latency of search queries.
+     *
+     * @return the scoringStatistics value.
+     */
+    public ScoringStatistics getScoringStatistics() {
+        return this.scoringStatistics;
+    }
+
+    /**
+     * Set the scoringStatistics property: A value that specifies whether we want to calculate scoring statistics (such
+     * as document frequency) globally for more consistent scoring, or locally, for lower latency. The default is
+     * 'local'. Use 'global' to aggregate scoring statistics globally before scoring. Using global scoring statistics
+     * can increase latency of search queries.
+     *
+     * @param scoringStatistics the scoringStatistics value to set.
+     * @return the SearchRequest object itself.
+     */
+    public SearchRequest setScoringStatistics(ScoringStatistics scoringStatistics) {
+        this.scoringStatistics = scoringStatistics;
+        return this;
+    }
+
+    /**
+     * Get the sessionId property: A value to be used to create a sticky session, which can help getting more consistent
+     * results. As long as the same sessionId is used, a best-effort attempt will be made to target the same replica
+     * set. Be wary that reusing the same sessionID values repeatedly can interfere with the load balancing of the
+     * requests across replicas and adversely affect the performance of the search service. The value used as sessionId
+     * cannot start with a '_' character.
+     *
+     * @return the sessionId value.
+     */
+    public String getSessionId() {
+        return this.sessionId;
+    }
+
+    /**
+     * Set the sessionId property: A value to be used to create a sticky session, which can help getting more consistent
+     * results. As long as the same sessionId is used, a best-effort attempt will be made to target the same replica
+     * set. Be wary that reusing the same sessionID values repeatedly can interfere with the load balancing of the
+     * requests across replicas and adversely affect the performance of the search service. The value used as sessionId
+     * cannot start with a '_' character.
+     *
+     * @param sessionId the sessionId value to set.
+     * @return the SearchRequest object itself.
+     */
+    public SearchRequest setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+        return this;
+    }
+
+    /**
      * Get the scoringParameters property: The list of parameter values to be used in scoring functions (for example,
      * referencePointParameter) using the format name-values. For example, if the scoring profile defines a function
      * with a parameter called 'mylocation' the parameter string would be "mylocation--122.2,44.8" (without the quotes).
@@ -541,11 +620,4 @@ public final class SearchRequest {
         this.top = top;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {}
 }

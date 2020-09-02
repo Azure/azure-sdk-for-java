@@ -20,9 +20,15 @@ public final class ListIndexersResult {
     @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private List<SearchIndexer> indexers;
 
-    /** Creates an instance of ListIndexersResult class. */
+    /**
+     * Creates an instance of ListIndexersResult class.
+     *
+     * @param indexers the indexers value to set.
+     */
     @JsonCreator
-    public ListIndexersResult(@JsonProperty(value = "value") List<SearchIndexer> indexers) {
+    public ListIndexersResult(
+            @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    List<SearchIndexer> indexers) {
         this.indexers = indexers;
     }
 
@@ -33,16 +39,5 @@ public final class ListIndexersResult {
      */
     public List<SearchIndexer> getIndexers() {
         return this.indexers;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getIndexers() != null) {
-            getIndexers().forEach(e -> e.validate());
-        }
     }
 }

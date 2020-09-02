@@ -4,9 +4,7 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
-import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.SentimentSkill;
-import com.azure.search.documents.indexes.models.SentimentSkillLanguage;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,13 +22,10 @@ public final class SentimentSkillConverter {
             return null;
         }
 
-        List<OutputFieldMappingEntry> outputs = obj.getOutputs() == null ? null
-            : obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-
         List<InputFieldMappingEntry> inputs = obj.getInputs() == null ? null
             : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
 
-        SentimentSkill sentimentSkill = new SentimentSkill(inputs, outputs);
+        SentimentSkill sentimentSkill = new SentimentSkill(inputs, obj.getOutputs());
 
         String name = obj.getName();
         sentimentSkill.setName(name);
@@ -42,9 +37,7 @@ public final class SentimentSkillConverter {
         sentimentSkill.setDescription(description);
 
         if (obj.getDefaultLanguageCode() != null) {
-            SentimentSkillLanguage defaultLanguageCode =
-                SentimentSkillLanguageConverter.map(obj.getDefaultLanguageCode());
-            sentimentSkill.setDefaultLanguageCode(defaultLanguageCode);
+            sentimentSkill.setDefaultLanguageCode(obj.getDefaultLanguageCode());
         }
         return sentimentSkill;
     }
@@ -57,16 +50,12 @@ public final class SentimentSkillConverter {
             return null;
         }
 
-        List<com.azure.search.documents.indexes.implementation.models.OutputFieldMappingEntry> outputs =
-            obj.getOutputs() == null ? null
-                : obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-
         List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
             obj.getOutputs() == null ? null
                 : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
 
         com.azure.search.documents.indexes.implementation.models.SentimentSkill sentimentSkill =
-            new com.azure.search.documents.indexes.implementation.models.SentimentSkill(inputs, outputs);
+            new com.azure.search.documents.indexes.implementation.models.SentimentSkill(inputs, obj.getOutputs());
 
 
         String name = obj.getName();
@@ -79,11 +68,9 @@ public final class SentimentSkillConverter {
         sentimentSkill.setDescription(description);
 
         if (obj.getDefaultLanguageCode() != null) {
-            com.azure.search.documents.indexes.implementation.models.SentimentSkillLanguage defaultLanguageCode =
-                SentimentSkillLanguageConverter.map(obj.getDefaultLanguageCode());
-            sentimentSkill.setDefaultLanguageCode(defaultLanguageCode);
+            sentimentSkill.setDefaultLanguageCode(obj.getDefaultLanguageCode());
         }
-        sentimentSkill.validate();
+
         return sentimentSkill;
     }
 

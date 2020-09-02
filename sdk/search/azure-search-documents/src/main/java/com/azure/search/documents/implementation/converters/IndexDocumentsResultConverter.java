@@ -39,11 +39,8 @@ public final class IndexDocumentsResultConverter {
 
         List<com.azure.search.documents.implementation.models.IndexingResult> results = obj.getResults() == null
             ? null : obj.getResults().stream().map(IndexingResultConverter::map).collect(Collectors.toList());
-        com.azure.search.documents.implementation.models.IndexDocumentsResult indexDocumentsResult =
-            new com.azure.search.documents.implementation.models.IndexDocumentsResult(results);
 
-        indexDocumentsResult.validate();
-        return indexDocumentsResult;
+        return new com.azure.search.documents.implementation.models.IndexDocumentsResult(results);
     }
 
     private IndexDocumentsResultConverter() {
