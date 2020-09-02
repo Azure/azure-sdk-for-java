@@ -20,6 +20,13 @@ public class PathRemoveAccessControlEntry {
     private String entityId;
 
     /**
+     * Initializes an empty instance of {@code PathRemoveAccessControlEntry}.
+     */
+    public PathRemoveAccessControlEntry() {
+        this.accessControlType = new AccessControlType();
+    }
+
+    /**
      * Indicates whether this is the default entry for the ACL.
      *
      * @return Whether this is the default entry for the ACL.
