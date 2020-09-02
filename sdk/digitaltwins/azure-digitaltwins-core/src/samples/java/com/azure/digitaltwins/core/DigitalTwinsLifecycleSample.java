@@ -99,7 +99,7 @@ public class DigitalTwinsLifecycleSample {
         final Semaphore deleteTwinsSemaphore = new Semaphore(0);
         final Semaphore deleteRelationshipsSemaphore = new Semaphore(0);
 
-        // Call APIs to clean up any preexisting resources that might be referenced by this sample. If digital twin does not exist, ignore.
+        // Call APIs to clean up any pre-existing resources that might be referenced by this sample. If digital twin does not exist, ignore.
         twins
             .forEach((twinId, twinContent) -> {
                 // Call APIs to delete all relationships.
