@@ -24,7 +24,7 @@ public class TimeSpanTests {
                 .withMinutes(10)
                 .withSeconds(70)
                 .withMilliseconds(1001);
-        Assertions.assertEquals(duration.toMillis(), timeSpan.totalMillisDuration().toMillis());
+        Assertions.assertEquals(duration.toMillis(), timeSpan.toDuration().toMillis());
 
         duration = Duration.ofDays(12 * 7 + 366)
             .plus(Duration.ofHours(25))

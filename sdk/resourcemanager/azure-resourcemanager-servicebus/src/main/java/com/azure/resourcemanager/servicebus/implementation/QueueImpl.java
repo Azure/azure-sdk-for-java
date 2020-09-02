@@ -130,7 +130,7 @@ class QueueImpl
         if (this.inner().defaultMessageTimeToLive() == null) {
             return null;
         }
-        return TimeSpan.parse(this.inner().defaultMessageTimeToLive()).totalMillisDuration();
+        return TimeSpan.parse(this.inner().defaultMessageTimeToLive()).toDuration();
     }
 
     @Override
@@ -138,7 +138,7 @@ class QueueImpl
         if (this.inner().duplicateDetectionHistoryTimeWindow() == null) {
             return null;
         }
-        return TimeSpan.parse(this.inner().duplicateDetectionHistoryTimeWindow()).totalMillisDuration();
+        return TimeSpan.parse(this.inner().duplicateDetectionHistoryTimeWindow()).toDuration();
     }
 
     @Override

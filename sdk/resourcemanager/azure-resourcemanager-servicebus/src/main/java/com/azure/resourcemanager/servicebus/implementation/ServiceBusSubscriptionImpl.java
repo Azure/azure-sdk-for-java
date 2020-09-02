@@ -103,7 +103,7 @@ class ServiceBusSubscriptionImpl extends
         if (this.inner().defaultMessageTimeToLive() == null) {
             return null;
         }
-        return TimeSpan.parse(this.inner().defaultMessageTimeToLive()).totalMillisDuration();
+        return TimeSpan.parse(this.inner().defaultMessageTimeToLive()).toDuration();
     }
 
     @Override

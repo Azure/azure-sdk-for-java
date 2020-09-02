@@ -117,7 +117,7 @@ public class TimeSpan {
     }
 
     /**
-     * @return mill-seconds value
+     * @return milliseconds value
      */
     public long milliseconds() {
         return this.milliseconds;
@@ -133,7 +133,7 @@ public class TimeSpan {
     /**
      * @return total number of milliseconds represented by this instance in duration format
      */
-    public Duration totalMillisDuration() {
+    public Duration toDuration() {
         Double millis = Double.valueOf(totalMilliseconds());
         return Duration.ofMillis(millis.longValue());
     }

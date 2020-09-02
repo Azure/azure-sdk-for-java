@@ -114,7 +114,7 @@ class TopicImpl
         if (this.inner().defaultMessageTimeToLive() == null) {
             return null;
         }
-        return TimeSpan.parse(this.inner().defaultMessageTimeToLive()).totalMillisDuration();
+        return TimeSpan.parse(this.inner().defaultMessageTimeToLive()).toDuration();
     }
 
     @Override
@@ -122,7 +122,7 @@ class TopicImpl
         if (this.inner().duplicateDetectionHistoryTimeWindow() == null) {
             return null;
         }
-        return TimeSpan.parse(this.inner().duplicateDetectionHistoryTimeWindow()).totalMillisDuration();
+        return TimeSpan.parse(this.inner().duplicateDetectionHistoryTimeWindow()).toDuration();
     }
 
     @Override
