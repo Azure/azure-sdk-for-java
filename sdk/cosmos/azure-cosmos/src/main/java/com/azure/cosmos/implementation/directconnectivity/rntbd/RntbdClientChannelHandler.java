@@ -12,11 +12,14 @@ import io.netty.channel.pool.ChannelHealthChecker;
 import io.netty.channel.pool.ChannelPool;
 import io.netty.channel.pool.ChannelPoolHandler;
 import io.netty.handler.logging.LoggingHandler;
+import io.netty.handler.ssl.SslContext;
+import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.AttributeKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.net.ssl.SSLEngine;
 import java.util.concurrent.TimeUnit;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -112,8 +115,12 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
             pipeline.addFirst(new LoggingHandler(this.config.wireLogLevel()));
         }
 
+        SslContext sslContext = this.config.sslContext();
+        SSLEngine sslEngine = sslContext.newEngine(channel.alloc());
+        SslHandler sslHandler = new SslHandler(sslEngine);
+        System.out.println("sslEngine type is: " + sslEngine.getClass());
         pipeline.addFirst(
-            this.config.sslContext().newHandler(channel.alloc()),
+            sslHandler,
             new IdleStateHandler(
                 idleConnectionTimerResolutionInNanos,
                 idleConnectionTimerResolutionInNanos,
