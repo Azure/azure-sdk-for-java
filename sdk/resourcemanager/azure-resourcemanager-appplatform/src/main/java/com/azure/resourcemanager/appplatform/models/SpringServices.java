@@ -6,7 +6,6 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.implementation.annotation.Beta;
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
 import com.azure.resourcemanager.appplatform.fluent.ServicesClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
@@ -23,7 +22,6 @@ import reactor.core.publisher.Mono;
 
 /** Entry point for Spring Service management API. */
 @Fluent
-@Beta
 public interface SpringServices
     extends HasManager<AppPlatformManager>,
         HasInner<ServicesClient>,

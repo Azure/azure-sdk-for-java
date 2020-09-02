@@ -14,6 +14,7 @@ import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.MinedOpinion;
 import com.azure.ai.textanalytics.models.OpinionSentiment;
 import com.azure.ai.textanalytics.models.PiiEntity;
+import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityDomainType;
 import com.azure.ai.textanalytics.models.RecognizePiiEntityOptions;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
@@ -622,10 +623,14 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     static void validatePiiEntitiesResultCollection(boolean showStatistics,
         RecognizePiiEntitiesResultCollection expected, RecognizePiiEntitiesResultCollection actual) {
-        validateTextAnalyticsResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
+        validateTextAnalyticsResult(showStatistics, expected, actual, (expectedItem, actualItem) -> {
+            final PiiEntityCollection expectedPiiEntityCollection = expectedItem.getEntities();
+            final PiiEntityCollection actualPiiEntityCollection = actualItem.getEntities();
+            assertEquals(expectedPiiEntityCollection.getRedactedText(), actualPiiEntityCollection.getRedactedText());
             validatePiiEntities(
-                expectedItem.getEntities().stream().collect(Collectors.toList()),
-                actualItem.getEntities().stream().collect(Collectors.toList())));
+                expectedPiiEntityCollection.stream().collect(Collectors.toList()),
+                actualPiiEntityCollection.stream().collect(Collectors.toList()));
+        });
     }
 
     static void validateLinkedEntitiesResultCollectionWithResponse(boolean showStatistics,

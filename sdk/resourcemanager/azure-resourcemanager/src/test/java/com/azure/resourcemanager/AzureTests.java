@@ -44,7 +44,7 @@ import com.azure.resourcemanager.network.models.PcStatus;
 import com.azure.resourcemanager.network.models.SecurityGroupView;
 import com.azure.resourcemanager.network.models.Topology;
 import com.azure.resourcemanager.network.models.VerificationIPFlow;
-import com.azure.resourcemanager.resources.core.TestUtilities;
+import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;

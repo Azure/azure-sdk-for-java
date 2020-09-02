@@ -113,6 +113,8 @@
             <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <argLine>
+                --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+
                 --add-opens com.azure.ai.textanalytics/com.azure.ai.textanalytics=ALL-UNNAMED
                 --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
               </argLine>

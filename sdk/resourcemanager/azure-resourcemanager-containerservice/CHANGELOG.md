@@ -1,5 +1,6 @@
 # Release History
 
-## 2.0.0-beta.4 (Unreleased)
+## 2.0.0-beta.4 (2020-09-02)
 
-- TODO
+- Updated `api-version` to `2020-06-01`
+- Add `withAgentPoolMode` in `KubernetesClusterAgentPool`
