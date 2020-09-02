@@ -18,7 +18,6 @@ import io.netty.util.AttributeKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.net.ssl.SSLEngine;
 import java.util.concurrent.TimeUnit;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -114,10 +113,11 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
             pipeline.addFirst(new LoggingHandler(this.config.wireLogLevel()));
         }
 
-        SSLEngine sslEngine = this.config.sslContext().newEngine(channel.alloc());
-        System.out.println("sslEngine type is: " + sslEngine.getClass());
         pipeline.addFirst(
-            new SslHandler(sslEngine),
+            // this.config.sslContext().newHandler(channel.alloc())
+            // TODO: (David) Log an issue with netty
+            // Do not change this because it will effect the compatibility
+            new SslHandler(this.config.sslContext().newEngine(channel.alloc())),
             new IdleStateHandler(
                 idleConnectionTimerResolutionInNanos,
                 idleConnectionTimerResolutionInNanos,
