@@ -24,12 +24,20 @@ public class DigitalTwinModelData {
     public DigitalTwinModelData(ModelData modelData) {
         mapper = new ObjectMapper();
 
+        String modelStringValue = null;
+
+        try {
+            modelStringValue = mapper.writeValueAsString(modelData.getModel());
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
         this.setId(modelData.getId())
             .setUploadTime(modelData.getUploadTime())
             .setDisplayName(modelData.getDisplayName())
             .setDescription(modelData.getDescription())
             .setDecommissioned(modelData.isDecommissioned())
-            .setModel(mapper.convertValue(modelData.getModel(), String.class));
+            .setModel(modelStringValue);
     }
 
     /*
