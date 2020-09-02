@@ -231,7 +231,9 @@ public final class ShareLeaseAsyncClient {
     }
 
     /**
-     * Breaks the previously acquired lease, if it exists. Leases will break immediately.
+     * Breaks the previously acquired lease, if it exists.
+     * <p>For files, leases will break immediately.</p>
+     * <p>For shares, leases will break after the specified duration.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -249,7 +251,9 @@ public final class ShareLeaseAsyncClient {
     }
 
     /**
-     * Breaks the previously acquired lease, if it exists. Leases will break immediately.
+     * Breaks the previously acquired lease, if it exists.
+     * <p>For files, leases will break immediately.</p>
+     * <p>For shares, leases will break after the specified duration.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -374,7 +378,8 @@ public final class ShareLeaseAsyncClient {
     Mono<Response<String>> renewLeaseWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
         if (this.isShareFile) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Cannot renew a lease on a share file."));
+            throw logger.logExceptionAsError(new UnsupportedOperationException(
+                "Cannot renew a lease on a share file."));
         } else {
             return this.client.shares().renewLeaseWithRestResponseAsync(null, this.leaseId, null,
                 null, null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))

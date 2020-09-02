@@ -444,7 +444,7 @@ public class ShareAsyncClient {
     }
 
     /**
-     * Retrieves the properties of the share, these include the metadata associated to it and the quota that the share
+     * Retrieves the properties of the share, these include the metadata associated with it and the quota that the share
      * is restricted to.
      *
      * <p><strong>Code Samples</strong></p>
@@ -462,14 +462,14 @@ public class ShareAsyncClient {
      */
     public Mono<Response<ShareProperties>> getPropertiesWithResponse() {
         try {
-            return withContext(context -> getPropertiesWithResponse(new ShareGetPropertiesOptions(), context));
+            return getPropertiesWithResponse(new ShareGetPropertiesOptions());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     /**
-     * Retrieves the properties of the share, these include the metadata associated to it and the quota that the share
+     * Retrieves the properties of the share, these include the metadata associated with it and the quota that the share
      * is restricted to.
      *
      * <p><strong>Code Samples</strong></p>
