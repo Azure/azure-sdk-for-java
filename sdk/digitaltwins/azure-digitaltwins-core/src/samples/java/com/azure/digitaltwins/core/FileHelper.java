@@ -12,6 +12,13 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class FileHelper {
+
+    /**
+     * Loads all json file contents in a path.
+     * @param path Path to the target directory.
+     * @return List of all file names and their content in map format.
+     * @throws IOException If an I/O error is thrown when accessing the starting file.
+     */
     public static Map<String, String> loadAllFilesInPath(Path path) throws IOException {
         Map<String, String> fileContents = new HashMap<>();
 
@@ -33,12 +40,12 @@ public class FileHelper {
         return fileContents;
     }
 
-    public static String cleanupJsonString(String jsonString) {
+    private static String cleanupJsonString(String jsonString) {
         // Remove newline characters, empty spaces and unwanted unicode characters
         return jsonString.replaceAll("([\\r\\n\\s+\\uFEFF-\\uFFFF])", "");
     }
 
-    public static String getFileNameFromPath(Path path) {
+    private static String getFileNameFromPath(Path path) {
         String fileName = path.getFileName().toString();
         if (fileName.indexOf(".") > 0) {
             fileName = fileName.substring(0, fileName.lastIndexOf("."));

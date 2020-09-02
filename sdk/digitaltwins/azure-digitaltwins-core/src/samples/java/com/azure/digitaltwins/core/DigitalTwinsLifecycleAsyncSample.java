@@ -18,7 +18,6 @@ import java.nio.file.Paths;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
 
 /**
  * This sample creates all the models in \DTDL\Models folder in the ADT service instance and creates the corresponding twins in \DTDL\DigitalTwins folder.
@@ -43,7 +42,7 @@ import java.util.function.Consumer;
  *          +------------+                 +-----------------+
  *
  */
-public class DigitalTwinsLifecycleSample {
+public class DigitalTwinsLifecycleAsyncSample {
     private static final String tenantId = System.getenv("TENANT_ID");
     private static final String clientId = System.getenv("CLIENT_ID");
     private static final String clientSecret = System.getenv("CLIENT_SECRET");
@@ -51,7 +50,7 @@ public class DigitalTwinsLifecycleSample {
 
     private static final int MaxWaitTimeAsyncOperationsInSeconds = 10;
 
-    private static final URL DtdlDirectoryUrl = DigitalTwinsLifecycleSample.class.getClassLoader().getResource("DTDL");
+    private static final URL DtdlDirectoryUrl = DigitalTwinsLifecycleAsyncSample.class.getClassLoader().getResource("DTDL");
     private static final Path DtDlDirectoryPath;
     private static final Path TwinsPath;
     private static final Path ModelsPath;
@@ -93,6 +92,11 @@ public class DigitalTwinsLifecycleSample {
         createTwins();
     }
 
+    /**
+     * Delete a twin, and any relationships it might have.
+     * @throws IOException If an I/O error is thrown when accessing the starting file.
+     * @throws InterruptedException If the current thread is interrupted while waiting to acquire permits on a semaphore.
+     */
     public static void deleteTwins() throws IOException, InterruptedException {
         System.out.println("DELETE DIGITAL TWINS");
         Map<String, String> twins = FileHelper.loadAllFilesInPath(TwinsPath);
@@ -126,14 +130,14 @@ public class DigitalTwinsLifecycleSample {
                         if (throwable instanceof ErrorResponseException && ((ErrorResponseException) throwable).getResponse().getStatusCode() == HttpStatus.SC_NOT_FOUND) {
                             deleteRelationshipsSemaphore.release();
                         } else {
-                            System.err.println("List relationships error: " + throwable);
+                            System.err.println("List incoming relationships error: " + throwable);
                         }
                     })
                     .subscribe(
                         incomingRelationship -> client.deleteRelationship(incomingRelationship.getSourceId(), incomingRelationship.getRelationshipId())
                             .subscribe(
                                 aVoid -> System.out.println("Found and deleted incoming relationship: " + incomingRelationship.getRelationshipId()),
-                                throwable -> System.err.println("Delete relationship error: " + throwable)
+                                throwable -> System.err.println("Delete incoming relationship error: " + throwable)
                             ));
 
                 try {
@@ -166,6 +170,11 @@ public class DigitalTwinsLifecycleSample {
         System.out.println("Twins deleted: " + created);
     }
 
+    /**
+     * Creates all twins specified in the DTDL->DigitalTwins directory.
+     * @throws IOException If an I/O error is thrown when accessing the starting file.
+     * @throws InterruptedException If the current thread is interrupted while waiting to acquire permits on a semaphore.
+     */
     public static void createTwins() throws IOException, InterruptedException {
         System.out.println("CREATE DIGITAL TWINS");
         Map<String, String> twins = FileHelper.loadAllFilesInPath(TwinsPath);
