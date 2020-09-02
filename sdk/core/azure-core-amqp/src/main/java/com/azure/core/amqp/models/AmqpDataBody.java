@@ -5,15 +5,24 @@ package com.azure.core.amqp.models;
 
 import com.azure.core.util.IterableStream;
 
+/**
+ *
+ */
 public class AmqpDataBody implements AmqpMessageBody {
-    public AmqpDataBody(Iterable<BinaryData> data) {
+    private AmqpBodyType bodyType;
+    private final Iterable<BinaryData> data;
+    private final IterableStream<BinaryData> dataStream;
 
+    public AmqpDataBody(Iterable<BinaryData> data) {
+        this.data = data;
+        this.dataStream = new IterableStream<>(data);
     }
 
-    @Override public AmqpBodyType getBodyType() {
-
+    @Override
+    public AmqpBodyType getBodyType() {
+        return bodyType;
     }
     public IterableStream<BinaryData> getData() {
-
+        return dataStream;
     }
 }
