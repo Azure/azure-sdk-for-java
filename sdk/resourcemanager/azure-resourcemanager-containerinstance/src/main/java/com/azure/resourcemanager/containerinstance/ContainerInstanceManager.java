@@ -11,7 +11,7 @@ import com.azure.resourcemanager.containerinstance.models.ContainerGroups;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.Manager;
+import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;

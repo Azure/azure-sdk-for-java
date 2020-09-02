@@ -10,7 +10,7 @@ import com.azure.resourcemanager.keyvault.implementation.VaultsImpl;
 import com.azure.resourcemanager.keyvault.models.Vaults;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.Manager;
+import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;

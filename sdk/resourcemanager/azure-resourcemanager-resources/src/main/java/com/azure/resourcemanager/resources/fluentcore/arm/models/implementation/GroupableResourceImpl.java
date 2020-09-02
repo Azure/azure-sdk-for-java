@@ -7,7 +7,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResour
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.ManagerBase;
+import com.azure.resourcemanager.resources.fluentcore.arm.ManagerBase;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 

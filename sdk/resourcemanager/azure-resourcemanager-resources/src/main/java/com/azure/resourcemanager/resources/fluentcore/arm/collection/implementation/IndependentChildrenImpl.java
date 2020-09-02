@@ -9,7 +9,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGet
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByParent;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsListingByParent;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.ManagerBase;
+import com.azure.resourcemanager.resources.fluentcore.arm.ManagerBase;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.IndependentChild;

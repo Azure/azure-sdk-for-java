@@ -8,7 +8,7 @@ import com.azure.core.management.Resource;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.ManagerBase;
+import com.azure.resourcemanager.resources.fluentcore.arm.ManagerBase;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;

@@ -25,7 +25,7 @@ import com.azure.resourcemanager.resources.models.Subscriptions;
 import com.azure.resourcemanager.resources.models.Tenants;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.ManagerBase;
+import com.azure.resourcemanager.resources.fluentcore.arm.ManagerBase;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;

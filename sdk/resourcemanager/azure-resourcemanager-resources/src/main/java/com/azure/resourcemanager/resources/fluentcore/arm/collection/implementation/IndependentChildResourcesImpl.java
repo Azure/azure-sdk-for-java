@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation;
 
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.ManagerBase;
+import com.azure.resourcemanager.resources.fluentcore.arm.ManagerBase;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.IndependentChildResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
