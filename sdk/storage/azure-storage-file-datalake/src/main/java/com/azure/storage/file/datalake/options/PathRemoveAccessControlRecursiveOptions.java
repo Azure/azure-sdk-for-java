@@ -4,6 +4,7 @@
 package com.azure.storage.file.datalake.options;
 
 import com.azure.core.http.rest.Response;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.models.AccessControlChanges;
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
 
@@ -27,7 +28,8 @@ public class PathRemoveAccessControlRecursiveOptions {
      * @param accessControlList The POSIX access control list for the file or directory.
      */
     public PathRemoveAccessControlRecursiveOptions(List<PathRemoveAccessControlEntry> accessControlList) {
-        this.accessControlList = Collections.unmodifiableList(accessControlList);
+        StorageImplUtils.assertNotNull("accessControllList", accessControlList);
+        this.accessControlList = List.copyOf(accessControlList);
     }
 
     /**
@@ -36,7 +38,7 @@ public class PathRemoveAccessControlRecursiveOptions {
      * @return The POSIX access control list for the file or directory.
      */
     public List<PathRemoveAccessControlEntry> getAccessControlList() {
-        return accessControlList;
+        return Collections.unmodifiableList(accessControlList);
     }
 
     /**
@@ -69,7 +71,8 @@ public class PathRemoveAccessControlRecursiveOptions {
      * Gets the maximum number of batches that single change Access Control operation can execute.
      * <p>
      * If maximum is reached before all subpaths are processed then continuation token can be used to resume operation.
-     * Empty value indicates that maximum number of batches in unbound and operation continues till end.
+     * Empty value indicates that maximum number of batches in unbound and operation continues till end. Operation may
+     *      * also halt if an error is hit and {@code continueOnFailure} is false.
      *
      * @return The maximum number of batches.
      */
@@ -81,7 +84,8 @@ public class PathRemoveAccessControlRecursiveOptions {
      * Sets the maximum number of batches that single change Access Control operation can execute.
      * <p>
      * If maximum is reached before all subpaths are processed then continuation token can be used to resume operation.
-     * Empty value indicates that maximum number of batches in unbound and operation continues till end.
+     * Empty value indicates that maximum number of batches in unbound and operation continues till end. Operation may
+     *      * also halt if an error is hit and {@code continueOnFailure} is false.
      *
      * @param maxBatches The maximum number of batches.
      * @return The updated object.

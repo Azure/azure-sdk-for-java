@@ -18,6 +18,7 @@ import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuilder;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
@@ -650,7 +651,7 @@ public class DataLakePathAsyncClient {
     }
 
     /**
-     * Sets the access control on a path and subpaths.
+     * Recursively sets the access control on a path and all subpaths.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -672,7 +673,7 @@ public class DataLakePathAsyncClient {
     }
 
     /**
-     * Sets the access control on a path and subpaths.
+     * Recursively sets the access control on a path and all subpaths.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -686,6 +687,7 @@ public class DataLakePathAsyncClient {
      */
     public Mono<Response<AccessControlChangeResult>> setAccessControlRecursiveWithResponse(
         PathSetAccessControlRecursiveOptions options) {
+        StorageImplUtils.assertNotNull("options", options);
         try {
             return withContext(context -> setAccessControlRecursiveWithResponse(
                 PathAccessControlEntry.serializeList(options.getAccessControlList()), options.getProgressHandler(),
@@ -697,7 +699,7 @@ public class DataLakePathAsyncClient {
     }
 
     /**
-     * Updates the access control on a path and subpaths.
+     * Recursively updates the access control on a path and all subpaths.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -721,7 +723,7 @@ public class DataLakePathAsyncClient {
     }
 
     /**
-     * Updates the access control on a path and subpaths.
+     * Recursively updates the access control on a path and all subpaths.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -735,6 +737,7 @@ public class DataLakePathAsyncClient {
      */
     public Mono<Response<AccessControlChangeResult>> updateAccessControlRecursiveWithResponse(
         PathUpdateAccessControlRecursiveOptions options) {
+        StorageImplUtils.assertNotNull("options", options);
         try {
             return withContext(context -> setAccessControlRecursiveWithResponse(
                 PathAccessControlEntry.serializeList(options.getAccessControlList()), options.getProgressHandler(),
@@ -746,7 +749,7 @@ public class DataLakePathAsyncClient {
     }
 
     /**
-     * Removes the access control on a path and subpaths.
+     * Recursively removes the access control on a path and all subpaths.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -770,7 +773,7 @@ public class DataLakePathAsyncClient {
     }
 
     /**
-     * Remove the access control on a path and subpaths.
+     * Recursively removes the access control on a path and all subpaths.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -784,6 +787,7 @@ public class DataLakePathAsyncClient {
      */
     public Mono<Response<AccessControlChangeResult>> removeAccessControlRecursiveWithResponse(
         PathRemoveAccessControlRecursiveOptions options) {
+        StorageImplUtils.assertNotNull("options", options);
         try {
             return withContext(context -> setAccessControlRecursiveWithResponse(
                 PathRemoveAccessControlEntry.serializeList(options.getAccessControlList()),
@@ -798,7 +802,7 @@ public class DataLakePathAsyncClient {
         String accessControlList, Consumer<Response<AccessControlChanges>> progressHandler,
         PathSetAccessControlRecursiveMode mode, Integer batchSize, Integer maxBatches, Boolean continueOnFailure,
         String continuationToken, Context context) {
-        // TODO: parameter validation? List should not be null (check in options, too).
+        StorageImplUtils.assertNotNull("accessControlList", accessControlList);
 
         context = context == null ? Context.NONE : context;
         Context contextFinal = context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE);

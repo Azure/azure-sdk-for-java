@@ -102,7 +102,6 @@ directive:
     }
 ```
 
-
 ### Adds FileSystem and Path parameter to /{filesystem}/{path}?action=flush
 ``` yaml
 directive:

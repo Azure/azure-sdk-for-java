@@ -361,7 +361,7 @@ public class DataLakePathClient {
     }
 
     /**
-     * Sets the access control on a path and subpaths.
+     * Recursively sets the access control on a path and all subpaths.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -379,7 +379,7 @@ public class DataLakePathClient {
     }
 
     /**
-     * Sets the access control on a path and subpaths.
+     * Recursively sets the access control on a path and all subpaths.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -405,7 +405,7 @@ public class DataLakePathClient {
     }
 
     /**
-     * Updates the access control on a path and subpaths.
+     * Recursively updates the access control on a path and all subpaths.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -423,7 +423,7 @@ public class DataLakePathClient {
     }
 
     /**
-     * Updates the access control on a path and subpaths.
+     * Recursively updates the access control on a path and all subpaths.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -449,7 +449,7 @@ public class DataLakePathClient {
     }
 
     /**
-     * Removes the access control on a path and subpaths.
+     * Recursively removes the access control on a path and all subpaths.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -468,7 +468,7 @@ public class DataLakePathClient {
     }
 
     /**
-     * Remove the access control on a path and subpaths.
+     * Recursively removes the access control on a path and all subpaths.
      *
      * <p><strong>Code Samples</strong></p>
      *

@@ -293,7 +293,7 @@ public class PathAsyncClientJavaDocCodeSamples {
     /**
      * Code snippets for {@link DataLakePathAsyncClient#removeAccessControlRecursive(List)}
      */
-    public void removetAccessControlRecursiveCodeSnippets() {
+    public void removeAccessControlRecursiveCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.removeAccessControlRecursive#List
         PathRemoveAccessControlEntry pathAccessControlEntry = new PathRemoveAccessControlEntry()
             .setEntityId("entityId");
