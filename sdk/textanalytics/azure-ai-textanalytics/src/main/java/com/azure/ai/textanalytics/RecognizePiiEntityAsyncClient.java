@@ -13,7 +13,7 @@ import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
-import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
+import com.azure.ai.textanalytics.models.RecognizePiiEntityOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.WarningCode;
@@ -66,14 +66,17 @@ class RecognizePiiEntityAsyncClient {
      *
      * @param document A single document.
      * @param language The language code.
+     * @param options The additional configurable {@link RecognizePiiEntityOptions options} that may be passed when
+     * recognizing PII entities.
      *
      * @return The {@link Mono} of {@link PiiEntityCollection}.
      */
-    Mono<PiiEntityCollection> recognizePiiEntities(String document, String language) {
+    Mono<PiiEntityCollection> recognizePiiEntities(String document, String language,
+        RecognizePiiEntityOptions options) {
         try {
             Objects.requireNonNull(document, "'document' cannot be null.");
             return recognizePiiEntitiesBatch(
-                Collections.singletonList(new TextDocumentInput("0", document).setLanguage(language)), null)
+                Collections.singletonList(new TextDocumentInput("0", document).setLanguage(language)), options)
                 .map(resultCollectionResponse -> {
                     PiiEntityCollection entityCollection = null;
                     // for each loop will have only one entry inside
@@ -95,12 +98,13 @@ class RecognizePiiEntityAsyncClient {
      * Helper function for calling service with max overloaded parameters.
      *
      * @param documents The list of documents to recognize Personally Identifiable Information entities for.
-     * @param options The {@link TextAnalyticsRequestOptions} request options.
+     * @param options The additional configurable {@link RecognizePiiEntityOptions options} that may be passed when
+     * recognizing PII entities.
      *
      * @return A mono {@link Response} that contains {@link RecognizePiiEntitiesResultCollection}.
      */
     Mono<Response<RecognizePiiEntitiesResultCollection>> recognizePiiEntitiesBatch(
-        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
+        Iterable<TextDocumentInput> documents, RecognizePiiEntityOptions options) {
         try {
             inputDocumentsValidation(documents);
             return withContext(context -> getRecognizePiiEntitiesResponse(documents, options, context));
@@ -113,13 +117,14 @@ class RecognizePiiEntityAsyncClient {
      * Helper function for calling service with max overloaded parameters with {@link Context} is given.
      *
      * @param documents The list of documents to recognize Personally Identifiable Information entities for.
-     * @param options The {@link TextAnalyticsRequestOptions} request options.
+     * @param options The additional configurable {@link RecognizePiiEntityOptions options} that may be passed when
+     * recognizing PII entities.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A mono {@link Response} that contains {@link RecognizePiiEntitiesResultCollection}.
      */
     Mono<Response<RecognizePiiEntitiesResultCollection>> recognizePiiEntitiesBatchWithContext(
-        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        Iterable<TextDocumentInput> documents, RecognizePiiEntityOptions options, Context context) {
         try {
             inputDocumentsValidation(documents);
             return getRecognizePiiEntitiesResponse(documents, options, context);
@@ -181,19 +186,20 @@ class RecognizePiiEntityAsyncClient {
      * {@link RecognizePiiEntitiesResultCollection} from a {@link SimpleResponse} of {@link EntitiesResult}.
      *
      * @param documents The list of documents to recognize Personally Identifiable Information entities for.
-     * @param options The {@link TextAnalyticsRequestOptions} request options.
+     * @param options The additional configurable {@link RecognizePiiEntityOptions options} that may be passed when
+     * recognizing PII entities.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A mono {@link Response} that contains {@link RecognizePiiEntitiesResultCollection}.
      */
     private Mono<Response<RecognizePiiEntitiesResultCollection>> getRecognizePiiEntitiesResponse(
-        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        Iterable<TextDocumentInput> documents, RecognizePiiEntityOptions options, Context context) {
         // TODO: add string index type implementation PR
         return service.entitiesRecognitionPiiWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
             options == null ? null : options.getModelVersion(),
             options == null ? null : options.isIncludeStatistics(),
-            null,
+            options == null ? null : options.getDomainFilter() == null ? null : options.getDomainFilter().toString(),
             null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info(
