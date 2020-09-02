@@ -93,6 +93,7 @@ class BlobBaseAPITest extends APISpec {
         setup:
         def oldBc = bc
         System.setProperty("AZURE_LOG_LEVEL", "INFO")
+        System.setProperty("org.slf4j.simpleLogger.defaultLogLevel" , "DEBUG");
         bc = getServiceClientBuilder(primaryCredential, primaryBlobServiceClient.getAccountUrl())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.HEADERS).addAllowedHeaderName("x-ms-request-id"))
             .buildClient().getBlobContainerClient(bc.getContainerName())
@@ -123,6 +124,7 @@ class BlobBaseAPITest extends APISpec {
         cleanup:
         bc = oldBc
         System.clearProperty("AZURE_LOG_LEVEL")
+        System.clearProperty("org.slf4j.simpleLogger.defaultLogLevel")
     }
 
     @Unroll
