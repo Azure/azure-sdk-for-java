@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 
 /**
- * Package containing classes used for representing backup and restore operations in Azure Key Vault.
+ * Package containing classes used by {@link com.azure.security.keyvault.administration.KeyVaultBackupAsyncClient} and
+ * {@link com.azure.security.keyvault.administration.KeyVaultBackupClient} to perform backup and restore operations
+ * on Azure Key Vault keys and vaults.
  */
 package com.azure.security.keyvault.administration.models;
