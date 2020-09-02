@@ -18,6 +18,8 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +53,6 @@ class ServiceBusReceiverClientTest {
 
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverClientTest.class);
 
-    private Duration maxAutoLockRenewalDuration;
     private ServiceBusReceiverClient client;
 
     @Mock
@@ -67,8 +68,7 @@ class ServiceBusReceiverClientTest {
 
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
-        when(asyncClient.getReceiverOptions()).thenReturn(new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1,
-            maxAutoLockRenewalDuration));
+        when(asyncClient.getReceiverOptions()).thenReturn(new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1));
 
         client = new ServiceBusReceiverClient(asyncClient, OPERATION_TIMEOUT);
     }
@@ -612,11 +612,11 @@ class ServiceBusReceiverClientTest {
     @Test
     void renewMessageLock() {
         // Arrange
-        final Instant response = Instant.ofEpochSecond(1585259339);
+        final OffsetDateTime response = Instant.ofEpochSecond(1585259339).atOffset(ZoneOffset.UTC);
         when(asyncClient.renewMessageLock(LOCK_TOKEN)).thenReturn(Mono.just(response));
 
         // Act
-        final Instant actual = client.renewMessageLock(LOCK_TOKEN);
+        final OffsetDateTime actual = client.renewMessageLock(LOCK_TOKEN);
 
         // Assert
         assertEquals(response, actual);
@@ -626,11 +626,11 @@ class ServiceBusReceiverClientTest {
     void renewSessionLock() {
         // Arrange
         final String sessionId = "a-session-id";
-        final Instant response = Instant.ofEpochSecond(1585259339);
+        final OffsetDateTime response = Instant.ofEpochSecond(1585259339).atOffset(ZoneOffset.UTC);
         when(asyncClient.renewSessionLock(sessionId)).thenReturn(Mono.just(response));
 
         // Act
-        final Instant actual = client.renewSessionLock(sessionId);
+        final OffsetDateTime actual = client.renewSessionLock(sessionId);
 
         // Assert
         assertEquals(response, actual);

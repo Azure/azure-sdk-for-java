@@ -72,8 +72,7 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
         final int numberToSend = 5;
         final List<String> lockTokens = new ArrayList<>();
 
-        setSenderAndReceiver(entityType, entityIndex, TIMEOUT,
-            builder -> builder.maxAutoLockRenewalDuration(Duration.ofMinutes(2)));
+        setSenderAndReceiver(entityType, entityIndex, TIMEOUT, builder -> builder);
 
         final Disposable subscription = Flux.interval(Duration.ofMillis(500))
             .take(numberToSend)
@@ -130,7 +129,7 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
         final Set<String> set = new HashSet<>();
 
         setSenderAndReceiver(MessagingEntityType.SUBSCRIPTION, entityIndex, Duration.ofSeconds(20),
-            builder -> builder.maxConcurrentSessions(maxConcurrency).maxAutoLockRenewalDuration(Duration.ofMinutes(2)));
+            builder -> builder.maxConcurrentSessions(maxConcurrency));
 
         final Disposable subscription = Flux.interval(Duration.ofMillis(500))
             .take(maxMessages)

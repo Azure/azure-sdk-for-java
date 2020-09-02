@@ -9,7 +9,7 @@ import com.azure.resourcemanager.appservice.models.CustomHostnameDnsRecordType;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import javax.net.ssl.SSLPeerUnverifiedException;
 import org.junit.jupiter.api.Assertions;

@@ -22,8 +22,8 @@ public class VaultTests extends KeyVaultManagementTest {
     @Test
     public void canCRUDVault() throws Exception {
         // Create user service principal
-        String sp = sdkContext.randomResourceName("sp", 20);
-        String us = sdkContext.randomResourceName("us", 20);
+        String sp = generateRandomResourceName("sp", 20);
+        String us = generateRandomResourceName("us", 20);
         ServicePrincipal servicePrincipal =
             authorizationManager.servicePrincipals().define(sp).withNewApplication("http://" + sp).create();
 
@@ -121,8 +121,8 @@ public class VaultTests extends KeyVaultManagementTest {
     @Test
     public void canCRUDVaultAsync() throws Exception {
         // Create user service principal
-        String sp = sdkContext.randomResourceName("sp", 20);
-        String us = sdkContext.randomResourceName("us", 20);
+        String sp = generateRandomResourceName("sp", 20);
+        String us = generateRandomResourceName("us", 20);
         ServicePrincipal servicePrincipal =
             authorizationManager.servicePrincipals().define(sp).withNewApplication("http://" + sp).create();
 
@@ -216,8 +216,8 @@ public class VaultTests extends KeyVaultManagementTest {
     @Test
     public void canEnableSoftDeleteAndPurge() throws InterruptedException {
         String otherVaultName = vaultName + "other";
-        String sp = sdkContext.randomResourceName("sp", 20);
-        String us = sdkContext.randomResourceName("us", 20);
+        String sp = generateRandomResourceName("sp", 20);
+        String us = generateRandomResourceName("us", 20);
 
         ServicePrincipal servicePrincipal =
             authorizationManager.servicePrincipals().define(sp).withNewApplication("http://" + sp).create();

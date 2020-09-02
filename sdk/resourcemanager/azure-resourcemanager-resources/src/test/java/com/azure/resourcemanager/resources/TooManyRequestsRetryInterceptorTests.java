@@ -18,7 +18,7 @@
 //import rx.functions.Func1;
 //import rx.schedulers.Schedulers;
 //
-//public class TooManyRequestsRetryInterceptorTests extends ResourceManagerTestBase {
+//public class TooManyRequestsRetryInterceptorTests extends ResourceManagementTest {
 //    private static ResourceGroups resourceGroups;
 //
 //    private String rgName;

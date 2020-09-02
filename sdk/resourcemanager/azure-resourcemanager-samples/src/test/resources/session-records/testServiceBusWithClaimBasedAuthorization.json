@@ -410,7 +410,7 @@
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "5ad02cee-7b6b-435f-8438-614354403ec5_M11CH3_M11CH3",
-      "Body" : "{\"primaryConnectionString\":\"Endpoint=sb://namespace82e20752f.servicebus.windows.net/;SharedAccessKeyName=SendRule;SharedAccessKey=aC2ZIEcRZtz0REf5hXdvXKKNgD0OT2P7QHWWAvUKWMk=\",\"secondaryConnectionString\":\"Endpoint=sb://namespace82e20752f.servicebus.windows.net/;SharedAccessKeyName=SendRule;SharedAccessKey=GNvXqJRgykUQSoVhcOCoWlFJXWuwRWIQWlnVi1W4U/I=\",\"primaryKey\":\"aC2ZIEcRZtz0REf5hXdvXKKNgD0OT2P7QHWWAvUKWMk=\",\"secondaryKey\":\"GNvXqJRgykUQSoVhcOCoWlFJXWuwRWIQWlnVi1W4U/I=\",\"keyName\":\"SendRule\"}"
+      "Body" : "{\"primaryConnectionString\":\"Endpoint=sb://namespace82e20752f.servicebus.windows.net/;SharedAccessKeyName=SendRule;SharedAccessKey=***REMOVED***\",\"secondaryConnectionString\":\"Endpoint=sb://namespace82e20752f.servicebus.windows.net/;SharedAccessKeyName=SendRule;SharedAccessKey=***REMOVED***\",\"primaryKey\":\"***REMOVED***\",\"secondaryKey\":\"***REMOVED***\",\"keyName\":\"SendRule\"}"
     }
   }, {
     "Method" : "DELETE",

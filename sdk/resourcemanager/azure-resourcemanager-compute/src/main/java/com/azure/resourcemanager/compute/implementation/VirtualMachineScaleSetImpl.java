@@ -6,6 +6,7 @@ package com.azure.resourcemanager.compute.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.SubResource;
+import com.azure.core.management.provider.IdentifierProvider;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
@@ -77,7 +78,6 @@ import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.utils.ResourceNamer;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.StorageManager;
@@ -114,7 +114,7 @@ public class VirtualMachineScaleSetImpl
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
     // used to generate unique name for any dependency resources
-    private final ResourceNamer namer;
+    private final IdentifierProvider namer;
     private boolean isMarketplaceLinuxImage = false;
     // name of an existing subnet in the primary network to use
     private String existingPrimaryNetworkSubnetNameToAssociate;
@@ -168,7 +168,7 @@ public class VirtualMachineScaleSetImpl
         super(name, innerModel, computeManager);
         this.storageManager = storageManager;
         this.networkManager = networkManager;
-        this.namer = this.manager().sdkContext().getResourceNamerFactory().createResourceNamer(this.name());
+        this.namer = this.manager().sdkContext().createIdentifierProvider(this.name());
         this.managedDataDisks = new ManagedDataDiskCollection(this);
         this.virtualMachineScaleSetMsiHandler = new VirtualMachineScaleSetMsiHandler(authorizationManager, this);
         this.bootDiagnosticsHandler = new BootDiagnosticsHandler(this);

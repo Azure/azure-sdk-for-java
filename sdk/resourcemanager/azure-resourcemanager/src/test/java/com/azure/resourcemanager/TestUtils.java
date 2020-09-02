@@ -3,12 +3,21 @@
 
 package com.azure.resourcemanager;
 
+import com.azure.core.util.Configuration;
 import com.azure.resourcemanager.compute.models.DataDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 
 /** Test utilities. */
 public final class TestUtils {
     private TestUtils() {
+    }
+
+    /**
+     * @return whether it it RECORD mode
+     */
+    public static boolean isRecordMode() {
+        String azureTestMode = Configuration.getGlobalConfiguration().get("AZURE_TEST_MODE");
+        return "RECORD".equalsIgnoreCase(azureTestMode);
     }
 
     //    public static void print(ManagementLock lock) {
