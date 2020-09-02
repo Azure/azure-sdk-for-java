@@ -165,6 +165,16 @@ public class TestAssetsHelper {
         return GetUniqueModelId(baseName, (id) -> dtClient.getDigitalTwin(id));
     }
 
+    public static String GetUniqueModelId(DigitalTwinsAsyncClient dtClient, String baseName)
+    {
+        return GetUniqueModelId(baseName, (id) -> dtClient.getModel(id).block());
+    }
+
+    public static String GetUniqueDigitalTwinId(DigitalTwinsAsyncClient dtClient, String baseName)
+    {
+        return GetUniqueModelId(baseName, (id) -> dtClient.getDigitalTwin(id).block());
+    }
+
     private static String GetUniqueModelId(String baseName, Consumer<String> getMethod)
     {
         String id;
