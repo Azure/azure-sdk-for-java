@@ -75,8 +75,6 @@ public class InteractiveBrowserCredentialTest {
 
     @Test
     public void testValidInteractiveViaRedirectUri() throws Exception {
-        Random random = new Random();
-
         // setup
         String token1 = "token1";
         String token2 = "token2";
