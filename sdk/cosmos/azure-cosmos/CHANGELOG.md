@@ -1,7 +1,8 @@
 # Release History
 
 ## 4.4.0-beta.2 (Unreleased)
-
+### Key Bug Fixes
+* Fixed RequestTimeoutException when enable tcnative.
 
 ## 4.4.0-beta.1 (2020-08-27)
 ### New Features
