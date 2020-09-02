@@ -271,7 +271,6 @@
                 --add-opens com.azure.storage.common/com.azure.storage.common.implementation=ALL-UNNAMED
                 --add-opens com.azure.storage.internal.avro/com.azure.storage.internal.avro.implementation=ALL-UNNAMED
                 --add-opens com.azure.storage.internal.avro/com.azure.storage.internal.avro.implementation.schema=ALL-UNNAMED
-                --add-reads com.azure.storage.internal.avro=ALL-UNNAMED
               </argLine>
             </configuration>
           </plugin>
