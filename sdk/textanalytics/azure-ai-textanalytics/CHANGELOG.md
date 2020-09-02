@@ -11,8 +11,6 @@
 - Added support for the Opinion Mining feature. To use this feature, you need to make sure you are using the 
 service's v3.1-preview.1 and above API. To get this support pass `includeOpinionMining` as `true` in 
 `AnalyzeSentimentOptions` when calling the sentiment analysis endpoints.
-- In API version v3.1-preview.2 and up, the redacted text of the document is returned on the result 
-object `PiiEntityCollection` through property `redactedText`.
 
 ## 5.0.0 (2020-07-27)
 - Re-release of version `1.0.1` with updated version `5.0.0`.

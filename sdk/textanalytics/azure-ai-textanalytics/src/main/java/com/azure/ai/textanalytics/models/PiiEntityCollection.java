@@ -18,8 +18,7 @@ public final class PiiEntityCollection extends IterableStream<PiiEntity> {
      * Creates a {@link PiiEntityCollection} model that describes a entities collection including warnings.
      *
      * @param entities An {@link IterableStream} of {@link PiiEntity Personally Identifiable Information entities}.
-     * @param redactedText The text of the input document with all of the PII information redacted out. Only returned
-     * for API version v3.1-preview.2 and up.
+     * @param redactedText The text of the input document with all of the PII information redacted out.
      * @param warnings An {@link IterableStream} of {@link TextAnalyticsWarning warnings}.
      */
     public PiiEntityCollection(IterableStream<PiiEntity> entities, String redactedText,
@@ -43,8 +42,7 @@ public final class PiiEntityCollection extends IterableStream<PiiEntity> {
      * Get the property redactedText value. The text of the input document with all of the PII information redacted out.
      * Only returned for API version v3.1-preview.2 and up.
      *
-     * @return The text of the input document with all of the PII information redacted out. Only returned
-     * for API version v3.1-preview.2 and up.
+     * @return The text of the input document with all of the PII information redacted out.
      */
     public String getRedactedText() {
         return redactedText;
