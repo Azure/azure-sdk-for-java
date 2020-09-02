@@ -260,14 +260,15 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@code lockToken} is an empty string.
      * @throws IllegalStateException if the receiver is a session receiver or the receiver is disposed.
      */
-    public void getAutoRenewMessageLock(String lockToken, Duration maxLockRenewalDuration, Consumer<Throwable> onError) {
+    public void getAutoRenewMessageLock(String lockToken, Duration maxLockRenewalDuration,
+        Consumer<Throwable> onError) {
         final Consumer<Throwable> throwableConsumer = onError != null
-            ? onError :
-            error -> logger.warning("Exception occurred while renewing lock token: '{}'.", lockToken, error);
+            ? onError
+            : error -> logger.warning("Exception occurred while renewing lock token: '{}'.", lockToken, error);
 
         asyncClient.getAutoRenewMessageLock(lockToken, maxLockRenewalDuration).subscribe(
             v -> logger.verbose("Completed renewing lock token: '{}'", lockToken),
-            throwableConsumer);
+                throwableConsumer);
     }
 
     /**
@@ -280,14 +281,15 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@code sessionId} is an empty string.
      * @throws IllegalStateException if the receiver is a non-session receiver or the receiver is disposed.
      */
-    public void getAutoRenewSessionLock(String sessionId, Duration maxLockRenewalDuration, Consumer<Throwable> onError) {
+    public void getAutoRenewSessionLock(String sessionId, Duration maxLockRenewalDuration,
+        Consumer<Throwable> onError) {
         final Consumer<Throwable> throwableConsumer = onError != null
-            ? onError :
-            error -> logger.warning("Exception occurred while renewing session: '{}'.", sessionId, error);
+            ? onError
+            : error -> logger.warning("Exception occurred while renewing session: '{}'.", sessionId, error);
 
         asyncClient.getAutoRenewSessionLock(sessionId, maxLockRenewalDuration).subscribe(
             v -> logger.verbose("Completed renewing session: '{}'", sessionId),
-            throwableConsumer);
+                throwableConsumer);
     }
 
     /**
