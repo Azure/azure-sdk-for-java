@@ -19,6 +19,7 @@ import com.azure.digitaltwins.core.implementation.models.ModelData;
 import com.azure.digitaltwins.core.implementation.serializer.DigitalTwinsStringSerializer;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsGetComponentResponse;
 import com.azure.digitaltwins.core.models.DigitalTwinModelData;
+import com.azure.digitaltwins.core.models.ModelConverter;
 import com.azure.digitaltwins.core.util.DigitalTwinsResponse;
 import com.azure.digitaltwins.core.util.DigitalTwinsResponseHeaders;
 import com.azure.digitaltwins.core.util.ListModelOptions;
@@ -780,7 +781,13 @@ public final class DigitalTwinsAsyncClient {
             .map(
                 objectPagedResponse -> {
                     List<DigitalTwinModelData> convertedList = objectPagedResponse.getValue().stream()
-                        .map(object -> new DigitalTwinModelData(object))
+                        .map(object -> ModelConverter.convertToDigitalTwinModelData(
+                            object.getId(),
+                            object.getModel(),
+                            object.getUploadTime(),
+                            object.getDescription(),
+                            object.getDisplayName(),
+                            object.isDecommissioned()))
                         .filter(Objects::nonNull)
                         .collect(Collectors.toList());
                     return new PagedResponseBase<>(
@@ -819,11 +826,20 @@ public final class DigitalTwinsAsyncClient {
         return protocolLayer
             .getDigitalTwinModels()
             .getByIdWithResponseAsync(modelId, includeModelDefinition, context)
-            .map(response -> new SimpleResponse<>(
+            .map(response -> {
+                ModelData modelData = response.getValue();
+                return new SimpleResponse<>(
                 response.getRequest(),
                 response.getStatusCode(),
                 response.getHeaders(),
-                new DigitalTwinModelData(response.getValue())));
+                ModelConverter.convertToDigitalTwinModelData(
+                    modelData.getId(),
+                    modelData.getModel(),
+                    modelData.getUploadTime(),
+                    modelData.getDescription(),
+                    modelData.getDisplayName(),
+                    modelData.isDecommissioned()));
+            });
     }
 
     /**
@@ -868,7 +884,13 @@ public final class DigitalTwinsAsyncClient {
             .map(
                 objectPagedResponse -> {
                     List<DigitalTwinModelData> convertedList = objectPagedResponse.getValue().stream()
-                        .map(object -> new DigitalTwinModelData(object))
+                        .map(object -> ModelConverter.convertToDigitalTwinModelData(
+                            object.getId(),
+                            object.getModel(),
+                            object.getUploadTime(),
+                            object.getDescription(),
+                            object.getDisplayName(),
+                            object.isDecommissioned()))
                         .filter(Objects::nonNull)
                         .collect(Collectors.toList());
                     return new PagedResponseBase<>(
@@ -886,7 +908,14 @@ public final class DigitalTwinsAsyncClient {
         return protocolLayer.getDigitalTwinModels().listNextSinglePageAsync(nextLink, context)
             .map(objectPagedResponse -> {
             List<DigitalTwinModelData> convertedList = objectPagedResponse.getValue().stream()
-                .map(object -> new DigitalTwinModelData(object))
+                .map(object ->
+                    ModelConverter.convertToDigitalTwinModelData(
+                        object.getId(),
+                        object.getModel(),
+                        object.getUploadTime(),
+                        object.getDescription(),
+                        object.getDisplayName(),
+                        object.isDecommissioned()))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
             return new PagedResponseBase<>(

@@ -15,28 +15,7 @@ import java.util.Map;
 @Fluent
 public class DigitalTwinModelData {
 
-    /**
-     * Creates a new instance of DigitalTwinModelData.
-     * @param modelData The model data.
-     */
-    public DigitalTwinModelData(ModelData modelData) {
-        String modelStringValue = null;
-
-        if (modelData.getModel() != null){
-            try {
-                modelStringValue = new ObjectMapper().writeValueAsString(modelData.getModel());
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
-        }
-
-        this.setId(modelData.getId())
-            .setUploadTime(modelData.getUploadTime())
-            .setDisplayName(modelData.getDisplayName())
-            .setDescription(modelData.getDescription())
-            .setDecommissioned(modelData.isDecommissioned())
-            .setModel(modelStringValue);
-    }
+    DigitalTwinModelData() {}
 
     /*
      * A language map that contains the localized display names as specified in
