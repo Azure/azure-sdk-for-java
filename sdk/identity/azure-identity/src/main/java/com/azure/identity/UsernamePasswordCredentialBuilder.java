@@ -42,8 +42,8 @@ public class UsernamePasswordCredentialBuilder extends AadCredentialBuilderBase<
      *
      * @return An updated instance of this builder.
      */
-    UsernamePasswordCredentialBuilder allowUnencryptedCache() {
-        this.identityClientOptions.allowUnencryptedCache();
+    public UsernamePasswordCredentialBuilder allowUnencryptedCache() {
+        this.identityClientOptions.setAllowUnencryptedCache(true);
         return this;
     }
 
@@ -54,7 +54,7 @@ public class UsernamePasswordCredentialBuilder extends AadCredentialBuilderBase<
      *
      * @return An updated instance of this builder with if the shared token cache enabled specified.
      */
-    UsernamePasswordCredentialBuilder enablePersistentCache() {
+    public UsernamePasswordCredentialBuilder enablePersistentCache() {
         this.identityClientOptions.enablePersistentCache();
         return this;
     }

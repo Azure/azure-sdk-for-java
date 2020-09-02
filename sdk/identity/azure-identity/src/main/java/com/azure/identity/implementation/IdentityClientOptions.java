@@ -7,6 +7,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
+import com.azure.identity.AuthenticationRecord;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.implementation.util.ValidationUtil;
 
@@ -179,10 +180,11 @@ public final class IdentityClientOptions {
      * Allows to use an unprotected file specified by <code>cacheFileLocation()</code> instead of
      * Gnome keyring on Linux. This is restricted by default.
      *
+     * @param allowUnencryptedCache the flag to indicate if unencrypted persistent cache is allowed for use or not.
      * @return The updated identity client options.
      */
-    public IdentityClientOptions allowUnencryptedCache() {
-        this.allowUnencryptedCache = true;
+    public IdentityClientOptions setAllowUnencryptedCache(boolean allowUnencryptedCache) {
+        this.allowUnencryptedCache = allowUnencryptedCache;
         return this;
     }
 
