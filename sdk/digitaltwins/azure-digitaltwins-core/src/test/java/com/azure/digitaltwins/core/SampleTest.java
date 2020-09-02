@@ -1,7 +1,9 @@
 package com.azure.digitaltwins.core;
 
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.Context;
 import com.azure.digitaltwins.core.models.ModelData;
+import com.azure.digitaltwins.core.util.ListModelOptions;
 import org.junit.jupiter.api.Test;
 
 public class SampleTest extends DigitalTwinsTestBase {
@@ -27,15 +29,14 @@ public class SampleTest extends DigitalTwinsTestBase {
 
     @Test
     public void ListTest(){
-        PagedIterable<ModelData> models = client.listModels();
-
-        // Process using the Stream interface by iterating over each page
+        PagedIterable<ModelData> models = client.listModels(new ListModelOptions().setIncludeModelDefinition(true), Context.NONE);
+        
         models
             // You can also subscribe to pages by specifying the preferred page size or the associated continuation token to start the processing from.
             .streamByPage()
             .forEach(page -> {
                 System.out.println("Response headers status code is " + page.getStatusCode());
-                page.getValue().forEach(item -> System.out.println("Model retrieved: " + item.getId()));
+                page.getValue().forEach(item -> System.out.println("Model Id retrieved: " + item.getId() + "model definition: " + item.getModel()));
             });
     }
 }
