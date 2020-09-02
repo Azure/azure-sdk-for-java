@@ -10,7 +10,7 @@ import java.util.Map;
  * The ModelData representing the model and its corresponding metadata.
  */
 @Fluent
-public class ModelData {
+public final class ModelData {
 
     /*
      * A language map that contains the localized display names as specified in
