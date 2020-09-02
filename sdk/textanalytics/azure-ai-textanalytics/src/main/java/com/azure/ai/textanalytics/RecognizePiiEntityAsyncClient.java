@@ -7,6 +7,7 @@ import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
+import com.azure.ai.textanalytics.implementation.models.PiiEntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntity;
@@ -136,11 +137,11 @@ class RecognizePiiEntityAsyncClient {
      * @return A {@link Response} that contains {@link RecognizePiiEntitiesResultCollection}.
      */
     private Response<RecognizePiiEntitiesResultCollection> toRecognizePiiEntitiesResultCollectionResponse(
-        final Response<EntitiesResult> response) {
-        final EntitiesResult entitiesResult = response.getValue();
+        final Response<PiiEntitiesResult> response) {
+        final PiiEntitiesResult piiEntitiesResult = response.getValue();
         // List of documents results
         final List<RecognizePiiEntitiesResult> recognizeEntitiesResults = new ArrayList<>();
-        entitiesResult.getDocuments().forEach(documentEntities -> {
+        piiEntitiesResult.getDocuments().forEach(documentEntities -> {
             // Pii entities list
             final List<PiiEntity> piiEntities = documentEntities.getEntities().stream().map(entity ->
                 new PiiEntity(entity.getText(), EntityCategory.fromString(entity.getCategory()),
@@ -164,14 +165,15 @@ class RecognizePiiEntityAsyncClient {
             ));
         });
         // Document errors
-        for (DocumentError documentError : entitiesResult.getErrors()) {
+        for (DocumentError documentError : piiEntitiesResult.getErrors()) {
             recognizeEntitiesResults.add(new RecognizePiiEntitiesResult(documentError.getId(), null,
                 toTextAnalyticsError(documentError.getError()), null));
         }
 
         return new SimpleResponse<>(response,
-            new RecognizePiiEntitiesResultCollection(recognizeEntitiesResults, entitiesResult.getModelVersion(),
-                entitiesResult.getStatistics() == null ? null : toBatchStatistics(entitiesResult.getStatistics())));
+            new RecognizePiiEntitiesResultCollection(recognizeEntitiesResults, piiEntitiesResult.getModelVersion(),
+                piiEntitiesResult.getStatistics() == null ? null : toBatchStatistics(piiEntitiesResult.getStatistics())
+            ));
     }
 
     /**
@@ -186,10 +188,12 @@ class RecognizePiiEntityAsyncClient {
      */
     private Mono<Response<RecognizePiiEntitiesResultCollection>> getRecognizePiiEntitiesResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        // TODO: add string index type implementation PR
         return service.entitiesRecognitionPiiWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
             options == null ? null : options.getModelVersion(),
             options == null ? null : options.isIncludeStatistics(),
+            null,
             null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info(
