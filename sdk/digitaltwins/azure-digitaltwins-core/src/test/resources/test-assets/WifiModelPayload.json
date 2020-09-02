@@ -1,0 +1,18 @@
+{
+  "@id": "WIFI_MODEL_ID",
+  "@type": "Interface",
+  "@context": "dtmi:dtdl:context;2",
+  "displayName": "Wifi",
+  "contents": [
+    {
+      "@type": "Property",
+      "name": "RouterName",
+      "schema": "string"
+    },
+    {
+      "@type": "Property",
+      "name": "Network",
+      "schema": "string"
+    }
+  ]
+}

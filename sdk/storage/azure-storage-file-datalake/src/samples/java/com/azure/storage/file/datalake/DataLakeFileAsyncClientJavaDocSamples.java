@@ -10,6 +10,7 @@ import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileQueryDelimitedSerialization;
 import com.azure.storage.file.datalake.models.FileQueryError;
 import com.azure.storage.file.datalake.models.FileQueryJsonSerialization;
+import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.models.FileQueryProgress;
 import com.azure.storage.file.datalake.models.FileRange;
@@ -149,7 +150,7 @@ public class DataLakeFileAsyncClientJavaDocSamples {
 
     /**
      * Code snippets for {@link DataLakeFileAsyncClient#upload(Flux, ParallelTransferOptions)},
-     * {@link DataLakeFileAsyncClient#upload(Flux, ParallelTransferOptions, boolean)} and
+     * {@link DataLakeFileAsyncClient#upload(Flux, ParallelTransferOptions, boolean)}, and
      * {@link DataLakeFileAsyncClient#uploadWithResponse(Flux, ParallelTransferOptions, PathHttpHeaders, Map, DataLakeRequestConditions)}
      */
     public void uploadCodeSnippets() {
@@ -200,6 +201,52 @@ public class DataLakeFileAsyncClientJavaDocSamples {
         client.uploadWithResponse(data, pto, httpHeaders, metadataMap, conditions)
             .subscribe(response -> System.out.println("Uploaded file %n"));
         // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-PathHttpHeaders-Map-DataLakeRequestConditions.ProgressReporter
+    }
+
+    /**
+     * Code snippets for {@link DataLakeFileAsyncClient#uploadWithResponse(FileParallelUploadOptions)}
+     */
+    public void uploadCodeSnippets2() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadWithResponse#FileParallelUploadOptions
+        PathHttpHeaders headers = new PathHttpHeaders()
+            .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+        Long blockSize = 100L * 1024L * 1024L; // 100 MB;
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(blockSize);
+
+        client.uploadWithResponse(new FileParallelUploadOptions(data)
+            .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers)
+            .setMetadata(metadata).setRequestConditions(requestConditions)
+            .setPermissions("permissions").setUmask("umask"))
+            .subscribe(response -> System.out.println("Uploaded file %n"));
+        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadWithResponse#FileParallelUploadOptions
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadWithResponse#FileParallelUploadOptions.ProgressReporter
+        PathHttpHeaders httpHeaders = new PathHttpHeaders()
+            .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+
+        Map<String, String> metadataMap = Collections.singletonMap("metadata", "value");
+        DataLakeRequestConditions conditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+        ParallelTransferOptions pto = new ParallelTransferOptions()
+            .setBlockSizeLong(blockSize)
+            .setProgressReceiver(bytesTransferred -> System.out.printf("Upload progress: %s bytes sent", bytesTransferred));
+
+        client.uploadWithResponse(new FileParallelUploadOptions(data)
+            .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers)
+            .setMetadata(metadata).setRequestConditions(requestConditions)
+            .setPermissions("permissions").setUmask("umask"))
+            .subscribe(response -> System.out.println("Uploaded file %n"));
+        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadWithResponse#FileParallelUploadOptions.ProgressReporter
     }
 
     /**
