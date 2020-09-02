@@ -21,7 +21,7 @@ public final class ModelDataConverter {
             try {
                 modelStringValue = new ObjectMapper().writeValueAsString(input.getModel());
             } catch (JsonProcessingException e) {
-                e.printStackTrace();
+                throw new IllegalArgumentException("ModelData does not have a valid model definition.", e);
             }
         }
 
