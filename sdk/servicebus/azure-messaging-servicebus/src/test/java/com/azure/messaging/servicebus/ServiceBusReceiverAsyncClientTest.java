@@ -343,7 +343,7 @@ class ServiceBusReceiverAsyncClientTest {
     }
 
     /**
-     * Verifies that we error if we try to complete a message without a lock token.
+     * Verifies that we error if we try to complete a message with null value.
      */
     @Test
     void completeNullLockToken() {
@@ -352,10 +352,8 @@ class ServiceBusReceiverAsyncClientTest {
         when(managementNode.updateDisposition(any(), eq(DispositionStatus.COMPLETED), isNull(), isNull(), isNull(),
             isNull(), isNull(), isNull()))
             .thenReturn(Mono.delay(Duration.ofMillis(250)).then());
-
-        when(receivedMessage.getLockToken()).thenReturn(null);
-
-        StepVerifier.create(receiver.complete(receivedMessage))
+        
+        StepVerifier.create(receiver.complete(null))
             .expectError(NullPointerException.class)
             .verify();
 
