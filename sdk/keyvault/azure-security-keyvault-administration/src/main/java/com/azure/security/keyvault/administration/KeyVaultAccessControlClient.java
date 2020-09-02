@@ -43,136 +43,147 @@ public final class KeyVaultAccessControlClient {
     }
 
     /**
-     * Get all {@link KeyVaultRoleDefinition role definitions} that are applicable at the given {@link KeyVaultRoleAssignmentScope
-     * scope} and above.
+     * Get all {@link KeyVaultRoleDefinition role definitions} that are applicable at the given
+     * {@link KeyVaultRoleAssignmentScope roleScope} and above.
      *
-     * @param scope   The {@link KeyVaultRoleAssignmentScope scope} of the {@link KeyVaultRoleDefinition role definitions}.
-     * @param context Additional {@link Context} that is passed through the HTTP pipeline during the service call.
+     * @param roleScope The {@link KeyVaultRoleAssignmentScope roleScope} of the {@link KeyVaultRoleDefinition role
+     *                  definitions}.
+     * @param context   Additional {@link Context} that is passed through the HTTP pipeline during the service call.
      * @return A {@link PagedIterable} containing the {@link KeyVaultRoleDefinition role definitions} for the given
-     * {@link KeyVaultRoleAssignmentScope scope}.
-     * @throws NullPointerException if the {@link KeyVaultRoleAssignmentScope scope} is {@code null}.
+     * {@link KeyVaultRoleAssignmentScope roleScope}.
+     * @throws NullPointerException if the {@link KeyVaultRoleAssignmentScope roleScope} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KeyVaultRoleDefinition> listRoleDefinitions(KeyVaultRoleAssignmentScope scope, Context context) {
-        return new PagedIterable<>(asyncClient.listRoleDefinitions(scope, context));
+    public PagedIterable<KeyVaultRoleDefinition> listRoleDefinitions(KeyVaultRoleAssignmentScope roleScope,
+                                                                     Context context) {
+        return new PagedIterable<>(asyncClient.listRoleDefinitions(roleScope, context));
     }
 
     /**
-     * Get all {@link KeyVaultRoleAssignment role assignments} that are applicable at the given {@link KeyVaultRoleAssignmentScope
-     * scope} and above.
+     * Get all {@link KeyVaultRoleAssignment role assignments} that are applicable at the given
+     * {@link KeyVaultRoleAssignmentScope roleScope} and above.
      *
-     * @param scope   The {@link KeyVaultRoleAssignmentScope scope} of the {@link KeyVaultRoleAssignment}.
-     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     * @param roleScope The {@link KeyVaultRoleAssignmentScope roleScope} of the {@link KeyVaultRoleAssignment}.
+     * @param context   Additional context that is passed through the HTTP pipeline during the service call.
      * @return A {@link PagedIterable} containing the {@link KeyVaultRoleAssignment role assignments} for the given
-     * {@link KeyVaultRoleAssignmentScope scope}.
-     * @throws NullPointerException if the {@link KeyVaultRoleAssignmentScope scope} is {@code null}.
+     * {@link KeyVaultRoleAssignmentScope roleScope}.
+     * @throws NullPointerException if the {@link KeyVaultRoleAssignmentScope roleScope} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KeyVaultRoleAssignment> listRoleAssignments(KeyVaultRoleAssignmentScope scope, Context context) {
-        return new PagedIterable<>(asyncClient.listRoleAssignments(scope, context));
+    public PagedIterable<KeyVaultRoleAssignment> listRoleAssignments(KeyVaultRoleAssignmentScope roleScope,
+                                                                     Context context) {
+        return new PagedIterable<>(asyncClient.listRoleAssignments(roleScope, context));
     }
 
     /**
      * Creates a {@link KeyVaultRoleAssignment} with a randomly generated {@link UUID name}.
      *
-     * @param scope      The {@link KeyVaultRoleAssignmentScope scope} of the {@link KeyVaultRoleAssignment} to create.
+     * @param roleScope  The {@link KeyVaultRoleAssignmentScope roleScope} of the {@link KeyVaultRoleAssignment} to
+     *                   create.
      * @param properties Properties for the {@link KeyVaultRoleAssignment}.
      * @return The created {@link KeyVaultRoleAssignment}.
-     * @throws NullPointerException if the {@link KeyVaultRoleAssignmentScope scope} or
-     * {@link KeyVaultRoleAssignmentProperties properties} are {@code null}.
+     * @throws NullPointerException if the {@link KeyVaultRoleAssignmentScope roleScope} or
+     *                              {@link KeyVaultRoleAssignmentProperties properties} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyVaultRoleAssignment createRoleAssignment(KeyVaultRoleAssignmentScope scope,
+    public KeyVaultRoleAssignment createRoleAssignment(KeyVaultRoleAssignmentScope roleScope,
                                                        KeyVaultRoleAssignmentProperties properties) {
-        return createRoleAssignmentWithResponse(scope, UUID.randomUUID(), properties, Context.NONE).getValue();
+        return createRoleAssignmentWithResponse(roleScope, UUID.randomUUID(), properties, Context.NONE).getValue();
     }
 
     /**
      * Creates a {@link KeyVaultRoleAssignment}.
      *
-     * @param scope      The {@link KeyVaultRoleAssignmentScope scope} of the {@link KeyVaultRoleAssignment} to create.
+     * @param roleScope  The {@link KeyVaultRoleAssignmentScope roleScope} of the {@link KeyVaultRoleAssignment} to
+     *                   create.
      * @param name       The name used to create the {@link KeyVaultRoleAssignment}. It can be any valid UUID.
      * @param properties Properties for the {@link KeyVaultRoleAssignment}.
      * @return The created {@link KeyVaultRoleAssignment}.
-     * @throws NullPointerException if the {@link KeyVaultRoleAssignmentScope scope}, {@link UUID name} or
-     * {@link KeyVaultRoleAssignmentProperties properties} are {@code null}.
+     * @throws NullPointerException if the {@link KeyVaultRoleAssignmentScope roleScope}, {@link UUID name} or
+     *                              {@link KeyVaultRoleAssignmentProperties properties} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyVaultRoleAssignment createRoleAssignment(KeyVaultRoleAssignmentScope scope, UUID name,
+    public KeyVaultRoleAssignment createRoleAssignment(KeyVaultRoleAssignmentScope roleScope, UUID name,
                                                        KeyVaultRoleAssignmentProperties properties) {
-        return createRoleAssignmentWithResponse(scope, name, properties, Context.NONE).getValue();
+        return createRoleAssignmentWithResponse(roleScope, name, properties, Context.NONE).getValue();
     }
 
     /**
      * Creates a {@link KeyVaultRoleAssignment}.
      *
-     * @param scope      The {@link KeyVaultRoleAssignmentScope scope} of the {@link KeyVaultRoleAssignment} to create.
+     * @param roleScope  The {@link KeyVaultRoleAssignmentScope roleScope} of the {@link KeyVaultRoleAssignment} to
+     *                   create.
      * @param name       The name used to create the {@link KeyVaultRoleAssignment}. It can be any valid UUID.
      * @param properties Properties for the {@link KeyVaultRoleAssignment}.
      * @param context    Additional context that is passed through the HTTP pipeline during the service call.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the created
      * {@link KeyVaultRoleAssignment}.
-     * @throws NullPointerException if the {@link KeyVaultRoleAssignmentScope scope}, {@link UUID name} or
-     * {@link KeyVaultRoleAssignmentProperties properties} are {@code null}.
+     * @throws NullPointerException if the {@link KeyVaultRoleAssignmentScope roleScope}, {@link UUID name} or
+     *                              {@link KeyVaultRoleAssignmentProperties properties} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyVaultRoleAssignment> createRoleAssignmentWithResponse(KeyVaultRoleAssignmentScope scope, UUID name,
+    public Response<KeyVaultRoleAssignment> createRoleAssignmentWithResponse(KeyVaultRoleAssignmentScope roleScope,
+                                                                             UUID name,
                                                                              KeyVaultRoleAssignmentProperties properties,
                                                                              Context context) {
-        return asyncClient.createRoleAssignmentWithResponse(scope, name, properties, context).block();
+        return asyncClient.createRoleAssignmentWithResponse(roleScope, name, properties, context).block();
     }
 
     /**
      * Gets a {@link KeyVaultRoleAssignment}.
      *
-     * @param scope The {@link KeyVaultRoleAssignmentScope scope} of the {@link KeyVaultRoleAssignment}.
-     * @param name  The name of the {@link KeyVaultRoleAssignment}.
+     * @param roleScope The {@link KeyVaultRoleAssignmentScope roleScope} of the {@link KeyVaultRoleAssignment}.
+     * @param name      The name of the {@link KeyVaultRoleAssignment}.
      * @return The {@link KeyVaultRoleAssignment}.
-     * @throws NullPointerException if the {@link KeyVaultRoleAssignmentScope scope} or {@link UUID name} are {@code null}.
+     * @throws NullPointerException if the {@link KeyVaultRoleAssignmentScope roleScope} or {@link UUID name} are
+     *                              {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyVaultRoleAssignment getRoleAssignment(KeyVaultRoleAssignmentScope scope, String name) {
-        return getRoleAssignmentWithResponse(scope, name, Context.NONE).getValue();
+    public KeyVaultRoleAssignment getRoleAssignment(KeyVaultRoleAssignmentScope roleScope, String name) {
+        return getRoleAssignmentWithResponse(roleScope, name, Context.NONE).getValue();
     }
 
     /**
      * Gets a {@link KeyVaultRoleAssignment}.
      *
-     * @param scope The {@link KeyVaultRoleAssignmentScope scope} of the {@link KeyVaultRoleAssignment}.
-     * @param name  The name of the {@link KeyVaultRoleAssignment}.
+     * @param roleScope The {@link KeyVaultRoleAssignmentScope roleScope} of the {@link KeyVaultRoleAssignment}.
+     * @param name      The name of the {@link KeyVaultRoleAssignment}.
      * @return The {@link KeyVaultRoleAssignment}.
-     * @throws NullPointerException if the {@link KeyVaultRoleAssignmentScope scope} or {@link UUID name} are {@code null}.
+     * @throws NullPointerException if the {@link KeyVaultRoleAssignmentScope roleScope} or {@link UUID name} are
+     *                              {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyVaultRoleAssignment> getRoleAssignmentWithResponse(KeyVaultRoleAssignmentScope scope, String name,
-                                                                          Context context) {
-        return asyncClient.getRoleAssignmentWithResponse(scope, name, context).block();
+    public Response<KeyVaultRoleAssignment> getRoleAssignmentWithResponse(KeyVaultRoleAssignmentScope roleScope,
+                                                                          String name, Context context) {
+        return asyncClient.getRoleAssignmentWithResponse(roleScope, name, context).block();
     }
 
     /**
      * Deletes a {@link KeyVaultRoleAssignment}.
      *
-     * @param scope The {@link KeyVaultRoleAssignmentScope scope} of the {@link KeyVaultRoleAssignment}.
-     * @param name  The name of the {@link KeyVaultRoleAssignment}.
+     * @param roleScope The {@link KeyVaultRoleAssignmentScope roleScope} of the {@link KeyVaultRoleAssignment}.
+     * @param name      The name of the {@link KeyVaultRoleAssignment}.
      * @return The {@link KeyVaultRoleAssignment}.
-     * @throws NullPointerException if the {@link KeyVaultRoleAssignmentScope scope} or {@link UUID name} are {@code null}.
+     * @throws NullPointerException if the {@link KeyVaultRoleAssignmentScope roleScope} or {@link UUID name} are
+     *                              {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyVaultRoleAssignment deleteRoleAssignment(KeyVaultRoleAssignmentScope scope, String name) {
-        return deleteRoleAssignmentWithResponse(scope, name, Context.NONE).getValue();
+    public KeyVaultRoleAssignment deleteRoleAssignment(KeyVaultRoleAssignmentScope roleScope, String name) {
+        return deleteRoleAssignmentWithResponse(roleScope, name, Context.NONE).getValue();
     }
 
     /**
      * Deletes a {@link KeyVaultRoleAssignment}.
      *
-     * @param scope The {@link KeyVaultRoleAssignmentScope scope} of the {@link KeyVaultRoleAssignment}.
-     * @param name  The name of the {@link KeyVaultRoleAssignment}.
+     * @param roleScope The {@link KeyVaultRoleAssignmentScope roleScope} of the {@link KeyVaultRoleAssignment}.
+     * @param name      The name of the {@link KeyVaultRoleAssignment}.
      * @return The {@link KeyVaultRoleAssignment}.
-     * @throws NullPointerException if the {@link KeyVaultRoleAssignmentScope scope} or {@link UUID name} are {@code null}.
+     * @throws NullPointerException if the {@link KeyVaultRoleAssignmentScope roleScope} or {@link UUID name} are
+     *                              {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyVaultRoleAssignment> deleteRoleAssignmentWithResponse(KeyVaultRoleAssignmentScope scope, String name,
-                                                                             Context context) {
-        return asyncClient.deleteRoleAssignmentWithResponse(scope, name, context).block();
+    public Response<KeyVaultRoleAssignment> deleteRoleAssignmentWithResponse(KeyVaultRoleAssignmentScope roleScope,
+                                                                             String name, Context context) {
+        return asyncClient.deleteRoleAssignmentWithResponse(roleScope, name, context).block();
     }
 }
