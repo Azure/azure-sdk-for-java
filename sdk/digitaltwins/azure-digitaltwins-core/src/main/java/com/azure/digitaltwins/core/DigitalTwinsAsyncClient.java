@@ -821,10 +821,10 @@ public final class DigitalTwinsAsyncClient {
             .map(response -> {
                 com.azure.digitaltwins.core.implementation.models.ModelData modelData = response.getValue();
                 return new SimpleResponse<>(
-                response.getRequest(),
-                response.getStatusCode(),
-                response.getHeaders(),
-                ModelDataConverter.map(modelData));
+                    response.getRequest(),
+                    response.getStatusCode(),
+                    response.getHeaders(),
+                    ModelDataConverter.map(modelData));
             });
     }
 
