@@ -30,8 +30,7 @@ public class SampleTest extends DigitalTwinsTestBase {
     @Test
     public void ListTest(){
         PagedIterable<ModelData> models = client.listModels(new ListModelOptions().setIncludeModelDefinition(true), Context.NONE);
-
-        // Process using the Stream interface by iterating over each page
+        
         models
             // You can also subscribe to pages by specifying the preferred page size or the associated continuation token to start the processing from.
             .streamByPage()
