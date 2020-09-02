@@ -68,7 +68,7 @@ class LockRenewalOperation implements AutoCloseable {
         Objects.requireNonNull(maxLockRenewalDuration, "'maxLockRenewalDuration' cannot be null.");
 
         if (maxLockRenewalDuration.isNegative()) {
-            throw logger.logThrowableAsError(new IllegalArgumentException(
+            throw logger.logExceptionAsError(new IllegalArgumentException(
                 "'maxLockRenewalDuration' cannot be negative."));
         }
 
