@@ -75,7 +75,9 @@ class LockRenewalOperation implements AutoCloseable {
         this.lockedUntil.set(tokenLockedUntil);
 
         final Flux<OffsetDateTime> renewLockOperation = getRenewLockOperation(tokenLockedUntil,
-            maxLockRenewalDuration).cache(Duration.ofMinutes(2));
+            maxLockRenewalDuration)
+            .takeUntilOther(cancellationProcessor)
+            .cache(Duration.ofMinutes(2));
 
         this.completionMono = renewLockOperation.then();
         this.subscription = renewLockOperation.subscribe(until -> this.lockedUntil.set(until),
