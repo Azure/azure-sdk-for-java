@@ -88,4 +88,14 @@ public final class ValidationUtil {
             }
         }
     }
+
+    public static void validateInteractiveBrowserRedirectUrlSetup(String className, Integer port, String redirecrUrl) {
+        ClientLogger logger = new ClientLogger(className);
+        if (port != null && redirecrUrl != null) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Port and Redirect URL cannot be configured at the same time. "
+                                                 + "Port is deprecated now. Use the redirectUrl setter to specify"
+                                                 + " the redirect URL on the builder."));
+        }
+    }
 }

@@ -17,13 +17,13 @@ import java.util.HashMap;
 public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBase<InteractiveBrowserCredentialBuilder> {
     private Integer port;
     private boolean automaticAuthentication = true;
-    private String redirectURL;
+    private String redirectUrl;
 
     /**
      * Sets the port for the local HTTP server, for which {@code http://localhost:{port}} must be
      * registered as a valid reply URL on the application.
      *
-     * @deprecated Configure the redirectURL as {@code http://localhost:{port}} via
+     * @deprecated Configure the redirect URL as {@code http://localhost:{port}} via
      * {@link InteractiveBrowserCredentialBuilder#redirectUrl(String)} instead.
      *
      * @param port the port on which the credential will listen for the browser authentication result
@@ -77,12 +77,12 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
      * client id is specified via {@link InteractiveBrowserCredentialBuilder#clientId(String)} and must match the
      * redirect URL specified during the application registration.
      *
-     * @param redirectURL the redirect URL to listen on and receive security code.
+     * @param redirectUrl the redirect URL to listen on and receive security code.
      *
      * @return An updated instance of this builder with the configured redirect URL.
      */
-    public InteractiveBrowserCredentialBuilder redirectUrl(String redirectURL) {
-        this.redirectURL = redirectURL;
+    public InteractiveBrowserCredentialBuilder redirectUrl(String redirectUrl) {
+        this.redirectUrl = redirectUrl;
         return this;
     }
 
@@ -107,10 +107,11 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
      * @return a {@link InteractiveBrowserCredential} with the current configurations.
      */
     public InteractiveBrowserCredential build() {
+        ValidationUtil.validateInteractiveBrowserRedirectUrlSetup(getClass().getSimpleName(), port, redirectUrl);
         ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
                 put("clientId", clientId);
             }});
-        return new InteractiveBrowserCredential(clientId, tenantId, port, redirectURL, automaticAuthentication,
+        return new InteractiveBrowserCredential(clientId, tenantId, port, redirectUrl, automaticAuthentication,
             identityClientOptions);
     }
 }

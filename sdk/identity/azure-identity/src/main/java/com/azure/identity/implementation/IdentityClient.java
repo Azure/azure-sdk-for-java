@@ -649,14 +649,14 @@ public class IdentityClient {
      * @return a Publisher that emits an AccessToken
      */
     public Mono<MsalToken> authenticateWithBrowserInteraction(TokenRequestContext request, Integer port,
-                                                              String redirectURL) {
+                                                              String redirectUrl) {
         URI redirectUri;
         String redirect;
 
         if (port != null) {
             redirect = HTTP_LOCALHOST + ":" + port;
-        } else if (redirectURL != null) {
-            redirect = redirectURL;
+        } else if (redirectUrl != null) {
+            redirect = redirectUrl;
         } else {
             redirect = HTTP_LOCALHOST;
         }

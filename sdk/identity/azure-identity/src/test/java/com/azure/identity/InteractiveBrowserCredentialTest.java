@@ -112,6 +112,17 @@ public class InteractiveBrowserCredentialTest {
             .verifyComplete();
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testCredentialDoesnWorkWIthPortAndRedirectUrlConfigured() throws Exception {
+        // setup
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        InteractiveBrowserCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder()
+            .clientId(CLIENT_ID)
+            .port(8080)
+            .redirectUrl("http://localhost:8080")
+            .build();
+    }
+
     @Test
     public void testValidAuthenticate() throws Exception {
         Random random = new Random();
