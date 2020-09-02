@@ -199,7 +199,7 @@ class RecognizePiiEntityAsyncClient {
         Iterable<TextDocumentInput> documents, RecognizePiiEntityOptions options, Context context) {
 
         String modelVersion = null;
-        boolean includeStatistics = false;
+        Boolean includeStatistics = null;
         String domainFilter = null;
         if (options != null) {
             modelVersion = options.getModelVersion();
