@@ -9,8 +9,8 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Sample demonstrates how to receive an {@link ServiceBusReceivedMessage} from an Azure Service Bus Queue and settle
- * it. Settling of message include {@link ServiceBusReceiverAsyncClient#complete(ServiceBusReceivedMessage)} complete()}
- * , {@link ServiceBusReceiverAsyncClient#defer(ServiceBusReceivedMessage)}  defer()},
+ * it. Settling of message include {@link ServiceBusReceiverAsyncClient#complete(ServiceBusReceivedMessage) complete},
+ * {@link ServiceBusReceiverAsyncClient#defer(ServiceBusReceivedMessage) defer},
  * {@link ServiceBusReceiverAsyncClient#abandon(ServiceBusReceivedMessage) abandon}, or
  * {@link ServiceBusReceiverAsyncClient#deadLetter(ServiceBusReceivedMessage) dead-letter} a message.
  */

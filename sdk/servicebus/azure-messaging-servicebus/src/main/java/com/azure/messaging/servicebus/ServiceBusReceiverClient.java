@@ -72,9 +72,9 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * Abandon a {@link ServiceBusReceivedMessage message}. This will make the message available
      * again for processing. Abandoning a message will increase the delivery count on the message.
      *
-     * @param message The {@link ServiceBusReceivedMessage} message.
+     * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      *
-     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws NullPointerException if {@code message} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @throws IllegalArgumentException if {@code lockToken} is an empty value.
@@ -88,10 +88,10 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * This will make the message available again for processing. Abandoning a message will increase the delivery count
      * on the message.
      *
-     * @param message The {@link ServiceBusReceivedMessage} message.
+     * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      * @param propertiesToModify Properties to modify on the message.
      *
-     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws NullPointerException if {@code message} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @throws IllegalArgumentException if {@code lockToken} is an empty value.
@@ -105,12 +105,12 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * This will make the message available again for processing. Abandoning a message will increase the delivery count
      * on the message.
      *
-     * @param message The {@link ServiceBusReceivedMessage} message.
+     * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      * @param propertiesToModify Properties to modify on the message.
      * @param transactionContext in which this operation is taking part in. The transaction should be created first by
      * {@link ServiceBusReceiverClient#createTransaction()} or {@link ServiceBusSenderClient#createTransaction()}.
      *
-     * @throws NullPointerException if {@code lockToken}, {@code transactionContext} or
+     * @throws NullPointerException if {@code message}, {@code transactionContext} or
      * {@code transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
@@ -125,9 +125,9 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     /**
      * Completes a {@link ServiceBusReceivedMessage message}. This will delete the message from the service.
      *
-     * @param message The {@link ServiceBusReceivedMessage} message.
+     * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      *
-     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws NullPointerException if {@code message} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @throws IllegalArgumentException if {@code lockToken} is an empty value.
@@ -140,11 +140,11 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * Completes a {@link ServiceBusReceivedMessage message}. This will delete the message from the
      * service.
      *
-     * @param message The {@link ServiceBusReceivedMessage} message.
+     * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      * @param transactionContext in which this operation is taking part in. The transaction should be created first by
      * {@link ServiceBusReceiverClient#createTransaction()} or {@link ServiceBusSenderClient#createTransaction()}.
      *
-     * @throws NullPointerException if {@code lockToken}, {@code transactionContext} or
+     * @throws NullPointerException if {@code message}, {@code transactionContext} or
      * {@code transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
@@ -158,9 +158,9 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * Defers a {@link ServiceBusReceivedMessage message}. This will move message into the deferred
      * subqueue.
      *
-     * @param message The {@link ServiceBusReceivedMessage} message.
+     * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      *
-     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws NullPointerException if {@code message} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @throws IllegalArgumentException if {@code lockToken} is an empty value.
@@ -174,10 +174,10 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * Defers a {@link ServiceBusReceivedMessage message} using its lock token with modified message property. This will
      * move message into the deferred subqueue.
      *
-     * @param message The {@link ServiceBusReceivedMessage} message.
+     * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      * @param propertiesToModify Message properties to modify.
      *
-     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws NullPointerException if {@code message} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @throws IllegalArgumentException if {@code lockToken} is an empty value.
@@ -191,12 +191,12 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * Defers a {@link ServiceBusReceivedMessage message} with modified message property. This will
      * move message into the deferred subqueue.
      *
-     * @param message The {@link ServiceBusReceivedMessage} message.
+     * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      * @param propertiesToModify Message properties to modify.
      * @param transactionContext in which this operation is taking part in. The transaction should be created first by
      * {@link ServiceBusReceiverClient#createTransaction()} or {@link ServiceBusSenderClient#createTransaction()}.
      *
-     * @throws NullPointerException if {@code lockToken}, {@code transactionContext} or
+     * @throws NullPointerException if {@code message}, {@code transactionContext} or
      * {@code transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
@@ -211,9 +211,9 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     /**
      * Moves a {@link ServiceBusReceivedMessage message} to the deadletter sub-queue.
      *
-     * @param message The {@link ServiceBusReceivedMessage} message.
+     * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      *
-     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws NullPointerException if {@code message} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @throws IllegalArgumentException if {@code lockToken} is an empty value.
@@ -228,10 +228,10 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * Moves a {@link ServiceBusReceivedMessage message} to the deadletter subqueue with deadletter reason, error
      * description, and/or modified properties.
      *
-     * @param message The {@link ServiceBusReceivedMessage} message.
+     * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      * @param deadLetterOptions The options to specify when moving message to the deadletter sub-queue.
      *
-     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws NullPointerException if {@code message} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @throws IllegalArgumentException if {@code lockToken} is an empty value.
@@ -244,12 +244,12 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * Moves a {@link ServiceBusReceivedMessage message} to the deadletter subqueue with deadletter reason, error
      * description, and/or modified properties.
      *
-     * @param message The {@link ServiceBusReceivedMessage} message.
+     * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      * @param deadLetterOptions The options to specify when moving message to the deadletter sub-queue.
      * @param transactionContext in which this operation is taking part in. The transaction should be created first by
      * {@link ServiceBusReceiverClient#createTransaction()} or {@link ServiceBusSenderClient#createTransaction()}.
      *
-     * @throws NullPointerException if {@code lockToken}, {@code transactionContext} or
+     * @throws NullPointerException if {@code message}, {@code transactionContext} or
      * {@code transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
