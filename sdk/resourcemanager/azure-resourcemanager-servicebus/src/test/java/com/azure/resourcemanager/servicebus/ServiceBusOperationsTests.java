@@ -421,7 +421,9 @@ public class ServiceBusOperationsTests extends ResourceManagerTestBase {
         Assertions.assertNotNull(nsRuleKeys.primaryConnectionString());
         Assertions.assertNotNull(nsRuleKeys.secondaryConnectionString());
         nsRuleKeys = foundNsRule.regenerateKey(Policykey.PRIMARY_KEY);
-        Assertions.assertNotEquals(nsRuleKeys.primaryKey(), primaryKey);
+        if (!isPlaybackMode()) {
+            Assertions.assertNotEquals(nsRuleKeys.primaryKey(), primaryKey);
+        }
         // Lookup queue & operate on auth rules
         //
         PagedIterable<Queue> queuesInNamespace = namespace.queues().list();
