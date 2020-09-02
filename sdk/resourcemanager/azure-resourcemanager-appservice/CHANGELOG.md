@@ -2,4 +2,4 @@
 
 ## 2.0.0-beta.4 (2020-09-02)
 
-- Fixed fuction app slot
+- Fixed function app slot
