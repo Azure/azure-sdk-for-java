@@ -10,14 +10,14 @@ package com.microsoft.azure.management.iothub.v2019_03_22_preview;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.iothub.v2019_03_22_preview.implementation.IoTHubManager;
+import com.microsoft.azure.management.iothub.v2019_03_22_preview.implementation.DevicesManager;
 import com.microsoft.azure.management.iothub.v2019_03_22_preview.implementation.TestAllRoutesResultInner;
 import java.util.List;
 
 /**
  * Type representing TestAllRoutesResult.
  */
-public interface TestAllRoutesResult extends HasInner<TestAllRoutesResultInner>, HasManager<IoTHubManager> {
+public interface TestAllRoutesResult extends HasInner<TestAllRoutesResultInner>, HasManager<DevicesManager> {
     /**
      * @return the routes value.
      */

@@ -13,14 +13,14 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.iothub.v2019_03_22_preview.CertificatePropertiesWithNonce;
 
 class CertificateWithNonceDescriptionImpl extends WrapperImpl<CertificateWithNonceDescriptionInner> implements CertificateWithNonceDescription {
-    private final IoTHubManager manager;
-    CertificateWithNonceDescriptionImpl(CertificateWithNonceDescriptionInner inner, IoTHubManager manager) {
+    private final DevicesManager manager;
+    CertificateWithNonceDescriptionImpl(CertificateWithNonceDescriptionInner inner, DevicesManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public IoTHubManager manager() {
+    public DevicesManager manager() {
         return this.manager;
     }
 
