@@ -17,69 +17,69 @@ public final class TextAnalyticsErrorCode extends ExpandableStringEnum<TextAnaly
     private static final long serialVersionUID = 21436310107606058L;
 
     /**
-     * Enum value invalidRequest.
+     * Enum value InvalidRequest.
      */
-    public static final TextAnalyticsErrorCode INVALID_REQUEST = fromString("invalidRequest");
+    public static final TextAnalyticsErrorCode INVALID_REQUEST = fromString("InvalidRequest");
 
     /**
-     * Enum value invalidArgument.
+     * Enum value InvalidArgument.
      */
-    public static final TextAnalyticsErrorCode INVALID_ARGUMENT = fromString("invalidArgument");
+    public static final TextAnalyticsErrorCode INVALID_ARGUMENT = fromString("InvalidArgument");
 
     /**
-     * Enum value internalServerError.
+     * Enum value InternalServerError.
      */
-    public static final TextAnalyticsErrorCode INTERNAL_SERVER_ERROR = fromString("internalServerError");
+    public static final TextAnalyticsErrorCode INTERNAL_SERVER_ERROR = fromString("InternalServerError");
 
     /**
-     * Enum value serviceUnavailable.
+     * Enum value ServiceUnavailable.
      */
-    public static final TextAnalyticsErrorCode SERVICE_UNAVAILABLE = fromString("serviceUnavailable");
+    public static final TextAnalyticsErrorCode SERVICE_UNAVAILABLE = fromString("ServiceUnavailable");
 
     /**
-     * Enum value invalidParameterValue.
+     * Enum value InvalidParameterValue.
      */
-    public static final TextAnalyticsErrorCode INVALID_PARAMETER_VALUE = fromString("invalidParameterValue");
+    public static final TextAnalyticsErrorCode INVALID_PARAMETER_VALUE = fromString("InvalidParameterValue");
 
     /**
-     * Enum value invalidRequestBodyFormat.
+     * Enum value InvalidRequestBodyFormat.
      */
-    public static final TextAnalyticsErrorCode INVALID_REQUEST_BODY_FORMAT = fromString("invalidRequestBodyFormat");
+    public static final TextAnalyticsErrorCode INVALID_REQUEST_BODY_FORMAT = fromString("InvalidRequestBodyFormat");
 
     /**
-     * Enum value emptyRequest.
+     * Enum value EmptyRequest.
      */
-    public static final TextAnalyticsErrorCode EMPTY_REQUEST = fromString("emptyRequest");
+    public static final TextAnalyticsErrorCode EMPTY_REQUEST = fromString("EmptyRequest");
 
     /**
-     * Enum value missingInputRecords.
+     * Enum value MissingInputRecords.
      */
-    public static final TextAnalyticsErrorCode MISSING_INPUT_RECORDS = fromString("missingInputRecords");
+    public static final TextAnalyticsErrorCode MISSING_INPUT_RECORDS = fromString("MissingInputRecords");
 
     /**
-     * Enum value invalidDocument.
+     * Enum value InvalidDocument.
      */
-    public static final TextAnalyticsErrorCode INVALID_DOCUMENT = fromString("invalidDocument");
+    public static final TextAnalyticsErrorCode INVALID_DOCUMENT = fromString("InvalidDocument");
 
     /**
-     * Enum value modelVersionIncorrect.
+     * Enum value ModelVersionIncorrect.
      */
-    public static final TextAnalyticsErrorCode MODEL_VERSION_INCORRECT = fromString("modelVersionIncorrect");
+    public static final TextAnalyticsErrorCode MODEL_VERSION_INCORRECT = fromString("ModelVersionIncorrect");
 
     /**
-     * Enum value invalidDocumentBatch.
+     * Enum value InvalidDocumentBatch.
      */
-    public static final TextAnalyticsErrorCode INVALID_DOCUMENT_BATCH = fromString("invalidDocumentBatch");
+    public static final TextAnalyticsErrorCode INVALID_DOCUMENT_BATCH = fromString("InvalidDocumentBatch");
 
     /**
-     * Enum value unsupportedLanguageCode.
+     * Enum value UnsupportedLanguageCode.
      */
-    public static final TextAnalyticsErrorCode UNSUPPORTED_LANGUAGE_CODE = fromString("unsupportedLanguageCode");
+    public static final TextAnalyticsErrorCode UNSUPPORTED_LANGUAGE_CODE = fromString("UnsupportedLanguageCode");
 
     /**
-     * Enum value invalidCountryHint.
+     * Enum value InvalidCountryHint.
      */
-    public static final TextAnalyticsErrorCode INVALID_COUNTRY_HINT = fromString("invalidCountryHint");
+    public static final TextAnalyticsErrorCode INVALID_COUNTRY_HINT = fromString("InvalidCountryHint");
 
     /**
      * Creates or finds a TextAnalyticsErrorCode from its string representation.

@@ -3,24 +3,49 @@
 
 package com.azure.resourcemanager.containerregistry;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.resourcemanager.resources.core.TestBase;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
+
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 /** The base for storage manager tests. */
-public abstract class RegistryTest extends TestBase {
+public abstract class RegistryTest extends ResourceManagerTestBase {
     protected ResourceManager resourceManager;
     protected ContainerRegistryManager registryManager;
     protected String rgName;
 
     @Override
+    protected HttpPipeline buildHttpPipeline(
+        TokenCredential credential,
+        AzureProfile profile,
+        HttpLogOptions httpLogOptions,
+        List<HttpPipelinePolicy> policies,
+        HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(
+            credential,
+            profile,
+            null,
+            httpLogOptions,
+            null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
+            policies,
+            httpClient);
+    }
+
+    @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         resourceManager =
-            ResourceManager.authenticate(httpPipeline, profile).withSdkContext(sdkContext).withDefaultSubscription();
-
-        registryManager = ContainerRegistryManager.authenticate(httpPipeline, profile, sdkContext);
-
+            ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
+        registryManager = ContainerRegistryManager.authenticate(httpPipeline, profile);
         rgName = generateRandomResourceName("rgacr", 10);
     }
 }

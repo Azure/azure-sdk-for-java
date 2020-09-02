@@ -26,7 +26,7 @@ license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: HandleItem,ShareFileHttpHeaders,ShareItem,ShareServiceProperties,ShareCorsRule,ShareProperties,Range,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders,LeaseDurationType,LeaseStateType,LeaseStatusType,PermissionCopyModeType
+custom-types: HandleItem,ShareFileHttpHeaders,ShareItem,ShareServiceProperties,ShareCorsRule,ShareProperties,Range,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders,LeaseDurationType,LeaseStateType,LeaseStatusType,PermissionCopyModeType,DeleteSnapshotsOptionType
 ```
 
 ### Query Parameters
@@ -479,6 +479,19 @@ directive:
     }
 ```
 
+### /{shareName}?restype=share&comp=lease&acquire
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{shareName}?restype=share&comp=lease&acquire"]
+  transform: >
+    let param = $.put.parameters[0];
+    if (!param["$ref"].endsWith("ShareName")) {
+        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareName");
+        $.put.parameters.splice(0, 0, { "$ref": path });
+    }
+```
+
 ### /{shareName}/{filePath}?comp=lease&release
 ``` yaml
 directive:
@@ -491,6 +504,19 @@ directive:
         op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
         op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
         delete $["/{shareName}/{directory}/{fileName}?comp=lease&release"];
+    }
+```
+
+### /{shareName}?restype=share&comp=lease&release
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{shareName}?restype=share&comp=lease&release"]
+  transform: >
+    let param = $.put.parameters[0];
+    if (!param["$ref"].endsWith("ShareName")) {
+        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareName");
+        $.put.parameters.splice(0, 0, { "$ref": path });
     }
 ```
 
@@ -509,6 +535,19 @@ directive:
     }
 ```
 
+### /{shareName}?restype=share&comp=lease&change
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{shareName}?restype=share&comp=lease&change"]
+  transform: >
+    let param = $.put.parameters[0];
+    if (!param["$ref"].endsWith("ShareName")) {
+        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareName");
+        $.put.parameters.splice(0, 0, { "$ref": path });
+    }
+```
+
 ### /{shareName}/{filePath}?comp=lease&break
 ``` yaml
 directive:
@@ -521,6 +560,32 @@ directive:
         op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
         op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
         delete $["/{shareName}/{directory}/{fileName}?comp=lease&break"];
+    }
+```
+
+### /{shareName}?restype=share&comp=lease&break
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{shareName}?restype=share&comp=lease&break"]
+  transform: >
+    let param = $.put.parameters[0];
+    if (!param["$ref"].endsWith("ShareName")) {
+        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareName");
+        $.put.parameters.splice(0, 0, { "$ref": path });
+    }
+```
+
+### /{shareName}?restype=share&comp=lease&renew
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{shareName}?restype=share&comp=lease&renew"]
+  transform: >
+    let param = $.put.parameters[0];
+    if (!param["$ref"].endsWith("ShareName")) {
+        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareName");
+        $.put.parameters.splice(0, 0, { "$ref": path });
     }
 ```
 

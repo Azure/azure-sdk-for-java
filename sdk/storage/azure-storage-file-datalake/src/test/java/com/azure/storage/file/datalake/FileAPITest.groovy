@@ -32,6 +32,7 @@ import com.azure.storage.file.datalake.models.PathHttpHeaders
 import com.azure.storage.file.datalake.models.PathPermissions
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry
 import com.azure.storage.file.datalake.models.RolePermissions
+import com.azure.storage.file.datalake.options.FileParallelUploadOptions
 import com.azure.storage.file.datalake.options.FileQueryOptions
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions
 import spock.lang.Ignore
@@ -2235,9 +2236,9 @@ class FileAPITest extends APISpec {
         file.delete()
 
         where:
-        dataSize                                       | singleUploadSize | blockSize || expectedBlockCount
-        100                                            | 50               | null      || 1 // Test that singleUploadSize is respected
-        100                                            | 50               | 20        || 5 // Test that blockSize is respected
+        dataSize | singleUploadSize | blockSize || expectedBlockCount
+        100      | 50               | null      || 1 // Test that singleUploadSize is respected
+        100      | 50               | 20        || 5 // Test that blockSize is respected
     }
 
     @Requires({ liveMode() })
@@ -2543,7 +2544,7 @@ class FileAPITest extends APISpec {
 
     @Unroll
     @Requires({ liveMode() })
-    @Ignore("failing in ci")
+//    @Ignore("failing in ci")
     def "Buffered upload options"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -2564,6 +2565,23 @@ class FileAPITest extends APISpec {
         (100 * Constants.MB) + 1 | null             | null      || Math.ceil(((double) (100 * Constants.MB) + 1) / (double) (4 * Constants.MB))
         100                      | 50               | null      || 1
         100                      | 50               | 20        || 5
+    }
+
+    def "Buffered upload permissions and umask"() {
+        setup:
+        def permissions = "0777"
+        def umask = "0057"
+        DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
+
+        when:
+        def uploadOperation = fac.uploadWithResponse(new FileParallelUploadOptions(Flux.just(getRandomData(10))).setPermissions(permissions).setUmask(umask))
+
+        then:
+        StepVerifier.create(uploadOperation.then(fac.getPropertiesWithResponse(null)))
+            .assertNext({
+                assert it.getStatusCode() == 200
+                assert it.getValue().getFileSize() == 10
+            }).verifyComplete()
     }
 
     @Unroll
@@ -3549,5 +3567,128 @@ class FileAPITest extends APISpec {
     }
 
     class RandomOtherSerialization implements FileQuerySerialization {
+    }
+
+    def "Upload input stream overwrite fails"() {
+        when:
+        fc.upload(defaultInputStream.get(), defaultDataSize)
+
+        then:
+        thrown(DataLakeStorageException)
+    }
+
+    def "Upload input stream overwrite"() {
+        setup:
+        def randomData = getRandomByteArray(Constants.KB)
+        def input = new ByteArrayInputStream(randomData)
+
+        when:
+        fc.upload(input, Constants.KB, true)
+
+        then:
+        def stream = new ByteArrayOutputStream()
+        fc.read(stream)
+        stream.toByteArray() == randomData
+    }
+
+    /* Tests an issue found where buffered upload would not deep copy buffers while determining what upload path to take. */
+
+    @Unroll
+    def "Upload input stream single upload"() {
+        setup:
+        def randomData = getRandomByteArray(20 * Constants.KB)
+        def input = new ByteArrayInputStream(randomData)
+
+        when:
+        fc.upload(input, 20 * Constants.KB, true)
+
+        then:
+        def stream = new ByteArrayOutputStream()
+        fc.read(stream)
+        stream.toByteArray() == randomData
+
+        where:
+        size              || _
+        1 * Constants.KB  || _  /* Less than copyToOutputStream buffer size, Less than maxSingleUploadSize */
+        8 * Constants.KB  || _  /* Equal to copyToOutputStream buffer size, Less than maxSingleUploadSize */
+        20 * Constants.KB || _  /* Greater than copyToOutputStream buffer size, Less than maxSingleUploadSize */
+    }
+
+    def "Upload input stream large data"() {
+        setup:
+        def randomData = getRandomByteArray(20 * Constants.MB)
+        def input = new ByteArrayInputStream(randomData)
+
+        def pto = new ParallelTransferOptions().setMaxSingleUploadSizeLong(Constants.MB)
+
+        when:
+        // Uses blob output stream under the hood.
+        fc.uploadWithResponse(new FileParallelUploadOptions(input, 20 * Constants.MB).setParallelTransferOptions(pto), null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+    }
+
+    @Unroll
+    def "Upload incorrect size"() {
+        when:
+        fc.upload(defaultInputStream.get(), dataSize, true)
+
+        then:
+        thrown(IllegalStateException)
+
+        where:
+        dataSize            | threshold
+        defaultDataSize + 1 | null
+        defaultDataSize - 1 | null
+        defaultDataSize + 1 | 1 // Test the chunked case as well
+        defaultDataSize - 1 | 1
+    }
+
+    /* Due to the inability to spy on a private method, we are just calling the async client with the input stream constructor */
+    @Unroll
+    def "Upload numAppends"() {
+        setup:
+        DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
+        def spyClient = Spy(fac)
+        def randomData = getRandomByteArray(dataSize)
+        def input = new ByteArrayInputStream(randomData)
+
+        def pto = new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(singleUploadSize)
+
+        when:
+        spyClient.uploadWithResponse(new FileParallelUploadOptions(input, dataSize).setParallelTransferOptions(pto)).block()
+
+        then:
+        fac.getProperties().block().getFileSize() == dataSize
+        numAppends * spyClient.appendWithResponse(_, _, _, _, _)
+
+        where:
+        dataSize                 | singleUploadSize | blockSize || numAppends
+        (100 * Constants.MB) - 1 | null             | null      || 1
+        (100 * Constants.MB) + 1 | null             | null      || Math.ceil(((double) (100 * Constants.MB) + 1) / (double) (4 * Constants.MB))
+        100                      | 50               | null      || 1
+        100                      | 50               | 20        || 5
+    }
+
+    def "Upload return value"() {
+        expect:
+        fc.uploadWithResponse(new FileParallelUploadOptions(defaultInputStream.get(), defaultDataSize), null, null)
+            .getValue().getETag() != null
+    }
+
+    @Requires({ liveMode() })
+    // Reading from recordings will not allow for the timing of the test to work correctly.
+    def "Upload timeout"() {
+        setup:
+        def size = 1024
+        def randomData = getRandomByteArray(size)
+        def input = new ByteArrayInputStream(randomData)
+
+        when:
+        fc.uploadWithResponse(new FileParallelUploadOptions(input, size), Duration.ofNanos(5L), null)
+
+        then:
+        thrown(IllegalStateException)
     }
 }

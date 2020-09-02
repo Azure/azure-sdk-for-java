@@ -72,6 +72,25 @@ public final class ShareProperties {
     private Integer remainingRetentionDays;
 
     /*
+     * Possible values include: 'locked', 'unlocked'
+     */
+    @JsonProperty(value = "LeaseStatus")
+    private LeaseStatusType leaseStatus;
+
+    /*
+     * Possible values include: 'available', 'leased', 'expired', 'breaking',
+     * 'broken'
+     */
+    @JsonProperty(value = "LeaseState")
+    private LeaseStateType leaseState;
+
+    /*
+     * Possible values include: 'infinite', 'fixed'
+     */
+    @JsonProperty(value = "LeaseDuration")
+    private LeaseDurationType leaseDuration;
+
+    /*
      * The metadata property.
      */
     @JsonProperty(value = "Metadata")
@@ -284,6 +303,72 @@ public final class ShareProperties {
      */
     public ShareProperties setRemainingRetentionDays(Integer remainingRetentionDays) {
         this.remainingRetentionDays = remainingRetentionDays;
+        return this;
+    }
+
+    /**
+     * Get the leaseStatus property: Possible values include: 'locked',
+     * 'unlocked'.
+     *
+     * @return the leaseStatus value.
+     */
+    public LeaseStatusType getLeaseStatus() {
+        return this.leaseStatus;
+    }
+
+    /**
+     * Set the leaseStatus property: Possible values include: 'locked',
+     * 'unlocked'.
+     *
+     * @param leaseStatus the leaseStatus value to set.
+     * @return the ShareProperties object itself.
+     */
+    public ShareProperties setLeaseStatus(LeaseStatusType leaseStatus) {
+        this.leaseStatus = leaseStatus;
+        return this;
+    }
+
+    /**
+     * Get the leaseState property: Possible values include: 'available',
+     * 'leased', 'expired', 'breaking', 'broken'.
+     *
+     * @return the leaseState value.
+     */
+    public LeaseStateType getLeaseState() {
+        return this.leaseState;
+    }
+
+    /**
+     * Set the leaseState property: Possible values include: 'available',
+     * 'leased', 'expired', 'breaking', 'broken'.
+     *
+     * @param leaseState the leaseState value to set.
+     * @return the ShareProperties object itself.
+     */
+    public ShareProperties setLeaseState(LeaseStateType leaseState) {
+        this.leaseState = leaseState;
+        return this;
+    }
+
+    /**
+     * Get the leaseDuration property: Possible values include: 'infinite',
+     * 'fixed'.
+     *
+     * @return the leaseDuration value.
+     */
+    public LeaseDurationType getLeaseDuration() {
+        return this.leaseDuration;
+    }
+
+    /**
+     * Set the leaseDuration property: Possible values include: 'infinite',
+     * 'fixed'.
+     *
+     * @param leaseDuration the leaseDuration value to set.
+     * @return the ShareProperties object itself.
+     */
+    public ShareProperties setLeaseDuration(LeaseDurationType leaseDuration) {
+        this.leaseDuration = leaseDuration;
         return this;
     }
 

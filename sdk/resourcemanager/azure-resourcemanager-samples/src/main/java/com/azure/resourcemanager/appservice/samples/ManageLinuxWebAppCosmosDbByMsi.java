@@ -11,7 +11,7 @@ import com.azure.resourcemanager.Azure;
 //import com.azure.management.containerregistry.Registry;
 //import com.azure.management.containerregistry.RegistryCredentials;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 
 /**
  * Azure App Service basic sample for managing web apps.

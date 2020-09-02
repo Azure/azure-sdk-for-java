@@ -22,8 +22,8 @@ public class LoadBalancerTests extends NetworkManagementTest {
 
     @Test
     public void canCRUDProbe() throws Exception {
-        String vmName = sdkContext.randomResourceName("vm", 8);
-        String lbName = sdkContext.randomResourceName("lb", 8);
+        String vmName = generateRandomResourceName("vm", 8);
+        String lbName = generateRandomResourceName("lb", 8);
 
         ResourceGroup resourceGroup =
             resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
