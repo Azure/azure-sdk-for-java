@@ -12,8 +12,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.digitaltwins.core.implementation.models.IncomingRelationship;
-import com.azure.digitaltwins.core.implementation.models.ModelData;
-import com.azure.digitaltwins.core.models.DigitalTwinModelData;
+import com.azure.digitaltwins.core.models.ModelData;
 import com.azure.digitaltwins.core.util.DigitalTwinsResponse;
 import com.azure.digitaltwins.core.util.ListModelOptions;
 
@@ -462,7 +461,7 @@ public final class DigitalTwinsClient {
      * @return A {@link PagedIterable} of created models and the http response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DigitalTwinModelData> createModels(List<String> models, Context context) {
+    public PagedIterable<ModelData> createModels(List<String> models, Context context) {
         return new PagedIterable<>(digitalTwinsAsyncClient.createModels(models, context));
     }
 
@@ -472,7 +471,7 @@ public final class DigitalTwinsClient {
      * @return The ModelData
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DigitalTwinModelData getModel(String modelId) {
+    public ModelData getModel(String modelId) {
         return digitalTwinsAsyncClient.getModel(modelId).block();
     }
 
@@ -483,7 +482,7 @@ public final class DigitalTwinsClient {
      * @return The ModelData and the http response
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DigitalTwinModelData> getModelWithResponse(String modelId, Context context) {
+    public Response<ModelData> getModelWithResponse(String modelId, Context context) {
         return digitalTwinsAsyncClient.getModelWithResponse(modelId, context).block();
     }
 
@@ -494,7 +493,7 @@ public final class DigitalTwinsClient {
      * @return A {@link PagedIterable} of ModelData and the http response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DigitalTwinModelData> listModels(ListModelOptions listModelOptions, Context context) {
+    public PagedIterable<ModelData> listModels(ListModelOptions listModelOptions, Context context) {
         return new PagedIterable<>(
             digitalTwinsAsyncClient.listModels(listModelOptions, context));
     }
@@ -504,7 +503,7 @@ public final class DigitalTwinsClient {
      * @return A {@link PagedFlux} of ModelData and the http response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DigitalTwinModelData> listModels() {
+    public PagedIterable<ModelData> listModels() {
         return new PagedIterable<>(digitalTwinsAsyncClient.listModels());
     }
 

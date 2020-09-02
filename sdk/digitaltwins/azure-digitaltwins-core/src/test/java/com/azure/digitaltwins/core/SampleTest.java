@@ -2,7 +2,7 @@ package com.azure.digitaltwins.core;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
-import com.azure.digitaltwins.core.models.DigitalTwinModelData;
+import com.azure.digitaltwins.core.models.ModelData;
 import com.azure.digitaltwins.core.util.ListModelOptions;
 import org.junit.jupiter.api.Test;
 
@@ -29,7 +29,7 @@ public class SampleTest extends DigitalTwinsTestBase {
 
     @Test
     public void ListTest(){
-        PagedIterable<DigitalTwinModelData> models = client.listModels();
+        PagedIterable<ModelData> models = client.listModels(new ListModelOptions().setIncludeModelDefinition(true), Context.NONE);
 
         // Process using the Stream interface by iterating over each page
         models

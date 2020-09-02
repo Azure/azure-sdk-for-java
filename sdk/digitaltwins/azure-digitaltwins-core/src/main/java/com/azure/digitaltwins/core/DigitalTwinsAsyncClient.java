@@ -13,13 +13,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImpl;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImplBuilder;
+import com.azure.digitaltwins.core.implementation.converters.ModelDataConverter;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions;
 import com.azure.digitaltwins.core.implementation.models.IncomingRelationship;
-import com.azure.digitaltwins.core.implementation.models.ModelData;
 import com.azure.digitaltwins.core.implementation.serializer.DigitalTwinsStringSerializer;
-import com.azure.digitaltwins.core.implementation.models.DigitalTwinsGetComponentResponse;
-import com.azure.digitaltwins.core.models.DigitalTwinModelData;
-import com.azure.digitaltwins.core.models.ModelConverter;
+import com.azure.digitaltwins.core.models.ModelData;
 import com.azure.digitaltwins.core.util.DigitalTwinsResponse;
 import com.azure.digitaltwins.core.util.DigitalTwinsResponseHeaders;
 import com.azure.digitaltwins.core.util.ListModelOptions;
@@ -55,7 +53,7 @@ public final class DigitalTwinsAsyncClient {
     private static final ObjectMapper mapper = new ObjectMapper();
     private final DigitalTwinsServiceVersion serviceVersion;
     private final AzureDigitalTwinsAPIImpl protocolLayer;
-    private static final Boolean includeModelDefinition = true;
+    private static final Boolean includeModelDefinitionOnGet = true;
 
     DigitalTwinsAsyncClient(HttpPipeline pipeline, DigitalTwinsServiceVersion serviceVersion, String host) {
         final SimpleModule stringModule = new SimpleModule("String Serializer");
@@ -752,19 +750,19 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link PagedFlux} of created models and the http response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DigitalTwinModelData> createModels(List<String> models) {
+    public PagedFlux<ModelData> createModels(List<String> models) {
         return new PagedFlux<>(
             () -> withContext(context -> createModelsSinglePageAsync(models, context)),
             nextLink -> withContext(context -> Mono.empty()));
     }
 
-    PagedFlux<DigitalTwinModelData> createModels(List<String> models, Context context){
+    PagedFlux<ModelData> createModels(List<String> models, Context context){
         return new PagedFlux<>(
             () -> createModelsSinglePageAsync(models, context),
             nextLink -> Mono.empty());
     }
 
-    Mono<PagedResponse<DigitalTwinModelData>> createModelsSinglePageAsync(List<String> models, Context context)
+    Mono<PagedResponse<ModelData>> createModelsSinglePageAsync(List<String> models, Context context)
     {
         List<Object> modelsPayload = new ArrayList<>();
         for (String model: models) {
@@ -780,14 +778,8 @@ public final class DigitalTwinsAsyncClient {
         return protocolLayer.getDigitalTwinModels().addWithResponseAsync(modelsPayload, context)
             .map(
                 objectPagedResponse -> {
-                    List<DigitalTwinModelData> convertedList = objectPagedResponse.getValue().stream()
-                        .map(object -> ModelConverter.convertToDigitalTwinModelData(
-                            object.getId(),
-                            object.getModel(),
-                            object.getUploadTime(),
-                            object.getDescription(),
-                            object.getDisplayName(),
-                            object.isDecommissioned()))
+                    List<ModelData> convertedList = objectPagedResponse.getValue().stream()
+                        .map(object -> ModelDataConverter.map(object))
                         .filter(Objects::nonNull)
                         .collect(Collectors.toList());
                     return new PagedResponseBase<>(
@@ -807,7 +799,7 @@ public final class DigitalTwinsAsyncClient {
      * @return The ModelData
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DigitalTwinModelData> getModel(String modelId) {
+    public Mono<ModelData> getModel(String modelId) {
         return getModelWithResponse(modelId)
             .map(Response::getValue);
     }
@@ -818,27 +810,21 @@ public final class DigitalTwinsAsyncClient {
      * @return The ModelData and the http response
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DigitalTwinModelData>> getModelWithResponse(String modelId) {
+    public Mono<Response<ModelData>> getModelWithResponse(String modelId) {
         return withContext(context -> getModelWithResponse(modelId, context));
     }
 
-    Mono<Response<DigitalTwinModelData>> getModelWithResponse(String modelId, Context context){
+    Mono<Response<ModelData>> getModelWithResponse(String modelId, Context context){
         return protocolLayer
             .getDigitalTwinModels()
-            .getByIdWithResponseAsync(modelId, includeModelDefinition, context)
+            .getByIdWithResponseAsync(modelId, includeModelDefinitionOnGet, context)
             .map(response -> {
-                ModelData modelData = response.getValue();
+                com.azure.digitaltwins.core.implementation.models.ModelData modelData = response.getValue();
                 return new SimpleResponse<>(
                 response.getRequest(),
                 response.getStatusCode(),
                 response.getHeaders(),
-                ModelConverter.convertToDigitalTwinModelData(
-                    modelData.getId(),
-                    modelData.getModel(),
-                    modelData.getUploadTime(),
-                    modelData.getDescription(),
-                    modelData.getDisplayName(),
-                    modelData.isDecommissioned()));
+                ModelDataConverter.map(modelData));
             });
     }
 
@@ -848,7 +834,7 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link PagedFlux} of ModelData and the http response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DigitalTwinModelData> listModels(ListModelOptions listModelOptions) {
+    public PagedFlux<ModelData> listModels(ListModelOptions listModelOptions) {
         return new PagedFlux<>(
             () -> withContext(context -> listModelsSinglePageAsync(listModelOptions, context)),
             nextLink -> withContext(context -> listModelsNextSinglePageAsync(nextLink, context)));
@@ -859,23 +845,23 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link PagedFlux} of ModelData and the http response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DigitalTwinModelData> listModels() {
+    public PagedFlux<ModelData> listModels() {
         return listModels(new ListModelOptions());
     }
 
-    PagedFlux<DigitalTwinModelData> listModels(Context context){
+    PagedFlux<ModelData> listModels(Context context){
         return new PagedFlux<>(
             () -> listModelsSinglePageAsync(new ListModelOptions(), context),
             nextLink -> listModelsNextSinglePageAsync(nextLink, context));
     }
 
-    PagedFlux<DigitalTwinModelData> listModels(ListModelOptions listModelOptions, Context context){
+    PagedFlux<ModelData> listModels(ListModelOptions listModelOptions, Context context){
         return new PagedFlux<>(
             () -> listModelsSinglePageAsync(listModelOptions, context),
             nextLink -> listModelsNextSinglePageAsync(nextLink, context));
     }
 
-    Mono<PagedResponse<DigitalTwinModelData>> listModelsSinglePageAsync(ListModelOptions listModelOptions, Context context){
+    Mono<PagedResponse<ModelData>> listModelsSinglePageAsync(ListModelOptions listModelOptions, Context context){
         return protocolLayer.getDigitalTwinModels().listSinglePageAsync(
             listModelOptions.getDependenciesFor(),
             listModelOptions.getIncludeModelDefinition(),
@@ -883,14 +869,8 @@ public final class DigitalTwinsAsyncClient {
             context)
             .map(
                 objectPagedResponse -> {
-                    List<DigitalTwinModelData> convertedList = objectPagedResponse.getValue().stream()
-                        .map(object -> ModelConverter.convertToDigitalTwinModelData(
-                            object.getId(),
-                            object.getModel(),
-                            object.getUploadTime(),
-                            object.getDescription(),
-                            object.getDisplayName(),
-                            object.isDecommissioned()))
+                    List<ModelData> convertedList = objectPagedResponse.getValue().stream()
+                        .map(object -> ModelDataConverter.map(object))
                         .filter(Objects::nonNull)
                         .collect(Collectors.toList());
                     return new PagedResponseBase<>(
@@ -904,18 +884,11 @@ public final class DigitalTwinsAsyncClient {
             );
     }
 
-    Mono<PagedResponse<DigitalTwinModelData>> listModelsNextSinglePageAsync(String nextLink, Context context){
+    Mono<PagedResponse<ModelData>> listModelsNextSinglePageAsync(String nextLink, Context context){
         return protocolLayer.getDigitalTwinModels().listNextSinglePageAsync(nextLink, context)
             .map(objectPagedResponse -> {
-            List<DigitalTwinModelData> convertedList = objectPagedResponse.getValue().stream()
-                .map(object ->
-                    ModelConverter.convertToDigitalTwinModelData(
-                        object.getId(),
-                        object.getModel(),
-                        object.getUploadTime(),
-                        object.getDescription(),
-                        object.getDisplayName(),
-                        object.isDecommissioned()))
+            List<ModelData> convertedList = objectPagedResponse.getValue().stream()
+                .map(object -> ModelDataConverter.map(object))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
             return new PagedResponseBase<>(

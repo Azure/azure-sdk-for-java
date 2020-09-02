@@ -35,9 +35,9 @@ public final class ListModelOptions {
 
     /*
      * Whether to include the model definition in the result. If false, only the model metadata will be returned.
-     * Enabled by default.
+     * Disabled by default.
      */
-    private Boolean includeModelDefinition = true;
+    private Boolean includeModelDefinition = false;
 
     /**
      * Get the includeModelDefinition property.
