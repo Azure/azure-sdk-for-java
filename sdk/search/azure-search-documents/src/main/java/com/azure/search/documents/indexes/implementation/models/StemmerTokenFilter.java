@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.search.documents.indexes.models.StemmerTokenFilterLanguage;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -25,11 +26,16 @@ public class StemmerTokenFilter extends TokenFilter {
     @JsonProperty(value = "language", required = true)
     private StemmerTokenFilterLanguage language;
 
-    /** Creates an instance of StemmerTokenFilter class. */
+    /**
+     * Creates an instance of StemmerTokenFilter class.
+     *
+     * @param name the name value to set.
+     * @param language the language value to set.
+     */
     @JsonCreator
     public StemmerTokenFilter(
-            @JsonProperty(value = "name") String name,
-            @JsonProperty(value = "language") StemmerTokenFilterLanguage language) {
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "language", required = true) StemmerTokenFilterLanguage language) {
         super(name);
         this.language = language;
     }
@@ -41,24 +47,5 @@ public class StemmerTokenFilter extends TokenFilter {
      */
     public StemmerTokenFilterLanguage getLanguage() {
         return this.language;
-    }
-
-    /**
-     * Set the language property: The language to use.
-     *
-     * @param language the language value to set.
-     * @return the StemmerTokenFilter object itself.
-     */
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (getLanguage() == null) {
-            throw new IllegalArgumentException("Missing required property language in model StemmerTokenFilter");
-        }
     }
 }

@@ -7,7 +7,8 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
+import com.azure.search.documents.indexes.models.SearchIndexerDataContainer;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSourceType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SearchIndexerDataSource model. */
@@ -16,7 +17,7 @@ public final class SearchIndexerDataSource {
     /*
      * The name of the datasource.
      */
-    @JsonProperty(value = "name", required = true)
+    @JsonProperty(value = "name")
     private String name;
 
     /*
@@ -28,19 +29,19 @@ public final class SearchIndexerDataSource {
     /*
      * The type of the datasource.
      */
-    @JsonProperty(value = "type", required = true)
+    @JsonProperty(value = "type")
     private SearchIndexerDataSourceType type;
 
     /*
      * Credentials for the datasource.
      */
-    @JsonProperty(value = "credentials", required = true)
+    @JsonProperty(value = "credentials")
     private DataSourceCredentials credentials;
 
     /*
      * The data container for the datasource.
      */
-    @JsonProperty(value = "container", required = true)
+    @JsonProperty(value = "container")
     private SearchIndexerDataContainer container;
 
     /*
@@ -61,19 +62,6 @@ public final class SearchIndexerDataSource {
     @JsonProperty(value = "@odata.etag")
     private String eTag;
 
-    /** Creates an instance of SearchIndexerDataSource class. */
-    @JsonCreator
-    public SearchIndexerDataSource(
-            @JsonProperty(value = "name") String name,
-            @JsonProperty(value = "type") SearchIndexerDataSourceType type,
-            @JsonProperty(value = "credentials") DataSourceCredentials credentials,
-            @JsonProperty(value = "container") SearchIndexerDataContainer container) {
-        this.name = name;
-        this.type = type;
-        this.credentials = credentials;
-        this.container = container;
-    }
-
     /**
      * Get the name property: The name of the datasource.
      *
@@ -89,6 +77,11 @@ public final class SearchIndexerDataSource {
      * @param name the name value to set.
      * @return the SearchIndexerDataSource object itself.
      */
+    public SearchIndexerDataSource setName(String name) {
+        this.name = name;
+        return this;
+    }
+
     /**
      * Get the description property: The description of the datasource.
      *
@@ -124,6 +117,11 @@ public final class SearchIndexerDataSource {
      * @param type the type value to set.
      * @return the SearchIndexerDataSource object itself.
      */
+    public SearchIndexerDataSource setType(SearchIndexerDataSourceType type) {
+        this.type = type;
+        return this;
+    }
+
     /**
      * Get the credentials property: Credentials for the datasource.
      *
@@ -139,6 +137,11 @@ public final class SearchIndexerDataSource {
      * @param credentials the credentials value to set.
      * @return the SearchIndexerDataSource object itself.
      */
+    public SearchIndexerDataSource setCredentials(DataSourceCredentials credentials) {
+        this.credentials = credentials;
+        return this;
+    }
+
     /**
      * Get the container property: The data container for the datasource.
      *
@@ -154,6 +157,11 @@ public final class SearchIndexerDataSource {
      * @param container the container value to set.
      * @return the SearchIndexerDataSource object itself.
      */
+    public SearchIndexerDataSource setContainer(SearchIndexerDataContainer container) {
+        this.container = container;
+        return this;
+    }
+
     /**
      * Get the dataChangeDetectionPolicy property: The data change detection policy for the datasource.
      *
@@ -213,36 +221,5 @@ public final class SearchIndexerDataSource {
     public SearchIndexerDataSource setETag(String eTag) {
         this.eTag = eTag;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getName() == null) {
-            throw new IllegalArgumentException("Missing required property name in model SearchIndexerDataSource");
-        }
-        if (getType() == null) {
-            throw new IllegalArgumentException("Missing required property type in model SearchIndexerDataSource");
-        }
-        if (getCredentials() == null) {
-            throw new IllegalArgumentException(
-                    "Missing required property credentials in model SearchIndexerDataSource");
-        } else {
-            getCredentials().validate();
-        }
-        if (getContainer() == null) {
-            throw new IllegalArgumentException("Missing required property container in model SearchIndexerDataSource");
-        } else {
-            getContainer().validate();
-        }
-        if (getDataChangeDetectionPolicy() != null) {
-            getDataChangeDetectionPolicy().validate();
-        }
-        if (getDataDeletionDetectionPolicy() != null) {
-            getDataDeletionDetectionPolicy().validate();
-        }
     }
 }

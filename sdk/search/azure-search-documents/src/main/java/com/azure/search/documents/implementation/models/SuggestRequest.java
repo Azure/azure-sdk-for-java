@@ -104,11 +104,16 @@ public final class SuggestRequest {
     @JsonProperty(value = "top")
     private Integer top;
 
-    /** Creates an instance of SuggestRequest class. */
+    /**
+     * Creates an instance of SuggestRequest class.
+     *
+     * @param searchText the searchText value to set.
+     * @param suggesterName the suggesterName value to set.
+     */
     @JsonCreator
     public SuggestRequest(
-            @JsonProperty(value = "search") String searchText,
-            @JsonProperty(value = "suggesterName") String suggesterName) {
+            @JsonProperty(value = "search", required = true) String searchText,
+            @JsonProperty(value = "suggesterName", required = true) String suggesterName) {
         this.searchText = searchText;
         this.suggesterName = suggesterName;
     }
@@ -266,13 +271,6 @@ public final class SuggestRequest {
     }
 
     /**
-     * Set the searchText property: The search text to use to suggest documents. Must be at least 1 character, and no
-     * more than 100 characters.
-     *
-     * @param searchText the searchText value to set.
-     * @return the SuggestRequest object itself.
-     */
-    /**
      * Get the searchFields property: The comma-separated list of field names to search for the specified search text.
      * Target fields must be included in the specified suggester.
      *
@@ -327,13 +325,6 @@ public final class SuggestRequest {
     }
 
     /**
-     * Set the suggesterName property: The name of the suggester as specified in the suggesters collection that's part
-     * of the index definition.
-     *
-     * @param suggesterName the suggesterName value to set.
-     * @return the SuggestRequest object itself.
-     */
-    /**
      * Get the top property: The number of suggestions to retrieve. This must be a value between 1 and 100. The default
      * is 5.
      *
@@ -353,19 +344,5 @@ public final class SuggestRequest {
     public SuggestRequest setTop(Integer top) {
         this.top = top;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getSearchText() == null) {
-            throw new IllegalArgumentException("Missing required property searchText in model SuggestRequest");
-        }
-        if (getSuggesterName() == null) {
-            throw new IllegalArgumentException("Missing required property suggesterName in model SuggestRequest");
-        }
     }
 }

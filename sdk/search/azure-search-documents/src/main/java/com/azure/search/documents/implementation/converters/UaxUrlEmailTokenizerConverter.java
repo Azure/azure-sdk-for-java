@@ -38,7 +38,7 @@ public final class UaxUrlEmailTokenizerConverter {
 
         Integer maxTokenLength = obj.getMaxTokenLength();
         uaxUrlEmailTokenizer.setMaxTokenLength(maxTokenLength);
-        uaxUrlEmailTokenizer.validate();
+
         return uaxUrlEmailTokenizer;
     }
 

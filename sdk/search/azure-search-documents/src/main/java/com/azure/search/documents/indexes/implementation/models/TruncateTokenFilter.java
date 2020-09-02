@@ -25,9 +25,13 @@ public class TruncateTokenFilter extends TokenFilter {
     @JsonProperty(value = "length")
     private Integer length;
 
-    /** Creates an instance of TruncateTokenFilter class. */
+    /**
+     * Creates an instance of TruncateTokenFilter class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
-    public TruncateTokenFilter(@JsonProperty(value = "name") String name) {
+    public TruncateTokenFilter(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 
@@ -49,15 +53,5 @@ public class TruncateTokenFilter extends TokenFilter {
     public TruncateTokenFilter setLength(Integer length) {
         this.length = length;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
     }
 }

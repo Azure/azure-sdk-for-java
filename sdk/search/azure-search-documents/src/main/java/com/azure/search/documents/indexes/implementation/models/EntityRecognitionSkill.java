@@ -8,6 +8,9 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.search.documents.indexes.models.EntityCategory;
+import com.azure.search.documents.indexes.models.EntityRecognitionSkillLanguage;
+import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -49,11 +52,16 @@ public class EntityRecognitionSkill extends SearchIndexerSkill {
     @JsonProperty(value = "minimumPrecision")
     private Double minimumPrecision;
 
-    /** Creates an instance of EntityRecognitionSkill class. */
+    /**
+     * Creates an instance of EntityRecognitionSkill class.
+     *
+     * @param inputs the inputs value to set.
+     * @param outputs the outputs value to set.
+     */
     @JsonCreator
     public EntityRecognitionSkill(
-            @JsonProperty(value = "inputs") List<InputFieldMappingEntry> inputs,
-            @JsonProperty(value = "outputs") List<OutputFieldMappingEntry> outputs) {
+            @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,
+            @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
     }
 
@@ -143,15 +151,5 @@ public class EntityRecognitionSkill extends SearchIndexerSkill {
     public EntityRecognitionSkill setMinimumPrecision(Double minimumPrecision) {
         this.minimumPrecision = minimumPrecision;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
     }
 }

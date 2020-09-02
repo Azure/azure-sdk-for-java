@@ -33,10 +33,16 @@ public class KeywordMarkerTokenFilter extends TokenFilter {
     @JsonProperty(value = "ignoreCase")
     private Boolean ignoreCase;
 
-    /** Creates an instance of KeywordMarkerTokenFilter class. */
+    /**
+     * Creates an instance of KeywordMarkerTokenFilter class.
+     *
+     * @param name the name value to set.
+     * @param keywords the keywords value to set.
+     */
     @JsonCreator
     public KeywordMarkerTokenFilter(
-            @JsonProperty(value = "name") String name, @JsonProperty(value = "keywords") List<String> keywords) {
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "keywords", required = true) List<String> keywords) {
         super(name);
         this.keywords = keywords;
     }
@@ -50,12 +56,6 @@ public class KeywordMarkerTokenFilter extends TokenFilter {
         return this.keywords;
     }
 
-    /**
-     * Set the keywords property: A list of words to mark as keywords.
-     *
-     * @param keywords the keywords value to set.
-     * @return the KeywordMarkerTokenFilter object itself.
-     */
     /**
      * Get the ignoreCase property: A value indicating whether to ignore case. If true, all words are converted to lower
      * case first. Default is false.
@@ -76,18 +76,5 @@ public class KeywordMarkerTokenFilter extends TokenFilter {
     public KeywordMarkerTokenFilter setIgnoreCase(Boolean ignoreCase) {
         this.ignoreCase = ignoreCase;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (getKeywords() == null) {
-            throw new IllegalArgumentException("Missing required property keywords in model KeywordMarkerTokenFilter");
-        }
     }
 }

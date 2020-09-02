@@ -51,10 +51,16 @@ public class SynonymTokenFilter extends TokenFilter {
     @JsonProperty(value = "expand")
     private Boolean expand;
 
-    /** Creates an instance of SynonymTokenFilter class. */
+    /**
+     * Creates an instance of SynonymTokenFilter class.
+     *
+     * @param name the name value to set.
+     * @param synonyms the synonyms value to set.
+     */
     @JsonCreator
     public SynonymTokenFilter(
-            @JsonProperty(value = "name") String name, @JsonProperty(value = "synonyms") List<String> synonyms) {
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "synonyms", required = true) List<String> synonyms) {
         super(name);
         this.synonyms = synonyms;
     }
@@ -71,15 +77,6 @@ public class SynonymTokenFilter extends TokenFilter {
         return this.synonyms;
     }
 
-    /**
-     * Set the synonyms property: A list of synonyms in following one of two formats: 1. incredible, unbelievable,
-     * fabulous =&gt; amazing - all terms on the left side of =&gt; symbol will be replaced with all terms on its right
-     * side; 2. incredible, unbelievable, fabulous, amazing - comma separated list of equivalent words. Set the expand
-     * option to change how this list is interpreted.
-     *
-     * @param synonyms the synonyms value to set.
-     * @return the SynonymTokenFilter object itself.
-     */
     /**
      * Get the ignoreCase property: A value indicating whether to case-fold input for matching. Default is false.
      *
@@ -128,18 +125,5 @@ public class SynonymTokenFilter extends TokenFilter {
     public SynonymTokenFilter setExpand(Boolean expand) {
         this.expand = expand;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (getSynonyms() == null) {
-            throw new IllegalArgumentException("Missing required property synonyms in model SynonymTokenFilter");
-        }
     }
 }

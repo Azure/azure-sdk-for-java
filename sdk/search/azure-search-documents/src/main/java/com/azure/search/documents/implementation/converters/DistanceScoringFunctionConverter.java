@@ -5,7 +5,6 @@ package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.DistanceScoringFunction;
 import com.azure.search.documents.indexes.models.DistanceScoringParameters;
-import com.azure.search.documents.indexes.models.ScoringFunctionInterpolation;
 
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.DistanceScoringFunction} and
@@ -21,15 +20,12 @@ public final class DistanceScoringFunctionConverter {
             return null;
         }
 
-        DistanceScoringParameters parameters = obj.getParameters() == null ? null
-            : DistanceScoringParametersConverter.map(obj.getParameters());
+        DistanceScoringParameters parameters = obj.getParameters() == null ? null : obj.getParameters();
         DistanceScoringFunction distanceScoringFunction = new DistanceScoringFunction(obj.getFieldName(),
             obj.getBoost(), parameters);
 
         if (obj.getInterpolation() != null) {
-            ScoringFunctionInterpolation interpolation =
-                ScoringFunctionInterpolationConverter.map(obj.getInterpolation());
-            distanceScoringFunction.setInterpolation(interpolation);
+            distanceScoringFunction.setInterpolation(obj.getInterpolation());
         }
 
         return distanceScoringFunction;
@@ -44,20 +40,15 @@ public final class DistanceScoringFunctionConverter {
             return null;
         }
 
-        com.azure.search.documents.indexes.implementation.models.DistanceScoringParameters parameters =
-            obj.getParameters() == null ? null
-                : DistanceScoringParametersConverter.map(obj.getParameters());
-
+        DistanceScoringParameters parameters = obj.getParameters() == null ? null : obj.getParameters();
         com.azure.search.documents.indexes.implementation.models.DistanceScoringFunction distanceScoringFunction =
             new com.azure.search.documents.indexes.implementation.models.DistanceScoringFunction(
                 obj.getFieldName(), obj.getBoost(), parameters);
 
         if (obj.getInterpolation() != null) {
-            com.azure.search.documents.indexes.implementation.models.ScoringFunctionInterpolation interpolation =
-                ScoringFunctionInterpolationConverter.map(obj.getInterpolation());
-            distanceScoringFunction.setInterpolation(interpolation);
+            distanceScoringFunction.setInterpolation(obj.getInterpolation());
         }
-        distanceScoringFunction.validate();
+
         return distanceScoringFunction;
     }
 

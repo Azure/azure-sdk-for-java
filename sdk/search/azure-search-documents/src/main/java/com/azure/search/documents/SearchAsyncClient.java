@@ -17,12 +17,8 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
 import com.azure.search.documents.implementation.SearchIndexClientImplBuilder;
-import com.azure.search.documents.implementation.converters.AutocompleteModeConverter;
-import com.azure.search.documents.implementation.converters.FacetResultConverter;
 import com.azure.search.documents.implementation.converters.IndexBatchBaseConverter;
 import com.azure.search.documents.implementation.converters.IndexDocumentsResultConverter;
-import com.azure.search.documents.implementation.converters.QueryTypeConverter;
-import com.azure.search.documents.implementation.converters.SearchModeConverter;
 import com.azure.search.documents.implementation.converters.SearchResultConverter;
 import com.azure.search.documents.implementation.converters.SuggestResultConverter;
 import com.azure.search.documents.implementation.models.AutocompleteRequest;
@@ -60,7 +56,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -707,12 +702,7 @@ public final class SearchAsyncClient {
             return null;
         }
 
-        Map<String, List<FacetResult>> facets = new HashMap<>();
-
-        result.getFacets().forEach((key, values) ->
-            facets.put(key, values.stream().map(FacetResultConverter::map).collect(Collectors.toList())));
-
-        return facets;
+        return result.getFacets();
     }
 
     /**
@@ -834,7 +824,7 @@ public final class SearchAsyncClient {
     private Mono<AutocompletePagedResponse> autocomplete(AutocompleteRequest request, Context context) {
         return restClient.getDocuments().autocompletePostWithResponseAsync(request, null, context)
             .onErrorMap(MappingUtils::exceptionMapper)
-            .map(MappingUtils::mappingAutocompleteResponse);
+            .map(response -> new AutocompletePagedResponse(new SimpleResponse<>(response, response.getValue())));
     }
 
     /**
@@ -851,18 +841,20 @@ public final class SearchAsyncClient {
             List<String> scoringParameters = searchOptions.getScoringParameters() == null ? null
                 : searchOptions.getScoringParameters().stream().map(ScoringParameter::toString)
                 .collect(Collectors.toList());
-            searchRequest.setSearchMode(SearchModeConverter.map(searchOptions.getSearchMode()))
+            searchRequest.setSearchMode(searchOptions.getSearchMode())
                 .setFacets(searchOptions.getFacets())
                 .setFilter(searchOptions.getFilter())
                 .setHighlightPostTag(searchOptions.getHighlightPostTag())
                 .setHighlightPreTag(searchOptions.getHighlightPreTag())
                 .setIncludeTotalResultCount(searchOptions.isTotalCountIncluded())
                 .setMinimumCoverage(searchOptions.getMinimumCoverage())
-                .setQueryType(QueryTypeConverter.map(searchOptions.getQueryType()))
+                .setQueryType(searchOptions.getQueryType())
                 .setScoringParameters(scoringParameters)
                 .setScoringProfile(searchOptions.getScoringProfile())
                 .setSkip(searchOptions.getSkip())
-                .setTop(searchOptions.getTop());
+                .setTop(searchOptions.getTop())
+                .setScoringStatistics(searchOptions.getScoringStatistics())
+                .setSessionId(searchOptions.getSessionId());
 
             if (searchOptions.getHighlightFields() != null) {
                 searchRequest.setHighlightFields(String.join(",", searchOptions.getHighlightFields()));
@@ -895,7 +887,6 @@ public final class SearchAsyncClient {
     private static SuggestRequest createSuggestRequest(String searchText, String suggesterName,
         SuggestOptions suggestOptions) {
         SuggestRequest suggestRequest = new SuggestRequest(searchText, suggesterName);
-        suggestRequest.validate();
 
         if (suggestOptions != null) {
             suggestRequest.setFilter(suggestOptions.getFilter())
@@ -935,7 +926,6 @@ public final class SearchAsyncClient {
     private static AutocompleteRequest createAutoCompleteRequest(String searchText, String suggesterName,
         AutocompleteOptions autocompleteOptions) {
         AutocompleteRequest autoCompleteRequest = new AutocompleteRequest(searchText, suggesterName);
-        autoCompleteRequest.validate();
 
         if (autocompleteOptions != null) {
             autoCompleteRequest.setFilter(autocompleteOptions.getFilter())
@@ -944,7 +934,7 @@ public final class SearchAsyncClient {
                 .setHighlightPreTag(autocompleteOptions.getHighlightPreTag())
                 .setMinimumCoverage(autocompleteOptions.getMinimumCoverage())
                 .setTop(autocompleteOptions.getTop())
-                .setAutocompleteMode(AutocompleteModeConverter.map(autocompleteOptions.getAutocompleteMode()));
+                .setAutocompleteMode(autocompleteOptions.getAutocompleteMode());
 
             List<String> searchFields = autocompleteOptions.getSearchFields();
             if (searchFields != null) {

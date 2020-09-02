@@ -4,8 +4,6 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.FreshnessScoringFunction;
-import com.azure.search.documents.indexes.models.FreshnessScoringParameters;
-import com.azure.search.documents.indexes.models.ScoringFunctionInterpolation;
 
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.FreshnessScoringFunction} and
@@ -21,14 +19,11 @@ public final class FreshnessScoringFunctionConverter {
             return null;
         }
 
-        FreshnessScoringParameters parameters = FreshnessScoringParametersConverter.map(obj.getParameters());
         FreshnessScoringFunction freshnessScoringFunction = new FreshnessScoringFunction(obj.getFieldName(),
-            obj.getBoost(), parameters);
+            obj.getBoost(), obj.getParameters());
 
         if (obj.getInterpolation() != null) {
-            ScoringFunctionInterpolation interpolation =
-                ScoringFunctionInterpolationConverter.map(obj.getInterpolation());
-            freshnessScoringFunction.setInterpolation(interpolation);
+            freshnessScoringFunction.setInterpolation(obj.getInterpolation());
         }
 
         return freshnessScoringFunction;
@@ -43,19 +38,14 @@ public final class FreshnessScoringFunctionConverter {
             return null;
         }
 
-        com.azure.search.documents.indexes.implementation.models.FreshnessScoringParameters parameters =
-            FreshnessScoringParametersConverter.map(obj.getParameters());
         com.azure.search.documents.indexes.implementation.models.FreshnessScoringFunction freshnessScoringFunction =
             new com.azure.search.documents.indexes.implementation.models.FreshnessScoringFunction(
-                obj.getFieldName(), obj.getBoost(), parameters);
+                obj.getFieldName(), obj.getBoost(), obj.getParameters());
 
         if (obj.getInterpolation() != null) {
-            com.azure.search.documents.indexes.implementation.models.ScoringFunctionInterpolation interpolation =
-                ScoringFunctionInterpolationConverter.map(obj.getInterpolation());
-            freshnessScoringFunction.setInterpolation(interpolation);
+            freshnessScoringFunction.setInterpolation(obj.getInterpolation());
         }
 
-        freshnessScoringFunction.validate();
         return freshnessScoringFunction;
     }
 

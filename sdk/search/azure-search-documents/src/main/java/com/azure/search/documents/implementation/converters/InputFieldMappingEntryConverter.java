@@ -59,7 +59,7 @@ public final class InputFieldMappingEntryConverter {
 
         String sourceContext = obj.getSourceContext();
         inputFieldMappingEntry.setSourceContext(sourceContext);
-        inputFieldMappingEntry.validate();
+
         return inputFieldMappingEntry;
     }
 

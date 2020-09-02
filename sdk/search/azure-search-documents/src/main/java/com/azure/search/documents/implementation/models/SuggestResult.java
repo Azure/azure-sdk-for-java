@@ -30,9 +30,15 @@ public final class SuggestResult {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of SuggestResult class. */
+    /**
+     * Creates an instance of SuggestResult class.
+     *
+     * @param text the text value to set.
+     */
     @JsonCreator
-    public SuggestResult(@JsonProperty(value = "@search.text") String text) {
+    public SuggestResult(
+            @JsonProperty(value = "@search.text", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    String text) {
         this.text = text;
     }
 
@@ -75,11 +81,4 @@ public final class SuggestResult {
         }
         additionalProperties.put(key, value);
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {}
 }

@@ -56,7 +56,7 @@ public final class DataSourcesImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "SearchServiceClientD")
-    private interface DataSourcesService {
+    public interface DataSourcesService {
         @Put("/datasources('{dataSourceName}')")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
@@ -143,22 +143,6 @@ public final class DataSourcesImpl {
             String ifNoneMatch,
             RequestOptions requestOptions,
             Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (dataSourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter dataSourceName is required and cannot be null."));
-        }
-        if (dataSource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter dataSource is required and cannot be null."));
-        } else {
-            dataSource.validate();
-        }
-        if (requestOptions != null) {
-            requestOptions.validate();
-        }
         final String prefer = "return=representation";
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
@@ -197,17 +181,6 @@ public final class DataSourcesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
             String dataSourceName, String ifMatch, String ifNoneMatch, RequestOptions requestOptions, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (dataSourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter dataSourceName is required and cannot be null."));
-        }
-        if (requestOptions != null) {
-            requestOptions.validate();
-        }
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -239,17 +212,6 @@ public final class DataSourcesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexerDataSource>> getWithResponseAsync(
             String dataSourceName, RequestOptions requestOptions, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (dataSourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter dataSourceName is required and cannot be null."));
-        }
-        if (requestOptions != null) {
-            requestOptions.validate();
-        }
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -280,14 +242,6 @@ public final class DataSourcesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ListDataSourcesResult>> listWithResponseAsync(
             String select, RequestOptions requestOptions, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (requestOptions != null) {
-            requestOptions.validate();
-        }
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -312,19 +266,6 @@ public final class DataSourcesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexerDataSource>> createWithResponseAsync(
             SearchIndexerDataSource dataSource, RequestOptions requestOptions, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (dataSource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter dataSource is required and cannot be null."));
-        } else {
-            dataSource.validate();
-        }
-        if (requestOptions != null) {
-            requestOptions.validate();
-        }
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {

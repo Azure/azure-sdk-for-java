@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,7 +16,7 @@ public final class SearchIndexerSkillset {
     /*
      * The name of the skillset.
      */
-    @JsonProperty(value = "name", required = true)
+    @JsonProperty(value = "name")
     private String name;
 
     /*
@@ -29,7 +28,7 @@ public final class SearchIndexerSkillset {
     /*
      * A list of skills in the skillset.
      */
-    @JsonProperty(value = "skills", required = true)
+    @JsonProperty(value = "skills")
     private List<SearchIndexerSkill> skills;
 
     /*
@@ -43,15 +42,6 @@ public final class SearchIndexerSkillset {
      */
     @JsonProperty(value = "@odata.etag")
     private String eTag;
-
-    /** Creates an instance of SearchIndexerSkillset class. */
-    @JsonCreator
-    public SearchIndexerSkillset(
-            @JsonProperty(value = "name") String name,
-            @JsonProperty(value = "skills") List<SearchIndexerSkill> skills) {
-        this.name = name;
-        this.skills = skills;
-    }
 
     /**
      * Get the name property: The name of the skillset.
@@ -68,6 +58,11 @@ public final class SearchIndexerSkillset {
      * @param name the name value to set.
      * @return the SearchIndexerSkillset object itself.
      */
+    public SearchIndexerSkillset setName(String name) {
+        this.name = name;
+        return this;
+    }
+
     /**
      * Get the description property: The description of the skillset.
      *
@@ -103,6 +98,11 @@ public final class SearchIndexerSkillset {
      * @param skills the skills value to set.
      * @return the SearchIndexerSkillset object itself.
      */
+    public SearchIndexerSkillset setSkills(List<SearchIndexerSkill> skills) {
+        this.skills = skills;
+        return this;
+    }
+
     /**
      * Get the cognitiveServicesAccount property: Details about cognitive services to be used when running skills.
      *
@@ -141,24 +141,5 @@ public final class SearchIndexerSkillset {
     public SearchIndexerSkillset setETag(String eTag) {
         this.eTag = eTag;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getName() == null) {
-            throw new IllegalArgumentException("Missing required property name in model SearchIndexerSkillset");
-        }
-        if (getSkills() == null) {
-            throw new IllegalArgumentException("Missing required property skills in model SearchIndexerSkillset");
-        } else {
-            getSkills().forEach(e -> e.validate());
-        }
-        if (getCognitiveServicesAccount() != null) {
-            getCognitiveServicesAccount().validate();
-        }
     }
 }

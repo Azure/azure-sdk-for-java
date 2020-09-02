@@ -27,9 +27,15 @@ public final class SuggestDocumentsResult {
     @JsonProperty(value = "@search.coverage", access = JsonProperty.Access.WRITE_ONLY)
     private Double coverage;
 
-    /** Creates an instance of SuggestDocumentsResult class. */
+    /**
+     * Creates an instance of SuggestDocumentsResult class.
+     *
+     * @param results the results value to set.
+     */
     @JsonCreator
-    public SuggestDocumentsResult(@JsonProperty(value = "value") List<SuggestResult> results) {
+    public SuggestDocumentsResult(
+            @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    List<SuggestResult> results) {
         this.results = results;
     }
 
@@ -50,16 +56,5 @@ public final class SuggestDocumentsResult {
      */
     public Double getCoverage() {
         return this.coverage;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getResults() != null) {
-            getResults().forEach(e -> e.validate());
-        }
     }
 }

@@ -38,9 +38,13 @@ public final class InputFieldMappingEntry {
     @JsonProperty(value = "inputs")
     private List<InputFieldMappingEntry> inputs;
 
-    /** Creates an instance of InputFieldMappingEntry class. */
+    /**
+     * Creates an instance of InputFieldMappingEntry class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
-    public InputFieldMappingEntry(@JsonProperty(value = "name") String name) {
+    public InputFieldMappingEntry(@JsonProperty(value = "name", required = true) String name) {
         this.name = name;
     }
 
@@ -53,12 +57,6 @@ public final class InputFieldMappingEntry {
         return this.name;
     }
 
-    /**
-     * Set the name property: The name of the input.
-     *
-     * @param name the name value to set.
-     * @return the InputFieldMappingEntry object itself.
-     */
     /**
      * Get the source property: The source of the input.
      *
@@ -117,19 +115,5 @@ public final class InputFieldMappingEntry {
     public InputFieldMappingEntry setInputs(List<InputFieldMappingEntry> inputs) {
         this.inputs = inputs;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getName() == null) {
-            throw new IllegalArgumentException("Missing required property name in model InputFieldMappingEntry");
-        }
-        if (getInputs() != null) {
-            getInputs().forEach(e -> e.validate());
-        }
     }
 }

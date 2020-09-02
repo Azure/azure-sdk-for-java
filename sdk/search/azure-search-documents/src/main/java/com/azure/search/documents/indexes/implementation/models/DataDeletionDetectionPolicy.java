@@ -22,15 +22,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(
             name = "#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy",
-            value = SoftDeleteColumnDeletionDetectionPolicy.class)
+            value = SoftDeleteColumnDeletionDetectionPolicy.class),
+    @JsonSubTypes.Type(
+            name = "#Microsoft.Azure.Search.NativeBlobSoftDeleteDeletionDetectionPolicy",
+            value = NativeBlobSoftDeleteDeletionDetectionPolicy.class)
 })
 @JsonFlatten
 @Immutable
-public class DataDeletionDetectionPolicy {
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {}
-}
+public class DataDeletionDetectionPolicy {}

@@ -50,7 +50,7 @@ public final class LuceneStandardAnalyzerConverter {
             List<String> stopwords = new ArrayList<>(obj.getStopwords());
             luceneStandardAnalyzer.setStopwords(stopwords);
         }
-        luceneStandardAnalyzer.validate();
+
         return luceneStandardAnalyzer;
     }
 

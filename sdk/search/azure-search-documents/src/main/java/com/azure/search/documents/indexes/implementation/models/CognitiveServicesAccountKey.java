@@ -26,9 +26,13 @@ public class CognitiveServicesAccountKey extends CognitiveServicesAccount {
     @JsonProperty(value = "key", required = true)
     private String key;
 
-    /** Creates an instance of CognitiveServicesAccountKey class. */
+    /**
+     * Creates an instance of CognitiveServicesAccountKey class.
+     *
+     * @param key the key value to set.
+     */
     @JsonCreator
-    public CognitiveServicesAccountKey(@JsonProperty(value = "key") String key) {
+    public CognitiveServicesAccountKey(@JsonProperty(value = "key", required = true) String key) {
         this.key = key;
     }
 
@@ -39,24 +43,5 @@ public class CognitiveServicesAccountKey extends CognitiveServicesAccount {
      */
     public String getKey() {
         return this.key;
-    }
-
-    /**
-     * Set the key property: The key used to provision the cognitive service resource attached to a skillset.
-     *
-     * @param key the key value to set.
-     * @return the CognitiveServicesAccountKey object itself.
-     */
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (getKey() == null) {
-            throw new IllegalArgumentException("Missing required property key in model CognitiveServicesAccountKey");
-        }
     }
 }

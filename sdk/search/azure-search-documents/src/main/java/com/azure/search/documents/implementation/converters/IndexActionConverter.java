@@ -9,7 +9,6 @@ import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.models.IndexAction;
-import com.azure.search.documents.models.IndexActionType;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -36,8 +35,7 @@ public final class IndexActionConverter {
         IndexAction<T> indexAction = new IndexAction<T>();
 
         if (obj.getActionType() != null) {
-            IndexActionType actionType = IndexActionTypeConverter.map(obj.getActionType());
-            indexAction.setActionType(actionType);
+            indexAction.setActionType(obj.getActionType());
         }
 
         if (obj.getAdditionalProperties() != null) {
@@ -60,9 +58,7 @@ public final class IndexActionConverter {
             new com.azure.search.documents.implementation.models.IndexAction();
 
         if (obj.getActionType() != null) {
-            com.azure.search.documents.implementation.models.IndexActionType actionType =
-                IndexActionTypeConverter.map(obj.getActionType());
-            indexAction.setActionType(actionType);
+            indexAction.setActionType(obj.getActionType());
         }
 
 

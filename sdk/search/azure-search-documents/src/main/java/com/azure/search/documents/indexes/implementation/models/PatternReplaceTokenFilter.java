@@ -31,12 +31,18 @@ public class PatternReplaceTokenFilter extends TokenFilter {
     @JsonProperty(value = "replacement", required = true)
     private String replacement;
 
-    /** Creates an instance of PatternReplaceTokenFilter class. */
+    /**
+     * Creates an instance of PatternReplaceTokenFilter class.
+     *
+     * @param name the name value to set.
+     * @param pattern the pattern value to set.
+     * @param replacement the replacement value to set.
+     */
     @JsonCreator
     public PatternReplaceTokenFilter(
-            @JsonProperty(value = "name") String name,
-            @JsonProperty(value = "pattern") String pattern,
-            @JsonProperty(value = "replacement") String replacement) {
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "pattern", required = true) String pattern,
+            @JsonProperty(value = "replacement", required = true) String replacement) {
         super(name);
         this.pattern = pattern;
         this.replacement = replacement;
@@ -52,40 +58,11 @@ public class PatternReplaceTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the pattern property: A regular expression pattern.
-     *
-     * @param pattern the pattern value to set.
-     * @return the PatternReplaceTokenFilter object itself.
-     */
-    /**
      * Get the replacement property: The replacement text.
      *
      * @return the replacement value.
      */
     public String getReplacement() {
         return this.replacement;
-    }
-
-    /**
-     * Set the replacement property: The replacement text.
-     *
-     * @param replacement the replacement value to set.
-     * @return the PatternReplaceTokenFilter object itself.
-     */
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (getPattern() == null) {
-            throw new IllegalArgumentException("Missing required property pattern in model PatternReplaceTokenFilter");
-        }
-        if (getReplacement() == null) {
-            throw new IllegalArgumentException(
-                    "Missing required property replacement in model PatternReplaceTokenFilter");
-        }
     }
 }

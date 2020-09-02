@@ -8,6 +8,10 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.search.documents.indexes.models.ImageAnalysisSkillLanguage;
+import com.azure.search.documents.indexes.models.ImageDetail;
+import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.VisualFeature;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -38,11 +42,16 @@ public class ImageAnalysisSkill extends SearchIndexerSkill {
     @JsonProperty(value = "details")
     private List<ImageDetail> details;
 
-    /** Creates an instance of ImageAnalysisSkill class. */
+    /**
+     * Creates an instance of ImageAnalysisSkill class.
+     *
+     * @param inputs the inputs value to set.
+     * @param outputs the outputs value to set.
+     */
     @JsonCreator
     public ImageAnalysisSkill(
-            @JsonProperty(value = "inputs") List<InputFieldMappingEntry> inputs,
-            @JsonProperty(value = "outputs") List<OutputFieldMappingEntry> outputs) {
+            @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,
+            @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
     }
 
@@ -104,15 +113,5 @@ public class ImageAnalysisSkill extends SearchIndexerSkill {
     public ImageAnalysisSkill setDetails(List<ImageDetail> details) {
         this.details = details;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
     }
 }
