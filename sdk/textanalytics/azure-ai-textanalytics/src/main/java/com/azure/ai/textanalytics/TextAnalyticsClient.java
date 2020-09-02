@@ -234,7 +234,6 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CategorizedEntityCollection recognizeEntities(String document, String language) {
-        Objects.requireNonNull(document, "'document' cannot be null.");
         return client.recognizeEntities(document, language).block();
     }
 
@@ -345,7 +344,6 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PiiEntityCollection recognizePiiEntities(String document, String language) {
-        Objects.requireNonNull(document, "'document' cannot be null.");
         return client.recognizePiiEntities(document, language).block();
     }
 
@@ -377,7 +375,6 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PiiEntityCollection recognizePiiEntities(String document, String language,
         RecognizePiiEntityOptions options) {
-        Objects.requireNonNull(document, "'document' cannot be null.");
         return client.recognizePiiEntities(document, language, options).block();
     }
 
