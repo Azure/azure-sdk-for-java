@@ -390,7 +390,9 @@ function GetExistingTags($apiUrl) {
 # Retrieve release tag for artiface package. If multiple packages, then output the first one.
 function RetrieveReleaseTag($pkgRepository, $artifactLocation, $continueOnError = $true) {
   try {
-    $pkgs, $ParsePkgInfoFn = RetrievePackages $pkgRepository, $artifactLocation
+    $pkgs, $ParsePkgInfoFn = RetrivePackages -pkgRepository $pkgRepository -artifactLocation $artifactLocation
+    Write-Host "This is the pkgs: $pkgs"
+    Write-Host "This is the pack func: $ParsePkgInfoFn"
     if (!pkgs -or !$pkgs[0]) {
       return ""
     }
@@ -410,6 +412,7 @@ function RetrieveReleaseTag($pkgRepository, $artifactLocation, $continueOnError 
   }
 }
 function RetrivePackages($pkgRepository, $artifactLocation) {
+  Write-Host "$pkgRepository"
   $ParsePkgInfoFn = ""
   $packagePattern = ""
   switch ($pkgRepository) {
@@ -446,14 +449,15 @@ function RetrivePackages($pkgRepository, $artifactLocation) {
       exit(1)
     }
   }
-  return (Get-ChildItem -Path $artifactLocation -Include $packagePattern -Recurse -File), $ParsePkgInfoFn
+  return Get-ChildItem -Path $artifactLocation -Include $packagePattern -Recurse -File, $ParsePkgInfoFn
 }
 
 # Walk across all build artifacts, check them against the appropriate repository, return a list of tags/releases
 function VerifyPackages($pkgRepository, $artifactLocation, $workingDirectory, $apiUrl, $releaseSha,  $continueOnError = $false) {
   $pkgList = [array]@()
-  $pkgs, $ParsePkgInfoFn = RetrivePackages $pkgRepository, $artifactLocation
-
+  $pkgs, $ParsePkgInfoFn = RetrivePackages -pkgRepository $pkgRepository -artifactLocation $artifactLocation
+  Write-Host "This is the pkgs: $pkgs"
+  Write-Host "This is the pack func: $ParsePkgInfoFn"
   foreach ($pkg in $pkgs) {
     try {
       $parsedPackage = &$ParsePkgInfoFn -pkg $pkg -workingDirectory $workingDirectory
