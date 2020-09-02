@@ -712,7 +712,8 @@ public class DataLakePathAsyncClient {
     public Mono<AccessControlChangeResult> updateAccessControlRecursive(List<PathAccessControlEntry> accessControlList)
     {
         try {
-            return updateAccessControlRecursiveWithResponse(new PathUpdateAccessControlRecursiveOptions(accessControlList))
+            return updateAccessControlRecursiveWithResponse(
+                new PathUpdateAccessControlRecursiveOptions(accessControlList))
                 .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -760,7 +761,8 @@ public class DataLakePathAsyncClient {
     public Mono<AccessControlChangeResult> removeAccessControlRecursive(
         List<PathRemoveAccessControlEntry> accessControlList) {
         try {
-            return removeAccessControlRecursiveWithResponse(new PathRemoveAccessControlRecursiveOptions(accessControlList))
+            return removeAccessControlRecursiveWithResponse(
+                new PathRemoveAccessControlRecursiveOptions(accessControlList))
                 .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -784,9 +786,9 @@ public class DataLakePathAsyncClient {
         PathRemoveAccessControlRecursiveOptions options) {
         try {
             return withContext(context -> setAccessControlRecursiveWithResponse(
-                PathRemoveAccessControlEntry.serializeList(options.getAccessControlList()), options.getProgressHandler(),
-                PathSetAccessControlRecursiveMode.REMOVE, options.getBatchSize(), options.getMaxBatches(),
-                options.isContinuingOnFailure(), options.getContinuationToken(), context));
+                PathRemoveAccessControlEntry.serializeList(options.getAccessControlList()),
+                options.getProgressHandler(), PathSetAccessControlRecursiveMode.REMOVE, options.getBatchSize(),
+                options.getMaxBatches(), options.isContinuingOnFailure(), options.getContinuationToken(), context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

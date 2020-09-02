@@ -11,6 +11,9 @@ import java.util.Locale;
 import static com.azure.storage.file.datalake.models.PathAccessControlEntry.ACCESS_CONTROL_ENTRY_INVALID_SCOPE;
 import static com.azure.storage.file.datalake.models.PathAccessControlEntry.DEFAULT_SCOPE;
 
+/**
+ * Represents an access control in a file access control list for removal.
+ */
 public class PathRemoveAccessControlEntry {
     private boolean defaultScope;
     private AccessControlType accessControlType;

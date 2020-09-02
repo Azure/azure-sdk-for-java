@@ -22,8 +22,8 @@ public class AccessControlChangeCounters {
 
     /**
      * Sets the number of directories where Access Control List has been updated successfully.
-     * @param changedDirectoriesCount  The number of directories where Access Control List has been updated
-     *                                 successfully.
+     * @param changedDirectoriesCount The number of directories where Access Control List has been updated
+     * successfully.
      * @return The updated object.
      */
     public AccessControlChangeCounters setChangedDirectoriesCount(long changedDirectoriesCount) {

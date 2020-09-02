@@ -41,8 +41,6 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-import static com.azure.core.util.FluxUtil.withContext;
-
 /**
  * This class provides a client that contains all operations that apply to any path object.
  */
@@ -488,9 +486,9 @@ public class DataLakePathClient {
         PathRemoveAccessControlRecursiveOptions options, Duration timeout, Context context) {
         Mono<Response<AccessControlChangeResult>> response =
             dataLakePathAsyncClient.setAccessControlRecursiveWithResponse(
-                PathRemoveAccessControlEntry.serializeList(options.getAccessControlList()), options.getProgressHandler(),
-                PathSetAccessControlRecursiveMode.REMOVE, options.getBatchSize(), options.getMaxBatches(),
-                options.isContinuingOnFailure(), options.getContinuationToken(), context);
+                PathRemoveAccessControlEntry.serializeList(options.getAccessControlList()),
+                options.getProgressHandler(), PathSetAccessControlRecursiveMode.REMOVE, options.getBatchSize(),
+                options.getMaxBatches(), options.isContinuingOnFailure(), options.getContinuationToken(), context);
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }

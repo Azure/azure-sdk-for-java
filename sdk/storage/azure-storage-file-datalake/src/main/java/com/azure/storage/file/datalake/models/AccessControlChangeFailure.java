@@ -9,7 +9,7 @@ package com.azure.storage.file.datalake.models;
 public class AccessControlChangeFailure {
     private String name;
     private boolean isDirectory;
-    public String errorMessage;
+    private String errorMessage;
 
     /**
      * Returns the name of an entry.
