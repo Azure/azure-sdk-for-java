@@ -15,21 +15,19 @@ import java.util.Map;
 @Fluent
 public class DigitalTwinModelData {
 
-    private final ObjectMapper mapper;
-
     /**
      * Creates a new instance of DigitalTwinModelData.
      * @param modelData The model data.
      */
     public DigitalTwinModelData(ModelData modelData) {
-        mapper = new ObjectMapper();
-
         String modelStringValue = null;
 
-        try {
-            modelStringValue = mapper.writeValueAsString(modelData.getModel());
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+        if (modelData.getModel() != null){
+            try {
+                modelStringValue = new ObjectMapper().writeValueAsString(modelData.getModel());
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
         }
 
         this.setId(modelData.getId())
