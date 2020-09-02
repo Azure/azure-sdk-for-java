@@ -6,7 +6,9 @@ package com.azure.digitaltwins.core;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
+import com.azure.digitaltwins.core.implementation.serialization.BasicRelationship;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import org.apache.http.HttpStatus;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -16,7 +18,31 @@ import java.nio.file.Paths;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
+/**
+ * This sample creates all the models in \DTDL\Models folder in the ADT service instance and creates the corresponding twins in \DTDL\DigitalTwins folder.
+ * The Diagram for the Hospital model looks like this:
+ *
+ *          +------------+
+ *          |  Building  +-----isEquippedWith-----+
+ *          +------------+                        |
+ *                |                               v
+ *               has                           +-----+
+ *                |                            | HVAC|
+ *                v                            +-----+
+ *          +------------+                        |
+ *          |   Floor    +<--controlsTemperature--+
+ *          +------------+
+ *                |
+ *             contains
+ *                |
+ *                v
+ *          +------------+                 +-----------------+
+ *          |   Room     |-with component->| WifiAccessPoint |
+ *          +------------+                 +-----------------+
+ *
+ */
 public class DigitalTwinsLifecycleSample {
     private static final String tenantId = System.getenv("TENANT_ID");
     private static final String clientId = System.getenv("CLIENT_ID");
@@ -38,8 +64,7 @@ public class DigitalTwinsLifecycleSample {
             assert DtdlDirectoryUrl != null;
             DtDlDirectoryPath = Paths.get(DtdlDirectoryUrl.toURI());
         } catch (URISyntaxException e) {
-            System.err.println("Unable to convert the DTDL directory URL to URI: " + e);
-            throw new RuntimeException(e);
+            throw new RuntimeException("Unable to convert the DTDL directory URL to URI", e);
         }
         TwinsPath = Paths.get(DtDlDirectoryPath.toString(), "DigitalTwins");
         ModelsPath = Paths.get(DtDlDirectoryPath.toString(), "Models");
@@ -72,21 +97,71 @@ public class DigitalTwinsLifecycleSample {
         System.out.println("DELETE DIGITAL TWINS");
         Map<String, String> twins = FileHelper.loadAllFilesInPath(TwinsPath);
         final Semaphore deleteTwinsSemaphore = new Semaphore(0);
+        final Semaphore deleteRelationshipsSemaphore = new Semaphore(0);
 
-        // Call APIs to delete the twins. For each async operation, once the operation is completed successfully, a semaphore is released.
+        // Call APIs to clean up any preexisting resources that might be referenced by this sample. If digital twin does not exist, ignore.
         twins
-            .forEach((twinId, twinContent) -> client.deleteDigitalTwin(twinId)
-                .doOnSuccess(aVoid -> System.out.println("Deleted digital twin: " + twinId))
-                .doOnError(throwable -> {
-                    // If digital twin does not exist, ignore.
-                    if (!(throwable instanceof ErrorResponseException) || !((ErrorResponseException) throwable).getValue().getError().getCode().equals("DigitalTwinNotFound")) {
-                        System.err.println("Could not delete digital twin " + twinId + " due to " + throwable);
-                    }
-                })
-                .doOnTerminate(deleteTwinsSemaphore::release)
-                .subscribe());
+            .forEach((twinId, twinContent) -> {
+                // Call APIs to delete all relationships.
+                client.listRelationships(twinId, BasicRelationship.class)
+                    .doOnComplete(deleteRelationshipsSemaphore::release)
+                    .doOnError(throwable -> {
+                        if (throwable instanceof ErrorResponseException && ((ErrorResponseException) throwable).getResponse().getStatusCode() == HttpStatus.SC_NOT_FOUND) {
+                            deleteRelationshipsSemaphore.release();
+                        } else {
+                            System.err.println("List relationships error: " + throwable);
+                        }
+                    })
+                    .subscribe(
+                        relationship -> client.deleteRelationship(twinId, relationship.getId())
+                            .subscribe(
+                                aVoid -> System.out.println("Found and deleted relationship: " + relationship.getId()),
+                                throwable -> System.err.println("Delete relationship error: " + throwable)
+                            ));
 
-        // Verify that a semaphore has been released for each async operation, signifying that the async call has completed.
+                // Call APIs to delete any incoming relationships.
+                client.listIncomingRelationships(twinId)
+                    .doOnComplete(deleteRelationshipsSemaphore::release)
+                    .doOnError(throwable -> {
+                        if (throwable instanceof ErrorResponseException && ((ErrorResponseException) throwable).getResponse().getStatusCode() == HttpStatus.SC_NOT_FOUND) {
+                            deleteRelationshipsSemaphore.release();
+                        } else {
+                            System.err.println("List relationships error: " + throwable);
+                        }
+                    })
+                    .subscribe(
+                        incomingRelationship -> client.deleteRelationship(incomingRelationship.getSourceId(), incomingRelationship.getRelationshipId())
+                            .subscribe(
+                                aVoid -> System.out.println("Found and deleted incoming relationship: " + incomingRelationship.getRelationshipId()),
+                                throwable -> System.err.println("Delete relationship error: " + throwable)
+                            ));
+
+                try {
+                    // Verify that the list relationships and list incoming relationships async operations have completed.
+                    if (deleteRelationshipsSemaphore.tryAcquire(2, MaxWaitTimeAsyncOperationsInSeconds, TimeUnit.SECONDS)) {
+                        // Now the digital twin should be safe to delete
+
+                        // Call APIs to delete the twins.
+                        client.deleteDigitalTwin(twinId)
+                            .doOnSuccess(aVoid -> {
+                                System.out.println("Deleted digital twin: " + twinId);
+                                deleteTwinsSemaphore.release();
+                            })
+                            .doOnError(throwable -> {
+                                if (throwable instanceof ErrorResponseException && ((ErrorResponseException) throwable).getResponse().getStatusCode() == HttpStatus.SC_NOT_FOUND) {
+                                    deleteTwinsSemaphore.release();
+                                } else {
+                                    System.err.println("Could not delete digital twin " + twinId + " due to " + throwable);
+                                }
+                            })
+                            .subscribe();
+                    }
+                } catch (InterruptedException e) {
+                    throw new RuntimeException("Could not cleanup the pre-existing resources: ", e);
+                }
+            });
+
+        // Verify that a semaphore has been released for each delete async operation, signifying that the async call has completed successfully..
         boolean created = deleteTwinsSemaphore.tryAcquire(twins.size(), MaxWaitTimeAsyncOperationsInSeconds, TimeUnit.SECONDS);
         System.out.println("Twins deleted: " + created);
     }
@@ -99,12 +174,12 @@ public class DigitalTwinsLifecycleSample {
         // Call APIs to create the twins. For each async operation, once the operation is completed successfully, a semaphore is released.
         twins
             .forEach((twinId, twinContent) -> client.createDigitalTwinWithResponse(twinId, twinContent)
-                .doOnSuccess(response -> System.out.println("Created digital twin: " + twinId + "\n\t Body: " + response.getValue()))
-                .doOnError(throwable -> System.err.println("Could not create digital twin " + twinId + " due to " + throwable))
-                .doOnTerminate(createTwinsSemaphore::release)
-                .subscribe());
+                .subscribe(
+                    response -> System.out.println("Created digital twin: " + twinId + "\n\t Body: " + response.getValue()),
+                    throwable -> System.err.println("Could not create digital twin " + twinId + " due to " + throwable),
+                    createTwinsSemaphore::release));
 
-        // Verify that a semaphore has been released for each async operation, signifying that the async call has completed.
+        // Verify that a semaphore has been released for each async operation, signifying that the async call has completed successfully.
         boolean created = createTwinsSemaphore.tryAcquire(twins.size(), MaxWaitTimeAsyncOperationsInSeconds, TimeUnit.SECONDS);
         System.out.println("Twins created: " + created);
     }
