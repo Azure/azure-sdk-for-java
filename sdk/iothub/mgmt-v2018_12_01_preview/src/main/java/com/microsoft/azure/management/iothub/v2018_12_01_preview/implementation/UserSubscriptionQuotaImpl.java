@@ -13,14 +13,14 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.iothub.v2018_12_01_preview.Name;
 
 class UserSubscriptionQuotaImpl extends WrapperImpl<UserSubscriptionQuotaInner> implements UserSubscriptionQuota {
-    private final IoTHubManager manager;
-    UserSubscriptionQuotaImpl(UserSubscriptionQuotaInner inner, IoTHubManager manager) {
+    private final DevicesManager manager;
+    UserSubscriptionQuotaImpl(UserSubscriptionQuotaInner inner, DevicesManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public IoTHubManager manager() {
+    public DevicesManager manager() {
         return this.manager;
     }
 
