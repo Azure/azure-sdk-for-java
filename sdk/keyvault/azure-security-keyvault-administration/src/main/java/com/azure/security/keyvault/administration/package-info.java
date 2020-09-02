@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 
 /**
- * Package containing classes for creating
- * {@link com.azure.security.keyvault.administration.KeyVaultAccessControlAsyncClient}
- * and {@link com.azure.security.keyvault.administration.KeyVaultAccessControlClient} to perform operations on Azure
- * Key Vault.
+ * Package containing classes for creating clients
+ * {@link com.azure.security.keyvault.administration.KeyVaultAccessControlAsyncClient} and
+ * {@link com.azure.security.keyvault.administration.KeyVaultAccessControlClient} that perform access control
+ * operations on Azure Key Vault resources.
  */
 package com.azure.security.keyvault.administration;
