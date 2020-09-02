@@ -42,9 +42,9 @@ extends:
       - name: azure-core-experimental
         groupId: com.azure
         safeName: azurecoreexperimental
-      - name: azure-core-http-jdk
+      - name: azure-core-http-jdk-httpclient
         groupId: com.azure
-        safeName: azurecorehttpjdk
+        safeName: azurecorehttpjdkhttpclient
       - name: azure-core-http-netty
         groupId: com.azure
         safeName: azurecorehttpnetty
