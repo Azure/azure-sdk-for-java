@@ -12,7 +12,6 @@ import io.netty.channel.pool.ChannelHealthChecker;
 import io.netty.channel.pool.ChannelPool;
 import io.netty.channel.pool.ChannelPoolHandler;
 import io.netty.handler.logging.LoggingHandler;
-import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.AttributeKey;
@@ -115,12 +114,10 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
             pipeline.addFirst(new LoggingHandler(this.config.wireLogLevel()));
         }
 
-        SslContext sslContext = this.config.sslContext();
-        SSLEngine sslEngine = sslContext.newEngine(channel.alloc());
-        SslHandler sslHandler = new SslHandler(sslEngine);
+        SSLEngine sslEngine = this.config.sslContext().newEngine(channel.alloc());
         System.out.println("sslEngine type is: " + sslEngine.getClass());
         pipeline.addFirst(
-            sslHandler,
+            new SslHandler(sslEngine),
             new IdleStateHandler(
                 idleConnectionTimerResolutionInNanos,
                 idleConnectionTimerResolutionInNanos,
