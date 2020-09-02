@@ -214,7 +214,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             serviceEndpoint, connectionPolicy, consistencyLevel, configs.getProtocol());
 
         try {
-
             this.connectionSharingAcrossClientsEnabled = connectionSharingAcrossClientsEnabled;
             this.configs = configs;
             this.masterKeyOrResourceToken = masterKeyOrResourceToken;
@@ -259,7 +258,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.globalEndpointManager = new GlobalEndpointManager(asDatabaseAccountManagerInternal(), this.connectionPolicy, /**/configs);
             this.retryPolicy = new RetryPolicy(this.globalEndpointManager, this.connectionPolicy);
             this.resetSessionTokenRetryPolicy = retryPolicy;
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             logger.error("unexpected failure in initializing client.", e);
             close();
             throw e;
@@ -279,7 +278,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 + " Check if the endpoint is reachable and if your auth token is valid");
         }
 
-        assert(databaseAccount != null);
         this.useMultipleWriteLocations = this.connectionPolicy.isMultipleWriteRegionsEnabled() && BridgeInternal.isEnableMultipleWriteLocations(databaseAccount);
 
         // TODO: add support for openAsync
