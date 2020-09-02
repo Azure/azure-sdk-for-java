@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.resourcemanager.resources.core;
+package com.azure.resourcemanager.test.utils;
 
 import com.azure.core.http.rest.PagedIterable;
 
