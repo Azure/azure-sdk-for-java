@@ -7,7 +7,7 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
- * The DigitalTwinModelData representing the model and its corresponding metadata.
+ * The ModelData representing the model and its corresponding metadata.
  */
 @Fluent
 public class ModelData {
@@ -66,7 +66,7 @@ public class ModelData {
      * definition.
      *
      * @param displayName the displayName value to set.
-     * @return the DigitalTwinModelData object itself.
+     * @return the ModelData object itself.
      */
     public ModelData setDisplayName(Map<String, String> displayName) {
         this.displayName = displayName;
@@ -88,7 +88,7 @@ public class ModelData {
      * definition.
      *
      * @param description the description value to set.
-     * @return the DigitalTwinModelData object itself.
+     * @return the ModelData object itself.
      */
     public ModelData setDescription(Map<String, String> description) {
         this.description = description;
@@ -108,7 +108,7 @@ public class ModelData {
      * Set the id property: The id of the model as specified in the model definition.
      *
      * @param id the id value to set.
-     * @return the DigitalTwinModelData object itself.
+     * @return the ModelData object itself.
      */
     public ModelData setId(String id) {
         this.id = id;
@@ -128,7 +128,7 @@ public class ModelData {
      * Set the uploadTime property: The time the model was uploaded to the service.
      *
      * @param uploadTime the uploadTime value to set.
-     * @return the DigitalTwinModelData object itself.
+     * @return the ModelData object itself.
      */
     public ModelData setUploadTime(OffsetDateTime uploadTime) {
         this.uploadTime = uploadTime;
@@ -150,7 +150,7 @@ public class ModelData {
      * referenced by newly created digital twins.
      *
      * @param decommissioned the decommissioned value to set.
-     * @return the DigitalTwinModelData object itself.
+     * @return the ModelData object itself.
      */
     public ModelData setDecommissioned(Boolean decommissioned) {
         this.decommissioned = decommissioned;
@@ -170,7 +170,7 @@ public class ModelData {
      * Set the model property: The model definition.
      *
      * @param model the model value to set.
-     * @return the DigitalTwinModelData object itself.
+     * @return the ModelData object itself.
      */
     public ModelData setModel(String model) {
         this.model = model;

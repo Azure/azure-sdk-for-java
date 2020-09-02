@@ -779,7 +779,7 @@ public final class DigitalTwinsAsyncClient {
             .map(
                 objectPagedResponse -> {
                     List<ModelData> convertedList = objectPagedResponse.getValue().stream()
-                        .map(object -> ModelDataConverter.map(object))
+                        .map(ModelDataConverter::map)
                         .filter(Objects::nonNull)
                         .collect(Collectors.toList());
                     return new PagedResponseBase<>(
@@ -870,7 +870,7 @@ public final class DigitalTwinsAsyncClient {
             .map(
                 objectPagedResponse -> {
                     List<ModelData> convertedList = objectPagedResponse.getValue().stream()
-                        .map(object -> ModelDataConverter.map(object))
+                        .map(ModelDataConverter::map)
                         .filter(Objects::nonNull)
                         .collect(Collectors.toList());
                     return new PagedResponseBase<>(
@@ -888,7 +888,7 @@ public final class DigitalTwinsAsyncClient {
         return protocolLayer.getDigitalTwinModels().listNextSinglePageAsync(nextLink, context)
             .map(objectPagedResponse -> {
             List<ModelData> convertedList = objectPagedResponse.getValue().stream()
-                .map(object -> ModelDataConverter.map(object))
+                .map(ModelDataConverter::map)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
             return new PagedResponseBase<>(
