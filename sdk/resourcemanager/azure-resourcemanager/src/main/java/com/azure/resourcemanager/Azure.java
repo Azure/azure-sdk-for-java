@@ -101,6 +101,8 @@ import com.azure.resourcemanager.resources.models.ResourceGroups;
 import com.azure.resourcemanager.resources.models.Subscription;
 import com.azure.resourcemanager.resources.models.Subscriptions;
 import com.azure.resourcemanager.resources.models.Tenants;
+import com.azure.resourcemanager.servicebus.ServiceBusManager;
+import com.azure.resourcemanager.servicebus.models.ServiceBusNamespaces;
 import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.sql.models.SqlServers;
 import com.azure.resourcemanager.storage.StorageManager;
@@ -129,7 +131,7 @@ public final class Azure {
     private final DnsZoneManager dnsZoneManager;
     private final AppServiceManager appServiceManager;
     private final SqlServerManager sqlServerManager;
-    //    private final ServiceBusManager serviceBusManager;
+    private final ServiceBusManager serviceBusManager;
     private final ContainerInstanceManager containerInstanceManager;
     private final ContainerRegistryManager containerRegistryManager;
     private final ContainerServiceManager containerServiceManager;
@@ -378,7 +380,7 @@ public final class Azure {
         this.dnsZoneManager = DnsZoneManager.authenticate(httpPipeline, profile, sdkContext);
         this.appServiceManager = AppServiceManager.authenticate(httpPipeline, profile, sdkContext);
         this.sqlServerManager = SqlServerManager.authenticate(httpPipeline, profile, sdkContext);
-        //        this.serviceBusManager = ServiceBusManager.authenticate(restClient, subscriptionId, sdkContext);
+        this.serviceBusManager = ServiceBusManager.authenticate(httpPipeline, profile, sdkContext);
         this.containerInstanceManager = ContainerInstanceManager.authenticate(httpPipeline, profile, sdkContext);
         this.containerRegistryManager = ContainerRegistryManager.authenticate(httpPipeline, profile, sdkContext);
         this.containerServiceManager = ContainerServiceManager.authenticate(httpPipeline, profile, sdkContext);
@@ -683,12 +685,12 @@ public final class Azure {
         return sqlServerManager.sqlServers();
     }
 
-    //    /**
-    //     * @return entry point to managing Service Bus.
-    //     */
-    //    public ServiceBusNamespaces serviceBusNamespaces() {
-    //        return serviceBusManager.namespaces();
-    //    }
+    /**
+     * @return entry point to managing Service Bus.
+     */
+    public ServiceBusNamespaces serviceBusNamespaces() {
+        return serviceBusManager.namespaces();
+    }
 
     /** @return entry point to managing Service Bus operations. */
     // TODO: To be revisited in the future

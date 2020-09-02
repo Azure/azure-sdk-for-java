@@ -168,6 +168,14 @@ import com.azure.resourcemanager.redis.models.ScheduleEntry;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
+import com.azure.resourcemanager.servicebus.models.AuthorizationKeys;
+import com.azure.resourcemanager.servicebus.models.NamespaceAuthorizationRule;
+import com.azure.resourcemanager.servicebus.models.Queue;
+import com.azure.resourcemanager.servicebus.models.QueueAuthorizationRule;
+import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
+import com.azure.resourcemanager.servicebus.models.ServiceBusSubscription;
+import com.azure.resourcemanager.servicebus.models.Topic;
+import com.azure.resourcemanager.servicebus.models.TopicAuthorizationRule;
 import com.azure.resourcemanager.sql.models.ElasticPoolActivity;
 import com.azure.resourcemanager.sql.models.ElasticPoolDatabaseActivity;
 import com.azure.resourcemanager.sql.models.PartnerInfo;
@@ -2183,215 +2191,215 @@ public final class Utils {
 
     }
 
-//    /**
-//     * Print service bus namespace info.
-//     *
-//     * @param serviceBusNamespace a service bus namespace
-//     */
-//    public static void print(ServiceBusNamespace serviceBusNamespace) {
-//        StringBuilder builder = new StringBuilder()
-//                .append("Service bus Namespace: ").append(serviceBusNamespace.id())
-//                .append("\n\tName: ").append(serviceBusNamespace.name())
-//                .append("\n\tRegion: ").append(serviceBusNamespace.regionName())
-//                .append("\n\tResourceGroupName: ").append(serviceBusNamespace.resourceGroupName())
-//                .append("\n\tCreatedAt: ").append(serviceBusNamespace.createdAt())
-//                .append("\n\tUpdatedAt: ").append(serviceBusNamespace.updatedAt())
-//                .append("\n\tDnsLabel: ").append(serviceBusNamespace.dnsLabel())
-//                .append("\n\tFQDN: ").append(serviceBusNamespace.fqdn())
-//                .append("\n\tSku: ")
-//                .append("\n\t\tCapacity: ").append(serviceBusNamespace.sku().capacity())
-//                .append("\n\t\tSkuName: ").append(serviceBusNamespace.sku().name())
-//                .append("\n\t\tTier: ").append(serviceBusNamespace.sku().tier());
-//
-//        System.out.println(builder.toString());
-//    }
+    /**
+     * Print service bus namespace info.
+     *
+     * @param serviceBusNamespace a service bus namespace
+     */
+    public static void print(ServiceBusNamespace serviceBusNamespace) {
+        StringBuilder builder = new StringBuilder()
+                .append("Service bus Namespace: ").append(serviceBusNamespace.id())
+                .append("\n\tName: ").append(serviceBusNamespace.name())
+                .append("\n\tRegion: ").append(serviceBusNamespace.regionName())
+                .append("\n\tResourceGroupName: ").append(serviceBusNamespace.resourceGroupName())
+                .append("\n\tCreatedAt: ").append(serviceBusNamespace.createdAt())
+                .append("\n\tUpdatedAt: ").append(serviceBusNamespace.updatedAt())
+                .append("\n\tDnsLabel: ").append(serviceBusNamespace.dnsLabel())
+                .append("\n\tFQDN: ").append(serviceBusNamespace.fqdn())
+                .append("\n\tSku: ")
+                .append("\n\t\tCapacity: ").append(serviceBusNamespace.sku().capacity())
+                .append("\n\t\tSkuName: ").append(serviceBusNamespace.sku().name())
+                .append("\n\t\tTier: ").append(serviceBusNamespace.sku().tier());
 
-//    /**
-//     * Print service bus queue info.
-//     *
-//     * @param queue a service bus queue
-//     */
-//    public static void print(Queue queue) {
-//        StringBuilder builder = new StringBuilder()
-//                .append("Service bus Queue: ").append(queue.id())
-//                .append("\n\tName: ").append(queue.name())
-//                .append("\n\tResourceGroupName: ").append(queue.resourceGroupName())
-//                .append("\n\tCreatedAt: ").append(queue.createdAt())
-//                .append("\n\tUpdatedAt: ").append(queue.updatedAt())
-//                .append("\n\tAccessedAt: ").append(queue.accessedAt())
-//                .append("\n\tActiveMessageCount: ").append(queue.activeMessageCount())
-//                .append("\n\tCurrentSizeInBytes: ").append(queue.currentSizeInBytes())
-//                .append("\n\tDeadLetterMessageCount: ").append(queue.deadLetterMessageCount())
-//                .append("\n\tDefaultMessageTtlDuration: ").append(queue.defaultMessageTtlDuration())
-//                .append("\n\tDuplicateMessageDetectionHistoryDuration: ").append(queue.duplicateMessageDetectionHistoryDuration())
-//                .append("\n\tIsBatchedOperationsEnabled: ").append(queue.isBatchedOperationsEnabled())
-//                .append("\n\tIsDeadLetteringEnabledForExpiredMessages: ").append(queue.isDeadLetteringEnabledForExpiredMessages())
-//                .append("\n\tIsDuplicateDetectionEnabled: ").append(queue.isDuplicateDetectionEnabled())
-//                .append("\n\tIsExpressEnabled: ").append(queue.isExpressEnabled())
-//                .append("\n\tIsPartitioningEnabled: ").append(queue.isPartitioningEnabled())
-//                .append("\n\tIsSessionEnabled: ").append(queue.isSessionEnabled())
-//                .append("\n\tDeleteOnIdleDurationInMinutes: ").append(queue.deleteOnIdleDurationInMinutes())
-//                .append("\n\tMaxDeliveryCountBeforeDeadLetteringMessage: ").append(queue.maxDeliveryCountBeforeDeadLetteringMessage())
-//                .append("\n\tMaxSizeInMB: ").append(queue.maxSizeInMB())
-//                .append("\n\tMessageCount: ").append(queue.messageCount())
-//                .append("\n\tScheduledMessageCount: ").append(queue.scheduledMessageCount())
-//                .append("\n\tStatus: ").append(queue.status())
-//                .append("\n\tTransferMessageCount: ").append(queue.transferMessageCount())
-//                .append("\n\tLockDurationInSeconds: ").append(queue.lockDurationInSeconds())
-//                .append("\n\tTransferDeadLetterMessageCount: ").append(queue.transferDeadLetterMessageCount());
-//
-//        System.out.println(builder.toString());
-//
-//    }
-//
-//    /**
-//     * Print service bus queue authorization keys info.
-//     *
-//     * @param queueAuthorizationRule a service bus queue authorization keys
-//     */
-//    public static void print(QueueAuthorizationRule queueAuthorizationRule) {
-//        StringBuilder builder = new StringBuilder()
-//                .append("Service bus queue authorization rule: ").append(queueAuthorizationRule.id())
-//                .append("\n\tName: ").append(queueAuthorizationRule.name())
-//                .append("\n\tResourceGroupName: ").append(queueAuthorizationRule.resourceGroupName())
-//                .append("\n\tNamespace Name: ").append(queueAuthorizationRule.namespaceName())
-//                .append("\n\tQueue Name: ").append(queueAuthorizationRule.queueName());
-//
-//        List<AccessRights> rights = queueAuthorizationRule.rights();
-//        builder.append("\n\tNumber of access rights in queue: ").append(rights.size());
-//        for (AccessRights right : rights) {
-//            builder.append("\n\t\tAccessRight: ")
-//                    .append("\n\t\t\tName :").append(right.name());
-//        }
-//
-//        System.out.println(builder.toString());
-//    }
-//
-//    /**
-//     * Print service bus namespace authorization keys info.
-//     *
-//     * @param keys a service bus namespace authorization keys
-//     */
-//    public static void print(AuthorizationKeys keys) {
-//        StringBuilder builder = new StringBuilder()
-//                .append("Authorization keys: ")
-//                .append("\n\tPrimaryKey: ").append(keys.primaryKey())
-//                .append("\n\tPrimaryConnectionString: ").append(keys.primaryConnectionString())
-//                .append("\n\tSecondaryKey: ").append(keys.secondaryKey())
-//                .append("\n\tSecondaryConnectionString: ").append(keys.secondaryConnectionString());
-//
-//        System.out.println(builder.toString());
-//    }
+        System.out.println(builder.toString());
+    }
 
-//    /**
-//     * Print service bus namespace authorization rule info.
-//     *
-//     * @param namespaceAuthorizationRule a service bus namespace authorization rule
-//     */
-//    public static void print(NamespaceAuthorizationRule namespaceAuthorizationRule) {
-//        StringBuilder builder = new StringBuilder()
-//                .append("Service bus queue authorization rule: ").append(namespaceAuthorizationRule.id())
-//                .append("\n\tName: ").append(namespaceAuthorizationRule.name())
-//                .append("\n\tResourceGroupName: ").append(namespaceAuthorizationRule.resourceGroupName())
-//                .append("\n\tNamespace Name: ").append(namespaceAuthorizationRule.namespaceName());
-//
-//        List<AccessRights> rights = namespaceAuthorizationRule.rights();
-//        builder.append("\n\tNumber of access rights in queue: ").append(rights.size());
-//        for (AccessRights right : rights) {
-//            builder.append("\n\t\tAccessRight: ")
-//                    .append("\n\t\t\tName :").append(right.name());
-//        }
-//
-//        System.out.println(builder.toString());
-//    }
+    /**
+     * Print service bus queue info.
+     *
+     * @param queue a service bus queue
+     */
+    public static void print(Queue queue) {
+        StringBuilder builder = new StringBuilder()
+                .append("Service bus Queue: ").append(queue.id())
+                .append("\n\tName: ").append(queue.name())
+                .append("\n\tResourceGroupName: ").append(queue.resourceGroupName())
+                .append("\n\tCreatedAt: ").append(queue.createdAt())
+                .append("\n\tUpdatedAt: ").append(queue.updatedAt())
+                .append("\n\tAccessedAt: ").append(queue.accessedAt())
+                .append("\n\tActiveMessageCount: ").append(queue.activeMessageCount())
+                .append("\n\tCurrentSizeInBytes: ").append(queue.currentSizeInBytes())
+                .append("\n\tDeadLetterMessageCount: ").append(queue.deadLetterMessageCount())
+                .append("\n\tDefaultMessageTtlDuration: ").append(queue.defaultMessageTtlDuration())
+                .append("\n\tDuplicateMessageDetectionHistoryDuration: ").append(queue.duplicateMessageDetectionHistoryDuration())
+                .append("\n\tIsBatchedOperationsEnabled: ").append(queue.isBatchedOperationsEnabled())
+                .append("\n\tIsDeadLetteringEnabledForExpiredMessages: ").append(queue.isDeadLetteringEnabledForExpiredMessages())
+                .append("\n\tIsDuplicateDetectionEnabled: ").append(queue.isDuplicateDetectionEnabled())
+                .append("\n\tIsExpressEnabled: ").append(queue.isExpressEnabled())
+                .append("\n\tIsPartitioningEnabled: ").append(queue.isPartitioningEnabled())
+                .append("\n\tIsSessionEnabled: ").append(queue.isSessionEnabled())
+                .append("\n\tDeleteOnIdleDurationInMinutes: ").append(queue.deleteOnIdleDurationInMinutes())
+                .append("\n\tMaxDeliveryCountBeforeDeadLetteringMessage: ").append(queue.maxDeliveryCountBeforeDeadLetteringMessage())
+                .append("\n\tMaxSizeInMB: ").append(queue.maxSizeInMB())
+                .append("\n\tMessageCount: ").append(queue.messageCount())
+                .append("\n\tScheduledMessageCount: ").append(queue.scheduledMessageCount())
+                .append("\n\tStatus: ").append(queue.status())
+                .append("\n\tTransferMessageCount: ").append(queue.transferMessageCount())
+                .append("\n\tLockDurationInSeconds: ").append(queue.lockDurationInSeconds())
+                .append("\n\tTransferDeadLetterMessageCount: ").append(queue.transferDeadLetterMessageCount());
 
-//    /**
-//     * Print service bus topic info.
-//     *
-//     * @param topic a service bus topic
-//     */
-//    public static void print(Topic topic) {
-//        StringBuilder builder = new StringBuilder()
-//                .append("Service bus topic: ").append(topic.id())
-//                .append("\n\tName: ").append(topic.name())
-//                .append("\n\tResourceGroupName: ").append(topic.resourceGroupName())
-//                .append("\n\tCreatedAt: ").append(topic.createdAt())
-//                .append("\n\tUpdatedAt: ").append(topic.updatedAt())
-//                .append("\n\tAccessedAt: ").append(topic.accessedAt())
-//                .append("\n\tActiveMessageCount: ").append(topic.activeMessageCount())
-//                .append("\n\tCurrentSizeInBytes: ").append(topic.currentSizeInBytes())
-//                .append("\n\tDeadLetterMessageCount: ").append(topic.deadLetterMessageCount())
-//                .append("\n\tDefaultMessageTtlDuration: ").append(topic.defaultMessageTtlDuration())
-//                .append("\n\tDuplicateMessageDetectionHistoryDuration: ").append(topic.duplicateMessageDetectionHistoryDuration())
-//                .append("\n\tIsBatchedOperationsEnabled: ").append(topic.isBatchedOperationsEnabled())
-//                .append("\n\tIsDuplicateDetectionEnabled: ").append(topic.isDuplicateDetectionEnabled())
-//                .append("\n\tIsExpressEnabled: ").append(topic.isExpressEnabled())
-//                .append("\n\tIsPartitioningEnabled: ").append(topic.isPartitioningEnabled())
-//                .append("\n\tDeleteOnIdleDurationInMinutes: ").append(topic.deleteOnIdleDurationInMinutes())
-//                .append("\n\tMaxSizeInMB: ").append(topic.maxSizeInMB())
-//                .append("\n\tScheduledMessageCount: ").append(topic.scheduledMessageCount())
-//                .append("\n\tStatus: ").append(topic.status())
-//                .append("\n\tTransferMessageCount: ").append(topic.transferMessageCount())
-//                .append("\n\tSubscriptionCount: ").append(topic.subscriptionCount())
-//                .append("\n\tTransferDeadLetterMessageCount: ").append(topic.transferDeadLetterMessageCount());
-//
-//        System.out.println(builder.toString());
-//    }
+        System.out.println(builder.toString());
 
-//    /**
-//     * Print service bus subscription info.
-//     *
-//     * @param serviceBusSubscription a service bus subscription
-//     */
-//    public static void print(ServiceBusSubscription serviceBusSubscription) {
-//        StringBuilder builder = new StringBuilder()
-//                .append("Service bus subscription: ").append(serviceBusSubscription.id())
-//                .append("\n\tName: ").append(serviceBusSubscription.name())
-//                .append("\n\tResourceGroupName: ").append(serviceBusSubscription.resourceGroupName())
-//                .append("\n\tCreatedAt: ").append(serviceBusSubscription.createdAt())
-//                .append("\n\tUpdatedAt: ").append(serviceBusSubscription.updatedAt())
-//                .append("\n\tAccessedAt: ").append(serviceBusSubscription.accessedAt())
-//                .append("\n\tActiveMessageCount: ").append(serviceBusSubscription.activeMessageCount())
-//                .append("\n\tDeadLetterMessageCount: ").append(serviceBusSubscription.deadLetterMessageCount())
-//                .append("\n\tDefaultMessageTtlDuration: ").append(serviceBusSubscription.defaultMessageTtlDuration())
-//                .append("\n\tIsBatchedOperationsEnabled: ").append(serviceBusSubscription.isBatchedOperationsEnabled())
-//                .append("\n\tDeleteOnIdleDurationInMinutes: ").append(serviceBusSubscription.deleteOnIdleDurationInMinutes())
-//                .append("\n\tScheduledMessageCount: ").append(serviceBusSubscription.scheduledMessageCount())
-//                .append("\n\tStatus: ").append(serviceBusSubscription.status())
-//                .append("\n\tTransferMessageCount: ").append(serviceBusSubscription.transferMessageCount())
-//                .append("\n\tIsDeadLetteringEnabledForExpiredMessages: ").append(serviceBusSubscription.isDeadLetteringEnabledForExpiredMessages())
-//                .append("\n\tIsSessionEnabled: ").append(serviceBusSubscription.isSessionEnabled())
-//                .append("\n\tLockDurationInSeconds: ").append(serviceBusSubscription.lockDurationInSeconds())
-//                .append("\n\tMaxDeliveryCountBeforeDeadLetteringMessage: ").append(serviceBusSubscription.maxDeliveryCountBeforeDeadLetteringMessage())
-//                .append("\n\tIsDeadLetteringEnabledForFilterEvaluationFailedMessages: ").append(serviceBusSubscription.isDeadLetteringEnabledForFilterEvaluationFailedMessages())
-//                .append("\n\tTransferMessageCount: ").append(serviceBusSubscription.transferMessageCount())
-//                .append("\n\tTransferDeadLetterMessageCount: ").append(serviceBusSubscription.transferDeadLetterMessageCount());
-//
-//        System.out.println(builder.toString());
-//    }
+    }
 
-//    /**
-//     * Print topic Authorization Rule info.
-//     *
-//     * @param topicAuthorizationRule a topic Authorization Rule
-//     */
-//    public static void print(TopicAuthorizationRule topicAuthorizationRule) {
-//        StringBuilder builder = new StringBuilder()
-//                .append("Service bus topic authorization rule: ").append(topicAuthorizationRule.id())
-//                .append("\n\tName: ").append(topicAuthorizationRule.name())
-//                .append("\n\tResourceGroupName: ").append(topicAuthorizationRule.resourceGroupName())
-//                .append("\n\tNamespace Name: ").append(topicAuthorizationRule.namespaceName())
-//                .append("\n\tTopic Name: ").append(topicAuthorizationRule.topicName());
-//
-//        List<AccessRights> rights = topicAuthorizationRule.rights();
-//        builder.append("\n\tNumber of access rights in queue: ").append(rights.size());
-//        for (AccessRights right : rights) {
-//            builder.append("\n\t\tAccessRight: ")
-//                    .append("\n\t\t\tName :").append(right.name());
-//        }
-//
-//        System.out.println(builder.toString());
-//    }
+    /**
+     * Print service bus queue authorization keys info.
+     *
+     * @param queueAuthorizationRule a service bus queue authorization keys
+     */
+    public static void print(QueueAuthorizationRule queueAuthorizationRule) {
+        StringBuilder builder = new StringBuilder()
+                .append("Service bus queue authorization rule: ").append(queueAuthorizationRule.id())
+                .append("\n\tName: ").append(queueAuthorizationRule.name())
+                .append("\n\tResourceGroupName: ").append(queueAuthorizationRule.resourceGroupName())
+                .append("\n\tNamespace Name: ").append(queueAuthorizationRule.namespaceName())
+                .append("\n\tQueue Name: ").append(queueAuthorizationRule.queueName());
+
+        List<com.azure.resourcemanager.servicebus.models.AccessRights> rights = queueAuthorizationRule.rights();
+        builder.append("\n\tNumber of access rights in queue: ").append(rights.size());
+        for (com.azure.resourcemanager.servicebus.models.AccessRights right : rights) {
+            builder.append("\n\t\tAccessRight: ")
+                    .append("\n\t\t\tName :").append(right.name());
+        }
+
+        System.out.println(builder.toString());
+    }
+
+    /**
+     * Print service bus namespace authorization keys info.
+     *
+     * @param keys a service bus namespace authorization keys
+     */
+    public static void print(AuthorizationKeys keys) {
+        StringBuilder builder = new StringBuilder()
+                .append("Authorization keys: ")
+                .append("\n\tPrimaryKey: ").append(keys.primaryKey())
+                .append("\n\tPrimaryConnectionString: ").append(keys.primaryConnectionString())
+                .append("\n\tSecondaryKey: ").append(keys.secondaryKey())
+                .append("\n\tSecondaryConnectionString: ").append(keys.secondaryConnectionString());
+
+        System.out.println(builder.toString());
+    }
+
+    /**
+     * Print service bus namespace authorization rule info.
+     *
+     * @param namespaceAuthorizationRule a service bus namespace authorization rule
+     */
+    public static void print(NamespaceAuthorizationRule namespaceAuthorizationRule) {
+        StringBuilder builder = new StringBuilder()
+                .append("Service bus queue authorization rule: ").append(namespaceAuthorizationRule.id())
+                .append("\n\tName: ").append(namespaceAuthorizationRule.name())
+                .append("\n\tResourceGroupName: ").append(namespaceAuthorizationRule.resourceGroupName())
+                .append("\n\tNamespace Name: ").append(namespaceAuthorizationRule.namespaceName());
+
+        List<com.azure.resourcemanager.servicebus.models.AccessRights> rights = namespaceAuthorizationRule.rights();
+        builder.append("\n\tNumber of access rights in queue: ").append(rights.size());
+        for (com.azure.resourcemanager.servicebus.models.AccessRights right : rights) {
+            builder.append("\n\t\tAccessRight: ")
+                    .append("\n\t\t\tName :").append(right.name());
+        }
+
+        System.out.println(builder.toString());
+    }
+
+    /**
+     * Print service bus topic info.
+     *
+     * @param topic a service bus topic
+     */
+    public static void print(Topic topic) {
+        StringBuilder builder = new StringBuilder()
+                .append("Service bus topic: ").append(topic.id())
+                .append("\n\tName: ").append(topic.name())
+                .append("\n\tResourceGroupName: ").append(topic.resourceGroupName())
+                .append("\n\tCreatedAt: ").append(topic.createdAt())
+                .append("\n\tUpdatedAt: ").append(topic.updatedAt())
+                .append("\n\tAccessedAt: ").append(topic.accessedAt())
+                .append("\n\tActiveMessageCount: ").append(topic.activeMessageCount())
+                .append("\n\tCurrentSizeInBytes: ").append(topic.currentSizeInBytes())
+                .append("\n\tDeadLetterMessageCount: ").append(topic.deadLetterMessageCount())
+                .append("\n\tDefaultMessageTtlDuration: ").append(topic.defaultMessageTtlDuration())
+                .append("\n\tDuplicateMessageDetectionHistoryDuration: ").append(topic.duplicateMessageDetectionHistoryDuration())
+                .append("\n\tIsBatchedOperationsEnabled: ").append(topic.isBatchedOperationsEnabled())
+                .append("\n\tIsDuplicateDetectionEnabled: ").append(topic.isDuplicateDetectionEnabled())
+                .append("\n\tIsExpressEnabled: ").append(topic.isExpressEnabled())
+                .append("\n\tIsPartitioningEnabled: ").append(topic.isPartitioningEnabled())
+                .append("\n\tDeleteOnIdleDurationInMinutes: ").append(topic.deleteOnIdleDurationInMinutes())
+                .append("\n\tMaxSizeInMB: ").append(topic.maxSizeInMB())
+                .append("\n\tScheduledMessageCount: ").append(topic.scheduledMessageCount())
+                .append("\n\tStatus: ").append(topic.status())
+                .append("\n\tTransferMessageCount: ").append(topic.transferMessageCount())
+                .append("\n\tSubscriptionCount: ").append(topic.subscriptionCount())
+                .append("\n\tTransferDeadLetterMessageCount: ").append(topic.transferDeadLetterMessageCount());
+
+        System.out.println(builder.toString());
+    }
+
+    /**
+     * Print service bus subscription info.
+     *
+     * @param serviceBusSubscription a service bus subscription
+     */
+    public static void print(ServiceBusSubscription serviceBusSubscription) {
+        StringBuilder builder = new StringBuilder()
+                .append("Service bus subscription: ").append(serviceBusSubscription.id())
+                .append("\n\tName: ").append(serviceBusSubscription.name())
+                .append("\n\tResourceGroupName: ").append(serviceBusSubscription.resourceGroupName())
+                .append("\n\tCreatedAt: ").append(serviceBusSubscription.createdAt())
+                .append("\n\tUpdatedAt: ").append(serviceBusSubscription.updatedAt())
+                .append("\n\tAccessedAt: ").append(serviceBusSubscription.accessedAt())
+                .append("\n\tActiveMessageCount: ").append(serviceBusSubscription.activeMessageCount())
+                .append("\n\tDeadLetterMessageCount: ").append(serviceBusSubscription.deadLetterMessageCount())
+                .append("\n\tDefaultMessageTtlDuration: ").append(serviceBusSubscription.defaultMessageTtlDuration())
+                .append("\n\tIsBatchedOperationsEnabled: ").append(serviceBusSubscription.isBatchedOperationsEnabled())
+                .append("\n\tDeleteOnIdleDurationInMinutes: ").append(serviceBusSubscription.deleteOnIdleDurationInMinutes())
+                .append("\n\tScheduledMessageCount: ").append(serviceBusSubscription.scheduledMessageCount())
+                .append("\n\tStatus: ").append(serviceBusSubscription.status())
+                .append("\n\tTransferMessageCount: ").append(serviceBusSubscription.transferMessageCount())
+                .append("\n\tIsDeadLetteringEnabledForExpiredMessages: ").append(serviceBusSubscription.isDeadLetteringEnabledForExpiredMessages())
+                .append("\n\tIsSessionEnabled: ").append(serviceBusSubscription.isSessionEnabled())
+                .append("\n\tLockDurationInSeconds: ").append(serviceBusSubscription.lockDurationInSeconds())
+                .append("\n\tMaxDeliveryCountBeforeDeadLetteringMessage: ").append(serviceBusSubscription.maxDeliveryCountBeforeDeadLetteringMessage())
+                .append("\n\tIsDeadLetteringEnabledForFilterEvaluationFailedMessages: ").append(serviceBusSubscription.isDeadLetteringEnabledForFilterEvaluationFailedMessages())
+                .append("\n\tTransferMessageCount: ").append(serviceBusSubscription.transferMessageCount())
+                .append("\n\tTransferDeadLetterMessageCount: ").append(serviceBusSubscription.transferDeadLetterMessageCount());
+
+        System.out.println(builder.toString());
+    }
+
+    /**
+     * Print topic Authorization Rule info.
+     *
+     * @param topicAuthorizationRule a topic Authorization Rule
+     */
+    public static void print(TopicAuthorizationRule topicAuthorizationRule) {
+        StringBuilder builder = new StringBuilder()
+                .append("Service bus topic authorization rule: ").append(topicAuthorizationRule.id())
+                .append("\n\tName: ").append(topicAuthorizationRule.name())
+                .append("\n\tResourceGroupName: ").append(topicAuthorizationRule.resourceGroupName())
+                .append("\n\tNamespace Name: ").append(topicAuthorizationRule.namespaceName())
+                .append("\n\tTopic Name: ").append(topicAuthorizationRule.topicName());
+
+        List<com.azure.resourcemanager.servicebus.models.AccessRights> rights = topicAuthorizationRule.rights();
+        builder.append("\n\tNumber of access rights in queue: ").append(rights.size());
+        for (com.azure.resourcemanager.servicebus.models.AccessRights right : rights) {
+            builder.append("\n\t\tAccessRight: ")
+                    .append("\n\t\t\tName :").append(right.name());
+        }
+
+        System.out.println(builder.toString());
+    }
 
     /**
      * Print CosmosDB info.
