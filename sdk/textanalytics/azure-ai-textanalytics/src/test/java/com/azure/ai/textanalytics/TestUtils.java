@@ -248,9 +248,12 @@ final class TestUtils {
      * Helper method to get the expected batch of Personally Identifiable Information entities for domain filter
      */
     static RecognizePiiEntitiesResultCollection getExpectedBatchPiiEntitiesForDomainFilter() {
-        PiiEntityCollection piiEntityCollection = new PiiEntityCollection(new IterableStream<>(Arrays.asList(getPiiEntitiesList1().get(1))), null);
+        PiiEntityCollection piiEntityCollection = new PiiEntityCollection(
+            new IterableStream<>(Arrays.asList(getPiiEntitiesList1().get(1))),
+            "Microsoft employee with ssn *********** is using our awesome API's.", null);
         PiiEntityCollection piiEntityCollection2 = new PiiEntityCollection(
-            new IterableStream<>(Arrays.asList(getPiiEntitiesList2().get(0), getPiiEntitiesList2().get(1), getPiiEntitiesList2().get(2))), null);
+            new IterableStream<>(Arrays.asList(getPiiEntitiesList2().get(0), getPiiEntitiesList2().get(1), getPiiEntitiesList2().get(2))),
+            "Your ABA number - ********* - is the first 9 digits in the lower left hand corner of your personal check.", null);
         TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(67, 1);
         TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(105, 1);
         RecognizePiiEntitiesResult recognizeEntitiesResult1 = new RecognizePiiEntitiesResult("0", textDocumentStatistics1, null, piiEntityCollection);

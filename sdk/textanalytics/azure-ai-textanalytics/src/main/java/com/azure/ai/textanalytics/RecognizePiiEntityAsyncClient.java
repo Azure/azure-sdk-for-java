@@ -12,6 +12,7 @@ import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
+import com.azure.ai.textanalytics.models.PiiEntityDomainType;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntityOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
@@ -196,13 +197,23 @@ class RecognizePiiEntityAsyncClient {
      */
     private Mono<Response<RecognizePiiEntitiesResultCollection>> getRecognizePiiEntitiesResponse(
         Iterable<TextDocumentInput> documents, RecognizePiiEntityOptions options, Context context) {
+
+        String modelVersion = null;
+        boolean includeStatistics = false;
+        String domainFilter = null;
+        if (options != null) {
+            modelVersion = options.getModelVersion();
+            includeStatistics = options.isIncludeStatistics();
+            final PiiEntityDomainType domainType = options.getDomainFilter();
+            if (domainType != null) {
+                domainFilter = domainType.toString();
+            }
+        }
+
         // TODO: add string index type implementation PR
         return service.entitiesRecognitionPiiWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-            options == null ? null : options.getModelVersion(),
-            options == null ? null : options.isIncludeStatistics(),
-            options == null ? null : options.getDomainFilter() == null ? null : options.getDomainFilter().toString(),
-            null,
+            modelVersion, includeStatistics, domainFilter, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info(
                 "Start recognizing Personally Identifiable Information entities for a batch of documents."))

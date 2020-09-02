@@ -43,9 +43,9 @@ public class RecognizePiiEntityOptions extends TextAnalyticsRequestOptions {
     /**
      * Get the value of domainFilter. It filters the response entities to ones only included in the specified domain.
      * I.e., if set to 'PHI', will only return entities in the Protected Healthcare Information domain.
-     * See https://aka.ms/tanerpii for more information. It is provided by service v3.1-preview.2 and later.
+     * See https://aka.ms/tanerpii for more information.
      *
-     * @return The value of domainFilter. It is provided by service v3.1-preview.2 and later.
+     * @return The value of domainFilter.
      */
     public PiiEntityDomainType getDomainFilter() {
         return domainFilter;
@@ -54,10 +54,9 @@ public class RecognizePiiEntityOptions extends TextAnalyticsRequestOptions {
     /**
      * Set the value of domainFilter. It filters the response entities to ones only included in the specified domain.
      * I.e., if set to 'PHI', will only return entities in the Protected Healthcare Information domain.
-     * See https://aka.ms/tanerpii for more information. It is provided by service v3.1-preview.2 and later.
+     * See https://aka.ms/tanerpii for more information.
      *
      * @param domainFilter It filters the response entities to ones only included in the specified domain.
-     * It is provided by service v3.1-preview.2 and later.
      *
      * @return The RecognizePiiEntityOptions object itself.
      */
