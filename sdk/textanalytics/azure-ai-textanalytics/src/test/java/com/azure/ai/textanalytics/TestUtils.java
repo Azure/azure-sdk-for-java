@@ -287,7 +287,7 @@ final class TestUtils {
         LinkedEntity linkedEntity = new LinkedEntity(
             "Seattle", new IterableStream<>(Collections.singletonList(linkedEntityMatch)),
             "en", "Seattle", "https://en.wikipedia.org/wiki/Seattle",
-            "Wikipedia");
+            "Wikipedia", "5fbba6b8-85e1-4d41-9444-d9055436e473");
         return asList(linkedEntity);
     }
 
@@ -299,7 +299,7 @@ final class TestUtils {
         LinkedEntity linkedEntity = new LinkedEntity(
             "Microsoft", new IterableStream<>(Collections.singletonList(linkedEntityMatch)),
             "en", "Microsoft", "https://en.wikipedia.org/wiki/Microsoft",
-            "Wikipedia");
+            "Wikipedia", "a093e9b9-90f5-a3d5-c4b8-5855e1b01f85");
         return asList(linkedEntity);
     }
 
