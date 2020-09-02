@@ -26,12 +26,13 @@ import com.azure.storage.common.sas.AccountSasSignatureValues
 import com.azure.storage.common.sas.CommonSasQueryParameters
 import com.azure.storage.common.sas.SasIpRange
 import com.azure.storage.common.sas.SasProtocol
+import org.junit.Ignore
 import spock.lang.Unroll
 
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
-
+@Ignore
 class SasClientTests extends APISpec {
 
     BlockBlobClient sasClient

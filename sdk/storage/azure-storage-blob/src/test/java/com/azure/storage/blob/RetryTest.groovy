@@ -6,11 +6,13 @@ package com.azure.storage.blob
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RetryPolicyType
+import org.junit.Ignore
 import reactor.test.StepVerifier
 import spock.lang.Unroll
 
 import java.time.Duration
 // Tests for package-private functionality.
+@Ignore
 class RetryTest extends APISpec {
     static URL retryTestURL = new URL("https://" + RequestRetryTestFactory.RETRY_TEST_PRIMARY_HOST)
     static RequestRetryOptions retryTestOptions = new RequestRetryOptions(RetryPolicyType.EXPONENTIAL, 6, 2,

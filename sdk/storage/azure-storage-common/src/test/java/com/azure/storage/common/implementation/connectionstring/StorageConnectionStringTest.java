@@ -4,11 +4,13 @@
 package com.azure.storage.common.implementation.connectionstring;
 
 import com.azure.core.util.logging.ClientLogger;
+import org.junit.Ignore;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@Ignore
 public class StorageConnectionStringTest {
     private final ClientLogger logger = new ClientLogger(StorageConnectionStringTest.class);
     private static final String ACCOUNT_NAME_VALUE = "contoso";

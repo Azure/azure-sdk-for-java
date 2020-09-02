@@ -4,8 +4,10 @@ import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.PageRange
 import com.azure.storage.common.implementation.Constants
+import org.junit.Ignore
 import spock.lang.Requires
 
+@Ignore
 class BlobOutputStreamTest extends APISpec {
     private static int FOUR_MB = 4 * Constants.MB
 

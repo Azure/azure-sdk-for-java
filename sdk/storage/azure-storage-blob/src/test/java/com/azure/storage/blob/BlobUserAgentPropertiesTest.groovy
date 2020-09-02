@@ -4,8 +4,10 @@
 package com.azure.storage.blob
 
 import com.azure.core.util.CoreUtils
+import org.junit.Ignore
 import spock.lang.Specification
 
+@Ignore
 class BlobUserAgentPropertiesTest extends Specification {
 
     def "User agent properties not null"() {

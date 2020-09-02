@@ -40,6 +40,7 @@ import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import com.azure.storage.common.implementation.Constants
+import org.junit.Ignore
 import reactor.core.Exceptions
 import reactor.core.publisher.Hooks
 import reactor.test.StepVerifier
@@ -56,6 +57,7 @@ import java.security.MessageDigest
 import java.time.Duration
 import java.time.OffsetDateTime
 
+@Ignore
 class BlobAPITest extends APISpec {
     BlobClient bc
     String blobName

@@ -8,12 +8,14 @@ import com.azure.storage.blob.models.UserDelegationKey
 import com.azure.storage.blob.sas.BlobContainerSasPermission
 import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
+import org.junit.Ignore
 import spock.lang.Specification
 import spock.lang.Unroll
 
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
+@Ignore
 class BlobServiceSasModelsTest extends Specification {
 
     def setup() {

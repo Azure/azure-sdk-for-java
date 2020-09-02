@@ -26,6 +26,7 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicLong
 import java.util.function.BiFunction
 
+@org.junit.Ignore
 class LargeBlobTest extends APISpec {
 
     long maxBlockSize =  4000L * Constants.MB

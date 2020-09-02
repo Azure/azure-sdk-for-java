@@ -17,11 +17,13 @@ import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RetryPolicyType
+import org.junit.Ignore
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import spock.lang.Specification
 
+@Ignore
 class BuilderHelperTest extends Specification {
     static def credentials = new StorageSharedKeyCredential("accountName", "accountKey")
     static def endpoint = "https://account.blob.core.windows.net/"

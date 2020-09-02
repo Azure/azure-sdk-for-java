@@ -2,6 +2,7 @@ package com.azure.storage.internal.avro.implementation
 
 import com.azure.core.util.FluxUtil
 import com.azure.storage.internal.avro.implementation.schema.primitive.AvroNullSchema
+import org.junit.Ignore
 import reactor.core.publisher.Flux
 import reactor.test.StepVerifier
 import reactor.util.function.Tuples
@@ -14,6 +15,7 @@ import java.nio.file.Path
 import java.nio.file.Paths
 import java.nio.file.StandardOpenOption
 
+@Ignore
 class AvroReaderTest extends Specification {
 
     def setup() {

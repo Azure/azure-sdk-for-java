@@ -17,10 +17,12 @@ import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.options.AppendBlobSealOptions
 import com.azure.storage.blob.options.BlobGetTagsOptions
+import org.junit.Ignore
 import spock.lang.Unroll
 
 import java.security.MessageDigest
 
+@Ignore
 class AppendBlobAPITest extends APISpec {
     AppendBlobClient bc
     String blobName

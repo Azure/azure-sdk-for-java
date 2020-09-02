@@ -16,9 +16,10 @@ import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
 import org.apache.commons.lang3.StringUtils
+import org.junit.Ignore
 
 import java.nio.charset.StandardCharsets
-
+@Ignore
 class VersioningTest extends APISpec {
 
     BlobContainerClient blobContainerClient

@@ -13,6 +13,7 @@ import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.util.UrlBuilder;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
+import org.junit.Ignore;
 import reactor.core.Disposable;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -31,6 +32,7 @@ import java.util.concurrent.TimeoutException;
 
 import static java.lang.StrictMath.pow;
 
+@Ignore
 class RequestRetryTestFactory {
     static final int RETRY_TEST_SCENARIO_RETRY_UNTIL_SUCCESS = 1;
 

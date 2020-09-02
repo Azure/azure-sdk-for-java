@@ -1,11 +1,13 @@
 package com.azure.storage.internal.avro.implementation
 
 import com.azure.storage.internal.avro.implementation.schema.AvroSchema
+import org.junit.Ignore
 import spock.lang.Specification
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
 
+@Ignore
 class AvroParserStateTest extends Specification {
 
     def setup() {

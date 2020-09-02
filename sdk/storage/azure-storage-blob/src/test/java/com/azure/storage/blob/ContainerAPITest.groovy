@@ -29,6 +29,7 @@ import com.azure.storage.blob.options.PageBlobCreateOptions
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.common.Utility
+import org.junit.Ignore
 import reactor.test.StepVerifier
 import spock.lang.Requires
 import spock.lang.Unroll
@@ -38,6 +39,7 @@ import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.util.stream.Collectors
 
+@Ignore
 class ContainerAPITest extends APISpec {
 
     def "Create all null"() {

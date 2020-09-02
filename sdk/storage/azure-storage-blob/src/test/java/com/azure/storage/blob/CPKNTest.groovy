@@ -20,6 +20,7 @@ import spock.lang.Ignore
 
 import java.time.OffsetDateTime
 
+@org.junit.Ignore
 class CPKNTest extends APISpec {
 
     String scope1 = "testscope1"

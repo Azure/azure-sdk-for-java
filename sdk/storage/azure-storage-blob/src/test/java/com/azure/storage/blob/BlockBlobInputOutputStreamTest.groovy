@@ -4,9 +4,11 @@ import com.azure.storage.blob.models.BlobType
 import com.azure.storage.blob.specialized.BlobOutputStream
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.common.implementation.Constants
+import org.junit.Ignore
 import spock.lang.Requires
 import spock.lang.Unroll
 
+@Ignore
 class BlockBlobInputOutputStreamTest extends APISpec {
     BlockBlobClient bc
 

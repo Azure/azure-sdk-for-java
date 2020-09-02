@@ -9,12 +9,14 @@ import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
 import com.azure.storage.common.sas.SasIpRange
 import com.azure.storage.common.sas.SasProtocol
+import org.junit.Ignore
 import spock.lang.Specification
 import spock.lang.Unroll
 
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
+@Ignore
 class SasModelsTest extends Specification {
 
     def setup() {
