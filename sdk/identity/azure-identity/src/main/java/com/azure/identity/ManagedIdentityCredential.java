@@ -23,6 +23,8 @@ public final class ManagedIdentityCredential implements TokenCredential {
     private final AppServiceMsiCredential appServiceMSICredential;
     private final VirtualMachineMsiCredential virtualMachineMSICredential;
     private final ClientLogger logger = new ClientLogger(ManagedIdentityCredential.class);
+
+    // TODO: Migrate to Configuration class in Core (https://github.com/Azure/azure-sdk-for-java/issues/14720)
     static final String PROPERTY_IDENTITY_ENDPOINT = "IDENTITY_ENDPOINT";
     static final String PROPERTY_IDENTITY_HEADER = "IDENTITY_HEADER";
 

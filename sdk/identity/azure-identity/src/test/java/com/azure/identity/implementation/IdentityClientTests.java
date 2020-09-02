@@ -200,7 +200,7 @@ public class IdentityClientTests {
 
         // test
         IdentityClient client = new IdentityClientBuilder().build();
-        AccessToken token = client.authenticateToManagedIdentityEndpoint(endpoint, secret, "2017-09-01", request).block();
+        AccessToken token = client.authenticateToManagedIdentityEndpoint(null, null, endpoint, secret, request).block();
         Assert.assertEquals("token1", token.getToken());
         Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
     }
@@ -223,7 +223,7 @@ public class IdentityClientTests {
 
         // test
         IdentityClient client = new IdentityClientBuilder().build();
-        AccessToken token = client.authenticateToManagedIdentityEndpoint(endpoint, secret, "2019-08-01", request).block();
+        AccessToken token = client.authenticateToManagedIdentityEndpoint(endpoint, secret, null, null, request).block();
         Assert.assertEquals("token1", token.getToken());
         Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
     }

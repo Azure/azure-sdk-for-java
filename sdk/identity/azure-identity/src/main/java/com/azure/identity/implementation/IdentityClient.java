@@ -111,6 +111,8 @@ public class IdentityClient {
     private static final String DEFAULT_CONFIDENTIAL_KEYRING_ITEM_NAME = DEFAULT_CONFIDENTIAL_KEYCHAIN_ACCOUNT;
     private static final String DEFAULT_KEYRING_ATTR_NAME = "MsalClientID";
     private static final String DEFAULT_KEYRING_ATTR_VALUE = "Microsoft.Developer.IdentityService";
+    public static final String IDENTITY_ENDPOINT_VERSION = "2019-08-01";
+    public static final String MSI_ENDPOINT_VERSION = "2017-09-01";
     private final ClientLogger logger = new ClientLogger(IdentityClient.class);
 
     private final IdentityClientOptions options;
@@ -727,14 +729,31 @@ public class IdentityClient {
     /**
      * Asynchronously acquire a token from the App Service Managed Service Identity endpoint.
      *
-     * @param endpoint the endpoint to acquire token from
-     * @param secret the secret to acquire token with
+     * @param identityEndpoint the Identity endpoint to acquire token from
+     * @param identityHeader the identity header to acquire token with
+     * @param msiEndpoint the MSI endpoint to acquire token from
+     * @param msiSecret the msi secret to acquire token with
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<AccessToken> authenticateToManagedIdentityEndpoint(String endpoint, String secret, String version,
+    public Mono<AccessToken> authenticateToManagedIdentityEndpoint(String identityEndpoint, String identityHeader,
+                                                                   String msiEndpoint, String msiSecret,
                                                                    TokenRequestContext request) {
         return Mono.fromCallable(() -> {
+            String endpoint;
+            String headerValue;
+            String endpointVersion;
+
+            if (identityEndpoint != null) {
+                endpoint = identityEndpoint;
+                headerValue = identityHeader;
+                endpointVersion = IDENTITY_ENDPOINT_VERSION;
+            } else {
+                endpoint = msiEndpoint;
+                headerValue = msiSecret;
+                endpointVersion = MSI_ENDPOINT_VERSION;
+            }
+
             String resource = ScopeUtil.scopesToResource(request.getScopes());
             HttpURLConnection connection = null;
             StringBuilder payload = new StringBuilder();
@@ -742,7 +761,7 @@ public class IdentityClient {
             payload.append("resource=");
             payload.append(URLEncoder.encode(resource, "UTF-8"));
             payload.append("&api-version=");
-            payload.append(URLEncoder.encode(version, "UTF-8"));
+            payload.append(URLEncoder.encode(endpointVersion, "UTF-8"));
             if (clientId != null) {
                 payload.append("&clientid=");
                 payload.append(URLEncoder.encode(clientId, "UTF-8"));
@@ -752,11 +771,11 @@ public class IdentityClient {
                 connection = (HttpURLConnection) url.openConnection();
 
                 connection.setRequestMethod("GET");
-                if (secret != null) {
-                    if (version.equals("2019-08-01")) {
-                        connection.setRequestProperty("X-IDENTITY-HEADER", secret);
+                if (headerValue != null) {
+                    if (endpointVersion.equals(IDENTITY_ENDPOINT_VERSION)) {
+                        connection.setRequestProperty("X-IDENTITY-HEADER", headerValue);
                     } else {
-                        connection.setRequestProperty("Secret", secret);
+                        connection.setRequestProperty("Secret", headerValue);
                     }
                 }
                 connection.setRequestProperty("Metadata", "true");
