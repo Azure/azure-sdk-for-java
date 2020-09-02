@@ -15,15 +15,17 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
+import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
 import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
 import com.azure.messaging.servicebus.administration.models.CreateTopicOptions;
 import com.azure.messaging.servicebus.administration.models.NamespaceProperties;
 import com.azure.messaging.servicebus.administration.models.QueueProperties;
-import com.azure.messaging.servicebus.administration.models.QueueRuntimeInfo;
+import com.azure.messaging.servicebus.administration.models.QueueRuntimeProperties;
+import com.azure.messaging.servicebus.administration.models.RuleProperties;
 import com.azure.messaging.servicebus.administration.models.SubscriptionProperties;
-import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeInfo;
+import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeProperties;
 import com.azure.messaging.servicebus.administration.models.TopicProperties;
-import com.azure.messaging.servicebus.administration.models.TopicRuntimeInfo;
+import com.azure.messaging.servicebus.administration.models.TopicRuntimeProperties;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -80,8 +82,7 @@ public final class ServiceBusAdministrationClient {
      * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
      *     occurred processing the request.
      * @throws NullPointerException if {@code queue} is null.
-     * @throws ResourceExistsException if a queue exists with the same {@link QueueProperties#getName()
-     *     queueName}.
+     * @throws ResourceExistsException if a queue exists with the same {@link QueueProperties#getName() queueName}.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -102,8 +103,7 @@ public final class ServiceBusAdministrationClient {
      * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
      *     occurred processing the request.
      * @throws NullPointerException if {@code queue} is null.
-     * @throws ResourceExistsException if a queue exists with the same {@link QueueProperties#getName()
-     *     queueName}.
+     * @throws ResourceExistsException if a queue exists with the same {@link QueueProperties#getName() queueName}.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -111,6 +111,74 @@ public final class ServiceBusAdministrationClient {
         Context context) {
         return asyncClient.createQueueWithResponse(queueName, queueOptions, context != null ? context : Context.NONE)
             .block();
+    }
+
+    /**
+     * Creates a rule under the given topic and subscription
+     *
+     * @param topicName Name of the topic associated with rule.
+     * @param subscriptionName Name of the subscription associated with the rule.
+     * @param ruleName Name of the rule.
+     *
+     * @return Information about the created rule.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
+     *     processing the request.
+     * @throws IllegalArgumentException if {@code topicName} or {@code ruleName} are are empty strings.
+     * @throws NullPointerException if {@code topicName} or {@code ruleName} are are null.
+     * @throws ResourceExistsException if a rule exists with the same topic, subscription, and rule name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RuleProperties createRule(String topicName, String subscriptionName, String ruleName) {
+        return asyncClient.createRule(topicName, subscriptionName, ruleName).block();
+    }
+
+    /**
+     * Creates a rule with the {@link CreateRuleOptions}.
+     *
+     * @param topicName Name of the topic associated with rule.
+     * @param subscriptionName Name of the subscription associated with the rule.
+     * @param ruleName Name of the rule.
+     * @param ruleOptions Information about the rule to create.
+     *
+     * @return Information about the created rule.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
+     *     processing the request.
+     * @throws IllegalArgumentException if {@code topicName} or {@code ruleName} are are empty strings.
+     * @throws NullPointerException if {@code topicName}, {@code ruleName}, or {@code ruleOptions} are are null.
+     * @throws ResourceExistsException if a rule exists with the same topic and rule name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RuleProperties createRule(String topicName, String ruleName, String subscriptionName,
+        CreateRuleOptions ruleOptions) {
+        return asyncClient.createRule(topicName, subscriptionName, ruleName, ruleOptions).block();
+    }
+
+    /**
+     * Creates a rule and returns the created rule in addition to the HTTP response.
+     *
+     * @param topicName Name of the topic associated with rule.
+     * @param subscriptionName Name of the subscription associated with the rule.
+     * @param ruleName Name of the rule.
+     * @param ruleOptions Information about the rule to create.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return The created rule in addition to the HTTP response.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
+     *     processing the request.
+     * @throws IllegalArgumentException if {@code topicName} or {@code ruleName} are are empty strings.
+     * @throws NullPointerException if {@code topicName}, {@code ruleName}, or {@code ruleOptions} are are null.
+     * @throws ResourceExistsException if a rule exists with the same topic and rule name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RuleProperties> createRuleWithResponse(String topicName, String subscriptionName,
+        String ruleName, CreateRuleOptions ruleOptions, Context context) {
+        return asyncClient.createRuleWithResponse(topicName, subscriptionName, ruleName, ruleOptions, context).block();
     }
 
     /**
@@ -166,7 +234,7 @@ public final class ServiceBusAdministrationClient {
      * @param subscriptionOptions Information about the subscription to create.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
-     * @return The created queue in addition to the HTTP response.
+     * @return The created subscription in addition to the HTTP response.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
@@ -283,6 +351,49 @@ public final class ServiceBusAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteQueueWithResponse(String queueName, Context context) {
         return asyncClient.deleteQueueWithResponse(queueName, context != null ? context : Context.NONE).block();
+    }
+
+    /**
+     * Deletes a rule the matching {@code ruleName}.
+     *
+     * @param topicName Name of topic associated with rule to delete.
+     * @param subscriptionName Name of the subscription associated with the rule to delete.
+     * @param ruleName Name of rule to delete.
+     *
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code topicName} or {@code ruleName} is an empty string.
+     * @throws NullPointerException if {@code topicName} or {@code ruleName} is null.
+     * @throws ResourceNotFoundException if the {@code ruleName} does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteRule(String topicName, String subscriptionName, String ruleName) {
+        asyncClient.deleteRule(topicName, subscriptionName, ruleName).block();
+    }
+
+    /**
+     * Deletes a rule the matching {@code ruleName} and returns the HTTP response.
+     *
+     * @param topicName Name of topic associated with rule to delete.
+     * @param subscriptionName Name of the subscription associated with the rule to delete.
+     * @param ruleName Name of rule to delete.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return The HTTP response.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code topicName}, {@code subscriptionName}, or {@code ruleName} is an
+     *     empty string.
+     * @throws NullPointerException if {@code topicName}, {@code subscriptionName}, or {@code ruleName} is null.
+     * @throws ResourceNotFoundException if the {@code ruleName} does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteRuleWithResponse(String topicName, String subscriptionName,
+        String ruleName, Context context) {
+        return asyncClient.deleteRuleWithResponse(topicName, subscriptionName, ruleName,
+            context != null ? context : Context.NONE).block();
     }
 
     /**
@@ -443,11 +554,11 @@ public final class ServiceBusAdministrationClient {
     }
 
     /**
-     * Gets runtime information about the queue.
+     * Gets runtime properties about the queue.
      *
      * @param queueName Name of queue to get information about.
      *
-     * @return Runtime information about the queue.
+     * @return Runtime properties about the queue.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
@@ -457,17 +568,17 @@ public final class ServiceBusAdministrationClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public QueueRuntimeInfo getQueueRuntimeInfo(String queueName) {
-        return asyncClient.getQueueRuntimeInfo(queueName).block();
+    public QueueRuntimeProperties getQueueRuntimeProperties(String queueName) {
+        return asyncClient.getQueueRuntimeProperties(queueName).block();
     }
 
     /**
-     * Gets runtime information about the queue along with its HTTP response.
+     * Gets runtime properties about the queue along with its HTTP response.
      *
      * @param queueName Name of queue to get information about.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
-     * @return Runtime information about the queue and the associated HTTP response.
+     * @return Runtime properties about the queue and the associated HTTP response.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
@@ -477,15 +588,15 @@ public final class ServiceBusAdministrationClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<QueueRuntimeInfo> getQueueRuntimeInfoWithResponse(String queueName, Context context) {
+    public Response<QueueRuntimeProperties> getQueueRuntimePropertiesWithResponse(String queueName, Context context) {
         return asyncClient.getQueueWithResponse(queueName, context != null ? context : Context.NONE,
-            QueueRuntimeInfo::new).block();
+            QueueRuntimeProperties::new).block();
     }
 
     /**
      * Gets information about the Service Bus namespace.
      *
-     * @return A Mono that completes with information about the Service Bus namespace.
+     * @return Information about the Service Bus namespace.
      * @throws ClientAuthenticationException if the client's credentials do not have access to the namespace.
      * @throws HttpResponseException If error occurred processing the request.
      */
@@ -499,7 +610,7 @@ public final class ServiceBusAdministrationClient {
      *
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
-     * @return A Mono that completes with information about the namespace and the associated HTTP response.
+     * @return Information about the namespace and the associated HTTP response.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
@@ -507,6 +618,43 @@ public final class ServiceBusAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NamespaceProperties> getNamespacePropertiesWithResponse(Context context) {
         return asyncClient.getNamespacePropertiesWithResponse(context).block();
+    }
+
+    /**
+     * Gets a rule from the service namespace.
+     *
+     * Only following data types are deserialized in Filters and Action parameters - string, int, long, boolean, double,
+     * and OffsetDateTime. Other data types would return its string value.
+     *
+     * @param topicName The name of the topic relative to service bus namespace.
+     * @param subscriptionName The subscription name the rule belongs to.
+     * @param ruleName The name of the rule to retrieve.
+     *
+     * @return The associated rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RuleProperties getRule(String topicName, String subscriptionName, String ruleName) {
+        return asyncClient.getRule(topicName, subscriptionName, ruleName).block();
+    }
+
+    /**
+     * Gets a rule from the service namespace.
+     *
+     * Only following data types are deserialized in Filters and Action parameters - string, int, long, bool, double,
+     * and OffsetDateTime. Other data types would return its string value.
+     *
+     * @param topicName The name of the topic relative to service bus namespace.
+     * @param subscriptionName The subscription name the rule belongs to.
+     * @param ruleName The name of the rule to retrieve.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return The associated rule with the corresponding HTTP response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RuleProperties> getRuleWithResponse(String topicName, String subscriptionName,
+        String ruleName, Context context) {
+        return asyncClient.getRuleWithResponse(topicName, subscriptionName, ruleName,
+            context != null ? context : Context.NONE).block();
     }
 
     /**
@@ -595,12 +743,12 @@ public final class ServiceBusAdministrationClient {
     }
 
     /**
-     * Gets runtime information about the subscription.
+     * Gets runtime properties about the subscription.
      *
      * @param topicName Name of topic associated with subscription.
      * @param subscriptionName Name of subscription to get information about.
      *
-     * @return Runtime information about the subscription.
+     * @return Runtime properties about the subscription.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
@@ -610,18 +758,18 @@ public final class ServiceBusAdministrationClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SubscriptionRuntimeInfo getSubscriptionRuntimeInfo(String topicName, String subscriptionName) {
-        return asyncClient.getSubscriptionRuntimeInfo(topicName, subscriptionName).block();
+    public SubscriptionRuntimeProperties getSubscriptionRuntimeProperties(String topicName, String subscriptionName) {
+        return asyncClient.getSubscriptionRuntimeProperties(topicName, subscriptionName).block();
     }
 
     /**
-     * Gets runtime information about the subscription.
+     * Gets runtime properties about the subscription.
      *
      * @param topicName Name of topic associated with subscription.
      * @param subscriptionName Name of subscription to get information about.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
-     * @return Runtime information about the subscription.
+     * @return Runtime properties about the subscription.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
@@ -631,10 +779,10 @@ public final class ServiceBusAdministrationClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SubscriptionRuntimeInfo> getSubscriptionRuntimeInfoWithResponse(String topicName,
-        String subscriptionName, Context context) {
+    public Response<SubscriptionRuntimeProperties> getSubscriptionRuntimePropertiesWithResponse(
+        String topicName, String subscriptionName, Context context) {
         return asyncClient.getSubscriptionWithResponse(topicName, subscriptionName,
-            context != null ? context : Context.NONE, SubscriptionRuntimeInfo::new).block();
+            context != null ? context : Context.NONE, SubscriptionRuntimeProperties::new).block();
     }
 
     /**
@@ -716,11 +864,11 @@ public final class ServiceBusAdministrationClient {
     }
 
     /**
-     * Gets runtime information about the topic.
+     * Gets runtime properties about the topic.
      *
      * @param topicName Name of topic to get information about.
      *
-     * @return Runtime information about the topic.
+     * @return Runtime properties about the topic.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
@@ -730,17 +878,17 @@ public final class ServiceBusAdministrationClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TopicRuntimeInfo getTopicRuntimeInfo(String topicName) {
-        return asyncClient.getTopicRuntimeInfo(topicName).block();
+    public TopicRuntimeProperties getTopicRuntimeProperties(String topicName) {
+        return asyncClient.getTopicRuntimeProperties(topicName).block();
     }
 
     /**
-     * Gets runtime information about the topic with its HTTP response.
+     * Gets runtime properties about the topic with its HTTP response.
      *
      * @param topicName Name of topic to get information about.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
-     * @return Runtime information about the topic and the associated HTTP response.
+     * @return Runtime properties about the topic and the associated HTTP response.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
@@ -750,9 +898,9 @@ public final class ServiceBusAdministrationClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TopicRuntimeInfo> getTopicRuntimeInfoWithResponse(String topicName, Context context) {
+    public Response<TopicRuntimeProperties> getTopicRuntimePropertiesWithResponse(String topicName, Context context) {
         return asyncClient.getTopicWithResponse(topicName, context != null ? context : Context.NONE,
-            TopicRuntimeInfo::new).block();
+            TopicRuntimeProperties::new).block();
     }
 
     /**
@@ -788,6 +936,25 @@ public final class ServiceBusAdministrationClient {
                 context != null ? context : Context.NONE));
 
         return new PagedIterable<>(pagedFlux);
+    }
+
+    /**
+     * Fetches all the rules for a topic and subscription.
+     *
+     * @param topicName The topic name under which all the rules need to be retrieved.
+     * @param subscriptionName The name of the subscription for which all rules need to be retrieved.
+     *
+     * @return An iterable of {@link RuleProperties rules} for the {@code topicName} and {@code subscriptionName}.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws NullPointerException if {@code topicName} or {@code subscriptionName} is null.
+     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} is an empty string.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/enumeration">List entities, rules, or
+     *     authorization rules</a>
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<RuleProperties> listRules(String topicName, String subscriptionName) {
+        return new PagedIterable<>(asyncClient.listRules(topicName, subscriptionName));
     }
 
     /**
@@ -945,8 +1112,70 @@ public final class ServiceBusAdministrationClient {
     }
 
     /**
-     * Updates a subscription with the given {@link SubscriptionProperties}. The {@link SubscriptionProperties} must
-     * be fully populated as all of the properties are replaced. If a property is not set the service default value is
+     * Updates a rule with the given {@link RuleProperties}. The {@link RuleProperties} must be fully populated as all
+     * of the properties are replaced. If a property is not set the service default value is used.
+     *
+     * The suggested flow is:
+     * <ol>
+     *     <li>{@link #getRule(String, String, String) Get rule description.}</li>
+     *     <li>Update the required elements.</li>
+     *     <li>Pass the updated description into this method.</li>
+     * </ol>
+     *
+     * @param topicName The topic name under which the rule is updated.
+     * @param subscriptionName The name of the subscription for which the rule is updated.
+     * @param rule Information about the rule to update. You must provide all the property values that are desired
+     *     on the updated entity. Any values not provided are set to the service default values.
+     *
+     * @return The updated rule.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the rule quota is exceeded, or an error
+     *     occurred processing the request.
+     * @throws IllegalArgumentException if {@link RuleProperties#getName()} is null or an empty string.
+     * @throws NullPointerException if {@code rule} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RuleProperties updateRule(String topicName, String subscriptionName, RuleProperties rule) {
+        return asyncClient.updateRule(topicName, subscriptionName, rule).block();
+    }
+
+    /**
+     * Updates a rule with the given {@link RuleProperties}. The {@link RuleProperties} must be fully populated as all
+     * of the properties are replaced. If a property is not set the service default value is used.
+     *
+     * The suggested flow is:
+     * <ol>
+     *     <li>{@link #getRule(String, String, String) Get rule description.}</li>
+     *     <li>Update the required elements.</li>
+     *     <li>Pass the updated description into this method.</li>
+     * </ol>
+     *
+     * @param topicName The topic name under which the rule is updated.
+     * @param subscriptionName The name of the subscription for which the rule is updated.
+     * @param rule Information about the rule to update. You must provide all the property values that are desired
+     *     on the updated entity. Any values not provided are set to the service default values.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return A Mono that returns the updated rule in addition to the HTTP response.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the rule quota is exceeded, or an error
+     *     occurred processing the request.
+     * @throws IllegalArgumentException if {@link RuleProperties#getName()} is null or an empty string.
+     * @throws NullPointerException if {@code rule} is null.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RuleProperties> updateRuleWithResponse(String topicName, String subscriptionName,
+        RuleProperties rule, Context context) {
+        return asyncClient.updateRuleWithResponse(topicName, subscriptionName, rule,
+            context != null ? context : Context.NONE).block();
+    }
+
+    /**
+     * Updates a subscription with the given {@link SubscriptionProperties}. The {@link SubscriptionProperties} must be
+     * fully populated as all of the properties are replaced. If a property is not set the service default value is
      * used.
      *
      * The suggested flow is:
@@ -967,7 +1196,7 @@ public final class ServiceBusAdministrationClient {
      * @param subscription Information about the subscription to update. You must provide all the property values
      *     that are desired on the updated entity. Any values not provided are set to the service default values.
      *
-     * @return A Mono that returns the updated subscription in addition to the HTTP response.
+     * @return Updated subscription in addition to the HTTP response.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the subscription quota is exceeded, or an
@@ -983,8 +1212,8 @@ public final class ServiceBusAdministrationClient {
     }
 
     /**
-     * Updates a subscription with the given {@link SubscriptionProperties}. The {@link SubscriptionProperties} must
-     * be fully populated as all of the properties are replaced. If a property is not set the service default value is
+     * Updates a subscription with the given {@link SubscriptionProperties}. The {@link SubscriptionProperties} must be
+     * fully populated as all of the properties are replaced. If a property is not set the service default value is
      * used.
      *
      * The suggested flow is:
@@ -1006,7 +1235,7 @@ public final class ServiceBusAdministrationClient {
      *     that are desired on the updated entity. Any values not provided are set to the service default values.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
-     * @return A Mono that returns the updated subscription in addition to the HTTP response.
+     * @return Updated subscription in addition to the HTTP response.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the subscription quota is exceeded, or an

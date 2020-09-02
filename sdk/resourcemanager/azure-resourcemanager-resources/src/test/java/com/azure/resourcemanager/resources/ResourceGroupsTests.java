@@ -5,13 +5,13 @@ package com.azure.resourcemanager.resources;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.models.ResourceGroups;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class ResourceGroupsTests extends ResourceManagerTestBase {
+public class ResourceGroupsTests extends ResourceManagementTest {
     private ResourceGroups resourceGroups;
 
     @Override
@@ -22,7 +22,7 @@ public class ResourceGroupsTests extends ResourceManagerTestBase {
 
     @Test
     public void canCreateResourceGroup() throws Exception {
-        final String rgName = sdkContext.randomResourceName("rg", 9);
+        final String rgName = generateRandomResourceName("rg", 9);
         Region region = Region.US_SOUTH_CENTRAL;
         // Create
         resourceGroups.define(rgName)

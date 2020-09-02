@@ -4,6 +4,9 @@
 - Added support for the 2019-02-10 service version.
 - Added support to schedule file expiration. 
 - Added support to specify Arrow Output Serialization when querying a file. 
+- Added support to upload data to a file from an InputStream.
+- Added support to specify permissions and umask when uploading a file. 
+- Fixed a bug where an empty string would be sent with the x-ms-properties header when metadata was null or empty.
 
 ## 12.2.0 (2020-08-13)
 - Fixed bug where Query Input Stream would throw when a ByteBuffer of length 0 was encountered.

@@ -3,7 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
@@ -44,7 +44,7 @@ public class SendScheduledMessageAndCancelAsyncSample {
         // Scheduling the message to appear in the queue one minute from now.
         // Following call returns a Mono<Void>, which we subscribe to. It completes successfully when the message has
         // been scheduled. It completes with an error if an exception occurs while scheduling the message.
-        sender.scheduleMessage(message, Instant.now().plusSeconds(60))
+        sender.scheduleMessage(message, OffsetDateTime.now().plusSeconds(60))
             .subscribe(sequenceNumber -> {
                 System.out.printf("Sequence number of scheduled message: %s%n", sequenceNumber);
                 messageSequenceNumber.set(sequenceNumber);

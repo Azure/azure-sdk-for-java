@@ -496,5 +496,34 @@ Licensed under the MIT License.
         </plugins>
       </build>
     </profile>
+    <profile>
+      <id>java-lts</id>
+      <activation>
+        <jdk>[11,)</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <argLine>
+                --add-opens com.azure.cosmos/com.azure.cosmos=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.implementation=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.caches=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.http=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.directconnectivity=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.query=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.routing=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.models=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.rx=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.rx.proxy=ALL-UNNAMED
+              </argLine>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
 </project>

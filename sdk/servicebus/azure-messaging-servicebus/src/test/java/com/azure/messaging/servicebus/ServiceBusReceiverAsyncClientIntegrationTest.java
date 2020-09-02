@@ -9,6 +9,7 @@ import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.LockRenewalStatus;
 import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.SubQueue;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
@@ -20,7 +21,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -424,7 +425,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
-        final Instant scheduledEnqueueTime = Instant.now().plusSeconds(2);
+        final OffsetDateTime scheduledEnqueueTime = OffsetDateTime.now().plusSeconds(2);
 
         sender.scheduleMessage(message, scheduledEnqueueTime).block(TIMEOUT);
 
@@ -448,7 +449,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
-        final Instant scheduledEnqueueTime = Instant.now().plusSeconds(10);
+        final OffsetDateTime scheduledEnqueueTime = OffsetDateTime.now().plusSeconds(10);
         final Duration delayDuration = Duration.ofSeconds(3);
 
         final Long sequenceNumber = sender.scheduleMessage(message, scheduledEnqueueTime).block(TIMEOUT);
@@ -652,7 +653,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         assertNotNull(receivedMessage);
         assertNotNull(receivedMessage.getLockedUntil());
 
-        final Instant initialLock = receivedMessage.getLockedUntil();
+        final OffsetDateTime initialLock = receivedMessage.getLockedUntil();
         logger.info("Received message. Seq: {}. lockedUntil: {}", receivedMessage.getSequenceNumber(), initialLock);
 
         // Assert & Act
@@ -698,16 +699,16 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 assertNotNull(received.getLockToken());
 
                 logger.info("{}: lockToken[{}]. lockedUntil[{}]. now[{}]", received.getSequenceNumber(),
-                    received.getLockToken(), received.getLockedUntil(), Instant.now());
+                    received.getLockToken(), received.getLockedUntil(), OffsetDateTime.now());
 
-                final Instant initial = received.getLockedUntil();
-                final Instant timeToStop = initial.plusSeconds(5);
-                Instant latest = Instant.MIN;
+                final OffsetDateTime initial = received.getLockedUntil();
+                final OffsetDateTime timeToStop = initial.plusSeconds(5);
+                OffsetDateTime latest = OffsetDateTime.MIN;
 
                 // Simulate some sort of long processing.
                 final AtomicInteger iteration = new AtomicInteger();
-                while (Instant.now().isBefore(timeToStop)) {
-                    logger.info("Iteration {}: {}. Time to stop: {}", iteration.incrementAndGet(), Instant.now(), timeToStop);
+                while (OffsetDateTime.now().isBefore(timeToStop)) {
+                    logger.info("Iteration {}: {}. Time to stop: {}", iteration.incrementAndGet(), OffsetDateTime.now(), timeToStop);
 
                     try {
                         TimeUnit.SECONDS.sleep(4);
@@ -992,7 +993,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 final ServiceBusReceivedMessage receivedMessage = receivedContext.getMessage();
                 assertNotNull(receivedMessage);
 
-                final Instant lockedUntil = receivedMessage.getLockedUntil();
+                final OffsetDateTime lockedUntil = receivedMessage.getLockedUntil();
                 assertNotNull(lockedUntil);
 
                 final LockRenewalOperation operation = receiver.getAutoRenewMessageLock(
@@ -1089,7 +1090,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         receiver.complete(receivedDeferredMessage.getLockToken()).block(TIMEOUT);
     }
 
-    private ServiceBusClientBuilder.ServiceBusDeadLetterReceiverClientBuilder getDeadLetterReceiverBuilder(boolean useCredentials,
+    private ServiceBusClientBuilder.ServiceBusReceiverClientBuilder getDeadLetterReceiverBuilder(boolean useCredentials,
         MessagingEntityType entityType, int entityIndex, Function<ServiceBusClientBuilder, ServiceBusClientBuilder> onBuilderCreate) {
 
         ServiceBusClientBuilder builder = getBuilder(useCredentials);
@@ -1100,14 +1101,14 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 final String queueName = getQueueName(entityIndex);
                 assertNotNull(queueName, "'queueName' cannot be null.");
 
-                return builder.deadLetterReceiver().queueName(queueName);
+                return builder.receiver().queueName(queueName).subQueue(SubQueue.DEAD_LETTER_QUEUE);
             case SUBSCRIPTION:
                 final String topicName = getTopicName(entityIndex);
                 final String subscriptionName = getSubscriptionBaseName();
                 assertNotNull(topicName, "'topicName' cannot be null.");
                 assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
 
-                return builder.deadLetterReceiver().topicName(topicName).subscriptionName(subscriptionName);
+                return builder.receiver().topicName(topicName).subscriptionName(subscriptionName).subQueue(SubQueue.DEAD_LETTER_QUEUE);
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
         }
