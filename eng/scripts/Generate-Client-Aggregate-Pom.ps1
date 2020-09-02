@@ -92,6 +92,27 @@ $JacocoAggregateConfiguration = @"
         </execution>
       </executions>
     </plugin>
+    <!-- This entire plugin configuration needs to be removed once Spring's groupId changes to com.azure -->
+    <!-- Normally com.microsoft.azure:* would not be OK to add to the plugin configuration since that groupdId
+         isn't limited to what we build as part of the data track. In this particular case it's OK since the only
+         jacoco dependencies are limited to libraries we build.
+    -->
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-enforcer-plugin</artifactId>
+      <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+      <configuration>
+        <rules>
+          <bannedDependencies>
+            <includes>
+              <!-- This is fine for in here but individual libraries need to list out everything. This mainly because
+                   com.microsoft.azure includes things that are not owned or built by the azure-sdk team. -->
+              <include>com.microsoft.azure:*</include>
+            </includes>
+          </bannedDependencies>
+        </rules>
+      </configuration>
+    </plugin>
   </plugins>
 </build>
 "@
