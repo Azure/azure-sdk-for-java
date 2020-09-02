@@ -15,7 +15,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -136,7 +136,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         setSenderAndReceiver(entityType, 0);
 
-        final Instant scheduledEnqueueTime = Instant.now().plusSeconds(10);
+        final OffsetDateTime scheduledEnqueueTime = OffsetDateTime.now().plusSeconds(10);
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId);
 
@@ -158,7 +158,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         setSenderAndReceiver(entityType, 0);
 
-        final Instant scheduledEnqueueTime = Instant.now().plusSeconds(20);
+        final OffsetDateTime scheduledEnqueueTime = OffsetDateTime.now().plusSeconds(20);
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId);
 

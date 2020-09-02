@@ -14,12 +14,14 @@ import com.azure.resourcemanager.appservice.samples.ManageLinuxWebAppSourceContr
 import com.azure.resourcemanager.appservice.samples.ManageLinuxWebAppStorageAccountConnection;
 import com.azure.resourcemanager.appservice.samples.ManageLinuxWebAppWithContainerRegistry;
 import com.azure.resourcemanager.appservice.samples.ManageLinuxWebAppWithDomainSsl;
+import com.azure.resourcemanager.appservice.samples.ManageLinuxWebAppWithTrafficManager;
 import com.azure.resourcemanager.appservice.samples.ManageWebAppCosmosDbByMsi;
 import com.azure.resourcemanager.appservice.samples.ManageWebAppCosmosDbThroughKeyVault;
 import com.azure.resourcemanager.appservice.samples.ManageWebAppLogs;
 import com.azure.resourcemanager.appservice.samples.ManageWebAppSourceControl;
 import com.azure.resourcemanager.appservice.samples.ManageWebAppStorageAccountConnection;
 import com.azure.resourcemanager.appservice.samples.ManageWebAppWithDomainSsl;
+import com.azure.resourcemanager.appservice.samples.ManageWebAppWithTrafficManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -165,10 +167,15 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
         Assertions.assertTrue(ManageWebAppWithDomainSsl.runSample(azure));
     }
 
-//    @Test
-//    public void testManageWebAppWithTrafficManager() {
-//        Assertions.assertTrue(ManageWebAppWithTrafficManager.runSample(azure));
-//    }
+    @Test
+    @DoNotRecord
+    public void testManageWebAppWithTrafficManager() {
+        if (skipInPlayback()) {
+            return;
+        }
+
+        Assertions.assertTrue(ManageWebAppWithTrafficManager.runSample(azure));
+    }
 
     @Test
     @DoNotRecord
@@ -180,10 +187,15 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
         Assertions.assertTrue(ManageLinuxWebAppWithDomainSsl.runSample(azure));
     }
 
-//    @Test
-//    public void testManageLinuxWebAppWithTrafficManager() {
-//        Assertions.assertTrue(ManageLinuxWebAppWithTrafficManager.runSample(azure));
-//    }
+    @Test
+    @DoNotRecord
+    public void testManageLinuxWebAppWithTrafficManager() {
+        if (skipInPlayback()) {
+            return;
+        }
+
+        Assertions.assertTrue(ManageLinuxWebAppWithTrafficManager.runSample(azure));
+    }
 
     @Test
     @DoNotRecord

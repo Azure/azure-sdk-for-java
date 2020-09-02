@@ -11,7 +11,7 @@ import com.azure.core.annotation.Fluent;
 @Fluent
 public class RequestOptions {
 
-    private String ifMatch;
+    String ifMatch;
 
     /**
      * Gets a string representing a weak ETag for the entity that this request performs an operation against, as per RFC7232.

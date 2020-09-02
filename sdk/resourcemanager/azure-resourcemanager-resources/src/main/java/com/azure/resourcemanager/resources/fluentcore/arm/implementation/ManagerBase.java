@@ -18,7 +18,7 @@ public abstract class ManagerBase {
     private final String subscriptionId;
     private final AzureEnvironment environment;
     protected final HttpPipeline httpPipeline;
-    private SdkContext sdkContext;
+    private final SdkContext sdkContext;
 
     protected ManagerBase(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
         this.httpPipeline = httpPipeline;
