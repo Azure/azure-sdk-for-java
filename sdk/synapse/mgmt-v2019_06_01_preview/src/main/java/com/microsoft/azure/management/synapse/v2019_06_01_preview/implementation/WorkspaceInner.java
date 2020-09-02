@@ -35,9 +35,13 @@ public class WorkspaceInner extends Resource {
     private String sqlAdministratorLoginPassword;
 
     /**
-     * Workspace managed resource group.
+     * Workspace managed resource group. The resource group name uniquely
+     * identifies the resource group within the user subscriptionId. The
+     * resource group name must be no longer than 90 characters long, and must
+     * be alphanumeric characters (Char.IsLetterOrDigit()) and '-', '_', '(',
+     * ')' and'.'. Note that the name cannot end with '.'.
      */
-    @JsonProperty(value = "properties.managedResourceGroupName", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.managedResourceGroupName")
     private String managedResourceGroupName;
 
     /**
@@ -76,6 +80,12 @@ public class WorkspaceInner extends Resource {
      */
     @JsonProperty(value = "properties.privateEndpointConnections")
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
+
+    /**
+     * Workspace level configs and feature flags.
+     */
+    @JsonProperty(value = "properties.extraProperties", access = JsonProperty.Access.WRITE_ONLY)
+    private Map<String, Object> extraProperties;
 
     /**
      * Identity of the workspace.
@@ -124,12 +134,23 @@ public class WorkspaceInner extends Resource {
     }
 
     /**
-     * Get workspace managed resource group.
+     * Get workspace managed resource group. The resource group name uniquely identifies the resource group within the user subscriptionId. The resource group name must be no longer than 90 characters long, and must be alphanumeric characters (Char.IsLetterOrDigit()) and '-', '_', '(', ')' and'.'. Note that the name cannot end with '.'.
      *
      * @return the managedResourceGroupName value
      */
     public String managedResourceGroupName() {
         return this.managedResourceGroupName;
+    }
+
+    /**
+     * Set workspace managed resource group. The resource group name uniquely identifies the resource group within the user subscriptionId. The resource group name must be no longer than 90 characters long, and must be alphanumeric characters (Char.IsLetterOrDigit()) and '-', '_', '(', ')' and'.'. Note that the name cannot end with '.'.
+     *
+     * @param managedResourceGroupName the managedResourceGroupName value to set
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withManagedResourceGroupName(String managedResourceGroupName) {
+        this.managedResourceGroupName = managedResourceGroupName;
+        return this;
     }
 
     /**
@@ -239,6 +260,15 @@ public class WorkspaceInner extends Resource {
     public WorkspaceInner withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
         this.privateEndpointConnections = privateEndpointConnections;
         return this;
+    }
+
+    /**
+     * Get workspace level configs and feature flags.
+     *
+     * @return the extraProperties value
+     */
+    public Map<String, Object> extraProperties() {
+        return this.extraProperties;
     }
 
     /**
