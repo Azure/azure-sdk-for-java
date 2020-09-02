@@ -33,10 +33,10 @@ public class AmqpMessageHeader {
     }
 
     /**
-     * Sets delivery count.
+     * Sets the given {@code deliveryCount} value on {@link AmqpMessageHeader} object.
      *
      * @param deliveryCount to be set.
-     * @return updated {@link AmqpMessageHeader}.
+     * @return updated {@link AmqpMessageHeader} object.
      */
     public AmqpMessageHeader setDeliveryCount(Integer deliveryCount) {
         this.deliveryCount = deliveryCount;
@@ -53,10 +53,10 @@ public class AmqpMessageHeader {
     }
 
     /**
-     * Sets the durable boolean flag.
+     * Sets the given {@code durable} value on {@link AmqpMessageHeader} object.
      *
      * @param durable to set on {@link AmqpMessageHeader}.
-     * @return updated {@link AmqpMessageHeader}.
+     * @return updated {@link AmqpMessageHeader} object.
      */
     public AmqpMessageHeader setDurable(Boolean durable) {
         this.durable = durable;
@@ -73,10 +73,10 @@ public class AmqpMessageHeader {
     }
 
     /**
-     * Sets the {@code firstAcquirer} boolean flag.
+     * Sets the given {@code firstAcquirer} value on {@link AmqpMessageHeader} object.
      *
      * @param firstAcquirer to set on {@link AmqpMessageHeader}.
-     * @return updated {@link AmqpMessageHeader}.
+     * @return updated {@link AmqpMessageHeader} object.
      */
     public AmqpMessageHeader setFirstAcquirer(Boolean firstAcquirer) {
         this.firstAcquirer = firstAcquirer;
@@ -92,10 +92,10 @@ public class AmqpMessageHeader {
     }
 
     /**
-     * Sets the priority.
+     * Sets the given {@code priority} value on {@link AmqpMessageHeader} object.
      *
      * @param priority to set on {@link AmqpMessageHeader}.
-     * @return updated {@link AmqpMessageHeader}.
+     * @return updated {@link AmqpMessageHeader} object.
      */
     public AmqpMessageHeader setPriority(Byte priority) {
         this.priority = priority;
@@ -111,9 +111,10 @@ public class AmqpMessageHeader {
     }
 
     /**
+     * Sets the given {@code timeToLive} value on {@link AmqpMessageHeader} object.
      *
      * @param timeToLive to set on {@link AmqpMessageHeader}.
-     * @return updated {@link AmqpMessageHeader}.
+     * @return updated {@link AmqpMessageHeader} object.
      */
     public AmqpMessageHeader setTimeToLive(Duration timeToLive) {
         this.timeToLive =  timeToLive;
