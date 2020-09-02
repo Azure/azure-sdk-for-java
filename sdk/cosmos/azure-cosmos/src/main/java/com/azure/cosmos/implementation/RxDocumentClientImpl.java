@@ -272,6 +272,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         //Database account should not be null here,
         // this.globalEndpointManager.init() must have been already called
         // hence asserting it
+        if (databaseAccount == null) {
+            logger.error("Client initialization failed."
+                + " Check if the endpoint is reachable and if your auth token is valid");
+            throw new RuntimeException("Client initialization failed."
+                + " Check if the endpoint is reachable and if your auth token is valid");
+        }
+
         assert(databaseAccount != null);
         this.useMultipleWriteLocations = this.connectionPolicy.isMultipleWriteRegionsEnabled() && BridgeInternal.isEnableMultipleWriteLocations(databaseAccount);
 
