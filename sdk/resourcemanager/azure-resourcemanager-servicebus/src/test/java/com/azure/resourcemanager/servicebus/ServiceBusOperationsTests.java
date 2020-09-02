@@ -1,11 +1,24 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.servicebus;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.core.TestUtilities;
+import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
+import com.azure.resourcemanager.servicebus.implementation.TimeSpan;
 import com.azure.resourcemanager.servicebus.models.AccessRights;
 import com.azure.resourcemanager.servicebus.models.AuthorizationKeys;
 import com.azure.resourcemanager.servicebus.models.CheckNameAvailabilityResult;
@@ -18,48 +31,51 @@ import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
 import com.azure.resourcemanager.servicebus.models.ServiceBusSubscription;
 import com.azure.resourcemanager.servicebus.models.Topic;
 import com.azure.resourcemanager.servicebus.models.TopicAuthorizationRule;
-import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.resources.ResourceGroup;
-import com.microsoft.azure.management.resources.core.TestBase;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.implementation.ResourceManager;
-import com.microsoft.rest.RestClient;
-import org.joda.time.Period;
-import org.junit.Assert;
-import org.junit.Test;
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.utils.TestDelayProvider;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-import java.util.concurrent.TimeUnit;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 
-public class ServiceBusOperationsTests extends TestBase {
-    protected static ResourceManager resourceManager;
-    protected static ServiceBusManager serviceBusManager;
-    protected static String RG_NAME = "";
+public class ServiceBusOperationsTests extends ResourceManagerTestBase {
+    private ResourceManager resourceManager;
+    private ServiceBusManager serviceBusManager;
+    private String rgName = "";
 
     @Override
-    protected RestClient buildRestClient(RestClient.Builder builder, boolean isMocked) {
-        if (!isMocked) {
-            return super.buildRestClient(builder, isMocked);
-        }
-        return super.buildRestClient(builder.withReadTimeout(100, TimeUnit.SECONDS), isMocked);
+    protected HttpPipeline buildHttpPipeline(
+        TokenCredential credential,
+        AzureProfile profile,
+        HttpLogOptions httpLogOptions,
+        List<HttpPipelinePolicy> policies,
+        HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(
+            credential,
+            profile,
+            null,
+            httpLogOptions,
+            null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
+            policies,
+            httpClient);
     }
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        RG_NAME = generateRandomResourceName("javasb", 20);
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
+        rgName = generateRandomResourceName("javasb", 20);
 
-        resourceManager = ResourceManager
-                .authenticate(restClient)
-                .withSubscription(defaultSubscription);
-
-        serviceBusManager = ServiceBusManager
-                .authenticate(restClient, defaultSubscription);
+        SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
+        resourceManager = ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
+        serviceBusManager = ServiceBusManager.authenticate(httpPipeline, profile);
     }
 
     @Override
     protected void cleanUpResources() {
-        if (RG_NAME != null && resourceManager != null) {
-            resourceManager.resourceGroups().deleteByName(RG_NAME);
+        if (rgName != null && resourceManager != null) {
+            resourceManager.resourceGroups().deleteByName(rgName);
         }
     }
 
@@ -67,7 +83,7 @@ public class ServiceBusOperationsTests extends TestBase {
     public void canCRUDOnSimpleNamespace() {
         Region region = Region.US_EAST;
         Creatable<ResourceGroup> rgCreatable = resourceManager.resourceGroups()
-                .define(RG_NAME)
+                .define(rgName)
                 .withRegion(region);
 
         String namespaceDNSLabel = generateRandomResourceName("jvsbns", 15);
@@ -79,13 +95,13 @@ public class ServiceBusOperationsTests extends TestBase {
                 .create();
 
         ServiceBusNamespace namespace = serviceBusManager.namespaces()
-                .getByResourceGroup(RG_NAME, namespaceDNSLabel);
-        Assert.assertNotNull(namespace);
-        Assert.assertNotNull(namespace.inner());
+                .getByResourceGroup(rgName, namespaceDNSLabel);
+        Assertions.assertNotNull(namespace);
+        Assertions.assertNotNull(namespace.inner());
 
-        PagedList<ServiceBusNamespace> namespaces = serviceBusManager.namespaces().listByResourceGroup(RG_NAME);
-        Assert.assertNotNull(namespaces);
-        Assert.assertTrue(namespaces.size() > 0);
+        PagedIterable<ServiceBusNamespace> namespaces = serviceBusManager.namespaces().listByResourceGroup(rgName);
+        Assertions.assertNotNull(namespaces);
+        Assertions.assertTrue(TestUtilities.getSize(namespaces) > 0);
         boolean found = false;
         for (ServiceBusNamespace n : namespaces) {
             if (n.name().equalsIgnoreCase(namespace.name())) {
@@ -93,45 +109,45 @@ public class ServiceBusOperationsTests extends TestBase {
                 break;
             }
         }
-        Assert.assertTrue(found);
+        Assertions.assertTrue(found);
 
-        Assert.assertNotNull(namespace.dnsLabel());
-        Assert.assertTrue(namespace.dnsLabel().equalsIgnoreCase(namespaceDNSLabel));
-        Assert.assertNotNull(namespace.fqdn());
-        Assert.assertTrue(namespace.fqdn().contains(namespaceDNSLabel));
-        Assert.assertNotNull(namespace.sku());
-        Assert.assertTrue(namespace.sku().name().equals(NamespaceSku.BASIC.name()));
-        Assert.assertNotNull(namespace.region());
-        Assert.assertTrue(namespace.region().equals(region));
-        Assert.assertNotNull(namespace.resourceGroupName());
-        Assert.assertTrue(namespace.resourceGroupName().equalsIgnoreCase(RG_NAME));
-        Assert.assertNotNull(namespace.createdAt());
-        Assert.assertNotNull(namespace.queues());
-        Assert.assertEquals(0, namespace.queues().list().size());
-        Assert.assertNotNull(namespace.topics());
-        Assert.assertEquals(0, namespace.topics().list().size());
-        Assert.assertNotNull(namespace.authorizationRules());
-        PagedList<NamespaceAuthorizationRule> defaultNsRules = namespace.authorizationRules().list();
-        Assert.assertEquals(1, defaultNsRules.size());
-        NamespaceAuthorizationRule defaultNsRule = defaultNsRules.get(0);
-        Assert.assertTrue(defaultNsRule.name().equalsIgnoreCase("RootManageSharedAccessKey"));
-        Assert.assertNotNull(defaultNsRule.rights());
-        Assert.assertNotNull(defaultNsRule.namespaceName());
-        Assert.assertTrue(defaultNsRule.namespaceName().equalsIgnoreCase(namespaceDNSLabel));
-        Assert.assertNotNull(defaultNsRule.resourceGroupName());
-        Assert.assertTrue(defaultNsRule.resourceGroupName().equalsIgnoreCase(RG_NAME));
+        Assertions.assertNotNull(namespace.dnsLabel());
+        Assertions.assertTrue(namespace.dnsLabel().equalsIgnoreCase(namespaceDNSLabel));
+        Assertions.assertNotNull(namespace.fqdn());
+        Assertions.assertTrue(namespace.fqdn().contains(namespaceDNSLabel));
+        Assertions.assertNotNull(namespace.sku());
+        Assertions.assertTrue(namespace.sku().name().equals(NamespaceSku.BASIC.name()));
+        Assertions.assertNotNull(namespace.region());
+        Assertions.assertTrue(namespace.region().equals(region));
+        Assertions.assertNotNull(namespace.resourceGroupName());
+        Assertions.assertTrue(namespace.resourceGroupName().equalsIgnoreCase(rgName));
+        Assertions.assertNotNull(namespace.createdAt());
+        Assertions.assertNotNull(namespace.queues());
+        Assertions.assertEquals(0, TestUtilities.getSize(namespace.queues().list()));
+        Assertions.assertNotNull(namespace.topics());
+        Assertions.assertEquals(0, TestUtilities.getSize(namespace.topics().list()));
+        Assertions.assertNotNull(namespace.authorizationRules());
+        PagedIterable<NamespaceAuthorizationRule> defaultNsRules = namespace.authorizationRules().list();
+        Assertions.assertEquals(1, TestUtilities.getSize(defaultNsRules));
+        NamespaceAuthorizationRule defaultNsRule = defaultNsRules.iterator().next();
+        Assertions.assertTrue(defaultNsRule.name().equalsIgnoreCase("RootManageSharedAccessKey"));
+        Assertions.assertNotNull(defaultNsRule.rights());
+        Assertions.assertNotNull(defaultNsRule.namespaceName());
+        Assertions.assertTrue(defaultNsRule.namespaceName().equalsIgnoreCase(namespaceDNSLabel));
+        Assertions.assertNotNull(defaultNsRule.resourceGroupName());
+        Assertions.assertTrue(defaultNsRule.resourceGroupName().equalsIgnoreCase(rgName));
         namespace.update()
                 .withSku(NamespaceSku.STANDARD)
                 .apply();
-        Assert.assertTrue(namespace.sku().name().equals(NamespaceSku.STANDARD.name()));
-        serviceBusManager.namespaces().deleteByResourceGroup(RG_NAME, namespace.name());
+        Assertions.assertTrue(namespace.sku().name().equals(NamespaceSku.STANDARD.name()));
+        serviceBusManager.namespaces().deleteByResourceGroup(rgName, namespace.name());
     }
 
     @Test
     public void canCreateNamespaceThenCRUDOnQueue() {
         Region region = Region.US_EAST;
         Creatable<ResourceGroup> rgCreatable = resourceManager.resourceGroups()
-                .define(RG_NAME)
+                .define(rgName)
                 .withRegion(region);
 
         String namespaceDNSLabel = generateRandomResourceName("jvsbns", 15);
@@ -141,43 +157,44 @@ public class ServiceBusOperationsTests extends TestBase {
                 .withNewResourceGroup(rgCreatable)
                 .withSku(NamespaceSku.STANDARD)
                 .create();
-        Assert.assertNotNull(namespace);
-        Assert.assertNotNull(namespace.inner());
+        Assertions.assertNotNull(namespace);
+        Assertions.assertNotNull(namespace.inner());
 
         String queueName = generateRandomResourceName("queue1-", 15);
         Queue queue = namespace.queues()
                 .define(queueName)
                 .create();
 
-        Assert.assertNotNull(queue);
-        Assert.assertNotNull(queue.inner());
-        Assert.assertNotNull(queue.name());
-        Assert.assertTrue(queue.name().equalsIgnoreCase(queueName));
+        Assertions.assertNotNull(queue);
+        Assertions.assertNotNull(queue.inner());
+        Assertions.assertNotNull(queue.name());
+        Assertions.assertTrue(queue.name().equalsIgnoreCase(queueName));
         // Default lock duration is 1 minute, assert TimeSpan("00:01:00") parsing
         //
-        Assert.assertEquals("00:01:00", queue.inner().lockDuration());
-        Assert.assertEquals(60, queue.lockDurationInSeconds());
+        Assertions.assertEquals("00:01:00", queue.inner().lockDuration());
+        Assertions.assertEquals(60, queue.lockDurationInSeconds());
 
-        Period dupDetectionDuration = queue.duplicateMessageDetectionHistoryDuration();
-        Assert.assertNotNull(dupDetectionDuration);
-        Assert.assertEquals(10, dupDetectionDuration.getMinutes());
+        Duration dupDetectionDuration = queue.duplicateMessageDetectionHistoryDuration();
+        Assertions.assertNotNull(dupDetectionDuration);
+        Assertions.assertEquals(10, TimeSpan.fromDuration(dupDetectionDuration).minutes());
         // Default message TTL is TimeSpan.Max, assert parsing
         //
-        Assert.assertEquals("10675199.02:48:05.4775807", queue.inner().defaultMessageTimeToLive());
-        Period msgTtlDuration = queue.defaultMessageTtlDuration();
-        Assert.assertNotNull(msgTtlDuration);
-        // Assert the default ttl TimeSpan("10675199.02:48:05.4775807") parsing
+        Assertions.assertEquals("10675199.02:48:05.4775807", queue.inner().defaultMessageTimeToLive());
+        Duration msgTtlDuration = queue.defaultMessageTtlDuration();
+        Assertions.assertNotNull(msgTtlDuration);
+        // Assertions the default ttl TimeSpan("10675199.02:48:05.4775807") parsing
         //
-        Assert.assertEquals(10675199, msgTtlDuration.getDays());
-        Assert.assertEquals(2, msgTtlDuration.getHours());
-        Assert.assertEquals(48, msgTtlDuration.getMinutes());
-        // Assert the default max size In MB
+        TimeSpan timeSpan = TimeSpan.fromDuration(msgTtlDuration);
+        Assertions.assertEquals(10675199, timeSpan.days());
+        Assertions.assertEquals(2, timeSpan.hours());
+        Assertions.assertEquals(48, timeSpan.minutes());
+        // Assertions the default max size In MB
         //
-        Assert.assertEquals(1024, queue.maxSizeInMB());
+        Assertions.assertEquals(1024, queue.maxSizeInMB());
 
-        PagedList<Queue> queuesInNamespace = namespace.queues().list();
-        Assert.assertNotNull(queuesInNamespace);
-        Assert.assertTrue(queuesInNamespace.size() > 0);
+        PagedIterable<Queue> queuesInNamespace = namespace.queues().list();
+        Assertions.assertNotNull(queuesInNamespace);
+        Assertions.assertTrue(TestUtilities.getSize(queuesInNamespace) > 0);
         Queue foundQueue = null;
         for (Queue q : queuesInNamespace) {
             if (q.name().equalsIgnoreCase(queueName)) {
@@ -185,19 +202,19 @@ public class ServiceBusOperationsTests extends TestBase {
                 break;
             }
         }
-        Assert.assertNotNull(foundQueue);
+        Assertions.assertNotNull(foundQueue);
         // Dead lettering disabled by default
         //
-        Assert.assertFalse(foundQueue.isDeadLetteringEnabledForExpiredMessages());
+        Assertions.assertFalse(foundQueue.isDeadLetteringEnabledForExpiredMessages());
         foundQueue = foundQueue.update()
                 .withMessageLockDurationInSeconds(120)
-                .withDefaultMessageTTL(new Period().withMinutes(20))
+                .withDefaultMessageTTL(Duration.ofMinutes(20))
                 .withExpiredMessageMovedToDeadLetterQueue()
                 .withMessageMovedToDeadLetterQueueOnMaxDeliveryCount(25)
                 .apply();
-        Assert.assertEquals(120, foundQueue.lockDurationInSeconds());
-        Assert.assertTrue(foundQueue.isDeadLetteringEnabledForExpiredMessages());
-        Assert.assertEquals(25, foundQueue.maxDeliveryCountBeforeDeadLetteringMessage());
+        Assertions.assertEquals(120, foundQueue.lockDurationInSeconds());
+        Assertions.assertTrue(foundQueue.isDeadLetteringEnabledForExpiredMessages());
+        Assertions.assertEquals(25, foundQueue.maxDeliveryCountBeforeDeadLetteringMessage());
         namespace.queues().deleteByName(foundQueue.name());
     }
 
@@ -205,7 +222,7 @@ public class ServiceBusOperationsTests extends TestBase {
     public void canCreateDeleteQueueWithNamespace() {
         Region region = Region.US_EAST;
         Creatable<ResourceGroup> rgCreatable = resourceManager.resourceGroups()
-                .define(RG_NAME)
+                .define(rgName)
                 .withRegion(region);
 
         String namespaceDNSLabel = generateRandomResourceName("jvsbns", 15);
@@ -219,13 +236,13 @@ public class ServiceBusOperationsTests extends TestBase {
                 .withSku(NamespaceSku.STANDARD)
                 .withNewQueue(queueName, 1024)
                 .create();
-        Assert.assertNotNull(namespace);
-        Assert.assertNotNull(namespace.inner());
+        Assertions.assertNotNull(namespace);
+        Assertions.assertNotNull(namespace.inner());
         // Lookup queue
         //
-        PagedList<Queue> queuesInNamespace = namespace.queues().list();
-        Assert.assertNotNull(queuesInNamespace);
-        Assert.assertEquals(1, queuesInNamespace.size());
+        PagedIterable<Queue> queuesInNamespace = namespace.queues().list();
+        Assertions.assertNotNull(queuesInNamespace);
+        Assertions.assertEquals(1, TestUtilities.getSize(queuesInNamespace));
         Queue foundQueue = null;
         for (Queue q : queuesInNamespace) {
             if (q.name().equalsIgnoreCase(queueName)) {
@@ -233,22 +250,22 @@ public class ServiceBusOperationsTests extends TestBase {
                 break;
             }
         }
-        Assert.assertNotNull(foundQueue);
+        Assertions.assertNotNull(foundQueue);
         // Remove Queue
         //
         namespace.update()
                 .withoutQueue(queueName)
                 .apply();
         queuesInNamespace = namespace.queues().list();
-        Assert.assertNotNull(queuesInNamespace);
-        Assert.assertEquals(0, queuesInNamespace.size());
+        Assertions.assertNotNull(queuesInNamespace);
+        Assertions.assertEquals(0, TestUtilities.getSize(queuesInNamespace));
     }
 
     @Test
     public void canCreateNamespaceThenCRUDOnTopic() {
         Region region = Region.US_EAST;
         Creatable<ResourceGroup> rgCreatable = resourceManager.resourceGroups()
-                .define(RG_NAME)
+                .define(rgName)
                 .withRegion(region);
 
         String namespaceDNSLabel = generateRandomResourceName("jvsbns", 15);
@@ -258,39 +275,40 @@ public class ServiceBusOperationsTests extends TestBase {
                 .withNewResourceGroup(rgCreatable)
                 .withSku(NamespaceSku.STANDARD)
                 .create();
-        Assert.assertNotNull(namespace);
-        Assert.assertNotNull(namespace.inner());
+        Assertions.assertNotNull(namespace);
+        Assertions.assertNotNull(namespace.inner());
 
         String topicName = generateRandomResourceName("topic1-", 15);
         Topic topic = namespace.topics()
                 .define(topicName)
                 .create();
 
-        Assert.assertNotNull(topic);
-        Assert.assertNotNull(topic.inner());
-        Assert.assertNotNull(topic.name());
-        Assert.assertTrue(topic.name().equalsIgnoreCase(topicName));
+        Assertions.assertNotNull(topic);
+        Assertions.assertNotNull(topic.inner());
+        Assertions.assertNotNull(topic.name());
+        Assertions.assertTrue(topic.name().equalsIgnoreCase(topicName));
 
-        Period dupDetectionDuration = topic.duplicateMessageDetectionHistoryDuration();
-        Assert.assertNotNull(dupDetectionDuration);
-        Assert.assertEquals(10, dupDetectionDuration.getMinutes());
+        Duration dupDetectionDuration = topic.duplicateMessageDetectionHistoryDuration();
+        Assertions.assertNotNull(dupDetectionDuration);
+        Assertions.assertEquals(10, TimeSpan.fromDuration(dupDetectionDuration).minutes());
         // Default message TTL is TimeSpan.Max, assert parsing
         //
-        Assert.assertEquals("10675199.02:48:05.4775807", topic.inner().defaultMessageTimeToLive());
-        Period msgTtlDuration = topic.defaultMessageTtlDuration();
-        Assert.assertNotNull(msgTtlDuration);
-        // Assert the default ttl TimeSpan("10675199.02:48:05.4775807") parsing
+        Assertions.assertEquals("10675199.02:48:05.4775807", topic.inner().defaultMessageTimeToLive());
+        Duration msgTtlDuration = topic.defaultMessageTtlDuration();
+        Assertions.assertNotNull(msgTtlDuration);
+        // Assertions the default ttl TimeSpan("10675199.02:48:05.4775807") parsing
         //
-        Assert.assertEquals(10675199, msgTtlDuration.getDays());
-        Assert.assertEquals(2, msgTtlDuration.getHours());
-        Assert.assertEquals(48, msgTtlDuration.getMinutes());
-        // Assert the default max size In MB
+        TimeSpan timeSpan = TimeSpan.fromDuration(msgTtlDuration);
+        Assertions.assertEquals(10675199, timeSpan.days());
+        Assertions.assertEquals(2, timeSpan.hours());
+        Assertions.assertEquals(48, timeSpan.minutes());
+        // Assertions the default max size In MB
         //
-        Assert.assertEquals(1024, topic.maxSizeInMB());
+        Assertions.assertEquals(1024, topic.maxSizeInMB());
 
-        PagedList<Topic> topicsInNamespace = namespace.topics().list();
-        Assert.assertNotNull(topicsInNamespace);
-        Assert.assertTrue(topicsInNamespace.size() > 0);
+        PagedIterable<Topic> topicsInNamespace = namespace.topics().list();
+        Assertions.assertNotNull(topicsInNamespace);
+        Assertions.assertTrue(TestUtilities.getSize(topicsInNamespace) > 0);
         Topic foundTopic = null;
         for (Topic t : topicsInNamespace) {
             if (t.name().equalsIgnoreCase(topic.name())) {
@@ -298,19 +316,19 @@ public class ServiceBusOperationsTests extends TestBase {
                 break;
             }
         }
-        Assert.assertNotNull(foundTopic);
+        Assertions.assertNotNull(foundTopic);
         foundTopic = foundTopic.update()
-                .withDefaultMessageTTL(new Period().withMinutes(20))
-                .withDuplicateMessageDetectionHistoryDuration(new Period().withMinutes(15))
+                .withDefaultMessageTTL(Duration.ofMinutes(20))
+                .withDuplicateMessageDetectionHistoryDuration(Duration.ofMinutes(15))
                 .withDeleteOnIdleDurationInMinutes(25)
                 .apply();
-        Period ttlDuration = foundTopic.defaultMessageTtlDuration();
-        Assert.assertNotNull(ttlDuration);
-        Assert.assertEquals(20, ttlDuration.getMinutes());
-        Period duplicateDetectDuration = foundTopic.duplicateMessageDetectionHistoryDuration();
-        Assert.assertNotNull(duplicateDetectDuration);
-        Assert.assertEquals(15, duplicateDetectDuration.getMinutes());
-        Assert.assertEquals(25, foundTopic.deleteOnIdleDurationInMinutes());
+        Duration ttlDuration = foundTopic.defaultMessageTtlDuration();
+        Assertions.assertNotNull(ttlDuration);
+        Assertions.assertEquals(20, TimeSpan.fromDuration(ttlDuration).minutes());
+        Duration duplicateDetectDuration = foundTopic.duplicateMessageDetectionHistoryDuration();
+        Assertions.assertNotNull(duplicateDetectDuration);
+        Assertions.assertEquals(15, TimeSpan.fromDuration(duplicateDetectDuration).minutes());
+        Assertions.assertEquals(25, foundTopic.deleteOnIdleDurationInMinutes());
         // Delete
         namespace.topics().deleteByName(foundTopic.name());
     }
@@ -319,7 +337,7 @@ public class ServiceBusOperationsTests extends TestBase {
     public void canCreateDeleteTopicWithNamespace() {
         Region region = Region.US_EAST;
         Creatable<ResourceGroup> rgCreatable = resourceManager.resourceGroups()
-                .define(RG_NAME)
+                .define(rgName)
                 .withRegion(region);
 
         String namespaceDNSLabel = generateRandomResourceName("jvsbns", 15);
@@ -333,13 +351,13 @@ public class ServiceBusOperationsTests extends TestBase {
                 .withSku(NamespaceSku.STANDARD)
                 .withNewTopic(topicName, 1024)
                 .create();
-        Assert.assertNotNull(namespace);
-        Assert.assertNotNull(namespace.inner());
+        Assertions.assertNotNull(namespace);
+        Assertions.assertNotNull(namespace.inner());
         // Lookup topic
         //
-        PagedList<Topic> topicsInNamespace = namespace.topics().list();
-        Assert.assertNotNull(topicsInNamespace);
-        Assert.assertEquals(1, topicsInNamespace.size());
+        PagedIterable<Topic> topicsInNamespace = namespace.topics().list();
+        Assertions.assertNotNull(topicsInNamespace);
+        Assertions.assertEquals(1, TestUtilities.getSize(topicsInNamespace));
         Topic foundTopic = null;
         for (Topic t : topicsInNamespace) {
             if (t.name().equalsIgnoreCase(topicName)) {
@@ -347,22 +365,22 @@ public class ServiceBusOperationsTests extends TestBase {
                 break;
             }
         }
-        Assert.assertNotNull(foundTopic);
+        Assertions.assertNotNull(foundTopic);
         // Remove Topic
         //
         namespace.update()
                 .withoutTopic(topicName)
                 .apply();
         topicsInNamespace = namespace.topics().list();
-        Assert.assertNotNull(topicsInNamespace);
-        Assert.assertEquals(0, topicsInNamespace.size());
+        Assertions.assertNotNull(topicsInNamespace);
+        Assertions.assertEquals(0, TestUtilities.getSize(topicsInNamespace));
     }
 
     @Test
     public void canOperateOnAuthorizationRules() {
         Region region = Region.US_EAST;
         Creatable<ResourceGroup> rgCreatable = resourceManager.resourceGroups()
-                .define(RG_NAME)
+                .define(rgName)
                 .withRegion(region);
 
         String namespaceDNSLabel = generateRandomResourceName("jvsbns", 15);
@@ -382,9 +400,9 @@ public class ServiceBusOperationsTests extends TestBase {
                 .create();
         // Lookup ns authorization rule
         //
-        PagedList<NamespaceAuthorizationRule> rulesInNamespace = namespace.authorizationRules().list();
-        Assert.assertNotNull(rulesInNamespace);
-        Assert.assertEquals(2, rulesInNamespace.size());    // Default + one explicit
+        PagedIterable<NamespaceAuthorizationRule> rulesInNamespace = namespace.authorizationRules().list();
+        Assertions.assertNotNull(rulesInNamespace);
+        Assertions.assertEquals(2, TestUtilities.getSize(rulesInNamespace));    // Default + one explicit
 
         NamespaceAuthorizationRule foundNsRule = null;
         for (NamespaceAuthorizationRule rule : rulesInNamespace) {
@@ -393,38 +411,38 @@ public class ServiceBusOperationsTests extends TestBase {
                 break;
             }
         }
-        Assert.assertNotNull(foundNsRule);
+        Assertions.assertNotNull(foundNsRule);
         AuthorizationKeys nsRuleKeys = foundNsRule.getKeys();
-        Assert.assertNotNull(nsRuleKeys);
-        Assert.assertNotNull(nsRuleKeys.inner());
+        Assertions.assertNotNull(nsRuleKeys);
+        Assertions.assertNotNull(nsRuleKeys.inner());
         String primaryKey = nsRuleKeys.primaryKey();
-        Assert.assertNotNull(primaryKey);
-        Assert.assertNotNull(nsRuleKeys.secondaryKey());
-        Assert.assertNotNull(nsRuleKeys.primaryConnectionString());
-        Assert.assertNotNull(nsRuleKeys.secondaryConnectionString());
+        Assertions.assertNotNull(primaryKey);
+        Assertions.assertNotNull(nsRuleKeys.secondaryKey());
+        Assertions.assertNotNull(nsRuleKeys.primaryConnectionString());
+        Assertions.assertNotNull(nsRuleKeys.secondaryConnectionString());
         nsRuleKeys = foundNsRule.regenerateKey(Policykey.PRIMARY_KEY);
-        Assert.assertNotEquals(nsRuleKeys.primaryKey(), primaryKey);
+        Assertions.assertNotEquals(nsRuleKeys.primaryKey(), primaryKey);
         // Lookup queue & operate on auth rules
         //
-        PagedList<Queue> queuesInNamespace = namespace.queues().list();
-        Assert.assertNotNull(queuesInNamespace);
-        Assert.assertEquals(1, queuesInNamespace.size());
-        Queue queue = queuesInNamespace.get(0);
-        Assert.assertNotNull(queue);
-        Assert.assertNotNull(queue.inner());
+        PagedIterable<Queue> queuesInNamespace = namespace.queues().list();
+        Assertions.assertNotNull(queuesInNamespace);
+        Assertions.assertEquals(1, TestUtilities.getSize(queuesInNamespace));
+        Queue queue = queuesInNamespace.iterator().next();
+        Assertions.assertNotNull(queue);
+        Assertions.assertNotNull(queue.inner());
 
         QueueAuthorizationRule qRule = queue.authorizationRules()
                 .define("rule1")
                 .withListeningEnabled()
                 .create();
-        Assert.assertNotNull(qRule);
-        Assert.assertNotNull(qRule.rights().contains(AccessRights.LISTEN));
+        Assertions.assertNotNull(qRule);
+        Assertions.assertNotNull(qRule.rights().contains(AccessRights.LISTEN));
         qRule = qRule.update()
                 .withManagementEnabled()
                 .apply();
-        Assert.assertNotNull(qRule.rights().contains(AccessRights.MANAGE));
-        PagedList<QueueAuthorizationRule> rulesInQueue = queue.authorizationRules().list();
-        Assert.assertTrue(rulesInQueue.size() > 0);
+        Assertions.assertNotNull(qRule.rights().contains(AccessRights.MANAGE));
+        PagedIterable<QueueAuthorizationRule> rulesInQueue = queue.authorizationRules().list();
+        Assertions.assertTrue(TestUtilities.getSize(rulesInQueue) > 0);
         boolean foundQRule = false;
         for (QueueAuthorizationRule r : rulesInQueue) {
             if (r.name().equalsIgnoreCase(qRule.name())) {
@@ -432,28 +450,28 @@ public class ServiceBusOperationsTests extends TestBase {
                 break;
             }
         }
-        Assert.assertTrue(foundQRule);
+        Assertions.assertTrue(foundQRule);
         queue.authorizationRules().deleteByName(qRule.name());
         // Lookup topic & operate on auth rules
         //
-        PagedList<Topic> topicsInNamespace = namespace.topics().list();
-        Assert.assertNotNull(topicsInNamespace);
-        Assert.assertEquals(1, topicsInNamespace.size());
-        Topic topic = topicsInNamespace.get(0);
-        Assert.assertNotNull(topic);
-        Assert.assertNotNull(topic.inner());
+        PagedIterable<Topic> topicsInNamespace = namespace.topics().list();
+        Assertions.assertNotNull(topicsInNamespace);
+        Assertions.assertEquals(1, TestUtilities.getSize(topicsInNamespace));
+        Topic topic = topicsInNamespace.iterator().next();
+        Assertions.assertNotNull(topic);
+        Assertions.assertNotNull(topic.inner());
         TopicAuthorizationRule tRule = topic.authorizationRules()
                 .define("rule2")
                 .withSendingEnabled()
                 .create();
-        Assert.assertNotNull(tRule);
-        Assert.assertNotNull(tRule.rights().contains(AccessRights.SEND));
+        Assertions.assertNotNull(tRule);
+        Assertions.assertNotNull(tRule.rights().contains(AccessRights.SEND));
         tRule = tRule.update()
                 .withManagementEnabled()
                 .apply();
-        Assert.assertNotNull(tRule.rights().contains(AccessRights.MANAGE));
-        PagedList<TopicAuthorizationRule> rulesInTopic = topic.authorizationRules().list();
-        Assert.assertTrue(rulesInTopic.size() > 0);
+        Assertions.assertNotNull(tRule.rights().contains(AccessRights.MANAGE));
+        PagedIterable<TopicAuthorizationRule> rulesInTopic = topic.authorizationRules().list();
+        Assertions.assertTrue(TestUtilities.getSize(rulesInTopic) > 0);
         boolean foundTRule = false;
         for (TopicAuthorizationRule r : rulesInTopic) {
             if (r.name().equalsIgnoreCase(tRule.name())) {
@@ -461,21 +479,21 @@ public class ServiceBusOperationsTests extends TestBase {
                 break;
             }
         }
-        Assert.assertTrue(foundTRule);
+        Assertions.assertTrue(foundTRule);
         topic.authorizationRules().deleteByName(tRule.name());
     }
 
     @Test
     public void canPerformOnNamespaceActions() {
-        RG_NAME = null;
+        rgName = null;
         String namespaceDNSLabel = generateRandomResourceName("jvsbns", 15);
         CheckNameAvailabilityResult availabilityResult = serviceBusManager
                 .namespaces()
                 .checkNameAvailability(namespaceDNSLabel);
-        Assert.assertNotNull(availabilityResult);
+        Assertions.assertNotNull(availabilityResult);
         if (!availabilityResult.isAvailable()) {
-            Assert.assertNotNull(availabilityResult.unavailabilityReason());
-            Assert.assertNotNull(availabilityResult.unavailabilityMessage());
+            Assertions.assertNotNull(availabilityResult.unavailabilityReason());
+            Assertions.assertNotNull(availabilityResult.unavailabilityMessage());
         }
     }
 
@@ -483,7 +501,7 @@ public class ServiceBusOperationsTests extends TestBase {
     public void canPerformCRUDOnSubscriptions() {
         Region region = Region.US_EAST;
         Creatable<ResourceGroup> rgCreatable = resourceManager.resourceGroups()
-                .define(RG_NAME)
+                .define(rgName)
                 .withRegion(region);
 
         String namespaceDNSLabel = generateRandomResourceName("jvsbns", 15);
@@ -502,16 +520,16 @@ public class ServiceBusOperationsTests extends TestBase {
         //
         Topic topic = namespace.topics().getByName(topicName);
         ServiceBusSubscription subscription = topic.subscriptions().define(subscriptionName)
-                .withDefaultMessageTTL(new Period().withMinutes(20))
+                .withDefaultMessageTTL(Duration.ofMinutes(20))
                 .create();
-        Assert.assertNotNull(subscription);
-        Assert.assertNotNull(subscription.inner());
-        Assert.assertEquals(20, subscription.defaultMessageTtlDuration().getMinutes());
+        Assertions.assertNotNull(subscription);
+        Assertions.assertNotNull(subscription.inner());
+        Assertions.assertEquals(20, TimeSpan.fromDuration(subscription.defaultMessageTtlDuration()).minutes());
         subscription = topic.subscriptions().getByName(subscriptionName);
-        Assert.assertNotNull(subscription);
-        Assert.assertNotNull(subscription.inner());
-        PagedList<ServiceBusSubscription> subscriptionsInTopic = topic.subscriptions().list();
-        Assert.assertTrue(subscriptionsInTopic.size() > 0);
+        Assertions.assertNotNull(subscription);
+        Assertions.assertNotNull(subscription.inner());
+        PagedIterable<ServiceBusSubscription> subscriptionsInTopic = topic.subscriptions().list();
+        Assertions.assertTrue(TestUtilities.getSize(subscriptionsInTopic) > 0);
         boolean foundSubscription = false;
         for (ServiceBusSubscription s : subscriptionsInTopic) {
             if (s.name().equalsIgnoreCase(subscription.name())) {
@@ -519,21 +537,9 @@ public class ServiceBusOperationsTests extends TestBase {
                 break;
             }
         }
-        Assert.assertTrue(foundSubscription);
+        Assertions.assertTrue(foundSubscription);
         topic.subscriptions().deleteByName(subscriptionName);
         subscriptionsInTopic = topic.subscriptions().list();
-        Assert.assertTrue(subscriptionsInTopic.size() == 0);
+        Assertions.assertTrue(TestUtilities.getSize(subscriptionsInTopic) == 0);
     }
-
-    //@Test
-    //TODO To be revisited in the future
-    //public void canListServiceBusOperations() {
-    //    RG_NAME = null;
-    //    PagedList<ServiceBusOperation> operations = serviceBusManager.operations()
-    //            .list();
-    //    Assert.assertTrue(operations.size() > 0);
-    //    for (ServiceBusOperation op : operations) {
-    //        Assert.assertNotNull(op.name());
-    //    }
-    //}
 }

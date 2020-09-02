@@ -5,10 +5,10 @@ package com.azure.resourcemanager.servicebus;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.Manager;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.servicebus.implementation.ServiceBusNamespacesImpl;
@@ -97,8 +97,8 @@ public final class ServiceBusManager extends Manager<ServiceBusManager, ServiceB
             profile,
             new ServiceBusManagementClientBuilder()
                 .pipeline(httpPipeline)
-                .endpoint(profile.environment().getResourceManagerEndpoint())
-                .subscriptionId(profile.subscriptionId())
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
                 .buildClient(),
             sdkContext
         );

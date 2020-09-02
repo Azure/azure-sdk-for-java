@@ -21,11 +21,11 @@ public class TimeSpan {
     private static double secondsPerTick = 1.0 / ticksPerSecond;
     private static double minutesPerTick = 1.0 / ticksPerMinute;
 
-    private int days;
-    private int hours;
-    private int minutes;
-    private int seconds;
-    private int milliseconds;
+    private long days;
+    private long hours;
+    private long minutes;
+    private long seconds;
+    private long milliseconds;
 
     /**
      * Creates TimeSpan.
@@ -39,7 +39,7 @@ public class TimeSpan {
      * @param days number of days
      * @return TimeSpan
      */
-    public TimeSpan withDays(final int days) {
+    public TimeSpan withDays(final long days) {
         this.days = days;
         return this;
     }
@@ -50,7 +50,7 @@ public class TimeSpan {
      * @param hours number of hours
      * @return TimeSpan
      */
-    public TimeSpan withHours(final int hours) {
+    public TimeSpan withHours(final long hours) {
         this.hours = hours;
         return this;
     }
@@ -61,7 +61,7 @@ public class TimeSpan {
      * @param minutes number of minutes
      * @return TimeSpan
      */
-    public TimeSpan withMinutes(final int minutes) {
+    public TimeSpan withMinutes(final long minutes) {
         this.minutes = minutes;
         return this;
     }
@@ -72,7 +72,7 @@ public class TimeSpan {
      * @param seconds number of seconds
      * @return TimeSpan
      */
-    public TimeSpan withSeconds(final int seconds) {
+    public TimeSpan withSeconds(final long seconds) {
         this.seconds = seconds;
         return this;
     }
@@ -83,7 +83,7 @@ public class TimeSpan {
      * @param milliseconds number of milliseconds
      * @return TimeSpan
      */
-    public TimeSpan withMilliseconds(final int milliseconds) {
+    public TimeSpan withMilliseconds(final long milliseconds) {
         this.milliseconds = milliseconds;
         return this;
     }
@@ -91,35 +91,35 @@ public class TimeSpan {
     /**
      * @return days value
      */
-    public int days() {
+    public long days() {
         return this.days;
     }
 
     /**
      * @return hours value
      */
-    public int hours() {
+    public long hours() {
         return this.hours;
     }
 
     /**
      * @return minutes value
      */
-    public int minutes() {
+    public long minutes() {
         return this.minutes;
     }
 
     /**
      * @return seconds value
      */
-    public int seconds() {
+    public long seconds() {
         return this.seconds;
     }
 
     /**
      * @return mill-seconds value
      */
-    public int milliseconds() {
+    public long milliseconds() {
         return this.milliseconds;
     }
 
@@ -159,8 +159,19 @@ public class TimeSpan {
      * @return TimeSpan
      */
     public static TimeSpan fromDuration(Duration duration) {
-        Long millis = Long.valueOf(duration.toMillis());
-        return new TimeSpan().withMilliseconds(millis.intValue());
+        long totalTicks = duration.toMillis() * ticksPerMillisecond;
+        long days = Math.abs(totalTicks / ticksPerDay);
+        totalTicks = Math.abs(totalTicks % ticksPerDay);
+        long hours = totalTicks / ticksPerHour % 24;
+        long minutes = totalTicks / ticksPerMinute % 60;
+        long seconds = totalTicks / ticksPerSecond % 60;
+        long milliseconds = duration.toMillis() - (days * 3600 * 24 + hours * 3600 + minutes * 60 + seconds) * 1000;
+
+        return new TimeSpan().withDays(days)
+            .withHours(hours)
+            .withMinutes(minutes)
+            .withSeconds(seconds)
+            .withMilliseconds(milliseconds);
     }
 
     /**
@@ -269,7 +280,7 @@ public class TimeSpan {
      */
     public String toString() {
         long totalTicks = totalTicks();
-        int days = (int) Math.abs(totalTicks / ticksPerDay);
+        long days = Math.abs(totalTicks / ticksPerDay);
         StringBuilder stringBuilder = new StringBuilder();
         // Sign part
         //
@@ -282,9 +293,9 @@ public class TimeSpan {
             stringBuilder.append(String.format("%d.", days));
         }
         long remainingTicks = Math.abs(totalTicks % ticksPerDay);
-        int hours = (int) (remainingTicks / ticksPerHour % 24);
-        int minutes = (int) (remainingTicks / ticksPerMinute % 60);
-        int seconds = (int) (remainingTicks / ticksPerSecond % 60);
+        long hours = remainingTicks / ticksPerHour % 24;
+        long minutes = remainingTicks / ticksPerMinute % 60;
+        long seconds = remainingTicks / ticksPerSecond % 60;
         // Hour, Minute, Second part
         //
         stringBuilder.append(String.format("%02d:%02d:%02d", hours, minutes, seconds));
@@ -301,7 +312,7 @@ public class TimeSpan {
      * @return total number of ticks represented by this instance
      */
     private long totalTicks() {
-        long totalMilliSeconds = ((long) days * 3600 * 24 + (long) hours * 3600 + (long) minutes * 60 + seconds) * 1000
+        long totalMilliSeconds = (days * 3600 * 24 + hours * 3600 + minutes * 60 + seconds) * 1000
                 + milliseconds;
         return totalMilliSeconds * ticksPerMillisecond;
     }
