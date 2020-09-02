@@ -6,6 +6,7 @@ package com.azure.digitaltwins.core;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
 import com.azure.identity.ClientSecretCredentialBuilder;
 
 import java.io.IOException;
@@ -79,7 +80,12 @@ public class DigitalTwinsLifecycleSample {
             .forEach((twinId, twinContent) -> client.deleteDigitalTwin(twinId)
                 .subscribe(
                     aVoid -> { },
-                    throwable -> System.err.println("Could not create digital twin " + twinId + " due to " + throwable),
+                    throwable -> {
+                        // If digital twin does not exist, ignore.
+                        if (!(throwable instanceof ErrorResponseException) || !((ErrorResponseException) throwable).getValue().getError().getCode().equals("DigitalTwinNotFound")) {
+                            throw new RuntimeException(throwable);
+                        }
+                    },
                     () -> {
                         System.out.println("Deleted digital twin: " + twinId);
                         deleteTwinsSemaphore.release();

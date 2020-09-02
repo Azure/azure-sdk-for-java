@@ -3,12 +3,15 @@
 
 package com.azure.digitaltwins.core;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class FileHelper {
@@ -20,7 +23,10 @@ public class FileHelper {
             .filter(filePath -> filePath.toFile().getName().endsWith(".json"))
             .forEach(filePath -> {
                 try {
-                    String fileAsString = Files.readString(filePath, StandardCharsets.UTF_8);
+                    Stream<String> lines = Files.lines(filePath);
+                    String fileAsString = lines.collect(Collectors.joining());
+                    lines.close();
+
                     fileContents.put(getFileNameFromPath(filePath), cleanupJsonString(fileAsString));
                 } catch (IOException e) {
                     e.printStackTrace();
