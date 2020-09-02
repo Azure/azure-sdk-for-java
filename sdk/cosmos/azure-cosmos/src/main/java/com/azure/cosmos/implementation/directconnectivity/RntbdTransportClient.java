@@ -93,12 +93,10 @@ public final class RntbdTransportClient extends TransportClient {
         final UserAgentContainer userAgent,
         final AddressResolverExtension addressResolver) {
 
-        // TODO (DANOBLE) expose UpdateStrategy as a configuration option for debug/test purposes
-
         this(
             new Options.Builder(connectionPolicy).userAgent(userAgent).build(),
             configs.getSslContext(),
-            addressResolver == null ? null : new RntbdConnectionStateListener(addressResolver, UpdateStrategy.IMMEDIATE));
+            addressResolver == null ? null : new RntbdConnectionStateListener(addressResolver));
     }
 
     RntbdTransportClient(

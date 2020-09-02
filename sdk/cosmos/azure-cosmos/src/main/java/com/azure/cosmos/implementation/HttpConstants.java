@@ -310,10 +310,15 @@ public class HttpConstants {
         public static final int READ_SESSION_NOT_AVAILABLE = 1002;
 
         // 410: Gone sub-status
+        // Sub-status code indicating that a GoneException was instantiated by the client; not as a result of a response
+        // message provide by a Cosmos instance.
+        public static final int CLIENT_GENERATED = 10_000;
+
+        // 410: Gone sub-status
         // Sub-status code zero in a response from a service endpoint indicates that a replica is being discontinued or
         // reconfigured. When endpoint rediscovery is enabled the RntbdTransportClient converts sub-status code zero to
         // this sub-status code value.
-        public static final int DISCONTINUING_SERVICE = 10002;
+        public static final int DISCONTINUING_SERVICE = CLIENT_GENERATED + 2;
     }
 
     public static class HeaderValues {

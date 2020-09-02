@@ -8,18 +8,14 @@ import com.azure.cosmos.implementation.apachecommons.collections.list.Unmodifiab
 import com.azure.cosmos.implementation.directconnectivity.AddressResolverExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import java.net.SocketAddress;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.BiFunction;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
-import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 public class RntbdConnectionStateListener {
 
@@ -29,32 +25,14 @@ public class RntbdConnectionStateListener {
 
     private final AddressResolverExtension addressResolver;
     private final ConcurrentHashMap<SocketAddress, Set<RntbdAddressCacheToken>> partitionAddressCache;
-    private final BiFunction<RntbdEndpoint, RxDocumentServiceRequest, Mono<Void>> update;
 
     // endregion
 
     // region Constructors
 
-    public RntbdConnectionStateListener(
-        final AddressResolverExtension addressResolver,
-        final UpdateStrategy updateStrategy) {
-
-        checkNotNull(addressResolver, "expected non-null addressResolver");
-        checkNotNull(updateStrategy, "expected non-null updateStrategy");
-
-        this.addressResolver = addressResolver;
+    public RntbdConnectionStateListener(final AddressResolverExtension addressResolver) {
+        this.addressResolver = checkNotNull(addressResolver, "expected non-null addressResolver");;
         this.partitionAddressCache = new ConcurrentHashMap<>();
-
-        switch (updateStrategy) {
-            case DEFERRED:
-                this.update = this::removeAddressCache;
-                break;
-            case IMMEDIATE:
-                this.update = this::updateAddressCacheAsync;
-                break;
-            default:
-                throw new IllegalArgumentException(lenientFormat("illegal updateStrategy: %s", updateStrategy));
-        }
     }
 
     // endregion
@@ -81,14 +59,7 @@ public class RntbdConnectionStateListener {
         }
 
         if (event == RntbdConnectionEvent.READ_EOF || event == RntbdConnectionEvent.READ_FAILURE) {
-
-            this.updateAddressCacheAsync(endpoint, request).publishOn(Schedulers.parallel())
-                .doOnError(error -> {
-                    logger.warn("Address cache update failed due to ", error);
-                    endpoint.close();
-                })
-                .doOnNext(result -> endpoint.close())
-                .subscribe();
+            this.updateAddressCache(endpoint, request);
         }
     }
 
@@ -100,25 +71,12 @@ public class RntbdConnectionStateListener {
 
     // region Privates
 
-    private Mono<Void> removeAddressCache(final RntbdEndpoint endpoint, final RxDocumentServiceRequest request) {
-        this.partitionAddressCache.computeIfPresent(endpoint.remoteAddress(), (address, tokens) -> {
-            this.addressResolver.removeAddressResolverURI(request);
-            return null;
-        });
-        return Mono.empty();
-    }
-
     @SuppressWarnings("unchecked")
-    private Mono<Void> updateAddressCacheAsync(final RntbdEndpoint endpoint, final RxDocumentServiceRequest request) {
-
-        final Mono<?>[] result = new Mono<?>[] { null };
-
-        this.partitionAddressCache.computeIfPresent(endpoint.remoteAddress(), (address, tokens) -> {
-            result[0] = this.addressResolver.updateAsync(request, new UnmodifiableList<>(new ArrayList<>(tokens)));
+    private void updateAddressCache(final RntbdEndpoint endpoint, final RxDocumentServiceRequest request) {
+        this.partitionAddressCache.computeIfPresent(endpoint.remoteAddress(), (remoteAddress, tokens) -> {
+            this.addressResolver.remove(request, new UnmodifiableList<>(new ArrayList<>(tokens)));
             return null;
         });
-
-        return result[0] == null ? Mono.empty() : (Mono<Void>) result[0];
     }
 
     private void updatePartitionAddressCache(final RntbdAddressCacheToken addressCacheToken) {

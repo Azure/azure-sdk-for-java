@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -92,42 +93,37 @@ public class GlobalAddressResolver implements AddressResolverExtension {
     }
 
     @Override
-    public boolean removeAddressResolverURI(RxDocumentServiceRequest request) {
-        final URI uri = this.getAddressResolverURI(request);
-        this.addressCacheByEndpoint.computeIfPresent(uri, (address, cache) -> {
-            // TODO (DANOBLE) What work must be done here?
-            //  Iff nothing to do, then use remove instead.
-            return null;
-        });
-        return true;
+    public void remove(final RxDocumentServiceRequest request, final List<RntbdAddressCacheToken> tokens) {
+
+        Objects.requireNonNull(request, "expected non-null addressResolverURI");
+        Objects.requireNonNull(tokens, "expected non-null tokens");
+
+        URI addressResolverURI = this.getAddressResolverURI(request);
+
+        if (tokens.size() > 0) {
+
+            this.addressCacheByEndpoint.computeIfPresent(addressResolverURI, (ignored, endpointCache) -> {
+
+                final GatewayAddressCache addressCache = endpointCache.addressCache;
+
+                for (RntbdAddressCacheToken token : tokens) {
+
+                    final PartitionKeyRangeIdentity partitionKeyRangeIdentity = token.getPartitionKeyRangeIdentity();
+
+                    if (partitionKeyRangeIdentity != null) {
+                        addressCache.removeAddresses(partitionKeyRangeIdentity);
+                    }
+                }
+
+                return endpointCache;
+            });
+        }
     }
 
     @Override
     public Mono<AddressInformation[]> resolveAsync(RxDocumentServiceRequest request, boolean forceRefresh) {
         IAddressResolver resolver = this.getAddressResolver(request);
         return resolver.resolveAsync(request, forceRefresh);
-    }
-
-    @Override
-    public Mono<Void> updateAsync(final RxDocumentServiceRequest request, final List<RntbdAddressCacheToken> tokens) {
-
-        final ArrayList<CompletableFuture<?>> updates = new ArrayList<>(tokens.size());
-
-        for (RntbdAddressCacheToken token : tokens) {
-
-            final PartitionKeyRangeIdentity partitionKeyRangeIdentity = token.getPartitionKeyRangeIdentity();
-
-            if (partitionKeyRangeIdentity != null) {
-                final EndpointCache endpointCache = this.addressCacheByEndpoint.get(token.getAddressResolverURI());
-                if (endpointCache != null) {
-                    updates.add(endpointCache.addressCache.updateAsync(request, partitionKeyRangeIdentity).toFuture());
-                }
-            }
-        }
-
-        return updates.size() > 0
-            ? Mono.fromFuture(CompletableFuture.allOf(updates.toArray(new CompletableFuture<?>[0])))
-            : Mono.empty();
     }
 
     Mono<Void> openAsync(DocumentCollection collection) {
@@ -176,9 +172,9 @@ public class GlobalAddressResolver implements AddressResolverExtension {
             LinkedList<URI> endpoints = new LinkedList<>(allEndpoints);
             while (this.addressCacheByEndpoint.size() > this.maxEndpoints) {
                 if (endpoints.size() > 0) {
-                    URI dequeueEnpoint = endpoints.pop();
-                    if (this.addressCacheByEndpoint.get(dequeueEnpoint) != null) {
-                        this.addressCacheByEndpoint.remove(dequeueEnpoint);
+                    URI dequeueEndpoint = endpoints.pop();
+                    if (this.addressCacheByEndpoint.get(dequeueEndpoint) != null) {
+                        this.addressCacheByEndpoint.remove(dequeueEndpoint);
                     }
                 } else {
                     break;

@@ -4,7 +4,6 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
-import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.directconnectivity.AddressResolverExtension;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
@@ -17,7 +16,6 @@ import java.net.SocketAddress;
 import java.net.URI;
 import java.util.Objects;
 
-import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssueUnless;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -26,11 +24,17 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  */
 public final class RntbdAddressCacheToken {
 
+    // region Fields
+
     private static Logger logger = LoggerFactory.getLogger(RntbdAddressCacheToken.class);
 
     private final URI addressResolverURI;
     private final RntbdEndpoint endpoint;
     private final PartitionKeyRangeIdentity partitionKeyRangeIdentity;
+
+    // endregion
+
+    // region Constructors
 
     public RntbdAddressCacheToken(
         final AddressResolverExtension addressResolver,
@@ -48,30 +52,22 @@ public final class RntbdAddressCacheToken {
 
         if (partitionKeyRangeIdentity == null) {
 
-            final PartitionKeyRange partitionKeyRange = request.requestContext.resolvedPartitionKeyRange;
+            final String partitionKeyRange = checkNotNull(
+                request.requestContext.resolvedPartitionKeyRange, "expected non-null resolvedPartitionKeyRange").getId();
+
             final String collectionRid = request.requestContext.resolvedCollectionRid;
 
-            if (collectionRid != null) {
-
-                partitionKeyRangeIdentity = partitionKeyRange != null
-                    ? new PartitionKeyRangeIdentity(collectionRid, partitionKeyRange.getId())
-                    : new PartitionKeyRangeIdentity(collectionRid);
-
-            } else {
-
-                // TODO (DANOBLE) This happens on master operations (e.g., read Database)
-                //  Is there an alternative mechanism for producing a partition key range identity or is this expected?
-
-                reportIssueUnless(logger, partitionKeyRange == null, request.requestContext,
-                    "expected null partitionKeyRange, not {} for '{} {}' operation",
-                    partitionKeyRange,
-                    request.getOperationType(),
-                    request.getResourceType());
-            }
+            partitionKeyRangeIdentity = collectionRid != null
+                ? new PartitionKeyRangeIdentity(collectionRid, partitionKeyRange)
+                : new PartitionKeyRangeIdentity(partitionKeyRange);
         }
 
         this.partitionKeyRangeIdentity = partitionKeyRangeIdentity;
     }
+
+    // endregion
+
+    // region Accessors
 
     @JsonProperty
     public URI getAddressResolverURI() {
@@ -87,6 +83,10 @@ public final class RntbdAddressCacheToken {
     public SocketAddress getRemoteAddress() {
         return this.endpoint.remoteAddress();
     }
+
+    // endregion
+
+    // region Methods
 
     @Override
     public boolean equals(final Object other) {
@@ -120,4 +120,6 @@ public final class RntbdAddressCacheToken {
     public String toString() {
         return RntbdObjectMapper.toString(this);
     }
+
+    // endregion
 }
