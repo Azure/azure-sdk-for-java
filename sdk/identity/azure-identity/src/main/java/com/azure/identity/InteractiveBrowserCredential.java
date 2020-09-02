@@ -30,11 +30,12 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 @Immutable
 public class InteractiveBrowserCredential implements TokenCredential {
-    private final int port;
+    private final Integer port;
     private final IdentityClient identityClient;
     private final AtomicReference<MsalAuthenticationAccount> cachedToken;
     private final boolean automaticAuthentication;
     private final String authorityHost;
+    private final String redirectURL;
     private final ClientLogger logger = new ClientLogger(InteractiveBrowserCredential.class);
 
 
@@ -45,12 +46,14 @@ public class InteractiveBrowserCredential implements TokenCredential {
      * @param clientId the client ID of the application
      * @param tenantId the tenant ID of the application
      * @param port the port on which the credential will listen for the browser authentication result
+     * @param redirectURL the redirect URL to listen on and receive security code.
      * @param automaticAuthentication indicates whether automatic authentication should be attempted or not.
      * @param identityClientOptions the options for configuring the identity client
      */
-    InteractiveBrowserCredential(String clientId, String tenantId, int port, boolean automaticAuthentication,
-                                 IdentityClientOptions identityClientOptions) {
+    InteractiveBrowserCredential(String clientId, String tenantId, Integer port, String redirectURL,
+                                 boolean automaticAuthentication, IdentityClientOptions identityClientOptions) {
         this.port = port;
+        this.redirectURL = redirectURL;
         identityClient = new IdentityClientBuilder()
             .tenantId(tenantId)
             .clientId(clientId)
@@ -79,7 +82,7 @@ public class InteractiveBrowserCredential implements TokenCredential {
                              + "authentication is needed to acquire token. Call Authenticate to initiate the device "
                              + "code authentication.", request)));
             }
-            return identityClient.authenticateWithBrowserInteraction(request, port);
+            return identityClient.authenticateWithBrowserInteraction(request, port, redirectURL);
         })).map(this::updateCache)
             .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
             .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
@@ -95,7 +98,7 @@ public class InteractiveBrowserCredential implements TokenCredential {
      * {@link InteractiveBrowserCredentialBuilder#enablePersistentCache()} when credential was instantiated.
      */
     Mono<AuthenticationRecord> authenticate(TokenRequestContext request) {
-        return Mono.defer(() -> identityClient.authenticateWithBrowserInteraction(request, port))
+        return Mono.defer(() -> identityClient.authenticateWithBrowserInteraction(request, port, redirectURL))
                 .map(this::updateCache)
                 .map(msalToken -> cachedToken.get().getAuthenticationRecord());
     }

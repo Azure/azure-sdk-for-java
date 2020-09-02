@@ -648,10 +648,21 @@ public class IdentityClient {
      * @param port the port on which the HTTP server is listening
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<MsalToken> authenticateWithBrowserInteraction(TokenRequestContext request, int port) {
+    public Mono<MsalToken> authenticateWithBrowserInteraction(TokenRequestContext request, Integer port,
+                                                              String redirectURL) {
         URI redirectUri;
+        String redirect;
+
+        if (port != null) {
+            redirect = HTTP_LOCALHOST + ":" + port;
+        } else if (redirectURL != null) {
+            redirect = redirectURL;
+        } else {
+            redirect = HTTP_LOCALHOST;
+        }
+
         try {
-            redirectUri = new URI(HTTP_LOCALHOST + ":" + port);
+            redirectUri = new URI(redirect);
         } catch (URISyntaxException e) {
             return Mono.error(logger.logExceptionAsError(new RuntimeException(e)));
         }
