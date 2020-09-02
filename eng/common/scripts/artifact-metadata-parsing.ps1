@@ -449,7 +449,8 @@ function RetrivePackages($pkgRepository, $artifactLocation) {
       exit(1)
     }
   }
-  return Get-ChildItem -Path $artifactLocation -Include $packagePattern -Recurse -File, $ParsePkgInfoFn
+  $pkgs = Get-ChildItem -Path $artifactLocation -Include $packagePattern -Recurse -File
+  return $pkgs, $ParsePkgInfoFn
 }
 
 # Walk across all build artifacts, check them against the appropriate repository, return a list of tags/releases
