@@ -255,6 +255,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @param lockToken Lock token of the message.
      * @param maxLockRenewalDuration Maximum duration to keep renewing the lock token.
+     * @param onError A function to call when an error occurs during lock renewal.
      * @throws NullPointerException if {@code lockToken} or {@code maxLockRenewalDuration} is null.
      * @throws IllegalArgumentException if {@code lockToken} is an empty string.
      * @throws IllegalStateException if the receiver is a session receiver or the receiver is disposed.
@@ -274,8 +275,9 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @param sessionId Id for the session to renew.
      * @param maxLockRenewalDuration Maximum duration to keep renewing the lock token.
+     * @param onError A function to call when an error occurs during lock renewal.
      * @throws NullPointerException if {@code sessionId} or {@code maxLockRenewalDuration} is null.
-     * @throws IllegalArgumentException if {@code lockToken} is an empty string.
+     * @throws IllegalArgumentException if {@code sessionId} is an empty string.
      * @throws IllegalStateException if the receiver is a non-session receiver or the receiver is disposed.
      */
     public void getAutoRenewSessionLock(String sessionId, Duration maxLockRenewalDuration, Consumer<Throwable> onError) {
