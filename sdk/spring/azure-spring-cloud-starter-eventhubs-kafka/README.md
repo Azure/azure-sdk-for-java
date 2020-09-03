@@ -24,7 +24,7 @@ The Spring Cloud Stream Kafka binder for Azure Event Hubs helps developers to fi
 Event Hubs provides a Kafka endpoint that can be used by your existing Kafka based applications as an alternative to running your own Kafka cluster. Event Hubs supports Apache Kafka protocol 1.0 and later, and works with your existing Kafka applications, including MirrorMaker.
 
 ## Examples
-Please refer to this [sample project](sample) illustrating how to use this starter.
+Please refer to this [sample project][sample] illustrating how to use this starter.
 
 ## Troubleshooting
 ### Enable client logging

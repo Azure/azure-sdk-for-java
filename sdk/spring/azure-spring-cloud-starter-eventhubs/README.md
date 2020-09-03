@@ -27,7 +27,7 @@ For Spring Integration on Event Hubs, please refer to the [source code](https://
 Azure Event Hubs is a big data streaming platform and event ingestion service. It can receive and process millions of events per second. Data sent to an event hub can be transformed and stored by using any real-time analytics provider or batching/storage adapters.
 
 ## Examples
-Please refer to this [sample project](sample) illustrating how to use Spring Cloud Event Hubs.
+Please refer to this [sample project][sample] illustrating how to use Spring Cloud Event Hubs.
 
 ## Troubleshooting
 ### Enable client logging

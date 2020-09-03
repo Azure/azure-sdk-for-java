@@ -26,7 +26,7 @@ Event Hubs is a fully managed, real-time data ingestion service that’s simple,
 Spring Integration enables lightweight messaging within Spring-based applications and supports integration with external systems via declarative adapters. Those adapters provide a higher-level of abstraction over Spring’s support for remoting, messaging, and scheduling.
 
 ## Examples
-Please refer to this [sample project](sample) illustrating how to use Event Hubs integration.
+Please refer to this [sample project][sample] illustrating how to use Event Hubs integration.
 
 ## Troubleshooting
 ### Enable client logging
