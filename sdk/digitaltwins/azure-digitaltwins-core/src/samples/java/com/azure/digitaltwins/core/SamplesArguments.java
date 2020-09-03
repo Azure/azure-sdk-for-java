@@ -4,7 +4,7 @@ import org.apache.commons.cli.*;
 
 public class SamplesArguments {
 
-    private final String DIGITAL_TWIN_URL = "digitalTwinUrl";
+    private final String DIGITALTWINS_URL = "DigitalTwinsEndpoint";
     private final String TENANT_ID = "tenantId";
     private final String CLIENT_ID = "clientId";
     private final String CLIENT_SECRET = "clientSecret";
@@ -16,7 +16,7 @@ public class SamplesArguments {
 
     public SamplesArguments(String[] args) {
         Options options = new Options();
-        Option input = new Option("d", DIGITAL_TWIN_URL, true, "DigitalTwin endpoint URI");
+        Option input = new Option("d", DIGITALTWINS_URL, true, "DigitalTwins endpoint URI");
         Option tenantId = new Option("t", TENANT_ID, true, "AAD Tenant Id");
         Option clientId = new Option("c", CLIENT_ID, true, "AAD Client Id");
         Option clientSecret = new Option("s", CLIENT_SECRET, true, "AAD ClientSecret URI");
@@ -45,7 +45,7 @@ public class SamplesArguments {
             System.exit(1);
         }
 
-        this.digitalTwinUrl = cmd.getOptionValue(DIGITAL_TWIN_URL);
+        this.digitalTwinUrl = cmd.getOptionValue(DIGITALTWINS_URL);
         this.tenantId = cmd.getOptionValue(TENANT_ID);
         this.clientId = cmd.getOptionValue(CLIENT_ID);
         this.clientSecret = cmd.getOptionValue(CLIENT_SECRET);
