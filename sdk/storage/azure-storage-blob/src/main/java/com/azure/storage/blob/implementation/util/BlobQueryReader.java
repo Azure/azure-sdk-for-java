@@ -15,7 +15,6 @@ import com.azure.storage.blob.models.BlobQueryError;
 import com.azure.storage.blob.models.BlobQueryJsonSerialization;
 import com.azure.storage.blob.models.BlobQueryProgress;
 import com.azure.storage.blob.models.BlobQuerySerialization;
-import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 import com.azure.storage.internal.avro.implementation.AvroConstants;
 import com.azure.storage.internal.avro.implementation.AvroObject;
 import com.azure.storage.internal.avro.implementation.AvroReaderFactory;
@@ -66,13 +65,9 @@ public class BlobQueryReader {
      * @return The parsed query reactive stream.
      */
     public Flux<ByteBuffer> read() {
-        try {
-            return new AvroReaderFactory().getAvroReader(avro).read()
-                .map(AvroObject::getObject)
-                .concatMap(this::parseRecord);
-        } catch (RuntimeException ex) {
-            return FluxUtil.fluxError(logger, ex);
-        }
+        return new AvroReaderFactory().getAvroReader(avro).read()
+            .map(AvroObject::getObject)
+            .concatMap(this::parseRecord);
     }
 
     /**
