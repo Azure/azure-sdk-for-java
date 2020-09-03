@@ -27,20 +27,20 @@ class DekCache {
         }
     }
 
-    public Mono<DataEncryptionKeyProperties> getOrAddDekPropertiesAsync(
+    public Mono<DataEncryptionKeyProperties> getOrAddDekProperties(
         String dekId,
         Function<String, Mono<DataEncryptionKeyProperties>> fetcher) {
         Mono<CachedDekProperties> cachedDekPropertiesMono = this.DekPropertiesCache.getAsync(
             dekId,
             null,
-            () -> this.fetchAsync(dekId, fetcher));
+            () -> this.fetch(dekId, fetcher));
 
         return cachedDekPropertiesMono.flatMap(cachedDekProperties -> {
                 if (cachedDekProperties.getServerPropertiesExpiryUtc().isBefore(Instant.now())) {
                     return this.DekPropertiesCache.getAsync(
                         dekId,
                         null,
-                        () -> this.fetchAsync(dekId, fetcher));
+                        () -> this.fetch(dekId, fetcher));
                 } else {
                     return Mono.just(cachedDekProperties);
                 }
@@ -49,7 +49,7 @@ class DekCache {
         ).map(CachedDekProperties::getServerProperties);
     }
 
-    public Mono<InMemoryRawDek> getOrAddRawDekAsync(
+    public Mono<InMemoryRawDek> getOrAddRawDek(
         DataEncryptionKeyProperties dekProperties,
         Function<DataEncryptionKeyProperties, Mono<InMemoryRawDek>> unwrapper) {
         Mono<InMemoryRawDek> inMemoryRawDekMono = this.RawDekCache.getAsync(
@@ -82,13 +82,13 @@ class DekCache {
         this.RawDekCache.set(dekId, inMemoryRawDek);
     }
 
-    public Mono<Void> removeAsync(String dekId) {
+    public Mono<Void> remove(String dekId) {
         Mono<CachedDekProperties> cachedDekPropertiesMono = this.DekPropertiesCache.removeAsync(dekId);
 
         return cachedDekPropertiesMono.flatMap(cachedDekProperties -> this.RawDekCache.removeAsync(dekId)).then();
     }
 
-    private Mono<CachedDekProperties> fetchAsync(
+    private Mono<CachedDekProperties> fetch(
         String dekId,
         Function<String, Mono<DataEncryptionKeyProperties>> fetcher) {
         Mono<DataEncryptionKeyProperties> serverPropertiesMono = fetcher.apply(dekId);

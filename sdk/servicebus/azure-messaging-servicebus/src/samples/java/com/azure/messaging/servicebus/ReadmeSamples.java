@@ -7,6 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.IterableStream;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.SubQueue;
 import reactor.core.Disposable;
 
 import java.nio.charset.StandardCharsets;
@@ -18,7 +19,6 @@ import java.util.List;
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS ARE USED TO EXTRACT
  * APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING LINE NUMBERS OF EXISTING CODE
  * SAMPLES.
- *
  * Class containing code snippets that will be injected to README.md.
  */
 public class ReadmeSamples {
@@ -199,9 +199,10 @@ public class ReadmeSamples {
     public void createSynchronousServiceBusDeadLetterQueueReceiver() {
         ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
             .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
-            .deadLetterReceiver()
+            .receiver()
             .topicName("<< TOPIC NAME >>")
             .subscriptionName("<< SUBSCRIPTION NAME >>")
+            .subQueue(SubQueue.DEAD_LETTER_QUEUE)
             .buildClient();
     }
 }

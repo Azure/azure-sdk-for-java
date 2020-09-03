@@ -5,6 +5,7 @@ package com.azure.resourcemanager.compute;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.compute.models.AvailabilitySet;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
@@ -13,12 +14,11 @@ import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.resourcemanager.resources.core.TestBase;
-import com.azure.resourcemanager.resources.core.TestUtilities;
+import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,9 +31,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public class VirtualMachineRelatedResourcesDeletionTests extends ComputeManagementTest {
-    public VirtualMachineRelatedResourcesDeletionTests() {
-        super(TestBase.RunCondition.LIVE_ONLY);
-    }
 
     private String rgName = "";
 
@@ -51,7 +48,12 @@ public class VirtualMachineRelatedResourcesDeletionTests extends ComputeManageme
     }
 
     @Test
+    @DoNotRecord
     public void canDeleteRelatedResourcesFromFailedParallelVMCreations() {
+        if (skipInPlayback()) {
+            return;
+        }
+
         final int desiredVMCount = 40;
         final Region region = Region.US_EAST;
         final String resourceGroupName = rgName;
@@ -73,7 +75,7 @@ public class VirtualMachineRelatedResourcesDeletionTests extends ComputeManageme
             Collection<Creatable<? extends Resource>> relatedDefinitions = new ArrayList<>();
 
             // Define a network for each VM
-            String networkName = sdkContext.randomResourceName("net", 14);
+            String networkName = generateRandomResourceName("net", 14);
             Creatable<Network> networkDefinition =
                 networkManager
                     .networks()
@@ -84,7 +86,7 @@ public class VirtualMachineRelatedResourcesDeletionTests extends ComputeManageme
             relatedDefinitions.add(networkDefinition);
 
             // Define a PIP for each VM
-            String pipName = sdkContext.randomResourceName("pip", 14);
+            String pipName = generateRandomResourceName("pip", 14);
             PublicIpAddress.DefinitionStages.WithCreate pipDefinition =
                 this
                     .networkManager
@@ -95,7 +97,7 @@ public class VirtualMachineRelatedResourcesDeletionTests extends ComputeManageme
             relatedDefinitions.add(pipDefinition);
 
             // Define a NIC for each VM
-            String nicName = sdkContext.randomResourceName("nic", 14);
+            String nicName = generateRandomResourceName("nic", 14);
             Creatable<NetworkInterface> nicDefinition =
                 networkManager
                     .networkInterfaces()
@@ -107,7 +109,7 @@ public class VirtualMachineRelatedResourcesDeletionTests extends ComputeManageme
                     .withNewPrimaryPublicIPAddress(pipDefinition);
 
             // Define a storage account for each VM
-            String storageAccountName = sdkContext.randomResourceName("st", 14);
+            String storageAccountName = generateRandomResourceName("st", 14);
             Creatable<StorageAccount> storageAccountDefinition =
                 storageManager
                     .storageAccounts()
@@ -117,7 +119,7 @@ public class VirtualMachineRelatedResourcesDeletionTests extends ComputeManageme
             relatedDefinitions.add(storageAccountDefinition);
 
             // Define an availability set for each VM
-            String availabilitySetName = sdkContext.randomResourceName("as", 14);
+            String availabilitySetName = generateRandomResourceName("as", 14);
             Creatable<AvailabilitySet> availabilitySetDefinition =
                 computeManager
                     .availabilitySets()
@@ -126,7 +128,7 @@ public class VirtualMachineRelatedResourcesDeletionTests extends ComputeManageme
                     .withExistingResourceGroup(resourceGroup);
             relatedDefinitions.add(availabilitySetDefinition);
 
-            String vmName = sdkContext.randomResourceName("vm", 14);
+            String vmName = generateRandomResourceName("vm", 14);
 
             // Define a VM
             String userName;

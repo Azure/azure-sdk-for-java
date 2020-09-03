@@ -48,6 +48,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
     private static final String ZERO_TENANT = "00000000-0000-0000-0000-000000000000";
     private static final String PLAYBACK_URI_BASE = "http://localhost:";
     private static final String AZURE_AUTH_LOCATION = "AZURE_AUTH_LOCATION";
+    private static final String AZURE_TEST_LOG_LEVEL = "AZURE_TEST_LOG_LEVEL";
     private static final String HTTPS_PROXY_HOST = "https.proxyHost";
     private static final String HTTPS_PROXY_PORT = "https.proxyPort";
     private static final String HTTP_PROXY_HOST = "http.proxyHost";
@@ -126,7 +127,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
         TokenCredential credential;
         HttpPipeline httpPipeline;
         Map<String, String> textReplacementRules = new HashMap<>();
-        String logLevel = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_LOG_LEVEL);
+        String logLevel = Configuration.getGlobalConfiguration().get(AZURE_TEST_LOG_LEVEL);
         HttpLogDetailLevel httpLogDetailLevel;
 
         try {
