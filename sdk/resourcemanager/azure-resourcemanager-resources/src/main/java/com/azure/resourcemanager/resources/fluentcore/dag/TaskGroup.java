@@ -390,7 +390,7 @@ public class TaskGroup
     @SuppressFBWarnings(value = "BC_UNCONFIRMED_CAST_OF_RETURN_VALUE", justification = "Incorrect spot bugs")
     private Flux<Indexable> invokeReadyTasksAsync(final InvocationContext context) {
         TaskGroupEntry<TaskItem> readyTaskEntry = super.getNext();
-        final List<Flux<Tuple3<Long,OffsetDateTime, Indexable>>> observables = new ArrayList<>();
+        final List<Flux<Tuple3<Long, OffsetDateTime, Indexable>>> observables = new ArrayList<>();
         // Enumerate the ready tasks (those with dependencies resolved) and kickoff them concurrently
         //
         while (readyTaskEntry != null) {
