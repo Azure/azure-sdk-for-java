@@ -58,6 +58,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -77,7 +79,8 @@ import static com.azure.cosmos.models.ModelBridgeInternal.toDatabaseAccount;
  */
 public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorizationTokenProvider {
 
-    private static final char PREFER_HEADER_SEPERATOR = ';';
+    private static final String DUMMY_SQL_QUERY = "this is dummy and only used in creating " +
+        "ParallelDocumentQueryExecutioncontext, but not used";
     private final static ObjectMapper mapper = Utils.getSimpleObjectMapper();
     private final ItemDeserializer itemDeserializer = new ItemDeserializer.JsonDeserializer();
     private final Logger logger = LoggerFactory.getLogger(RxDocumentClientImpl.class);
@@ -210,50 +213,56 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 + " serviceEndpoint [{}], connectionPolicy [{}], consistencyLevel [{}], directModeProtocol [{}]",
             serviceEndpoint, connectionPolicy, consistencyLevel, configs.getProtocol());
 
-        this.connectionSharingAcrossClientsEnabled = connectionSharingAcrossClientsEnabled;
-        this.configs = configs;
-        this.masterKeyOrResourceToken = masterKeyOrResourceToken;
-        this.serviceEndpoint = serviceEndpoint;
-        this.credential = credential;
-        this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
+        try {
+            this.connectionSharingAcrossClientsEnabled = connectionSharingAcrossClientsEnabled;
+            this.configs = configs;
+            this.masterKeyOrResourceToken = masterKeyOrResourceToken;
+            this.serviceEndpoint = serviceEndpoint;
+            this.credential = credential;
+            this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
 
-        if (this.credential != null) {
-            hasAuthKeyResourceToken = false;
-            this.authorizationTokenProvider = new BaseAuthorizationTokenProvider(this.credential);
-        } else if (masterKeyOrResourceToken != null && ResourceTokenAuthorizationHelper.isResourceToken(masterKeyOrResourceToken)) {
-            this.authorizationTokenProvider = null;
-            hasAuthKeyResourceToken = true;
-        } else if(masterKeyOrResourceToken != null && !ResourceTokenAuthorizationHelper.isResourceToken(masterKeyOrResourceToken)){
-            this.credential = new AzureKeyCredential(this.masterKeyOrResourceToken);
-            hasAuthKeyResourceToken = false;
-            this.authorizationTokenProvider = new BaseAuthorizationTokenProvider(this.credential);
-        } else {
-            hasAuthKeyResourceToken = false;
-            this.authorizationTokenProvider = null;
+            if (this.credential != null) {
+                hasAuthKeyResourceToken = false;
+                this.authorizationTokenProvider = new BaseAuthorizationTokenProvider(this.credential);
+            } else if (masterKeyOrResourceToken != null && ResourceTokenAuthorizationHelper.isResourceToken(masterKeyOrResourceToken)) {
+                this.authorizationTokenProvider = null;
+                hasAuthKeyResourceToken = true;
+            } else if (masterKeyOrResourceToken != null && !ResourceTokenAuthorizationHelper.isResourceToken(masterKeyOrResourceToken)) {
+                this.credential = new AzureKeyCredential(this.masterKeyOrResourceToken);
+                hasAuthKeyResourceToken = false;
+                this.authorizationTokenProvider = new BaseAuthorizationTokenProvider(this.credential);
+            } else {
+                hasAuthKeyResourceToken = false;
+                this.authorizationTokenProvider = null;
+            }
+
+            if (connectionPolicy != null) {
+                this.connectionPolicy = connectionPolicy;
+            } else {
+                this.connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
+            }
+
+            boolean disableSessionCapturing = (ConsistencyLevel.SESSION != consistencyLevel && !sessionCapturingOverrideEnabled);
+
+            this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing);
+            this.consistencyLevel = consistencyLevel;
+
+            this.userAgentContainer = new UserAgentContainer();
+
+            String userAgentSuffix = this.connectionPolicy.getUserAgentSuffix();
+            if (userAgentSuffix != null && userAgentSuffix.length() > 0) {
+                userAgentContainer.setSuffix(userAgentSuffix);
+            }
+
+            this.reactorHttpClient = httpClient();
+            this.globalEndpointManager = new GlobalEndpointManager(asDatabaseAccountManagerInternal(), this.connectionPolicy, /**/configs);
+            this.retryPolicy = new RetryPolicy(this.globalEndpointManager, this.connectionPolicy);
+            this.resetSessionTokenRetryPolicy = retryPolicy;
+        } catch (RuntimeException e) {
+            logger.error("unexpected failure in initializing client.", e);
+            close();
+            throw e;
         }
-
-        if (connectionPolicy != null) {
-            this.connectionPolicy = connectionPolicy;
-        } else {
-            this.connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
-        }
-
-        boolean disableSessionCapturing = (ConsistencyLevel.SESSION != consistencyLevel && !sessionCapturingOverrideEnabled);
-
-        this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing);
-        this.consistencyLevel = consistencyLevel;
-
-        this.userAgentContainer = new UserAgentContainer();
-
-        String userAgentSuffix = this.connectionPolicy.getUserAgentSuffix();
-        if (userAgentSuffix != null && userAgentSuffix.length() > 0) {
-            userAgentContainer.setSuffix(userAgentSuffix);
-        }
-
-        this.reactorHttpClient = httpClient();
-        this.globalEndpointManager = new GlobalEndpointManager(asDatabaseAccountManagerInternal(), this.connectionPolicy, /**/configs);
-        this.retryPolicy = new RetryPolicy(this.globalEndpointManager, this.connectionPolicy);
-        this.resetSessionTokenRetryPolicy = retryPolicy;
     }
 
     private void initializeGatewayConfigurationReader() {
@@ -262,7 +271,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         //Database account should not be null here,
         // this.globalEndpointManager.init() must have been already called
         // hence asserting it
-        assert(databaseAccount != null);
+        if (databaseAccount == null) {
+            logger.error("Client initialization failed."
+                + " Check if the endpoint is reachable and if your auth token is valid");
+            throw new RuntimeException("Client initialization failed."
+                + " Check if the endpoint is reachable and if your auth token is valid");
+        }
+
         this.useMultipleWriteLocations = this.connectionPolicy.isMultipleWriteRegionsEnabled() && BridgeInternal.isEnableMultipleWriteLocations(databaseAccount);
 
         // TODO: add support for openAsync
@@ -270,28 +285,33 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     public void init() {
-
-        // TODO: add support for openAsync
-        // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/332589
-        this.gatewayProxy = createRxGatewayProxy(this.sessionContainer,
+        try {
+            // TODO: add support for openAsync
+            // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/332589
+            this.gatewayProxy = createRxGatewayProxy(this.sessionContainer,
                 this.consistencyLevel,
                 this.queryCompatibilityMode,
                 this.userAgentContainer,
                 this.globalEndpointManager,
                 this.reactorHttpClient);
-        this.globalEndpointManager.init();
-        this.initializeGatewayConfigurationReader();
+            this.globalEndpointManager.init();
+            this.initializeGatewayConfigurationReader();
 
-        this.collectionCache = new RxClientCollectionCache(this.sessionContainer, this.gatewayProxy, this, this.retryPolicy);
-        this.resetSessionTokenRetryPolicy = new ResetSessionTokenRetryPolicyFactory(this.sessionContainer, this.collectionCache, this.retryPolicy);
+            this.collectionCache = new RxClientCollectionCache(this.sessionContainer, this.gatewayProxy, this, this.retryPolicy);
+            this.resetSessionTokenRetryPolicy = new ResetSessionTokenRetryPolicyFactory(this.sessionContainer, this.collectionCache, this.retryPolicy);
 
-        this.partitionKeyRangeCache = new RxPartitionKeyRangeCache(RxDocumentClientImpl.this,
+            this.partitionKeyRangeCache = new RxPartitionKeyRangeCache(RxDocumentClientImpl.this,
                 collectionCache);
 
-        if (this.connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY) {
-            this.storeModel = this.gatewayProxy;
-        } else {
-            this.initializeDirectConnectivity();
+            if (this.connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY) {
+                this.storeModel = this.gatewayProxy;
+            } else {
+                this.initializeDirectConnectivity();
+            }
+        } catch (Exception e) {
+            logger.error("unexpected failure in initializing client.", e);
+            close();
+            throw e;
         }
     }
 
@@ -1055,13 +1075,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             // For backward compatibility, if collection doesn't have partition key defined, we assume all documents
             // have empty value for it and user doesn't need to specify it explicitly.
             partitionKeyInternal = PartitionKeyInternal.getEmpty();
-        } else if (contentAsByteBuffer != null) {
+        } else if (contentAsByteBuffer != null || objectDoc != null) {
             InternalObjectNode internalObjectNode;
             if (objectDoc instanceof InternalObjectNode) {
                 internalObjectNode = (InternalObjectNode) objectDoc;
-            } else {
+            } else if (contentAsByteBuffer != null) {
                 contentAsByteBuffer.rewind();
                 internalObjectNode = new InternalObjectNode(contentAsByteBuffer);
+            } else {
+                //  This is a safety check, this should not happen ever.
+                //  If it does, it is a SDK bug
+                throw new IllegalStateException("ContentAsByteBuffer and objectDoc are null");
             }
 
             Instant serializationStartTime = Instant.now();
@@ -1424,10 +1448,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Mono<ResourceResponse<Document>> deleteDocument(String documentLink, RequestOptions options) {
         DocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
-        return ObservableHelper.inlineIfPossibleAsObs(() -> deleteDocumentInternal(documentLink, options, requestRetryPolicy), requestRetryPolicy);
+        return ObservableHelper.inlineIfPossibleAsObs(() -> deleteDocumentInternal(documentLink, null, options, requestRetryPolicy), requestRetryPolicy);
     }
 
-    private Mono<ResourceResponse<Document>> deleteDocumentInternal(String documentLink, RequestOptions options,
+    @Override
+    public Mono<ResourceResponse<Document>> deleteDocument(String documentLink, InternalObjectNode internalObjectNode, RequestOptions options) {
+        DocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        return ObservableHelper.inlineIfPossibleAsObs(() -> deleteDocumentInternal(documentLink, internalObjectNode, options, requestRetryPolicy),
+            requestRetryPolicy);
+    }
+
+    private Mono<ResourceResponse<Document>> deleteDocumentInternal(String documentLink, InternalObjectNode internalObjectNode, RequestOptions options,
                                                                     DocumentClientRetryPolicy retryPolicyInstance) {
         try {
             if (StringUtils.isEmpty(documentLink)) {
@@ -1445,7 +1476,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
 
-            Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs);
+            Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, internalObjectNode, options, collectionObs);
 
             return requestObs.flatMap(req -> {
                 return this.delete(req, retryPolicyInstance)
@@ -1517,99 +1548,109 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             OperationType.Query,
             ResourceType.Document,
             collectionLink, null
-        ); // This should not got to backend
-        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(null, request);
+        ); 
+
+        // This should not got to backend
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs =
+            collectionCache.resolveCollectionAsync(null, request);
 
         return collectionObs
-                   .flatMap(documentCollectionResourceResponse -> {
-                                final DocumentCollection collection = documentCollectionResourceResponse.v;
-                                if (collection == null) {
-                                    throw new IllegalStateException("Collection cannot be null");
+            .flatMap(documentCollectionResourceResponse -> {
+                    final DocumentCollection collection = documentCollectionResourceResponse.v;
+                    if (collection == null) {
+                        throw new IllegalStateException("Collection cannot be null");
+                    }
+
+                    final PartitionKeyDefinition pkDefinition = collection.getPartitionKey();
+
+                    Mono<Utils.ValueHolder<CollectionRoutingMap>> valueHolderMono = partitionKeyRangeCache
+                        .tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
+                            collection.getResourceId(),
+                            null,
+                            null);
+                    return valueHolderMono.flatMap(collectionRoutingMapValueHolder -> {
+                        Map<PartitionKeyRange, List<Pair<String, PartitionKey>>> partitionRangeItemKeyMap =
+                            new HashMap<>();
+                        CollectionRoutingMap routingMap = collectionRoutingMapValueHolder.v;
+                        if (routingMap == null) {
+                            throw new IllegalStateException("Failed to get routing map.");
+                        }
+                        itemKeyList
+                            .forEach(stringPartitionKeyPair -> {
+
+                                String effectivePartitionKeyString =  PartitionKeyInternalHelper
+                                    .getEffectivePartitionKeyString(
+                                        BridgeInternal.getPartitionKeyInternal(stringPartitionKeyPair.getRight()),
+                                        pkDefinition);
+
+                                //use routing map to find the partitionKeyRangeId of each
+                                // effectivePartitionKey
+                                PartitionKeyRange range =
+                                    routingMap.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
+
+                                //group the itemKeyList based on partitionKeyRangeId
+                                if (partitionRangeItemKeyMap.get(range) == null) {
+                                    List<Pair<String, PartitionKey>> list = new ArrayList<>();
+                                    list.add(stringPartitionKeyPair);
+                                    partitionRangeItemKeyMap.put(range, list);
+                                } else {
+                                    List<Pair<String, PartitionKey>> pairs =
+                                        partitionRangeItemKeyMap.get(range);
+                                    pairs.add(stringPartitionKeyPair);
+                                    partitionRangeItemKeyMap.put(range, pairs);
                                 }
 
-                                Mono<Utils.ValueHolder<CollectionRoutingMap>> valueHolderMono = partitionKeyRangeCache
-                                                                                                    .tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
-                                                                                                        collection.getResourceId(),
-                                                                                                                    null,
-                                                                                                                    null);
-                                return valueHolderMono.flatMap(collectionRoutingMapValueHolder -> {
-                                    Map<PartitionKeyRange, List<Pair<String, PartitionKey>>> partitionRangeItemKeyMap =
-                                        new HashMap<>();
-                                    CollectionRoutingMap routingMap = collectionRoutingMapValueHolder.v;
-                                    if (routingMap == null) {
-                                        throw new IllegalStateException("Failed to get routing map.");
+                            });
+
+                        Set<PartitionKeyRange> partitionKeyRanges = partitionRangeItemKeyMap.keySet();
+                        List<PartitionKeyRange> ranges = new ArrayList<>();
+                        ranges.addAll(partitionKeyRanges);
+
+                        //Create the range query map that contains the query to be run for that
+                        // partitionkeyrange
+                        Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap;
+                        rangeQueryMap = getRangeQueryMap(partitionRangeItemKeyMap,
+                            collection.getPartitionKey());
+
+                        // create the executable query
+                        return createReadManyQuery(
+                            collectionLink,
+                            new SqlQuerySpec(DUMMY_SQL_QUERY),
+                            options,
+                            Document.class,
+                            ResourceType.Document,
+                            collection,
+                            Collections.unmodifiableMap(rangeQueryMap))
+                            .collectList() // aggregating the result construct a FeedResponse and
+                            // aggregate RUs.
+                            .map(feedList -> {
+                                List<T> finalList = new ArrayList<T>();
+                                HashMap<String, String> headers = new HashMap<>();
+                                ConcurrentMap<String, QueryMetrics> aggregatedQueryMetrics =
+                                    new ConcurrentHashMap<String, QueryMetrics>();
+                                double requestCharge = 0;
+                                for (FeedResponse<Document> page : feedList) {
+                                    ConcurrentMap<String, QueryMetrics> pageQueryMetrics =
+                                        ModelBridgeInternal.queryMetrics(page);
+                                    if (pageQueryMetrics != null) {
+                                        pageQueryMetrics.forEach(
+                                            (key, value) -> aggregatedQueryMetrics.putIfAbsent(key, value));
                                     }
-                                    itemKeyList
-                                        .forEach(stringPartitionKeyPair -> {
 
-                                            String effectivePartitionKeyString =  PartitionKeyInternalHelper
-                                                                                     .getEffectivePartitionKeyString(BridgeInternal
-                                                                                                                         .getPartitionKeyInternal(stringPartitionKeyPair
-                                                                                                                                                      .getRight()),
-                                                                                                                     collection
-                                                                                                                         .getPartitionKey());
-
-                                            //use routing map to find the partitionKeyRangeId of each
-                                            // effectivePartitionKey
-                                            PartitionKeyRange range =
-                                                routingMap.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
-
-                                            //group the itemKeyList based on partitionKeyRangeId
-                                            if (partitionRangeItemKeyMap.get(range) == null) {
-                                                List<Pair<String, PartitionKey>> list = new ArrayList<>();
-                                                list.add(stringPartitionKeyPair);
-                                                partitionRangeItemKeyMap.put(range, list);
-                                            } else {
-                                                List<Pair<String, PartitionKey>> pairs =
-                                                    partitionRangeItemKeyMap.get(range);
-                                                pairs.add(stringPartitionKeyPair);
-                                                partitionRangeItemKeyMap.put(range, pairs);
-                                            }
-
-                                        });
-
-                                    Set<PartitionKeyRange> partitionKeyRanges = partitionRangeItemKeyMap.keySet();
-                                    List<PartitionKeyRange> ranges = new ArrayList<>();
-                                    ranges.addAll(partitionKeyRanges);
-
-                                    //Create the range query map that contains the query to be run for that
-                                    // partitionkeyrange
-                                    Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap;
-                                    rangeQueryMap = getRangeQueryMap(partitionRangeItemKeyMap,
-                                                                     collection.getPartitionKey());
-
-                                    String sqlQuery = "this is dummy and only used in creating " +
-                                                          "ParallelDocumentQueryExecutioncontext, but not used";
-
-                                    // create the executable query
-                                    return createReadManyQuery(collectionLink,
-                                                               new SqlQuerySpec(sqlQuery),
-                                                               options,
-                                                               Document.class,
-                                                               ResourceType.Document,
-                                                               collection,
-                                                               Collections.unmodifiableMap(rangeQueryMap))
-                                               .collectList() // aggregating the result construct a FeedResponse and
-                                               // aggregate RUs.
-                                               .map(feedList -> {
-                                                   List<T> finalList = new ArrayList<T>();
-                                                   HashMap<String, String> headers = new HashMap<>();
-                                                   double requestCharge = 0;
-                                                   for (FeedResponse<Document> page : feedList) {
-                                                       requestCharge += page.getRequestCharge();
-                                                       // TODO: this does double serialization: FIXME
-                                                       finalList.addAll(page.getResults().stream().map(document ->
-                                                           ModelBridgeInternal.toObjectFromJsonSerializable(document, klass)).collect(Collectors.toList()));
-                                                   }
-                                                   headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double
-                                                                                                             .toString(requestCharge));
-                                                   FeedResponse<T> frp = BridgeInternal
-                                                                                    .createFeedResponse(finalList, headers);
-                                                   return frp;
-                                               });
-                                });
-                            }
-                   );
+                                    requestCharge += page.getRequestCharge();
+                                    // TODO: this does double serialization: FIXME
+                                    finalList.addAll(page.getResults().stream().map(document ->
+                                        ModelBridgeInternal.toObjectFromJsonSerializable(document, klass)).collect(Collectors.toList()));
+                                }
+                                headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double
+                                    .toString(requestCharge));
+                                FeedResponse<T> frp = BridgeInternal
+                                    .createFeedResponse(finalList, headers);
+                                return frp;
+                            });
+                    });
+                }
+            );
 
     }
 
@@ -1637,7 +1678,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return rangeQueryMap;
     }
 
-    private SqlQuerySpec createReadManyQuerySpecPartitionKeyIdSame(List<Pair<String, PartitionKey>> idPartitionKeyPairList, String partitionKeySelector) {
+    private SqlQuerySpec createReadManyQuerySpecPartitionKeyIdSame(
+        List<Pair<String, PartitionKey>> idPartitionKeyPairList,
+        String partitionKeySelector) {
+
         StringBuilder queryStringBuilder = new StringBuilder();
         List<SqlParameter> parameters = new ArrayList<>();
 
@@ -1704,6 +1748,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         return new SqlQuerySpec(queryStringBuilder.toString(), parameters);
     }
+
+    
 
     private String createPkSelector(PartitionKeyDefinition partitionKeyDefinition) {
         return partitionKeyDefinition.getPaths()
@@ -1810,6 +1856,97 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 Document.class, collectionLink, changeFeedOptions);
 
         return changeFeedQueryImpl.executeAsync();
+    }
+
+    @Override
+    public Flux<FeedResponse<Document>> readAllDocuments(
+        String collectionLink,
+        PartitionKey partitionKey,
+        CosmosQueryRequestOptions options) {
+
+        if (StringUtils.isEmpty(collectionLink)) {
+            throw new IllegalArgumentException("collectionLink");
+        }
+
+        if (partitionKey == null) {
+            throw new IllegalArgumentException("partitionKey");
+        }
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            OperationType.Query,
+            ResourceType.Document,
+            collectionLink,
+            null
+        );
+
+        // This should not got to backend
+        Flux<Utils.ValueHolder<DocumentCollection>> collectionObs =
+            collectionCache.resolveCollectionAsync(null, request).flux();
+
+        return collectionObs.flatMap(documentCollectionResourceResponse -> {
+
+            DocumentCollection collection = documentCollectionResourceResponse.v;
+            if (collection == null) {
+                throw new IllegalStateException("Collection cannot be null");
+            }
+
+            PartitionKeyDefinition pkDefinition = collection.getPartitionKey();
+            String pkSelector = createPkSelector(pkDefinition);
+            SqlQuerySpec querySpec = createLogicalPartitionScanQuerySpec(partitionKey, pkSelector);
+
+            String resourceLink = parentResourceLinkToQueryLink(collectionLink, ResourceType.Document);
+            UUID activityId = Utils.randomUUID();
+            IDocumentQueryClient queryClient = documentQueryClientImpl(RxDocumentClientImpl.this);
+
+            final CosmosQueryRequestOptions effectiveOptions =
+                ModelBridgeInternal.createQueryRequestOptions(options);
+
+            // Trying to put this logic as low as the query pipeline
+            // Since for parallelQuery, each partition will have its own request, so at this point, there will be no request associate with this retry policy.
+            // For default document context, it already wired up InvalidPartitionExceptionRetry, but there is no harm to wire it again here
+            InvalidPartitionExceptionRetryPolicy invalidPartitionExceptionRetryPolicy = new InvalidPartitionExceptionRetryPolicy(
+                this.collectionCache,
+                null,
+                resourceLink,
+                effectiveOptions);
+
+            return ObservableHelper.fluxInlineIfPossibleAsObs(
+                () -> {
+                    Flux<Utils.ValueHolder<CollectionRoutingMap>> valueHolderMono = this.partitionKeyRangeCache
+                        .tryLookupAsync(
+                            BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
+                            collection.getResourceId(),
+                            null,
+                            null).flux();
+                    return valueHolderMono.flatMap(collectionRoutingMapValueHolder -> {
+
+                        CollectionRoutingMap routingMap = collectionRoutingMapValueHolder.v;
+                        if (routingMap == null) {
+                            throw new IllegalStateException("Failed to get routing map.");
+                        }
+
+                        String effectivePartitionKeyString = PartitionKeyInternalHelper
+                            .getEffectivePartitionKeyString(
+                                BridgeInternal.getPartitionKeyInternal(partitionKey),
+                                pkDefinition);
+
+                        //use routing map to find the partitionKeyRangeId of each
+                        // effectivePartitionKey
+                        PartitionKeyRange range =
+                            routingMap.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
+
+                        return createQueryInternal(
+                            resourceLink,
+                            querySpec,
+                            ModelBridgeInternal.partitionKeyRangeIdInternal(effectiveOptions, range.getId()),
+                            Document.class,
+                            ResourceType.Document,
+                            queryClient,
+                            activityId);
+                    });
+                },
+                invalidPartitionExceptionRetryPolicy);
+        });
     }
 
     @Override
@@ -3196,16 +3333,33 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         logger.info("Closing StoreClientFactory ...");
         LifeCycleUtils.closeQuietly(this.storeClientFactory);
         logger.info("Shutting down reactorHttpClient ...");
-        try {
-            this.reactorHttpClient.shutdown();
-        } catch (Exception e) {
-            logger.warn("shutting down reactorHttpClient failed", e);
-        }
+        LifeCycleUtils.closeQuietly(this.reactorHttpClient);
         logger.info("Shutting down completed.");
     }
 
     @Override
     public ItemDeserializer getItemDeserializer() {
         return this.itemDeserializer;
+    }
+
+    private static SqlQuerySpec createLogicalPartitionScanQuerySpec(
+        PartitionKey partitionKey,
+        String partitionKeySelector) {
+
+        StringBuilder queryStringBuilder = new StringBuilder();
+        List<SqlParameter> parameters = new ArrayList<>();
+
+        queryStringBuilder.append("SELECT * FROM c WHERE");
+        Object pkValue = ModelBridgeInternal.getPartitionKeyObject(partitionKey);
+        String pkParamName = "@pkValue";
+        parameters.add(new SqlParameter(pkParamName, pkValue));
+
+        queryStringBuilder.append(" c");
+        // partition key def
+        queryStringBuilder.append(partitionKeySelector);
+        queryStringBuilder.append((" = "));
+        queryStringBuilder.append(pkParamName);
+
+        return new SqlQuerySpec(queryStringBuilder.toString(), parameters);
     }
 }

@@ -10,14 +10,18 @@ import com.azure.core.amqp.implementation.RequestResponseChannel;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.models.DeadLetterOptions;
+import com.azure.messaging.servicebus.ServiceBusTransactionContext;
+import com.azure.messaging.servicebus.administration.models.DeadLetterOptions;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
+import org.apache.qpid.proton.amqp.transaction.TransactionalState;
+import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,6 +38,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
@@ -60,6 +65,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
@@ -90,6 +96,8 @@ class ManagementChannelTests {
     private RequestResponseChannel requestResponseChannel;
     @Captor
     private ArgumentCaptor<Message> messageCaptor;
+    @Captor
+    private ArgumentCaptor<DeliveryState> amqpDeliveryStateCaptor;
 
     @BeforeAll
     static void beforeAll() {
@@ -378,6 +386,39 @@ class ManagementChannelTests {
         } else {
             assertFalse(applicationProperties.containsKey(ASSOCIATED_LINK_NAME_KEY));
         }
+    }
+
+    /**
+     * Verifies that transaction-id is set properly.
+     */
+    @Test
+    void updateDispositionWithTransaction() {
+        // Arrange
+        final String associatedLinkName = "associatedLinkName";
+        final String txnIdString = "Transaction-ID";
+        final DeadLetterOptions options = new DeadLetterOptions()
+            .setDeadLetterErrorDescription("dlq-description")
+            .setDeadLetterReason("dlq-reason");
+
+        final UUID lockToken = UUID.randomUUID();
+        final ServiceBusTransactionContext mockTransaction = mock(ServiceBusTransactionContext.class);
+        when(mockTransaction.getTransactionId()).thenReturn(ByteBuffer.wrap(txnIdString.getBytes()));
+        when(requestResponseChannel.sendWithAck(any(Message.class), any(DeliveryState.class)))
+            .thenReturn(Mono.just(responseMessage));
+
+        // Act & Assert
+        StepVerifier.create(managementChannel.updateDisposition(lockToken.toString(), DispositionStatus.SUSPENDED,
+            options.getDeadLetterReason(), options.getDeadLetterErrorDescription(), options.getPropertiesToModify(),
+            null, associatedLinkName, mockTransaction))
+            .verifyComplete();
+
+        // Verify the contents of our request to make sure the correct properties were given.
+        verify(requestResponseChannel).sendWithAck(any(Message.class), amqpDeliveryStateCaptor.capture());
+
+        final DeliveryState delivery = amqpDeliveryStateCaptor.getValue();
+        Assertions.assertNotNull(delivery);
+        Assertions.assertTrue(delivery instanceof TransactionalState);
+        Assertions.assertEquals(txnIdString, ((TransactionalState) delivery).getTxnId().toString());
     }
 
     /**

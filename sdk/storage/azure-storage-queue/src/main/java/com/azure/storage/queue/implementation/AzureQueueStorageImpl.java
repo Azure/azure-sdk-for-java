@@ -136,12 +136,7 @@ public final class AzureQueueStorageImpl {
      * Initializes an instance of AzureQueueStorage client.
      */
     public AzureQueueStorageImpl() {
-        this(new HttpPipelineBuilder()
-                 .policies(
-                     new UserAgentPolicy(),
-                     new RetryPolicy(),
-                     new CookiePolicy())
-                 .build());
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build());
     }
 
     /**

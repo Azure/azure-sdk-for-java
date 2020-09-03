@@ -5,7 +5,7 @@ package com.azure.resourcemanager.resources.fluentcore.arm.implementation;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.ResourceManager;
 
@@ -18,7 +18,7 @@ public abstract class ManagerBase {
     private final String subscriptionId;
     private final AzureEnvironment environment;
     protected final HttpPipeline httpPipeline;
-    private SdkContext sdkContext;
+    private final SdkContext sdkContext;
 
     protected ManagerBase(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
         this.httpPipeline = httpPipeline;
@@ -27,8 +27,8 @@ public abstract class ManagerBase {
                     .withSdkContext(sdkContext)
                     .withDefaultSubscription();
         }
-        this.subscriptionId = profile.subscriptionId();
-        this.environment = profile.environment();
+        this.subscriptionId = profile.getSubscriptionId();
+        this.environment = profile.getEnvironment();
         this.sdkContext = sdkContext;
     }
 

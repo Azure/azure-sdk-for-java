@@ -16,25 +16,41 @@ With Spring Starter for Azure Active Directory, now you can get started quickly 
 * **Create a client secret key for the application**: Go to API ACCESS - Keys to create a secret key (`client-secret`).
 
 ### Include the package
+[//]: # "{x-version-update-start;com.microsoft.azure:azure-active-directory-spring-boot-starter;current}"
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-active-directory-spring-boot-starter</artifactId>
-    <version>2.3.3-beta.1</version>
+    <version>2.3.3</version>
 </dependency>
 ```
 [//]: # "{x-version-update-end}"
 
 ## Key concepts
 This package provides 2 ways to integrate with Spring Security and authenticate with Azure Active Directory.
-* Authenticate in backend, auto configuration for common Azure Active Directory OAuth2 properties and `OAuth2UserService` to map authorities are provided.
-* Authenticate in frontend, sends bearer authorization code to backend, in backend a Spring Security filter validates the Jwt token from Azure AD and save authentication. The Jwt token is also used to acquire a On-Behalf-Of token for Azure AD Graph API so that authenticated user's membership information is available for authorization of access of API resources. Below is a diagram that shows the layers and typical flow for Single Page Application with Spring Boot web API backend that uses the filter for Authentication and Authorization.
-![Single Page Application + Spring Boot Web API + Azure AD](resource/spring-aad.png)
 
 The authorization flow is composed of 3 phrases:
 * Login with credentials and validate id_token from Azure AD 
 * Get On-Behalf-Of token and membership info from Azure AD Graph API
 * Evaluate the permission based on membership info to grant or deny access
+
+### Authenticate in frontend
+Sends bearer authorization code to backend, in backend a Spring Security filter `AADAuthenticationFilter` validates the Jwt token from Azure AD and save authentication. The Jwt token is also used to acquire a On-Behalf-Of token for Azure AD Graph API so that authenticated user's membership information is available for authorization of access of API resources. 
+Below is a diagram that shows the layers and typical flow for Single Page Application with Spring Boot web API backend that uses the filter for Authentication and Authorization.
+![Single Page Application + Spring Boot Web API + Azure AD](resource/auth-in-frontend-with-aad-filter.png)
+
+
+### Authenticate in backend
+Auto configuration for common Azure Active Directory OAuth2 properties and `OAuth2UserService` to map authorities are provided.
+
+#### Authorization Code mode usage
+![Single Page Application + Spring Boot Web API + Azure AD](resource/auth-in-backend-code-mode.png)
+
+#### ID Token mode usage(Stateless implicit)
+
+![Single Page Application + Spring Boot Web API + Azure AD](resource/auth-in-backend-id-token-mode.png)
+When the session is stateless, use `AADAppRoleStatelessAuthenticationFilter` as a Spring Security filter to validate the Jwt token from Azure AD and save authentication
+
 ## Examples
 
 Refer to different samples for different authentication ways. 

@@ -3,14 +3,10 @@
 
 package com.microsoft.azure.keyvault.spring;
 
-import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.stereotype.Component;
 
-@ConditionalOnEnabledHealthIndicator("azure-key-vault")
-@Component
 public class KeyVaultHealthIndicator implements HealthIndicator {
 
     private final ConfigurableEnvironment environment;

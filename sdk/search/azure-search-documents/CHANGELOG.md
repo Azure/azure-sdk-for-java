@@ -2,6 +2,7 @@
 
 ## 11.1.0-beta.2 (Unreleased)
 
+- Replaced `ObjectSerializer` setters in builders with `JsonSerializer` to better represent the type requirement.
 
 ## 11.1.0-beta.1 (2020-08-12)
 

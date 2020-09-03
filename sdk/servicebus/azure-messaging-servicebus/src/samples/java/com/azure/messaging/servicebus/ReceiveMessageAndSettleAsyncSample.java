@@ -9,10 +9,10 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Sample demonstrates how to receive an {@link ServiceBusReceivedMessage} from an Azure Service Bus Queue and settle
- * it. Settling of message include {@link ServiceBusReceiverAsyncClient#complete(String) complete()}, {@link
- * ServiceBusReceiverAsyncClient#defer(String) defer()},
- * {@link ServiceBusReceiverAsyncClient#abandon(String) abandon}, or
- * {@link ServiceBusReceiverAsyncClient#deadLetter(String) dead-letter} a message.
+ * it. Settling of message include {@link ServiceBusReceiverAsyncClient#complete(ServiceBusReceivedMessage) complete},
+ * {@link ServiceBusReceiverAsyncClient#defer(ServiceBusReceivedMessage) defer},
+ * {@link ServiceBusReceiverAsyncClient#abandon(ServiceBusReceivedMessage) abandon}, or
+ * {@link ServiceBusReceiverAsyncClient#deadLetter(ServiceBusReceivedMessage) dead-letter} a message.
  */
 public class ReceiveMessageAndSettleAsyncSample {
 
@@ -49,9 +49,9 @@ public class ReceiveMessageAndSettleAsyncSample {
                 // Change the `messageProcessed` according to you business logic and if you are able to process the
                 // message successfully.
                 if (messageProcessed) {
-                    return receiver.complete(context.getMessage().getLockToken());
+                    return receiver.complete(context.getMessage());
                 } else {
-                    return receiver.abandon(context.getMessage().getLockToken());
+                    return receiver.abandon(context.getMessage());
                 }
             }).subscribe();
 

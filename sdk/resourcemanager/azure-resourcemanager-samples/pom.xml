@@ -13,7 +13,7 @@
     <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
     <relativePath>../../parents/azure-client-sdk-parent</relativePath>
   </parent>
-  
+
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-samples</artifactId>
   <version>2.0.0-beta.4</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-samples;current} -->
@@ -48,6 +48,12 @@
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager</artifactId>
       <version>2.0.0-beta.4</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure.resourcemanager</groupId>
+      <artifactId>azure-resourcemanager-test</artifactId>
+      <version>2.0.0-beta.4</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-test;current} -->
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -98,12 +104,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.7.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.8.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.3.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <version>4.3.1</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -170,9 +176,8 @@
       <dependencies>
         <dependency>
           <groupId>com.azure.resourcemanager</groupId>
-          <artifactId>azure-resourcemanager-resources</artifactId>
-          <version>2.0.0-beta.4</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;current} -->
-          <type>test-jar</type>
+          <artifactId>azure-resourcemanager-test</artifactId>
+          <version>2.0.0-beta.4</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-test;current} -->
           <scope>test</scope>
         </dependency>
       </dependencies>

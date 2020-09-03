@@ -9,7 +9,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.ClientCertificateCredentialBuilder;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.google.common.io.ByteStreams;
 import com.azure.resourcemanager.Azure;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
@@ -86,7 +86,7 @@ public final class ManageServicePrincipalCredentials {
                     .define(raName)
                     .forServicePrincipal(servicePrincipal)
                     .withBuiltInRole(BuiltInRole.CONTRIBUTOR)
-                    .withSubscriptionScope(profile.subscriptionId())
+                    .withSubscriptionScope(profile.getSubscriptionId())
                     .create();
 
             System.out.println("Created role assignment " + raName + ".");
@@ -101,7 +101,7 @@ public final class ManageServicePrincipalCredentials {
                 .tenantId(authenticated.tenantId())
                 .clientId(servicePrincipal.applicationId())
                 .clientSecret(password1)
-                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
             try {
                 Azure.authenticate(testCredential, profile).withDefaultSubscription();
@@ -117,7 +117,7 @@ public final class ManageServicePrincipalCredentials {
                 .tenantId(authenticated.tenantId())
                 .clientId(servicePrincipal.applicationId())
                 .clientSecret(password2)
-                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
             try {
                 Azure.authenticate(testCredential, profile).withDefaultSubscription();
@@ -133,7 +133,7 @@ public final class ManageServicePrincipalCredentials {
                 .tenantId(authenticated.tenantId())
                 .clientId(servicePrincipal.applicationId())
                 .pfxCertificate(ManageServicePrincipalCredentials.class.getResource("/myTest.pfx").toString(), "Abc123")
-                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
             try {
                 Azure.authenticate(testCredential, profile).withDefaultSubscription();
@@ -164,7 +164,7 @@ public final class ManageServicePrincipalCredentials {
                 .tenantId(authenticated.tenantId())
                 .clientId(servicePrincipal.applicationId())
                 .clientSecret(password1)
-                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
             try {
                 Azure.authenticate(testCredential, profile).withDefaultSubscription();
@@ -192,7 +192,7 @@ public final class ManageServicePrincipalCredentials {
                 .tenantId(authenticated.tenantId())
                 .clientId(servicePrincipal.applicationId())
                 .clientSecret(password2)
-                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
             try {
                 Azure.authenticate(testCredential, profile).withDefaultSubscription()

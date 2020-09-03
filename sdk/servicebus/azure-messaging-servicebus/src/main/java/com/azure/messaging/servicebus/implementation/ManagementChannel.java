@@ -36,6 +36,7 @@ import reactor.core.publisher.SynchronousSink;
 import java.nio.BufferOverflowException;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -286,7 +287,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
      * {@inheritDoc}
      */
     @Override
-    public Mono<Long> schedule(ServiceBusMessage message, Instant scheduledEnqueueTime, int maxLinkSize,
+    public Mono<Long> schedule(ServiceBusMessage message, OffsetDateTime scheduledEnqueueTime, int maxLinkSize,
         String associatedLinkName, ServiceBusTransactionContext transactionContext) {
         message.setScheduledEnqueueTime(scheduledEnqueueTime);
 

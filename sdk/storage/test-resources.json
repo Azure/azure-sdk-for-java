@@ -111,6 +111,20 @@
             ]
         },
         {
+          "type": "Microsoft.Storage/storageAccounts/encryptionScopes",
+          "apiVersion": "[variables('storageApiVersion')]",
+          "name": "[concat(variables('primaryAccountName'), '/testscope1')]",
+          "properties": {
+          }
+        },
+        {
+          "type": "Microsoft.Storage/storageAccounts/encryptionScopes",
+          "apiVersion": "[variables('storageApiVersion')]",
+          "name": "[concat(variables('primaryAccountName'), '/testscope2')]",
+          "properties": {
+          }
+        },
+        {
             "type": "Microsoft.Storage/storageAccounts",
             "apiVersion": "[variables('storageApiVersion')]",
             "name": "[variables('secondaryAccountName')]",

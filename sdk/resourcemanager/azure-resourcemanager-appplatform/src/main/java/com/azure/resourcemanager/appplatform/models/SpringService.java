@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.implementation.annotation.Beta;
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
 import com.azure.resourcemanager.appplatform.fluent.inner.ServiceResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
@@ -17,7 +16,6 @@ import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure Spring Service. */
 @Fluent
-@Beta
 public interface SpringService
     extends GroupableResource<AppPlatformManager, ServiceResourceInner>,
         Refreshable<SpringService>,
@@ -26,17 +24,23 @@ public interface SpringService
     /** @return Sku of the service */
     Sku sku();
 
-    /** @return Trace properties of the service */
-    TraceProperties traceProperties();
-
-    /** @return server properties of the service */
-    ConfigServerProperties serverProperties();
-
     /** @return the entry point of the spring app */
     SpringApps apps();
 
     /** @return the entry point of the spring service certificate */
     SpringServiceCertificates certificates();
+
+    /** @return Monitoring Setting properties of the service */
+    MonitoringSettingProperties getMonitoringSetting();
+
+    /** @return Monitoring Setting properties of the service */
+    Mono<MonitoringSettingProperties> getMonitoringSettingAsync();
+
+    /** @return server properties of the service */
+    ConfigServerProperties getServerProperties();
+
+    /** @return server properties of the service */
+    Mono<ConfigServerProperties> getServerPropertiesAsync();
 
     /**
      * Lists test keys for the service.
@@ -139,14 +143,40 @@ public interface SpringService
             WithCreate withTracing(String appInsightInstrumentationKey);
         }
 
-        /** The stage of a spring service update allowing to specify the certificate. */
+        /** The stage of a spring service definition allowing to specify the server configuration. */
+        interface WithConfiguration {
+            /**
+             * Specifies the git repository for the spring service.
+             * @param uri the uri of the git repository
+             * @return the next stage of spring service definition
+             */
+            WithCreate withGitUri(String uri);
+
+            /**
+             * Specifies the git repository for the spring service.
+             * @param uri the uri of the git repository
+             * @param username the username of the private git repository
+             * @param password the password of the private git repository
+             * @return the next stage of spring service definition
+             */
+            WithCreate withGitUriAndCredential(String uri, String username, String password);
+
+            /**
+             * Specifies the git repository for the spring service.
+             * @param gitConfig the configuration of the git repository
+             * @return the next stage of spring service definition
+             */
+            WithCreate withGitConfig(ConfigServerGitProperty gitConfig);
+        }
+
+        /** The stage of a spring service definition allowing to specify the certificate. */
         interface WithCertificate {
             /**
              * Specifies a certificate in key vault with latest version binding to the spring service.
              * @param name the certificate name
              * @param keyVaultUri the uri for key vault that contains certificate
              * @param certNameInKeyVault the certificate name in the key vault
-             * @return the next stage of spring service update
+             * @return the next stage of spring service definition
              */
             WithCreate withCertificate(String name, String keyVaultUri, String certNameInKeyVault);
 
@@ -156,7 +186,7 @@ public interface SpringService
              * @param keyVaultUri the uri for key vault that contains certificate
              * @param certNameInKeyVault the certificate name in the key vault
              * @param certVersion the certificate version in the key vault
-             * @return the next stage of spring service update
+             * @return the next stage of spring service definition
              */
             WithCreate withCertificate(String name, String keyVaultUri, String certNameInKeyVault, String certVersion);
         }
@@ -170,6 +200,7 @@ public interface SpringService
                 Resource.DefinitionWithTags<WithCreate>,
                 WithSku,
                 WithTracing,
+                WithConfiguration,
                 WithCertificate { }
     }
 

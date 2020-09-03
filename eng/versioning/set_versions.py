@@ -54,7 +54,7 @@ prerelease_regex_named = re.compile(prerelease_version_regex_with_name)
 prerelease_data_regex = re.compile(prerelease_data_version_regex)
 
 # Update packages (excluding unreleased dependencies and packages which already
-# have a dev version set) to use a "zero dev version" (e.g. dev.20201225.0).
+# have a dev version set) to use a "zero dev version" (e.g. alpha.20201225.0).
 # This ensures that packages built in pipelines who have unreleased dependencies
 # that are built in other pipelines can successfully fall back to a source build
 # of the unreleased dependency package in the monorepo if the unreleased
@@ -67,8 +67,8 @@ def set_dev_zero_version(build_type, build_qualifier):
     version_file = os.path.normpath('eng/versioning/version_' + build_type.name + '.txt')
     print('version_file=' + version_file)
 
-    # Assuming a build qualifier of the form: "dev.20200204.123"
-    # Converts "dev.20200204.123" -> "dev.20200204.0"
+    # Assuming a build qualifier of the form: "alpha.20200204.123"
+    # Converts "alpha.20200204.123" -> "alpha.20200204.0"
     zero_qualifier = build_qualifier[:build_qualifier.rfind('.') + 1] + '0'
 
     newlines = []
@@ -174,8 +174,8 @@ def update_versions_file_for_nightly_devops(build_type, build_qualifier, artifac
                 # changes in the case where a dependency version has already
                 # been modified.
                 elif (module.name.startswith('unreleased_') or module.name.startswith('beta_'))  and not module.dependency.startswith('['):
-                    # Assuming a build qualifier of the form: "dev.20200204.1"
-                    # Converts "dev.20200204.1" -> "dev.20200204."
+                    # Assuming a build qualifier of the form: "alpha.20200204.1"
+                    # Converts "alpha.20200204.1" -> "alpha.20200204."
                     unreleased_build_qualifier = build_qualifier[:build_qualifier.rfind('.') + 1]
 
                     if '-' in module.dependency:
@@ -185,7 +185,7 @@ def update_versions_file_for_nightly_devops(build_type, build_qualifier, artifac
                         module.dependency += '-' + unreleased_build_qualifier
 
                     # The final unreleased dependency version needs to be of the form
-                    # [1.0.0-dev.YYYYMMDD.,] <-- note the ., this is the version range for Maven
+                    # [1.0.0-alpha.YYYYMMDD.,] <-- note the ., this is the version range for Maven
                     module.dependency = '[{},]'.format(module.dependency)
 
                     print(f'updating unreleased/beta dependency {module.name} to use dependency version range: "{module.dependency}"')
@@ -429,7 +429,7 @@ def main():
     # if the file changed flag is set, which only happens through a call to prep_version_file_for_source_testing,
     # then exit with a unique code that allows us to know that something changed.
     if (file_changed):
-        sys.exit(5678)
+        print('##vso[task.setvariable variable=ShouldRunSourceTests]true')
 
 if __name__ == '__main__':
     main()
