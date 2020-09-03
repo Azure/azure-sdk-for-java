@@ -131,7 +131,7 @@ public class TimeSpan {
     }
 
     /**
-     * @return total number of milliseconds represented by this instance in duration format
+     * @return the duration represented by this instance
      */
     public Duration toDuration() {
         Double millis = Double.valueOf(totalMilliseconds());
