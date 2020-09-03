@@ -74,6 +74,9 @@ extends:
       - name: azure-resourcemanager-privatedns
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerprivatedns
+      - name: azure-resourcemanager-redis
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerredis
       - name: azure-resourcemanager-resources
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerresources
