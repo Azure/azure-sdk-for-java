@@ -19,6 +19,7 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
@@ -142,8 +143,8 @@ public class DigitalTwinsLifecycleAsyncSample {
         for (Map.Entry<String, String> twin : twins.entrySet()) {
             String twinId = twin.getKey();
 
-            // This list contains all the relations that existing between the twins referenced by this sample.
-            List<BasicRelationship> relationshipList = new ArrayList<>();
+            // This list contains all the relationships that existing between the twins referenced by this sample.
+            List<BasicRelationship> relationshipList = Collections.synchronizedList(new ArrayList<>());
 
             // These semaphores indicate when the relationship list and relationship delete operations have completed.
             // We cannot use a latch here since we do not know the no. of relationships that will be deleted (so we do cannot set the latch initial count).
