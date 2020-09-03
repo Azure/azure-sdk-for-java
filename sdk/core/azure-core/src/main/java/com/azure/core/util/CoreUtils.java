@@ -30,7 +30,6 @@ import java.util.stream.Collectors;
  * This class contains utility methods useful for building client libraries.
  */
 public final class CoreUtils {
-    private static final ClientLogger LOGGER = new ClientLogger(CoreUtils.class);
     private static final String COMMA = ",";
     private static final Charset UTF_32BE = Charset.forName("UTF-32BE");
     private static final Charset UTF_32LE = Charset.forName("UTF-32LE");
@@ -264,11 +263,15 @@ public final class CoreUtils {
 
         String clientApplicationId = null;
 
+        // We prioritize application id sent in ClientOptions.
         if (clientOptions != null) {
             clientApplicationId = clientOptions.getApplicationId();
         }
 
-        // We prioritize application id sent in ClientOptions.
-        return clientApplicationId != null ? clientApplicationId : logOptions.getApplicationId();
+        if (clientApplicationId == null && logOptions != null) {
+            clientApplicationId = logOptions.getApplicationId();
+        }
+
+        return clientApplicationId;
     }
 }

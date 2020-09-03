@@ -12,7 +12,7 @@ import java.util.Objects;
 /**
  * Client Options for setting common properties for example applicationId. Most of these properties are applied on
  * request being send to Azure Service but some could be used for other purpose also for example applicationId could be
- * used for telemetry.
+ * used for telemetry. This class is used by user to set these properties at the time of building the client.
  */
 @Fluent
 public final class ClientOptions {
