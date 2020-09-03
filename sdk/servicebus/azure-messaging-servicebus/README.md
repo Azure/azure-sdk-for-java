@@ -253,7 +253,7 @@ receiver.receiveMessages(10).forEach(context -> {
     ServiceBusReceivedMessage message = context.getMessage();
 
     // Process message and then complete it.
-    receiver.complete(message.getLockToken());
+    receiver.complete(message);
 });
 ```
 
@@ -326,13 +326,14 @@ Azure Service Bus queues and topic subscriptions provide a secondary sub-queue, 
 The dead-letter queue doesn't need to be explicitly created and can't be deleted or otherwise managed independent 
 of the main entity. Learn more about dead-letter queue [here][dead-letter-queue].
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L200-L205 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L200-L206 -->
 ```java
 ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
     .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
-    .deadLetterReceiver()
+    .receiver()
     .topicName("<< TOPIC NAME >>")
     .subscriptionName("<< SUBSCRIPTION NAME >>")
+    .subQueue(SubQueue.DEAD_LETTER_QUEUE)
     .buildClient();
 ```
 

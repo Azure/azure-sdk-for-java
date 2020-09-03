@@ -36,6 +36,7 @@ java:
     generate-client-as-impl: true
     implementation-subpackage: implementation
     models-subpackage: implementation.models
+    context-client-method-parameter: true
     custom-types-subpackage: models
-    custom-types: ModelData
+    custom-types: IncomingRelationship
 ```

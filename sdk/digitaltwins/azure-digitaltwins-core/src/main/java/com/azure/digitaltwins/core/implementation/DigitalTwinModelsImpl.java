@@ -24,13 +24,12 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
+import com.azure.digitaltwins.core.implementation.models.ModelData;
 import com.azure.digitaltwins.core.implementation.models.PagedModelDataCollection;
-import com.azure.digitaltwins.core.models.ModelData;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
@@ -62,7 +61,7 @@ public final class DigitalTwinModelsImpl {
     @ServiceInterface(name = "AzureDigitalTwinsAPI")
     private interface DigitalTwinModelsService {
         @Post("/models")
-        @ExpectedResponses({200})
+        @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<List<ModelData>>> add(
                 @HostParam("$host") String host,
@@ -122,15 +121,15 @@ public final class DigitalTwinModelsImpl {
      * (Bad Request): The request is invalid. 409 (Conflict): One or more of the provided models already exist.
      *
      * @param models Array of any.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of ModelData objects.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<ModelData>>> addWithResponseAsync(List<Object> models) {
-        return FluxUtil.withContext(
-                context -> service.add(this.client.getHost(), this.client.getApiVersion(), models, context));
+    public Mono<Response<List<ModelData>>> addWithResponseAsync(List<Object> models, Context context) {
+        return service.add(this.client.getHost(), this.client.getApiVersion(), models, context);
     }
 
     /**
@@ -140,6 +139,7 @@ public final class DigitalTwinModelsImpl {
      * @param dependenciesFor Array of Get0ItemsItem.
      * @param includeModelDefinition When true the model definition will be returned as part of the result.
      * @param digitalTwinModelsListOptions Parameter group.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -149,7 +149,8 @@ public final class DigitalTwinModelsImpl {
     public Mono<PagedResponse<ModelData>> listSinglePageAsync(
             List<String> dependenciesFor,
             Boolean includeModelDefinition,
-            DigitalTwinModelsListOptions digitalTwinModelsListOptions) {
+            DigitalTwinModelsListOptions digitalTwinModelsListOptions,
+            Context context) {
         Integer maxItemCountInternal = null;
         if (digitalTwinModelsListOptions != null) {
             maxItemCountInternal = digitalTwinModelsListOptions.getMaxItemCount();
@@ -157,15 +158,13 @@ public final class DigitalTwinModelsImpl {
         Integer maxItemCount = maxItemCountInternal;
         String dependenciesForConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(dependenciesFor, CollectionFormat.CSV);
-        return FluxUtil.withContext(
-                        context ->
-                                service.list(
-                                        this.client.getHost(),
-                                        dependenciesForConverted,
-                                        includeModelDefinition,
-                                        maxItemCount,
-                                        this.client.getApiVersion(),
-                                        context))
+        return service.list(
+                        this.client.getHost(),
+                        dependenciesForConverted,
+                        includeModelDefinition,
+                        maxItemCount,
+                        this.client.getApiVersion(),
+                        context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -183,21 +182,16 @@ public final class DigitalTwinModelsImpl {
      *
      * @param id The id for the model. The id is globally unique and case sensitive.
      * @param includeModelDefinition When true the model definition will be returned as part of the result.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a model definition and metadata for that model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ModelData>> getByIdWithResponseAsync(String id, Boolean includeModelDefinition) {
-        return FluxUtil.withContext(
-                context ->
-                        service.getById(
-                                this.client.getHost(),
-                                id,
-                                includeModelDefinition,
-                                this.client.getApiVersion(),
-                                context));
+    public Mono<Response<ModelData>> getByIdWithResponseAsync(
+            String id, Boolean includeModelDefinition, Context context) {
+        return service.getById(this.client.getHost(), id, includeModelDefinition, this.client.getApiVersion(), context);
     }
 
     /**
@@ -206,16 +200,15 @@ public final class DigitalTwinModelsImpl {
      *
      * @param id The id for the model. The id is globally unique and case sensitive.
      * @param updateModel Array of any.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateWithResponseAsync(String id, List<Object> updateModel) {
-        return FluxUtil.withContext(
-                context ->
-                        service.update(this.client.getHost(), id, this.client.getApiVersion(), updateModel, context));
+    public Mono<Response<Void>> updateWithResponseAsync(String id, List<Object> updateModel, Context context) {
+        return service.update(this.client.getHost(), id, this.client.getApiVersion(), updateModel, context);
     }
 
     /**
@@ -224,29 +217,30 @@ public final class DigitalTwinModelsImpl {
      * (Conflict): There are dependencies on the model that prevent it from being deleted.
      *
      * @param id The id for the model. The id is globally unique and case sensitive.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(String id) {
-        return FluxUtil.withContext(
-                context -> service.delete(this.client.getHost(), id, this.client.getApiVersion(), context));
+    public Mono<Response<Void>> deleteWithResponseAsync(String id, Context context) {
+        return service.delete(this.client.getHost(), id, this.client.getApiVersion(), context);
     }
 
     /**
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of ModelData objects.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ModelData>> listNextSinglePageAsync(String nextLink) {
-        return FluxUtil.withContext(context -> service.listNext(nextLink, context))
+    public Mono<PagedResponse<ModelData>> listNextSinglePageAsync(String nextLink, Context context) {
+        return service.listNext(nextLink, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

@@ -13,7 +13,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.policy.AuxiliaryAuthenticationPolicy;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 
 import java.time.temporal.ChronoUnit;
@@ -129,7 +129,7 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
         Objects.requireNonNull(credential);
         if (!tokens.isEmpty()) {
             policies.add(
-                new AuxiliaryAuthenticationPolicy(profile.environment(), tokens.toArray(new TokenCredential[0])));
+                new AuxiliaryAuthenticationPolicy(profile.getEnvironment(), tokens.toArray(new TokenCredential[0])));
         }
         return HttpPipelineProvider.buildHttpPipeline(credential, profile, scopes(), httpLogOptions, configuration,
             retryPolicy, policies, httpClient);

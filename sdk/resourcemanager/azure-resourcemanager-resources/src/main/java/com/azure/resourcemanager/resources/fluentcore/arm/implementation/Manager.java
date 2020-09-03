@@ -5,7 +5,7 @@ package com.azure.resourcemanager.resources.fluentcore.arm.implementation;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 /**

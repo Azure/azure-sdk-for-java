@@ -2,7 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
@@ -39,12 +44,12 @@ import com.azure.resourcemanager.network.models.PcStatus;
 import com.azure.resourcemanager.network.models.SecurityGroupView;
 import com.azure.resourcemanager.network.models.Topology;
 import com.azure.resourcemanager.network.models.VerificationIPFlow;
-import com.azure.resourcemanager.resources.core.TestBase;
-import com.azure.resourcemanager.resources.core.TestUtilities;
+import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.models.Deployment;
 import com.azure.resourcemanager.resources.models.DeploymentMode;
@@ -56,6 +61,7 @@ import com.azure.resourcemanager.storage.models.SkuName;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -65,16 +71,41 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.utils.TestDelayProvider;
+import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public class AzureTests extends TestBase {
+public class AzureTests extends ResourceManagerTestBase {
     private Azure azure;
     private MSIManager msiManager;
 
     @Override
+    protected HttpPipeline buildHttpPipeline(
+        TokenCredential credential,
+        AzureProfile profile,
+        HttpLogOptions httpLogOptions,
+        List<HttpPipelinePolicy> policies,
+        HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(
+            credential,
+            profile,
+            null,
+            httpLogOptions,
+            null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
+            policies,
+            httpClient);
+    }
+
+    @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
+        SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
+        SdkContext sdkContext = new SdkContext();
+        sdkContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
         Azure.Authenticated azureAuthed = Azure.authenticate(httpPipeline, profile).withSdkContext(sdkContext);
         azure = azureAuthed.withDefaultSubscription();
         this.msiManager = MSIManager.authenticate(httpPipeline, profile, sdkContext);
@@ -979,6 +1010,10 @@ public class AzureTests extends TestBase {
 
     @Test
     public void testVirtualMachineSyncPoller() throws Exception {
+        if (skipInPlayback()) {
+            return; // skip now as taking too long time for PLAYBACK
+        }
+
         new TestVirtualMachineSyncPoller(azure.networks().manager())
             .runTest(azure.virtualMachines(), azure.resourceGroups());
     }
@@ -1061,11 +1096,14 @@ public class AzureTests extends TestBase {
     //        new TestBatch().runTest(azure.batchAccounts(), azure.resourceGroups());
     //    }
 
-    //    @Test
-    //    public void testTrafficManager() throws Exception {
-    //        new TestTrafficManager(azure.publicIPAddresses())
-    //                .runTest(azure.trafficManagerProfiles(), azure.resourceGroups());
-    //    }
+    @Test
+    public void testTrafficManager() throws Exception {
+        if (isPlaybackMode()) {
+            return; // TODO: fix playback random fail
+        }
+        new TestTrafficManager(azure.publicIpAddresses())
+                .runTest(azure.trafficManagerProfiles(), azure.resourceGroups());
+    }
 
     @Test
     public void testRedis() throws Exception {

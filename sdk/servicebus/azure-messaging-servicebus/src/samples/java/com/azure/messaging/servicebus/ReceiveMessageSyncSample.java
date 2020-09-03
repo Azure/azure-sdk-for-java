@@ -47,7 +47,7 @@ public class ReceiveMessageSyncSample {
                 System.out.println("Received Message Id: " + message.getMessageId());
                 System.out.println("Received Message: " + new String(message.getBody()));
 
-                receiver.complete(message.getLockToken());
+                receiver.complete(message);
             });
         }
 
