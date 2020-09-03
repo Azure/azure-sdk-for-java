@@ -51,10 +51,12 @@ public class ResourceManagerThrottlingInfo {
             }
         }
         resourceRateLimit = headers.getValue(RESOURCE_RATE_LIMIT_HEADER);
-        Matcher matcher = RESOURCE_RATE_LIMIT_HEADER_PATTERN.matcher(resourceRateLimit);
-        while (matcher.find()) {
-            commonRateLimits.put(
-                String.format("%s-%s", RESOURCE_RATE_LIMIT_HEADER, matcher.group(1)), matcher.group(2));
+        if (resourceRateLimit != null) {
+            Matcher matcher = RESOURCE_RATE_LIMIT_HEADER_PATTERN.matcher(resourceRateLimit);
+            while (matcher.find()) {
+                commonRateLimits.put(
+                    String.format("%s-%s", RESOURCE_RATE_LIMIT_HEADER, matcher.group(1)), matcher.group(2));
+            }
         }
     }
 
