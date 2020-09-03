@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.sql.v2014_04_01;
 
+import rx.Completable;
 import rx.Observable;
 import com.microsoft.azure.management.sql.v2014_04_01.implementation.ExtensionsInner;
 import com.microsoft.azure.arm.model.HasInner;
@@ -17,7 +18,18 @@ import com.microsoft.azure.arm.model.HasInner;
  */
 public interface Extensions extends HasInner<ExtensionsInner> {
     /**
-     * Gets database extensions.
+     * Gets a database extension. This API is deprecated and should not be used.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database to import into
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable getAsync(String resourceGroupName, String serverName, String databaseName);
+
+    /**
+     * Gets database extensions. This API is deprecated and should not be used.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
