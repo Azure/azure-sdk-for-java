@@ -61,7 +61,7 @@ public final class DigitalTwinModelsImpl {
     @ServiceInterface(name = "AzureDigitalTwinsAPI")
     private interface DigitalTwinModelsService {
         @Post("/models")
-        @ExpectedResponses({200})
+        @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<List<ModelData>>> add(
                 @HostParam("$host") String host,
