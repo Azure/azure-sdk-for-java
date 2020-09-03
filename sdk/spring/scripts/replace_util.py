@@ -35,15 +35,15 @@ config = {
                 VersionUpdateItem('org.springframework.boot:spring-boot-starter-actuator', '2.2.9.RELEASE'),
                 VersionUpdateItem('org.springframework.boot:spring-boot-starter-test', '2.2.9.RELEASE')
             )
+        },
+        'sdk/spring/azure-spring-boot-test-aad/pom.xml': {
+            ARTIFACT_ID_PAIRS: (
+                ArtifactIdPair('azure-active-directory-spring-boot-2-3-starter', 'azure-active-directory-spring-boot-2-2-starter'),
+            ),
+            VERSION_UPDATE_ITEMS: (
+                VersionUpdateItem('org.springframework.boot:spring-boot-starter-test', '2.2.9.RELEASE'),
+            )
         }
-    },
-    'sdk/spring/azure-spring-boot-test-aad/pom.xml': {
-        ARTIFACT_ID_PAIRS: (
-            ArtifactIdPair('azure-active-directory-spring-boot-2-3-starter', 'azure-active-directory-spring-boot-2-2-starter'),
-        ),
-        VERSION_UPDATE_ITEMS: (
-            VersionUpdateItem('org.springframework.boot:spring-boot-starter-test', '2.2.9.RELEASE'),
-        )
     }
 }
 
