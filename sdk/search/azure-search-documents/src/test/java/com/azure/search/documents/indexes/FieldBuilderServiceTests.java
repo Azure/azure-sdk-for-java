@@ -4,12 +4,14 @@
 package com.azure.search.documents.indexes;
 
 import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.search.documents.SearchTestBase;
 import com.azure.search.documents.indexes.models.FieldBuilderOptions;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SynonymMap;
 import com.azure.search.documents.test.environment.models.Hotel;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -47,7 +49,8 @@ public class FieldBuilderServiceTests extends SearchTestBase {
         client.createSynonymMap(synonymMap);
         index.setFields(SearchIndexClient.buildSearchFields(Hotel.class, new FieldBuilderOptions()
             .setJsonSerializer(new JacksonJsonSerializerBuilder()
-                .serializer(((JacksonAdapter) JacksonAdapter.createDefaultSerializerAdapter()).serializer())
+                .serializer(new ObjectMapper()
+                    .setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY))
                 .build())));
         client.createIndex(index);
         indexesToDelete.add(index.getName());
