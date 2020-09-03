@@ -183,7 +183,7 @@ public final class RestProxy implements InvocationHandler {
      * @return The updated context containing the span context.
      */
     private Context startTracingSpan(Method method, Context context) {
-        if (!TracerProxy.isEnabled()) {
+        if (!TracerProxy.isTracingEnabled()) {
             return context;
         }
         String spanName = String.format("%s.%s", interfaceParser.getServiceName(), method.getName());
@@ -530,7 +530,7 @@ public final class RestProxy implements InvocationHandler {
     // This handles each onX for the response mono.
     // The signal indicates the status and contains the metadata we need to end the tracing span.
     private static void endTracingSpan(Signal<HttpDecodedResponse> signal) {
-        if (!TracerProxy.isEnabled()) {
+        if (!TracerProxy.isTracingEnabled()) {
             return;
         }
 
