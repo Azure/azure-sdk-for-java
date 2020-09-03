@@ -78,10 +78,10 @@ public class DigitalTwinsLifecycleAsyncSample {
                     .clientSecret(parsedArguments.getClientSecret())
                     .build()
             )
-            .endpoint(parsedArguments.getDigitalTwinUrl())
+            .endpoint(parsedArguments.getDigitalTwinEndpoint())
             .httpLogOptions(
                 new HttpLogOptions()
-                    .setLogLevel(HttpLogDetailLevel.NONE))
+                    .setLogLevel(parsedArguments.getHttpLogDetailLevel()))
             .buildAsyncClient();
 
         // Ensure existing twins with the same name are deleted first
