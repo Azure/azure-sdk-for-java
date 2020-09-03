@@ -261,11 +261,10 @@ public final class Region {
     private final String label;
 
     /**
-     * @return predefined Azure regions
+     * @return predefined Azure regions.
      */
-    public static Region[] values() {
-        Collection<Region> valuesCollection = VALUES_BY_NAME.values();
-        return valuesCollection.toArray(new Region[valuesCollection.size()]);
+    public static Collection<Region> values() {
+        return VALUES_BY_NAME.values();
     }
 
     private Region(String name, String label) {
@@ -277,9 +276,9 @@ public final class Region {
     /**
      * Creates a region from a name and a label.
      *
-     * @param name the uniquely identifiable name of the region
-     * @param label the label of the region
-     * @return the newly created region
+     * @param name the uniquely identifiable name of the region.
+     * @param label the label of the region.
+     * @return the newly created region.
      */
     public static Region create(String name, String label) {
         Objects.requireNonNull(name, "'name' cannot be null.");
@@ -299,14 +298,14 @@ public final class Region {
     }
 
     /**
-     * @return the name of the region
+     * @return the name of the region.
      */
     public String name() {
         return this.name;
     }
 
     /**
-     * @return the label of the region
+     * @return the label of the region.
      */
     public String label() {
         return this.label;
@@ -315,8 +314,8 @@ public final class Region {
     /**
      * Parses a name into a Region object and creates a new Region instance if not found among the existing ones.
      *
-     * @param name the name of the region
-     * @return the parsed or created region
+     * @param name the name of the region.
+     * @return the parsed or created region.
      */
     public static Region fromName(String name) {
         if (name == null) {
