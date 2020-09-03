@@ -119,6 +119,16 @@
       <version>3.2.7</version> <!-- {x-version-update;cglib:cglib-nodep;external_dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.7.30</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>1.7.30</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
+    </dependency>
   </dependencies>
 
   <build>
@@ -201,6 +211,21 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
           </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+            <configuration>
+              <rules>
+                <bannedDependencies>
+                  <includes>
+                    <include>org.slf4j:slf4j-api:[1.7.30]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
+                    <include>org.slf4j:slf4j-simple:[1.7.30]</include> <!-- {x-include-update;org.slf4j:slf4j-simple;external_dependency} -->
+                  </includes>
+                </bannedDependencies>
+              </rules>
+            </configuration>
+          </plugin>
         </plugins>
       </build>
     </profile>
@@ -260,6 +285,21 @@
               </dependency>
             </dependencies>
           </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+            <configuration>
+              <rules>
+                <bannedDependencies>
+                  <includes>
+                    <include>org.slf4j:slf4j-api:[1.7.30]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
+                    <include>org.slf4j:slf4j-simple:[1.7.30]</include> <!-- {x-include-update;org.slf4j:slf4j-simple;external_dependency} -->
+                  </includes>
+                </bannedDependencies>
+              </rules>
+            </configuration>
+          </plugin>
 
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
@@ -281,7 +321,6 @@
                 --add-reads com.azure.core.test=ALL-UNNAMED
                 --add-reads com.azure.core.amqp=ALL-UNNAMED
                 --add-reads com.azure.storage.common=ALL-UNNAMED
-                --add-reads com.azure.storage.internal.avro=ALL-UNNAMED
               </argLine>
             </configuration>
           </plugin>

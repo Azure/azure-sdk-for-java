@@ -4,6 +4,8 @@
 package com.azure.storage.blob
 
 import com.azure.core.http.RequestConditions
+import com.azure.core.http.policy.HttpLogDetailLevel
+import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.polling.LongRunningOperationStatus
 import com.azure.identity.DefaultAzureCredentialBuilder
@@ -12,6 +14,7 @@ import com.azure.storage.blob.models.ArchiveStatus
 import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
+import com.azure.storage.blob.models.BlobQueryDelimitedSerialization
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
@@ -64,6 +67,74 @@ class BlobAPITest extends APISpec {
         blobName = generateBlobName()
         bc = cc.getBlobClient(blobName)
         bc.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+    }
+
+    // Generates and uploads a CSV file
+    def uploadCsv(BlobQueryDelimitedSerialization s, int numCopies) {
+        String header = String.join(new String(s.getColumnSeparator()), "rn1", "rn2", "rn3", "rn4")
+            .concat(new String(s.getRecordSeparator()))
+        byte[] headers = header.getBytes()
+
+        String csv = String.join(new String(s.getColumnSeparator()), "100", "200", "300", "400")
+            .concat(new String(s.getRecordSeparator()))
+            .concat(String.join(new String(s.getColumnSeparator()), "300", "400", "500", "600")
+                .concat(new String(s.getRecordSeparator())))
+
+        byte[] csvData = csv.getBytes()
+
+        int headerLength = s.isHeadersPresent() ? headers.length : 0
+        byte[] data = new byte[headerLength + csvData.length * numCopies]
+        if (s.isHeadersPresent()) {
+            System.arraycopy(headers, 0, data, 0, headers.length)
+        }
+
+        for (int i = 0; i < numCopies; i++) {
+            int o = i * csvData.length + headerLength
+            System.arraycopy(csvData, 0, data, o, csvData.length)
+        }
+
+        InputStream inputStream = new ByteArrayInputStream(data)
+
+        bc.upload(inputStream, data.length, true)
+    }
+
+    @Requires({ liveMode() }) // TODO (gapra-msft): Remove this is just to test
+    def "Query async"() {
+        setup:
+        def oldBc = bc
+        System.setProperty("AZURE_LOG_LEVEL", "INFO")
+        System.setProperty("org.slf4j.simpleLogger.defaultLogLevel" , "DEBUG");
+        bc = getServiceClientBuilder(primaryCredential, primaryBlobServiceClient.getAccountUrl())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.HEADERS).addAllowedHeaderName("x-ms-request-id"))
+            .buildClient().getBlobContainerClient(bc.getContainerName())
+            .getBlobClient(bc.getBlobName())
+        BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
+            .setRecordSeparator('\n' as char)
+            .setColumnSeparator(',' as char)
+            .setEscapeChar('\0' as char)
+            .setFieldQuote('\0' as char)
+            .setHeadersPresent(false)
+        uploadCsv(ser, 1)
+        def expression = "SELECT * from BlobStorage"
+
+        ByteArrayOutputStream downloadData = new ByteArrayOutputStream()
+        bc.download(downloadData)
+        byte[] downloadedData = downloadData.toByteArray()
+
+        /* Output Stream. */
+        when:
+        OutputStream os = new ByteArrayOutputStream()
+        bc.query(os, expression)
+        byte[] osData = os.toByteArray()
+
+        then:
+        notThrown(BlobStorageException)
+        osData == downloadedData
+
+        cleanup:
+        bc = oldBc
+        System.clearProperty("AZURE_LOG_LEVEL")
+        System.clearProperty("org.slf4j.simpleLogger.defaultLogLevel")
     }
 
     def "Upload input stream overwrite fails"() {
