@@ -11,6 +11,7 @@ import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.Configuration;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,8 +30,9 @@ public class RecognizeLinkedEntitiesBatchDocumentsAsync {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .credential(new AzureKeyCredential("{key}"))
-            .endpoint("{endpoint}")
+
+            .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_API_KEY")))
+            .endpoint(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_ENDPOINT"))
             .buildAsyncClient();
 
         // The texts that need be analyzed.
@@ -68,8 +70,10 @@ public class RecognizeLinkedEntitiesBatchDocumentsAsync {
                         // Valid document
                         entitiesResult.getEntities().forEach(linkedEntity -> {
                             System.out.println("Linked Entities:");
-                            System.out.printf("\tName: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
-                                linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(), linkedEntity.getDataSource());
+                            System.out.printf("\tName: %s, entity ID in data source: %s, URL: %s, data source: %s,"
+                                    + " Bing Entity Search API ID: %s.%n",
+                                linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
+                                linkedEntity.getDataSource(), linkedEntity.getBingEntitySearchApiId());
                             linkedEntity.getMatches().forEach(entityMatch -> System.out.printf(
                                 "\tMatched entity: %s, confidence score: %f.%n",
                                 entityMatch.getText(), entityMatch.getConfidenceScore()));
