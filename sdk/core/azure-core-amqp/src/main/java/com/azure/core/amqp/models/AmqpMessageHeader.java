@@ -87,7 +87,7 @@ public class AmqpMessageHeader {
      * Gets the priority on {@code amqpMessage}.
      * @return the priority.
      */
-    public Byte getPriority(){
+    public Byte getPriority() {
         return this.priority;
     }
 

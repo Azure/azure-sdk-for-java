@@ -739,7 +739,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusMessage messageToSend = getMessage(messageId, isSessionEnabled);
         final int maxMessages = 1;
 
-        Map<String, Object> sentProperties = messageToSend.getProperties();
+        Map<String, Object> sentProperties = messageToSend.getApplicationProperties();
         sentProperties.put("NullProperty", null);
         sentProperties.put("BooleanProperty", true);
         sentProperties.put("ByteProperty", (byte) 1);

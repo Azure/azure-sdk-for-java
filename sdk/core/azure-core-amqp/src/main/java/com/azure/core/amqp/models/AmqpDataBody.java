@@ -13,6 +13,10 @@ public class AmqpDataBody implements AmqpMessageBody {
     private final Iterable<BinaryData> data;
     private final IterableStream<BinaryData> dataStream;
 
+    /**
+     *
+     * @param data to be set.
+     */
     public AmqpDataBody(Iterable<BinaryData> data) {
         this.data = data;
         this.dataStream = new IterableStream<>(data);
@@ -22,6 +26,11 @@ public class AmqpDataBody implements AmqpMessageBody {
     public AmqpBodyType getBodyType() {
         return bodyType;
     }
+
+    /**
+     *
+     * @return data.
+     */
     public IterableStream<BinaryData> getData() {
         return dataStream;
     }

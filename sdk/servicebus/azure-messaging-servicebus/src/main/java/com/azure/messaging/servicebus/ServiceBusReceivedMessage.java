@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 
 import java.time.Duration;
@@ -17,6 +18,7 @@ import java.util.UUID;
  * This class represents a received message from Service Bus.
  */
 public final class ServiceBusReceivedMessage {
+    private AmqpAnnotatedMessage amqpAnnotatedMessage;
     private UUID lockToken;
     private long sequenceNumber;
     private long enqueuedSequenceNumber;
@@ -45,6 +47,14 @@ public final class ServiceBusReceivedMessage {
     ServiceBusReceivedMessage(byte[] body) {
         this.body = Objects.requireNonNull(body, "'body' cannot be null.");
         this.properties = new HashMap<>();
+    }
+
+    /**
+     *
+     * @return
+     */
+    public AmqpAnnotatedMessage getAmqpAnnotatedMessage() {
+        return amqpAnnotatedMessage;
     }
 
     /**

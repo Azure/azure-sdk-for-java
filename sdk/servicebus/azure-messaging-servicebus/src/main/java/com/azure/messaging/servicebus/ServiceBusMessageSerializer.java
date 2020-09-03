@@ -132,8 +132,8 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         //TODO (conniey): support AMQP sequence and AMQP value.
         amqpMessage.setBody(new Data(new Binary(body)));
 
-        if (brokeredMessage.getProperties() != null) {
-            amqpMessage.setApplicationProperties(new ApplicationProperties(brokeredMessage.getProperties()));
+        if (brokeredMessage.getApplicationProperties() != null) {
+            amqpMessage.setApplicationProperties(new ApplicationProperties(brokeredMessage.getApplicationProperties()));
         }
 
         if (brokeredMessage.getTimeToLive() != null) {
@@ -147,7 +147,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         amqpMessage.setMessageId(brokeredMessage.getMessageId());
         amqpMessage.setContentType(brokeredMessage.getContentType());
         amqpMessage.setCorrelationId(brokeredMessage.getCorrelationId());
-        amqpMessage.setSubject(brokeredMessage.getLabel());
+        amqpMessage.setSubject(brokeredMessage.getSubject());
         amqpMessage.getProperties().setTo(brokeredMessage.getTo());
         amqpMessage.setReplyTo(brokeredMessage.getReplyTo());
         amqpMessage.setReplyToGroupId(brokeredMessage.getReplyToSessionId());

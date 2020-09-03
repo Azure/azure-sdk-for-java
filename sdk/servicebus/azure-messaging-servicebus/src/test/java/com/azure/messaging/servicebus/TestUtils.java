@@ -198,7 +198,7 @@ public class TestUtils {
         return IntStream.range(0, numberOfEvents)
             .mapToObj(number -> {
                 final ServiceBusMessage message = getServiceBusMessage(content, messageId);
-                message.getProperties().put(MESSAGE_POSITION_ID, number);
+                message.getApplicationProperties().put(MESSAGE_POSITION_ID, number);
 
                 return message;
             })
@@ -218,7 +218,7 @@ public class TestUtils {
         return IntStream.range(0, numberOfEvents)
             .mapToObj(number -> {
                 final ServiceBusMessage message = getServiceBusMessage("Event " + number, messageId);
-                message.getProperties().put(MESSAGE_POSITION_ID, number);
+                message.getApplicationProperties().put(MESSAGE_POSITION_ID, number);
 
                 return message;
             })

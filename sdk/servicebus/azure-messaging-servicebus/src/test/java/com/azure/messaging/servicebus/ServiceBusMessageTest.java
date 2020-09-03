@@ -48,7 +48,7 @@ public class ServiceBusMessageTest {
         // Assert
         Assertions.assertNotNull(serviceBusMessageData.getBody());
         Assertions.assertNotNull(serviceBusMessageData.getContext());
-        Assertions.assertNotNull(serviceBusMessageData.getProperties());
+        Assertions.assertNotNull(serviceBusMessageData.getApplicationProperties());
     }
 
     /**

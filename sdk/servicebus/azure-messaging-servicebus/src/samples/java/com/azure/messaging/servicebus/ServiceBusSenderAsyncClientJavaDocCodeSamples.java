@@ -94,9 +94,9 @@ public class ServiceBusSenderAsyncClientJavaDocCodeSamples {
             .buildAsyncClient();
 
         final ServiceBusMessage firstMessage = new ServiceBusMessage("92".getBytes(UTF_8));
-        firstMessage.getProperties().put("telemetry", "latency");
+        firstMessage.getApplicationProperties().put("telemetry", "latency");
         final ServiceBusMessage secondMessage = new ServiceBusMessage("98".getBytes(UTF_8));
-        secondMessage.getProperties().put("telemetry", "cpu-temperature");
+        secondMessage.getApplicationProperties().put("telemetry", "cpu-temperature");
 
         // BEGIN: com.azure.messaging.servicebus.servicebusasyncsenderclient.createBatch#CreateBatchOptionsLimitedSize
         final Flux<ServiceBusMessage> telemetryMessages = Flux.just(firstMessage, secondMessage);
