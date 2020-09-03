@@ -23,18 +23,16 @@ public class RegionTests {
 
     @Test
     public void testCreate() {
-        Region region = Region.US_WEST;
-
         // reuse region if exist
         Region sameRegion = Region.create("WESTUS", "WEST US");
-        Assertions.assertTrue(region.equals(sameRegion));
-        Assertions.assertTrue(region == sameRegion);
+        Assertions.assertEquals(Region.US_WEST, sameRegion);
+        Assertions.assertTrue(Region.US_WEST == sameRegion);
 
         int size = Region.values().size();
 
         // create region with new name
         Region newRegion = Region.create("centraluseuap2", "Central US 2 EUAP");
-        Assertions.assertEquals(size + 1, Region.values().size());
+        Assertions.assertTrue(Region.values().size() >= size + 1);  // 'testFromLabel' might create region in parallel, hence use >= instead of ==
         Region newRegionSame = Region.fromName("centraluseuap2");
         Assertions.assertTrue(newRegion.equals(newRegionSame));
         Assertions.assertEquals("Central US 2 EUAP", newRegionSame.label());
@@ -44,7 +42,15 @@ public class RegionTests {
     public void testFromLabel() {
         // reuse region if exist
         Region region = Region.fromName("westus");
-        Assertions.assertTrue(region.equals(Region.US_WEST));
+        Assertions.assertEquals(Region.US_WEST, region);
+
+        // space is ignored
+        Region sameRegion = Region.fromName("west us");
+        Assertions.assertEquals(Region.US_WEST, sameRegion);
+
+        // case is ignored
+        sameRegion = Region.fromName("WEST US");
+        Assertions.assertEquals(Region.US_WEST, sameRegion);
 
         // create region if not exist
         Region newRegion = Region.fromName("newregion");
