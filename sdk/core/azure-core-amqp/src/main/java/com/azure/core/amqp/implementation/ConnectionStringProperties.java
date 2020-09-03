@@ -3,6 +3,9 @@
 
 package com.azure.core.amqp.implementation;
 
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Locale;
@@ -12,7 +15,12 @@ import java.util.Objects;
  * The set of properties that comprise a connection string from the Azure portal.
  */
 public class ConnectionStringProperties {
+    private final ClientLogger logger = new ClientLogger(ConnectionStringProperties.class);
+
     private static final String TOKEN_VALUE_SEPARATOR = "=";
+    private static final String ENDPOINT_SCHEME_SB_PREFIX = "sb://";
+    private static final String ENDPOINT_SCHEME_HTTP_PREFIX = "http://";
+    private static final String ENDPOINT_SCHEME_HTTPS_PREFIX = "https://";
     private static final String TOKEN_VALUE_PAIR_DELIMITER = ";";
     private static final String ENDPOINT = "Endpoint";
     private static final String SHARED_ACCESS_KEY_NAME = "SharedAccessKeyName";
@@ -20,7 +28,9 @@ public class ConnectionStringProperties {
     private static final String ENTITY_PATH = "EntityPath";
     private static final String ERROR_MESSAGE_FORMAT = "Could not parse 'connectionString'. Expected format: "
         + "'Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
-        + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}'. Actual: %s";
+        + "SharedAccessKey={sharedAccessKey};EntityPath={entityPath}'. Actual: %s";
+    private static final String ERROR_MESSAGE_ENDPOINT_FORMAT = "'Endpoint' must be provided in 'connectionString'."
+        + " Actual: %s";
 
     private final URI endpoint;
     private final String entityPath;
@@ -60,8 +70,9 @@ public class ConnectionStringProperties {
             final String value = pair[1].trim();
 
             if (key.equalsIgnoreCase(ENDPOINT)) {
+                final String endpointUri = validateAndUpdateDefaultScheme(value, connectionString);
                 try {
-                    endpoint = new URI(value);
+                    endpoint = new URI(endpointUri);
                 } catch (URISyntaxException e) {
                     throw new IllegalArgumentException(
                         String.format(Locale.US, "Invalid endpoint: %s", tokenValuePair), e);
@@ -122,5 +133,26 @@ public class ConnectionStringProperties {
      */
     public String getSharedAccessKey() {
         return sharedAccessKey;
+    }
+
+    /*
+     * The function checks for pre existing scheme of "sb://" , "http://" or "https://". If the scheme is not provided
+     * in endpoint, it will set the default scheme to "sb://".
+     */
+    private String validateAndUpdateDefaultScheme(final String endpoint, final String connectionString) {
+        String updatedEndpoint = endpoint.trim();
+
+        if (CoreUtils.isNullOrEmpty(endpoint)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
+                ERROR_MESSAGE_ENDPOINT_FORMAT, connectionString)));
+
+        }
+        final String endpointLowerCase = endpoint.toLowerCase(Locale.getDefault());
+        if (!endpointLowerCase.startsWith(ENDPOINT_SCHEME_SB_PREFIX)
+            && !endpointLowerCase.startsWith(ENDPOINT_SCHEME_HTTP_PREFIX)
+            && !endpointLowerCase.startsWith(ENDPOINT_SCHEME_HTTPS_PREFIX)) {
+            updatedEndpoint = ENDPOINT_SCHEME_SB_PREFIX + endpoint;
+        }
+        return updatedEndpoint;
     }
 }

@@ -6,8 +6,6 @@ package com.azure.cosmos.encryption;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.encryption.AeadAes256CbcHmac256AlgorithmProvider;
 
-import java.lang.reflect.InvocationTargetException;
-
 /**
  * Abstraction for a data encryption key for use in client-side encryption. See https://aka.ms/CosmosClientEncryption
  * for more information on client-side encryption support in Azure Cosmos DB.

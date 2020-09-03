@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -144,11 +144,11 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can send message to final destination using via-queue.
      */
     @Test
-    void viaMessageSendTest() {
+    void viaQueueMessageSendTest() {
         // Arrange
         final Duration shortTimeout = Duration.ofSeconds(15);
-        final int viaIntermediateEntity = TestUtils.USE_CASE_SEND_VIA_1;
-        final int destinationEntity = TestUtils.USE_CASE_SEND_VIA_2;
+        final int viaIntermediateEntity = TestUtils.USE_CASE_SEND_VIA_QUEUE_1;
+        final int destinationEntity = TestUtils.USE_CASE_SEND_VIA_QUEUE_2;
         final boolean shareConnection = true;
         final MessagingEntityType entityType = MessagingEntityType.QUEUE;
         final boolean isSessionEnabled =  false;
@@ -157,6 +157,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         final int totalToDestination = 2;
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(total, messageId, CONTENTS_BYTES);
         final String viaQueueName = getQueueName(viaIntermediateEntity);
+
 
         setSenderAndReceiver(entityType, viaIntermediateEntity, false, false, shareConnection);
         final ServiceBusReceiverAsyncClient intermediateReceiver =  receiver;
@@ -205,7 +206,82 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
             })
             .verifyComplete();
 
-        // Verify, intermediate-via queue has is delivered to intermediate Entity.
+        // Verify, intermediate-via queue has it delivered to intermediate Entity.
+        StepVerifier.create(intermediateReceiver.receiveMessages().take(total).timeout(shortTimeout))
+            .assertNext(receivedMessage -> {
+                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+                messagesPending.decrementAndGet();
+            })
+            .verifyComplete();
+    }
+
+    /**
+     * Verifies that we can send message to final destination using via-topic.
+     */
+    @Test
+    void viaTopicMessageSendTest() {
+        // Arrange
+        final Duration shortTimeout = Duration.ofSeconds(15);
+        final int viaIntermediateEntity = TestUtils.USE_CASE_SEND_VIA_TOPIC_1;
+        final int destinationEntity = TestUtils.USE_CASE_SEND_VIA_TOPIC_2;
+        final boolean shareConnection = true;
+        final MessagingEntityType entityType = MessagingEntityType.SUBSCRIPTION;
+        final boolean isSessionEnabled =  false;
+        final String messageId = UUID.randomUUID().toString();
+        final int total = 1;
+        final int totalToDestination = 2;
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(total, messageId, CONTENTS_BYTES);
+        final String viaTopicName = getTopicName(viaIntermediateEntity);
+
+
+        setSenderAndReceiver(entityType, viaIntermediateEntity, false, false, shareConnection);
+        final ServiceBusReceiverAsyncClient intermediateReceiver =  receiver;
+        final ServiceBusSenderAsyncClient intermediateSender = sender;
+
+        final ServiceBusSenderAsyncClient destination1ViaSender = getSenderBuilder(false, entityType,
+            destinationEntity, false, shareConnection)
+            .viaTopicName(viaTopicName)
+            .buildAsyncClient();
+
+        final ServiceBusReceiverAsyncClient destination1Receiver = getReceiverBuilder(false, entityType, destinationEntity, Function.identity(), shareConnection)
+            .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+            .buildAsyncClient();
+
+        final AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
+
+        // Act
+        StepVerifier.create(destination1ViaSender.createTransaction())
+            .assertNext(transactionContext -> {
+                transaction.set(transactionContext);
+                assertNotNull(transaction);
+            })
+            .verifyComplete();
+        assertNotNull(transaction.get());
+
+        StepVerifier.create(intermediateSender.sendMessages(messages, transaction.get()))
+            .verifyComplete();
+        StepVerifier.create(destination1ViaSender.sendMessages(messages, transaction.get()))
+            .verifyComplete();
+        StepVerifier.create(destination1ViaSender.sendMessages(messages, transaction.get()))
+            .verifyComplete();
+
+        StepVerifier.create(destination1ViaSender.commitTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
+            .verifyComplete();
+
+        // Assert
+        // Verify message is received by final destination Entity
+        StepVerifier.create(destination1Receiver.receiveMessages().take(totalToDestination).timeout(shortTimeout))
+            .assertNext(receivedMessage -> {
+                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+                messagesPending.decrementAndGet();
+            })
+            .assertNext(receivedMessage -> {
+                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+                messagesPending.decrementAndGet();
+            })
+            .verifyComplete();
+
+        // Verify, intermediate-via topic has it delivered to intermediate Entity.
         StepVerifier.create(intermediateReceiver.receiveMessages().take(total).timeout(shortTimeout))
             .assertNext(receivedMessage -> {
                 assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
@@ -318,7 +394,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
                 assertNotNull(transaction);
             })
             .verifyComplete();
-        StepVerifier.create(sender.scheduleMessage(message, Instant.now().plusSeconds(5), transaction.get()))
+        StepVerifier.create(sender.scheduleMessage(message, OffsetDateTime.now().plusSeconds(5), transaction.get()))
             .assertNext(sequenceNumber -> {
                 assertNotNull(sequenceNumber);
                 assertTrue(sequenceNumber.intValue() > 0);

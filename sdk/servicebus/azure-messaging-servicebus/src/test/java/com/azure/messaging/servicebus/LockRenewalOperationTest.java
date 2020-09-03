@@ -16,7 +16,7 @@ import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.concurrent.TimeUnit;
@@ -42,7 +42,7 @@ class LockRenewalOperationTest {
     private LockRenewalOperation operation;
 
     @Mock
-    private Function<String, Mono<Instant>> renewalOperation;
+    private Function<String, Mono<OffsetDateTime>> renewalOperation;
 
     @BeforeEach
     void beforeEach() {
@@ -61,10 +61,10 @@ class LockRenewalOperationTest {
     void constructor(boolean isSession) {
         // Arrange
         final Duration renewalPeriod = Duration.ofSeconds(4);
-        final Instant lockedUntil = Instant.now().plus(renewalPeriod);
+        final OffsetDateTime lockedUntil = OffsetDateTime.now().plus(renewalPeriod);
         final Duration maxDuration = Duration.ofSeconds(20);
         when(renewalOperation.apply(A_LOCK_TOKEN))
-            .thenReturn(Mono.fromCallable(() -> Instant.now().plus(renewalPeriod)));
+            .thenReturn(Mono.fromCallable(() -> OffsetDateTime.now().plus(renewalPeriod)));
 
         // Act
         operation = new LockRenewalOperation(A_LOCK_TOKEN, maxDuration, isSession, renewalOperation, lockedUntil);
@@ -91,26 +91,26 @@ class LockRenewalOperationTest {
         // Arrange
         final boolean isSession = true;
         final Duration renewalPeriod = Duration.ofSeconds(2);
-        final Instant lockedUntil = Instant.now().plus(renewalPeriod);
+        final OffsetDateTime lockedUntil = OffsetDateTime.now().plus(renewalPeriod);
         final Duration maxDuration = Duration.ofSeconds(6);
         final Duration totalSleepPeriod = renewalPeriod.plus(renewalPeriod).plusMillis(500);
         final Throwable testError = new IllegalAccessException("A test error");
-        final AtomicReference<Instant> lastLockedUntil = new AtomicReference<>();
+        final AtomicReference<OffsetDateTime> lastLockedUntil = new AtomicReference<>();
 
-        final Deque<Mono<Instant>> responses = new ArrayDeque<>();
+        final Deque<Mono<OffsetDateTime>> responses = new ArrayDeque<>();
         responses.add(Mono.fromCallable(() -> {
-            final Instant plus = Instant.now().plus(renewalPeriod);
+            final OffsetDateTime plus = OffsetDateTime.now().plus(renewalPeriod);
             lastLockedUntil.set(plus);
             return plus;
         }));
         responses.add(Mono.error(testError));
         responses.add(Mono.fromCallable(() -> {
             fail("Should not have been called.");
-            return Instant.now();
+            return OffsetDateTime.now();
         }));
 
         when(renewalOperation.apply(A_LOCK_TOKEN)).thenAnswer(invocation -> {
-            final Mono<Instant> instantMono = responses.pollFirst();
+            final Mono<OffsetDateTime> instantMono = responses.pollFirst();
             return instantMono != null
                 ? instantMono
                 : Mono.error(new IllegalStateException("Should have fetched an item."));
@@ -138,11 +138,11 @@ class LockRenewalOperationTest {
 
         // At most 4 times because we renew the lock before it expires (by some seconds).
         final int atMost = 4;
-        final Instant lockedUntil = Instant.now().plus(renewalPeriod);
+        final OffsetDateTime lockedUntil = OffsetDateTime.now().plus(renewalPeriod);
         final Duration totalSleepPeriod = maxDuration.plusMillis(500);
 
         when(renewalOperation.apply(A_LOCK_TOKEN))
-            .thenReturn(Mono.fromCallable(() -> Instant.now().plus(renewalPeriod)));
+            .thenReturn(Mono.fromCallable(() -> OffsetDateTime.now().plus(renewalPeriod)));
 
         operation = new LockRenewalOperation(A_LOCK_TOKEN, maxDuration, false, renewalOperation, lockedUntil);
 
@@ -172,11 +172,11 @@ class LockRenewalOperationTest {
 
         // At most 3 times because we renew the lock before it expires (by some seconds).
         final int atMost = 2;
-        final Instant lockedUntil = Instant.now().plus(renewalPeriod);
+        final OffsetDateTime lockedUntil = OffsetDateTime.now().plus(renewalPeriod);
         final Duration totalSleepPeriod = renewalPeriod.plusMillis(1000);
 
         when(renewalOperation.apply(A_LOCK_TOKEN))
-            .thenReturn(Mono.fromCallable(() -> Instant.now().plus(renewalPeriod)));
+            .thenReturn(Mono.fromCallable(() -> OffsetDateTime.now().plus(renewalPeriod)));
 
         operation = new LockRenewalOperation(A_LOCK_TOKEN, maxDuration, false, renewalOperation, lockedUntil);
 
@@ -205,10 +205,10 @@ class LockRenewalOperationTest {
         // Arrange
         final Duration maxDuration = Duration.ZERO;
         final Duration renewalPeriod = Duration.ofSeconds(3);
-        final Instant lockedUntil = Instant.now().plus(renewalPeriod);
+        final OffsetDateTime lockedUntil = OffsetDateTime.now().plus(renewalPeriod);
 
         when(renewalOperation.apply(A_LOCK_TOKEN))
-            .thenReturn(Mono.fromCallable(() -> Instant.now().plus(renewalPeriod)));
+            .thenReturn(Mono.fromCallable(() -> OffsetDateTime.now().plus(renewalPeriod)));
 
         operation = new LockRenewalOperation(A_LOCK_TOKEN, maxDuration, false, renewalOperation, lockedUntil);
 
@@ -235,11 +235,11 @@ class LockRenewalOperationTest {
 
         // At most 4 times because we renew the lock before it expires (by some seconds).
         final int atLeast = 4;
-        final Instant lockedUntil = Instant.now();
+        final OffsetDateTime lockedUntil = OffsetDateTime.now();
         final Duration totalSleepPeriod = maxDuration.plusMillis(500);
 
         when(renewalOperation.apply(A_LOCK_TOKEN))
-            .thenReturn(Mono.fromCallable(() -> Instant.now().plus(renewalPeriod)));
+            .thenReturn(Mono.fromCallable(() -> OffsetDateTime.now().plus(renewalPeriod)));
 
         operation = new LockRenewalOperation(A_LOCK_TOKEN, maxDuration, false, renewalOperation);
 

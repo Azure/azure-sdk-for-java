@@ -30,10 +30,11 @@ import java.util.List;
 
 public class SpringAppDeploymentImpl
     extends ExternalChildResourceImpl<SpringAppDeployment, DeploymentResourceInner, SpringAppImpl, SpringApp>
-    implements SpringAppDeployment, SpringAppDeployment.Definition, SpringAppDeployment.Update {
+    implements SpringAppDeployment,
+        SpringAppDeployment.Definition<SpringAppImpl, SpringAppDeploymentImpl>,
+        SpringAppDeployment.Update {
 
-    SpringAppDeploymentImpl(String name, SpringAppImpl parent,
-                            DeploymentResourceInner innerObject) {
+    SpringAppDeploymentImpl(String name, SpringAppImpl parent, DeploymentResourceInner innerObject) {
         super(name, parent, innerObject);
     }
 
@@ -190,7 +191,7 @@ public class SpringAppDeploymentImpl
             ShareFileAsyncClient shareFileAsyncClient = createShareFileAsyncClient(option);
             return shareFileAsyncClient.create(source.length())
                 .flatMap(fileInfo -> shareFileAsyncClient.uploadFromFile(source.getAbsolutePath()))
-                    .then(Mono.empty());
+                .then(Mono.empty());
         } catch (Exception e) {
             return Mono.error(e);
         }
@@ -388,5 +389,10 @@ public class SpringAppDeploymentImpl
 
     private AppPlatformManager manager() {
         return parent().manager();
+    }
+
+    @Override
+    public SpringAppImpl attach() {
+        return parent().addActiveDeployment(this);
     }
 }

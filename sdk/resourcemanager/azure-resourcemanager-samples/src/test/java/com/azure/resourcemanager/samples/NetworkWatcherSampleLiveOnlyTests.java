@@ -2,18 +2,20 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.samples;
 
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.network.samples.ManageNetworkWatcher;
-import com.azure.resourcemanager.resources.core.TestBase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class NetworkWatcherSampleLiveOnlyTests extends SamplesTestBase {
-    public NetworkWatcherSampleLiveOnlyTests() {
-        super(TestBase.RunCondition.LIVE_ONLY);
-    }
 
     @Test
+    @DoNotRecord
     public void testManageNetworkWatcher() {
+        if (skipInPlayback()) {
+            return;
+        }
+
         Assertions.assertTrue(ManageNetworkWatcher.runSample(azure));
     }
 }
