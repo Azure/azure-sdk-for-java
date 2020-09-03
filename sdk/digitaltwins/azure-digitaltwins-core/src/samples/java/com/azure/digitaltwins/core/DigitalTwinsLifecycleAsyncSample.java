@@ -289,6 +289,11 @@ public class DigitalTwinsLifecycleAsyncSample {
         createTwinsLatch.await(MaxWaitTimeAsyncOperationsInSeconds, TimeUnit.SECONDS);
     }
 
+    /**
+     * Creates all the relationships defined in the DTDL->Relationships directory
+     * @throws IOException If an I/O error is thrown when accessing the starting file.
+     * @throws InterruptedException If the current thread is interrupted while waiting to acquire latch.
+     */
     public static void connectTwinsTogether() throws IOException, InterruptedException {
         System.out.println("CONNECT DIGITAL TWINS");
         Map<String, String> allRelationships = FileHelper.loadAllFilesInPath(RelationshipsPath);
