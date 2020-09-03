@@ -76,7 +76,7 @@ public interface SerializerAdapter {
     <T> T deserialize(String value, Type type, SerializerEncoding encoding) throws IOException;
 
     /**
-     * Deserializes a byte[] into a {@code U} object.
+     * Deserializes a byte[] into a {@code T} object.
      *
      * @param inputStream The {@link InputStream} containing the serialized object data to deserialize.
      * @param type The type to deserialize.
