@@ -17,13 +17,12 @@ public final class KeyVaultPermission {
     /**
      * Creates a new {@link KeyVaultPermission} with the specified allowed and denied actions and data actions.
      *
-     * @param actions           The actions this {@link KeyVaultPermission permission} allows.
-     * @param deniedActions     The actions this {@link KeyVaultPermission permission} denies.
-     * @param dataActions       The data actions this {@link KeyVaultPermission permission} allows.
+     * @param actions The actions this {@link KeyVaultPermission permission} allows.
+     * @param deniedActions The actions this {@link KeyVaultPermission permission} denies.
+     * @param dataActions The data actions this {@link KeyVaultPermission permission} allows.
      * @param deniedDataActions The data actions this {@link KeyVaultPermission permission} denies.
      */
-    public KeyVaultPermission(List<String> actions, List<String> deniedActions, List<String> dataActions,
-                              List<String> deniedDataActions) {
+    public KeyVaultPermission(List<String> actions, List<String> deniedActions, List<String> dataActions, List<String> deniedDataActions) {
         this.actions = actions;
         this.deniedActions = deniedActions;
         this.dataActions = dataActions;

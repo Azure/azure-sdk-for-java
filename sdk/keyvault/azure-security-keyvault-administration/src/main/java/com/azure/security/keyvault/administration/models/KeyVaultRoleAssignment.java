@@ -16,16 +16,15 @@ public final class KeyVaultRoleAssignment {
     /**
      * Creates a new {@link KeyVaultRoleAssignment role assignment} with the specified details.
      *
-     * @param id         The ID for this {@link KeyVaultRoleAssignment role assignment}.
-     * @param name       The name of this {@link KeyVaultRoleAssignment role assignment}.
-     * @param type       The type of this {@link KeyVaultRoleAssignment role assignment}.
+     * @param id The ID for this {@link KeyVaultRoleAssignment role assignment}.
+     * @param name The name of this {@link KeyVaultRoleAssignment role assignment}.
+     * @param type The type of this {@link KeyVaultRoleAssignment role assignment}.
      * @param properties {@link KeyVaultRoleAssignmentProperties properties} of this {@link KeyVaultRoleAssignment
-     *                   role assignment}.
-     * @param roleScope  The {@link KeyVaultRoleAssignmentScope scope} of this {@link KeyVaultRoleAssignment role
+     * role assignment}.
+     * @param roleScope The {@link KeyVaultRoleAssignmentScope scope} of this {@link KeyVaultRoleAssignment role
      * assignment}.
      */
-    public KeyVaultRoleAssignment(String id, String name, String type, KeyVaultRoleAssignmentProperties properties,
-                                  KeyVaultRoleAssignmentScope roleScope) {
+    public KeyVaultRoleAssignment(String id, String name, String type, KeyVaultRoleAssignmentProperties properties, KeyVaultRoleAssignmentScope roleScope) {
         this.id = id;
         this.name = name;
         this.type = type;

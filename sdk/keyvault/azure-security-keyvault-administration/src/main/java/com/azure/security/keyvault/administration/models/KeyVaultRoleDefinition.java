@@ -18,11 +18,11 @@ public final class KeyVaultRoleDefinition {
     /**
      * Creates a new {@link KeyVaultRoleDefinition role definition} with the specified details.
      *
-     * @param id         The ID for this {@link KeyVaultRoleDefinition role definition}.
-     * @param name       The name for this {@link KeyVaultRoleDefinition role definition}.
-     * @param type       The type for this {@link KeyVaultRoleDefinition role definition}.
+     * @param id The ID for this {@link KeyVaultRoleDefinition role definition}.
+     * @param name The name for this {@link KeyVaultRoleDefinition role definition}.
+     * @param type The type for this {@link KeyVaultRoleDefinition role definition}.
      * @param properties {@link KeyVaultRoleDefinitionProperties properties} of this {@link KeyVaultRoleDefinition
-     *                   role assignment}.
+     * role assignment}.
      */
     public KeyVaultRoleDefinition(String id, String name, String type, KeyVaultRoleDefinitionProperties properties) {
         this.id = id;

@@ -19,16 +19,14 @@ public final class KeyVaultRoleDefinitionProperties {
      * Creates a new {@link KeyVaultRoleDefinitionProperties role definition properties} object with the specified
      * details.
      *
-     * @param roleName         The name of the role.
-     * @param roleDescription  The description of the role.
-     * @param roleType         The type of the role.
-     * @param permissions      The {@link KeyVaultPermission permissions} the {@link KeyVaultRoleDefinition role
-     *                         definition} has.
+     * @param roleName The name of the role.
+     * @param roleDescription The description of the role.
+     * @param roleType The type of the role.
+     * @param permissions The {@link KeyVaultPermission permissions} the {@link KeyVaultRoleDefinition role
+     * definition} has.
      * @param assignableScopes The assignable scopes of the {@link KeyVaultRoleDefinition role definition}.
      */
-    public KeyVaultRoleDefinitionProperties(String roleName, String roleDescription, String roleType,
-                                            List<KeyVaultPermission> permissions,
-                                            List<String> assignableScopes) {
+    public KeyVaultRoleDefinitionProperties(String roleName, String roleDescription, String roleType, List<KeyVaultPermission> permissions, List<String> assignableScopes) {
         this.roleName = roleName;
         this.description = roleDescription;
         this.roleType = roleType;

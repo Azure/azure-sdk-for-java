@@ -85,11 +85,11 @@ public final class KeyVaultAccessControlAsyncClient {
     }
 
     /**
-     * Get all {@link KeyVaultRoleDefinition role definitions} that are applicable at the given
+     * Lists all {@link KeyVaultRoleDefinition role definitions} that are applicable at the given
      * {@link KeyVaultRoleAssignmentScope roleScope} and above.
      *
      * @param roleScope The {@link KeyVaultRoleAssignmentScope roleScope} of the {@link KeyVaultRoleDefinition role
-     *                  definitions}.
+     * definitions}.
      * @return A {@link PagedFlux} containing the {@link KeyVaultRoleDefinition role definitions} for the given
      * {@link KeyVaultRoleAssignmentScope roleScope}.
      * @throws NullPointerException if the {@link KeyVaultRoleAssignmentScope roleScope} is {@code null}.
@@ -102,12 +102,12 @@ public final class KeyVaultAccessControlAsyncClient {
     }
 
     /**
-     * Get all {@link KeyVaultRoleDefinition role definitions} that are applicable at the given
+     * Lists all {@link KeyVaultRoleDefinition role definitions} that are applicable at the given
      * {@link KeyVaultRoleAssignmentScope roleScope} and above.
      *
      * @param roleScope The {@link KeyVaultRoleAssignmentScope roleScope} of the {@link KeyVaultRoleDefinition role
-     *                  definitions}.
-     * @param context   Additional {@link Context} that is passed through the HTTP pipeline during the service call.
+     * definitions}.
+     * @param context Additional {@link Context} that is passed through the HTTP pipeline during the service call.
      * @return A {@link PagedFlux} containing the {@link KeyVaultRoleDefinition role definitions} for the given
      * {@link KeyVaultRoleAssignmentScope roleScope}.
      * @throws NullPointerException if the {@link KeyVaultRoleAssignmentScope roleScope} is {@code null}.
@@ -119,19 +119,17 @@ public final class KeyVaultAccessControlAsyncClient {
     }
 
     /**
-     * Get all {@link KeyVaultRoleDefinition role definitions} in the first page that are applicable at the given
+     * Lists all {@link KeyVaultRoleDefinition role definitions} in the first page that are applicable at the given
      * {@link KeyVaultRoleAssignmentScope roleScope} and above.
      *
-     * @param vaultUrl  The URL for the Key Vault this client is associated with.
+     * @param vaultUrl The URL for the Key Vault this client is associated with.
      * @param roleScope The {@link KeyVaultRoleAssignmentScope roleScope} of the {@link KeyVaultRoleDefinition}.
-     * @param context   Additional context that is passed through the HTTP pipeline during the service call.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return A {@link Mono} containing a {@link PagedResponse} of {@link KeyVaultRoleDefinition role definitions}
      * for the given {@link KeyVaultRoleAssignmentScope roleScope} from the first page of results.
      * @throws NullPointerException if the {@link KeyVaultRoleAssignmentScope roleScope} is {@code null}.
      */
-    Mono<PagedResponse<KeyVaultRoleDefinition>> listRoleDefinitionsFirstPage(String vaultUrl,
-                                                                             KeyVaultRoleAssignmentScope roleScope,
-                                                                             Context context) {
+    Mono<PagedResponse<KeyVaultRoleDefinition>> listRoleDefinitionsFirstPage(String vaultUrl, KeyVaultRoleAssignmentScope roleScope, Context context) {
         Objects.requireNonNull(roleScope,
             String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
                 "'roleScope'"));
@@ -151,13 +149,13 @@ public final class KeyVaultAccessControlAsyncClient {
     }
 
     /**
-     * Gets all the {@link KeyVaultRoleDefinition role definitions} given by the {@code nextPageLink} that was retrieved
+     * Lists all {@link KeyVaultRoleDefinition role definitions} given by the {@code nextPageLink} that was retrieved
      * from a call to
      * {@link KeyVaultAccessControlAsyncClient#listRoleDefinitionsFirstPage(String, KeyVaultRoleAssignmentScope, Context)}.
      *
      * @param continuationToken The {@link PagedResponse#getContinuationToken() continuationToken} from a previous,
-     *                          successful call to one of the {@code listKeyVaultRoleDefinitions} operations.
-     * @param context           Additional context that is passed through the HTTP pipeline during the service call.
+     * successful call to one of the {@code listKeyVaultRoleDefinitions} operations.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return A {@link Mono} containing a {@link PagedResponse} of {@link KeyVaultRoleDefinition role definitions}
      * for the given {@link KeyVaultRoleAssignmentScope roleScope} from the next page of results.
      */
@@ -177,7 +175,7 @@ public final class KeyVaultAccessControlAsyncClient {
     }
 
     /**
-     * Get all {@link KeyVaultRoleAssignment role assignments} that are applicable at the given
+     * Lists all {@link KeyVaultRoleAssignment role assignments} that are applicable at the given
      * {@link KeyVaultRoleAssignmentScope roleScope} and above.
      *
      * @param roleScope The {@link KeyVaultRoleAssignmentScope roleScope} of the {@link KeyVaultRoleAssignment}.
@@ -193,11 +191,11 @@ public final class KeyVaultAccessControlAsyncClient {
     }
 
     /**
-     * Get all {@link KeyVaultRoleAssignment role assignments} that are applicable at the given
+     * Lists all {@link KeyVaultRoleAssignment role assignments} that are applicable at the given
      * {@link KeyVaultRoleAssignmentScope roleScope} and above.
      *
      * @param roleScope The {@link KeyVaultRoleAssignmentScope roleScope} of the {@link KeyVaultRoleAssignment}.
-     * @param context   Additional context that is passed through the HTTP pipeline during the service call.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return A {@link PagedFlux} containing the {@link KeyVaultRoleAssignment role assignments} for the given
      * {@link KeyVaultRoleAssignmentScope roleScope}.
      * @throws NullPointerException if the {@link KeyVaultRoleAssignmentScope roleScope} is {@code null}.
@@ -209,19 +207,17 @@ public final class KeyVaultAccessControlAsyncClient {
     }
 
     /**
-     * Get all {@link KeyVaultRoleAssignment role assignments} in the first page that are applicable at
+     * Lists all {@link KeyVaultRoleAssignment role assignments} in the first page that are applicable at
      * the given {@link KeyVaultRoleAssignmentScope roleScope} and above.
      *
-     * @param vaultUrl  The URL for the Key Vault this client is associated with.
+     * @param vaultUrl The URL for the Key Vault this client is associated with.
      * @param roleScope The {@link KeyVaultRoleAssignmentScope roleScope} of the {@link KeyVaultRoleAssignment}.
-     * @param context   Additional context that is passed through the HTTP pipeline during the service call.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return A {@link Mono} containing a {@link PagedResponse} of {@link KeyVaultRoleAssignment role assignments}
      * in the given {@link KeyVaultRoleAssignmentScope roleScope} from the first page of results.
      * @throws NullPointerException if the {@link KeyVaultRoleAssignmentScope roleScope} is {@code null}.
      */
-    Mono<PagedResponse<KeyVaultRoleAssignment>> listRoleAssignmentsFirstPage(String vaultUrl,
-                                                                             KeyVaultRoleAssignmentScope roleScope,
-                                                                             Context context) {
+    Mono<PagedResponse<KeyVaultRoleAssignment>> listRoleAssignmentsFirstPage(String vaultUrl, KeyVaultRoleAssignmentScope roleScope, Context context) {
         Objects.requireNonNull(roleScope,
             String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
                 "'roleScope'"));
@@ -241,13 +237,13 @@ public final class KeyVaultAccessControlAsyncClient {
     }
 
     /**
-     * Gets all the {@link KeyVaultRoleAssignment role assignments} given by the {@code nextPageLink} that was
+     * Lists all {@link KeyVaultRoleAssignment role assignments} given by the {@code nextPageLink} that was
      * retrieved from a call to
      * {@link KeyVaultAccessControlAsyncClient#listRoleAssignments(KeyVaultRoleAssignmentScope)}.
      *
      * @param continuationToken The {@link PagedResponse#getContinuationToken() continuationToken} from a previous,
-     *                          successful call to one of the {@code listKeyVaultRoleAssignments} operations.
-     * @param context           Additional context that is passed through the HTTP pipeline during the service call.
+     * successful call to one of the {@code listKeyVaultRoleAssignments} operations.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return A {@link Mono} containing a {@link PagedResponse} of {@link KeyVaultRoleAssignment role assignments}
      * for the given {@link KeyVaultRoleAssignmentScope roleScope} from the first page of results.
      */
@@ -269,89 +265,81 @@ public final class KeyVaultAccessControlAsyncClient {
     /**
      * Creates a {@link KeyVaultRoleAssignment} with a randomly generated {@link UUID name}.
      *
-     * @param roleScope  The {@link KeyVaultRoleAssignmentScope roleScope} of the {@link KeyVaultRoleAssignment} to
-     *                   create.
+     * @param roleScope The {@link KeyVaultRoleAssignmentScope roleScope} of the {@link KeyVaultRoleAssignment} to
+     * create.
      * @param properties Properties for the {@link KeyVaultRoleAssignment}.
      * @return A {@link Mono} containing the created {@link KeyVaultRoleAssignment}.
      * @throws NullPointerException if the {@link KeyVaultRoleAssignmentScope roleScope} or
-     *                              {@link KeyVaultRoleAssignmentProperties properties} are {@code null}.
+     * {@link KeyVaultRoleAssignmentProperties properties} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KeyVaultRoleAssignment> createRoleAssignment(KeyVaultRoleAssignmentScope roleScope,
-                                                             KeyVaultRoleAssignmentProperties properties) {
+    public Mono<KeyVaultRoleAssignment> createRoleAssignment(KeyVaultRoleAssignmentScope roleScope, KeyVaultRoleAssignmentProperties properties) {
         return createRoleAssignment(roleScope, UUID.randomUUID(), properties);
     }
 
     /**
      * Creates a {@link KeyVaultRoleAssignment}.
      *
-     * @param roleScope  The {@link KeyVaultRoleAssignmentScope roleScope} of the {@link KeyVaultRoleAssignment} to
-     *                   create.
-     * @param name       The name used to create the {@link KeyVaultRoleAssignment}. It can be any valid UUID.
+     * @param roleScope The {@link KeyVaultRoleAssignmentScope roleScope} of the {@link KeyVaultRoleAssignment} to
+     * create.
+     * @param name The name used to create the {@link KeyVaultRoleAssignment}. It can be any valid UUID.
      * @param properties Properties for the {@link KeyVaultRoleAssignment}.
      * @return A {@link Mono} containing the created {@link KeyVaultRoleAssignment}.
      * @throws NullPointerException if the {@link KeyVaultRoleAssignmentScope roleScope}, {@link UUID name} or
-     *                              {@link KeyVaultRoleAssignmentProperties properties} are {@code null}.
+     * {@link KeyVaultRoleAssignmentProperties properties} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KeyVaultRoleAssignment> createRoleAssignment(KeyVaultRoleAssignmentScope roleScope, UUID name,
-                                                             KeyVaultRoleAssignmentProperties properties) {
+    public Mono<KeyVaultRoleAssignment> createRoleAssignment(KeyVaultRoleAssignmentScope roleScope, UUID name, KeyVaultRoleAssignmentProperties properties) {
         return createRoleAssignmentWithResponse(roleScope, name, properties).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Creates a {@link KeyVaultRoleAssignment} with a randomly generated {@link UUID name}.
      *
-     * @param roleScope  The {@link KeyVaultRoleAssignmentScope roleScope} of the {@link KeyVaultRoleAssignment} to
-     *                   create.
+     * @param roleScope The {@link KeyVaultRoleAssignmentScope roleScope} of the {@link KeyVaultRoleAssignment} to
+     * create.
      * @param properties Properties for the {@link KeyVaultRoleAssignment}.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the created
      * {@link KeyVaultRoleAssignment}.
      * @throws NullPointerException if the {@link KeyVaultRoleAssignmentScope roleScope} or
-     *                              {@link KeyVaultRoleAssignmentProperties properties} are {@code null}.
+     * {@link KeyVaultRoleAssignmentProperties properties} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KeyVaultRoleAssignment>> createRoleAssignmentWithResponse(KeyVaultRoleAssignmentScope roleScope,
-                                                                                   KeyVaultRoleAssignmentProperties properties) {
+    public Mono<Response<KeyVaultRoleAssignment>> createRoleAssignmentWithResponse(KeyVaultRoleAssignmentScope roleScope, KeyVaultRoleAssignmentProperties properties) {
         return createRoleAssignmentWithResponse(roleScope, UUID.randomUUID(), properties);
     }
 
     /**
      * Creates a {@link KeyVaultRoleAssignment}.
      *
-     * @param roleScope  The {@link KeyVaultRoleAssignmentScope roleScope} of the {@link KeyVaultRoleAssignment} to
-     *                   create.
-     * @param name       The name used to create the {@link KeyVaultRoleAssignment}. It can be any valid UUID.
+     * @param roleScope The {@link KeyVaultRoleAssignmentScope roleScope} of the {@link KeyVaultRoleAssignment} to
+     * create.
+     * @param name The name used to create the {@link KeyVaultRoleAssignment}. It can be any valid UUID.
      * @param properties Properties for the {@link KeyVaultRoleAssignment}.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the created
      * {@link KeyVaultRoleAssignment}.
      * @throws NullPointerException if the {@link KeyVaultRoleAssignmentScope roleScope}, {@link UUID name} or
-     *                              {@link KeyVaultRoleAssignmentProperties properties} are {@code null}.
+     * {@link KeyVaultRoleAssignmentProperties properties} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KeyVaultRoleAssignment>> createRoleAssignmentWithResponse(KeyVaultRoleAssignmentScope roleScope,
-                                                                                   UUID name,
-                                                                                   KeyVaultRoleAssignmentProperties properties) {
+    public Mono<Response<KeyVaultRoleAssignment>> createRoleAssignmentWithResponse(KeyVaultRoleAssignmentScope roleScope, UUID name, KeyVaultRoleAssignmentProperties properties) {
         return withContext(context -> createRoleAssignmentWithResponse(roleScope, name, properties, context));
     }
 
     /**
      * Creates a {@link KeyVaultRoleAssignment}.
      *
-     * @param roleScope  The {@link KeyVaultRoleAssignmentScope roleScope} of the {@link KeyVaultRoleAssignment} to
-     *                   create.
-     * @param name       The name used to create the {@link KeyVaultRoleAssignment}. It can be any valid UUID.
+     * @param roleScope The {@link KeyVaultRoleAssignmentScope roleScope} of the {@link KeyVaultRoleAssignment} to
+     * create.
+     * @param name The name used to create the {@link KeyVaultRoleAssignment}. It can be any valid UUID.
      * @param properties Properties for the {@link KeyVaultRoleAssignment}.
-     * @param context    Additional context that is passed through the HTTP pipeline during the service call.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the created
      * {@link KeyVaultRoleAssignment}.
      * @throws NullPointerException if the {@link KeyVaultRoleAssignmentScope roleScope}, {@link UUID name} or
-     *                              {@link KeyVaultRoleAssignmentProperties properties} are {@code null}.
+     * {@link KeyVaultRoleAssignmentProperties properties} are {@code null}.
      */
-    Mono<Response<KeyVaultRoleAssignment>> createRoleAssignmentWithResponse(KeyVaultRoleAssignmentScope roleScope,
-                                                                            UUID name,
-                                                                            KeyVaultRoleAssignmentProperties properties,
-                                                                            Context context) {
+    Mono<Response<KeyVaultRoleAssignment>> createRoleAssignmentWithResponse(KeyVaultRoleAssignmentScope roleScope, UUID name, KeyVaultRoleAssignmentProperties properties, Context context) {
         Objects.requireNonNull(roleScope,
             String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
                 "'roleScope'"));
@@ -383,10 +371,10 @@ public final class KeyVaultAccessControlAsyncClient {
      * Gets a {@link KeyVaultRoleAssignment}.
      *
      * @param roleScope The {@link KeyVaultRoleAssignmentScope roleScope} of the {@link KeyVaultRoleAssignment}.
-     * @param name      The name used of the {@link KeyVaultRoleAssignment}.
+     * @param name The name used of the {@link KeyVaultRoleAssignment}.
      * @return A {@link Mono} containing the {@link KeyVaultRoleAssignment}.
      * @throws NullPointerException if the {@link KeyVaultRoleAssignmentScope roleScope} or {@link String name} are
-     *                              {@code null}.
+     * {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultRoleAssignment> getRoleAssignment(KeyVaultRoleAssignmentScope roleScope, String name) {
@@ -397,15 +385,14 @@ public final class KeyVaultAccessControlAsyncClient {
      * Gets a {@link KeyVaultRoleAssignment}.
      *
      * @param roleScope The {@link KeyVaultRoleAssignmentScope roleScope} of the {@link KeyVaultRoleAssignment}.
-     * @param name      The name of the {@link KeyVaultRoleAssignment}.
+     * @param name The name of the {@link KeyVaultRoleAssignment}.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
      * {@link KeyVaultRoleAssignment}.
      * @throws NullPointerException if the {@link KeyVaultRoleAssignmentScope roleScope} or {@link String name} are
-     *                              {@code null}.
+     * {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KeyVaultRoleAssignment>> getRoleAssignmentWithResponse(KeyVaultRoleAssignmentScope roleScope,
-                                                                                String name) {
+    public Mono<Response<KeyVaultRoleAssignment>> getRoleAssignmentWithResponse(KeyVaultRoleAssignmentScope roleScope, String name) {
         return withContext(context -> getRoleAssignmentWithResponse(roleScope, name, context));
     }
 
@@ -413,15 +400,14 @@ public final class KeyVaultAccessControlAsyncClient {
      * Gets a {@link KeyVaultRoleAssignment}.
      *
      * @param roleScope The {@link KeyVaultRoleAssignmentScope roleScope} of the {@link KeyVaultRoleAssignment}.
-     * @param name      The name of the {@link KeyVaultRoleAssignment}.
-     * @param context   Additional context that is passed through the HTTP pipeline during the service call.
+     * @param name The name of the {@link KeyVaultRoleAssignment}.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
      * {@link KeyVaultRoleAssignment}.
      * @throws NullPointerException if the {@link KeyVaultRoleAssignmentScope roleScope} or {@link String name} are
-     *                              {@code null}.
+     * {@code null}.
      */
-    Mono<Response<KeyVaultRoleAssignment>> getRoleAssignmentWithResponse(KeyVaultRoleAssignmentScope roleScope,
-                                                                         String name, Context context) {
+    Mono<Response<KeyVaultRoleAssignment>> getRoleAssignmentWithResponse(KeyVaultRoleAssignmentScope roleScope, String name, Context context) {
         Objects.requireNonNull(roleScope,
             String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
                 "'roleScope'"));
@@ -446,10 +432,10 @@ public final class KeyVaultAccessControlAsyncClient {
      * Deletes a {@link KeyVaultRoleAssignment}.
      *
      * @param roleScope The {@link KeyVaultRoleAssignmentScope roleScope} of the {@link KeyVaultRoleAssignment}.
-     * @param name      The name of the {@link KeyVaultRoleAssignment}.
+     * @param name The name of the {@link KeyVaultRoleAssignment}.
      * @return A {@link Mono} containing the {@link KeyVaultRoleAssignment}.
      * @throws NullPointerException if the {@link KeyVaultRoleAssignmentScope roleScope} or {@link String name} are
-     *                              {@code null}.
+     * {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultRoleAssignment> deleteRoleAssignment(KeyVaultRoleAssignmentScope roleScope, String name) {
@@ -460,15 +446,14 @@ public final class KeyVaultAccessControlAsyncClient {
      * Deletes a {@link KeyVaultRoleAssignment}.
      *
      * @param roleScope The {@link KeyVaultRoleAssignmentScope roleScope} of the {@link KeyVaultRoleAssignment}.
-     * @param name      The name of the {@link KeyVaultRoleAssignment}.
+     * @param name The name of the {@link KeyVaultRoleAssignment}.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
      * {@link KeyVaultRoleAssignment}.
      * @throws NullPointerException if the {@link KeyVaultRoleAssignmentScope roleScope} or {@link String name} are
-     *                              {@code null}.
+     * {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KeyVaultRoleAssignment>> deleteRoleAssignmentWithResponse(KeyVaultRoleAssignmentScope roleScope,
-                                                                                   String name) {
+    public Mono<Response<KeyVaultRoleAssignment>> deleteRoleAssignmentWithResponse(KeyVaultRoleAssignmentScope roleScope, String name) {
         return withContext(context -> deleteRoleAssignmentWithResponse(roleScope, name, context));
     }
 
@@ -476,15 +461,14 @@ public final class KeyVaultAccessControlAsyncClient {
      * Deletes a {@link KeyVaultRoleAssignment}.
      *
      * @param roleScope The {@link KeyVaultRoleAssignmentScope roleScope} of the {@link KeyVaultRoleAssignment}.
-     * @param name      The name of the {@link KeyVaultRoleAssignment}.
-     * @param context   Additional context that is passed through the HTTP pipeline during the service call.
+     * @param name The name of the {@link KeyVaultRoleAssignment}.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
      * {@link KeyVaultRoleAssignment}.
      * @throws NullPointerException if the {@link KeyVaultRoleAssignmentScope roleScope} or {@link String name} are
-     *                              {@code null}.
+     * {@code null}.
      */
-    Mono<Response<KeyVaultRoleAssignment>> deleteRoleAssignmentWithResponse(KeyVaultRoleAssignmentScope roleScope,
-                                                                            String name, Context context) {
+    Mono<Response<KeyVaultRoleAssignment>> deleteRoleAssignmentWithResponse(KeyVaultRoleAssignmentScope roleScope, String name, Context context) {
         Objects.requireNonNull(roleScope,
             String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
                 "'roleScope'"));
