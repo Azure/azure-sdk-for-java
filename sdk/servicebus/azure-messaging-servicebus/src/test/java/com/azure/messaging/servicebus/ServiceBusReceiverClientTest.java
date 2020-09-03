@@ -58,7 +58,7 @@ class ServiceBusReceiverClientTest {
     @Mock
     private Map<String, Object> propertiesToModify;
     @Mock
-    ServiceBusTransactionContext transactionContext;
+    private ServiceBusTransactionContext transactionContext;
 
     @Mock
     private ServiceBusReceivedMessage message;
@@ -66,7 +66,6 @@ class ServiceBusReceiverClientTest {
     @BeforeEach
     void setup() {
         MockitoAnnotations.initMocks(this);
-        when(message.getLockToken()).thenReturn(LOCK_TOKEN);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
         when(asyncClient.getReceiverOptions()).thenReturn(new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1));
@@ -646,9 +645,5 @@ class ServiceBusReceiverClientTest {
 
         // Assert
         verify(asyncClient).setSessionState(sessionId, contents);
-    }
-
-    private static boolean lockTokenEquals(String compared) {
-        return compared != null && LOCK_TOKEN.equals(compared);
     }
 }

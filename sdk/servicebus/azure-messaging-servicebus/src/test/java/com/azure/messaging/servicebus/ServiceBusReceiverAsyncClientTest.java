@@ -343,25 +343,6 @@ class ServiceBusReceiverAsyncClientTest {
     }
 
     /**
-     * Verifies that we error if we try to complete a message with null value.
-     */
-    @Test
-    void completeNullLockToken() {
-        // Arrange
-        when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE)).thenReturn(Mono.just(managementNode));
-        when(managementNode.updateDisposition(any(), eq(DispositionStatus.COMPLETED), isNull(), isNull(), isNull(),
-            isNull(), isNull(), isNull()))
-            .thenReturn(Mono.delay(Duration.ofMillis(250)).then());
-        
-        StepVerifier.create(receiver.complete(null))
-            .expectError(NullPointerException.class)
-            .verify();
-
-        verify(managementNode, never()).updateDisposition(any(), eq(DispositionStatus.COMPLETED), isNull(), isNull(),
-            isNull(), isNull(), isNull(), isNull());
-    }
-
-    /**
      * Verifies that we error if we try to complete a null message.
      */
     @Test
