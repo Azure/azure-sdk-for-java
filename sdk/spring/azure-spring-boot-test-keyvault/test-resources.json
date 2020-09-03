@@ -207,7 +207,11 @@
         "typeHandlerVersion": "1.4",
         "autoUpgradeMinorVersion": true,
         "settings": {
-          "commandToExecute": "for i in {1..3}; do sudo apt-get update && sudo apt-get install -y openjdk-8-jdk maven git && break || sleep 15; done"
+          "fileUris": [
+            "https://raw.githubusercontent.com/chenrujun/azure-sdk-for-java/enable-KeyVaultIT.keyVaultWithVirtualMachineMSI-1/sdk/spring/azure-spring-boot-test-keyvault/install_java_mvn_git.sh",
+            "https://raw.githubusercontent.com/chenrujun/azure-sdk-for-java/enable-KeyVaultIT.keyVaultWithVirtualMachineMSI-1/sdk/spring/azure-spring-boot-test-keyvault/install_java_mvn_git_with_retry.sh"
+          ],
+          "commandToExecute": "bash install_java_mvn_git_with_retry.sh"
         },
         "protectedSettings": {
           "commandToExecute": ""
