@@ -36,7 +36,6 @@ import java.util.function.Consumer;
  */
 public class BlobQueryReader {
 
-    private final ClientLogger logger = new ClientLogger(BlobQueryReader.class);
     private final Flux<ByteBuffer> avro;
     private final Consumer<BlobQueryProgress> progressConsumer;
     private final Consumer<BlobQueryError> errorConsumer;
