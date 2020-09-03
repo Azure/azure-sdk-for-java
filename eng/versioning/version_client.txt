@@ -77,7 +77,7 @@ com.azure.resourcemanager:azure-resourcemanager-dns;2.0.0-beta.3;2.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-eventhubs;2.0.0-beta.4;2.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-keyvault;2.0.0-beta.4;2.0.0-beta.5
 com.azure.resourcemanager:azure-resourcemanager-monitor;2.0.0-beta.4;2.0.0-beta.5
-com.azure.resourcemanager:azure-resourcemanager-msi;2.0.0-beta.3;2.0.0-beta.4
+com.azure.resourcemanager:azure-resourcemanager-msi;2.0.0-beta.4;2.0.0-beta.5
 com.azure.resourcemanager:azure-resourcemanager-network;2.0.0-beta.3;2.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-privatedns;2.0.0-beta.4;2.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-resources;2.0.0-beta.3;2.0.0-beta.4
