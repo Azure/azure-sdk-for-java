@@ -26,7 +26,11 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+import static com.azure.ai.textanalytics.TestUtils.CATEGORIZED_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
+import static com.azure.ai.textanalytics.TestUtils.LINKED_ENTITY_INPUTS;
+import static com.azure.ai.textanalytics.TestUtils.PII_ENTITY_OFFSET_INPUT;
+import static com.azure.ai.textanalytics.TestUtils.SENTIMENT_OFFSET_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.getCategorizedEntitiesList1;
 import static com.azure.ai.textanalytics.TestUtils.getDetectedLanguageEnglish;
 import static com.azure.ai.textanalytics.TestUtils.getDetectedLanguageSpanish;
@@ -383,6 +387,123 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 }));
     }
 
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeEntitiesEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        emojiRunner(document ->
+            StepVerifier.create(client.recognizeEntities(document))
+                .assertNext(result -> result.forEach(categorizedEntity -> {
+                    assertEquals(13, categorizedEntity.getOffset());
+                    assertEquals(9, categorizedEntity.getLength());
+                })).verifyComplete(), CATEGORIZED_ENTITY_INPUTS.get(1)
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeEntitiesEmojiWithSkinToneModifier(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        emojiWithSkinToneModifierRunner(document ->
+            StepVerifier.create(client.recognizeEntities(document))
+                .assertNext(result -> result.forEach(categorizedEntity -> {
+                    assertEquals(15, categorizedEntity.getOffset());
+                    assertEquals(9, categorizedEntity.getLength());
+                })).verifyComplete(), CATEGORIZED_ENTITY_INPUTS.get(1)
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeEntitiesEmojiFamily(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        emojiFamilyRunner(document ->
+            StepVerifier.create(client.recognizeEntities(document))
+                .assertNext(result -> result.forEach(categorizedEntity -> {
+                    assertEquals(22, categorizedEntity.getOffset());
+                    assertEquals(9, categorizedEntity.getLength());
+                })).verifyComplete(), CATEGORIZED_ENTITY_INPUTS.get(1)
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeEntitiesEmojiFamilyWIthSkinToneModifier(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        emojiFamilyWithSkinToneModifierRunner(document ->
+            StepVerifier.create(client.recognizeEntities(document))
+                .assertNext(result -> result.forEach(categorizedEntity -> {
+                    assertEquals(30, categorizedEntity.getOffset());
+                    assertEquals(9, categorizedEntity.getLength());
+                })).verifyComplete(), CATEGORIZED_ENTITY_INPUTS.get(1)
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeEntitiesDiacriticsNfc(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        diacriticsNfcRunner(document ->
+            StepVerifier.create(client.recognizeEntities(document))
+                .assertNext(result -> result.forEach(categorizedEntity -> {
+                    assertEquals(14, categorizedEntity.getOffset());
+                    assertEquals(9, categorizedEntity.getLength());
+                })).verifyComplete(), CATEGORIZED_ENTITY_INPUTS.get(1)
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeEntitiesDiacriticsNfd(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        diacriticsNfdRunner(document ->
+            StepVerifier.create(client.recognizeEntities(document))
+                .assertNext(result -> result.forEach(categorizedEntity -> {
+                    assertEquals(15, categorizedEntity.getOffset());
+                    assertEquals(9, categorizedEntity.getLength());
+                })).verifyComplete(), CATEGORIZED_ENTITY_INPUTS.get(1)
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeEntitiesKoreanNfc(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        koreanNfcRunner(document ->
+            StepVerifier.create(client.recognizeEntities(document))
+                .assertNext(result -> result.forEach(categorizedEntity -> {
+                    assertEquals(13, categorizedEntity.getOffset());
+                    assertEquals(9, categorizedEntity.getLength());
+                })).verifyComplete(), CATEGORIZED_ENTITY_INPUTS.get(1)
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeEntitiesKoreanNfd(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        koreanNfdRunner(document ->
+            StepVerifier.create(client.recognizeEntities(document))
+                .assertNext(result -> result.forEach(categorizedEntity -> {
+                    assertEquals(13, categorizedEntity.getOffset());
+                    assertEquals(9, categorizedEntity.getLength());
+                })).verifyComplete(), CATEGORIZED_ENTITY_INPUTS.get(1)
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeEntitiesZalgoText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        zalgoTextRunner(document ->
+            StepVerifier.create(client.recognizeEntities(document))
+                .assertNext(result -> result.forEach(categorizedEntity -> {
+                    assertEquals(126, categorizedEntity.getOffset());
+                    assertEquals(9, categorizedEntity.getLength());
+                })).verifyComplete(), CATEGORIZED_ENTITY_INPUTS.get(1)
+        );
+    }
+
     // Recognize Personally Identifiable Information entity
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -502,6 +623,123 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                     final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
                     assertEquals(INVALID_DOCUMENT_BATCH, textAnalyticsError.getErrorCode());
                 }));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizePiiEntitiesEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        emojiRunner(document ->
+            StepVerifier.create(client.recognizePiiEntities(document))
+                .assertNext(result -> result.forEach(piiEntity -> {
+                    assertEquals(8, piiEntity.getOffset());
+                    assertEquals(11, piiEntity.getLength());
+                })).verifyComplete(), PII_ENTITY_OFFSET_INPUT
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizePiiEntitiesEmojiWithSkinToneModifier(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        emojiWithSkinToneModifierRunner(document ->
+            StepVerifier.create(client.recognizePiiEntities(document))
+                .assertNext(result -> result.forEach(piiEntity -> {
+                    assertEquals(10, piiEntity.getOffset());
+                    assertEquals(11, piiEntity.getLength());
+                })).verifyComplete(), PII_ENTITY_OFFSET_INPUT
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizePiiEntitiesEmojiFamily(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        emojiFamilyRunner(document ->
+            StepVerifier.create(client.recognizePiiEntities(document))
+                .assertNext(result -> result.forEach(piiEntity -> {
+                    assertEquals(17, piiEntity.getOffset());
+                    assertEquals(11, piiEntity.getLength());
+                })).verifyComplete(), PII_ENTITY_OFFSET_INPUT
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizePiiEntitiesEmojiFamilyWIthSkinToneModifier(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        emojiFamilyWithSkinToneModifierRunner(document ->
+            StepVerifier.create(client.recognizePiiEntities(document))
+                .assertNext(result -> result.forEach(piiEntity -> {
+                    assertEquals(25, piiEntity.getOffset());
+                    assertEquals(11, piiEntity.getLength());
+                })).verifyComplete(), PII_ENTITY_OFFSET_INPUT
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizePiiEntitiesDiacriticsNfc(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        diacriticsNfcRunner(document ->
+            StepVerifier.create(client.recognizePiiEntities(document))
+                .assertNext(result -> result.forEach(piiEntity -> {
+                    assertEquals(9, piiEntity.getOffset());
+                    assertEquals(11, piiEntity.getLength());
+                })).verifyComplete(), PII_ENTITY_OFFSET_INPUT
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizePiiEntitiesDiacriticsNfd(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        diacriticsNfdRunner(document ->
+            StepVerifier.create(client.recognizePiiEntities(document))
+                .assertNext(result -> result.forEach(piiEntity -> {
+                    assertEquals(10, piiEntity.getOffset());
+                    assertEquals(11, piiEntity.getLength());
+                })).verifyComplete(), PII_ENTITY_OFFSET_INPUT
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizePiiEntitiesKoreanNfc(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        koreanNfcRunner(document ->
+            StepVerifier.create(client.recognizePiiEntities(document))
+                .assertNext(result -> result.forEach(piiEntity -> {
+                    assertEquals(8, piiEntity.getOffset());
+                    assertEquals(11, piiEntity.getLength());
+                })).verifyComplete(), PII_ENTITY_OFFSET_INPUT
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizePiiEntitiesKoreanNfd(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        koreanNfdRunner(document ->
+            StepVerifier.create(client.recognizePiiEntities(document))
+                .assertNext(result -> result.forEach(piiEntity -> {
+                    assertEquals(8, piiEntity.getOffset());
+                    assertEquals(11, piiEntity.getLength());
+                })).verifyComplete(), PII_ENTITY_OFFSET_INPUT
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizePiiEntitiesZalgoText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        zalgoTextRunner(document ->
+            StepVerifier.create(client.recognizePiiEntities(document))
+                .assertNext(result -> result.forEach(piiEntity -> {
+                    assertEquals(121, piiEntity.getOffset());
+                    assertEquals(11, piiEntity.getLength());
+                })).verifyComplete(), PII_ENTITY_OFFSET_INPUT
+        );
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -654,6 +892,141 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                     final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
                     assertEquals(INVALID_DOCUMENT_BATCH, textAnalyticsError.getErrorCode());
                 }));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeLinkedEntitiesEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        emojiRunner(document ->
+            StepVerifier.create(client.recognizeLinkedEntities(document))
+                .assertNext(result -> result.forEach(linkedEntity -> {
+                    linkedEntity.getMatches().forEach(linkedEntityMatch -> {
+                        assertEquals(13, linkedEntityMatch.getOffset());
+                        assertEquals(9, linkedEntityMatch.getLength());
+                    });
+                })).verifyComplete(), LINKED_ENTITY_INPUTS.get(1)
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeLinkedEntitiesEmojiWithSkinToneModifier(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        emojiWithSkinToneModifierRunner(document ->
+            StepVerifier.create(client.recognizeLinkedEntities(document))
+                .assertNext(result -> result.forEach(linkedEntity -> {
+                    linkedEntity.getMatches().forEach(linkedEntityMatch -> {
+                        assertEquals(15, linkedEntityMatch.getOffset());
+                        assertEquals(9, linkedEntityMatch.getLength());
+                    });
+                })).verifyComplete(), LINKED_ENTITY_INPUTS.get(1)
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeLinkedEntitiesEmojiFamily(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        emojiFamilyRunner(document ->
+            StepVerifier.create(client.recognizeLinkedEntities(document))
+                .assertNext(result -> result.forEach(linkedEntity -> {
+                    linkedEntity.getMatches().forEach(linkedEntityMatch -> {
+                        assertEquals(22, linkedEntityMatch.getOffset());
+                        assertEquals(9, linkedEntityMatch.getLength());
+                    });
+                })).verifyComplete(), LINKED_ENTITY_INPUTS.get(1)
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeLinkedEntitiesEmojiFamilyWIthSkinToneModifier(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        emojiFamilyWithSkinToneModifierRunner(document ->
+            StepVerifier.create(client.recognizeLinkedEntities(document))
+                .assertNext(result -> result.forEach(linkedEntity -> {
+                    linkedEntity.getMatches().forEach(linkedEntityMatch -> {
+                        assertEquals(30, linkedEntityMatch.getOffset());
+                        assertEquals(9, linkedEntityMatch.getLength());
+                    });
+                })).verifyComplete(), LINKED_ENTITY_INPUTS.get(1)
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeLinkedEntitiesDiacriticsNfc(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        diacriticsNfcRunner(document ->
+            StepVerifier.create(client.recognizeLinkedEntities(document))
+                .assertNext(result -> result.forEach(linkedEntity -> {
+                    linkedEntity.getMatches().forEach(linkedEntityMatch -> {
+                        assertEquals(14, linkedEntityMatch.getOffset());
+                        assertEquals(9, linkedEntityMatch.getLength());
+                    });
+                })).verifyComplete(), LINKED_ENTITY_INPUTS.get(1)
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeLinkedEntitiesDiacriticsNfd(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        diacriticsNfdRunner(document ->
+            StepVerifier.create(client.recognizeLinkedEntities(document))
+                .assertNext(result -> result.forEach(linkedEntity -> {
+                    linkedEntity.getMatches().forEach(linkedEntityMatch -> {
+                        assertEquals(15, linkedEntityMatch.getOffset());
+                        assertEquals(9, linkedEntityMatch.getLength());
+                    });
+                })).verifyComplete(), LINKED_ENTITY_INPUTS.get(1)
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeLinkedEntitiesKoreanNfc(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        koreanNfcRunner(document ->
+            StepVerifier.create(client.recognizeLinkedEntities(document))
+                .assertNext(result -> result.forEach(linkedEntity -> {
+                    linkedEntity.getMatches().forEach(linkedEntityMatch -> {
+                        assertEquals(13, linkedEntityMatch.getOffset());
+                        assertEquals(9, linkedEntityMatch.getLength());
+                    });
+                })).verifyComplete(), LINKED_ENTITY_INPUTS.get(1)
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeLinkedEntitiesKoreanNfd(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        koreanNfdRunner(document ->
+            StepVerifier.create(client.recognizeLinkedEntities(document))
+                .assertNext(result -> result.forEach(linkedEntity -> {
+                    linkedEntity.getMatches().forEach(linkedEntityMatch -> {
+                        assertEquals(13, linkedEntityMatch.getOffset());
+                        assertEquals(9, linkedEntityMatch.getLength());
+                    });
+                })).verifyComplete(), LINKED_ENTITY_INPUTS.get(1)
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeLinkedEntitiesZalgoText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        zalgoTextRunner(document ->
+            StepVerifier.create(client.recognizeLinkedEntities(document))
+                .assertNext(result -> result.forEach(linkedEntity -> {
+                    linkedEntity.getMatches().forEach(linkedEntityMatch -> {
+                        assertEquals(126, linkedEntityMatch.getOffset());
+                        assertEquals(9, linkedEntityMatch.getLength());
+                    });
+                })).verifyComplete(), LINKED_ENTITY_INPUTS.get(1)
+        );
     }
 
     // Key Phrases
@@ -1124,5 +1497,122 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                     final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
                     assertEquals(INVALID_DOCUMENT_BATCH, textAnalyticsError.getErrorCode());
                 }));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeSentimentEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        emojiRunner(document ->
+            StepVerifier.create(client.analyzeSentiment(document))
+                .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
+                    assertEquals(0, sentenceSentiment.getOffset());
+                    assertEquals(34, sentenceSentiment.getLength());
+                })).verifyComplete(), SENTIMENT_OFFSET_INPUT
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeSentimentEmojiWithSkinToneModifier(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        emojiWithSkinToneModifierRunner(document ->
+            StepVerifier.create(client.analyzeSentiment(document))
+                .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
+                    assertEquals(0, sentenceSentiment.getOffset());
+                    assertEquals(36, sentenceSentiment.getLength());
+                })).verifyComplete(), SENTIMENT_OFFSET_INPUT
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeSentimentEmojiFamily(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        emojiFamilyRunner(document ->
+            StepVerifier.create(client.analyzeSentiment(document))
+                .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
+                    assertEquals(0, sentenceSentiment.getOffset());
+                    assertEquals(43, sentenceSentiment.getLength());
+                })).verifyComplete(), SENTIMENT_OFFSET_INPUT
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeSentimentEmojiFamilyWithSkinToneModifier(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        emojiFamilyWithSkinToneModifierRunner(document ->
+            StepVerifier.create(client.analyzeSentiment(document))
+                .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
+                    assertEquals(0, sentenceSentiment.getOffset());
+                    assertEquals(51, sentenceSentiment.getLength());
+                })).verifyComplete(), SENTIMENT_OFFSET_INPUT
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeSentimentDiacriticsNfc(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        diacriticsNfcRunner(document ->
+            StepVerifier.create(client.analyzeSentiment(document))
+                .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
+                    assertEquals(0, sentenceSentiment.getOffset());
+                    assertEquals(35, sentenceSentiment.getLength());
+                })).verifyComplete(), SENTIMENT_OFFSET_INPUT
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeSentimentDiacriticsNfd(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        diacriticsNfdRunner(document ->
+            StepVerifier.create(client.analyzeSentiment(document))
+                .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
+                    assertEquals(0, sentenceSentiment.getOffset());
+                    assertEquals(36, sentenceSentiment.getLength());
+                })).verifyComplete(), SENTIMENT_OFFSET_INPUT
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeSentimentKoreanNfc(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        koreanNfcRunner(document ->
+            StepVerifier.create(client.analyzeSentiment(document))
+                .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
+                    assertEquals(0, sentenceSentiment.getOffset());
+                    assertEquals(34, sentenceSentiment.getLength());
+                })).verifyComplete(), SENTIMENT_OFFSET_INPUT
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeSentimentKoreanNfd(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        koreanNfdRunner(document ->
+            StepVerifier.create(client.analyzeSentiment(document))
+                .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
+                    assertEquals(0, sentenceSentiment.getOffset());
+                    assertEquals(34, sentenceSentiment.getLength());
+                })).verifyComplete(), SENTIMENT_OFFSET_INPUT
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeSentimentZalgoText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        zalgoTextRunner(document ->
+            StepVerifier.create(client.analyzeSentiment(document))
+                .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
+                    assertEquals(0, sentenceSentiment.getOffset());
+                    assertEquals(147, sentenceSentiment.getLength());
+                })).verifyComplete(), SENTIMENT_OFFSET_INPUT
+        );
     }
 }

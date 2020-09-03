@@ -52,7 +52,7 @@ public class ReceiveNamedSessionAsyncSample {
                 System.out.println("Processing message from session: " + context.getSessionId());
 
                 // Process message then complete it.
-                return receiver.complete(context.getMessage().getLockToken());
+                return receiver.complete(context.getMessage());
             })
             .subscribe(aVoid -> {
             }, error -> System.err.println("Error occurred: " + error));

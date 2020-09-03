@@ -93,6 +93,9 @@ final class TestUtils {
     static final List<String> DETECT_LANGUAGE_INPUTS = asList(
         "This is written in English", "Este es un documento escrito en Español.", "~@!~:)");
 
+    static final String PII_ENTITY_OFFSET_INPUT = "SSN: 859-98-0987";
+    static final String SENTIMENT_OFFSET_INPUT = "The hotel was dark and unclean.";
+
     // "personal" and "social" are common to both English and Spanish and if given with limited context the
     // response will be based on the "US" country hint. If the origin of the text is known to be coming from
     // Spanish that can be given as a hint.
@@ -310,7 +313,7 @@ final class TestUtils {
         LinkedEntity linkedEntity = new LinkedEntity(
             "Seattle", new IterableStream<>(Collections.singletonList(linkedEntityMatch)),
             "en", "Seattle", "https://en.wikipedia.org/wiki/Seattle",
-            "Wikipedia");
+            "Wikipedia", "5fbba6b8-85e1-4d41-9444-d9055436e473");
         return asList(linkedEntity);
     }
 
@@ -322,7 +325,7 @@ final class TestUtils {
         LinkedEntity linkedEntity = new LinkedEntity(
             "Microsoft", new IterableStream<>(Collections.singletonList(linkedEntityMatch)),
             "en", "Microsoft", "https://en.wikipedia.org/wiki/Microsoft",
-            "Wikipedia");
+            "Wikipedia", "a093e9b9-90f5-a3d5-c4b8-5855e1b01f85");
         return asList(linkedEntity);
     }
 

@@ -1,7 +1,5 @@
 package com.azure.digitaltwins.core;
 
-import com.azure.core.http.HttpResponse;
-import com.azure.core.util.Context;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
 import com.azure.digitaltwins.core.util.UpdateOperationUtility;
 import org.opentest4j.AssertionFailedError;
@@ -12,7 +10,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 public class TestAssetsHelper {
     protected static int MaxTries = 10;
