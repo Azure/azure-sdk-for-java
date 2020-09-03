@@ -142,9 +142,15 @@ public class DigitalTwinsLifecycleAsyncSample {
         for (Map.Entry<String, String> twin : twins.entrySet()) {
             String twinId = twin.getKey();
 
+            // This list contains all the relations that existing between the twins referenced by this sample.
             List<BasicRelationship> relationshipList = new ArrayList<>();
+
+            // These semaphores indicate when the relationship list and relationship delete operations have completed.
+            // We cannot use a latch here since we do not know the no. of relationships that will be deleted (so we do cannot set the latch initial count).
             Semaphore listRelationshipSemaphore = new Semaphore(0);
             Semaphore deleteRelationshipsSemaphore = new Semaphore(0);
+
+            // This latch is to ensure that we wait for the delete twin operation to complete, before proceeding.
             CountDownLatch deleteTwinsLatch = new CountDownLatch(1);
 
             // Call APIs to retrieve all relationships.
@@ -188,7 +194,7 @@ public class DigitalTwinsLifecycleAsyncSample {
                     .doOnTerminate(deleteTwinsLatch::countDown)
                     .subscribe();
 
-                // Wait until the latch has been counted down for each async delete operation, signifying that the async call has completed successfully.
+                // Wait until the latch count reaches zero, signifying that the async calls have completed successfully.
                 deleteTwinsLatch.await(MaxWaitTimeAsyncOperationsInSeconds, TimeUnit.SECONDS);
             }
         }
@@ -236,7 +242,7 @@ public class DigitalTwinsLifecycleAsyncSample {
             .doOnTerminate(createModelsLatch::countDown)
             .subscribe();
 
-        // Wait until the latch has been counted down for the async operation, signifying that the async call has completed successfully.
+        // Wait until the latch count reaches zero, signifying that the async calls have completed successfully.
         createModelsLatch.await(MaxWaitTimeAsyncOperationsInSeconds, TimeUnit.SECONDS);
     }
 
@@ -250,13 +256,13 @@ public class DigitalTwinsLifecycleAsyncSample {
 
         // Call API to list the models. For each async operation, once the operation is completed successfully, a latch is counted down.
         client.listModels()
-            .doOnNext(modelData -> System.out.println(String.format("Retrieved model: %s, display name '%s', upload time '%s' and decommissioned '%s'",
-                modelData.getId(), modelData.getDisplayName().get("en"), modelData.getUploadTime(), modelData.isDecommissioned())))
+            .doOnNext(modelData -> System.out.println("Retrieved model: " + modelData.getId() + ", display name '" + modelData.getDisplayName().get("en") + "'," +
+                    " upload time '" + modelData.getUploadTime() + "' and decommissioned '" + modelData.isDecommissioned() + "'"))
             .doOnError(throwable -> System.err.println("List models error: " + throwable))
             .doOnTerminate(listModelsLatch::countDown)
             .subscribe();
 
-        // Wait until the latch has been counted down for the async operation, signifying that the async call has completed successfully.
+        // Wait until the latch count reaches zero, signifying that the async calls have completed successfully.
         listModelsLatch.await(MaxWaitTimeAsyncOperationsInSeconds, TimeUnit.SECONDS);
     }
 
@@ -278,7 +284,7 @@ public class DigitalTwinsLifecycleAsyncSample {
                     throwable -> System.err.println("Could not create digital twin " + twinId + " due to " + throwable),
                     createTwinsLatch::countDown));
 
-        // Wait until the latch has been counted down for each async operation, signifying that the async call has completed successfully.
+        // Wait until the latch count reaches zero, signifying that the async calls have completed successfully.
         createTwinsLatch.await(MaxWaitTimeAsyncOperationsInSeconds, TimeUnit.SECONDS);
     }
 
@@ -313,7 +319,7 @@ public class DigitalTwinsLifecycleAsyncSample {
             }
         );
 
-        // Wait until the latch has been counted down for each async operation, signifying that the async call has completed successfully.
+        // Wait until the latch count reaches zero, signifying that the async calls have completed successfully.
         connectTwinsLatch.await(MaxWaitTimeAsyncOperationsInSeconds, TimeUnit.SECONDS);
     }
 }
