@@ -17,15 +17,14 @@ public class KeyVaultLongRunningOperation {
     /**
      * Creates an object containing the details of a {@link KeyVaultLongRunningOperation}.
      *
-     * @param status        Status of the {@link KeyVaultLongRunningOperation}.
+     * @param status Status of the {@link KeyVaultLongRunningOperation}.
      * @param statusDetails The status details of the {@link KeyVaultLongRunningOperation}.
-     * @param error         Error encountered, if any, during the {@link KeyVaultLongRunningOperation}.
-     * @param startTime     The start time of the {@link KeyVaultLongRunningOperation} in UTC.
-     * @param endTime       The end time of the {@link KeyVaultLongRunningOperation} in UTC.
-     * @param jobId         Identifier for the full {@link KeyVaultLongRunningOperation}.
+     * @param error Error encountered, if any, during the {@link KeyVaultLongRunningOperation}.
+     * @param startTime The start time of the {@link KeyVaultLongRunningOperation} in UTC.
+     * @param endTime The end time of the {@link KeyVaultLongRunningOperation} in UTC.
+     * @param jobId Identifier for the full {@link KeyVaultLongRunningOperation}.
      */
-    public KeyVaultLongRunningOperation(String status, String statusDetails, KeyVaultError error, String jobId,
-                                        Long startTime, Long endTime) {
+    public KeyVaultLongRunningOperation(String status, String statusDetails, KeyVaultError error, String jobId, Long startTime, Long endTime) {
         this.status = status;
         this.statusDetails = statusDetails;
         this.error = error;

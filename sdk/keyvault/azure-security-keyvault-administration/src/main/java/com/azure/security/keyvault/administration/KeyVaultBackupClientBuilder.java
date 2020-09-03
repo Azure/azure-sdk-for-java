@@ -30,24 +30,16 @@ import java.util.Objects;
  *
  * <p> The minimal configuration options required by {@link KeyVaultBackupClientBuilder} to build an
  * an {@link KeyVaultBackupAsyncClient} are {@link String vaultUrl} and {@link TokenCredential credential}.</p>
- * <p>
- * {@codesnippet com.azure.security.keyvault.keys.async.backupclient.instantiation}
  *
  * <p>The {@link HttpLogDetailLevel}, multiple custom {@link HttpLoggingPolicy policies} and custom
  * {@link HttpClient} can be optionally configured in the {@link KeyVaultBackupClientBuilder}.</p>
- * <p>
- * {@codesnippet com.azure.security.keyvault.keys.async.backupclient.withhttpclient.instantiation}
  *
  * <p>Alternatively, a custom {@link HttpPipeline} with custom {@link HttpPipelinePolicy} policies and {@link String
  * vaultUrl} can be specified. It provides finer control over the construction of {@link KeyVaultBackupAsyncClient}
  * and {@link KeyVaultBackupClient} instances.</p>
- * <p>
- * {@codesnippet com.azure.security.keyvault.keys.async.backupclient.pipeline.instantiation}
  *
  * <p> The minimal configuration options required by {@link KeyVaultBackupClientBuilder} to build an
  * {@link KeyVaultBackupClient} are {@link String vaultUrl} and {@link TokenCredential credential}. </p>
- * <p>
- * {@codesnippet com.azure.security.keyvault.keys.backupclient.instantiation}
  *
  * @see KeyVaultBackupAsyncClient
  * @see KeyVaultBackupClient

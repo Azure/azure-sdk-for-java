@@ -88,7 +88,7 @@ public final class KeyVaultBackupAsyncClient {
      * Initiates a full backup of the Key Vault.
      *
      * @param blobStorageUrl The URL for the Blob Storage resource where the backup will be located.
-     * @param sasToken       A Shared Access Signature (SAS) token to authorize access to the blob.
+     * @param sasToken A Shared Access Signature (SAS) token to authorize access to the blob.
      * @return A {@link PollerFlux} polling on the {@link KeyVaultBackupOperation backup operation} status.
      * @throws NullPointerException if the {@code blobStorageUrl} or {@code sasToken} are {@code null}.
      */
@@ -112,14 +112,13 @@ public final class KeyVaultBackupAsyncClient {
      * Initiates a full backup of the Key Vault.
      *
      * @param blobStorageUrl The URL for the Blob Storage resource where the backup will be located.
-     * @param sasToken       A Shared Access Signature (SAS) token to authorize access to the blob.
-     * @param context        Additional context that is passed through the HTTP pipeline during the service call.
+     * @param sasToken A Shared Access Signature (SAS) token to authorize access to the blob.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return A {@link PollerFlux} polling on the {@link KeyVaultBackupOperation backup operation} status.
      * @throws KeyVaultErrorException if the operation is unsuccessful.
-     * @throws NullPointerException   if the {@code blobStorageUrl} or {@code sasToken} are {@code null}.
+     * @throws NullPointerException if the {@code blobStorageUrl} or {@code sasToken} are {@code null}.
      */
-    Mono<Response<KeyVaultBackupOperation>> backupWithResponse(String blobStorageUrl, String sasToken,
-                                                               Context context) {
+    Mono<Response<KeyVaultBackupOperation>> backupWithResponse(String blobStorageUrl, String sasToken, Context context) {
         SASTokenParameter sasTokenParameter = new SASTokenParameter()
             .setStorageResourceUri(blobStorageUrl)
             .setToken(sasToken);
@@ -169,7 +168,7 @@ public final class KeyVaultBackupAsyncClient {
                     .map(response ->
                         new SimpleResponse<>(response,
                             (KeyVaultBackupOperation) transformToLongRunningOperation(response.getValue())))
-                    .flatMap(this::processBackupOperationResponse);
+                    .flatMap(KeyVaultBackupAsyncClient::processBackupOperationResponse);
             } catch (HttpResponseException e) {
                 //noinspection ThrowableNotThrown
                 logger.logExceptionAsError(e);
@@ -179,19 +178,20 @@ public final class KeyVaultBackupAsyncClient {
         };
     }
 
-    private Mono<PollResponse<KeyVaultBackupOperation>> processBackupOperationResponse(Response<KeyVaultBackupOperation> response) {
+    private static Mono<PollResponse<KeyVaultBackupOperation>> processBackupOperationResponse(Response<KeyVaultBackupOperation> response) {
         String operationStatus = response.getValue().getStatus().toLowerCase();
 
-        return Mono.just(new PollResponse<>(toLongRunningOperationStatus(operationStatus), response.getValue()));
+        return Mono.just(
+            new PollResponse<>(toLongRunningOperationStatus(operationStatus.toLowerCase()), response.getValue()));
     }
 
-    private LongRunningOperationStatus toLongRunningOperationStatus(String operationStatus) {
+    private static LongRunningOperationStatus toLongRunningOperationStatus(String operationStatus) {
         switch (operationStatus) {
-            case "InProgress":
+            case "inprogress":
                 return LongRunningOperationStatus.IN_PROGRESS;
-            case "Success":
+            case "success":
                 return LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-            case "Failed":
+            case "failed":
                 return LongRunningOperationStatus.FAILED;
             default:
                 // Should not reach here
@@ -203,15 +203,14 @@ public final class KeyVaultBackupAsyncClient {
      * Initiates a full restore of the Key Vault.
      *
      * @param blobStorageUrl The URL for the Blob Storage resource where the backup is located.
-     * @param sasToken       A Shared Access Signature (SAS) token to authorize access to the blob.
-     * @param folderName     The name of the folder containing the backup data to restore.
+     * @param sasToken A Shared Access Signature (SAS) token to authorize access to the blob.
+     * @param folderName The name of the folder containing the backup data to restore.
      * @return A {@link PollerFlux} polling on the {@link KeyVaultRestoreOperation backup operation} status.
      * @throws NullPointerException if the {@code blobStorageUrl}, {@code sasToken} or {@code folderName} are {@code
-     *                              null}.
+     * null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<KeyVaultRestoreOperation, Void> beginRestore(String blobStorageUrl, String sasToken,
-                                                                   String folderName) {
+    public PollerFlux<KeyVaultRestoreOperation, Void> beginRestore(String blobStorageUrl, String sasToken, String folderName) {
         Objects.requireNonNull(blobStorageUrl,
             String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
                 "'blobStorageUrl'"));
@@ -234,15 +233,14 @@ public final class KeyVaultBackupAsyncClient {
      * Initiates a full restore of the Key Vault.
      *
      * @param blobStorageUrl The URL for the Blob Storage resource where the backup is located.
-     * @param sasToken       A Shared Access Signature (SAS) token to authorize access to the blob.
-     * @param folderName     The name of the folder containing the backup data to restore.
-     * @param context        Additional context that is passed through the HTTP pipeline during the service call.
+     * @param sasToken A Shared Access Signature (SAS) token to authorize access to the blob.
+     * @param folderName The name of the folder containing the backup data to restore.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return A {@link PollerFlux} polling on the {@link KeyVaultRestoreOperation backup operation} status.
      * @throws KeyVaultErrorException if the operation is unsuccessful.
-     * @throws NullPointerException   if the {@code blobStorageUrl} or {@code sasToken} are {@code null}.
+     * @throws NullPointerException if the {@code blobStorageUrl} or {@code sasToken} are {@code null}.
      */
-    Mono<Response<KeyVaultRestoreOperation>> restoreWithResponse(String blobStorageUrl, String sasToken,
-                                                                 String folderName, Context context) {
+    Mono<Response<KeyVaultRestoreOperation>> restoreWithResponse(String blobStorageUrl, String sasToken, String folderName, Context context) {
         SASTokenParameter sasTokenParameter = new SASTokenParameter()
             .setStorageResourceUri(blobStorageUrl)
             .setToken(sasToken);
@@ -297,7 +295,7 @@ public final class KeyVaultBackupAsyncClient {
                     .map(response ->
                         new SimpleResponse<>(response,
                             (KeyVaultRestoreOperation) transformToLongRunningOperation(response.getValue())))
-                    .flatMap(this::processRestoreOperationResponse);
+                    .flatMap(KeyVaultBackupAsyncClient::processRestoreOperationResponse);
             } catch (HttpResponseException e) {
                 //noinspection ThrowableNotThrown
                 logger.logExceptionAsError(e);
@@ -307,27 +305,27 @@ public final class KeyVaultBackupAsyncClient {
         };
     }
 
-    private Mono<PollResponse<KeyVaultRestoreOperation>> processRestoreOperationResponse(Response<KeyVaultRestoreOperation> response) {
+    private static Mono<PollResponse<KeyVaultRestoreOperation>> processRestoreOperationResponse(Response<KeyVaultRestoreOperation> response) {
         String operationStatus = response.getValue().getStatus().toLowerCase();
 
-        return Mono.just(new PollResponse<>(toLongRunningOperationStatus(operationStatus), response.getValue()));
+        return Mono.just(new PollResponse<>(
+            toLongRunningOperationStatus(operationStatus.toLowerCase()), response.getValue()));
     }
 
     /**
      * Restores all versions of a given key using the supplied SAS token pointing to a previously stored Azure Blob
      * storage backup folder.
      *
-     * @param keyName        The name of the key to be restored.
+     * @param keyName The name of the key to be restored.
      * @param blobStorageUrl The URL for the Blob Storage resource where the backup is located.
-     * @param sasToken       A Shared Access Signature (SAS) token to authorize access to the blob.
-     * @param folderName     The name of the folder containing the backup data to restore.
+     * @param sasToken A Shared Access Signature (SAS) token to authorize access to the blob.
+     * @param folderName The name of the folder containing the backup data to restore.
      * @return A {@link PollerFlux} polling on the {@link KeyVaultRestoreOperation backup operation} status.
      * @throws NullPointerException if the {@code keyName}, {@code blobStorageUrl}, {@code sasToken} or {@code
-     *                              folderName} are {@code null}.
+     * folderName} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<KeyVaultRestoreOperation, Void> beginSelectiveRestore(String keyName, String blobStorageUrl,
-                                                                            String sasToken, String folderName) {
+    public PollerFlux<KeyVaultRestoreOperation, Void> beginSelectiveRestore(String keyName, String blobStorageUrl, String sasToken, String folderName) {
         Objects.requireNonNull(keyName,
             String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
                 "'keyName'"));
@@ -352,18 +350,16 @@ public final class KeyVaultBackupAsyncClient {
      * Restores all versions of a given key using the supplied SAS token pointing to a previously stored Azure Blob
      * storage backup folder.
      *
-     * @param keyName        The name of the key to be restored.
+     * @param keyName The name of the key to be restored.
      * @param blobStorageUrl The URL for the Blob Storage resource where the backup is located.
-     * @param sasToken       A Shared Access Signature (SAS) token to authorize access to the blob.
-     * @param folderName     The name of the folder containing the backup data to restore.
-     * @param context        Additional context that is passed through the HTTP pipeline during the service call.
+     * @param sasToken A Shared Access Signature (SAS) token to authorize access to the blob.
+     * @param folderName The name of the folder containing the backup data to restore.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return A {@link PollerFlux} polling on the {@link KeyVaultRestoreOperation backup operation} status.
      * @throws KeyVaultErrorException if the operation is unsuccessful.
-     * @throws NullPointerException   if the {@code blobStorageUrl} or {@code sasToken} are {@code null}.
+     * @throws NullPointerException if the {@code blobStorageUrl} or {@code sasToken} are {@code null}.
      */
-    Mono<Response<KeyVaultRestoreOperation>> selectiveRestoreWithResponse(String keyName, String blobStorageUrl,
-                                                                          String sasToken, String folderName,
-                                                                          Context context) {
+    Mono<Response<KeyVaultRestoreOperation>> selectiveRestoreWithResponse(String keyName, String blobStorageUrl, String sasToken, String folderName, Context context) {
         SASTokenParameter sasTokenParameter = new SASTokenParameter()
             .setStorageResourceUri(blobStorageUrl)
             .setToken(sasToken);
@@ -421,7 +417,7 @@ public final class KeyVaultBackupAsyncClient {
                     .map(response ->
                         new SimpleResponse<>(response,
                             (KeyVaultRestoreOperation) transformToLongRunningOperation(response.getValue())))
-                    .flatMap(this::processRestoreOperationResponse);
+                    .flatMap(KeyVaultBackupAsyncClient::processRestoreOperationResponse);
             } catch (HttpResponseException e) {
                 //noinspection ThrowableNotThrown
                 logger.logExceptionAsError(e);

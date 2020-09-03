@@ -12,16 +12,15 @@ public final class KeyVaultBackupOperation extends KeyVaultLongRunningOperation 
     /**
      * Creates an object containing the details of a {@link KeyVaultBackupOperation}.
      *
-     * @param status                       Status of the {@link KeyVaultBackupOperation}.
-     * @param statusDetails                The status details of the {@link KeyVaultBackupOperation}.
-     * @param error                        Error encountered, if any, during the {@link KeyVaultBackupOperation}.
-     * @param startTime                    The start time of the {@link KeyVaultBackupOperation} in UTC.
-     * @param endTime                      The end time of the {@link KeyVaultBackupOperation} in UTC.
-     * @param jobId                        Identifier for the full {@link KeyVaultBackupOperation}.
+     * @param status Status of the {@link KeyVaultBackupOperation}.
+     * @param statusDetails The status details of the {@link KeyVaultBackupOperation}.
+     * @param error Error encountered, if any, during the {@link KeyVaultBackupOperation}.
+     * @param startTime The start time of the {@link KeyVaultBackupOperation} in UTC.
+     * @param endTime The end time of the {@link KeyVaultBackupOperation} in UTC.
+     * @param jobId Identifier for the full {@link KeyVaultBackupOperation}.
      * @param azureStorageBlobContainerUri The Azure blob storage container URI which contains the backup.
      */
-    public KeyVaultBackupOperation(String status, String statusDetails, KeyVaultError error, String jobId,
-                                   Long startTime, Long endTime, String azureStorageBlobContainerUri) {
+    public KeyVaultBackupOperation(String status, String statusDetails, KeyVaultError error, String jobId, Long startTime, Long endTime, String azureStorageBlobContainerUri) {
         super(status, statusDetails, error, jobId, startTime, endTime);
         this.azureStorageBlobContainerUri = azureStorageBlobContainerUri;
     }

@@ -41,7 +41,7 @@ public final class KeyVaultBackupClient {
      * Initiates a full backup of the Key Vault.
      *
      * @param blobStorageUrl The URL for the Blob Storage resource where the backup will be located.
-     * @param sasToken       A Shared Access Signature (SAS) token to authorize access to the blob.
+     * @param sasToken A Shared Access Signature (SAS) token to authorize access to the blob.
      * @return A {@link SyncPoller} polling on the {@link KeyVaultBackupOperation backup operation} status.
      * @throws NullPointerException if the {@code blobStorageUrl} or {@code sasToken} are {@code null}.
      */
@@ -54,15 +54,14 @@ public final class KeyVaultBackupClient {
      * Initiates a full restore of the Key Vault.
      *
      * @param blobStorageUrl The URL for the Blob Storage resource where the backup is located.
-     * @param sasToken       A Shared Access Signature (SAS) token to authorize access to the blob.
-     * @param folderName     The name of the folder containing the backup data to restore.
+     * @param sasToken A Shared Access Signature (SAS) token to authorize access to the blob.
+     * @param folderName The name of the folder containing the backup data to restore.
      * @return A {@link SyncPoller} polling on the {@link KeyVaultRestoreOperation backup operation} status.
      * @throws NullPointerException if the {@code blobStorageUrl}, {@code sasToken} or {@code folderName} are {@code
-     *                              null}.
+     * null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<KeyVaultRestoreOperation, Void> beginRestore(String blobStorageUrl, String sasToken,
-                                                                   String folderName) {
+    public SyncPoller<KeyVaultRestoreOperation, Void> beginRestore(String blobStorageUrl, String sasToken, String folderName) {
         return asyncClient.beginRestore(blobStorageUrl, sasToken, folderName).getSyncPoller();
     }
 
@@ -70,17 +69,16 @@ public final class KeyVaultBackupClient {
      * Restores all versions of a given key using the supplied SAS token pointing to a previously stored Azure Blob
      * storage backup folder.
      *
-     * @param keyName        The name of the key to be restored.
+     * @param keyName The name of the key to be restored.
      * @param blobStorageUrl The URL for the Blob Storage resource where the backup is located.
-     * @param sasToken       A Shared Access Signature (SAS) token to authorize access to the blob.
-     * @param folderName     The name of the folder containing the backup data to restore.
+     * @param sasToken A Shared Access Signature (SAS) token to authorize access to the blob.
+     * @param folderName The name of the folder containing the backup data to restore.
      * @return A {@link PollerFlux} polling on the {@link KeyVaultRestoreOperation backup operation} status.
      * @throws NullPointerException if the {@code keyName}, {@code blobStorageUrl}, {@code sasToken} or {@code
-     *                              folderName} are {@code null}.
+     * folderName} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<KeyVaultRestoreOperation, Void> beginSelectiveRestore(String keyName, String blobStorageUrl,
-                                                                            String sasToken, String folderName) {
+    public SyncPoller<KeyVaultRestoreOperation, Void> beginSelectiveRestore(String keyName, String blobStorageUrl, String sasToken, String folderName) {
         return asyncClient.beginSelectiveRestore(keyName, blobStorageUrl, sasToken, folderName).getSyncPoller();
     }
 }
