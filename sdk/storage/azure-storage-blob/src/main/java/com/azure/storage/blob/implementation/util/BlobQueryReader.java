@@ -20,6 +20,7 @@ import com.azure.storage.internal.avro.implementation.AvroObject;
 import com.azure.storage.internal.avro.implementation.AvroReaderFactory;
 import com.azure.storage.internal.avro.implementation.schema.AvroSchema;
 import com.azure.storage.internal.avro.implementation.schema.primitive.AvroNullSchema;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -65,14 +66,12 @@ public class BlobQueryReader {
      * @return The parsed query reactive stream.
      */
     public Flux<ByteBuffer> read() {
-        AvroReaderFactory avroReaderFactory;
         try {
-            avroReaderFactory = new AvroReaderFactory();
-            return avroReaderFactory.getAvroReader(avro).read()
+            return new AvroReaderFactory().getAvroReader(avro).read()
                 .map(AvroObject::getObject)
                 .concatMap(this::parseRecord);
-        } catch (RuntimeException ex) {
-            return FluxUtil.fluxError(logger, ex);
+        } catch (Throwable ex) {
+            return Flux.error(logger.logThrowableAsError(Exceptions.propagate(ex)));
         }
     }
 
