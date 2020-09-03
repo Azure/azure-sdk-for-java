@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.implementation.util;
 
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.models.DelimitedTextConfiguration;
 import com.azure.storage.blob.implementation.models.JsonTextConfiguration;
@@ -14,6 +15,7 @@ import com.azure.storage.blob.models.BlobQueryError;
 import com.azure.storage.blob.models.BlobQueryJsonSerialization;
 import com.azure.storage.blob.models.BlobQueryProgress;
 import com.azure.storage.blob.models.BlobQuerySerialization;
+import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 import com.azure.storage.internal.avro.implementation.AvroConstants;
 import com.azure.storage.internal.avro.implementation.AvroObject;
 import com.azure.storage.internal.avro.implementation.AvroReaderFactory;
@@ -35,6 +37,7 @@ import java.util.function.Consumer;
  */
 public class BlobQueryReader {
 
+    private final ClientLogger logger = new ClientLogger(BlobQueryReader.class);
     private final Flux<ByteBuffer> avro;
     private final Consumer<BlobQueryProgress> progressConsumer;
     private final Consumer<BlobQueryError> errorConsumer;
@@ -63,9 +66,13 @@ public class BlobQueryReader {
      * @return The parsed query reactive stream.
      */
     public Flux<ByteBuffer> read() {
-        return new AvroReaderFactory().getAvroReader(avro).read()
-            .map(AvroObject::getObject)
-            .concatMap(this::parseRecord);
+        try {
+            return new AvroReaderFactory().getAvroReader(avro).read()
+                .map(AvroObject::getObject)
+                .concatMap(this::parseRecord);
+        } catch (RuntimeException ex) {
+            return FluxUtil.fluxError(logger, ex);
+        }
     }
 
     /**
