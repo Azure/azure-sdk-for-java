@@ -3,7 +3,6 @@
 
 package com.azure.digitaltwins.core;
 
-import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
 import com.azure.digitaltwins.core.implementation.serialization.BasicRelationship;
