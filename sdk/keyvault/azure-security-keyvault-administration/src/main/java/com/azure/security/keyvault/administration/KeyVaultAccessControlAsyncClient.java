@@ -433,9 +433,9 @@ public final class KeyVaultAccessControlAsyncClient {
             return clientImpl.getRoleAssignments()
                 .getWithResponseAsync(vaultUrl, roleScope.toString(), name, context.addData(AZ_TRACING_NAMESPACE_KEY,
                     KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.info("Creating role assignment - {}", name))
-                .doOnSuccess(response -> logger.info("Created role assignment - {}", response.getValue().getName()))
-                .doOnError(error -> logger.warning("Failed to create role assignment - {}", name, error))
+                .doOnRequest(ignored -> logger.info("Retrieving role assignment - {}", name))
+                .doOnSuccess(response -> logger.info("Retrieved role assignment - {}", response.getValue().getName()))
+                .doOnError(error -> logger.warning("Failed to retrieved role assignment - {}", name, error))
                 .map(this::transformRoleAssignmentResponse);
         } catch (RuntimeException e) {
             return monoError(logger, e);
@@ -496,9 +496,9 @@ public final class KeyVaultAccessControlAsyncClient {
             return clientImpl.getRoleAssignments()
                 .deleteWithResponseAsync(vaultUrl, roleScope.toString(), name, context.addData(AZ_TRACING_NAMESPACE_KEY,
                     KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.info("Creating role assignment - {}", name))
-                .doOnSuccess(response -> logger.info("Created role assignment - {}", response.getValue().getName()))
-                .doOnError(error -> logger.warning("Failed to create role assignment - {}", name, error))
+                .doOnRequest(ignored -> logger.info("Deleting role assignment - {}", name))
+                .doOnSuccess(response -> logger.info("Deleted role assignment - {}", response.getValue().getName()))
+                .doOnError(error -> logger.warning("Failed to delete role assignment - {}", name, error))
                 .map(this::transformRoleAssignmentResponse);
         } catch (RuntimeException e) {
             return monoError(logger, e);
