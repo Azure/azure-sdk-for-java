@@ -68,7 +68,7 @@
       </dependency>
       <dependency>
         <groupId>com.microsoft.azure</groupId>
-        <artifactId>azure-active-directory-spring-boot-starter</artifactId>
+        <artifactId>azure-active-directory-spring-boot-2-3-starter</artifactId>
         <version>${azure.spring.boot.integration.version}</version>
       </dependency>
       <dependency>

@@ -88,7 +88,8 @@ com.azure.resourcemanager:azure-resourcemanager-storage;2.0.0-beta.3;2.0.0-beta.
 com.azure.resourcemanager:azure-resourcemanager-trafficmanager;2.0.0-beta.4;2.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-test;2.0.0-beta.4;2.0.0-beta.4
 com.microsoft.azure:azure-active-directory-b2c-spring-boot-starter;2.3.3;2.4.0-beta.1
-com.microsoft.azure:azure-active-directory-spring-boot-starter;2.3.3;2.4.0-beta.1
+com.microsoft.azure:azure-active-directory-spring-boot-2-2-starter;2.4.0-beta.1;2.4.0-beta.1
+com.microsoft.azure:azure-active-directory-spring-boot-2-3-starter;2.4.0-beta.1;2.4.0-beta.1
 com.microsoft.azure:azure-cosmosdb-spring-boot-2-3-starter;2.4.0-beta.1;2.4.0-beta.1
 com.microsoft.azure:azure-cosmosdb-spring-boot-2-2-starter;2.4.0-beta.1;2.4.0-beta.1
 com.microsoft.azure:azure-data-gremlin-spring-boot-starter;2.3.3;2.4.0-beta.1

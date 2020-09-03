@@ -36,9 +36,12 @@ extends:
       - name: azure-spring-boot-starter
         groupId: com.microsoft.azure
         safeName: azurespringbootstarter
-      - name: azure-active-directory-spring-boot-starter
+      - name: azure-active-directory-spring-boot-2-2-starter
         groupId: com.microsoft.azure
-        safeName: azurespringbootstarteractivedirectory
+        safeName: azurespringboot22starteractivedirectory
+      - name: azure-active-directory-spring-boot-2-3-starter
+        groupId: com.microsoft.azure
+        safeName: azurespringboot23starteractivedirectory
       - name: azure-active-directory-b2c-spring-boot-starter
         groupId: com.microsoft.azure
         safeName: azurespringbootstarteractivedirectoryb2c
