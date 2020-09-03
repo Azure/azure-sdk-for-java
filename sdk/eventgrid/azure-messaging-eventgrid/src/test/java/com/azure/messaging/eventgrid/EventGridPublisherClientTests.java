@@ -203,6 +203,7 @@ public class EventGridPublisherClientTests extends TestBase {
         for (int i = 0; i < 5; i++) {
             events.add(new HashMap<String, String>() {{
                 put("id", UUID.randomUUID().toString());
+                put("time", OffsetDateTime.now().toString());
                 put("subject", "Test");
                 put("foo", "bar");
                 put("type", "Microsoft.MockPublisher.TestEvent");
