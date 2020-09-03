@@ -12,6 +12,7 @@ import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.OpinionSentiment;
 import com.azure.ai.textanalytics.models.PiiEntity;
+import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
@@ -251,7 +252,9 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void recognizePiiEntities() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String
-        for (PiiEntity entity : textAnalyticsClient.recognizePiiEntities("My SSN is 859-98-0987")) {
+        PiiEntityCollection piiEntityCollection = textAnalyticsClient.recognizePiiEntities("My SSN is 859-98-0987");
+        System.out.printf("Redacted Text: %s%n", piiEntityCollection.getRedactedText());
+        for (PiiEntity entity : piiEntityCollection) {
             System.out.printf(
                 "Recognized Personally Identifiable Information entity: %s, entity category: %s,"
                     + " entity subcategory: %s, confidence score: %f.%n",
@@ -265,8 +268,10 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void recognizePiiEntitiesWithLanguage() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String-String
-        textAnalyticsClient.recognizePiiEntities("My SSN is 859-98-0987", "en")
-            .forEach(entity -> System.out.printf(
+        PiiEntityCollection piiEntityCollection = textAnalyticsClient.recognizePiiEntities(
+            "My SSN is 859-98-0987", "en");
+        System.out.printf("Redacted Text: %s%n", piiEntityCollection.getRedactedText());
+        piiEntityCollection.forEach(entity -> System.out.printf(
                 "Recognized Personally Identifiable Information entity: %s, entity category: %s,"
                     + " entity subcategory: %s, confidence score: %f.%n",
                 entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore()));
@@ -291,11 +296,14 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         System.out.printf("A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-        resultCollection.forEach(recognizePiiEntitiesResult ->
-            recognizePiiEntitiesResult.getEntities().forEach(entity -> System.out.printf(
+        resultCollection.forEach(recognizePiiEntitiesResult -> {
+            PiiEntityCollection piiEntityCollection = recognizePiiEntitiesResult.getEntities();
+            System.out.printf("Redacted Text: %s%n", piiEntityCollection.getRedactedText());
+            piiEntityCollection.forEach(entity -> System.out.printf(
                 "Recognized Personally Identifiable Information entity: %s, entity category: %s,"
                     + " entity subcategory: %s, confidence score: %f.%n",
-                entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore())));
+                entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore()));
+        });
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions
     }
 
@@ -320,11 +328,14 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         System.out.printf("A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-        resultCollection.forEach(recognizePiiEntitiesResult ->
-            recognizePiiEntitiesResult.getEntities().forEach(entity -> System.out.printf(
+        resultCollection.forEach(recognizePiiEntitiesResult -> {
+            PiiEntityCollection piiEntityCollection = recognizePiiEntitiesResult.getEntities();
+            System.out.printf("Redacted Text: %s%n", piiEntityCollection.getRedactedText());
+            piiEntityCollection.forEach(entity -> System.out.printf(
                 "Recognized Personally Identifiable Information entity: %s, entity category: %s,"
                     + " entity subcategory: %s, confidence score: %f.%n",
-                entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore())));
+                entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore()));
+        });
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable-TextAnalyticsRequestOptions-Context
     }
 
