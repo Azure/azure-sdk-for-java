@@ -93,6 +93,9 @@ final class TestUtils {
     static final List<String> DETECT_LANGUAGE_INPUTS = asList(
         "This is written in English", "Este es un documento escrito en Español.", "~@!~:)");
 
+    static final String PII_ENTITY_OFFSET_INPUT = "SSN: 859-98-0987";
+    static final String SENTIMENT_OFFSET_INPUT = "The hotel was dark and unclean.";
+
     // "personal" and "social" are common to both English and Spanish and if given with limited context the
     // response will be based on the "US" country hint. If the origin of the text is known to be coming from
     // Spanish that can be given as a hint.
