@@ -89,7 +89,7 @@ public class SendAndReceiveSessionMessageSample {
             System.out.println("Received Message Session Id: " + message.getSessionId());
             System.out.println("Received Message: " + new String(message.getBody()));
 
-            return receiver.complete(message.getLockToken(), message.getSessionId());
+            return receiver.complete(message);
         }).subscribe();
 
         // subscribe() is not a blocking call. We sleep here so the program does not end before the send is complete.
