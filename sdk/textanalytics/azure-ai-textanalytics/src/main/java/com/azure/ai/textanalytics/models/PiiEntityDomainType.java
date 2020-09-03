@@ -3,44 +3,28 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 /**
  * Defines values for PiiEntityDomainType.
  */
-public enum PiiEntityDomainType {
+@Immutable
+public final class PiiEntityDomainType extends ExpandableStringEnum<PiiEntityDomainType> {
     /**
      * Protected health information (PHI) as the PiiEntityDomainType.
      */
-    PROTECTED_HEALTH_INFORMATION("PHI");
-
-    /** The actual serialized value for a PiiEntityDomainType instance. */
-    private final String value;
-
-    PiiEntityDomainType(String value) {
-        this.value = value;
-    }
+    public static final PiiEntityDomainType PROTECTED_HEALTH_INFORMATION = fromString("PHI");
 
     /**
-     * Parses a serialized value to a PiiEntityDomainType instance.
+     * Creates or finds a {@link EntityCategory} from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed PiiEntityDomainType object, or null if unable to parse.
+     * @param name The string name to look for.
+     * @return The corresponding {@link EntityCategory}.
      */
-    public static PiiEntityDomainType fromString(String value) {
-        PiiEntityDomainType[] items = PiiEntityDomainType.values();
-        for (PiiEntityDomainType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * The string representation of the enum value.
-     *
-     * @return the string representation of the enum value.
-     */
-    public String toString() {
-        return this.value;
+    @JsonCreator
+    public static PiiEntityDomainType fromString(String name) {
+        return fromString(name, PiiEntityDomainType.class);
     }
 }

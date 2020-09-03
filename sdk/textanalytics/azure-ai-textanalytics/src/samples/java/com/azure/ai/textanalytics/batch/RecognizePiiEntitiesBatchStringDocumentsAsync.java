@@ -5,6 +5,7 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
+import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntityOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
@@ -60,9 +61,11 @@ public class RecognizePiiEntitiesBatchStringDocumentsAsync {
                         System.out.printf("Cannot recognize Personally Identifiable Information entities. Error: %s%n", entitiesResult.getError().getMessage());
                     } else {
                         // Valid document
-                        entitiesResult.getEntities().forEach(entity -> System.out.printf(
-                            "Recognized Personally Identifiable Information entity: %s, entity category: %s, entity subcategory: %s, confidence score: %f.%n",
-                            entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore()));
+                        PiiEntityCollection piiEntityCollection = entitiesResult.getEntities();
+                        System.out.printf("Redacted Text: %s%n", piiEntityCollection.getRedactedText());
+                        piiEntityCollection.forEach(entity -> System.out.printf(
+                            "Recognized Personally Identifiable Information entity: %s, entity category: %s, entity subcategory: %s, offset: %s, length: %s, confidence score: %f.%n",
+                            entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getOffset(), entity.getLength(), entity.getConfidenceScore()));
                     }
                 }
             },
