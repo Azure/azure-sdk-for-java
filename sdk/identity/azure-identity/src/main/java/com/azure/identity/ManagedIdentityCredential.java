@@ -39,8 +39,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
             .identityClientOptions(identityClientOptions)
             .build();
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
-        if ((configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT) &&
-                 configuration.contains(Configuration.PROPERTY_MSI_SECRET))
+        if (configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT)
                 || (configuration.contains(PROPERTY_IDENTITY_ENDPOINT) &&
                         configuration.contains(PROPERTY_IDENTITY_HEADER))) {
             appServiceMSICredential = new AppServiceMsiCredential(clientId, identityClient);
