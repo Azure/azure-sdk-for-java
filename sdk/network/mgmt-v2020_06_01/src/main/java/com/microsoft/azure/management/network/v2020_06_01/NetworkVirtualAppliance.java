@@ -57,6 +57,11 @@ public interface NetworkVirtualAppliance extends HasInner<NetworkVirtualApplianc
     ManagedServiceIdentity identity();
 
     /**
+     * @return the inboundSecurityRules value.
+     */
+    List<SubResource> inboundSecurityRules();
+
+    /**
      * @return the nvaSku value.
      */
     VirtualApplianceSkuProperties nvaSku();

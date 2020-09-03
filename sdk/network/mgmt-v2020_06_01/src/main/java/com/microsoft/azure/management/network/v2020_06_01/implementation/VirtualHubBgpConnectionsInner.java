@@ -28,12 +28,15 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.HTTP;
 import retrofit2.http.Path;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
+import com.microsoft.azure.LongRunningFinalState;
+import com.microsoft.azure.LongRunningOperationOptions;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -84,6 +87,22 @@ public class VirtualHubBgpConnectionsInner {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2020_06_01.VirtualHubBgpConnections list" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/bgpConnections")
         Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("virtualHubName") String virtualHubName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2020_06_01.VirtualHubBgpConnections listLearnedRoutes" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{hubName}/bgpConnections/{connectionName}/learnedRoutes")
+        Observable<Response<ResponseBody>> listLearnedRoutes(@Path("resourceGroupName") String resourceGroupName, @Path("hubName") String hubName, @Path("connectionName") String connectionName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2020_06_01.VirtualHubBgpConnections beginListLearnedRoutes" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{hubName}/bgpConnections/{connectionName}/learnedRoutes")
+        Observable<Response<ResponseBody>> beginListLearnedRoutes(@Path("resourceGroupName") String resourceGroupName, @Path("hubName") String hubName, @Path("connectionName") String connectionName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2020_06_01.VirtualHubBgpConnections listAdvertisedRoutes" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{hubName}/bgpConnections/{connectionName}/advertisedRoutes")
+        Observable<Response<ResponseBody>> listAdvertisedRoutes(@Path("resourceGroupName") String resourceGroupName, @Path("hubName") String hubName, @Path("connectionName") String connectionName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2020_06_01.VirtualHubBgpConnections beginListAdvertisedRoutes" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{hubName}/bgpConnections/{connectionName}/advertisedRoutes")
+        Observable<Response<ResponseBody>> beginListAdvertisedRoutes(@Path("resourceGroupName") String resourceGroupName, @Path("hubName") String hubName, @Path("connectionName") String connectionName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2020_06_01.VirtualHubBgpConnections listNext" })
         @GET
@@ -646,6 +665,338 @@ public class VirtualHubBgpConnectionsInner {
     private ServiceResponse<PageImpl<BgpConnectionInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<BgpConnectionInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<BgpConnectionInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Retrieves a list of routes the virtual hub bgp connection has learned.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the virtual hub.
+     * @param connectionName The name of the virtual hub bgp connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PeerRouteListInner object if successful.
+     */
+    public PeerRouteListInner listLearnedRoutes(String resourceGroupName, String hubName, String connectionName) {
+        return listLearnedRoutesWithServiceResponseAsync(resourceGroupName, hubName, connectionName).toBlocking().last().body();
+    }
+
+    /**
+     * Retrieves a list of routes the virtual hub bgp connection has learned.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the virtual hub.
+     * @param connectionName The name of the virtual hub bgp connection.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<PeerRouteListInner> listLearnedRoutesAsync(String resourceGroupName, String hubName, String connectionName, final ServiceCallback<PeerRouteListInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listLearnedRoutesWithServiceResponseAsync(resourceGroupName, hubName, connectionName), serviceCallback);
+    }
+
+    /**
+     * Retrieves a list of routes the virtual hub bgp connection has learned.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the virtual hub.
+     * @param connectionName The name of the virtual hub bgp connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<PeerRouteListInner> listLearnedRoutesAsync(String resourceGroupName, String hubName, String connectionName) {
+        return listLearnedRoutesWithServiceResponseAsync(resourceGroupName, hubName, connectionName).map(new Func1<ServiceResponse<PeerRouteListInner>, PeerRouteListInner>() {
+            @Override
+            public PeerRouteListInner call(ServiceResponse<PeerRouteListInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Retrieves a list of routes the virtual hub bgp connection has learned.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the virtual hub.
+     * @param connectionName The name of the virtual hub bgp connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<PeerRouteListInner>> listLearnedRoutesWithServiceResponseAsync(String resourceGroupName, String hubName, String connectionName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (hubName == null) {
+            throw new IllegalArgumentException("Parameter hubName is required and cannot be null.");
+        }
+        if (connectionName == null) {
+            throw new IllegalArgumentException("Parameter connectionName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2020-06-01";
+        Observable<Response<ResponseBody>> observable = service.listLearnedRoutes(resourceGroupName, hubName, connectionName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.LOCATION), new TypeToken<PeerRouteListInner>() { }.getType());
+    }
+
+    /**
+     * Retrieves a list of routes the virtual hub bgp connection has learned.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the virtual hub.
+     * @param connectionName The name of the virtual hub bgp connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PeerRouteListInner object if successful.
+     */
+    public PeerRouteListInner beginListLearnedRoutes(String resourceGroupName, String hubName, String connectionName) {
+        return beginListLearnedRoutesWithServiceResponseAsync(resourceGroupName, hubName, connectionName).toBlocking().single().body();
+    }
+
+    /**
+     * Retrieves a list of routes the virtual hub bgp connection has learned.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the virtual hub.
+     * @param connectionName The name of the virtual hub bgp connection.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<PeerRouteListInner> beginListLearnedRoutesAsync(String resourceGroupName, String hubName, String connectionName, final ServiceCallback<PeerRouteListInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginListLearnedRoutesWithServiceResponseAsync(resourceGroupName, hubName, connectionName), serviceCallback);
+    }
+
+    /**
+     * Retrieves a list of routes the virtual hub bgp connection has learned.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the virtual hub.
+     * @param connectionName The name of the virtual hub bgp connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PeerRouteListInner object
+     */
+    public Observable<PeerRouteListInner> beginListLearnedRoutesAsync(String resourceGroupName, String hubName, String connectionName) {
+        return beginListLearnedRoutesWithServiceResponseAsync(resourceGroupName, hubName, connectionName).map(new Func1<ServiceResponse<PeerRouteListInner>, PeerRouteListInner>() {
+            @Override
+            public PeerRouteListInner call(ServiceResponse<PeerRouteListInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Retrieves a list of routes the virtual hub bgp connection has learned.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the virtual hub.
+     * @param connectionName The name of the virtual hub bgp connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PeerRouteListInner object
+     */
+    public Observable<ServiceResponse<PeerRouteListInner>> beginListLearnedRoutesWithServiceResponseAsync(String resourceGroupName, String hubName, String connectionName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (hubName == null) {
+            throw new IllegalArgumentException("Parameter hubName is required and cannot be null.");
+        }
+        if (connectionName == null) {
+            throw new IllegalArgumentException("Parameter connectionName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2020-06-01";
+        return service.beginListLearnedRoutes(resourceGroupName, hubName, connectionName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PeerRouteListInner>>>() {
+                @Override
+                public Observable<ServiceResponse<PeerRouteListInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PeerRouteListInner> clientResponse = beginListLearnedRoutesDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PeerRouteListInner> beginListLearnedRoutesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PeerRouteListInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PeerRouteListInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the virtual hub.
+     * @param connectionName The name of the virtual hub bgp connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PeerRouteListInner object if successful.
+     */
+    public PeerRouteListInner listAdvertisedRoutes(String resourceGroupName, String hubName, String connectionName) {
+        return listAdvertisedRoutesWithServiceResponseAsync(resourceGroupName, hubName, connectionName).toBlocking().last().body();
+    }
+
+    /**
+     * Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the virtual hub.
+     * @param connectionName The name of the virtual hub bgp connection.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<PeerRouteListInner> listAdvertisedRoutesAsync(String resourceGroupName, String hubName, String connectionName, final ServiceCallback<PeerRouteListInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listAdvertisedRoutesWithServiceResponseAsync(resourceGroupName, hubName, connectionName), serviceCallback);
+    }
+
+    /**
+     * Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the virtual hub.
+     * @param connectionName The name of the virtual hub bgp connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<PeerRouteListInner> listAdvertisedRoutesAsync(String resourceGroupName, String hubName, String connectionName) {
+        return listAdvertisedRoutesWithServiceResponseAsync(resourceGroupName, hubName, connectionName).map(new Func1<ServiceResponse<PeerRouteListInner>, PeerRouteListInner>() {
+            @Override
+            public PeerRouteListInner call(ServiceResponse<PeerRouteListInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the virtual hub.
+     * @param connectionName The name of the virtual hub bgp connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<PeerRouteListInner>> listAdvertisedRoutesWithServiceResponseAsync(String resourceGroupName, String hubName, String connectionName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (hubName == null) {
+            throw new IllegalArgumentException("Parameter hubName is required and cannot be null.");
+        }
+        if (connectionName == null) {
+            throw new IllegalArgumentException("Parameter connectionName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2020-06-01";
+        Observable<Response<ResponseBody>> observable = service.listAdvertisedRoutes(resourceGroupName, hubName, connectionName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.LOCATION), new TypeToken<PeerRouteListInner>() { }.getType());
+    }
+
+    /**
+     * Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the virtual hub.
+     * @param connectionName The name of the virtual hub bgp connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PeerRouteListInner object if successful.
+     */
+    public PeerRouteListInner beginListAdvertisedRoutes(String resourceGroupName, String hubName, String connectionName) {
+        return beginListAdvertisedRoutesWithServiceResponseAsync(resourceGroupName, hubName, connectionName).toBlocking().single().body();
+    }
+
+    /**
+     * Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the virtual hub.
+     * @param connectionName The name of the virtual hub bgp connection.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<PeerRouteListInner> beginListAdvertisedRoutesAsync(String resourceGroupName, String hubName, String connectionName, final ServiceCallback<PeerRouteListInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginListAdvertisedRoutesWithServiceResponseAsync(resourceGroupName, hubName, connectionName), serviceCallback);
+    }
+
+    /**
+     * Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the virtual hub.
+     * @param connectionName The name of the virtual hub bgp connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PeerRouteListInner object
+     */
+    public Observable<PeerRouteListInner> beginListAdvertisedRoutesAsync(String resourceGroupName, String hubName, String connectionName) {
+        return beginListAdvertisedRoutesWithServiceResponseAsync(resourceGroupName, hubName, connectionName).map(new Func1<ServiceResponse<PeerRouteListInner>, PeerRouteListInner>() {
+            @Override
+            public PeerRouteListInner call(ServiceResponse<PeerRouteListInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the virtual hub.
+     * @param connectionName The name of the virtual hub bgp connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PeerRouteListInner object
+     */
+    public Observable<ServiceResponse<PeerRouteListInner>> beginListAdvertisedRoutesWithServiceResponseAsync(String resourceGroupName, String hubName, String connectionName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (hubName == null) {
+            throw new IllegalArgumentException("Parameter hubName is required and cannot be null.");
+        }
+        if (connectionName == null) {
+            throw new IllegalArgumentException("Parameter connectionName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2020-06-01";
+        return service.beginListAdvertisedRoutes(resourceGroupName, hubName, connectionName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PeerRouteListInner>>>() {
+                @Override
+                public Observable<ServiceResponse<PeerRouteListInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PeerRouteListInner> clientResponse = beginListAdvertisedRoutesDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PeerRouteListInner> beginListAdvertisedRoutesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PeerRouteListInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PeerRouteListInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
