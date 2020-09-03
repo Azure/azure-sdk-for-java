@@ -7,7 +7,7 @@
     }
   },
   "variables": {
-    "apiVersion": "2020-04-01-preview",
+    "apiVersion": "2020-06-01",
     "eventGridTopicName": "[concat(parameters('baseName'), 'topic')]",
     "cloudeventTopicName": "[concat(parameters('baseName'), 'cloudevent-topic')]",
     "customeventTopicName": "[concat(parameters('baseName'), 'customevent-topic')]"
@@ -69,7 +69,7 @@
       "type": "string",
       "value": "[reference(variables('eventGridTopicName')).endpoint]"
     },
-    "AZURE_EVENTGRID_EVENTGRID_Key": {
+    "AZURE_EVENTGRID_EVENTGRID_KEY": {
       "type": "string",
       "value": "[listKeys(resourceId('Microsoft.EventGrid/topics', variables('eventGridTopicName')), variables('apiVersion')).key1]"
     },
