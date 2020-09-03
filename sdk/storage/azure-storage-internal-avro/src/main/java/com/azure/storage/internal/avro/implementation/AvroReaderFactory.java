@@ -3,6 +3,7 @@
 
 package com.azure.storage.internal.avro.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -12,6 +13,8 @@ import java.nio.ByteBuffer;
  * Factory class for {@link AvroReader}.
  */
 public class AvroReaderFactory {
+
+    private final ClientLogger logger = new ClientLogger(AvroReaderFactory.class);
 
     /**
      * Gets a new instance of {@link AvroReader}.
@@ -24,15 +27,19 @@ public class AvroReaderFactory {
      */
     public AvroReader getAvroReader(Flux<ByteBuffer> avroHeader, Flux<ByteBuffer> avroBody, long offset,
         long thresholdIndex) {
-        return () -> {
-            AvroParser parser = new AvroParser(true);
-            /* Parse the header. */
-            return avroHeader.concatMap(parser::parse)
-                /* Prepare the parser to read the body at an offset.*/
-                .then(Mono.defer(() -> parser.prepareParserToReadBody(offset, thresholdIndex)))
-                /* Parse the body. */
-                .thenMany(avroBody.concatMap(parser::parse));
-        };
+        try {
+            return () -> {
+                AvroParser parser = new AvroParser(true);
+                /* Parse the header. */
+                return avroHeader.concatMap(parser::parse)
+                    /* Prepare the parser to read the body at an offset.*/
+                    .then(Mono.defer(() -> parser.prepareParserToReadBody(offset, thresholdIndex)))
+                    /* Parse the body. */
+                    .thenMany(avroBody.concatMap(parser::parse));
+            };
+        } catch (RuntimeException ex) {
+            throw logger.logExceptionAsError(ex);
+        }
     }
 
     /**
@@ -42,10 +49,14 @@ public class AvroReaderFactory {
      * @return An AvroReader.
      */
     public AvroReader getAvroReader(Flux<ByteBuffer> avro) {
-        return () -> {
-            AvroParser parser = new AvroParser(false);
-            /* Parse the header. */
-            return avro.concatMap(parser::parse);
-        };
+        try {
+            return () -> {
+                AvroParser parser = new AvroParser(false);
+                /* Parse the header. */
+                return avro.concatMap(parser::parse);
+            };
+        } catch (RuntimeException ex) {
+            throw logger.logExceptionAsError(ex);
+        }
     }
 }
