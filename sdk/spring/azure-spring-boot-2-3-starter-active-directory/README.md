@@ -1,4 +1,4 @@
-# Azure AD Spring Boot Starter client library for Java
+# Azure AD Spring Boot 2.3 Starter client library for Java
 
 With Spring Starter for Azure Active Directory, now you can get started quickly to build the authentication workflow for a web application that uses Azure AD and OAuth 2.0 to secure its back end. It also enables developers to create a role based authorization workflow for a Web API secured by Azure AD, with the power of the Spring Security Filter Chain. 
 
@@ -16,11 +16,11 @@ With Spring Starter for Azure Active Directory, now you can get started quickly 
 * **Create a client secret key for the application**: Go to API ACCESS - Keys to create a secret key (`client-secret`).
 
 ### Include the package
-[//]: # "{x-version-update-start;com.microsoft.azure:azure-active-directory-spring-boot-starter;current}"
+[//]: # "{x-version-update-start;com.microsoft.azure:azure-active-directory-spring-boot-2-3-starter;current}"
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure-active-directory-spring-boot-starter</artifactId>
+    <artifactId>azure-active-directory-spring-boot-2-3-starter</artifactId>
     <version>2.3.3</version>
 </dependency>
 ```
