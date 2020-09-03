@@ -313,7 +313,7 @@ public class DigitalTwinsLifecycleAsyncSample {
         allRelationships.values().forEach(
             relationshipContent -> {
                 try {
-                    List<BasicRelationship> relationships = mapper.readValue(relationshipContent, new TypeReference<>() { });
+                    List<BasicRelationship> relationships = mapper.readValue(relationshipContent, new TypeReference<List<BasicRelationship>>() { });
 
                     // From loaded relationships, get the source Id and Id from each one, and create it with full relationship payload.
                     relationships
