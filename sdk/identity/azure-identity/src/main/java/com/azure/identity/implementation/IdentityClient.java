@@ -745,7 +745,11 @@ public class IdentityClient {
             payload.append("&api-version=");
             payload.append(URLEncoder.encode(endpointVersion, "UTF-8"));
             if (clientId != null) {
-                payload.append("&clientid=");
+                if (endpointVersion.equals(IDENTITY_ENDPOINT_VERSION)) {
+                    payload.append("&client_id=");
+                } else {
+                    payload.append("&clientid=");
+                }
                 payload.append(URLEncoder.encode(clientId, "UTF-8"));
             }
             try {

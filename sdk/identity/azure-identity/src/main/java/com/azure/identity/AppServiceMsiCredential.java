@@ -40,7 +40,8 @@ class AppServiceMsiCredential {
         this.clientId = clientId;
         if (identityEndpoint != null) {
             validateEndpointProtocol(this.identityEndpoint, "Identity");
-        } else {
+        }
+        if (msiEndpoint != null) {
             validateEndpointProtocol(this.msiEndpoint, "MSI");
         }
     }
