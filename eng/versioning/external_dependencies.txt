@@ -153,7 +153,7 @@ com.microsoft.azure:azure-mgmt-resources;1.3.0
 com.microsoft.azure:azure-mgmt-search;1.24.1
 com.microsoft.azure:azure-mgmt-storage;1.3.0
 com.microsoft.azure:azure-storage;8.0.0
-com.microsoft.azure:msal4j;1.6.1
+com.microsoft.azure:msal4j;1.6.2
 com.microsoft.azure:msal4j-persistence-extension;1.0.0
 com.sun.activation:jakarta.activation;1.2.2
 io.opentelemetry:opentelemetry-api;0.6.0
@@ -247,7 +247,6 @@ org.eclipse.m2e:lifecycle-mapping;1.0.0
 org.jacoco:jacoco-maven-plugin;0.8.5
 org.jacoco:org.jacoco.agent;0.8.5
 org.mockito:mockito-core;3.3.3
-org.nanohttpd:nanohttpd;2.3.1
 org.revapi:revapi-java;0.20.0
 org.revapi:revapi-maven-plugin;0.11.2
 
@@ -269,7 +268,7 @@ org.revapi:revapi-maven-plugin;0.11.2
 test_jar_com.microsoft.azure:azure-mgmt-resources;1.3.1-SNAPSHOT
 
 # everything under sdk\cosmos
-cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;2.10.1
+cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;2.11.2
 cosmos_com.google.guava:guava;25.0-jre
 cosmos_io.dropwizard.metrics:metrics-core;4.1.0
 cosmos_io.dropwizard.metrics:metrics-graphite;4.1.0

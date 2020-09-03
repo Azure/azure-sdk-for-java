@@ -8,7 +8,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.storage.models.BlobContainer;
 import com.azure.resourcemanager.storage.models.BlobContainers;
 import com.azure.resourcemanager.storage.models.PublicAccess;

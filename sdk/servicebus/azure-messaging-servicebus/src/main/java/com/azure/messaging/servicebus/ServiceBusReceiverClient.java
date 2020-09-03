@@ -13,7 +13,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 
 import java.time.Duration;
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -771,7 +771,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      * @throws IllegalStateException if the receiver is a session receiver.
      */
-    public Instant renewMessageLock(String lockToken) {
+    public OffsetDateTime renewMessageLock(String lockToken) {
         return asyncClient.renewMessageLock(lockToken).block(operationTimeout);
     }
 
@@ -783,7 +783,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @return The next expiration time for the session lock.
      * @throws IllegalStateException if the receiver is a non-session receiver.
      */
-    public Instant renewSessionLock(String sessionId) {
+    public OffsetDateTime renewSessionLock(String sessionId) {
         return asyncClient.renewSessionLock(sessionId).block(operationTimeout);
     }
 

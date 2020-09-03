@@ -229,8 +229,10 @@ final class TestUtils {
      * Helper method to get the expected batch of Personally Identifiable Information entities
      */
     static RecognizePiiEntitiesResultCollection getExpectedBatchPiiEntities() {
-        PiiEntityCollection piiEntityCollection = new PiiEntityCollection(new IterableStream<>(getPiiEntitiesList1()), null);
-        PiiEntityCollection piiEntityCollection2 = new PiiEntityCollection(new IterableStream<>(getPiiEntitiesList2()), null);
+        PiiEntityCollection piiEntityCollection = new PiiEntityCollection(new IterableStream<>(getPiiEntitiesList1()),
+            "********* employee with ssn *********** is using our awesome API's.", null);
+        PiiEntityCollection piiEntityCollection2 = new PiiEntityCollection(new IterableStream<>(getPiiEntitiesList2()),
+            "Your ABA number - ********* - is the first 9 digits in the lower left hand corner of your personal check.", null);
         TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(67, 1);
         TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(105, 1);
         RecognizePiiEntitiesResult recognizeEntitiesResult1 = new RecognizePiiEntitiesResult("0", textDocumentStatistics1, null, piiEntityCollection);
@@ -283,11 +285,11 @@ final class TestUtils {
      * Helper method to get the expected linked Entities List 1
      */
     static List<LinkedEntity> getLinkedEntitiesList1() {
-        final LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatch("Seattle", 26, 7, 0.0);
+        final LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatch("Seattle", 0.0, 26, 7);
         LinkedEntity linkedEntity = new LinkedEntity(
             "Seattle", new IterableStream<>(Collections.singletonList(linkedEntityMatch)),
             "en", "Seattle", "https://en.wikipedia.org/wiki/Seattle",
-            "Wikipedia");
+            "Wikipedia", "5fbba6b8-85e1-4d41-9444-d9055436e473");
         return asList(linkedEntity);
     }
 
@@ -295,11 +297,11 @@ final class TestUtils {
      * Helper method to get the expected linked Entities List 2
      */
     static List<LinkedEntity> getLinkedEntitiesList2() {
-        LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatch("Microsoft", 10, 9, 0.0);
+        LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatch("Microsoft", 0.0, 10, 9);
         LinkedEntity linkedEntity = new LinkedEntity(
             "Microsoft", new IterableStream<>(Collections.singletonList(linkedEntityMatch)),
             "en", "Microsoft", "https://en.wikipedia.org/wiki/Microsoft",
-            "Wikipedia");
+            "Wikipedia", "a093e9b9-90f5-a3d5-c4b8-5855e1b01f85");
         return asList(linkedEntity);
     }
 
@@ -342,20 +344,24 @@ final class TestUtils {
             new SentimentConfidenceScores(0.0, 0.0, 0.0),
             new IterableStream<>(asList(
                 new SentenceSentiment("The hotel was dark and unclean.", TextSentiment.NEGATIVE,
+                    new SentimentConfidenceScores(0.0, 0.0, 0.0),
                     new IterableStream<>(asList(new MinedOpinion(
                         new AspectSentiment("hotel", TextSentiment.NEGATIVE, 4, 5, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
                         new IterableStream<>(asList(
                             new OpinionSentiment("dark", TextSentiment.NEGATIVE, 14, 4, false, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
                             new OpinionSentiment("unclean", TextSentiment.NEGATIVE, 23, 7, false, new SentimentConfidenceScores(0.0, 0.0, 0.0))
                         ))))),
-                    new SentimentConfidenceScores(0.0, 0.0, 0.0)),
+                    0, 31
+                ),
                 new SentenceSentiment("The restaurant had amazing gnocchi.", TextSentiment.POSITIVE,
+                    new SentimentConfidenceScores(0.0, 0.0, 0.0),
                     new IterableStream<>(asList(new MinedOpinion(
                         new AspectSentiment("gnocchi", TextSentiment.POSITIVE, 59, 7, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
                         new IterableStream<>(asList(
                             new OpinionSentiment("amazing", TextSentiment.POSITIVE, 51, 7, false, new SentimentConfidenceScores(0.0, 0.0, 0.0))
                         ))))),
-                    new SentimentConfidenceScores(0.0, 0.0, 0.0))
+                    32, 35
+                )
             )), null);
     }
 
@@ -367,20 +373,23 @@ final class TestUtils {
             new SentimentConfidenceScores(0.0, 0.0, 0.0),
             new IterableStream<>(asList(
                 new SentenceSentiment("The restaurant had amazing gnocchi.", TextSentiment.POSITIVE,
+                    new SentimentConfidenceScores(0.0, 0.0, 0.0),
                     new IterableStream<>(asList(new MinedOpinion(
                         new AspectSentiment("gnocchi", TextSentiment.POSITIVE, 27, 7, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
                         new IterableStream<>(asList(
                             new OpinionSentiment("amazing", TextSentiment.POSITIVE, 19, 7, false, new SentimentConfidenceScores(0.0, 0.0, 0.0))
                         ))))),
-                    new SentimentConfidenceScores(0.0, 0.0, 0.0)),
+                    0, 35
+                ),
                 new SentenceSentiment("The hotel was dark and unclean.", TextSentiment.NEGATIVE,
-                    new IterableStream<>(asList(new MinedOpinion(
+                    new SentimentConfidenceScores(0.0, 0.0, 0.0), new IterableStream<>(asList(new MinedOpinion(
                         new AspectSentiment("hotel", TextSentiment.NEGATIVE, 40, 5, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
                         new IterableStream<>(asList(
                             new OpinionSentiment("dark", TextSentiment.NEGATIVE, 50, 4, false, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
                             new OpinionSentiment("unclean", TextSentiment.NEGATIVE, 59, 7, false, new SentimentConfidenceScores(0.0, 0.0, 0.0))
                         ))))),
-                    new SentimentConfidenceScores(0.0, 0.0, 0.0))
+                    36, 31
+                )
             )), null);
     }
 
