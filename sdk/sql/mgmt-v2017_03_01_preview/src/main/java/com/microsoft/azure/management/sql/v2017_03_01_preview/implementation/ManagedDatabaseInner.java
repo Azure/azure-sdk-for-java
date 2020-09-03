@@ -29,7 +29,7 @@ public class ManagedDatabaseInner extends Resource {
 
     /**
      * Status of the database. Possible values include: 'Online', 'Offline',
-     * 'Shutdown', 'Creating', 'Inaccessible', 'Updating'.
+     * 'Shutdown', 'Creating', 'Inaccessible', 'Restoring', 'Updating'.
      */
     @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
     private ManagedDatabaseStatus status;
@@ -77,7 +77,7 @@ public class ManagedDatabaseInner extends Resource {
      * by restoring a geo-replicated backup. RecoverableDatabaseId must be
      * specified as the recoverable database resource ID to restore. Possible
      * values include: 'Default', 'RestoreExternalBackup',
-     * 'PointInTimeRestore', 'Recovery'.
+     * 'PointInTimeRestore', 'Recovery', 'RestoreLongTermRetentionBackup'.
      */
     @JsonProperty(value = "properties.createMode")
     private ManagedDatabaseCreateMode createMode;
@@ -126,6 +126,13 @@ public class ManagedDatabaseInner extends Resource {
     private String recoverableDatabaseId;
 
     /**
+     * The name of the Long Term Retention backup to be used for restore of
+     * this managed database.
+     */
+    @JsonProperty(value = "properties.longTermRetentionBackupResourceId")
+    private String longTermRetentionBackupResourceId;
+
+    /**
      * Get collation of the managed database.
      *
      * @return the collation value
@@ -146,7 +153,7 @@ public class ManagedDatabaseInner extends Resource {
     }
 
     /**
-     * Get status of the database. Possible values include: 'Online', 'Offline', 'Shutdown', 'Creating', 'Inaccessible', 'Updating'.
+     * Get status of the database. Possible values include: 'Online', 'Offline', 'Shutdown', 'Creating', 'Inaccessible', 'Restoring', 'Updating'.
      *
      * @return the status value
      */
@@ -222,7 +229,7 @@ public class ManagedDatabaseInner extends Resource {
     }
 
     /**
-     * Get managed database create mode. PointInTimeRestore: Create a database by restoring a point in time backup of an existing database. SourceDatabaseName, SourceManagedInstanceName and PointInTime must be specified. RestoreExternalBackup: Create a database by restoring from external backup files. Collation, StorageContainerUri and StorageContainerSasToken must be specified. Recovery: Creates a database by restoring a geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to restore. Possible values include: 'Default', 'RestoreExternalBackup', 'PointInTimeRestore', 'Recovery'.
+     * Get managed database create mode. PointInTimeRestore: Create a database by restoring a point in time backup of an existing database. SourceDatabaseName, SourceManagedInstanceName and PointInTime must be specified. RestoreExternalBackup: Create a database by restoring from external backup files. Collation, StorageContainerUri and StorageContainerSasToken must be specified. Recovery: Creates a database by restoring a geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to restore. Possible values include: 'Default', 'RestoreExternalBackup', 'PointInTimeRestore', 'Recovery', 'RestoreLongTermRetentionBackup'.
      *
      * @return the createMode value
      */
@@ -231,7 +238,7 @@ public class ManagedDatabaseInner extends Resource {
     }
 
     /**
-     * Set managed database create mode. PointInTimeRestore: Create a database by restoring a point in time backup of an existing database. SourceDatabaseName, SourceManagedInstanceName and PointInTime must be specified. RestoreExternalBackup: Create a database by restoring from external backup files. Collation, StorageContainerUri and StorageContainerSasToken must be specified. Recovery: Creates a database by restoring a geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to restore. Possible values include: 'Default', 'RestoreExternalBackup', 'PointInTimeRestore', 'Recovery'.
+     * Set managed database create mode. PointInTimeRestore: Create a database by restoring a point in time backup of an existing database. SourceDatabaseName, SourceManagedInstanceName and PointInTime must be specified. RestoreExternalBackup: Create a database by restoring from external backup files. Collation, StorageContainerUri and StorageContainerSasToken must be specified. Recovery: Creates a database by restoring a geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to restore. Possible values include: 'Default', 'RestoreExternalBackup', 'PointInTimeRestore', 'Recovery', 'RestoreLongTermRetentionBackup'.
      *
      * @param createMode the createMode value to set
      * @return the ManagedDatabaseInner object itself.
@@ -347,6 +354,26 @@ public class ManagedDatabaseInner extends Resource {
      */
     public ManagedDatabaseInner withRecoverableDatabaseId(String recoverableDatabaseId) {
         this.recoverableDatabaseId = recoverableDatabaseId;
+        return this;
+    }
+
+    /**
+     * Get the name of the Long Term Retention backup to be used for restore of this managed database.
+     *
+     * @return the longTermRetentionBackupResourceId value
+     */
+    public String longTermRetentionBackupResourceId() {
+        return this.longTermRetentionBackupResourceId;
+    }
+
+    /**
+     * Set the name of the Long Term Retention backup to be used for restore of this managed database.
+     *
+     * @param longTermRetentionBackupResourceId the longTermRetentionBackupResourceId value to set
+     * @return the ManagedDatabaseInner object itself.
+     */
+    public ManagedDatabaseInner withLongTermRetentionBackupResourceId(String longTermRetentionBackupResourceId) {
+        this.longTermRetentionBackupResourceId = longTermRetentionBackupResourceId;
         return this;
     }
 
