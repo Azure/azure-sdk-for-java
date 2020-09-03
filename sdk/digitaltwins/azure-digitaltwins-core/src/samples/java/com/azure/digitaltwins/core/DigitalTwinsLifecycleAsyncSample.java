@@ -26,6 +26,8 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 import static com.azure.digitaltwins.core.SamplesConstants.*;
+import static com.azure.digitaltwins.core.SamplesUtil.IgnoreConflictError;
+import static com.azure.digitaltwins.core.SamplesUtil.IgnoreNotFoundError;
 import static java.util.Arrays.asList;
 
 /**
@@ -148,22 +150,14 @@ public class DigitalTwinsLifecycleAsyncSample {
             // Call APIs to retrieve all relationships.
             client.listRelationships(twinId, BasicRelationship.class)
                 .doOnNext(relationshipList::add)
-                .doOnError(throwable -> {
-                    if (!(throwable instanceof ErrorResponseException) || ((ErrorResponseException) throwable).getResponse().getStatusCode() != HttpStatus.SC_NOT_FOUND) {
-                        System.err.println("List relationships error: " + throwable);
-                    }
-                })
+                .doOnError(IgnoreNotFoundError)
                 .doOnTerminate(listRelationshipSemaphore::release)
                 .subscribe();
 
             // Call APIs to retrieve all incoming relationships.
             client.listIncomingRelationships(twinId)
                 .doOnNext(e -> relationshipList.add(mapper.convertValue(e, BasicRelationship.class)))
-                .doOnError(throwable -> {
-                    if (!(throwable instanceof ErrorResponseException) || ((ErrorResponseException) throwable).getResponse().getStatusCode() != HttpStatus.SC_NOT_FOUND) {
-                        System.err.println("List incoming relationships error: " + throwable);
-                    }
-                })
+                .doOnError(IgnoreNotFoundError)
                 .doOnTerminate(listRelationshipSemaphore::release)
                 .subscribe();
 
@@ -178,11 +172,7 @@ public class DigitalTwinsLifecycleAsyncSample {
                                 System.out.println("Found and deleted incoming relationship: " + relationship.getId());
                             }
                         })
-                        .doOnError(throwable -> {
-                            if (!(throwable instanceof ErrorResponseException) || ((ErrorResponseException) throwable).getResponse().getStatusCode() != HttpStatus.SC_NOT_FOUND) {
-                                System.err.println("List relationships error: " + throwable);
-                            }
-                        })
+                        .doOnError(IgnoreNotFoundError)
                         .doOnTerminate(deleteRelationshipsSemaphore::release)
                         .subscribe());
             }
@@ -194,11 +184,7 @@ public class DigitalTwinsLifecycleAsyncSample {
                 // Call APIs to delete the twins.
                 client.deleteDigitalTwin(twinId)
                     .doOnSuccess(aVoid -> System.out.println("Deleted digital twin: " + twinId))
-                    .doOnError(throwable -> {
-                        if (!(throwable instanceof ErrorResponseException) || ((ErrorResponseException) throwable).getResponse().getStatusCode() != HttpStatus.SC_NOT_FOUND) {
-                            System.err.println("Delete twin error: " + throwable);
-                        }
-                    })
+                    .doOnError(IgnoreNotFoundError)
                     .doOnTerminate(deleteTwinsLatch::countDown)
                     .subscribe();
 
@@ -246,11 +232,7 @@ public class DigitalTwinsLifecycleAsyncSample {
         // Call API to create the models. For each async operation, once the operation is completed successfully, a latch is counted down.
         client.createModels(modelsToCreate)
             .doOnNext(modelData -> System.out.println("Created model: " + modelData.getId()))
-            .doOnError(throwable -> {
-                if (!(throwable instanceof ErrorResponseException) || ((ErrorResponseException) throwable).getResponse().getStatusCode() != HttpStatus.SC_CONFLICT) {
-                    System.err.println("Create models error: " + throwable);
-                }
-            })
+            .doOnError(IgnoreConflictError)
             .doOnTerminate(createModelsLatch::countDown)
             .subscribe();
 
@@ -321,12 +303,7 @@ public class DigitalTwinsLifecycleAsyncSample {
                             try {
                                 client.createRelationship(relationship.getSourceId(), relationship.getId(), mapper.writeValueAsString(relationship))
                                     .doOnSuccess(s -> System.out.println("Linked twin " + relationship.getSourceId() + " to twin " + relationship.getTargetId() + " as " + relationship.getName()))
-                                    .doOnError(throwable -> {
-                                        if (!(throwable instanceof ErrorResponseException) || ((ErrorResponseException) throwable).getResponse().getStatusCode() != HttpStatus.SC_CONFLICT) {
-                                            System.err.println("Could not linked twin " + relationship.getSourceId() + " to twin " + relationship.getTargetId() + " as " + relationship.getName() +
-                                                " due to " + throwable);
-                                        }
-                                    })
+                                    .doOnError(IgnoreConflictError)
                                     .doOnTerminate(connectTwinsLatch::countDown)
                                     .subscribe();
                             } catch (JsonProcessingException e) {
