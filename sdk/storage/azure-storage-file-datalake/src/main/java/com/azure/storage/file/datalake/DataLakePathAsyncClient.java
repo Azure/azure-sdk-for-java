@@ -104,8 +104,8 @@ public class DataLakePathAsyncClient {
      * @return The metadata represented as a String.
      */
     static String buildMetadataString(Map<String, String> metadata) {
-        StringBuilder sb = new StringBuilder();
         if (!CoreUtils.isNullOrEmpty(metadata)) {
+            StringBuilder sb = new StringBuilder();
             for (final Map.Entry<String, String> entry : metadata.entrySet()) {
                 if (Objects.isNull(entry.getKey()) || entry.getKey().isEmpty()) {
                     throw new IllegalArgumentException("The key for one of the metadata key-value pairs is null, "
@@ -125,8 +125,10 @@ public class DataLakePathAsyncClient {
                         StandardCharsets.UTF_8)).append(',');
             }
             sb.deleteCharAt(sb.length() - 1); // Remove the extraneous "," after the last element.
+            return sb.toString();
+        } else {
+            return null;
         }
-        return sb.toString();
     }
 
     /**

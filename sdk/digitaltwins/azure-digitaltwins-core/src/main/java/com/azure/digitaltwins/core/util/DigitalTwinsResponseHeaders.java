@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * A helper class to represent the HTTP response headers returned by the service.
  */
 @Fluent
-public class DigitalTwinsResponseHeaders {
+public final class DigitalTwinsResponseHeaders {
     /*
      * The ETag property.
      */
