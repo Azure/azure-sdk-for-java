@@ -105,7 +105,6 @@ class SasClientTests extends APISpec {
         notThrown(BlobStorageException)
     }
 
-//    @Ignore("User Delegation SAS string to sign has changed. Reenable when working on feature.")
     def "blob sas user delegation"() {
         setup:
         def permissions = new BlobSasPermission()
@@ -171,7 +170,6 @@ class SasClientTests extends APISpec {
         validateSasProperties(properties)
     }
 
-//    @Ignore("User Delegation SAS string to sign has changed. Reenable when working on feature.")
     def "blob sas snapshot user delegation"() {
         setup:
         def snapshotBlob = new SpecializedBlobClientBuilder().blobClient(sasClient.createSnapshot()).buildBlockBlobClient()
@@ -209,7 +207,6 @@ class SasClientTests extends APISpec {
         validateSasProperties(properties)
     }
 
-//    @Ignore("User Delegation SAS string to sign has changed. Reenable when working on feature.")
     def "container sas user delegation"() {
         setup:
         def permissions = new BlobContainerSasPermission()

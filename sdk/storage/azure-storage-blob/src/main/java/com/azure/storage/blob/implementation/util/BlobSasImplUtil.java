@@ -110,7 +110,7 @@ public class BlobSasImplUtil {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("'snapshot' and 'versionId' cannot be used at the same time."));
         }
-        this.version = null;
+        this.version = null; /* Setting this to null forces the latest service version - see ensureState. */
         this.protocol = sasValues.getProtocol();
         this.startTime = sasValues.getStartTime();
         this.expiryTime = sasValues.getExpiryTime();
@@ -314,9 +314,9 @@ public class BlobSasImplUtil {
             key.getSignedExpiry() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedExpiry()),
             key.getSignedService() == null ? "" : key.getSignedService(),
             key.getSignedVersion() == null ? "" : key.getSignedVersion(),
-            "",
-            "",
-            "",
+            "", /* saoid - empty since this applies to HNS only accounts. */
+            "", /* suoid - empty since this applies to HNS only accounts. */
+            "", /* cid - empty since this applies to HNS only accounts. */
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(),
             version,
