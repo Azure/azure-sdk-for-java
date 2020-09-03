@@ -16,10 +16,10 @@ public class SamplesArguments {
 
     public SamplesArguments(String[] args) {
         Options options = new Options();
-        Option input = new Option("d", DIGITALTWINS_URL, true, "DigitalTwins endpoint URI");
+        Option input = new Option("d", DIGITALTWINS_URL, true, "DigitalTwins endpoint URL");
         Option tenantId = new Option("t", TENANT_ID, true, "AAD Tenant Id");
         Option clientId = new Option("c", CLIENT_ID, true, "AAD Client Id");
-        Option clientSecret = new Option("s", CLIENT_SECRET, true, "AAD ClientSecret URI");
+        Option clientSecret = new Option("s", CLIENT_SECRET, true, "AAD Client Secret");
 
         input.setRequired(true);
         tenantId.setRequired(true);
