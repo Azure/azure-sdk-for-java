@@ -219,7 +219,7 @@ public class DigitalTwinsLifecycleAsyncSample {
         List<String> models = asList(RoomModelId, WifiModelId, BuildingModelId, FloorModelId, HvacModelId);
 
         // Call APIs to delete the models.
-        // Not that we are blocking the async API call. This is to ensure models are deleted in an order such that no other models are referencing it.
+        // Note that we are blocking the async API call. This is to ensure models are deleted in an order such that no other models are referencing it.
         models
             .forEach(modelId -> {
                 try {
