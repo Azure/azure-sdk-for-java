@@ -16,7 +16,7 @@ public class Contact {
 
     private int intValue;
 
-    private boolean status;
+    private boolean isActive;
 
     public Contact() {
     }
@@ -26,11 +26,11 @@ public class Contact {
         this.title = title;
     }
 
-    public Contact(final String logicId, final String title, final int intValue, boolean status) {
+    public Contact(final String logicId, final String title, final int intValue, boolean isActive) {
         this.logicId = logicId;
         this.title = title;
         this.intValue = intValue;
-        this.status = status;
+        this.isActive = isActive;
     }
 
     public String getLogicId() {
@@ -54,17 +54,17 @@ public class Contact {
      *
      * @return Value for property 'status'.
      */
-    public boolean isStatus() {
-        return status;
+    public boolean isActive() {
+        return isActive;
     }
 
     /**
      * Setter for property 'status'.
      *
-     * @param status Value to set for property 'status'.
+     * @param active Value to set for property 'status'.
      */
-    public void setStatus(final boolean status) {
-        this.status = status;
+    public void setActive(final boolean active) {
+        this.isActive = active;
     }
 
     /**
@@ -116,7 +116,7 @@ public class Contact {
                    + intValue
                    + '\''
                    + ", status='"
-                   + status
+                   + isActive
                    + '\''
                    + '}';
     }

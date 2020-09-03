@@ -586,6 +586,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                    .getContainer(containerName)
                    .queryItems(querySpec, options, returnType)
                    .byPage()
+                   .publishOn(Schedulers.parallel())
                    .flatMap(cosmosItemFeedResponse -> {
                        CosmosUtils
                            .fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,

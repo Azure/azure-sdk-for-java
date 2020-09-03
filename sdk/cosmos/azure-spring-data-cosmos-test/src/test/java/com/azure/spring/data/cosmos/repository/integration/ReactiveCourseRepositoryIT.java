@@ -303,10 +303,10 @@ public class ReactiveCourseRepositoryIT {
 
     @Test
     public void testAnnotatedQueries() {
-        Flux<Course> courseFlux = repository.coursesWithNameDepartment(COURSE_NAME_1, DEPARTMENT_NAME_3);
+        Flux<Course> courseFlux = repository.getCoursesWithNameDepartment(COURSE_NAME_1, DEPARTMENT_NAME_3);
         StepVerifier.create(courseFlux).expectNext(COURSE_1).verifyComplete();
 
-        Flux<ObjectNode> courseGroupBy = repository.coursesGroupBy();
+        Flux<ObjectNode> courseGroupBy = repository.getCoursesGroupByDepartment();
         StepVerifier.create(courseGroupBy).expectComplete();
         StepVerifier.create(courseGroupBy).expectNextCount(1);
     }

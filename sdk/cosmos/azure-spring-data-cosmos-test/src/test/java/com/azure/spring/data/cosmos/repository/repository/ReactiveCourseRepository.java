@@ -47,9 +47,9 @@ public interface ReactiveCourseRepository extends ReactiveCosmosRepository<Cours
     Mono<Course> findOneByName(String name);
 
     @Query(value = "select * from c where c.name = @name and c.department = @department")
-    Flux<Course> coursesWithNameDepartment(@Param("name") String name, @Param("department") String department);
+    Flux<Course> getCoursesWithNameDepartment(@Param("name") String name, @Param("department") String department);
 
     @Query(value = "select count(c.id) as num_ids, c.department from c group by c.department")
-    Flux<ObjectNode> coursesGroupBy();
+    Flux<ObjectNode> getCoursesGroupByDepartment();
 
 }

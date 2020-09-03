@@ -23,15 +23,15 @@ public interface ContactRepository extends CosmosRepository<Contact, String> {
     Optional<Contact> findOptionallyByTitle(String title);
 
     @Query(value = "select * from c where c.title = @title and c.intValue = @value")
-    List<Contact> contactWithValueTitle(@Param("value") int value, @Param("title") String name);
+    List<Contact> getContactsByTitleAndValue(@Param("value") int value, @Param("title") String name);
 
     @Query(value = "select * from c offset @offset limit @limit")
-    List<Contact> contactsWithOffsetLimit(@Param("offset") int offset, @Param("limit") int limit);
+    List<Contact> getContactsWithOffsetLimit(@Param("offset") int offset, @Param("limit") int limit);
 
     @Query(value = "select * from c where c.status= true")
     List<Contact> findActiveContacts();
 
-    @Query(value = "SELECT count(c.id) as num_ids, c.intValue FROM c group by c.intValue")
+    @Query(value = "SELECT count(c.id) as id_count, c.intValue FROM c group by c.intValue")
     List<ObjectNode> selectGroupBy();
 
 }

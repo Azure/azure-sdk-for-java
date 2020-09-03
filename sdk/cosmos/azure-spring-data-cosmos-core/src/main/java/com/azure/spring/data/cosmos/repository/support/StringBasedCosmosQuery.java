@@ -44,7 +44,7 @@ public class StringBasedCosmosQuery extends AbstractCosmosQuery {
         final ResultProcessor processor = getQueryMethod().getResultProcessor().withDynamicProjection(accessor);
 
         List<SqlParameter> sqlParameters = getQueryMethod().getParameters().stream()
-                            .map(p -> new SqlParameter("@" + p.getName().get(),
+                            .map(p -> new SqlParameter("@" + p.getName().orElse(""),
                                                        toCosmosDbValue(parameters[p.getIndex()])))
                             .collect(Collectors.toList());
 
