@@ -4,6 +4,7 @@
 package com.azure.storage.file.share.options;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 
@@ -11,11 +12,21 @@ import com.azure.storage.file.share.models.ShareRequestConditions;
  * Extended options that may be passed when listing ranges for a File.
  */
 @Fluent
-public class ShareFileListRangeOptions {
+public class ShareFileListRangesDiffOptions {
 
     private ShareFileRange range;
-    private String previousSnapshot;
+    private final String previousSnapshot;
     private ShareRequestConditions requestConditions;
+
+    /**
+     * @param previousSnapshot Specifies that the response will contain only ranges that were changed between target
+     * file and previous snapshot. Changed ranges include both updated and cleared ranges. The target file may be a
+     * snapshot, as long as the snapshot specified by previousSnapshot is the older of the two.
+     */
+    public ShareFileListRangesDiffOptions(String previousSnapshot) {
+        StorageImplUtils.assertNotNull("previousSnapshot", previousSnapshot);
+        this.previousSnapshot = previousSnapshot;
+    }
 
     /**
      * @return The range of bytes over which to list ranges, inclusively.
@@ -28,7 +39,7 @@ public class ShareFileListRangeOptions {
      * @param range The range of bytes over which to list ranges, inclusively.
      * @return The updated options.
      */
-    public ShareFileListRangeOptions setRange(ShareFileRange range) {
+    public ShareFileListRangesDiffOptions setRange(ShareFileRange range) {
         this.range = range;
         return this;
     }
@@ -38,17 +49,6 @@ public class ShareFileListRangeOptions {
      */
     public String getPreviousSnapshot() {
         return previousSnapshot;
-    }
-
-    /**
-     * @param previousSnapshot Specifies that the response will contain only ranges that were changed between target
-     * file and previous snapshot. Changed ranges include both updated and cleared ranges. The target file may be a
-     * snapshot, as long as the snapshot specified by previousSnapshot is the older of the two.
-     * @return The updated options.
-     */
-    public ShareFileListRangeOptions setPreviousSnapshot(String previousSnapshot) {
-        this.previousSnapshot = previousSnapshot;
-        return this;
     }
 
     /**
@@ -62,7 +62,7 @@ public class ShareFileListRangeOptions {
      * @param requestConditions {@link ShareRequestConditions} for the file.
      * @return The updated options.
      */
-    public ShareFileListRangeOptions setRequestConditions(ShareRequestConditions requestConditions) {
+    public ShareFileListRangesDiffOptions setRequestConditions(ShareRequestConditions requestConditions) {
         this.requestConditions = requestConditions;
         return this;
     }

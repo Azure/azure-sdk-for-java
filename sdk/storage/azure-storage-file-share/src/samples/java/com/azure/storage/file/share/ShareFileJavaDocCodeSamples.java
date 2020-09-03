@@ -19,7 +19,7 @@ import com.azure.storage.file.share.models.ShareFileUploadInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareRequestConditions;
-import com.azure.storage.file.share.options.ShareFileListRangeOptions;
+import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 
@@ -816,12 +816,25 @@ public class ShareFileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareFileClient#listRanges(ShareFileListRangeOptions, Duration, Context)}
+     * Generates a code sample for using {@link ShareFileClient#listRangesDiff(String, Duration, Context)}
      */
-    public void listRangesOptionalOverload() {
+    public void listRangesDiffOverload() {
+        ShareFileClient fileClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.listRanges#String-Duration-Context
+        Iterable<ShareFileRange> ranges = fileClient.listRangesDiff("previoussnapshot",
+            Duration.ofSeconds(1), new Context(key1, value1));
+        ranges.forEach(range ->
+            System.out.printf("List ranges completed with start: %d, end: %d", range.getStart(), range.getEnd()));
+        // END: com.azure.storage.file.share.ShareFileClient.listRanges#String-Duration-Context
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareFileClient#listRangesDiff(ShareFileListRangesDiffOptions, Duration, Context)}
+     */
+    public void listRangesDiffOptionalOverload() {
         ShareFileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareFileClient.listRanges#ShareFileListRangeOptions-Duration-Context
-        Iterable<ShareFileRange> ranges = fileClient.listRanges(new ShareFileListRangeOptions()
+        Iterable<ShareFileRange> ranges = fileClient.listRangesDiff(new ShareFileListRangesDiffOptions("previoussnapshot")
                 .setRange(new ShareFileRange(1024, 2048L)), Duration.ofSeconds(1), new Context(key1, value1));
         ranges.forEach(range ->
             System.out.printf("List ranges completed with start: %d, end: %d", range.getStart(), range.getEnd()));

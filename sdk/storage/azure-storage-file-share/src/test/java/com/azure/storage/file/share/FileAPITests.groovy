@@ -17,7 +17,7 @@ import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.ShareFileRange
 import com.azure.storage.file.share.models.ShareSnapshotInfo
 import com.azure.storage.file.share.models.ShareStorageException
-import com.azure.storage.file.share.options.ShareFileListRangeOptions
+import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions
 import com.azure.storage.file.share.sas.ShareFileSasPermission
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues
 import spock.lang.Ignore
@@ -785,7 +785,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.uploadWithResponse(defaultData, dataLength, 1024, null, null)
 
         expect:
-        primaryFileClient.listRanges(new ShareFileListRangeOptions().setPreviousSnapshot(snapInfo.getSnapshot()), null, null).each {
+        primaryFileClient.listRangesDiff(new ShareFileListRangesDiffOptions(snapInfo.getSnapshot()), null, null).each {
             assert it.getStart() == 1024 /* These are the changes since the previous snapshot. */
             assert it.getEnd() == 1030
         }
@@ -802,7 +802,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.uploadFromFile(uploadFile)
 
         when:
-        primaryFileClient.listRanges(new ShareFileListRangeOptions().setPreviousSnapshot("2020-08-07T16:58:02.0000000Z"), null, null).each {
+        primaryFileClient.listRangesDiff(new ShareFileListRangesDiffOptions("2020-08-07T16:58:02.0000000Z"), null, null).each {
             assert it.getStart() == 0
             assert it.getEnd() == 511
         }
