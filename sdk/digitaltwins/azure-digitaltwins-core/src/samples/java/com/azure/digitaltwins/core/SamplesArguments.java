@@ -9,6 +9,11 @@ public class SamplesArguments {
     private final String CLIENT_ID = "clientId";
     private final String CLIENT_SECRET = "clientSecret";
 
+    private String digitalTwinUrl;
+    private String tenantId;
+    private String clientId;
+    private String clientSecret;
+
     public SamplesArguments(String[] args) {
         Options options = new Options();
         Option input = new Option("d", DIGITAL_TWIN_URL, true, "DigitalTwin endpoint URI");
@@ -45,11 +50,6 @@ public class SamplesArguments {
         this.clientId = cmd.getOptionValue(CLIENT_ID);
         this.clientSecret = cmd.getOptionValue(CLIENT_SECRET);
     }
-
-    public String digitalTwinUrl;
-    public String tenantId;
-    public String clientId;
-    public String clientSecret;
 
     public String getDigitalTwinUrl() {
         return this.digitalTwinUrl;
