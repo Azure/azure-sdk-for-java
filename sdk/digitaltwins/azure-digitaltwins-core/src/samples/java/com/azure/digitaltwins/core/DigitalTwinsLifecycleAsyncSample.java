@@ -3,7 +3,6 @@
 
 package com.azure.digitaltwins.core;
 
-import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
 import com.azure.digitaltwins.core.implementation.serialization.BasicRelationship;
@@ -43,10 +42,6 @@ import java.util.concurrent.TimeUnit;
  *
  */
 public class DigitalTwinsLifecycleAsyncSample {
-    private static final String tenantId = System.getenv("TENANT_ID");
-    private static final String clientId = System.getenv("CLIENT_ID");
-    private static final String clientSecret = System.getenv("CLIENT_SECRET");
-    private static final String endpoint = System.getenv("DIGITAL_TWINS_ENDPOINT");
 
     private static final int MaxWaitTimeAsyncOperationsInSeconds = 10;
 
@@ -56,7 +51,7 @@ public class DigitalTwinsLifecycleAsyncSample {
     private static final Path ModelsPath;
     private static final Path RelationshipsPath;
 
-    private static final DigitalTwinsAsyncClient client;
+    private static DigitalTwinsAsyncClient client;
 
     static {
         try {
@@ -68,23 +63,26 @@ public class DigitalTwinsLifecycleAsyncSample {
         TwinsPath = Paths.get(DtDlDirectoryPath.toString(), "DigitalTwins");
         ModelsPath = Paths.get(DtDlDirectoryPath.toString(), "Models");
         RelationshipsPath = Paths.get(DtDlDirectoryPath.toString(), "Relationships");
+    }
+
+    public static void main(String[] args) throws IOException, InterruptedException {
+
+        SamplesArguments parsedArguments = new SamplesArguments(args);
 
         client = new DigitalTwinsClientBuilder()
             .tokenCredential(
                 new ClientSecretCredentialBuilder()
-                    .tenantId(tenantId)
-                    .clientId(clientId)
-                    .clientSecret(clientSecret)
+                    .tenantId(parsedArguments.getTenantId())
+                    .clientId(parsedArguments.getClientId())
+                    .clientSecret(parsedArguments.getClientSecret())
                     .build()
             )
-            .endpoint(endpoint)
+            .endpoint(parsedArguments.getDigitalTwinEndpoint())
             .httpLogOptions(
                 new HttpLogOptions()
-                    .setLogLevel(HttpLogDetailLevel.NONE))
+                    .setLogLevel(parsedArguments.getHttpLogDetailLevel()))
             .buildAsyncClient();
-    }
 
-    public static void main(String[] args) throws IOException, InterruptedException {
         // Ensure existing twins with the same name are deleted first
         deleteTwins();
 
