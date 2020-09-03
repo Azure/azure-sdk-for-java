@@ -40,7 +40,7 @@ public class SamplesArguments {
         }
         catch (ParseException e) {
             System.out.println(e.getMessage());
-            formatter.printHelp("Sample option parser", options);
+            formatter.printHelp("java <sampleClass>.jar", options);
 
             System.exit(1);
         }
