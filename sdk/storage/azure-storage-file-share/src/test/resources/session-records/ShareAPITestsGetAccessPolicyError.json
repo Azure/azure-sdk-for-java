@@ -1,0 +1,27 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestsgetaccesspolicyerror52260c2b59101ee7?restype=share&comp=acl",
+    "Headers" : {
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2228cbd9-6dbe-4fe1-bf1a-e68ffc153e00"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-02-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "Access-Control-Allow-Origin" : "*",
+      "x-ms-error-code" : "ShareNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "217",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "8c89f8a3-601a-0022-4675-761fdd000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:8c89f8a3-601a-0022-4675-761fdd000000\nTime:2020-08-19T22:09:40.2965188Z</Message></Error>",
+      "Date" : "Wed, 19 Aug 2020 22:09:40 GMT",
+      "x-ms-client-request-id" : "2228cbd9-6dbe-4fe1-bf1a-e68ffc153e00",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "shareapitestsgetaccesspolicyerror52260c2b59101ee7" ]
+}

@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 public class ApplicationsTests extends GraphRbacManagementTest {
     @Test
     public void canCRUDApplication() throws Exception {
-        String name = sdkContext.randomResourceName("javasdkapp", 20);
+        String name = generateRandomResourceName("javasdkapp", 20);
 
         ActiveDirectoryApplication application = null;
         try {

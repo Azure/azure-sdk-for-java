@@ -222,6 +222,11 @@ documentSentiment.getSentences().forEach(sentenceSentiment ->
     System.out.printf("Analyzed sentence sentiment: %s.%n", sentenceSentiment.getSentiment()));
 ```
 For samples on using the production recommended option `AnalyzeSentimentBatch` see [here][analyze_sentiment_sample].
+
+To get more granular information about the opinions related to aspects of a product/service, also knows as Aspect-based
+Sentiment Analysis in Natural Language Processing (NLP), see sample on sentiment analysis with opinion mining see 
+[here][analyze_sentiment_with_opinion_mining_sample].
+
 Please refer to the service documentation for a conceptual discussion of [sentiment analysis][sentiment_analysis].
 
 ### Detect language
@@ -270,14 +275,16 @@ document. It recognizes and categorizes PII entities in its input text, such as
 Social Security Numbers, bank account information, credit card numbers, and more. This endpoint is only supported for
 API versions v3.1-preview.1 and above.
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L158-L161 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L158-L162 -->
 ```java
 String document = "My SSN is 859-98-0987";
 textAnalyticsClient.recognizePiiEntities(document).forEach(entity -> System.out.printf(
     "Recognized Personally Identifiable Information entity: %s, entity category: %s, entity subcategory: %s,"
         + " confidence score: %f.%n",
+    entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore()));
 ```
 
+For samples on using the production recommended option `RecognizePiiEntitiesBatch` see [here][recognize_pii_entities_sample].
 Please refer to the service documentation for [supported PII entity types][pii_entity_recognition].
 
 ### Recognize linked entities
@@ -394,8 +401,10 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/README.md
 [detect_language_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/DetectLanguageBatchDocuments.java
 [analyze_sentiment_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/AnalyzeSentimentBatchDocuments.java
+[analyze_sentiment_with_opinion_mining_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/AnalyzeSentimentWithOpinionMining.java
 [extract_key_phrases_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/ExtractKeyPhrasesBatchDocuments.java
 [recognize_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeEntitiesBatchDocuments.java
+[recognize_pii_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizePiiEntitiesBatchDocuments.java
 [recognize_linked_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeLinkedEntitiesBatchDocuments.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ftextanalytics%2Fazure-ai-textanalytics%2FREADME.png)

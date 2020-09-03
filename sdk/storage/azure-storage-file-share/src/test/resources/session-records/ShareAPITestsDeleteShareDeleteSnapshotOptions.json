@@ -1,0 +1,134 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestsdeletesharedeletesnapshotoptions31730af41c?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ccfd2df4-de98-4e12-a26c-9e416f507d49"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-02-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D8448C8D825B74",
+      "Last-Modified" : "Wed, 19 Aug 2020 22:09:33 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "8c89f84b-601a-0022-0875-761fdd000000",
+      "Date" : "Wed, 19 Aug 2020 22:09:33 GMT",
+      "x-ms-client-request-id" : "ccfd2df4-de98-4e12-a26c-9e416f507d49"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestsdeletesharedeletesnapshotoptions31730af41c?restype=share&comp=snapshot",
+    "Headers" : {
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2037129e-d1b1-4249-bcdd-a40ec4ae7992"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-02-10",
+      "x-ms-snapshot" : "2020-08-19T22:09:33.0000000Z",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D8448C8D825B74",
+      "Last-Modified" : "Wed, 19 Aug 2020 22:09:33 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "8c89f84d-601a-0022-0975-761fdd000000",
+      "Date" : "Wed, 19 Aug 2020 22:09:33 GMT",
+      "x-ms-client-request-id" : "2037129e-d1b1-4249-bcdd-a40ec4ae7992"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestsdeletesharedeletesnapshotoptions31730af41c?restype=share&comp=snapshot",
+    "Headers" : {
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "139c78fe-74f5-43b2-b779-1c857b57ee9a"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-02-10",
+      "x-ms-snapshot" : "2020-08-19T22:09:34.0000000Z",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D8448C8D825B74",
+      "Last-Modified" : "Wed, 19 Aug 2020 22:09:33 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "8c89f84e-601a-0022-0a75-761fdd000000",
+      "Date" : "Wed, 19 Aug 2020 22:09:33 GMT",
+      "x-ms-client-request-id" : "139c78fe-74f5-43b2-b779-1c857b57ee9a"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestsdeletesharedeletesnapshotoptions31730af41c?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "63e058f1-c32f-492a-9c1a-d8931aee692a"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-02-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "8c89f84f-601a-0022-0b75-761fdd000000",
+      "Date" : "Wed, 19 Aug 2020 22:09:33 GMT",
+      "x-ms-client-request-id" : "63e058f1-c32f-492a-9c1a-d8931aee692a"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestsdeletesharedeletesnapshotoptions31730af41c?sharesnapshot=2020-08-19T22%3A09%3A33.0000000Z&restype=share",
+    "Headers" : {
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5c66b3ef-2981-424a-aede-116d0177c312"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-02-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "Access-Control-Allow-Origin" : "*",
+      "x-ms-error-code" : "ShareNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "217",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "8c89f850-601a-0022-0c75-761fdd000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:8c89f850-601a-0022-0c75-761fdd000000\nTime:2020-08-19T22:09:33.6057981Z</Message></Error>",
+      "Date" : "Wed, 19 Aug 2020 22:09:33 GMT",
+      "x-ms-client-request-id" : "5c66b3ef-2981-424a-aede-116d0177c312",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestsdeletesharedeletesnapshotoptions31730af41c?sharesnapshot=2020-08-19T22%3A09%3A34.0000000Z&restype=share",
+    "Headers" : {
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "815f0832-93db-475c-816d-bc36b8d3386e"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-02-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "Access-Control-Allow-Origin" : "*",
+      "x-ms-error-code" : "ShareNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "217",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "8c89f852-601a-0022-0d75-761fdd000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:8c89f852-601a-0022-0d75-761fdd000000\nTime:2020-08-19T22:09:33.6648397Z</Message></Error>",
+      "Date" : "Wed, 19 Aug 2020 22:09:33 GMT",
+      "x-ms-client-request-id" : "815f0832-93db-475c-816d-bc36b8d3386e",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "shareapitestsdeletesharedeletesnapshotoptions31730af41c" ]
+}

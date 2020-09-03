@@ -108,7 +108,7 @@ public class CosmosDataEncryptionKeyProvider implements DataEncryptionKeyProvide
     public Mono<DataEncryptionKey> getDataEncryptionKey(String id,
                                                   String encryptionAlgorithm) {
         Mono<Tuple2<DataEncryptionKeyProperties, InMemoryRawDek>> fetchUnwrapMono = this
-            .dataEncryptionKeyContainerCore.fetchUnwrappedAsync(id);
+            .dataEncryptionKeyContainerCore.fetchUnwrapped(id);
 
         return fetchUnwrapMono
             .map(fetchUnwrap -> fetchUnwrap.getT2().getDataEncryptionKey());

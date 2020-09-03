@@ -39,7 +39,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-ai-anomalydetector</artifactId>
-      <version>3.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-anomalydetector;current} -->
+      <version>3.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-ai-anomalydetector;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -68,8 +68,8 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-core-http-jdk-httpclient</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;current} -->
+      <artifactId>azure-core-http-jdk</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-jdk;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -140,6 +140,11 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
       <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-messaging-eventgrid</artifactId>
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventgrid;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -354,8 +359,13 @@
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-cosmosdb-spring-boot-starter</artifactId>
-      <version>2.4.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-cosmosdb-spring-boot-starter;current} -->
+      <artifactId>azure-cosmosdb-spring-boot-2-3-starter</artifactId>
+      <version>2.4.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-cosmosdb-spring-boot-2-3-starter;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-cosmosdb-spring-boot-2-2-starter</artifactId>
+      <version>2.4.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-cosmosdb-spring-boot-2-2-starter;current} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>

@@ -33,6 +33,7 @@ import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
 import com.microsoft.aad.msal4j.IAccount;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
 import com.microsoft.aad.msal4j.IClientCredential;
+import com.microsoft.aad.msal4j.InteractiveRequestParameters;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.RefreshTokenParameters;
 import com.microsoft.aad.msal4j.SilentParameters;
@@ -42,7 +43,6 @@ import com.microsoft.aad.msal4jextensions.PersistenceTokenCacheAccessAspect;
 import com.microsoft.aad.msal4jextensions.persistence.linux.KeyRingAccessException;
 import com.sun.jna.Platform;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -76,7 +76,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
@@ -111,6 +110,7 @@ public class IdentityClient {
     private static final String DEFAULT_CONFIDENTIAL_KEYRING_ITEM_NAME = DEFAULT_CONFIDENTIAL_KEYCHAIN_ACCOUNT;
     private static final String DEFAULT_KEYRING_ATTR_NAME = "MsalClientID";
     private static final String DEFAULT_KEYRING_ATTR_VALUE = "Microsoft.Developer.IdentityService";
+    private static final String HTTP_LOCALHOST = "http://localhost";
     private final ClientLogger logger = new ClientLogger(IdentityClient.class);
 
     private final IdentityClientOptions options;
@@ -640,38 +640,20 @@ public class IdentityClient {
      * @return a Publisher that emits an AccessToken
      */
     public Mono<MsalToken> authenticateWithBrowserInteraction(TokenRequestContext request, int port) {
-        String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId;
-        return AuthorizationCodeListener.create(port)
-            .flatMap(server -> {
-                URI redirectUri;
-                String browserUri;
-                try {
-                    redirectUri = new URI(String.format("http://localhost:%s", port));
-                    browserUri =
-                        String.format("%s/oauth2/v2.0/authorize?response_type=code&response_mode=query&prompt"
-                                + "=select_account&client_id=%s&redirect_uri=%s&state=%s&scope=%s",
-                            authorityUrl,
-                            clientId,
-                            redirectUri.toString(),
-                            UUID.randomUUID(),
-                            String.join(" ", request.getScopes()));
-                } catch (URISyntaxException e) {
-                    return server.dispose().then(Mono.error(e));
-                }
+        URI redirectUri;
+        try {
+            redirectUri = new URI(HTTP_LOCALHOST + ":" + port);
+        } catch (URISyntaxException e) {
+            return Mono.error(logger.logExceptionAsError(new RuntimeException(e)));
+        }
+        InteractiveRequestParameters parameters = InteractiveRequestParameters.builder(redirectUri)
+                                                     .scopes(new HashSet<>(request.getScopes()))
+                                                     .build();
+        Mono<IAuthenticationResult> acquireToken = publicClientApplicationAccessor.getValue()
+                               .flatMap(pc -> Mono.fromFuture(() -> pc.acquireToken(parameters)));
 
-                return server.listen()
-                    .mergeWith(Mono.<String>fromRunnable(() -> {
-                        try {
-                            openUrl(browserUri);
-                        } catch (IOException e) {
-                            throw logger.logExceptionAsError(new IllegalStateException(e));
-                        }
-                    }).subscribeOn(Schedulers.newSingle("browser")))
-                    .next()
-                    .flatMap(code -> authenticateWithAuthorizationCode(request, code, redirectUri))
-                    .onErrorResume(t -> server.dispose().then(Mono.error(t)))
-                    .flatMap(msalToken -> server.dispose().then(Mono.just(msalToken)));
-            });
+        return acquireToken.onErrorMap(t -> new ClientAuthenticationException(
+            "Failed to acquire token with Interactive Browser Authentication.", null, t)).map(MsalToken::new);
     }
 
     /**
@@ -821,7 +803,16 @@ public class IdentityClient {
                         throw logger.logExceptionAsError(new RuntimeException(
                                 String.format("Could not connect to the url: %s.", url), exception));
                     }
-                    int responseCode = connection.getResponseCode();
+                    int responseCode;
+                    try {
+                        responseCode = connection.getResponseCode();
+                    } catch (Exception e) {
+                        throw logger.logExceptionAsError(
+                            new CredentialUnavailableException(
+                                "ManagedIdentityCredential authentication unavailable. "
+                                    + "Connection to IMDS endpoint cannot be established, "
+                                    + e.getMessage() + ".", e));
+                    }
                     if (responseCode == 410
                             || responseCode == 429
                             || responseCode == 404
