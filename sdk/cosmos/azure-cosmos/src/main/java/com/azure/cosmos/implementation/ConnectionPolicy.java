@@ -41,7 +41,7 @@ public final class ConnectionPolicy {
 
     //  Direct connection config properties
     private Duration connectTimeout;
-    private boolean enableTcpConnectionEndpointRediscovery;
+    private boolean tcpConnectionEndpointRediscoveryEnabled;
     private Duration idleTcpConnectionTimeout;
     private Duration idleTcpEndpointTimeout;
     private int maxConnectionsPerEndpoint;
@@ -52,7 +52,7 @@ public final class ConnectionPolicy {
      */
     public ConnectionPolicy(GatewayConnectionConfig gatewayConnectionConfig) {
         this(ConnectionMode.GATEWAY);
-        this.enableTcpConnectionEndpointRediscovery = false;
+        this.tcpConnectionEndpointRediscoveryEnabled = true;
         this.idleHttpConnectionTimeout = gatewayConnectionConfig.getIdleConnectionTimeout();
         this.maxConnectionPoolSize = gatewayConnectionConfig.getMaxConnectionPoolSize();
         this.requestTimeout = BridgeInternal.getRequestTimeoutFromGatewayConnectionConfig(gatewayConnectionConfig);
@@ -62,7 +62,7 @@ public final class ConnectionPolicy {
     public ConnectionPolicy(DirectConnectionConfig directConnectionConfig) {
         this(ConnectionMode.DIRECT);
         this.connectTimeout = directConnectionConfig.getConnectTimeout();
-        this.enableTcpConnectionEndpointRediscovery = directConnectionConfig.getEnableConnectionEndpointRediscovery();
+        this.tcpConnectionEndpointRediscoveryEnabled = directConnectionConfig.isConnectionEndpointRediscoveryEnabled();
         this.idleTcpConnectionTimeout = directConnectionConfig.getIdleConnectionTimeout();
         this.idleTcpEndpointTimeout = directConnectionConfig.getIdleEndpointTimeout();
         this.maxConnectionsPerEndpoint = directConnectionConfig.getMaxConnectionsPerEndpoint();
@@ -95,8 +95,8 @@ public final class ConnectionPolicy {
      *
      * @return {@code true} if Direct TCP connection endpoint rediscovery should is enabled; {@code false} otherwise.
      */
-    public boolean getEnableTcpConnectionEndpointRediscovery() {
-        return this.enableTcpConnectionEndpointRediscovery;
+    public boolean isTcpConnectionEndpointRediscoveryEnabled() {
+        return this.tcpConnectionEndpointRediscoveryEnabled;
     }
 
     /**
@@ -104,8 +104,8 @@ public final class ConnectionPolicy {
      *
      * @return the {@linkplain ConnectionPolicy}.
      */
-    public ConnectionPolicy getEnableTcpConnectionEndpointRediscovery(boolean enableTcpConnectionEndpointRediscovery) {
-        this.enableTcpConnectionEndpointRediscovery = enableTcpConnectionEndpointRediscovery;
+    public ConnectionPolicy setTcpConnectionEndpointRediscoveryEnabled(boolean tcpConnectionEndpointRediscoveryEnabled) {
+        this.tcpConnectionEndpointRediscoveryEnabled = tcpConnectionEndpointRediscoveryEnabled;
         return this;
     }
 
@@ -515,9 +515,10 @@ public final class ConnectionPolicy {
             ", inetSocketProxyAddress=" + (proxy != null ? proxy.getAddress() : null) +
             ", readRequestsFallbackEnabled=" + readRequestsFallbackEnabled +
             ", connectTimeout=" + connectTimeout +
-            ", idleEndpointTimeout=" + idleTcpEndpointTimeout +
+            ", idleTcpEndpointTimeout=" + idleTcpEndpointTimeout +
             ", maxConnectionsPerEndpoint=" + maxConnectionsPerEndpoint +
             ", maxRequestsPerConnection=" + maxRequestsPerConnection +
+            ", tcpConnectionEndpointRediscoveryEnabled=" + tcpConnectionEndpointRediscoveryEnabled +
             '}';
     }
 }

@@ -82,24 +82,24 @@ public final class DirectConnectionConfig {
     }
 
     /**
-     * Gets a value that indicates whether Direct TCP connection endpoint rediscovery should is enabled.
+     * Gets a value that indicates whether Direct TCP connection endpoint rediscovery is enabled.
      *
-     * @return {@code true} if Direct TCP connection endpoint rediscovery should is enabled; {@code false} otherwise.\
+     * @return {@code true} if Direct TCP connection endpoint rediscovery should is enabled; {@code false} otherwise.
      */
-    public boolean getEnableConnectionEndpointRediscovery() {
+    public boolean isConnectionEndpointRediscoveryEnabled() {
         return this.enableConnectionEndpointRediscovery;
     }
 
     /**
-     * Sets a value that indicates whether Direct TCP connection endpoint rediscovery should is enabled.
+     * Sets a value that indicates whether Direct TCP connection endpoint rediscovery should be enabled.
      *
-     * @param enableConnectionEndpointRediscovery {@code true} if connection endpoint rediscovery is enabled; {@code
+     * @param connectionEndpointRediscoveryEnabled {@code true} if connection endpoint rediscovery is enabled; {@code
      *                                            false} otherwise.
      *
      * @return the {@linkplain DirectConnectionConfig}.
      */
-    public DirectConnectionConfig setEnableConnectionEndpointRediscovery(boolean enableConnectionEndpointRediscovery) {
-        this.enableConnectionEndpointRediscovery = enableConnectionEndpointRediscovery;
+    public DirectConnectionConfig setConnectionEndpointRediscoveryEnabled(boolean connectionEndpointRediscoveryEnabled) {
+        this.enableConnectionEndpointRediscovery = connectionEndpointRediscoveryEnabled;
         return this;
     }
 

@@ -49,7 +49,6 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import com.azure.cosmos.implementation.directconnectivity.WFConstants.BackendHeaders;
 
-import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConnectionStateListener.UpdateStrategy;
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssue;
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssueUnless;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
@@ -492,7 +491,7 @@ public final class RntbdTransportClient extends TransportClient {
         private Options(final ConnectionPolicy connectionPolicy) {
             this.bufferPageSize = 8192;
             this.connectionAcquisitionTimeout = Duration.ZERO;
-            this.connectionEndpointRediscovery = connectionPolicy.getEnableTcpConnectionEndpointRediscovery();
+            this.connectionEndpointRediscovery = connectionPolicy.isTcpConnectionEndpointRediscoveryEnabled();
             this.connectTimeout = connectionPolicy.getConnectTimeout();
             this.idleChannelTimeout = connectionPolicy.getIdleTcpConnectionTimeout();
             this.idleChannelTimerResolution = Duration.ofMillis(100);
@@ -617,7 +616,7 @@ public final class RntbdTransportClient extends TransportClient {
          * <pre>{@code RntbdTransportClient.class.getClassLoader().getResourceAsStream("azure.cosmos.directTcp.defaultOptions.json")}</pre>
          * <p>Example: <pre>{@code {
          *   "bufferPageSize": 8192,
-         *   "connectionEndpointRediscovery": false,
+         *   "connectionEndpointRediscovery": true,
          *   "connectTimeout": "PT1M",
          *   "idleChannelTimeout": "PT0S",
          *   "idleEndpointTimeout": "PT1M10S",
