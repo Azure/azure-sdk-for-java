@@ -182,9 +182,9 @@ public class JacksonAdapter implements SerializerAdapter {
         final JavaType javaType = createJavaType(type);
         try {
             if (encoding == SerializerEncoding.XML) {
-                return (U) xmlMapper.readValue(value, javaType);
+                return (T) xmlMapper.readValue(value, javaType);
             } else {
-                return (U) serializer().readValue(value, javaType);
+                return (T) serializer().readValue(value, javaType);
             }
         } catch (JsonParseException jpe) {
             throw logger.logExceptionAsError(new MalformedValueException(jpe.getMessage(), jpe));
