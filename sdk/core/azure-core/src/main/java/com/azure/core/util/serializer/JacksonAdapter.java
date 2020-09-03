@@ -174,7 +174,7 @@ public class JacksonAdapter implements SerializerAdapter {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <U> U deserialize(String value, Type type, SerializerEncoding encoding) throws IOException {
+    public <T> T deserialize(String value, Type type, SerializerEncoding encoding) throws IOException {
         if (CoreUtils.isNullOrEmpty(value)) {
             return null;
         }
