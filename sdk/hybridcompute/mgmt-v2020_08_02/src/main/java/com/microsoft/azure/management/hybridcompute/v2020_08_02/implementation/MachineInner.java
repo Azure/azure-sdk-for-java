@@ -114,7 +114,7 @@ public class MachineInner extends Resource {
     /**
      * Machine Extensions information.
      */
-    @JsonProperty(value = "properties.extensions")
+    @JsonProperty(value = "properties.extensions", access = JsonProperty.Access.WRITE_ONLY)
     private List<MachineExtensionInstanceView> extensions;
 
     /**
@@ -324,17 +324,6 @@ public class MachineInner extends Resource {
      */
     public List<MachineExtensionInstanceView> extensions() {
         return this.extensions;
-    }
-
-    /**
-     * Set machine Extensions information.
-     *
-     * @param extensions the extensions value to set
-     * @return the MachineInner object itself.
-     */
-    public MachineInner withExtensions(List<MachineExtensionInstanceView> extensions) {
-        this.extensions = extensions;
-        return this;
     }
 
     /**

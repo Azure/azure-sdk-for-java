@@ -105,7 +105,7 @@ public class MachineProperties {
     /**
      * Machine Extensions information.
      */
-    @JsonProperty(value = "extensions")
+    @JsonProperty(value = "extensions", access = JsonProperty.Access.WRITE_ONLY)
     private List<MachineExtensionInstanceView> extensions;
 
     /**
@@ -309,17 +309,6 @@ public class MachineProperties {
      */
     public List<MachineExtensionInstanceView> extensions() {
         return this.extensions;
-    }
-
-    /**
-     * Set machine Extensions information.
-     *
-     * @param extensions the extensions value to set
-     * @return the MachineProperties object itself.
-     */
-    public MachineProperties withExtensions(List<MachineExtensionInstanceView> extensions) {
-        this.extensions = extensions;
-        return this;
     }
 
     /**

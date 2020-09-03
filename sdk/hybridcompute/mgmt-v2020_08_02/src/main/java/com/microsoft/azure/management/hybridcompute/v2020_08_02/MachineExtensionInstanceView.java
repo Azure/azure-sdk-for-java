@@ -17,20 +17,20 @@ public class MachineExtensionInstanceView {
     /**
      * The machine extension name.
      */
-    @JsonProperty(value = "name")
+    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /**
      * Specifies the type of the extension; an example is
      * "CustomScriptExtension".
      */
-    @JsonProperty(value = "type")
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /**
      * Specifies the version of the script handler.
      */
-    @JsonProperty(value = "typeHandlerVersion")
+    @JsonProperty(value = "typeHandlerVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String typeHandlerVersion;
 
     /**
@@ -49,17 +49,6 @@ public class MachineExtensionInstanceView {
     }
 
     /**
-     * Set the machine extension name.
-     *
-     * @param name the name value to set
-     * @return the MachineExtensionInstanceView object itself.
-     */
-    public MachineExtensionInstanceView withName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
      * Get specifies the type of the extension; an example is "CustomScriptExtension".
      *
      * @return the type value
@@ -69,34 +58,12 @@ public class MachineExtensionInstanceView {
     }
 
     /**
-     * Set specifies the type of the extension; an example is "CustomScriptExtension".
-     *
-     * @param type the type value to set
-     * @return the MachineExtensionInstanceView object itself.
-     */
-    public MachineExtensionInstanceView withType(String type) {
-        this.type = type;
-        return this;
-    }
-
-    /**
      * Get specifies the version of the script handler.
      *
      * @return the typeHandlerVersion value
      */
     public String typeHandlerVersion() {
         return this.typeHandlerVersion;
-    }
-
-    /**
-     * Set specifies the version of the script handler.
-     *
-     * @param typeHandlerVersion the typeHandlerVersion value to set
-     * @return the MachineExtensionInstanceView object itself.
-     */
-    public MachineExtensionInstanceView withTypeHandlerVersion(String typeHandlerVersion) {
-        this.typeHandlerVersion = typeHandlerVersion;
-        return this;
     }
 
     /**
