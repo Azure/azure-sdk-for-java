@@ -1,6 +1,7 @@
 {
   "advisor": "Advisor",
   "analysisservices": "Analysis Services",
+  "anomalydetector": "Anomaly Detector",
   "apimanagement": "Api Management",
   "appconfiguration": "App Configuration",
   "applicationinsights": "Application Insights",
@@ -97,6 +98,7 @@
   "resourcegraph": "Resource Graph",
   "resourcehealth": "Resource Health",
   "resources": "Resources",
+  "resourcemanager": "Resource Manager",
   "schemaregistry": "Schema Registry",
   "search": "Search",
   "security": "Security",
