@@ -236,9 +236,8 @@ public class DigitalTwinsLifecycleAsyncSample {
             .doOnTerminate(createModelsLatch::countDown)
             .subscribe();
 
-        // Verify that the latch has been counted down for the async operation, signifying that the async call has completed successfully.
-        boolean created = createModelsLatch.await(MaxWaitTimeAsyncOperationsInSeconds, TimeUnit.SECONDS);
-        System.out.println("Models created: " + created);
+        // Wait until the latch has been counted down for the async operation, signifying that the async call has completed successfully.
+        createModelsLatch.await(MaxWaitTimeAsyncOperationsInSeconds, TimeUnit.SECONDS);
     }
 
     /**
@@ -257,9 +256,8 @@ public class DigitalTwinsLifecycleAsyncSample {
             .doOnTerminate(listModelsLatch::countDown)
             .subscribe();
 
-        // Verify that the latch has been counted down for the async operation, signifying that the async call has completed successfully.
-        boolean created = listModelsLatch.await(MaxWaitTimeAsyncOperationsInSeconds, TimeUnit.SECONDS);
-        System.out.println("Models retrieved: " + created);
+        // Wait until the latch has been counted down for the async operation, signifying that the async call has completed successfully.
+        listModelsLatch.await(MaxWaitTimeAsyncOperationsInSeconds, TimeUnit.SECONDS);
     }
 
     /**
@@ -280,9 +278,8 @@ public class DigitalTwinsLifecycleAsyncSample {
                     throwable -> System.err.println("Could not create digital twin " + twinId + " due to " + throwable),
                     createTwinsLatch::countDown));
 
-        // Verify that the latch has been counted down for each async operation, signifying that the async call has completed successfully.
-        boolean created = createTwinsLatch.await(MaxWaitTimeAsyncOperationsInSeconds, TimeUnit.SECONDS);
-        System.out.println("Twins created: " + created);
+        // Wait until the latch has been counted down for each async operation, signifying that the async call has completed successfully.
+        createTwinsLatch.await(MaxWaitTimeAsyncOperationsInSeconds, TimeUnit.SECONDS);
     }
 
     public static void connectTwinsTogether() throws IOException, InterruptedException {
@@ -316,8 +313,7 @@ public class DigitalTwinsLifecycleAsyncSample {
             }
         );
 
-        // Verify that the latch has been counted down for each async operation, signifying that the async call has completed successfully.
-        boolean created = connectTwinsLatch.await(MaxWaitTimeAsyncOperationsInSeconds, TimeUnit.SECONDS);
-        System.out.println("Twins connected: " + created);
+        // Wait until the latch has been counted down for each async operation, signifying that the async call has completed successfully.
+        connectTwinsLatch.await(MaxWaitTimeAsyncOperationsInSeconds, TimeUnit.SECONDS);
     }
 }
