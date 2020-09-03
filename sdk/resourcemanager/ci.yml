@@ -56,6 +56,9 @@ extends:
       - name: azure-resourcemanager-dns
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerdns
+      - name: azure-resourcemanager-eventhubs
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagereventhubs
       - name: azure-resourcemanager-keyvault
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerkeyvault
@@ -68,6 +71,9 @@ extends:
       - name: azure-resourcemanager-network
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagernetwork
+      - name: azure-resourcemanager-privatedns
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerprivatedns
       - name: azure-resourcemanager-resources
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerresources
@@ -80,3 +86,6 @@ extends:
       - name: azure-resourcemanager-storage
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerstorage
+      - name: azure-resourcemanager-trafficmanager
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagertrafficmanager
