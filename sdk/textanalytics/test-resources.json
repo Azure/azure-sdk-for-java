@@ -41,7 +41,6 @@
     "variables": {
         "authorizationApiVersion": "2018-09-01-preview",
         "textAnalyticsApiVersion": "2017-04-18",
-        "azureTextAnalyticsUrl": "[concat('https://', parameters('baseName'), parameters('endpointSuffix'))]",
         "cognitiveServiceUserRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/a97b65f3-24c7-4388-baec-2e87135dc908')]"
     },
     "resources": [
@@ -70,27 +69,5 @@
                 "customSubDomainName": "[parameters('baseName')]"
             }
         }
-    ],
-    "outputs": {
-        "AZURE_TENANT_ID": {
-            "type": "String",
-            "value": "[parameters('tenantId')]"
-        },
-        "AZURE_CLIENT_ID": {
-            "type": "String",
-            "value": "[parameters('testApplicationId')]"
-        },
-        "AZURE_CLIENT_SECRET": {
-            "type": "String",
-            "value": "[parameters('testApplicationSecret')]"
-        },
-        "AZURE_TEXT_ANALYTICS_API_KEY": {
-            "type": "string",
-            "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', parameters('baseName')), variables('textAnalyticsApiVersion')).key1]"
-        },
-        "AZURE_TEXT_ANALYTICS_ENDPOINT": {
-            "type": "string",
-            "value": "[variables('azureTextAnalyticsUrl')]"
-        }
-    }
+    ]
 }
