@@ -279,9 +279,6 @@ All client libraries, by default, use the Tomcat-native Boring SSL library to en
 ## Next steps
 Several Key Vault Java SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Azure Key Vault.
 
-## Next steps samples
-Samples are explained in detail [here][samples_readme].
-
 ###  Additional documentation
 For more extensive documentation on Azure Key Vault, see the [API reference documentation][azkeyvault_rest].
 
@@ -306,8 +303,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [azure_create_application_in_portal]: https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal
 [azure_keyvault_cli]: https://docs.microsoft.com/azure/key-vault/quick-create-cli
 [azure_keyvault_cli_full]: https://docs.microsoft.com/cli/azure/keyvault?view=azure-cli-latest
-[administration_samples]: src/samples/java/com/azure/security/keyvault/administration
-[samples_readme]: src/samples/README.md
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fkeyvault%2Fazure-security-keyvault-administration%2FREADME.png)
