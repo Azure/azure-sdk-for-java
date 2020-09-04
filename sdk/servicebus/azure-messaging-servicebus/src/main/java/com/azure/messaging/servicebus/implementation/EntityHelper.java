@@ -52,7 +52,7 @@ public final class EntityHelper {
      */
     public static QueueDescription getQueueDescription(CreateQueueOptions options) {
         Objects.requireNonNull(options, "'options' cannot be null.");
-        return new QueueDescription()
+        final QueueDescription description = new QueueDescription()
             .setAutoDeleteOnIdle(options.getAutoDeleteOnIdle())
             .setDefaultMessageTimeToLive(options.getDefaultMessageTimeToLive())
             .setDeadLetteringOnMessageExpiration(options.deadLetteringOnMessageExpiration())
@@ -68,6 +68,12 @@ public final class EntityHelper {
             .setRequiresSession(options.requiresSession())
             .setStatus(options.getStatus())
             .setUserMetadata(options.getUserMetadata());
+
+        if (!options.getAuthorizationRules().isEmpty()) {
+            description.setAuthorizationRules(options.getAuthorizationRules());
+        }
+
+        return description;
     }
 
     public static SubscriptionDescription getSubscriptionDescription(CreateSubscriptionOptions options) {
@@ -89,7 +95,7 @@ public final class EntityHelper {
 
     public static TopicDescription getTopicDescription(CreateTopicOptions options) {
         Objects.requireNonNull(options, "'options' cannot be null.");
-        return new TopicDescription()
+        final TopicDescription description = new TopicDescription()
             .setAutoDeleteOnIdle(options.getAutoDeleteOnIdle())
             .setDefaultMessageTimeToLive(options.getDefaultMessageTimeToLive())
             .setDuplicateDetectionHistoryTimeWindow(options.getDuplicateDetectionHistoryTimeWindow())
@@ -100,6 +106,12 @@ public final class EntityHelper {
             .setSupportOrdering(options.isSupportOrdering())
             .setStatus(options.getStatus())
             .setUserMetadata(options.getUserMetadata());
+
+        if (!options.getAuthorizationRules().isEmpty()) {
+            description.setAuthorizationRules(options.getAuthorizationRules());
+        }
+
+        return description;
     }
 
     /**
