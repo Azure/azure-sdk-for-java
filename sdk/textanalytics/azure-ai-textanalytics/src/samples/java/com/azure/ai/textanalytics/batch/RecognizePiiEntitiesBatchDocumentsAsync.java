@@ -7,7 +7,7 @@ import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
-import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
+import com.azure.ai.textanalytics.models.RecognizePiiEntityOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
@@ -41,11 +41,11 @@ public class RecognizePiiEntitiesBatchDocumentsAsync {
             new TextDocumentInput("2", "Visa card 4111 1111 1111 1111").setLanguage("en")
         );
 
-        // Request options: show statistics and model version
-        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest");
+        // Show statistics and model version
+        RecognizePiiEntityOptions options = new RecognizePiiEntityOptions().setIncludeStatistics(true).setModelVersion("latest");
 
         // Recognizing Personally Identifiable Information entities for each document in a batch of documents
-        client.recognizePiiEntitiesBatchWithResponse(documents, requestOptions).subscribe(
+        client.recognizePiiEntitiesBatchWithResponse(documents, options).subscribe(
             entitiesBatchResultResponse -> {
                 // Response's status code
                 System.out.printf("Status code of request response: %d%n", entitiesBatchResultResponse.getStatusCode());
