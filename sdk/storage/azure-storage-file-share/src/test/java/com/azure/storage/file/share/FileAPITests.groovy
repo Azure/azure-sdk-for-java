@@ -15,6 +15,7 @@ import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileCopyInfo
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.ShareFileRange
+import com.azure.storage.file.share.models.ShareRequestConditions
 import com.azure.storage.file.share.models.ShareSnapshotInfo
 import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions
@@ -773,7 +774,7 @@ class FileAPITests extends APISpec {
         FileTestHelper.deleteFilesIfExists(testFolder.getPath())
     }
 
-    def "List ranges prev snapshot"() {
+    def "List ranges diff"() {
         given:
         def fileName = testResourceName.randomName("file", 60)
         primaryFileClient.create(1024 + dataLength)
@@ -785,7 +786,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.uploadWithResponse(defaultData, dataLength, 1024, null, null)
 
         expect:
-        primaryFileClient.listRangesDiff(new ShareFileListRangesDiffOptions(snapInfo.getSnapshot()), null, null).each {
+        primaryFileClient.listRangesDiff(snapInfo.getSnapshot(), null, null).each {
             assert it.getStart() == 1024 /* These are the changes since the previous snapshot. */
             assert it.getEnd() == 1030
         }
@@ -794,7 +795,74 @@ class FileAPITests extends APISpec {
         FileTestHelper.deleteFilesIfExists(testFolder.getPath())
     }
 
-    def "List ranges prev snapshot fail"() {
+    def "List ranges diff with range"() {
+        given:
+        def fileName = testResourceName.randomName("file", 60)
+        primaryFileClient.create(1024 + dataLength)
+        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, testFolder, fileName)
+        primaryFileClient.uploadFromFile(uploadFile)
+
+        def snapInfo = shareClient.createSnapshot()
+
+        primaryFileClient.uploadWithResponse(defaultData, dataLength, 1024, null, null)
+
+        expect:
+        primaryFileClient.listRangesDiff(new ShareFileListRangesDiffOptions(snapInfo.getSnapshot()).setRange(new ShareFileRange(1025, 1026)), null, null).each {
+            assert it.getStart() == 1025 /* These are the changes since the previous snapshot. */
+            assert it.getEnd() == 1026
+        }
+
+        cleanup:
+        FileTestHelper.deleteFilesIfExists(testFolder.getPath())
+    }
+
+    def "List ranges diff lease"() {
+        given:
+        def fileName = testResourceName.randomName("file", 60)
+        primaryFileClient.create(1024 + dataLength)
+        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, testFolder, fileName)
+        primaryFileClient.uploadFromFile(uploadFile)
+
+        def snapInfo = shareClient.createSnapshot()
+
+        primaryFileClient.uploadWithResponse(defaultData, dataLength, 1024, null, null)
+        def leaseId = createLeaseClient(primaryFileClient).acquireLease()
+
+        expect:
+        primaryFileClient.listRangesDiff(new ShareFileListRangesDiffOptions(snapInfo.getSnapshot()).setRequestConditions(new ShareRequestConditions().setLeaseId(leaseId)), null, null).each {
+            assert it.getStart() == 1024 /* These are the changes since the previous snapshot. */
+            assert it.getEnd() == 1030
+        }
+
+        cleanup:
+        FileTestHelper.deleteFilesIfExists(testFolder.getPath())
+    }
+
+    def "List ranges diff lease fail"() {
+        given:
+        def fileName = testResourceName.randomName("file", 60)
+        primaryFileClient.create(1024 + dataLength)
+        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, testFolder, fileName)
+        primaryFileClient.uploadFromFile(uploadFile)
+
+        def snapInfo = shareClient.createSnapshot()
+
+        primaryFileClient.uploadWithResponse(defaultData, dataLength, 1024, null, null)
+
+        when:
+        primaryFileClient.listRangesDiff(new ShareFileListRangesDiffOptions(snapInfo.getSnapshot()).setRequestConditions(new ShareRequestConditions().setLeaseId(getRandomUUID())), null, null).each {
+            assert it.getStart() == 1024 /* These are the changes since the previous snapshot. */
+            assert it.getEnd() == 1030
+        }
+
+        then:
+        thrown(ShareStorageException)
+
+        cleanup:
+        FileTestHelper.deleteFilesIfExists(testFolder.getPath())
+    }
+
+    def "List ranges diff fail"() {
         given:
         def fileName = testResourceName.randomName("file", 60)
         primaryFileClient.create(1024)
