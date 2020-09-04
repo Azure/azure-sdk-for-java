@@ -4,9 +4,6 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.exception.AmqpResponseCode;
-import com.azure.messaging.servicebus.models.ServiceBusMessage;
-import com.azure.messaging.servicebus.ServiceBusMessageSerializer;
-import com.azure.messaging.servicebus.models.ServiceBusReceivedMessage;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;

@@ -9,9 +9,6 @@ import com.azure.messaging.servicebus.administration.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.ReceiveMode;
-import com.azure.messaging.servicebus.models.ServiceBusMessage;
-import com.azure.messaging.servicebus.models.ServiceBusReceivedMessage;
-import com.azure.messaging.servicebus.models.ServiceBusReceivedMessageContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -38,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
- * Integration tests for {@link ServiceBusReceiverClient} from queues or subscriptions.
+ * Integration tests for {@link com.azure.messaging.servicebus.ServiceBusReceiverClient} from queues or subscriptions.
  */
 @Tag("integration")
 class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {

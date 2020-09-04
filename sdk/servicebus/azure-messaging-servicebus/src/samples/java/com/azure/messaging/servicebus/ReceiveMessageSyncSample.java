@@ -4,9 +4,6 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.util.IterableStream;
-import com.azure.messaging.servicebus.models.ServiceBusMessage;
-import com.azure.messaging.servicebus.models.ServiceBusReceivedMessage;
-import com.azure.messaging.servicebus.models.ServiceBusReceivedMessageContext;
 
 /**
  * Sample demonstrates how to receive a batch of {@link ServiceBusReceivedMessage} from an Azure Service Bus Queue using

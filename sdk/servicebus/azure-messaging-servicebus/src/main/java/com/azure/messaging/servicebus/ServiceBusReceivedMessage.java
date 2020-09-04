@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.servicebus.models;
+package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpDataBody;
@@ -9,9 +9,9 @@ import com.azure.core.amqp.models.AmqpMessageHeader;
 import com.azure.core.amqp.models.AmqpMessageProperties;
 import com.azure.core.amqp.models.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.implementation.EntityHelper;
 import com.azure.messaging.servicebus.implementation.MessageWithLockToken;
 import com.azure.messaging.servicebus.implementation.Messages;
+import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
@@ -55,33 +55,6 @@ public final class ServiceBusReceivedMessage {
 
     private AmqpAnnotatedMessage amqpAnnotatedMessage;
     private UUID lockToken;
-
-    static {
-        // This is used by classes in different packages to get access to private and package-private methods.
-        EntityHelper.setServiceBusReceivedMessageAccessor(new EntityHelper.ServiceBusReceivedMessageAccessor() {
-
-            @Override
-            public ServiceBusReceivedMessage toModel(Message amqpMessage, UUID lockToken) {
-                ServiceBusReceivedMessage brokeredMessage = new ServiceBusReceivedMessage(amqpMessage);
-                if (lockToken != null) {
-                    brokeredMessage.setLockToken(lockToken);
-                }
-                return brokeredMessage;
-            }
-
-            @Override
-            public ServiceBusReceivedMessage toModel(byte[] data, long sequenceNumber) {
-                ServiceBusReceivedMessage brokeredMessage = new ServiceBusReceivedMessage(data);
-                brokeredMessage.setSequenceNumber(sequenceNumber);
-                return brokeredMessage;
-            }
-
-            @Override
-            public void setLockedUntil(ServiceBusReceivedMessage message, OffsetDateTime lockedUntil) {
-                message.setLockedUntil(lockedUntil);
-            }
-        });
-    }
 
     /**
      *
@@ -627,36 +600,36 @@ public final class ServiceBusReceivedMessage {
      *
      * @see #getCorrelationId()
      */
-    /*void setCorrelationId(String correlationId) {
+    void setCorrelationId(String correlationId) {
         amqpAnnotatedMessage.getProperties().setCorrelationId(correlationId);
-    }*/
+    }
 
     /**
      * Sets the content type of the {@link ServiceBusReceivedMessage}.
      *
      * @param contentType of the message.
      */
-    /*void setContentType(String contentType) {
+    void setContentType(String contentType) {
         amqpAnnotatedMessage.getProperties().setContentType(contentType);
-    }*/
+    }
 
     /**
      * Sets the dead letter description.
      *
      * @param deadLetterErrorDescription Dead letter description.
      */
-    /*void setDeadLetterErrorDescription(String deadLetterErrorDescription) {
+    void setDeadLetterErrorDescription(String deadLetterErrorDescription) {
         amqpAnnotatedMessage.getApplicationProperties().put(DEAD_LETTER_DESCRIPTION, deadLetterErrorDescription);
-    }/*
+    }
 
     /**
      * Sets the dead letter reason.
      *
      * @param deadLetterReason Dead letter reason.
      */
-    /*void setDeadLetterReason(String deadLetterReason) {
+    void setDeadLetterReason(String deadLetterReason) {
         amqpAnnotatedMessage.getApplicationProperties().put(DEAD_LETTER_REASON, deadLetterReason);
-    }*/
+    }
 
     /**
      * Sets the name of the queue or subscription that this message was enqueued on, before it was
@@ -665,31 +638,34 @@ public final class ServiceBusReceivedMessage {
      * @param deadLetterSource the name of the queue or subscription that this message was enqueued on,
      * before it was deadlettered.
      */
-    /*void setDeadLetterSource(String deadLetterSource) {
+    void setDeadLetterSource(String deadLetterSource) {
         amqpAnnotatedMessage.getApplicationProperties().put(DEAD_LETTER_SOURCE_NAME, deadLetterSource);
-    }*/
+    }
 
     /**
      * Sets the number of the times this message was delivered to clients.
      *
      * @param deliveryCount the number of the times this message was delivered to clients.
      */
-    /*void setDeliveryCount(long deliveryCount) {
-        this.deliveryCount = deliveryCount;
-    }*/
+    void setDeliveryCount(long deliveryCount) {
+        amqpAnnotatedMessage.getHeader().setDeliveryCount(deliveryCount);
+    }
 
-   /* void setEnqueuedSequenceNumber(long enqueuedSequenceNumber) {
+    void setEnqueuedSequenceNumber(long enqueuedSequenceNumber) {
         amqpAnnotatedMessage.getMessageAnnotations().put(ENQUEUED_SEQUENCE_NUMBER, enqueuedSequenceNumber);
-    }/*
+    }
 
     /**
      * Sets the datetime at which this message was enqueued in Azure Service Bus.
      *
      * @param enqueuedTime the datetime at which this message was enqueued in Azure Service Bus.
      */
-    /*void setEnqueuedTime(OffsetDateTime enqueuedTime) {
-        this.enqueuedTime = enqueuedTime;
-    }*/
+    void setEnqueuedTime(OffsetDateTime enqueuedTime) {
+        if (enqueuedTime != null) {
+            long epochMilli = enqueuedTime.toInstant().toEpochMilli();
+            amqpAnnotatedMessage.getMessageAnnotations().put(ENQUEUED_TIME_UTC_NAME, new Date(epochMilli));
+        }
+    }
 
     /**
      * Sets the subject for the message.
@@ -715,9 +691,10 @@ public final class ServiceBusReceivedMessage {
      * @param lockedUntil the datetime at which the lock of this message expires.
      */
     void setLockedUntil(OffsetDateTime lockedUntil) {
-        long epochMilli = lockedUntil.toInstant().toEpochMilli();
-        final Map<String, Object> messageAnnotations = amqpAnnotatedMessage.getMessageAnnotations();
-        messageAnnotations.put(LOCKED_UNTIL_NAME, new Date(epochMilli));
+        if (lockedUntil != null) {
+            long epochMilli = lockedUntil.toInstant().toEpochMilli();
+            amqpAnnotatedMessage.getMessageAnnotations().put(LOCKED_UNTIL_NAME, new Date(epochMilli));
+        }
     }
 
     /**
@@ -725,9 +702,9 @@ public final class ServiceBusReceivedMessage {
      *
      * @param messageId to be set.
      */
-    /*void setMessageId(String messageId) {
+    void setMessageId(String messageId) {
         amqpAnnotatedMessage.getProperties().setMessageId(messageId);
-    }*/
+    }
 
     /**
      * Sets a partition key for sending a message to a partitioned entity
@@ -736,9 +713,9 @@ public final class ServiceBusReceivedMessage {
      *
      * @see #getPartitionKey()
      */
-    /*void setPartitionKey(String partitionKey) {
+    void setPartitionKey(String partitionKey) {
         amqpAnnotatedMessage.getMessageAnnotations().put(PARTITION_KEY_NAME, partitionKey);
-    }*/
+    }
 
     /**
      * Sets the scheduled enqueue time of this message.
@@ -747,9 +724,12 @@ public final class ServiceBusReceivedMessage {
      *
      * @see #getScheduledEnqueueTime()
      */
-    /*void setScheduledEnqueueTime(OffsetDateTime scheduledEnqueueTime) {
-        this.scheduledEnqueueTime = scheduledEnqueueTime;
-    }*/
+    void setScheduledEnqueueTime(OffsetDateTime scheduledEnqueueTime) {
+        if (scheduledEnqueueTime != null) {
+            long epochMilli = scheduledEnqueueTime.toInstant().toEpochMilli();
+            amqpAnnotatedMessage.getMessageAnnotations().put(SCHEDULED_ENQUEUE_TIME_NAME, new Date(epochMilli));
+        }
+    }
 
     /**
      * Sets the unique number assigned to a message by Service Bus.
@@ -765,9 +745,9 @@ public final class ServiceBusReceivedMessage {
      *
      * @param sessionId to be set.
      */
-    /*void setSessionId(String sessionId) {
+    void setSessionId(String sessionId) {
         amqpAnnotatedMessage.getProperties().setGroupId(sessionId);
-    }*/
+    }
 
     /**
      * Sets the duration of time before this message expires.
@@ -776,9 +756,9 @@ public final class ServiceBusReceivedMessage {
      *
      * @see #getTimeToLive()
      */
-    /*void setTimeToLive(Duration timeToLive) {
+    void setTimeToLive(Duration timeToLive) {
         amqpAnnotatedMessage.getHeader().setTimeToLive(timeToLive);
-    }*/
+    }
 
     /**
      * Sets the address of an entity to send replies to.
@@ -787,18 +767,18 @@ public final class ServiceBusReceivedMessage {
      *
      * @see #getReplyTo()
      */
-    /*void setReplyTo(String replyTo) {
+    void setReplyTo(String replyTo) {
         amqpAnnotatedMessage.getProperties().setReplyTo(replyTo);
-    }*/
+    }
 
     /**
      * Gets or sets a session identifier augmenting the {@link #getReplyTo() ReplyTo} address.
      *
      * @param replyToSessionId ReplyToSessionId property value of this message
      */
-    /*void setReplyToSessionId(String replyToSessionId) {
+    void setReplyToSessionId(String replyToSessionId) {
         amqpAnnotatedMessage.getProperties().setReplyToGroupId(replyToSessionId);
-    }*/
+    }
 
     /**
      * Sets the "to" address.
@@ -810,9 +790,9 @@ public final class ServiceBusReceivedMessage {
      *
      * @param to To property value of this message
      */
-    /*void setTo(String to) {
+    void setTo(String to) {
         amqpAnnotatedMessage.getProperties().setTo(to);
-    }*/
+    }
 
     /**
      * Sets a via-partition key for sending a message to a destination entity via another partitioned entity
@@ -821,7 +801,7 @@ public final class ServiceBusReceivedMessage {
      *
      * @see #getViaPartitionKey()
      */
-    /*void setViaPartitionKey(String viaPartitionKey) {
+    void setViaPartitionKey(String viaPartitionKey) {
         amqpAnnotatedMessage.getMessageAnnotations().put(VIA_PARTITION_KEY_NAME, viaPartitionKey);
-    }*/
+    }
 }

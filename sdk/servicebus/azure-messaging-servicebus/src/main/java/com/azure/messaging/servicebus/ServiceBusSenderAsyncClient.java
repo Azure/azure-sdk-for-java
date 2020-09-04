@@ -20,8 +20,6 @@ import com.azure.core.util.tracing.ProcessKind;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.models.CreateBatchOptions;
-import com.azure.messaging.servicebus.models.ServiceBusMessage;
-import com.azure.messaging.servicebus.models.ServiceBusReceivedMessage;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.amqp.transaction.TransactionalState;

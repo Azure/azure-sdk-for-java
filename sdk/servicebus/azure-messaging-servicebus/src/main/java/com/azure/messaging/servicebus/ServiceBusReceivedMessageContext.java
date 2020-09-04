@@ -1,12 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.messaging.servicebus.models;
-
-import com.azure.messaging.servicebus.implementation.EntityHelper;
-import org.apache.qpid.proton.message.Message;
+package com.azure.messaging.servicebus;
 
 import java.util.Objects;
-import java.util.UUID;
 
 /**
  * Represents the result of a receive message operation with context from Service Bus.
@@ -15,25 +11,6 @@ public class ServiceBusReceivedMessageContext {
     private final ServiceBusReceivedMessage message;
     private final String sessionId;
     private final Throwable error;
-
-    static {
-        // This is used by classes in different packages to get access to private and package-private methods.
-        EntityHelper.setServiceBusReceivedMessageContextAccessor(
-            new EntityHelper.ServiceBusReceivedMessageContextAccessor() {
-                @Override
-                public ServiceBusReceivedMessageContext toModel(ServiceBusReceivedMessage message, String sessionId,
-                    Throwable error) {
-                    System.out.println("!!!! Init ServiceBusReceivedMessageContext toModel ");
-                    ServiceBusReceivedMessageContext messageContext;
-                    if (message != null) {
-                        messageContext = new ServiceBusReceivedMessageContext(message);
-                    } else {
-                        messageContext = new ServiceBusReceivedMessageContext(sessionId, error);
-                    }
-                    return messageContext;
-                }
-        });
-    }
 
     /**
      * Creates an instance where a message was successfully received.

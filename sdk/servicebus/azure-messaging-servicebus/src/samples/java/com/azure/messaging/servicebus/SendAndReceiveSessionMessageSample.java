@@ -4,8 +4,6 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.messaging.servicebus.models.ReceiveMode;
-import com.azure.messaging.servicebus.models.ServiceBusMessage;
-import com.azure.messaging.servicebus.models.ServiceBusReceivedMessage;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;

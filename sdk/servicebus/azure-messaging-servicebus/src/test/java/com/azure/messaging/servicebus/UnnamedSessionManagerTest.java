@@ -19,8 +19,6 @@ import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcess
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import com.azure.messaging.servicebus.models.ReceiveMode;
-import com.azure.messaging.servicebus.models.ServiceBusReceivedMessage;
-import com.azure.messaging.servicebus.models.ServiceBusReceivedMessageContext;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterAll;

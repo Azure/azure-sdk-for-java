@@ -4,8 +4,6 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.util.IterableStream;
-import com.azure.messaging.servicebus.models.ServiceBusReceivedMessage;
-import com.azure.messaging.servicebus.models.ServiceBusReceivedMessageContext;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;

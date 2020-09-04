@@ -17,15 +17,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder;
 import com.azure.messaging.servicebus.administration.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
-import com.azure.messaging.servicebus.implementation.EntityHelper;
 import com.azure.messaging.servicebus.implementation.LockContainer;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;
 import com.azure.messaging.servicebus.models.ReceiveMode;
-import com.azure.messaging.servicebus.models.ServiceBusReceivedMessage;
-import com.azure.messaging.servicebus.models.ServiceBusReceivedMessageContext;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -660,7 +657,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 // the same sequence number.
                 final Mono<ServiceBusReceivedMessage> handle = messages
                     .switchIfEmpty(Mono.fromCallable(() -> {
-                        return EntityHelper.toModel(new byte[0], lastPeekedSequenceNumber.get());
+                        ServiceBusReceivedMessage emptyMessage = new ServiceBusReceivedMessage(new byte[0]);
+                        emptyMessage.setSequenceNumber(lastPeekedSequenceNumber.get());
+                        return emptyMessage;
                     }))
                     .last()
                     .handle((last, sink) -> {
@@ -731,8 +730,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         if (unnamedSessionManager != null) {
             return unnamedSessionManager.receive();
         } else {
-            return getOrCreateConsumer().receive()
-                .map(message -> EntityHelper.toModel(message, null, null));
+            return getOrCreateConsumer().receive().map(ServiceBusReceivedMessageContext::new);
         }
     }
 
@@ -769,7 +767,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                     return receivedMessage;
                 }
                 if (receiverOptions.getReceiveMode() == ReceiveMode.PEEK_LOCK) {
-                    EntityHelper.setLockedUntil(receivedMessage, managementNodeLocks.addOrUpdate(receivedMessage.getLockToken(),
+                    receivedMessage.setLockedUntil(managementNodeLocks.addOrUpdate(receivedMessage.getLockToken(),
                         receivedMessage.getLockedUntil().toInstant(),
                         receivedMessage.getLockedUntil()).atOffset(ZoneOffset.UTC));
                 }
@@ -815,7 +813,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                     return receivedMessage;
                 }
                 if (receiverOptions.getReceiveMode() == ReceiveMode.PEEK_LOCK) {
-                    EntityHelper.setLockedUntil(receivedMessage, managementNodeLocks.addOrUpdate(receivedMessage.getLockToken(),
+                    receivedMessage.setLockedUntil(managementNodeLocks.addOrUpdate(receivedMessage.getLockToken(),
                         receivedMessage.getLockedUntil().toInstant(),
                         receivedMessage.getLockedUntil()).atOffset(ZoneOffset.UTC));
                 }

@@ -4,19 +4,13 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
-import com.azure.core.amqp.models.AmqpBodyType;
 import com.azure.core.amqp.models.AmqpDataBody;
-import com.azure.core.amqp.models.AmqpMessageBody;
 import com.azure.core.amqp.models.BinaryData;
-import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.administration.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.ReceiveMode;
-import com.azure.messaging.servicebus.models.ServiceBusMessage;
-import com.azure.messaging.servicebus.models.ServiceBusReceivedMessage;
-import com.azure.messaging.servicebus.models.ServiceBusReceivedMessageContext;
 import com.azure.messaging.servicebus.models.SubQueue;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -979,6 +973,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         final Map<String, Object> aplicaitonProperties = new HashMap<>();
         footer.put("ap-key-1", "ap-value-1");
+        footer.put("ap-key-2", "ap-value-2");
 
         final Map<String, Object> deliveryAnnotation = new HashMap<>();
         deliveryAnnotation.put("delivery-annotations-key-1", "delivery-annotations-value-1");

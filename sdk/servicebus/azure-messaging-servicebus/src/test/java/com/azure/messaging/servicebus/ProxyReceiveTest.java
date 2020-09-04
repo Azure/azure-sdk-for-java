@@ -8,7 +8,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.jproxy.ProxyServer;
 import com.azure.messaging.servicebus.jproxy.SimpleProxy;
 import com.azure.messaging.servicebus.models.ReceiveMode;
-import com.azure.messaging.servicebus.models.ServiceBusMessage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

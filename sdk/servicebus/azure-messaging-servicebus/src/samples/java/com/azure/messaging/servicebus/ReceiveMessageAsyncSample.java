@@ -3,7 +3,6 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.messaging.servicebus.models.ServiceBusReceivedMessage;
 import reactor.core.Disposable;
 
 import java.time.Instant;

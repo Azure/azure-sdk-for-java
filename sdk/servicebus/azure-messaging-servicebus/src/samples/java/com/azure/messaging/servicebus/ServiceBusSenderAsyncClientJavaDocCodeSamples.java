@@ -5,7 +5,6 @@ package com.azure.messaging.servicebus;
 
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.models.CreateBatchOptions;
-import com.azure.messaging.servicebus.models.ServiceBusMessage;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

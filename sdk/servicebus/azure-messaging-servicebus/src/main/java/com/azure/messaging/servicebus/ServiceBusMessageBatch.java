@@ -11,7 +11,6 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
-import com.azure.messaging.servicebus.models.ServiceBusMessage;
 import reactor.core.publisher.Signal;
 
 import java.nio.BufferOverflowException;

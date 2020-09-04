@@ -5,7 +5,6 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.messaging.servicebus.models.ServiceBusMessage;
 
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;

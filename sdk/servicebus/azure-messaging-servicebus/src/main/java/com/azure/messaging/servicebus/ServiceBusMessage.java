@@ -1,14 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.servicebus.models;
+package com.azure.messaging.servicebus;
 
 
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpDataBody;
 import com.azure.core.amqp.models.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.messaging.servicebus.ServiceBusMessageBatch;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -468,7 +467,7 @@ public class ServiceBusMessage {
      *
      * @return the {@link Context} object set on the {@link ServiceBusMessage}.
      */
-    public Context getContext() {
+    Context getContext() {
         return context;
     }
 

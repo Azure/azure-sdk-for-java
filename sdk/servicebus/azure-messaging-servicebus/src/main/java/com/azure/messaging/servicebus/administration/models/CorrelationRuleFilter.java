@@ -5,7 +5,7 @@ package com.azure.messaging.servicebus.administration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.models.ServiceBusMessage;
+import com.azure.messaging.servicebus.ServiceBusMessage;
 
 import java.util.HashMap;
 import java.util.Map;
