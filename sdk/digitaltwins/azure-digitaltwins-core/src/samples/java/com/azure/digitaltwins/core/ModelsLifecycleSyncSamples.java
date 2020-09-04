@@ -10,6 +10,7 @@ import com.azure.identity.ClientSecretCredentialBuilder;
 import org.apache.http.HttpStatus;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -65,7 +66,7 @@ public class ModelsLifecycleSyncSamples {
             ConsoleLogger.PrintSuccess("Created models " + componentModelId + " and " + sampleModelId);
         }
         catch (ErrorResponseException ex){
-            if (ex.getResponse().getStatusCode() == HttpStatus.SC_CONFLICT) {
+            if (ex.getResponse().getStatusCode() == HttpURLConnection.HTTP_CONFLICT) {
                 ConsoleLogger.PrintWarning("One or more models already existed");
             }
         }
