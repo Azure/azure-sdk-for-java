@@ -41,7 +41,8 @@ Alternatively you may want to use the [starters](https://github.com/Azure/azure-
 ## Key concepts
 This project provides auto-configuration for the following Azure services:
 
-- [Azure Active Directory](../azure-spring-boot-starter-active-directory)
+- [Spring Boot 2.2 for Azure Active Directory](../azure-spring-boot-2-2-starter-active-directory)
+- [Spring Boot 2.3 for Azure Active Directory](../azure-spring-boot-2-3-starter-active-directory)
 - [Azure Active Directory B2C](../azure-spring-boot-starter-active-directory-b2c)
 - [Spring Boot 2.2 for Cosmos DB SQL API](../azure-spring-boot-2-2-starter-cosmosdb)
 - [Spring Boot 2.3 for Cosmos DB SQL API](../azure-spring-boot-2-3-starter-cosmosdb)
