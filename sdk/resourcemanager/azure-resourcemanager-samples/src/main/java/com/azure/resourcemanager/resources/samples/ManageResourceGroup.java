@@ -10,7 +10,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.Azure;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 
 /**
  * Azure Resource sample for managing resource groups -

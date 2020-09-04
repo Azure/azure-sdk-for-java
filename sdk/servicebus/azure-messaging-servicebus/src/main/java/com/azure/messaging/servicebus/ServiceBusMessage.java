@@ -7,7 +7,7 @@ import com.azure.core.util.Context;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,7 +44,7 @@ public class ServiceBusMessage {
     private String partitionKey;
     private String replyTo;
     private String replyToSessionId;
-    private Instant scheduledEnqueueTime;
+    private OffsetDateTime scheduledEnqueueTime;
     private String sessionId;
     private Duration timeToLive;
     private String to;
@@ -332,27 +332,27 @@ public class ServiceBusMessage {
      * <p>
      * This value is used for delayed message availability. The message is safely added to the queue, but is not
      * considered active and therefore not retrievable until the scheduled enqueue time. Mind that the message may not
-     * be activated (enqueued) at the exact given instant; the actual activation time depends on the queue's workload
+     * be activated (enqueued) at the exact given datetime; the actual activation time depends on the queue's workload
      * and its state.
      * </p>
      *
-     * @return the instant at which the message will be enqueued in Azure Service Bus
+     * @return the datetime at which the message will be enqueued in Azure Service Bus
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-sequencing">Message Sequencing and
      *     Timestamps</a>
      */
-    public Instant getScheduledEnqueueTime() {
+    public OffsetDateTime getScheduledEnqueueTime() {
         return scheduledEnqueueTime;
     }
 
     /**
      * Sets the scheduled enqueue time of this message.
      *
-     * @param scheduledEnqueueTime the instant at which this message should be enqueued in Azure Service Bus.
+     * @param scheduledEnqueueTime the datetime at which this message should be enqueued in Azure Service Bus.
      *
      * @return The updated {@link ServiceBusMessage}.
      * @see #getScheduledEnqueueTime()
      */
-    public ServiceBusMessage setScheduledEnqueueTime(Instant scheduledEnqueueTime) {
+    public ServiceBusMessage setScheduledEnqueueTime(OffsetDateTime scheduledEnqueueTime) {
         this.scheduledEnqueueTime = scheduledEnqueueTime;
         return this;
     }

@@ -821,7 +821,16 @@ public class IdentityClient {
                         throw logger.logExceptionAsError(new RuntimeException(
                                 String.format("Could not connect to the url: %s.", url), exception));
                     }
-                    int responseCode = connection.getResponseCode();
+                    int responseCode;
+                    try {
+                        responseCode = connection.getResponseCode();
+                    } catch (Exception e) {
+                        throw logger.logExceptionAsError(
+                            new CredentialUnavailableException(
+                                "ManagedIdentityCredential authentication unavailable. "
+                                    + "Connection to IMDS endpoint cannot be established, "
+                                    + e.getMessage() + ".", e));
+                    }
                     if (responseCode == 410
                             || responseCode == 429
                             || responseCode == 404

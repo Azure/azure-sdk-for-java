@@ -9,7 +9,6 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.encryption.Encryptor;
 import com.azure.cosmos.encryption.EncryptionOptions;
-import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.implementation.guava27.Strings;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -26,7 +25,7 @@ import java.util.Map;
 public class EncryptionProcessor {
     private final static Logger LOGGER = LoggerFactory.getLogger(EncryptionProcessor.class);
 
-    public static Mono<byte[]> encryptAsync(byte[] payload, Encryptor encryptor, EncryptionOptions encryptionOptions) {
+    public static Mono<byte[]> encrypt(byte[] payload, Encryptor encryptor, EncryptionOptions encryptionOptions) {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Encrypting byte[] of size [{}] on thread [{}]",
                 payload == null ? null : payload.length,
@@ -71,7 +70,7 @@ public class EncryptionProcessor {
         SensitiveDataTransformer serializer = new SensitiveDataTransformer();
         byte[] plainText = serializer.toByteArray(toEncryptJObj);
 
-        Mono<byte[]> cipherTextMono = encryptor.encryptAsync(plainText, encryptionOptions.getDataEncryptionKeyId(), encryptionOptions.getEncryptionAlgorithm());
+        Mono<byte[]> cipherTextMono = encryptor.encrypt(plainText, encryptionOptions.getDataEncryptionKeyId(), encryptionOptions.getEncryptionAlgorithm());
 
         return cipherTextMono.switchIfEmpty(Mono.error(new NullPointerException("cipherText is null")))
                              .flatMap(
@@ -92,7 +91,7 @@ public class EncryptionProcessor {
                              );
     }
 
-    public static Mono<byte[]> decryptAsync(byte[] input, Encryptor encryptor) {
+    public static Mono<byte[]> decrypt(byte[] input, Encryptor encryptor) {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Decrypting byte[] of size [{}] on thread [{}]",
                 input == null ? null : input.length,
@@ -101,7 +100,7 @@ public class EncryptionProcessor {
 
         JsonNode itemJObj = Utils.parse(input, JsonNode.class);
         if (itemJObj instanceof ObjectNode) {
-            Mono<ObjectNode> itemJObjMono = decryptAsync((ObjectNode) itemJObj, encryptor);
+            Mono<ObjectNode> itemJObjMono = decrypt((ObjectNode) itemJObj, encryptor);
             return itemJObjMono.flatMap(
                 decryptedItem -> {
                     return Mono.just(EncryptionUtils.serializeJsonToByteArray(Utils.getSimpleObjectMapper(), itemJObj));
@@ -112,15 +111,15 @@ public class EncryptionProcessor {
         }
     }
 
-    public static Mono<ObjectNode> decryptAsync(ObjectNode itemJObj, Encryptor encryptor) {
+    public static Mono<ObjectNode> decrypt(ObjectNode itemJObj, Encryptor encryptor) {
         try {
-            return decryptAsyncInternal(itemJObj, encryptor);
+            return decryptInternal(itemJObj, encryptor);
         } catch (Exception e) {
             return Mono.error(e);
         }
     }
 
-    private static Mono<ObjectNode> decryptAsyncInternal(ObjectNode itemJObj, Encryptor encryptor) {
+    private static Mono<ObjectNode> decryptInternal(ObjectNode itemJObj, Encryptor encryptor) {
         assert (itemJObj != null);
         assert (encryptor != null);
 
@@ -145,7 +144,7 @@ public class EncryptionProcessor {
                 "Unknown encryption format version: %s. Please upgrade your SDK to the latest version.", encryptionProperties.getEncryptionFormatVersion()));
         }
 
-        Mono<byte[]> plainTextMono = encryptor.decryptAsync(encryptionProperties.getEncryptedData(), encryptionProperties.getDataEncryptionKeyId(), encryptionProperties.getEncryptionAlgorithm());
+        Mono<byte[]> plainTextMono = encryptor.decrypt(encryptionProperties.getEncryptedData(), encryptionProperties.getDataEncryptionKeyId(), encryptionProperties.getEncryptionAlgorithm());
 
         return plainTextMono.flatMap(
             plainText -> {
