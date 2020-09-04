@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.resourcemanager.resources.fluentcore.model.implementation;
+package com.azure.resourcemanager.resources.fluentcore.model;
 
-import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
 import com.azure.resourcemanager.resources.fluentcore.dag.TaskItem;

@@ -5,7 +5,7 @@ package com.azure.resourcemanager.resources.fluentcore.dag;
 
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreateUpdateTask;
+import com.azure.resourcemanager.resources.fluentcore.model.CreateUpdateTask;
 import org.junit.jupiter.api.Assertions;
 import reactor.core.publisher.Mono;
 

@@ -8,6 +8,7 @@ import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Executable;
+import com.azure.resourcemanager.resources.fluentcore.model.ExecuteTask;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import reactor.core.publisher.Mono;
 
