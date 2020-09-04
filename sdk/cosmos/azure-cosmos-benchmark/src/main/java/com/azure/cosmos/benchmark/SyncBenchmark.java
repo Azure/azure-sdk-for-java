@@ -246,8 +246,8 @@ abstract class SyncBenchmark<T> {
 
         switch (configuration.getOperationType()) {
             case ReadLatency:
+            case WriteLatency:
                 // TODO: support for other operationTypes will be added later
-//            case WriteLatency:
 //            case QueryInClauseParallel:
 //            case QueryCross:
 //            case QuerySingle:
@@ -308,8 +308,8 @@ abstract class SyncBenchmark<T> {
 
             switch (configuration.getOperationType()) {
                 case ReadLatency:
+                case WriteLatency:
                     // TODO: support for other operation types will be added later
-//                case WriteLatency:
 //                case QueryInClauseParallel:
 //                case QueryCross:
 //                case QuerySingle:

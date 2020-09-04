@@ -121,12 +121,6 @@ Licensed under the MIT License.
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
       <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
-      <exclusions>
-        <exclusion>
-          <groupId>io.netty</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>

@@ -6,6 +6,7 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
+import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
@@ -156,7 +157,9 @@ public class ReadmeSamples {
      */
     public void recognizePiiEntity() {
         String document = "My SSN is 859-98-0987";
-        textAnalyticsClient.recognizePiiEntities(document).forEach(entity -> System.out.printf(
+        PiiEntityCollection piiEntityCollection = textAnalyticsClient.recognizePiiEntities(document);
+        System.out.printf("Redacted Text: %s%n", piiEntityCollection.getRedactedText());
+        piiEntityCollection.forEach(entity -> System.out.printf(
             "Recognized Personally Identifiable Information entity: %s, entity category: %s, entity subcategory: %s,"
                 + " confidence score: %f.%n",
             entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore()));
