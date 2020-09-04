@@ -22,7 +22,7 @@ import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.PUBLISHER_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.PUBLISHED_SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -328,8 +328,8 @@ public class EventData {
             put(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), this.sequenceNumber);
 
             this.publishedSequenceNumber = removeSystemProperty(
-                PUBLISHED_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
-            put(PUBLISHED_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), this.publishedSequenceNumber);
+                PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
+            put(PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), this.publishedSequenceNumber);
         }
 
         /**
