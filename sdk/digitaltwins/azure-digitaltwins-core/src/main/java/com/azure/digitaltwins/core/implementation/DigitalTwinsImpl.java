@@ -25,7 +25,6 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsAddRelationshipResponse;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsAddResponse;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsGetByIdResponse;
@@ -35,9 +34,9 @@ import com.azure.digitaltwins.core.implementation.models.DigitalTwinsUpdateCompo
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsUpdateRelationshipResponse;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsUpdateResponse;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
-import com.azure.digitaltwins.core.implementation.models.IncomingRelationship;
 import com.azure.digitaltwins.core.implementation.models.IncomingRelationshipCollection;
 import com.azure.digitaltwins.core.implementation.models.RelationshipCollection;
+import com.azure.digitaltwins.core.models.IncomingRelationship;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
@@ -237,15 +236,15 @@ public final class DigitalTwinsImpl {
      * provided id.
      *
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DigitalTwinsGetByIdResponse> getByIdWithResponseAsync(String id) {
-        return FluxUtil.withContext(
-                context -> service.getById(this.client.getHost(), id, this.client.getApiVersion(), context));
+    public Mono<DigitalTwinsGetByIdResponse> getByIdWithResponseAsync(String id, Context context) {
+        return service.getById(this.client.getHost(), id, this.client.getApiVersion(), context);
     }
 
     /**
@@ -255,18 +254,16 @@ public final class DigitalTwinsImpl {
      *
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
      * @param twin Any object.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DigitalTwinsAddResponse> addWithResponseAsync(String id, Object twin) {
+    public Mono<DigitalTwinsAddResponse> addWithResponseAsync(String id, Object twin, Context context) {
         final String ifNoneMatch = "*";
-        return FluxUtil.withContext(
-                context ->
-                        service.add(
-                                this.client.getHost(), id, ifNoneMatch, this.client.getApiVersion(), twin, context));
+        return service.add(this.client.getHost(), id, ifNoneMatch, this.client.getApiVersion(), twin, context);
     }
 
     /**
@@ -277,15 +274,15 @@ public final class DigitalTwinsImpl {
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
      * @param ifMatch Only perform the operation if the entity's etag matches one of the etags provided or * is
      *     provided.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(String id, String ifMatch) {
-        return FluxUtil.withContext(
-                context -> service.delete(this.client.getHost(), id, ifMatch, this.client.getApiVersion(), context));
+    public Mono<Response<Void>> deleteWithResponseAsync(String id, String ifMatch, Context context) {
+        return service.delete(this.client.getHost(), id, ifMatch, this.client.getApiVersion(), context);
     }
 
     /**
@@ -296,6 +293,7 @@ public final class DigitalTwinsImpl {
      * @param patchDocument Array of any.
      * @param ifMatch Only perform the operation if the entity's etag matches one of the etags provided or * is
      *     provided.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -303,16 +301,8 @@ public final class DigitalTwinsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsUpdateResponse> updateWithResponseAsync(
-            String id, List<Object> patchDocument, String ifMatch) {
-        return FluxUtil.withContext(
-                context ->
-                        service.update(
-                                this.client.getHost(),
-                                id,
-                                ifMatch,
-                                this.client.getApiVersion(),
-                                patchDocument,
-                                context));
+            String id, List<Object> patchDocument, String ifMatch, Context context) {
+        return service.update(this.client.getHost(), id, ifMatch, this.client.getApiVersion(), patchDocument, context);
     }
 
     /**
@@ -321,6 +311,7 @@ public final class DigitalTwinsImpl {
      *
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
      * @param relationshipId The id of the relationship. The id is unique within the digital twin and case sensitive.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -328,11 +319,9 @@ public final class DigitalTwinsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsGetRelationshipByIdResponse> getRelationshipByIdWithResponseAsync(
-            String id, String relationshipId) {
-        return FluxUtil.withContext(
-                context ->
-                        service.getRelationshipById(
-                                this.client.getHost(), id, relationshipId, this.client.getApiVersion(), context));
+            String id, String relationshipId, Context context) {
+        return service.getRelationshipById(
+                this.client.getHost(), id, relationshipId, this.client.getApiVersion(), context);
     }
 
     /**
@@ -343,6 +332,7 @@ public final class DigitalTwinsImpl {
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
      * @param relationshipId The id of the relationship. The id is unique within the digital twin and case sensitive.
      * @param relationship Any object.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -350,18 +340,16 @@ public final class DigitalTwinsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsAddRelationshipResponse> addRelationshipWithResponseAsync(
-            String id, String relationshipId, Object relationship) {
+            String id, String relationshipId, Object relationship, Context context) {
         final String ifNoneMatch = "*";
-        return FluxUtil.withContext(
-                context ->
-                        service.addRelationship(
-                                this.client.getHost(),
-                                id,
-                                relationshipId,
-                                ifNoneMatch,
-                                this.client.getApiVersion(),
-                                relationship,
-                                context));
+        return service.addRelationship(
+                this.client.getHost(),
+                id,
+                relationshipId,
+                ifNoneMatch,
+                this.client.getApiVersion(),
+                relationship,
+                context);
     }
 
     /**
@@ -372,22 +360,17 @@ public final class DigitalTwinsImpl {
      * @param relationshipId The id of the relationship. The id is unique within the digital twin and case sensitive.
      * @param ifMatch Only perform the operation if the entity's etag matches one of the etags provided or * is
      *     provided.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteRelationshipWithResponseAsync(String id, String relationshipId, String ifMatch) {
-        return FluxUtil.withContext(
-                context ->
-                        service.deleteRelationship(
-                                this.client.getHost(),
-                                id,
-                                relationshipId,
-                                ifMatch,
-                                this.client.getApiVersion(),
-                                context));
+    public Mono<Response<Void>> deleteRelationshipWithResponseAsync(
+            String id, String relationshipId, String ifMatch, Context context) {
+        return service.deleteRelationship(
+                this.client.getHost(), id, relationshipId, ifMatch, this.client.getApiVersion(), context);
     }
 
     /**
@@ -400,6 +383,7 @@ public final class DigitalTwinsImpl {
      * @param ifMatch Only perform the operation if the entity's etag matches one of the etags provided or * is
      *     provided.
      * @param patchDocument Array of any.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -407,17 +391,15 @@ public final class DigitalTwinsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsUpdateRelationshipResponse> updateRelationshipWithResponseAsync(
-            String id, String relationshipId, String ifMatch, List<Object> patchDocument) {
-        return FluxUtil.withContext(
-                context ->
-                        service.updateRelationship(
-                                this.client.getHost(),
-                                id,
-                                relationshipId,
-                                ifMatch,
-                                this.client.getApiVersion(),
-                                patchDocument,
-                                context));
+            String id, String relationshipId, String ifMatch, List<Object> patchDocument, Context context) {
+        return service.updateRelationship(
+                this.client.getHost(),
+                id,
+                relationshipId,
+                ifMatch,
+                this.client.getApiVersion(),
+                patchDocument,
+                context);
     }
 
     /**
@@ -426,21 +408,17 @@ public final class DigitalTwinsImpl {
      *
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
      * @param relationshipName The name of the relationship.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of relationships which relate digital twins together.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<Object>> listRelationshipsSinglePageAsync(String id, String relationshipName) {
-        return FluxUtil.withContext(
-                        context ->
-                                service.listRelationships(
-                                        this.client.getHost(),
-                                        id,
-                                        relationshipName,
-                                        this.client.getApiVersion(),
-                                        context))
+    public Mono<PagedResponse<Object>> listRelationshipsSinglePageAsync(
+            String id, String relationshipName, Context context) {
+        return service.listRelationships(
+                        this.client.getHost(), id, relationshipName, this.client.getApiVersion(), context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -457,17 +435,16 @@ public final class DigitalTwinsImpl {
      * request is invalid. 404 (Not Found): There is no digital twin with the provided id.
      *
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of incoming relationships which relate digital twins together.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<IncomingRelationship>> listIncomingRelationshipsSinglePageAsync(String id) {
-        return FluxUtil.withContext(
-                        context ->
-                                service.listIncomingRelationships(
-                                        this.client.getHost(), id, this.client.getApiVersion(), context))
+    public Mono<PagedResponse<IncomingRelationship>> listIncomingRelationshipsSinglePageAsync(
+            String id, Context context) {
+        return service.listIncomingRelationships(this.client.getHost(), id, this.client.getApiVersion(), context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -488,6 +465,7 @@ public final class DigitalTwinsImpl {
      *     de-duplicating messages.
      * @param telemetry Any object.
      * @param dtTimestamp An RFC 3339 timestamp that identifies the time the telemetry was measured.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -495,17 +473,9 @@ public final class DigitalTwinsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendTelemetryWithResponseAsync(
-            String id, String dtId, Object telemetry, String dtTimestamp) {
-        return FluxUtil.withContext(
-                context ->
-                        service.sendTelemetry(
-                                this.client.getHost(),
-                                id,
-                                dtId,
-                                dtTimestamp,
-                                this.client.getApiVersion(),
-                                telemetry,
-                                context));
+            String id, String dtId, Object telemetry, String dtTimestamp, Context context) {
+        return service.sendTelemetry(
+                this.client.getHost(), id, dtId, dtTimestamp, this.client.getApiVersion(), telemetry, context);
     }
 
     /**
@@ -519,6 +489,7 @@ public final class DigitalTwinsImpl {
      *     de-duplicating messages.
      * @param telemetry Any object.
      * @param dtTimestamp An RFC 3339 timestamp that identifies the time the telemetry was measured.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -526,18 +497,16 @@ public final class DigitalTwinsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendComponentTelemetryWithResponseAsync(
-            String id, String componentPath, String dtId, Object telemetry, String dtTimestamp) {
-        return FluxUtil.withContext(
-                context ->
-                        service.sendComponentTelemetry(
-                                this.client.getHost(),
-                                id,
-                                componentPath,
-                                dtId,
-                                dtTimestamp,
-                                this.client.getApiVersion(),
-                                telemetry,
-                                context));
+            String id, String componentPath, String dtId, Object telemetry, String dtTimestamp, Context context) {
+        return service.sendComponentTelemetry(
+                this.client.getHost(),
+                id,
+                componentPath,
+                dtId,
+                dtTimestamp,
+                this.client.getApiVersion(),
+                telemetry,
+                context);
     }
 
     /**
@@ -546,17 +515,16 @@ public final class DigitalTwinsImpl {
      *
      * @param id The id of the digital twin. The id is unique within the service and case sensitive.
      * @param componentPath The name of the DTDL component.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DigitalTwinsGetComponentResponse> getComponentWithResponseAsync(String id, String componentPath) {
-        return FluxUtil.withContext(
-                context ->
-                        service.getComponent(
-                                this.client.getHost(), id, componentPath, this.client.getApiVersion(), context));
+    public Mono<DigitalTwinsGetComponentResponse> getComponentWithResponseAsync(
+            String id, String componentPath, Context context) {
+        return service.getComponent(this.client.getHost(), id, componentPath, this.client.getApiVersion(), context);
     }
 
     /**
@@ -568,6 +536,7 @@ public final class DigitalTwinsImpl {
      * @param ifMatch Only perform the operation if the entity's etag matches one of the etags provided or * is
      *     provided.
      * @param patchDocument Array of any.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -575,31 +544,24 @@ public final class DigitalTwinsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsUpdateComponentResponse> updateComponentWithResponseAsync(
-            String id, String componentPath, String ifMatch, List<Object> patchDocument) {
-        return FluxUtil.withContext(
-                context ->
-                        service.updateComponent(
-                                this.client.getHost(),
-                                id,
-                                componentPath,
-                                ifMatch,
-                                this.client.getApiVersion(),
-                                patchDocument,
-                                context));
+            String id, String componentPath, String ifMatch, List<Object> patchDocument, Context context) {
+        return service.updateComponent(
+                this.client.getHost(), id, componentPath, ifMatch, this.client.getApiVersion(), patchDocument, context);
     }
 
     /**
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of relationships which relate digital twins together.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<Object>> listRelationshipsNextSinglePageAsync(String nextLink) {
-        return FluxUtil.withContext(context -> service.listRelationshipsNext(nextLink, context))
+    public Mono<PagedResponse<Object>> listRelationshipsNextSinglePageAsync(String nextLink, Context context) {
+        return service.listRelationshipsNext(nextLink, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -615,14 +577,16 @@ public final class DigitalTwinsImpl {
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of incoming relationships which relate digital twins together.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<IncomingRelationship>> listIncomingRelationshipsNextSinglePageAsync(String nextLink) {
-        return FluxUtil.withContext(context -> service.listIncomingRelationshipsNext(nextLink, context))
+    public Mono<PagedResponse<IncomingRelationship>> listIncomingRelationshipsNextSinglePageAsync(
+            String nextLink, Context context) {
+        return service.listIncomingRelationshipsNext(nextLink, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

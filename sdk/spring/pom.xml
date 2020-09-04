@@ -13,7 +13,8 @@
     <module>azure-spring-boot-starter</module>
     <module>azure-spring-boot-starter-active-directory</module>
     <module>azure-spring-boot-starter-active-directory-b2c</module>
-    <module>azure-spring-boot-starter-cosmosdb</module>
+    <module>azure-spring-boot-2-2-starter-cosmosdb</module>
+    <module>azure-spring-boot-2-3-starter-cosmosdb</module>
     <module>azure-spring-boot-starter-data-gremlin</module>
     <module>azure-spring-boot-starter-keyvault-secrets</module>
     <module>azure-spring-boot-starter-metrics</module>
@@ -23,6 +24,7 @@
     <module>azure-spring-boot-test-aad</module>
     <module>azure-spring-boot-test-cosmosdb</module>
     <module>azure-spring-boot-test-keyvault</module>
+    <module>azure-spring-boot-test-servicebus-jms</module>
     <module>azure-spring-cloud-test-eventhubs</module>
     <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory</module>
     <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc</module>

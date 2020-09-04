@@ -34,6 +34,7 @@ public class SpringServiceImpl
     SpringServiceImpl(String name, ServiceResourceInner innerObject, AppPlatformManager manager) {
         super(name, innerObject, manager);
     }
+
     @Override
     public Sku sku() {
         return inner().sku();

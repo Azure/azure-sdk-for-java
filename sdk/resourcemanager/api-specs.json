@@ -154,10 +154,10 @@
     "package": "com.azure.resourcemanager.dns",
     "args": "--payload-flattening-threshold=1 --tag=package-2018-03-preview"
   },
-  "eventhub": {
-    "dir": "azure-resourcemanager-eventhub",
+  "eventhubs": {
+    "dir": "azure-resourcemanager-eventhubs",
     "source": "specification/eventhub/resource-manager/readme.md",
-    "package": "com.microsoft.azure.resourcemanager.eventhub",
+    "package": "com.azure.resourcemanager.eventhubs",
     "args": "--payload-flattening-threshold=1 --tag=package-2017-04"
   },
   "features": {
@@ -337,7 +337,7 @@
   "trafficmanager": {
     "dir": "azure-resourcemanager-trafficmanager",
     "source": "specification/trafficmanager/resource-manager/readme.md",
-    "package": "com.microsoft.azure.resourcemanager.trafficmanager",
+    "package": "com.azure.resourcemanager.trafficmanager",
     "args": "--payload-flattening-threshold=1 --tag=package-2018-04"
   },
   "msi": {

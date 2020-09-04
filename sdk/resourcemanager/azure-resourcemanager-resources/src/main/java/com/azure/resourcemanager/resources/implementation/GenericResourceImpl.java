@@ -152,6 +152,7 @@ final class GenericResourceImpl
         String name = isInCreateMode() ? this.name() : ResourceUtils.nameFromResourceId(inner().id());
 
         return AcceptedImpl.newAccepted(logger,
+            this.manager().inner(),
             () -> this.manager().inner().getResources()
                 .createOrUpdateWithResponseAsync(
                     resourceGroupName(),
@@ -162,8 +163,6 @@ final class GenericResourceImpl
                     apiVersion,
                     inner()).block(),
             inner -> new GenericResourceImpl(inner.id(), inner, this.manager()),
-            this.manager().inner().getSerializerAdapter(),
-            this.manager().inner().getHttpPipeline(),
             GenericResourceInner.class,
             null,
             this::setInner);

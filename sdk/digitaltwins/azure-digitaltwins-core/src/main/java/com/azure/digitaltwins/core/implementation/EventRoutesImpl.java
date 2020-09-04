@@ -23,7 +23,6 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
 import com.azure.digitaltwins.core.implementation.models.EventRoute;
 import com.azure.digitaltwins.core.implementation.models.EventRouteCollection;
@@ -104,21 +103,21 @@ public final class EventRoutesImpl {
      * Retrieves all event routes. Status codes: 200 (OK): Success. 400 (Bad Request): The request is invalid.
      *
      * @param eventRoutesListOptions Parameter group.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of EventRoute objects.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<EventRoute>> listSinglePageAsync(EventRoutesListOptions eventRoutesListOptions) {
+    public Mono<PagedResponse<EventRoute>> listSinglePageAsync(
+            EventRoutesListOptions eventRoutesListOptions, Context context) {
         Integer maxItemCountInternal = null;
         if (eventRoutesListOptions != null) {
             maxItemCountInternal = eventRoutesListOptions.getMaxItemCount();
         }
         Integer maxItemCount = maxItemCountInternal;
-        return FluxUtil.withContext(
-                        context ->
-                                service.list(this.client.getHost(), maxItemCount, this.client.getApiVersion(), context))
+        return service.list(this.client.getHost(), maxItemCount, this.client.getApiVersion(), context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -135,15 +134,15 @@ public final class EventRoutesImpl {
      * provided id.
      *
      * @param id The id for an event route. The id is unique within event routes and case sensitive.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a route which directs notification and telemetry events to an endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<EventRoute>> getByIdWithResponseAsync(String id) {
-        return FluxUtil.withContext(
-                context -> service.getById(this.client.getHost(), id, this.client.getApiVersion(), context));
+    public Mono<Response<EventRoute>> getByIdWithResponseAsync(String id, Context context) {
+        return service.getById(this.client.getHost(), id, this.client.getApiVersion(), context);
     }
 
     /**
@@ -152,15 +151,15 @@ public final class EventRoutesImpl {
      * @param id The id for an event route. The id is unique within event routes and case sensitive.
      * @param eventRoute A route which directs notification and telemetry events to an endpoint. Endpoints are a
      *     destination outside of Azure Digital Twins such as an EventHub.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> addWithResponseAsync(String id, EventRoute eventRoute) {
-        return FluxUtil.withContext(
-                context -> service.add(this.client.getHost(), id, this.client.getApiVersion(), eventRoute, context));
+    public Mono<Response<Void>> addWithResponseAsync(String id, EventRoute eventRoute, Context context) {
+        return service.add(this.client.getHost(), id, this.client.getApiVersion(), eventRoute, context);
     }
 
     /**
@@ -168,29 +167,30 @@ public final class EventRoutesImpl {
      * provided id.
      *
      * @param id The id for an event route. The id is unique within event routes and case sensitive.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(String id) {
-        return FluxUtil.withContext(
-                context -> service.delete(this.client.getHost(), id, this.client.getApiVersion(), context));
+    public Mono<Response<Void>> deleteWithResponseAsync(String id, Context context) {
+        return service.delete(this.client.getHost(), id, this.client.getApiVersion(), context);
     }
 
     /**
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of EventRoute objects.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<EventRoute>> listNextSinglePageAsync(String nextLink) {
-        return FluxUtil.withContext(context -> service.listNext(nextLink, context))
+    public Mono<PagedResponse<EventRoute>> listNextSinglePageAsync(String nextLink, Context context) {
+        return service.listNext(nextLink, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

@@ -12,15 +12,20 @@ import com.azure.core.test.TestBase;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.UpdateMode;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.util.Date;
 import java.util.Map;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -143,6 +148,54 @@ public class TablesAsyncClientTest extends TestBase {
     }
 
     @Test
+    void createEntityWithAllSupportedDataTypesAsync() {
+        // Arrange
+        final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
+        final TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue);
+
+        final boolean booleanValue = true;
+        final byte[] binaryValue = "Test value".getBytes();
+        final Date dateValue = new Date();
+        final OffsetDateTime offsetDateTimeValue = OffsetDateTime.now();
+        final double doubleValue = 2.0d;
+        final UUID guidValue = UUID.randomUUID();
+        final int int32Value = 1337;
+        final long int64Value = 1337L;
+        final String stringValue = "This is table entity";
+
+        tableEntity.addProperty("BinaryTypeProperty", binaryValue);
+        tableEntity.addProperty("BooleanTypeProperty", booleanValue);
+        tableEntity.addProperty("DateTypeProperty", dateValue);
+        tableEntity.addProperty("OffsetDateTimeTypeProperty", offsetDateTimeValue);
+        tableEntity.addProperty("DoubleTypeProperty", doubleValue);
+        tableEntity.addProperty("GuidTypeProperty", guidValue);
+        tableEntity.addProperty("Int32TypeProperty", int32Value);
+        tableEntity.addProperty("Int64TypeProperty", int64Value);
+        tableEntity.addProperty("StringTypeProperty", stringValue);
+
+        tableClient.createEntity(tableEntity).block(TIMEOUT);
+
+        // Act & Assert
+        StepVerifier.create(tableClient.getEntityWithResponse(partitionKeyValue, rowKeyValue))
+            .assertNext(response -> {
+                final TableEntity entity = response.getValue();
+                Map<String, Object> properties = entity.getProperties();
+                assertTrue(properties.get("BinaryTypeProperty") instanceof byte[]);
+                assertTrue(properties.get("BooleanTypeProperty") instanceof Boolean);
+                assertTrue(properties.get("DateTypeProperty") instanceof OffsetDateTime);
+                assertTrue(properties.get("OffsetDateTimeTypeProperty") instanceof OffsetDateTime);
+                assertTrue(properties.get("DoubleTypeProperty") instanceof Double);
+                assertTrue(properties.get("GuidTypeProperty") instanceof UUID);
+                assertTrue(properties.get("Int32TypeProperty") instanceof Integer);
+                assertTrue(properties.get("Int64TypeProperty") instanceof Long);
+                assertTrue(properties.get("StringTypeProperty") instanceof String);
+            })
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
     void deleteTableAsync() {
         // Act & Assert
         StepVerifier.create(tableClient.delete())
@@ -245,6 +298,7 @@ public class TablesAsyncClientTest extends TestBase {
                 assertEquals(tableEntity.getPartitionKey(), entity.getPartitionKey());
                 assertEquals(tableEntity.getRowKey(), entity.getRowKey());
 
+                assertNotNull(entity.getTimestamp());
                 assertNotNull(entity.getETag());
                 assertNotNull(entity.getProperties());
             })
@@ -301,29 +355,54 @@ public class TablesAsyncClientTest extends TestBase {
             .verifyComplete();
     }
 
-    @Disabled("List not working yet.")
     @Test
-    void listEntityWithFilterAsync() {
+    @Tag("ListEntities")
+    void listEntitiesAsync() {
         // Arrange
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
-        final TableEntity entity = new TableEntity(partitionKeyValue, rowKeyValue);
-        ListEntitiesOptions options = new ListEntitiesOptions().setFilter("PartitionKey eq '" + entity.getPartitionKey() + "'");
-        tableClient.createEntity(entity).block(TIMEOUT);
+        final String rowKeyValue2 = testResourceNamer.randomName("rowKey", 20);
+        Mono.when(
+            tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue)),
+            tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue2))
+        ).block(TIMEOUT);
+
+        // Act & Assert
+        StepVerifier.create(tableClient.listEntities())
+            .expectNextCount(2)
+            .thenConsumeWhile(x -> true)
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
+    @Tag("ListEntities")
+    void listEntitiesWithFilterAsync() {
+        // Arrange
+        final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
+        final String rowKeyValue2 = testResourceNamer.randomName("rowKey", 20);
+        ListEntitiesOptions options = new ListEntitiesOptions().setFilter("RowKey eq '" + rowKeyValue + "'");
+        Mono.when(
+            tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue)),
+            tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue2))
+        ).block(TIMEOUT);
 
         // Act & Assert
         StepVerifier.create(tableClient.listEntities(options))
             .assertNext(returnEntity -> {
                 assertEquals(partitionKeyValue, returnEntity.getPartitionKey());
-                assertEquals(entity.getRowKey(), returnEntity.getRowKey());
+                assertEquals(rowKeyValue, returnEntity.getRowKey());
             })
+            .expectNextCount(0)
+            .thenConsumeWhile(x -> true)
             .expectComplete()
             .verify();
     }
 
-    @Disabled("List not working yet.")
     @Test
-    void listEntityWithSelectAsync() {
+    @Tag("ListEntities")
+    void listEntitiesWithSelectAsync() {
         // Arrange
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
@@ -331,30 +410,41 @@ public class TablesAsyncClientTest extends TestBase {
             .addProperty("propertyC", "valueC")
             .addProperty("propertyD", "valueD");
         ListEntitiesOptions options = new ListEntitiesOptions()
-            .setFilter("PartitionKey eq '" + entity.getPartitionKey() + "'")
             .setSelect("propertyC");
         tableClient.createEntity(entity).block(TIMEOUT);
 
         // Act & Assert
         StepVerifier.create(tableClient.listEntities(options))
             .assertNext(returnEntity -> {
-                assertEquals(entity.getRowKey(), returnEntity.getRowKey());
-                assertEquals(entity.getPartitionKey(), returnEntity.getPartitionKey());
+                assertNull(returnEntity.getRowKey());
+                assertNull(returnEntity.getPartitionKey());
                 assertEquals("valueC", returnEntity.getProperties().get("propertyC"));
-                assertEquals(3, returnEntity.getProperties().size());
+                assertNull(returnEntity.getProperties().get("propertyD"));
             })
             .expectComplete()
             .verify();
     }
 
     @Test
-    void listEntityWithTopAsync() {
+    @Tag("ListEntities")
+    void listEntitiesWithTopAsync() {
         // Arrange
-        ListEntitiesOptions options = new ListEntitiesOptions()
-            .setTop(1);
+        final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
+        final String rowKeyValue2 = testResourceNamer.randomName("rowKey", 20);
+        final String rowKeyValue3 = testResourceNamer.randomName("rowKey", 20);
+        ListEntitiesOptions options = new ListEntitiesOptions().setTop(2);
+        Mono.when(
+            tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue)),
+            tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue2)),
+            tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue3))
+        ).block(TIMEOUT);
 
         // Act & Assert
         StepVerifier.create(tableClient.listEntities(options))
-            .expectNextCount(2);
+            .expectNextCount(2)
+            .thenConsumeWhile(x -> true)
+            .expectComplete()
+            .verify();
     }
 }

@@ -316,6 +316,14 @@ WebApp webApp = azure.webApps()
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/appservice/samples/ManageFunctionAppLogs.java">Get function logs</a></li>
 </ul></td>
   </tr>
+  
+  <tr>
+    <td>Traffic Manager</td>
+    <td><ul style="list-style-type:circle">
+<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/trafficmanager/samples/ManageTrafficManager.java">Manage traffic manager profiles</a></li>
+<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/trafficmanager/samples/ManageSimpleTrafficManager.java">Manage simple traffic manager profiles</a></li>
+</ul></td>
+  </tr>
 
 </table>
 

@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -266,7 +266,7 @@ public class ServiceBusSenderClientTest {
         // Arrange
         final ServiceBusMessage testData =
             new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
-        final Instant scheduledEnqueueTime = Instant.now();
+        final OffsetDateTime scheduledEnqueueTime = OffsetDateTime.now();
         final long expected = 1;
 
         when(asyncSender.scheduleMessage(testData, scheduledEnqueueTime)).thenReturn(Mono.just(expected));
@@ -288,7 +288,7 @@ public class ServiceBusSenderClientTest {
         // Arrange
         final ServiceBusMessage testData =
             new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
-        final Instant scheduledEnqueueTime = Instant.now();
+        final OffsetDateTime scheduledEnqueueTime = OffsetDateTime.now();
         final long expected = 1;
 
         when(asyncSender.scheduleMessage(testData, scheduledEnqueueTime, transactionContext)).thenReturn(Mono.just(expected));

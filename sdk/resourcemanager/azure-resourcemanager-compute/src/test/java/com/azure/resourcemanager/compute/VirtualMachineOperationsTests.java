@@ -38,7 +38,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.storage.models.SkuName;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import java.util.ArrayList;
@@ -655,7 +655,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
     @Test
     public void canSetStorageAccountForUnmanagedDisk() {
-        final String storageName = sdkContext.randomResourceName("st", 14);
+        final String storageName = generateRandomResourceName("st", 14);
         // Create a premium storage account for virtual machine data disk
         //
         StorageAccount storageAccount =

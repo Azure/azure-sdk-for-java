@@ -83,6 +83,13 @@ import com.azure.resourcemanager.dns.models.SrvRecord;
 import com.azure.resourcemanager.dns.models.SrvRecordSet;
 import com.azure.resourcemanager.dns.models.TxtRecord;
 import com.azure.resourcemanager.dns.models.TxtRecordSet;
+import com.azure.resourcemanager.eventhubs.models.AccessRights;
+import com.azure.resourcemanager.eventhubs.models.DisasterRecoveryPairingAuthorizationKey;
+import com.azure.resourcemanager.eventhubs.models.DisasterRecoveryPairingAuthorizationRule;
+import com.azure.resourcemanager.eventhubs.models.EventHub;
+import com.azure.resourcemanager.eventhubs.models.EventHubConsumerGroup;
+import com.azure.resourcemanager.eventhubs.models.EventHubDisasterRecoveryPairing;
+import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.resourcemanager.keyvault.models.AccessPolicy;
 import com.azure.resourcemanager.keyvault.models.CertificatePermissions;
 import com.azure.resourcemanager.keyvault.models.KeyPermissions;
@@ -179,6 +186,10 @@ import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountEncryptionStatus;
 import com.azure.resourcemanager.storage.models.StorageAccountKey;
 import com.azure.resourcemanager.storage.models.StorageService;
+import com.azure.resourcemanager.trafficmanager.models.TrafficManagerAzureEndpoint;
+import com.azure.resourcemanager.trafficmanager.models.TrafficManagerExternalEndpoint;
+import com.azure.resourcemanager.trafficmanager.models.TrafficManagerNestedProfileEndpoint;
+import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfile;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import reactor.core.publisher.Flux;
@@ -1060,80 +1071,80 @@ public final class Utils {
         System.out.println(builder.toString());
     }
 
-//    /**
-//     * Print a traffic manager profile.
-//     *
-//     * @param profile a traffic manager profile
-//     */
-//    public static void print(TrafficManagerProfile profile) {
-//        StringBuilder info = new StringBuilder();
-//        info.append("Traffic Manager Profile: ").append(profile.id())
-//                .append("\n\tName: ").append(profile.name())
-//                .append("\n\tResource group: ").append(profile.resourceGroupName())
-//                .append("\n\tRegion: ").append(profile.regionName())
-//                .append("\n\tTags: ").append(profile.tags())
-//                .append("\n\tDNSLabel: ").append(profile.dnsLabel())
-//                .append("\n\tFQDN: ").append(profile.fqdn())
-//                .append("\n\tTTL: ").append(profile.timeToLive())
-//                .append("\n\tEnabled: ").append(profile.isEnabled())
-//                .append("\n\tRoutingMethod: ").append(profile.trafficRoutingMethod())
-//                .append("\n\tMonitor status: ").append(profile.monitorStatus())
-//                .append("\n\tMonitoring port: ").append(profile.monitoringPort())
-//                .append("\n\tMonitoring path: ").append(profile.monitoringPath());
-//
-//        Map<String, TrafficManagerAzureEndpoint> azureEndpoints = profile.azureEndpoints();
-//        if (!azureEndpoints.isEmpty()) {
-//            info.append("\n\tAzure endpoints:");
-//            int idx = 1;
-//            for (TrafficManagerAzureEndpoint endpoint : azureEndpoints.values()) {
-//                info.append("\n\t\tAzure endpoint: #").append(idx++)
-//                        .append("\n\t\t\tId: ").append(endpoint.id())
-//                        .append("\n\t\t\tType: ").append(endpoint.endpointType())
-//                        .append("\n\t\t\tTarget resourceId: ").append(endpoint.targetAzureResourceId())
-//                        .append("\n\t\t\tTarget resourceType: ").append(endpoint.targetResourceType())
-//                        .append("\n\t\t\tMonitor status: ").append(endpoint.monitorStatus())
-//                        .append("\n\t\t\tEnabled: ").append(endpoint.isEnabled())
-//                        .append("\n\t\t\tRouting priority: ").append(endpoint.routingPriority())
-//                        .append("\n\t\t\tRouting weight: ").append(endpoint.routingWeight());
-//            }
-//        }
-//
-//        Map<String, TrafficManagerExternalEndpoint> externalEndpoints = profile.externalEndpoints();
-//        if (!externalEndpoints.isEmpty()) {
-//            info.append("\n\tExternal endpoints:");
-//            int idx = 1;
-//            for (TrafficManagerExternalEndpoint endpoint : externalEndpoints.values()) {
-//                info.append("\n\t\tExternal endpoint: #").append(idx++)
-//                        .append("\n\t\t\tId: ").append(endpoint.id())
-//                        .append("\n\t\t\tType: ").append(endpoint.endpointType())
-//                        .append("\n\t\t\tFQDN: ").append(endpoint.fqdn())
-//                        .append("\n\t\t\tSource Traffic Location: ").append(endpoint.sourceTrafficLocation())
-//                        .append("\n\t\t\tMonitor status: ").append(endpoint.monitorStatus())
-//                        .append("\n\t\t\tEnabled: ").append(endpoint.isEnabled())
-//                        .append("\n\t\t\tRouting priority: ").append(endpoint.routingPriority())
-//                        .append("\n\t\t\tRouting weight: ").append(endpoint.routingWeight());
-//            }
-//        }
-//
-//        Map<String, TrafficManagerNestedProfileEndpoint> nestedProfileEndpoints = profile.nestedProfileEndpoints();
-//        if (!nestedProfileEndpoints.isEmpty()) {
-//            info.append("\n\tNested profile endpoints:");
-//            int idx = 1;
-//            for (TrafficManagerNestedProfileEndpoint endpoint : nestedProfileEndpoints.values()) {
-//                info.append("\n\t\tNested profile endpoint: #").append(idx++)
-//                        .append("\n\t\t\tId: ").append(endpoint.id())
-//                        .append("\n\t\t\tType: ").append(endpoint.endpointType())
-//                        .append("\n\t\t\tNested profileId: ").append(endpoint.nestedProfileId())
-//                        .append("\n\t\t\tMinimum child threshold: ").append(endpoint.minimumChildEndpointCount())
-//                        .append("\n\t\t\tSource Traffic Location: ").append(endpoint.sourceTrafficLocation())
-//                        .append("\n\t\t\tMonitor status: ").append(endpoint.monitorStatus())
-//                        .append("\n\t\t\tEnabled: ").append(endpoint.isEnabled())
-//                        .append("\n\t\t\tRouting priority: ").append(endpoint.routingPriority())
-//                        .append("\n\t\t\tRouting weight: ").append(endpoint.routingWeight());
-//            }
-//        }
-//        System.out.println(info.toString());
-//    }
+    /**
+     * Print a traffic manager profile.
+     *
+     * @param profile a traffic manager profile
+     */
+    public static void print(TrafficManagerProfile profile) {
+        StringBuilder info = new StringBuilder();
+        info.append("Traffic Manager Profile: ").append(profile.id())
+                .append("\n\tName: ").append(profile.name())
+                .append("\n\tResource group: ").append(profile.resourceGroupName())
+                .append("\n\tRegion: ").append(profile.regionName())
+                .append("\n\tTags: ").append(profile.tags())
+                .append("\n\tDNSLabel: ").append(profile.dnsLabel())
+                .append("\n\tFQDN: ").append(profile.fqdn())
+                .append("\n\tTTL: ").append(profile.timeToLive())
+                .append("\n\tEnabled: ").append(profile.isEnabled())
+                .append("\n\tRoutingMethod: ").append(profile.trafficRoutingMethod())
+                .append("\n\tMonitor status: ").append(profile.monitorStatus())
+                .append("\n\tMonitoring port: ").append(profile.monitoringPort())
+                .append("\n\tMonitoring path: ").append(profile.monitoringPath());
+
+        Map<String, TrafficManagerAzureEndpoint> azureEndpoints = profile.azureEndpoints();
+        if (!azureEndpoints.isEmpty()) {
+            info.append("\n\tAzure endpoints:");
+            int idx = 1;
+            for (TrafficManagerAzureEndpoint endpoint : azureEndpoints.values()) {
+                info.append("\n\t\tAzure endpoint: #").append(idx++)
+                        .append("\n\t\t\tId: ").append(endpoint.id())
+                        .append("\n\t\t\tType: ").append(endpoint.endpointType())
+                        .append("\n\t\t\tTarget resourceId: ").append(endpoint.targetAzureResourceId())
+                        .append("\n\t\t\tTarget resourceType: ").append(endpoint.targetResourceType())
+                        .append("\n\t\t\tMonitor status: ").append(endpoint.monitorStatus())
+                        .append("\n\t\t\tEnabled: ").append(endpoint.isEnabled())
+                        .append("\n\t\t\tRouting priority: ").append(endpoint.routingPriority())
+                        .append("\n\t\t\tRouting weight: ").append(endpoint.routingWeight());
+            }
+        }
+
+        Map<String, TrafficManagerExternalEndpoint> externalEndpoints = profile.externalEndpoints();
+        if (!externalEndpoints.isEmpty()) {
+            info.append("\n\tExternal endpoints:");
+            int idx = 1;
+            for (TrafficManagerExternalEndpoint endpoint : externalEndpoints.values()) {
+                info.append("\n\t\tExternal endpoint: #").append(idx++)
+                        .append("\n\t\t\tId: ").append(endpoint.id())
+                        .append("\n\t\t\tType: ").append(endpoint.endpointType())
+                        .append("\n\t\t\tFQDN: ").append(endpoint.fqdn())
+                        .append("\n\t\t\tSource Traffic Location: ").append(endpoint.sourceTrafficLocation())
+                        .append("\n\t\t\tMonitor status: ").append(endpoint.monitorStatus())
+                        .append("\n\t\t\tEnabled: ").append(endpoint.isEnabled())
+                        .append("\n\t\t\tRouting priority: ").append(endpoint.routingPriority())
+                        .append("\n\t\t\tRouting weight: ").append(endpoint.routingWeight());
+            }
+        }
+
+        Map<String, TrafficManagerNestedProfileEndpoint> nestedProfileEndpoints = profile.nestedProfileEndpoints();
+        if (!nestedProfileEndpoints.isEmpty()) {
+            info.append("\n\tNested profile endpoints:");
+            int idx = 1;
+            for (TrafficManagerNestedProfileEndpoint endpoint : nestedProfileEndpoints.values()) {
+                info.append("\n\t\tNested profile endpoint: #").append(idx++)
+                        .append("\n\t\t\tId: ").append(endpoint.id())
+                        .append("\n\t\t\tType: ").append(endpoint.endpointType())
+                        .append("\n\t\t\tNested profileId: ").append(endpoint.nestedProfileId())
+                        .append("\n\t\t\tMinimum child threshold: ").append(endpoint.minimumChildEndpointCount())
+                        .append("\n\t\t\tSource Traffic Location: ").append(endpoint.sourceTrafficLocation())
+                        .append("\n\t\t\tMonitor status: ").append(endpoint.monitorStatus())
+                        .append("\n\t\t\tEnabled: ").append(endpoint.isEnabled())
+                        .append("\n\t\t\tRouting priority: ").append(endpoint.routingPriority())
+                        .append("\n\t\t\tRouting weight: ").append(endpoint.routingWeight());
+            }
+        }
+        System.out.println(info.toString());
+    }
 
     /**
      * Print a dns zone.
@@ -1542,7 +1553,6 @@ public final class Utils {
      */
     public static void createCertificate(String certPath, String pfxPath,
                                          String alias, String password, String cnName) throws Exception {
-        SdkContext.prepareFileLocation(new File(pfxPath), new File(certPath));
         if (new File(pfxPath).exists()) {
             return;
         }
@@ -2781,116 +2791,116 @@ public final class Utils {
         System.out.println(info.toString());
     }
 
-//    /**
-//     * Print event hub namespace.
-//     *
-//     * @param resource a virtual machine
-//     */
-//    public static void print(EventHubNamespace resource) {
-//        StringBuilder info = new StringBuilder();
-//        info.append("Eventhub Namespace: ").append(resource.id())
-//                .append("\n\tName: ").append(resource.name())
-//                .append("\n\tRegion: ").append(resource.region())
-//                .append("\n\tTags: ").append(resource.tags())
-//                .append("\n\tAzureInsightMetricId: ").append(resource.azureInsightMetricId())
-//                .append("\n\tIsAutoScale enabled: ").append(resource.isAutoScaleEnabled())
-//                .append("\n\tServiceBus endpoint: ").append(resource.serviceBusEndpoint())
-//                .append("\n\tThroughPut upper limit: ").append(resource.throughputUnitsUpperLimit())
-//                .append("\n\tCurrent ThroughPut: ").append(resource.currentThroughputUnits())
-//                .append("\n\tCreated time: ").append(resource.createdAt())
-//                .append("\n\tUpdated time: ").append(resource.updatedAt());
-//
-//        System.out.println(info.toString());
-//    }
-//
-//    /**
-//     * Print event hub.
-//     *
-//     * @param resource event hub
-//     */
-//    public static void print(EventHub resource) {
-//        StringBuilder info = new StringBuilder();
-//        info.append("Eventhub: ").append(resource.id())
-//                .append("\n\tName: ").append(resource.name())
-//                .append("\n\tNamespace resource group: ").append(resource.namespaceResourceGroupName())
-//                .append("\n\tNamespace: ").append(resource.namespaceName())
-//                .append("\n\tIs data capture enabled: ").append(resource.isDataCaptureEnabled())
-//                .append("\n\tPartition ids: ").append(resource.partitionIds());
-//        if (resource.isDataCaptureEnabled()) {
-//            info.append("\n\t\t\tData capture window size in MB: ").append(resource.dataCaptureWindowSizeInMB());
-//            info.append("\n\t\t\tData capture window size in seconds: ").append(resource.dataCaptureWindowSizeInSeconds());
-//            if (resource.captureDestination() != null) {
-//                info.append("\n\t\t\tData capture storage account: ").append(resource.captureDestination().storageAccountResourceId());
-//                info.append("\n\t\t\tData capture storage container: ").append(resource.captureDestination().blobContainer());
-//            }
-//        }
-//        System.out.println(info.toString());
-//    }
-//
-//    /**
-//     * Print event hub namespace recovery pairing.
-//     *
-//     * @param resource event hub namespace disaster recovery pairing
-//     */
-//    public static void print(EventHubDisasterRecoveryPairing resource) {
-//        StringBuilder info = new StringBuilder();
-//        info.append("DisasterRecoveryPairing: ").append(resource.id())
-//                .append("\n\tName: ").append(resource.name())
-//                .append("\n\tPrimary namespace resource group name: ").append(resource.primaryNamespaceResourceGroupName())
-//                .append("\n\tPrimary namespace name: ").append(resource.primaryNamespaceName())
-//                .append("\n\tSecondary namespace: ").append(resource.secondaryNamespaceId())
-//                .append("\n\tNamespace role: ").append(resource.namespaceRole());
-//        System.out.println(info.toString());
-//    }
-//
-//    /**
-//     * Print event hub namespace recovery pairing auth rules.
-//     *
-//     * @param resource event hub namespace disaster recovery pairing auth rule
-//     */
-//    public static void print(DisasterRecoveryPairingAuthorizationRule resource) {
-//        StringBuilder info = new StringBuilder();
-//        info.append("DisasterRecoveryPairing auth rule: ").append(resource.name());
-//        List<String> rightsStr = new ArrayList<>();
-//        for (com.microsoft.azure.management.eventhub.AccessRights rights : resource.rights()) {
-//            rightsStr.add(rights.toString());
-//        }
-//        info.append("\n\tRights: ").append(rightsStr);
-//        System.out.println(info.toString());
-//    }
-//
-//    /**
-//     * Print event hub namespace recovery pairing auth rule key.
-//     *
-//     * @param resource event hub namespace disaster recovery pairing auth rule key
-//     */
-//    public static void print(DisasterRecoveryPairingAuthorizationKey resource) {
-//        StringBuilder info = new StringBuilder();
-//        info.append("DisasterRecoveryPairing auth key: ")
-//                .append("\n\t Alias primary connection string: ").append(resource.aliasPrimaryConnectionString())
-//                .append("\n\t Alias secondary connection string: ").append(resource.aliasSecondaryConnectionString())
-//                .append("\n\t Primary key: ").append(resource.primaryKey())
-//                .append("\n\t Secondary key: ").append(resource.secondaryKey())
-//                .append("\n\t Primary connection string: ").append(resource.primaryConnectionString())
-//                .append("\n\t Secondary connection string: ").append(resource.secondaryConnectionString());
-//        System.out.println(info.toString());
-//    }
-//
-//    /**
-//     * Print event hub consumer group.
-//     *
-//     * @param resource event hub consumer group
-//     */
-//    public static void print(EventHubConsumerGroup resource) {
-//        StringBuilder info = new StringBuilder();
-//        info.append("Event hub consumer group: ").append(resource.id())
-//                .append("\n\tName: ").append(resource.name())
-//                .append("\n\tNamespace resource group: ").append(resource.namespaceResourceGroupName())
-//                .append("\n\tNamespace: ").append(resource.namespaceName())
-//                .append("\n\tEvent hub name: ").append(resource.eventHubName())
-//                .append("\n\tUser metadata: ").append(resource.userMetadata());
-//        System.out.println(info.toString());
-//    }
+    /**
+     * Print event hub namespace.
+     *
+     * @param resource a virtual machine
+     */
+    public static void print(EventHubNamespace resource) {
+        StringBuilder info = new StringBuilder();
+        info.append("Eventhub Namespace: ").append(resource.id())
+                .append("\n\tName: ").append(resource.name())
+                .append("\n\tRegion: ").append(resource.region())
+                .append("\n\tTags: ").append(resource.tags())
+                .append("\n\tAzureInsightMetricId: ").append(resource.azureInsightMetricId())
+                .append("\n\tIsAutoScale enabled: ").append(resource.isAutoScaleEnabled())
+                .append("\n\tServiceBus endpoint: ").append(resource.serviceBusEndpoint())
+                .append("\n\tThroughPut upper limit: ").append(resource.throughputUnitsUpperLimit())
+                .append("\n\tCurrent ThroughPut: ").append(resource.currentThroughputUnits())
+                .append("\n\tCreated time: ").append(resource.createdAt())
+                .append("\n\tUpdated time: ").append(resource.updatedAt());
+
+        System.out.println(info.toString());
+    }
+
+    /**
+     * Print event hub.
+     *
+     * @param resource event hub
+     */
+    public static void print(EventHub resource) {
+        StringBuilder info = new StringBuilder();
+        info.append("Eventhub: ").append(resource.id())
+                .append("\n\tName: ").append(resource.name())
+                .append("\n\tNamespace resource group: ").append(resource.namespaceResourceGroupName())
+                .append("\n\tNamespace: ").append(resource.namespaceName())
+                .append("\n\tIs data capture enabled: ").append(resource.isDataCaptureEnabled())
+                .append("\n\tPartition ids: ").append(resource.partitionIds());
+        if (resource.isDataCaptureEnabled()) {
+            info.append("\n\t\t\tData capture window size in MB: ").append(resource.dataCaptureWindowSizeInMB());
+            info.append("\n\t\t\tData capture window size in seconds: ").append(resource.dataCaptureWindowSizeInSeconds());
+            if (resource.captureDestination() != null) {
+                info.append("\n\t\t\tData capture storage account: ").append(resource.captureDestination().storageAccountResourceId());
+                info.append("\n\t\t\tData capture storage container: ").append(resource.captureDestination().blobContainer());
+            }
+        }
+        System.out.println(info.toString());
+    }
+
+    /**
+     * Print event hub namespace recovery pairing.
+     *
+     * @param resource event hub namespace disaster recovery pairing
+     */
+    public static void print(EventHubDisasterRecoveryPairing resource) {
+        StringBuilder info = new StringBuilder();
+        info.append("DisasterRecoveryPairing: ").append(resource.id())
+                .append("\n\tName: ").append(resource.name())
+                .append("\n\tPrimary namespace resource group name: ").append(resource.primaryNamespaceResourceGroupName())
+                .append("\n\tPrimary namespace name: ").append(resource.primaryNamespaceName())
+                .append("\n\tSecondary namespace: ").append(resource.secondaryNamespaceId())
+                .append("\n\tNamespace role: ").append(resource.namespaceRole());
+        System.out.println(info.toString());
+    }
+
+    /**
+     * Print event hub namespace recovery pairing auth rules.
+     *
+     * @param resource event hub namespace disaster recovery pairing auth rule
+     */
+    public static void print(DisasterRecoveryPairingAuthorizationRule resource) {
+        StringBuilder info = new StringBuilder();
+        info.append("DisasterRecoveryPairing auth rule: ").append(resource.name());
+        List<String> rightsStr = new ArrayList<>();
+        for (AccessRights rights : resource.rights()) {
+            rightsStr.add(rights.toString());
+        }
+        info.append("\n\tRights: ").append(rightsStr);
+        System.out.println(info.toString());
+    }
+
+    /**
+     * Print event hub namespace recovery pairing auth rule key.
+     *
+     * @param resource event hub namespace disaster recovery pairing auth rule key
+     */
+    public static void print(DisasterRecoveryPairingAuthorizationKey resource) {
+        StringBuilder info = new StringBuilder();
+        info.append("DisasterRecoveryPairing auth key: ")
+                .append("\n\t Alias primary connection string: ").append(resource.aliasPrimaryConnectionString())
+                .append("\n\t Alias secondary connection string: ").append(resource.aliasSecondaryConnectionString())
+                .append("\n\t Primary key: ").append(resource.primaryKey())
+                .append("\n\t Secondary key: ").append(resource.secondaryKey())
+                .append("\n\t Primary connection string: ").append(resource.primaryConnectionString())
+                .append("\n\t Secondary connection string: ").append(resource.secondaryConnectionString());
+        System.out.println(info.toString());
+    }
+
+    /**
+     * Print event hub consumer group.
+     *
+     * @param resource event hub consumer group
+     */
+    public static void print(EventHubConsumerGroup resource) {
+        StringBuilder info = new StringBuilder();
+        info.append("Event hub consumer group: ").append(resource.id())
+                .append("\n\tName: ").append(resource.name())
+                .append("\n\tNamespace resource group: ").append(resource.namespaceResourceGroupName())
+                .append("\n\tNamespace: ").append(resource.namespaceName())
+                .append("\n\tEvent hub name: ").append(resource.eventHubName())
+                .append("\n\tUser metadata: ").append(resource.userMetadata());
+        System.out.println(info.toString());
+    }
 
 
     /**

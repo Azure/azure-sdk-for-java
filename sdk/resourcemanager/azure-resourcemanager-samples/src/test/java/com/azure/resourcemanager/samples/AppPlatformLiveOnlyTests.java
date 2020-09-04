@@ -3,18 +3,20 @@
 package com.azure.resourcemanager.samples;
 
 
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.appplatform.samples.ManageSpringCloud;
-import com.azure.resourcemanager.resources.core.TestBase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class AppPlatformLiveOnlyTests extends SamplesTestBase {
-    public AppPlatformLiveOnlyTests() {
-        super(TestBase.RunCondition.LIVE_ONLY);
-    }
 
     @Test
+    @DoNotRecord
     public void testSpringCloud() {
+        if (skipInPlayback()) {
+            return;
+        }
+
         Assertions.assertTrue(ManageSpringCloud.runSample(azure, clientIdFromFile()));
     }
 }

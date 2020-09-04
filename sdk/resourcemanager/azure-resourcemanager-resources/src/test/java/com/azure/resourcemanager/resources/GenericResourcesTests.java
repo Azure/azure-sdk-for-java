@@ -11,7 +11,7 @@ import com.azure.resourcemanager.resources.fluent.inner.GenericResourceExpandedI
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.models.GenericResource;
 import com.azure.resourcemanager.resources.models.GenericResources;
@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.Optional;
 
-public class GenericResourcesTests extends ResourceManagerTestBase {
+public class GenericResourcesTests extends ResourceManagementTest {
     private ResourceGroups resourceGroups;
     private GenericResources genericResources;
 
@@ -33,7 +33,7 @@ public class GenericResourcesTests extends ResourceManagerTestBase {
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
-        testId = sdkContext.randomResourceName("", 9);
+        testId = generateRandomResourceName("", 9);
         rgName = "rg" + testId;
         newRgName = "rgB" + testId;
 

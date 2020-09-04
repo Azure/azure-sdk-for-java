@@ -24,13 +24,40 @@ public class TableServiceClient {
     }
 
     /**
+     * returns the account for this service
+     *
+     * @return returns the account name
+     */
+    public String getAccountName() {
+        return client.getAccountName();
+    }
+
+    /**
+     * returns Url of this service
+     *
+     * @return Url
+     */
+    public String getServiceUrl() {
+        return client.getServiceUrl();
+    }
+
+    /**
+     * returns the version
+     *
+     * @return the version
+     */
+    public TablesServiceVersion getApiVersion() {
+        return client.getApiVersion();
+    }
+
+    /**
      * gets the Table Client for the given table
      *
      * @param name the name of the table
      * @return the Table Client for the table
      */
     public TableClient getTableClient(String name) {
-        return null;
+        return new TableClient(client.getTableClient(name));
     }
 
     /**
@@ -53,6 +80,28 @@ public class TableServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createTableWithResponse(String tableName, Context context) {
         return client.createTableWithResponse(tableName, context).block();
+    }
+
+    /**
+     * creates the table with the given name if it does not exist, otherwise no action is taken.
+     *
+     * @param tableName the name of the table to create
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void createTableIfNotExists(String tableName) {
+        client.createTableIfNotExists(tableName).block();
+    }
+
+    /**
+     * creates the table with the given name if it does not exist, otherwise no action is taken.
+     *
+     * @param tableName the name of the table to create
+     * @param context the context of the query
+     * @return response
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> createTableIfNotExistsWithResponse(String tableName, Context context) {
+        return client.createTableIfNotExistsWithResponse(tableName, context).block();
     }
 
     /**

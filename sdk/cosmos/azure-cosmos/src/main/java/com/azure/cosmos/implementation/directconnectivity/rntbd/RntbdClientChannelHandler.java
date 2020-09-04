@@ -12,6 +12,7 @@ import io.netty.channel.pool.ChannelHealthChecker;
 import io.netty.channel.pool.ChannelPool;
 import io.netty.channel.pool.ChannelPoolHandler;
 import io.netty.handler.logging.LoggingHandler;
+import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.AttributeKey;
 import org.slf4j.Logger;
@@ -112,15 +113,19 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
             pipeline.addFirst(new LoggingHandler(this.config.wireLogLevel()));
         }
 
-        pipeline.addFirst(this.config.sslContext().newHandler(channel.alloc()));
+        pipeline.addFirst(
+            // Initialize sslHandler with jdkCompatibilityMode = true for OpenSSL context
+            // TODO (DANOBLE) Log an issue with netty for clarification on the design of this constructor and the
+            //  semantic differences between the JDK and OpenSSL implementations
+            new SslHandler(this.config.sslContext().newEngine(channel.alloc())));
 
         final long idleConnectionTimerResolutionInNanos = config.idleConnectionTimerResolutionInNanos();
 
         pipeline.addFirst(new IdleStateHandler(
-            idleConnectionTimerResolutionInNanos,
-            idleConnectionTimerResolutionInNanos,
-            0,
-            TimeUnit.NANOSECONDS));
+                idleConnectionTimerResolutionInNanos,
+                idleConnectionTimerResolutionInNanos,
+                0,
+                TimeUnit.NANOSECONDS));
 
         channel.attr(REQUEST_MANAGER).set(requestManager);
     }

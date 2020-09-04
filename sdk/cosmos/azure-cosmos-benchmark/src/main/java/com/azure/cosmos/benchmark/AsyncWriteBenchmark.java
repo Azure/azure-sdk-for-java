@@ -69,13 +69,13 @@ class AsyncWriteBenchmark extends AsyncBenchmark<CosmosItemResponse> {
                 partitionKey,
                 configuration.getDocumentDataFieldCount()));
         } else {
-            // more optimized for write as partition ke is already passed as config
+            // more optimized for write as partition key is already passed as config
             obs = cosmosAsyncContainer.createItem(BenchmarkHelper.generateDocument(id,
                 dataFieldValue,
                 partitionKey,
                 configuration.getDocumentDataFieldCount()),
                 new PartitionKey(id),
-                new CosmosItemRequestOptions());
+                null);
         }
 
         concurrencyControlSemaphore.acquire();

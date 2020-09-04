@@ -3,36 +3,60 @@
 
 package com.azure.resourcemanager.appplatform;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.dns.DnsZoneManager;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
-import com.azure.resourcemanager.resources.core.TestBase;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.utils.TestDelayProvider;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 
-public class AppPlatformTest extends TestBase {
+public class AppPlatformTest extends ResourceManagerTestBase {
     protected AppPlatformManager appPlatformManager;
     protected AppServiceManager appServiceManager;
     protected DnsZoneManager dnsZoneManager;
     protected KeyVaultManager keyVaultManager;
     protected String rgName = "";
 
-    public AppPlatformTest() {
-    }
-
-    AppPlatformTest(RunCondition runCondition) {
-        super(runCondition);
+    @Override
+    protected HttpPipeline buildHttpPipeline(
+        TokenCredential credential,
+        AzureProfile profile,
+        HttpLogOptions httpLogOptions,
+        List<HttpPipelinePolicy> policies,
+        HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(
+            credential,
+            profile,
+            null,
+            httpLogOptions,
+            null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
+            policies,
+            httpClient);
     }
 
     @Override
-    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) throws IOException {
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
+        SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
         rgName = generateRandomResourceName("rg", 20);
-        appPlatformManager = AppPlatformManager.authenticate(httpPipeline, profile, sdkContext);
-        appServiceManager = AppServiceManager.authenticate(httpPipeline, profile, sdkContext);
-        dnsZoneManager = DnsZoneManager.authenticate(httpPipeline, profile, sdkContext);
-        keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile, sdkContext);
+        appPlatformManager = AppPlatformManager.authenticate(httpPipeline, profile);
+        appServiceManager = AppServiceManager.authenticate(httpPipeline, profile);
+        dnsZoneManager = DnsZoneManager.authenticate(httpPipeline, profile);
+        keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile);
     }
 
     @Override
@@ -40,5 +64,48 @@ public class AppPlatformTest extends TestBase {
         try {
             appPlatformManager.resourceManager().resourceGroups().beginDeleteByName(rgName);
         } catch (Exception e) { }
+    }
+
+    protected boolean checkRedirect(String url) throws IOException {
+        for (int i = 0; i < 60; ++i) {
+            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+            connection.setInstanceFollowRedirects(false);
+            try {
+                connection.connect();
+                if (200 <= connection.getResponseCode() && connection.getResponseCode() < 400) {
+                    connection.getInputStream().close();
+                    if (connection.getResponseCode() / 100 == 3) {
+                        return true;
+                    }
+                    System.out.printf("Do request to %s with response code %d%n", url, connection.getResponseCode());
+                }
+            } catch (Exception e) {
+                System.err.printf("Do request to %s with error %s%n", url, e.getMessage());
+            } finally {
+                connection.disconnect();
+            }
+            SdkContext.sleep(5000);
+        }
+        return false;
+    }
+
+    protected boolean requestSuccess(String url) throws IOException {
+        for (int i = 0; i < 60; ++i) {
+            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+            try {
+                connection.connect();
+                if (connection.getResponseCode() == 200) {
+                    connection.getInputStream().close();
+                    return true;
+                }
+                System.out.printf("Do request to %s with response code %d%n", url, connection.getResponseCode());
+            } catch (Exception e) {
+                System.err.printf("Do request to %s with error %s%n", url, e.getMessage());
+            } finally {
+                connection.disconnect();
+            }
+            SdkContext.sleep(5000);
+        }
+        return false;
     }
 }

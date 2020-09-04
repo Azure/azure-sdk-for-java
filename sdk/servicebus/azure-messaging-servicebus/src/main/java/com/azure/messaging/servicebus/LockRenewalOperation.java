@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoProcessor;
 
 import java.time.Duration;
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -26,14 +26,14 @@ import java.util.function.Function;
 public class LockRenewalOperation implements AutoCloseable {
     private final ClientLogger logger = new ClientLogger(LockRenewalOperation.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
-    private final AtomicReference<Instant> lockedUntil = new AtomicReference<>();
+    private final AtomicReference<OffsetDateTime> lockedUntil = new AtomicReference<>();
     private final AtomicReference<Throwable> throwable = new AtomicReference<>();
     private final AtomicReference<LockRenewalStatus> status = new AtomicReference<>(LockRenewalStatus.RUNNING);
     private final MonoProcessor<Void> cancellationProcessor = MonoProcessor.create();
 
     private final String lockToken;
     private final boolean isSession;
-    private final Function<String, Mono<Instant>> renewalOperation;
+    private final Function<String, Mono<OffsetDateTime>> renewalOperation;
     private final Disposable subscription;
 
     /**
@@ -45,8 +45,8 @@ public class LockRenewalOperation implements AutoCloseable {
      * @param renewalOperation The renewal operation to call.
      */
     LockRenewalOperation(String lockToken, Duration maxLockRenewalDuration, boolean isSession,
-        Function<String, Mono<Instant>> renewalOperation) {
-        this(lockToken, maxLockRenewalDuration, isSession, renewalOperation, Instant.now());
+        Function<String, Mono<OffsetDateTime>> renewalOperation) {
+        this(lockToken, maxLockRenewalDuration, isSession, renewalOperation, OffsetDateTime.now());
     }
 
     /**
@@ -59,7 +59,7 @@ public class LockRenewalOperation implements AutoCloseable {
      * @param renewalOperation The renewal operation to call.
      */
     LockRenewalOperation(String lockToken, Duration maxLockRenewalDuration, boolean isSession,
-        Function<String, Mono<Instant>> renewalOperation, Instant lockedUntil) {
+        Function<String, Mono<OffsetDateTime>> renewalOperation, OffsetDateTime lockedUntil) {
         this.lockToken = Objects.requireNonNull(lockToken, "'lockToken' cannot be null.");
         this.renewalOperation = Objects.requireNonNull(renewalOperation, "'renewalOperation' cannot be null.");
         this.isSession = isSession;
@@ -77,11 +77,11 @@ public class LockRenewalOperation implements AutoCloseable {
     }
 
     /**
-     * Gets the current instant the message or session is locked until.
+     * Gets the current datetime the message or session is locked until.
      *
-     * @return the instant the message or session is locked until.
+     * @return the datetime the message or session is locked until.
      */
-    public Instant getLockedUntil() {
+    public OffsetDateTime getLockedUntil() {
         return lockedUntil.get();
     }
 
@@ -146,13 +146,13 @@ public class LockRenewalOperation implements AutoCloseable {
      * @param maxLockRenewalDuration Duration to renew lock for.
      * @return The subscription for the operation.
      */
-    private Disposable getRenewLockOperation(Instant initialLockedUntil, Duration maxLockRenewalDuration) {
+    private Disposable getRenewLockOperation(OffsetDateTime initialLockedUntil, Duration maxLockRenewalDuration) {
         if (maxLockRenewalDuration.isZero()) {
             status.set(LockRenewalStatus.COMPLETE);
             return Disposables.single();
         }
 
-        final Instant now = Instant.now();
+        final OffsetDateTime now = OffsetDateTime.now();
         Duration initialInterval = Duration.between(now, initialLockedUntil);
 
         if (initialInterval.isNegative()) {
@@ -179,16 +179,16 @@ public class LockRenewalOperation implements AutoCloseable {
             .thenReturn(Flux.create(s -> s.next(interval)))))
             .takeUntilOther(cancellationSignals)
             .flatMap(delay -> {
-                logger.info("token[{}]. now[{}]. Starting lock renewal.", lockToken, Instant.now());
+                logger.info("token[{}]. now[{}]. Starting lock renewal.", lockToken, OffsetDateTime.now());
                 return renewalOperation.apply(lockToken);
             })
-            .map(instant -> {
-                final Duration next = Duration.between(Instant.now(), instant);
-                logger.info("token[{}]. nextExpiration[{}]. next: [{}]. isSession[{}]", lockToken, instant, next,
+            .map(offsetDateTime -> {
+                final Duration next = Duration.between(OffsetDateTime.now(), offsetDateTime);
+                logger.info("token[{}]. nextExpiration[{}]. next: [{}]. isSession[{}]", lockToken, offsetDateTime, next,
                     isSession);
 
                 sink.next(MessageUtils.adjustServerTimeout(next));
-                return instant;
+                return offsetDateTime;
             })
             .subscribe(until -> lockedUntil.set(until),
                 error -> {
