@@ -833,12 +833,12 @@ public class ShareFileJavaDocCodeSamples {
      */
     public void listRangesDiffOptionalOverload() {
         ShareFileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareFileClient.listRangesDiff#ShareFileListRangeOptions-Duration-Context
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.listRangesDiff#ShareFileListRangesDiffOptions-Duration-Context
         Iterable<ShareFileRange> ranges = fileClient.listRangesDiff(new ShareFileListRangesDiffOptions("previoussnapshot")
                 .setRange(new ShareFileRange(1024, 2048L)), Duration.ofSeconds(1), new Context(key1, value1));
         ranges.forEach(range ->
             System.out.printf("List ranges completed with start: %d, end: %d", range.getStart(), range.getEnd()));
-        // END: com.azure.storage.file.share.ShareFileClient.listRangesDiff#ShareFileListRangeOptions-Duration-Context
+        // END: com.azure.storage.file.share.ShareFileClient.listRangesDiff#ShareFileListRangesDiffOptions-Duration-Context
     }
 
     /**
