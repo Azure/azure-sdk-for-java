@@ -93,7 +93,7 @@ public final class KeyVaultBackupAsyncClient {
      * @throws NullPointerException if the {@code blobStorageUrl} or {@code sasToken} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<KeyVaultBackupOperation, Void> beginBackup(String blobStorageUrl, String sasToken) {
+    public PollerFlux<KeyVaultBackupOperation, String> beginBackup(String blobStorageUrl, String sasToken) {
         Objects.requireNonNull(blobStorageUrl,
             String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
                 "'blobStorageUrl'"));
@@ -105,7 +105,8 @@ public final class KeyVaultBackupAsyncClient {
             backupActivationOperation(blobStorageUrl, sasToken),
             backupPollOperation(),
             (pollingContext, firstResponse) -> Mono.error(new RuntimeException("Cancellation is not supported")),
-            (pollingContext) -> Mono.empty());
+            (pollingContext) ->
+                Mono.just(pollingContext.getLatestResponse().getValue().getAzureStorageBlobContainerUri()));
     }
 
     /**
@@ -125,6 +126,10 @@ public final class KeyVaultBackupAsyncClient {
 
         return clientImpl.fullBackupWithResponseAsync(vaultUrl, sasTokenParameter,
             context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+            .doOnRequest(ignored -> logger.info("Backing up at URL - {}", blobStorageUrl))
+            .doOnSuccess(response -> logger.info("Backed up at URL - {}",
+                response.getValue().getAzureStorageBlobContainerUri()))
+            .doOnError(error -> logger.warning("Failed to backup at URL - {}", blobStorageUrl, error))
             .map(backupOperationResponse ->
                 new SimpleResponse<>(backupOperationResponse.getRequest(), backupOperationResponse.getStatusCode(),
                     backupOperationResponse.getHeaders(),
@@ -251,6 +256,10 @@ public final class KeyVaultBackupAsyncClient {
 
         return clientImpl.fullRestoreOperationWithResponseAsync(vaultUrl, restoreOperationParameters,
             context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+            .doOnRequest(ignored -> logger.info("Restoring from location - {}\\{}", blobStorageUrl, folderName))
+            .doOnSuccess(response -> logger.info("Restored from location - {}\\{}", blobStorageUrl, folderName))
+            .doOnError(error ->
+                logger.warning("Failed to restore at location - {}\\{}", blobStorageUrl, folderName, error))
             .map(restoreOperationResponse ->
                 new SimpleResponse<>(restoreOperationResponse.getRequest(), restoreOperationResponse.getStatusCode(),
                     restoreOperationResponse.getHeaders(),
@@ -372,6 +381,13 @@ public final class KeyVaultBackupAsyncClient {
         return clientImpl.selectiveKeyRestoreOperationWithResponseAsync(vaultUrl, keyName,
             selectiveKeyRestoreOperationParameters, context.addData(AZ_TRACING_NAMESPACE_KEY,
                 KEYVAULT_TRACING_NAMESPACE_VALUE))
+            .doOnRequest(ignored ->
+                logger.info("Restoring key \"{}\" from location - {}\\{}", keyName, blobStorageUrl, folderName))
+            .doOnSuccess(response ->
+                logger.info("Restored key \"{}\" from location - {}\\{}", keyName, blobStorageUrl, folderName))
+            .doOnError(error ->
+                logger.warning("Failed to restore key \"{}\" from location - {}\\{}", keyName, blobStorageUrl,
+                    folderName, error))
             .map(restoreOperationResponse ->
                 new SimpleResponse<>(restoreOperationResponse.getRequest(), restoreOperationResponse.getStatusCode(),
                     restoreOperationResponse.getHeaders(),

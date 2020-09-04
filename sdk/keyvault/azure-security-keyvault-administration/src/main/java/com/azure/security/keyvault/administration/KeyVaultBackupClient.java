@@ -46,7 +46,7 @@ public final class KeyVaultBackupClient {
      * @throws NullPointerException if the {@code blobStorageUrl} or {@code sasToken} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<KeyVaultBackupOperation, Void> beginBackup(String blobStorageUrl, String sasToken) {
+    public SyncPoller<KeyVaultBackupOperation, String> beginBackup(String blobStorageUrl, String sasToken) {
         return asyncClient.beginBackup(blobStorageUrl, sasToken).getSyncPoller();
     }
 
