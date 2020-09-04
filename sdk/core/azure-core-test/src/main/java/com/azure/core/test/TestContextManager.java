@@ -78,6 +78,11 @@ public class TestContextManager {
         return testName;
     }
 
+    /**
+     * Returns the name of the playback record for the test being ran.
+     *
+     * @return The playback record name.
+     */
     public String getTestPlaybackRecordingName() {
         StringBuilder builder = new StringBuilder(className)
             .append(".")

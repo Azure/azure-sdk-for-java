@@ -279,7 +279,7 @@ public class InterceptorManager implements AutoCloseable {
         File playbackFile = new File(getRecordFolder(), playbackRecordName + ".json");
         File oldPlaybackFile = new File(getRecordFolder(), testName + ".json");
 
-        if (!playbackFile.exists() && oldPlaybackFile.exists()) {
+        if (!playbackFile.exists() && !oldPlaybackFile.exists()) {
             throw logger.logExceptionAsError(new RuntimeException(String.format(
                 "Missing both new and old playback files. Files are %s and %s.", playbackFile.getPath(),
                 oldPlaybackFile.getPath())));
