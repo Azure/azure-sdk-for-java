@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class TableServiceClientTest extends TestBase {
-    private TableServiceClient serviceClient;
+    private CosmosThrottled<TableServiceClient> runner;
 
     @Override
     protected void beforeTest() {
@@ -31,8 +31,7 @@ public class TableServiceClientTest extends TestBase {
             }
             builder.addPolicy(new RetryPolicy());
         }
-
-        serviceClient = builder.buildClient();
+        runner = CosmosThrottled.get(builder.buildClient(), interceptorManager.isPlaybackMode());
     }
 
     @Test
@@ -41,17 +40,18 @@ public class TableServiceClientTest extends TestBase {
         String tableName = testResourceNamer.randomName("test", 20);
 
         // Act & Assert
-        serviceClient.createTable(tableName);
+        runner.runVoid(serviceClient -> serviceClient.createTable(tableName));
     }
 
     @Test
     void serviceCreateTableFailsIfExists() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
-        serviceClient.createTable(tableName);
+        runner.runVoid(serviceClient -> serviceClient.createTable(tableName));
 
         // Act & Assert
-        Assertions.assertThrows(TableServiceErrorException.class, () -> serviceClient.createTable(tableName));
+        Assertions.assertThrows(TableServiceErrorException.class,
+            () -> runner.runVoid(serviceClient -> serviceClient.createTable(tableName)));
     }
 
     @Test
@@ -60,17 +60,17 @@ public class TableServiceClientTest extends TestBase {
         String tableName = testResourceNamer.randomName("test", 20);
 
         // Act & Assert
-        serviceClient.createTableIfNotExists(tableName);
+        runner.runVoid(serviceClient -> serviceClient.createTableIfNotExists(tableName));
     }
 
     @Test
     void serviceCreateTableIfNotExistsSucceedsIfExists() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
-        serviceClient.createTable(tableName);
+        runner.runVoid(serviceClient -> serviceClient.createTable(tableName));
 
         //Act & Assert
-        serviceClient.createTableIfNotExists(tableName);
+        runner.runVoid(serviceClient -> serviceClient.createTableIfNotExists(tableName));
     }
 
     @Test
