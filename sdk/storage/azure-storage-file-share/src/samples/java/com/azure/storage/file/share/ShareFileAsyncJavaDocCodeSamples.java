@@ -841,12 +841,12 @@ public class ShareFileAsyncJavaDocCodeSamples {
      */
     public void listRangesDiffAsyncOptionalOverload() {
         ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.listRangesDiff#ShareFileListRangesOptions
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.listRangesDiff#ShareFileListRangesDiffOptions
         shareFileAsyncClient.listRangesDiff(new ShareFileListRangesDiffOptions("previoussnapshot")
             .setRange(new ShareFileRange(1024, 2048L)))
             .subscribe(result -> System.out.printf("List ranges completed with start: %d, end: %d",
                 result.getStart(), result.getEnd()));
-        // END: com.azure.storage.file.share.ShareFileAsyncClient.listRangesDiff#ShareFileListRangesOptions
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.listRangesDiff#ShareFileListRangesDiffOptions
     }
 
     /**
