@@ -6,7 +6,7 @@ package com.azure.cosmos.models;
 /**
  * Encapsulates the PartitionKey/id tuple that uniquely identifies a CosmosItem
  */
-public class CosmosItemIdentity {
+public final class CosmosItemIdentity {
     private final PartitionKey partitionKey;
     private final String id;
 
