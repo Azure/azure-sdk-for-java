@@ -49,9 +49,9 @@ public class ReceiveMessageAutoLockRenewal {
                 // Change the `messageProcessed` according to you business logic and if you are able to process the
                 // message successfully.
                 if (messageProcessed) {
-                    return receiver.complete(context.getMessage().getLockToken());
+                    return receiver.complete(context.getMessage());
                 } else {
-                    return receiver.abandon(context.getMessage().getLockToken());
+                    return receiver.abandon(context.getMessage());
                 }
             }).subscribe();
 

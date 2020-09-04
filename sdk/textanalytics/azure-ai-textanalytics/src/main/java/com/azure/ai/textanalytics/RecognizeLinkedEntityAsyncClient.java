@@ -7,6 +7,7 @@ import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.EntityLinkingResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
+import com.azure.ai.textanalytics.implementation.models.StringIndexType;
 import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
@@ -181,7 +182,7 @@ class RecognizeLinkedEntityAsyncClient {
                     match.getText(), match.getConfidenceScore(), match.getOffset(), match.getLength()))
                     .collect(Collectors.toList())),
                 linkedEntity.getLanguage(),
-                linkedEntity.getId(), linkedEntity.getUrl(), linkedEntity.getDataSource()));
+                linkedEntity.getId(), linkedEntity.getUrl(), linkedEntity.getDataSource(), linkedEntity.getBingId()));
         }
         return new IterableStream<>(linkedEntitiesList);
     }
@@ -202,6 +203,7 @@ class RecognizeLinkedEntityAsyncClient {
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
             options == null ? null : options.getModelVersion(),
             options == null ? null : options.isIncludeStatistics(),
+            StringIndexType.UTF16CODE_UNIT,
             context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
             .doOnSuccess(response -> logger.info("Recognized linked entities for a batch of documents - {}",

@@ -10,8 +10,8 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.data.tables.implementation.TablesJacksonSerializer;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
@@ -29,7 +29,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {TableServiceClient.class, TableServiceAsyncClient.class})
 public class TableServiceClientBuilder {
     private final ClientLogger logger = new ClientLogger(TableServiceClientBuilder.class);
-    private final SerializerAdapter serializerAdapter = new TablesJacksonSerializer();
+    private final SerializerAdapter serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
     private final List<HttpPipelinePolicy> policies;
     private String connectionString;
     private Configuration configuration;

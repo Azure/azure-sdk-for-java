@@ -152,7 +152,7 @@ public class AsyncSample
         String etag = jsonNode.path("$etag").textValue();
 
         client.deleteRelationship(dtId_String, r_id_1).block();
-        client.deleteRelationshipWithResponse(dtId_String, r_id_2, new RequestOptions().setIfMatch(etag)).block();
+        client.deleteRelationshipWithResponse(dtId_String, r_id_2, new DeleteRelationshipRequestOptions().setIfMatch(etag)).block();
 
     }
 }

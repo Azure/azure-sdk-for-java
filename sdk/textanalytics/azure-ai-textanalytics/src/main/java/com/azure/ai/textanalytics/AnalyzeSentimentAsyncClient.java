@@ -16,6 +16,7 @@ import com.azure.ai.textanalytics.implementation.models.SentenceOpinion;
 import com.azure.ai.textanalytics.implementation.models.SentenceSentimentValue;
 import com.azure.ai.textanalytics.implementation.models.SentimentConfidenceScorePerLabel;
 import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
+import com.azure.ai.textanalytics.implementation.models.StringIndexType;
 import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
@@ -205,11 +206,17 @@ class AnalyzeSentimentAsyncClient {
      */
     private Mono<Response<AnalyzeSentimentResultCollection>> getAnalyzedSentimentResponse(
         Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options, Context context) {
+        String modelVersion = null;
+        Boolean includeStatistics = null;
+        Boolean includeOpinionMining = null;
+        if (options != null) {
+            modelVersion = options.getModelVersion();
+            includeStatistics = options.isIncludeStatistics();
+            includeOpinionMining = options.isIncludeOpinionMining();
+        }
         return service.sentimentWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-            options == null ? null : options.getModelVersion(),
-            options == null ? null : options.isIncludeStatistics(),
-            options == null ? null : options.isIncludeOpinionMining(),
+            modelVersion, includeStatistics, includeOpinionMining, StringIndexType.UTF16CODE_UNIT,
             context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
             .doOnSuccess(response -> logger.info("Analyzed sentiment for a batch of documents - {}", response))

@@ -44,7 +44,7 @@ import com.azure.resourcemanager.network.models.PcStatus;
 import com.azure.resourcemanager.network.models.SecurityGroupView;
 import com.azure.resourcemanager.network.models.Topology;
 import com.azure.resourcemanager.network.models.VerificationIPFlow;
-import com.azure.resourcemanager.resources.core.TestUtilities;
+import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
@@ -55,6 +55,7 @@ import com.azure.resourcemanager.resources.models.Deployment;
 import com.azure.resourcemanager.resources.models.DeploymentMode;
 import com.azure.resourcemanager.resources.models.GenericResource;
 import com.azure.resourcemanager.resources.models.Location;
+import com.azure.resourcemanager.resources.models.RegionCategory;
 import com.azure.resourcemanager.resources.models.RegionType;
 import com.azure.resourcemanager.resources.models.Subscription;
 import com.azure.resourcemanager.storage.models.SkuName;
@@ -1010,10 +1011,6 @@ public class AzureTests extends ResourceManagerTestBase {
 
     @Test
     public void testVirtualMachineSyncPoller() throws Exception {
-        if (skipInPlayback()) {
-            return; // skip now as taking too long time for PLAYBACK
-        }
-
         new TestVirtualMachineSyncPoller(azure.networks().manager())
             .runTest(azure.virtualMachines(), azure.resourceGroups());
     }
@@ -1098,6 +1095,9 @@ public class AzureTests extends ResourceManagerTestBase {
 
     @Test
     public void testTrafficManager() throws Exception {
+        if (isPlaybackMode()) {
+            return; // TODO: fix playback random fail
+        }
         new TestTrafficManager(azure.publicIpAddresses())
                 .runTest(azure.trafficManagerProfiles(), azure.resourceGroups());
     }
@@ -1324,23 +1324,85 @@ public class AzureTests extends ResourceManagerTestBase {
             azure
                 .getCurrentSubscription()
                 .listLocations(); // note the region is not complete since it depends on current subscription
+
+        List<Location> locationGroupByGeography = new ArrayList<>();
+        List<String> geographies = Arrays.asList(
+            "US", "Canada", "South America", "Europe", "Asia Pacific", "Middle East", "Africa");
+        for (String geography : geographies) {
+            for (Location location : locations) {
+                if (location.regionType() == RegionType.PHYSICAL) {
+                    if (geography.equals(location.inner().metadata().geographyGroup())) {
+                        locationGroupByGeography.add(location);
+                    }
+                }
+            }
+        }
         for (Location location : locations) {
+            if (location.regionType() == RegionType.PHYSICAL) {
+                if (!geographies.contains(location.inner().metadata().geographyGroup())) {
+                    locationGroupByGeography.add(location);
+                }
+            }
+        }
+
+        for (Location location : locationGroupByGeography) {
             if (location.regionType() == RegionType.PHYSICAL) {
                 Region region = Region.findByLabelOrName(location.name());
                 if (region == null) {
                     sb
-                        .append("\n")
-                        .append(
-                            MessageFormat
-                                .format(
-                                    "public static final Region {0} = new Region(\"{1}\", \"{2}\");",
-                                    location.displayName().toUpperCase().replace(" ", "_"),
-                                    location.name(),
-                                    location.displayName()));
+                        .append("\n").append("/**")
+                        .append("\n").append(MessageFormat.format(
+                            " * {0} ({1})",
+                            location.displayName(),
+                            location.inner().metadata().geographyGroup()))
+                        .append(location.inner().metadata().regionCategory() == RegionCategory.RECOMMENDED
+                            ? " (recommended)" : "")
+                        .append("\n").append(" */")
+                        .append("\n").append(MessageFormat.format(
+                            "public static final Region {0} = new Region(\"{1}\", \"{2}\");",
+                            getLocationVariableName(location),
+                            location.name(),
+                            location.displayName()));
                 }
             }
         }
 
         Assertions.assertTrue(sb.length() == 0, sb.toString());
+    }
+
+    private static String getLocationVariableName(Location location) {
+        final String geographyGroup = location.inner().metadata().geographyGroup();
+        String displayName = location.displayName();
+        if ("US".equals(geographyGroup)) {
+            if (displayName.contains(" US")) {
+                displayName = displayName.replace(" US", "");
+                displayName = "US " + displayName;
+            }
+        } else if ("Europe".equals(geographyGroup)) {
+            if (displayName.contains(" Europe")) {
+                displayName = displayName.replace(" Europe", "");
+                displayName = "Europe " + displayName;
+            }
+        } else if ("Asia Pacific".equals(geographyGroup)) {
+            if (displayName.contains(" Asia")) {
+                displayName = displayName.replace(" Asia", "");
+                displayName = "Asia " + displayName;
+            } else if (displayName.contains(" India")) {
+                displayName = displayName.replace(" India", "");
+                displayName = "India " + displayName;
+            }
+
+        } else if ("Africa".equals(geographyGroup)) {
+            if (displayName.startsWith("South Africa")) {
+                displayName = displayName.replace("South Africa", "SouthAfrica");
+            }
+        }
+        if (displayName.length() > 2 && displayName.charAt(displayName.length() - 1) >= '0'
+            && displayName.charAt(displayName.length() - 1) <= '9'
+            && displayName.charAt(displayName.length() - 2) == ' ') {
+            displayName = displayName.replace(displayName.substring(displayName.length() - 2),
+                displayName.substring(displayName.length() - 1));
+        }
+        return displayName.toUpperCase().replace(" ", "_");
     }
 }

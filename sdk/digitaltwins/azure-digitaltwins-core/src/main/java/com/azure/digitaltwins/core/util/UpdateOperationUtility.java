@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  * A utility to create the application/json-patch+json operations payload required for update operations.
  */
 @Fluent
-public class UpdateOperationUtility {
+public final class UpdateOperationUtility {
     private static final String ADD = "add";
     private static final String REPLACE = "replace";
     private static final String REMOVE = "remove";

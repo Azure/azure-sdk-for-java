@@ -197,11 +197,7 @@ class ReactorNettyClient implements HttpClient {
         @Override
         public Flux<ByteBuf> body() {
             return bodyIntern()
-                .doOnSubscribe(this::updateSubscriptionState)
-                .map(byteBuf -> {
-                    byteBuf.retain();
-                    return byteBuf;
-                });
+                .doOnSubscribe(this::updateSubscriptionState);
         }
 
         @Override
