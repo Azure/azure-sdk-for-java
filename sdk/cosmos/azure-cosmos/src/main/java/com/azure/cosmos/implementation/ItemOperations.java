@@ -3,12 +3,10 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosContainer;
 import com.azure.cosmos.models.CosmosItemIdentity;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
@@ -63,7 +61,7 @@ final public class ItemOperations {
         List<Pair<String, PartitionKey>> itemKeyList) {
 
         if (itemKeyList != null) {
-            List<CosmosItemIdentity> itemIdentities = new ArrayList<CosmosItemIdentity>(itemKeyList.size());
+            List<CosmosItemIdentity> itemIdentities = new ArrayList<>(itemKeyList.size());
             for (int i = 0; i < itemKeyList.size(); i++) {
 
                 itemIdentities.set(
@@ -76,7 +74,7 @@ final public class ItemOperations {
             return itemIdentities;
         }
 
-        return new ArrayList<CosmosItemIdentity>(itemKeyList.size());
+        return new ArrayList<>();
     }
 
     private ItemOperations() {}
