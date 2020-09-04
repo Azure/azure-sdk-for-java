@@ -453,51 +453,6 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             }
         }
 
-        // Message Annotations
-        /*final MessageAnnotations messageAnnotations = amqpMessage.getMessageAnnotations();
-        if (messageAnnotations != null) {
-            Map<Symbol, Object> messageAnnotationsMap = messageAnnotations.getValue();
-            if (messageAnnotationsMap != null) {
-                for (Map.Entry<Symbol, Object> entry : messageAnnotationsMap.entrySet()) {
-                    final String key = entry.getKey().toString();
-                    final Object value = entry.getValue();
-
-                    switch (key) {
-                        case ENQUEUED_TIME_UTC_NAME:
-                            brokeredMessage.setEnqueuedTime(((Date) value).toInstant().atOffset(ZoneOffset.UTC));
-
-                            break;
-                        case SCHEDULED_ENQUEUE_TIME_NAME:
-                            brokeredMessage.setScheduledEnqueueTime(((Date) value).toInstant()
-                                .atOffset(ZoneOffset.UTC));
-                            break;
-                        case SEQUENCE_NUMBER_NAME:
-                            brokeredMessage.setSequenceNumber((long) value);
-                            break;
-                        case LOCKED_UNTIL_NAME:
-                            brokeredMessage.setLockedUntil(((Date) value).toInstant().atOffset(ZoneOffset.UTC));
-                            break;
-                        case PARTITION_KEY_NAME:
-                            brokeredMessage.setPartitionKey((String) value);
-                            break;
-                        case VIA_PARTITION_KEY_NAME:
-                            brokeredMessage.setViaPartitionKey((String) value);
-                            break;
-                        case DEAD_LETTER_SOURCE_NAME:
-                            brokeredMessage.setDeadLetterSource((String) value);
-                            break;
-                        case ENQUEUED_SEQUENCE_NUMBER:
-                            brokeredMessage.setEnqueuedSequenceNumber((long) value);
-                            break;
-                        default:
-                            logger.info("Unrecognised key: {}, value: {}", key, value);
-                            break;
-                    }
-                }
-            }
-        }
-        */
-
         if (amqpMessage instanceof MessageWithLockToken) {
             brokeredMessage.setLockToken(((MessageWithLockToken) amqpMessage).getLockToken());
         }

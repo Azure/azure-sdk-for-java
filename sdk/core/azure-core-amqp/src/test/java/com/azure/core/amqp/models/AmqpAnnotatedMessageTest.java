@@ -39,7 +39,9 @@ public class AmqpAnnotatedMessageTest {
         Assertions.assertNotNull(actual.getMessageAnnotations());
         Assertions.assertNotNull(actual.getApplicationProperties());
 
-        List<BinaryData> dataList = ((AmqpDataBody)actual.getBody()).getData().stream().collect(Collectors.toList());
+        // Validate Message Body
+        Assertions.assertNotNull(actual.getBody());
+        List<BinaryData> dataList = ((AmqpDataBody) actual.getBody()).getData().stream().collect(Collectors.toList());
         assertEquals(1, dataList.size());
         byte[] actualData = dataList.get(0).getData();
         assertArrayEquals(CONTENTS_BYTES, actualData);

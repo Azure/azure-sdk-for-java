@@ -9,7 +9,7 @@ import java.util.Objects;
 /**
  * Binary representation of amqp message body.
  */
-public class BinaryData {
+public final class BinaryData {
     private final byte[] data;
     /**
      *Create {@link BinaryData} instance with given byte array data.

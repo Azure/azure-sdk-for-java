@@ -16,7 +16,7 @@ public class AmqpMessageHeader {
     private Long deliveryCount;
     private Boolean durable;
     private Boolean firstAcquirer;
-    private short priority;
+    private Short priority;
     private Duration timeToLive;
 
     AmqpMessageHeader() {
@@ -87,7 +87,7 @@ public class AmqpMessageHeader {
      * Gets the priority on {@code amqpMessage}.
      * @return the priority.
      */
-    public short getPriority() {
+    public Short getPriority() {
         return this.priority;
     }
 
