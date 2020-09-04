@@ -7,6 +7,9 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.IterableStream;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusMessage;
+import com.azure.messaging.servicebus.models.ServiceBusReceivedMessage;
+import com.azure.messaging.servicebus.models.ServiceBusReceivedMessageContext;
 import com.azure.messaging.servicebus.models.SubQueue;
 import reactor.core.Disposable;
 

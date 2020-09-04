@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.messaging.servicebus.implementation;
 
-import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
+import com.azure.messaging.servicebus.models.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.publisher.Mono;

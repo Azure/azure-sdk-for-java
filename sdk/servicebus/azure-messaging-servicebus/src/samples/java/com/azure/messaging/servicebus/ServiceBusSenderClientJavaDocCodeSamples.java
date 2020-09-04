@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.messaging.servicebus.models.CreateBatchOptions;
+import com.azure.messaging.servicebus.models.ServiceBusMessage;
 
 import java.util.Arrays;
 import java.util.List;

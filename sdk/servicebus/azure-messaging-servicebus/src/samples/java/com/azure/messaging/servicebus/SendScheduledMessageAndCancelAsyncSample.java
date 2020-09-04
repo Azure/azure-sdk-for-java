@@ -3,6 +3,8 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.messaging.servicebus.models.ServiceBusMessage;
+
 import java.time.OffsetDateTime;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;

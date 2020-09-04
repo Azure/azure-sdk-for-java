@@ -6,9 +6,12 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.EntityHelper;
 import com.azure.messaging.servicebus.implementation.LockContainer;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
+import com.azure.messaging.servicebus.models.ServiceBusReceivedMessage;
+import com.azure.messaging.servicebus.models.ServiceBusReceivedMessageContext;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
@@ -85,11 +88,12 @@ class UnnamedSessionReceiver implements AutoCloseable {
                         deserialized.getSessionId(), deserialized.getMessageId());
                 }
 
-                return new ServiceBusReceivedMessageContext(deserialized);
+                return EntityHelper.toModel(deserialized, null, null);
             })
             .onErrorResume(error -> {
                 logger.warning("sessionId[{}]. Error occurred. Ending session.", sessionId, error);
-                return Mono.just(new ServiceBusReceivedMessageContext(getSessionId(), error));
+                ;
+                return Mono.just(EntityHelper.toModel(null, getSessionId(), error));
             })
             .doOnNext(context -> {
                 if (context.hasError()) {

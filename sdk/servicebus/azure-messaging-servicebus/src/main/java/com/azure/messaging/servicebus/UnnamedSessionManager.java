@@ -17,6 +17,7 @@ import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
+import com.azure.messaging.servicebus.models.ServiceBusReceivedMessageContext;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;

@@ -6,6 +6,7 @@ package com.azure.core.amqp.models;
 import com.azure.core.annotation.Fluent;
 
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 
 /**
  * Represents properties from Amqp message.
@@ -19,7 +20,7 @@ public class AmqpMessageProperties {
     private String correlationId;
     private OffsetDateTime creationTime;
     private String groupId;
-    private String groupSequence;
+    private long groupSequence;
     private String messageId;
     private String replyToGroupId;
     private String replyTo;
@@ -152,7 +153,7 @@ public class AmqpMessageProperties {
      *
      * @return The {@code groupSequence}.
      */
-    public String getGroupSequence() {
+    public long getGroupSequence() {
         return this.groupSequence;
     }
 
@@ -162,7 +163,7 @@ public class AmqpMessageProperties {
      * @param groupSequence to be set .
      * @return updated {@link AmqpMessageProperties} object.
      */
-    public AmqpMessageProperties setGroupSequence(String groupSequence) {
+    public AmqpMessageProperties setGroupSequence(long groupSequence) {
         this.groupSequence = groupSequence;
         return this;
     }
@@ -273,7 +274,7 @@ public class AmqpMessageProperties {
      * @return The {@code userId}.
      */
     public byte[] getUserId() {
-        return this.userId;
+        return userId != null ? Arrays.copyOf(this.userId, userId.length) : new byte[0];
     }
 
     /**
@@ -283,7 +284,7 @@ public class AmqpMessageProperties {
      * @return updated {@link AmqpMessageProperties} object.
      */
     public AmqpMessageProperties setUserId(byte[] userId) {
-        this.userId = userId;
+        this.userId = userId != null ? Arrays.copyOf(userId, userId.length) : new byte[0];
         return this;
     }
 

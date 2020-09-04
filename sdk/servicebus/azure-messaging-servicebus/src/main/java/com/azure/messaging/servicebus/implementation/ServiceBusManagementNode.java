@@ -3,8 +3,8 @@
 
 package com.azure.messaging.servicebus.implementation;
 
-import com.azure.messaging.servicebus.ServiceBusMessage;
-import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
+import com.azure.messaging.servicebus.models.ServiceBusMessage;
+import com.azure.messaging.servicebus.models.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusTransactionContext;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.publisher.Flux;

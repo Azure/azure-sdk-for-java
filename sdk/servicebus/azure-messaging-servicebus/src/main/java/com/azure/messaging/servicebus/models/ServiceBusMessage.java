@@ -1,19 +1,22 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.servicebus;
+package com.azure.messaging.servicebus.models;
 
 
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpDataBody;
 import com.azure.core.amqp.models.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.messaging.servicebus.ServiceBusMessageBatch;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -41,22 +44,9 @@ import java.util.stream.Collectors;
  */
 public class ServiceBusMessage {
     private static final String SCHEDULED_ENQUEUE_TIME_NAME = "x-opt-scheduled-enqueue-time";
+    private static final String VIA_PARTITION_KEY_NAME = "x-opt-via-partition-key";
     private Context context;
     private final AmqpAnnotatedMessage amqpAnnotatedMessage;
-    /*private final Map<String, Object> applicationProperties = new HashMap<>();
-
-    private String contentType;
-    private String correlationId;
-    private String label;
-    private String messageId;
-    private String partitionKey;
-    private String replyTo;
-    private String replyToSessionId;
-    private OffsetDateTime scheduledEnqueueTime;
-    private String sessionId;
-    private Duration timeToLive;
-    private String to;
-    private String viaPartitionKey;*/
 
     /**
      * Creates a {@link ServiceBusMessage} with a {@link java.nio.charset.StandardCharsets#UTF_8 UTF_8} encoded body.
@@ -77,7 +67,6 @@ public class ServiceBusMessage {
      * @throws NullPointerException if {@code body} is {@code null}.
      */
     public ServiceBusMessage(byte[] body) {
-        Objects.requireNonNull(body, "'body' cannot be null.");
         this.context = Context.NONE;
         amqpAnnotatedMessage = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(new BinaryData(body))));
     }
@@ -218,12 +207,12 @@ public class ServiceBusMessage {
     /**
      * Sets the subject for the message.
      *
-     * @param label The subject to set.
+     * @param subject The subject to set.
      *
      * @return The updated {@link ServiceBusMessage} object.
      */
-    public ServiceBusMessage setSubject(String label) {
-        amqpAnnotatedMessage.getProperties().setSubject(label);
+    public ServiceBusMessage setSubject(String subject) {
+        amqpAnnotatedMessage.getProperties().setSubject(subject);
         return this;
     }
 
@@ -344,7 +333,7 @@ public class ServiceBusMessage {
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-expiration">Message Expiration</a>
      */
     public Duration getTimeToLive() {
-        return timeToLive;
+        return amqpAnnotatedMessage.getHeader().getTimeToLive();
     }
 
     /**
@@ -356,7 +345,7 @@ public class ServiceBusMessage {
      * @see #getTimeToLive()
      */
     public ServiceBusMessage setTimeToLive(Duration timeToLive) {
-        this.timeToLive = timeToLive;
+        amqpAnnotatedMessage.getHeader().setTimeToLive(timeToLive);
         return this;
     }
 
@@ -374,7 +363,14 @@ public class ServiceBusMessage {
      *     Timestamps</a>
      */
     public OffsetDateTime getScheduledEnqueueTime() {
-        return (OffsetDateTime)amqpAnnotatedMessage.getMessageAnnotations().get(SCHEDULED_ENQUEUE_TIME_NAME);
+        OffsetDateTime scheduledEnqueueTime = null;
+        Map<String, Object> messageAnnotationMap = amqpAnnotatedMessage.getMessageAnnotations();
+        if (messageAnnotationMap.containsKey(SCHEDULED_ENQUEUE_TIME_NAME)) {
+            scheduledEnqueueTime = ((Date) messageAnnotationMap.get(SCHEDULED_ENQUEUE_TIME_NAME)).toInstant()
+                .atOffset(ZoneOffset.UTC) ;
+        }
+
+        return scheduledEnqueueTime;
     }
 
     /**
@@ -386,6 +382,7 @@ public class ServiceBusMessage {
      * @see #getScheduledEnqueueTime()
      */
     public ServiceBusMessage setScheduledEnqueueTime(OffsetDateTime scheduledEnqueueTime) {
+        Objects.requireNonNull(scheduledEnqueueTime, "'scheduledEnqueueTime' cannot be null.");
         amqpAnnotatedMessage.getMessageAnnotations().put(SCHEDULED_ENQUEUE_TIME_NAME, scheduledEnqueueTime);
         return this;
     }
@@ -401,7 +398,7 @@ public class ServiceBusMessage {
      *     Routing and Correlation</a>
      */
     public String getReplyToSessionId() {
-        return (OffsetDateTime)amqpAnnotatedMessage.getMessageAnnotations().get(SCHEDULED_ENQUEUE_TIME_NAME);
+        return amqpAnnotatedMessage.getProperties().getReplyToGroupId();
     }
 
     /**
@@ -412,7 +409,7 @@ public class ServiceBusMessage {
      * @return The updated {@link ServiceBusMessage}.
      */
     public ServiceBusMessage setReplyToSessionId(String replyToSessionId) {
-        this.replyToSessionId = replyToSessionId;
+        amqpAnnotatedMessage.getProperties().setReplyToGroupId(replyToSessionId);
         return this;
     }
 
@@ -428,7 +425,7 @@ public class ServiceBusMessage {
      *     and Send Via</a>
      */
     public String getViaPartitionKey() {
-        return viaPartitionKey;
+        return (String)amqpAnnotatedMessage.getMessageAnnotations().get(VIA_PARTITION_KEY_NAME);
     }
 
     /**
@@ -440,7 +437,7 @@ public class ServiceBusMessage {
      * @see #getViaPartitionKey()
      */
     public ServiceBusMessage setViaPartitionKey(String viaPartitionKey) {
-        this.viaPartitionKey = viaPartitionKey;
+        amqpAnnotatedMessage.getMessageAnnotations().put(VIA_PARTITION_KEY_NAME, viaPartitionKey);
         return this;
     }
 
@@ -450,7 +447,7 @@ public class ServiceBusMessage {
      * @return Session Id of the {@link ServiceBusMessage}.
      */
     public String getSessionId() {
-        return sessionId;
+        return amqpAnnotatedMessage.getProperties().getGroupId();
     }
 
     /**
@@ -461,7 +458,7 @@ public class ServiceBusMessage {
      * @return The updated {@link ServiceBusMessage}.
      */
     public ServiceBusMessage setSessionId(String sessionId) {
-        this.sessionId = sessionId;
+        amqpAnnotatedMessage.getProperties().setGroupId(sessionId);
         return this;
     }
 
@@ -471,7 +468,7 @@ public class ServiceBusMessage {
      *
      * @return the {@link Context} object set on the {@link ServiceBusMessage}.
      */
-    Context getContext() {
+    public Context getContext() {
         return context;
     }
 

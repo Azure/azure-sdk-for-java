@@ -31,6 +31,7 @@ import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusSharedKeyCredential;
 import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusMessage;
 import com.azure.messaging.servicebus.models.SubQueue;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

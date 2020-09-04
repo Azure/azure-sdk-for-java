@@ -6,7 +6,10 @@ package com.azure.messaging.servicebus;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.administration.models.DeadLetterOptions;
+import com.azure.messaging.servicebus.implementation.EntityHelper;
 import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceivedMessage;
+import com.azure.messaging.servicebus.models.ServiceBusReceivedMessageContext;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -450,8 +453,8 @@ class ServiceBusReceiverClientTest {
                 }
 
                 for (int i = 0; i < numberToEmit; i++) {
-                    ServiceBusReceivedMessageContext context = new ServiceBusReceivedMessageContext(
-                        mock(ServiceBusReceivedMessage.class));
+                    ServiceBusReceivedMessageContext context = EntityHelper.toModel(
+                        mock(ServiceBusReceivedMessage.class), null, null);
                     sink.next(context);
 
                     final int emit = emittedMessages.incrementAndGet();
@@ -497,7 +500,7 @@ class ServiceBusReceiverClientTest {
                 }
 
                 for (int i = 0; i < numberToEmit; i++) {
-                    sink.next(new ServiceBusReceivedMessageContext(mock(ServiceBusReceivedMessage.class)));
+                    sink.next(EntityHelper.toModel(mock(ServiceBusReceivedMessage.class), null, null));
 
                     final int emit = emittedMessages.incrementAndGet();
                     if (emit >= numberToEmit) {
@@ -544,7 +547,7 @@ class ServiceBusReceiverClientTest {
                 }
 
                 for (int i = 0; i < numberToEmit; i++) {
-                    sink.next(new ServiceBusReceivedMessageContext(mock(ServiceBusReceivedMessage.class)));
+                    sink.next(EntityHelper.toModel(mock(ServiceBusReceivedMessage.class), null, null));
 
                     final int emit = emittedMessages.incrementAndGet();
                     if (emit >= numberToEmit) {

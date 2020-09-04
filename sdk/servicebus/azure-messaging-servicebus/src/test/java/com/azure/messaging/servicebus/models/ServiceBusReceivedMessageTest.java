@@ -1,8 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.servicebus;
+package com.azure.messaging.servicebus.models;
 
+import com.azure.messaging.servicebus.models.ServiceBusMessage;
+import com.azure.messaging.servicebus.models.ServiceBusReceivedMessage;
+import org.apache.qpid.proton.amqp.Binary;
+import org.apache.qpid.proton.amqp.messaging.Data;
+import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -10,6 +15,8 @@ import java.time.Duration;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ServiceBusReceivedMessageTest {
 
@@ -30,7 +37,7 @@ public class ServiceBusReceivedMessageTest {
 
         // Assert
         Assertions.assertNotNull(receivedMessage.getBody());
-        Assertions.assertNotNull(receivedMessage.getProperties());
+        Assertions.assertNotNull(receivedMessage.getApplicationProperties());
     }
 
 
@@ -67,8 +74,12 @@ public class ServiceBusReceivedMessageTest {
     @Test
     public void toServiceBusMessageTest() {
         //Arrange
-        final ServiceBusReceivedMessage originalMessage = new ServiceBusReceivedMessage(PAYLOAD_BYTES);
-        originalMessage.setMessageId("mid");
+        Message amqpMessage = mock(Message.class);
+        Data data = new Data(new Binary(PAYLOAD_BYTES));
+        when(amqpMessage.getBody()).thenReturn(data);
+        //
+        final ServiceBusReceivedMessage originalMessage = new ServiceBusReceivedMessage(amqpMessage);
+        /*originalMessage.setMessageId("mid");
         originalMessage.setContentType("type");
         originalMessage.setCorrelationId("cid");
         originalMessage.setReplyTo("rto");
@@ -76,7 +87,7 @@ public class ServiceBusReceivedMessageTest {
         originalMessage.setTimeToLive(Duration.ofSeconds(10));
         originalMessage.setReplyToSessionId("rsessionid");
         originalMessage.setLabel("label");
-        originalMessage.setTo("to");
+        originalMessage.setTo("to");*/
 
         // Act
         final ServiceBusMessage messageToSend = new ServiceBusMessage(originalMessage);
@@ -91,7 +102,7 @@ public class ServiceBusReceivedMessageTest {
         Assertions.assertEquals(originalMessage.getReplyTo(), messageToSend.getReplyTo());
         Assertions.assertEquals(originalMessage.getViaPartitionKey(), messageToSend.getViaPartitionKey());
         Assertions.assertEquals(originalMessage.getTimeToLive().toMillis(), messageToSend.getTimeToLive().toMillis());
-        Assertions.assertEquals(originalMessage.getLabel(), messageToSend.getLabel());
+        Assertions.assertEquals(originalMessage.getLabel(), messageToSend.getSubject());
         Assertions.assertEquals(originalMessage.getReplyToSessionId(), messageToSend.getReplyToSessionId());
         Assertions.assertEquals(originalMessage.getTo(), messageToSend.getTo());
     }

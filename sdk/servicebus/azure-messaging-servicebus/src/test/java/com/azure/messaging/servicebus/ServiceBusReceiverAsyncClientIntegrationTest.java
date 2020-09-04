@@ -9,6 +9,9 @@ import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.LockRenewalStatus;
 import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusMessage;
+import com.azure.messaging.servicebus.models.ServiceBusReceivedMessage;
+import com.azure.messaging.servicebus.models.ServiceBusReceivedMessageContext;
 import com.azure.messaging.servicebus.models.SubQueue;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -516,7 +519,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         setSenderAndReceiver(entityType, TestUtils.USE_CASE_PEEK_BATCH_MESSAGES, isSessionEnabled);
 
         final BiConsumer<ServiceBusReceivedMessage, Integer> checkCorrectMessage = (message, index) -> {
-            final Map<String, Object> properties = message.getProperties();
+            final Map<String, Object> properties = message.getApplicationProperties();
             final Object value = properties.get(MESSAGE_POSITION_ID);
             assertTrue(value instanceof Integer, "Did not contain correct position number: " + value);
 
@@ -870,7 +873,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 messagesPending.decrementAndGet();
                 assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
 
-                final Map<String, Object> received = receivedMessage.getMessage().getProperties();
+                final Map<String, Object> received = receivedMessage.getMessage().getApplicationProperties();
 
                 assertEquals(sentProperties.size(), received.size());
 

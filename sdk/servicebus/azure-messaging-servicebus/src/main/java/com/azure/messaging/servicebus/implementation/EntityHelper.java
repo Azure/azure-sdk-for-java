@@ -19,8 +19,13 @@ import com.azure.messaging.servicebus.implementation.models.RuleDescription;
 import com.azure.messaging.servicebus.implementation.models.RuleFilterImpl;
 import com.azure.messaging.servicebus.implementation.models.SubscriptionDescription;
 import com.azure.messaging.servicebus.implementation.models.TopicDescription;
+import com.azure.messaging.servicebus.models.ServiceBusReceivedMessage;
+import com.azure.messaging.servicebus.models.ServiceBusReceivedMessageContext;
+import org.apache.qpid.proton.message.Message;
 
+import java.time.OffsetDateTime;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Used to access internal methods on {@link QueueProperties}.
@@ -30,6 +35,8 @@ public final class EntityHelper {
     private static SubscriptionAccessor subscriptionAccessor;
     private static TopicAccessor topicAccessor;
     private static RuleAccessor ruleAccessor;
+    private static ServiceBusReceivedMessageAccessor receivedMessageAccessor;
+    private static ServiceBusReceivedMessageContextAccessor messageContextAccessor;
 
     static {
         try {
@@ -38,6 +45,10 @@ public final class EntityHelper {
                 SubscriptionProperties.class.getClassLoader());
             Class.forName(TopicProperties.class.getName(), true, TopicProperties.class.getClassLoader());
             Class.forName(RuleProperties.class.getName(), true, RuleProperties.class.getClassLoader());
+            Class.forName(ServiceBusReceivedMessage.class.getName(), true,
+                ServiceBusReceivedMessage.class.getClassLoader());
+            Class.forName(ServiceBusReceivedMessageContext.class.getName(), true,
+                ServiceBusReceivedMessageContext.class.getClassLoader());
         } catch (ClassNotFoundException e) {
             throw new ClientLogger(EntityHelper.class).logExceptionAsError(new IllegalStateException(e));
         }
@@ -313,6 +324,68 @@ public final class EntityHelper {
     }
 
     /**
+     * Creates a new {@link ServiceBusReceivedMessage} given the options.
+     *
+     * @param amqpMessage to create {@link ServiceBusReceivedMessage} with.
+     *
+     * @return A new {@link ServiceBusReceivedMessage} with the set options.
+     */
+    public static ServiceBusReceivedMessage toModel(Message amqpMessage, UUID lockToken) {
+        Objects.requireNonNull(amqpMessage, "'amqpMessage' cannot be null.");
+
+        if (receivedMessageAccessor == null) {
+            throw new ClientLogger(EntityHelper.class).logExceptionAsError(
+                new IllegalStateException("'topicAccessor' should not be null."));
+        }
+
+        return receivedMessageAccessor.toModel(amqpMessage, lockToken);
+    }
+
+    /**
+     * Creates a new {@link ServiceBusReceivedMessage} given the options.
+     *
+     * @param message to create {@link ServiceBusReceivedMessage} with.
+     *
+     * @return A new {@link ServiceBusReceivedMessage} with the set options.
+     */
+    public static ServiceBusReceivedMessageContext toModel(ServiceBusReceivedMessage message, String sessionId, Throwable error) {
+
+        if (messageContextAccessor == null) {
+            throw new ClientLogger(EntityHelper.class).logExceptionAsError(
+                new IllegalStateException("'topicAccessor' should not be null."));
+        }
+
+        return messageContextAccessor.toModel(message, sessionId, error);
+    }
+
+    /**
+     * Creates a new {@link ServiceBusReceivedMessage} given the options.
+     *
+     * @param data to create {@link ServiceBusReceivedMessage} with.
+     *
+     * @return A new {@link ServiceBusReceivedMessage} with the set options.
+     */
+    public static ServiceBusReceivedMessage toModel(byte[] data, long sequenceNumber) {
+
+        if (receivedMessageAccessor == null) {
+            throw new ClientLogger(EntityHelper.class).logExceptionAsError(
+                new IllegalStateException("'topicAccessor' should not be null."));
+        }
+
+        return receivedMessageAccessor.toModel(data, sequenceNumber);
+    }
+
+    public static void setLockedUntil(ServiceBusReceivedMessage message,
+        OffsetDateTime lockedUntil) {
+
+        if (receivedMessageAccessor == null) {
+            throw new ClientLogger(EntityHelper.class).logExceptionAsError(
+                new IllegalStateException("'topicAccessor' should not be null."));
+        }
+
+        receivedMessageAccessor.setLockedUntil(message, lockedUntil);
+    }
+    /**
      * Sets the queue accessor.
      *
      * @param accessor The queue accessor to set on the queue helper.
@@ -406,6 +479,38 @@ public final class EntityHelper {
         EntityHelper.topicAccessor = accessor;
     }
 
+    /**
+     * Sets the ServiceBusReceivedMessage accessor.
+     *
+     * @param accessor The ServiceBusReceivedMessage accessor to set.
+     */
+    public static void setServiceBusReceivedMessageContextAccessor(ServiceBusReceivedMessageContextAccessor accessor) {
+        Objects.requireNonNull(accessor, "'accessor' cannot be null.");
+
+        if (EntityHelper.messageContextAccessor != null) {
+            throw new ClientLogger(EntityHelper.class).logExceptionAsError(new IllegalStateException(
+                "'receivedMessageAccessor' is already set."));
+        }
+
+        EntityHelper.messageContextAccessor = accessor;
+    }
+
+
+    /**
+     * Sets the ServiceBusReceivedMessage accessor.
+     *
+     * @param accessor The ServiceBusReceivedMessage accessor to set.
+     */
+    public static void setServiceBusReceivedMessageAccessor(ServiceBusReceivedMessageAccessor accessor) {
+        Objects.requireNonNull(accessor, "'accessor' cannot be null.");
+
+        if (EntityHelper.receivedMessageAccessor != null) {
+            throw new ClientLogger(EntityHelper.class).logExceptionAsError(new IllegalStateException(
+                "'receivedMessageAccessor' is already set."));
+        }
+
+        EntityHelper.receivedMessageAccessor = accessor;
+    }
     /**
      * Sets the topic name on a {@link SubscriptionProperties}.
      *
@@ -552,5 +657,47 @@ public final class EntityHelper {
          * @param name Name of the topic.
          */
         void setName(TopicProperties topicProperties, String name);
+    }
+
+    /**
+     * Interface for accessing methods on a ServiceBusReceivedMessage.
+     */
+    public interface ServiceBusReceivedMessageAccessor {
+        /**
+         * Sets properties on the ServiceBusReceivedMessage based on the TODO.
+         *
+         * @param amqpMessage The implementation topic.
+         *
+         * @return A new {@link ServiceBusReceivedMessage} with the properties set.
+         */
+        ServiceBusReceivedMessage toModel(Message amqpMessage, UUID lockToken);
+
+        /**
+         *
+         * @param data
+         * @param sequenceNumber
+         * @return
+         */
+        ServiceBusReceivedMessage toModel(byte[] data, long sequenceNumber);
+
+        /**
+         *
+         * @param lockedUntil
+         */
+        void setLockedUntil(ServiceBusReceivedMessage message, OffsetDateTime lockedUntil);
+    }
+
+    /**
+     * Interface for accessing methods on a ServiceBusReceivedMessage.
+     */
+    public interface ServiceBusReceivedMessageContextAccessor {
+        /**
+         * Sets properties on the ServiceBusReceivedMessage based on the TODO.
+         *
+         * @param message The {@link ServiceBusReceivedMessage} message.
+         *
+         * @return A new {@link ServiceBusReceivedMessage} with the properties set.
+         */
+        ServiceBusReceivedMessageContext toModel(ServiceBusReceivedMessage message, String sessionId, Throwable error);
     }
 }

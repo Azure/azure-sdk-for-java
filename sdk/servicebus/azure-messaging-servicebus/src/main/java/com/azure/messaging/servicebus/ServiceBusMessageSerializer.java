@@ -6,10 +6,13 @@ package com.azure.messaging.servicebus;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseUtils;
+import com.azure.core.amqp.models.AmqpMessageHeader;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.EntityHelper;
 import com.azure.messaging.servicebus.implementation.ManagementConstants;
-import com.azure.messaging.servicebus.implementation.MessageWithLockToken;
 import com.azure.messaging.servicebus.implementation.Messages;
+import com.azure.messaging.servicebus.models.ServiceBusMessage;
+import com.azure.messaging.servicebus.models.ServiceBusReceivedMessage;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Decimal128;
@@ -24,6 +27,8 @@ import org.apache.qpid.proton.amqp.messaging.AmqpSequence;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
+import org.apache.qpid.proton.amqp.messaging.Footer;
+import org.apache.qpid.proton.amqp.messaging.Header;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.amqp.messaging.Properties;
 import org.apache.qpid.proton.amqp.messaging.Section;
@@ -32,7 +37,6 @@ import org.apache.qpid.proton.amqp.transaction.Discharge;
 import org.apache.qpid.proton.message.Message;
 
 import java.lang.reflect.Array;
-import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -52,16 +56,10 @@ import java.util.stream.Collectors;
  * Deserializes and serializes messages to and from Azure Service Bus.
  */
 class ServiceBusMessageSerializer implements MessageSerializer {
-    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
-    private static final String ENQUEUED_TIME_UTC_NAME = "x-opt-enqueued-time";
-    private static final String SCHEDULED_ENQUEUE_TIME_NAME = "x-opt-scheduled-enqueue-time";
-    private static final String SEQUENCE_NUMBER_NAME = "x-opt-sequence-number";
-    private static final String LOCKED_UNTIL_NAME = "x-opt-locked-until";
+
     private static final String PARTITION_KEY_NAME = "x-opt-partition-key";
     private static final String VIA_PARTITION_KEY_NAME = "x-opt-via-partition-key";
-    private static final String DEAD_LETTER_SOURCE_NAME = "x-opt-deadletter-source";
-    private static final String DEAD_LETTER_DESCRIPTION = "DeadLetterErrorDescription";
-    private static final String DEAD_LETTER_REASON = "DeadLetterReason";
+    private static final String SCHEDULED_ENQUEUE_TIME_NAME = "x-opt-scheduled-enqueue-time";
 
     // This one appears to always be 0, but is always returned with each message.
     private static final String ENQUEUED_SEQUENCE_NUMBER = "x-opt-enqueue-sequence-number";
@@ -152,6 +150,26 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         amqpMessage.setReplyTo(brokeredMessage.getReplyTo());
         amqpMessage.setReplyToGroupId(brokeredMessage.getReplyToSessionId());
         amqpMessage.setGroupId(brokeredMessage.getSessionId());
+
+        //set footer
+        amqpMessage.setFooter(new Footer(brokeredMessage.getAmqpAnnotatedMessage().getFooter()));
+
+        //set header
+        AmqpMessageHeader header = brokeredMessage.getAmqpAnnotatedMessage().getHeader();
+        if (header.getDeliveryCount() != null) {
+            amqpMessage.setDeliveryCount(brokeredMessage.getAmqpAnnotatedMessage().getHeader().getDeliveryCount());
+        }
+        amqpMessage.setPriority(brokeredMessage.getAmqpAnnotatedMessage().getHeader().getPriority());
+        if (header.getDurable() != null) {
+            amqpMessage.setDurable(brokeredMessage.getAmqpAnnotatedMessage().getHeader().getDurable());
+        }
+        if (header.getFirstAcquirer() != null) {
+            amqpMessage.setFirstAcquirer(brokeredMessage.getAmqpAnnotatedMessage().getHeader().getFirstAcquirer());
+        }
+        if (header.getTimeToLive() != null) {
+            amqpMessage.setTtl(brokeredMessage.getAmqpAnnotatedMessage().getHeader().getTimeToLive().toMillis());
+        }
+
 
         final Map<Symbol, Object> messageAnnotationsMap = new HashMap<>();
         if (brokeredMessage.getScheduledEnqueueTime() != null) {
@@ -303,12 +321,13 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             responseMessage.decode(messagePayLoad.getArray(), messagePayLoad.getArrayOffset(),
                 messagePayLoad.getLength());
 
-            final ServiceBusReceivedMessage receivedMessage = deserializeMessage(responseMessage);
+            UUID lockToken = null;
 
             // if amqp message have lockToken
             if (((Map) message).containsKey(ManagementConstants.LOCK_TOKEN_KEY)) {
-                receivedMessage.setLockToken((UUID) ((Map) message).get(ManagementConstants.LOCK_TOKEN_KEY));
+                lockToken = (UUID) ((Map) message).get(ManagementConstants.LOCK_TOKEN_KEY);
             }
+            final ServiceBusReceivedMessage receivedMessage = deserializeMessage(responseMessage, lockToken);
 
             messageList.add(receivedMessage);
         }
@@ -317,7 +336,13 @@ class ServiceBusMessageSerializer implements MessageSerializer {
     }
 
     private ServiceBusReceivedMessage deserializeMessage(Message amqpMessage) {
-        final ServiceBusReceivedMessage brokeredMessage;
+        return EntityHelper.toModel(amqpMessage, null);
+    }
+
+    private ServiceBusReceivedMessage deserializeMessage(Message amqpMessage, UUID lockToken) {
+        return EntityHelper.toModel(amqpMessage, lockToken);
+    }
+/*      final ServiceBusReceivedMessage brokeredMessage;
         final Section body = amqpMessage.getBody();
         if (body != null) {
             //TODO (conniey): Support other AMQP types like AmqpValue and AmqpSequence.
@@ -424,7 +449,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         }
 
         return brokeredMessage;
-    }
+    }*/
 
     private static int getPayloadSize(Message msg) {
         if (msg == null || msg.getBody() == null) {

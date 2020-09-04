@@ -3,7 +3,7 @@
 
 package com.azure.messaging.servicebus.administration.models;
 
-import com.azure.messaging.servicebus.ServiceBusMessage;
+import com.azure.messaging.servicebus.models.ServiceBusMessage;
 
 /**
  * Describes a filter expression that is evaluated against a {@link ServiceBusMessage}. Filter is an abstract class with

@@ -12,12 +12,12 @@ import java.util.Objects;
  */
 public final class AmqpAnnotatedMessage {
     private final AmqpMessageBody amqpMessageBody;
-    private final Map<String, Object> applicationProperties;
-    private final Map<String, Object> deliveryAnnotations;
-    private final Map<String, Object> messageAnnotations;
-    private final Map<String, Object> footer;
-    private final AmqpMessageHeader header;
-    private final AmqpMessageProperties properties;
+    private Map<String, Object> applicationProperties;
+    private Map<String, Object> deliveryAnnotations;
+    private Map<String, Object> messageAnnotations;
+    private Map<String, Object> footer;
+    private AmqpMessageHeader header;
+    private AmqpMessageProperties properties;
 
     /**
      * Creates instance of {@link AmqpAnnotatedMessage} with given {@link AmqpMessageBody}.
@@ -25,13 +25,7 @@ public final class AmqpAnnotatedMessage {
      * @param body to be set on amqp message.
      */
     public AmqpAnnotatedMessage(AmqpMessageBody body) {
-        this.amqpMessageBody = Objects.requireNonNull(body, "'body' cannot be null.");;
-        this.applicationProperties = new HashMap<>();
-        this.deliveryAnnotations = new HashMap<>();
-        this.messageAnnotations = new HashMap<>();
-        this.footer = new HashMap<>();
-        this.header = new AmqpMessageHeader();
-        this.properties = new AmqpMessageProperties();
+        this.amqpMessageBody = Objects.requireNonNull(body, "'body' cannot be null.");
     }
 
     /**
@@ -45,7 +39,6 @@ public final class AmqpAnnotatedMessage {
         this.applicationProperties = message.getApplicationProperties();
         this.deliveryAnnotations = message.getDeliveryAnnotations();
         this.messageAnnotations = message.getMessageAnnotations();
-        this.footer = message.getFooter();
         this.header = message.getHeader();
         this.properties = message.getProperties();
     }
@@ -55,6 +48,9 @@ public final class AmqpAnnotatedMessage {
      * @return The application properties.
      */
     public Map<String, Object> getApplicationProperties() {
+        if (this.applicationProperties == null) {
+            this.applicationProperties = new HashMap<>();
+        }
         return applicationProperties;
     }
 
@@ -73,6 +69,10 @@ public final class AmqpAnnotatedMessage {
      * @return the {@link Map} representation of delivery annotations.
      */
     public Map<String, Object> getDeliveryAnnotations() {
+        if (deliveryAnnotations == null) {
+            this.deliveryAnnotations = new HashMap<>();
+        }
+
         return deliveryAnnotations;
     }
 
@@ -82,6 +82,9 @@ public final class AmqpAnnotatedMessage {
      * @return the {@link Map} representation of footer.
      */
     public Map<String, Object> getFooter() {
+        if (this.footer ==  null) {
+            this.footer = new HashMap<>();
+        }
         return footer;
     }
 
@@ -91,6 +94,9 @@ public final class AmqpAnnotatedMessage {
      * @return the {@link AmqpMessageHeader} object.
      */
     public AmqpMessageHeader getHeader() {
+        if (this.header ==  null) {
+            this.header = new AmqpMessageHeader();
+        }
         return header;
     }
 
@@ -100,6 +106,9 @@ public final class AmqpAnnotatedMessage {
      * @return the {@link Map} representation of message annotations.
      */
     public Map<String, Object> getMessageAnnotations() {
+        if (messageAnnotations == null) {
+            this.messageAnnotations = new HashMap<>();
+        }
         return messageAnnotations;
     }
 
@@ -109,6 +118,9 @@ public final class AmqpAnnotatedMessage {
      * @return the {@link AmqpMessageProperties} object.
      */
     public AmqpMessageProperties getProperties() {
+        if (properties == null) {
+            this.properties = new AmqpMessageProperties();
+        }
         return properties;
     }
 }

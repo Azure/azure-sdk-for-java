@@ -13,10 +13,10 @@ import java.time.Duration;
 @Fluent
 public class AmqpMessageHeader {
 
-    private Integer deliveryCount;
+    private Long deliveryCount;
     private Boolean durable;
     private Boolean firstAcquirer;
-    private Byte priority;
+    private short priority;
     private Duration timeToLive;
 
     AmqpMessageHeader() {
@@ -28,7 +28,7 @@ public class AmqpMessageHeader {
      *
      * @return delivery count.
      */
-    public Integer getDeliveryCount() {
+    public Long getDeliveryCount() {
         return deliveryCount;
     }
 
@@ -38,7 +38,7 @@ public class AmqpMessageHeader {
      * @param deliveryCount to be set.
      * @return updated {@link AmqpMessageHeader} object.
      */
-    public AmqpMessageHeader setDeliveryCount(Integer deliveryCount) {
+    public AmqpMessageHeader setDeliveryCount(Long deliveryCount) {
         this.deliveryCount = deliveryCount;
         return this;
     }
@@ -87,7 +87,7 @@ public class AmqpMessageHeader {
      * Gets the priority on {@code amqpMessage}.
      * @return the priority.
      */
-    public Byte getPriority() {
+    public short getPriority() {
         return this.priority;
     }
 
@@ -97,7 +97,7 @@ public class AmqpMessageHeader {
      * @param priority to set on {@link AmqpMessageHeader}.
      * @return updated {@link AmqpMessageHeader} object.
      */
-    public AmqpMessageHeader setPriority(Byte priority) {
+    public AmqpMessageHeader setPriority(short priority) {
         this.priority = priority;
         return this;
     }

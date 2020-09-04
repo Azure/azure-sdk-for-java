@@ -9,17 +9,16 @@ import com.azure.core.util.IterableStream;
  *
  */
 public class AmqpDataBody implements AmqpMessageBody {
-    private AmqpBodyType bodyType;
-    private final Iterable<BinaryData> data;
-    private final IterableStream<BinaryData> dataStream;
+    private final AmqpBodyType bodyType;
+    private final IterableStream<BinaryData> data;
 
     /**
      *
      * @param data to be set.
      */
     public AmqpDataBody(Iterable<BinaryData> data) {
-        this.data = data;
-        this.dataStream = new IterableStream<>(data);
+        this.data = new IterableStream<>(data);
+        this.bodyType = AmqpBodyType.DATA;
     }
 
     @Override
@@ -32,6 +31,6 @@ public class AmqpDataBody implements AmqpMessageBody {
      * @return data.
      */
     public IterableStream<BinaryData> getData() {
-        return dataStream;
+        return data;
     }
 }

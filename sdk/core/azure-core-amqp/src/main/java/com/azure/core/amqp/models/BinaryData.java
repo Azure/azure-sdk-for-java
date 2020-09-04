@@ -3,6 +3,9 @@
 
 package com.azure.core.amqp.models;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 /**
  * Binary representation of amqp message body.
  */
@@ -14,7 +17,8 @@ public class BinaryData {
      * @param data to use.
      */
     public BinaryData(byte[] data) {
-        this.data = data;
+        Objects.requireNonNull(data, "'data' cannot be null.");
+        this.data = Arrays.copyOf(data, data.length);
     }
 
     /**
@@ -23,6 +27,6 @@ public class BinaryData {
      */
 
     public byte[] getData() {
-        return data;
+        return Arrays.copyOf(data, data.length);
     }
 }

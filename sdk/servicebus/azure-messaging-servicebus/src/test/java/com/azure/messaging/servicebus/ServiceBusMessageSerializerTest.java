@@ -4,6 +4,9 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.exception.AmqpResponseCode;
+import com.azure.messaging.servicebus.models.ServiceBusMessage;
+import com.azure.messaging.servicebus.ServiceBusMessageSerializer;
+import com.azure.messaging.servicebus.models.ServiceBusReceivedMessage;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
@@ -102,10 +105,10 @@ class ServiceBusMessageSerializerTest {
         assertEquals(message.getCorrelationId(), serviceBusMessage.getCorrelationId());
 
         // Verifying our application properties are the same.
-        assertEquals(APPLICATION_PROPERTIES.size(), serviceBusMessage.getProperties().size());
+        assertEquals(APPLICATION_PROPERTIES.size(), serviceBusMessage.getApplicationProperties().size());
         APPLICATION_PROPERTIES.forEach((key, value) -> {
-            Assertions.assertTrue(serviceBusMessage.getProperties().containsKey(key));
-            assertEquals(value, serviceBusMessage.getProperties().get(key));
+            Assertions.assertTrue(serviceBusMessage.getApplicationProperties().containsKey(key));
+            assertEquals(value, serviceBusMessage.getApplicationProperties().get(key));
         });
 
         // Verifying the contents of our message is the same.
