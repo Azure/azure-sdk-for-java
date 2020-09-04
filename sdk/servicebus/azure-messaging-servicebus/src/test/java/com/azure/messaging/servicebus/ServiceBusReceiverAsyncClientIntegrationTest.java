@@ -3,6 +3,12 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.amqp.models.AmqpAnnotatedMessage;
+import com.azure.core.amqp.models.AmqpBodyType;
+import com.azure.core.amqp.models.AmqpDataBody;
+import com.azure.core.amqp.models.AmqpMessageBody;
+import com.azure.core.amqp.models.BinaryData;
+import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.administration.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
@@ -26,6 +32,8 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -954,6 +962,73 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             })
             .expectComplete()
             .verify(Duration.ofMinutes(3));
+    }
+
+    /**
+     * Verifies that we can receive a message which have different section set (i.e header, footer, annotations,
+     * application properties etc).
+     */
+    @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
+    @ParameterizedTest
+    void receiveAndValidateProperties(MessagingEntityType entityType) {
+        // Arrange
+        final boolean isSessionEnabled = false;
+        final String subject = "subject";
+        final Map<String, Object> footer = new HashMap<>();
+        footer.put("footer-key-1", "footer-value-1");
+
+        final Map<String, Object> aplicaitonProperties = new HashMap<>();
+        footer.put("ap-key-1", "ap-value-1");
+
+        final Map<String, Object> deliveryAnnotation = new HashMap<>();
+        deliveryAnnotation.put("delivery-annotations-key-1", "delivery-annotations-value-1");
+        deliveryAnnotation.put("delivery-annotations-key-2", "delivery-annotations-value-2");
+
+        setSenderAndReceiver(entityType, 0, isSessionEnabled);
+        ServiceBusReceiverAsyncClient deadLetterReceiver = getDeadLetterReceiverBuilder(false, entityType,
+            0, Function.identity())
+            .buildAsyncClient();
+
+        final String messageId = UUID.randomUUID().toString();
+        final AmqpAnnotatedMessage amqpProperties = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(new BinaryData(CONTENTS_BYTES))));
+        amqpProperties.getProperties().setSubject(subject);
+        amqpProperties.getHeader().setPriority((short)2);
+        amqpProperties.getFooter().putAll(footer);
+        amqpProperties.getDeliveryAnnotations().putAll(deliveryAnnotation);
+        amqpProperties.getApplicationProperties().putAll(aplicaitonProperties);
+
+
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled, amqpProperties);
+
+        sendMessage(message).block(TIMEOUT);
+
+        StepVerifier.create(receiver.receiveMessages().map(ServiceBusReceivedMessageContext::getMessage))
+            .assertNext(received -> {
+                assertNotNull(received.getLockToken());
+                AmqpAnnotatedMessage actual = received.getAmqpAnnotatedMessage();
+                try {
+                    assertArrayEquals(CONTENTS_BYTES, message.getBody());
+                    assertEquals(amqpProperties.getHeader().getPriority(), actual.getHeader().getPriority(), "Header.priority is not equal.");
+
+                    assertEquals(amqpProperties.getProperties().getSubject(), actual.getProperties().getSubject(), "Properties.subject is not equal.");
+                    assertEquals(amqpProperties.getProperties().getSubject(), actual.getProperties().getSubject(), "Properties.subject is not equal.");
+
+                    Map<String, Object> actualDeliveryAnnotationMap = actual.getDeliveryAnnotations();
+                    Iterator<String> ite  = deliveryAnnotation.keySet().iterator();
+                    while (ite.hasNext()) {
+                        String key = ite.next();
+                        assertEquals(amqpProperties.getDeliveryAnnotations().get(key), actualDeliveryAnnotationMap.get(key), "Delivery annotations is not equal for Key " + key);
+                    }
+                    assertEquals(amqpProperties.getProperties().getSubject(), actual.getProperties().getSubject(), "Properties.subject is not equal.");
+
+                } finally {
+                    logger.info("Completing message.");
+                    receiver.complete(received).block(Duration.ofSeconds(15));
+                    messagesPending.decrementAndGet();
+                }
+            })
+            .thenCancel()
+            .verify(Duration.ofMinutes(2));
     }
 
     /**

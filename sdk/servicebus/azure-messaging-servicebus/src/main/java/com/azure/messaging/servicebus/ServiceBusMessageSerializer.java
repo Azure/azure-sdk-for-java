@@ -27,8 +27,8 @@ import org.apache.qpid.proton.amqp.messaging.AmqpSequence;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
+import org.apache.qpid.proton.amqp.messaging.DeliveryAnnotations;
 import org.apache.qpid.proton.amqp.messaging.Footer;
-import org.apache.qpid.proton.amqp.messaging.Header;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.amqp.messaging.Properties;
 import org.apache.qpid.proton.amqp.messaging.Section;
@@ -45,6 +45,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -188,6 +189,18 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         }
 
         amqpMessage.setMessageAnnotations(new MessageAnnotations(messageAnnotationsMap));
+
+        // Set Delivery Annotations.
+        final Map<Symbol, Object> deliveryAnnotationsMap = new HashMap<>();
+
+        final Map<String, Object> deliveryAnnotations = brokeredMessage.getAmqpAnnotatedMessage().getDeliveryAnnotations();
+        Iterator<String> deliveryAnnotationIterator = deliveryAnnotations.keySet().iterator();
+        while (deliveryAnnotationIterator.hasNext()) {
+            String key = deliveryAnnotationIterator.next();
+            deliveryAnnotationsMap.put(Symbol.valueOf(key), deliveryAnnotations.get(key));
+        }
+
+        amqpMessage.setDeliveryAnnotations( new DeliveryAnnotations(deliveryAnnotationsMap));
 
         return amqpMessage;
     }
@@ -342,114 +355,6 @@ class ServiceBusMessageSerializer implements MessageSerializer {
     private ServiceBusReceivedMessage deserializeMessage(Message amqpMessage, UUID lockToken) {
         return EntityHelper.toModel(amqpMessage, lockToken);
     }
-/*      final ServiceBusReceivedMessage brokeredMessage;
-        final Section body = amqpMessage.getBody();
-        if (body != null) {
-            //TODO (conniey): Support other AMQP types like AmqpValue and AmqpSequence.
-            if (body instanceof Data) {
-                final Binary messageData = ((Data) body).getValue();
-                final byte[] bytes = messageData.getArray();
-                brokeredMessage = new ServiceBusReceivedMessage(bytes);
-            } else {
-                logger.warning(String.format(Messages.MESSAGE_NOT_OF_TYPE, body.getType()));
-                brokeredMessage = new ServiceBusReceivedMessage(EMPTY_BYTE_ARRAY);
-            }
-        } else {
-            logger.warning(String.format(Messages.MESSAGE_NOT_OF_TYPE, "null"));
-            brokeredMessage = new ServiceBusReceivedMessage(EMPTY_BYTE_ARRAY);
-        }
-
-        // Application properties
-        ApplicationProperties applicationProperties = amqpMessage.getApplicationProperties();
-        if (applicationProperties != null) {
-            final Map<String, Object> propertiesValue = applicationProperties.getValue();
-            brokeredMessage.getProperties().putAll(propertiesValue);
-
-            if (propertiesValue.containsKey(DEAD_LETTER_REASON)) {
-                brokeredMessage.setDeadLetterReason(String.valueOf(propertiesValue.get(DEAD_LETTER_REASON)));
-            }
-            if (propertiesValue.containsKey(DEAD_LETTER_DESCRIPTION)) {
-                brokeredMessage.setDeadLetterErrorDescription(String.valueOf(
-                    propertiesValue.get(DEAD_LETTER_DESCRIPTION)));
-            }
-        }
-
-        // Header
-        brokeredMessage.setTimeToLive(Duration.ofMillis(amqpMessage.getTtl()));
-        brokeredMessage.setDeliveryCount(amqpMessage.getDeliveryCount());
-
-        // Properties
-        final Object messageId = amqpMessage.getMessageId();
-        if (messageId != null) {
-            brokeredMessage.setMessageId(messageId.toString());
-        }
-
-        brokeredMessage.setContentType(amqpMessage.getContentType());
-        final Object correlationId = amqpMessage.getCorrelationId();
-        if (correlationId != null) {
-            brokeredMessage.setCorrelationId(correlationId.toString());
-        }
-
-        final Properties properties = amqpMessage.getProperties();
-        if (properties != null) {
-            brokeredMessage.setTo(properties.getTo());
-        }
-
-        brokeredMessage.setLabel(amqpMessage.getSubject());
-        brokeredMessage.setReplyTo(amqpMessage.getReplyTo());
-        brokeredMessage.setReplyToSessionId(amqpMessage.getReplyToGroupId());
-        brokeredMessage.setSessionId(amqpMessage.getGroupId());
-
-        // Message Annotations
-        final MessageAnnotations messageAnnotations = amqpMessage.getMessageAnnotations();
-        if (messageAnnotations != null) {
-            Map<Symbol, Object> messageAnnotationsMap = messageAnnotations.getValue();
-            if (messageAnnotationsMap != null) {
-                for (Map.Entry<Symbol, Object> entry : messageAnnotationsMap.entrySet()) {
-                    final String key = entry.getKey().toString();
-                    final Object value = entry.getValue();
-
-                    switch (key) {
-                        case ENQUEUED_TIME_UTC_NAME:
-                            brokeredMessage.setEnqueuedTime(((Date) value).toInstant().atOffset(ZoneOffset.UTC));
-
-                            break;
-                        case SCHEDULED_ENQUEUE_TIME_NAME:
-                            brokeredMessage.setScheduledEnqueueTime(((Date) value).toInstant()
-                                .atOffset(ZoneOffset.UTC));
-                            break;
-                        case SEQUENCE_NUMBER_NAME:
-                            brokeredMessage.setSequenceNumber((long) value);
-                            break;
-                        case LOCKED_UNTIL_NAME:
-                            brokeredMessage.setLockedUntil(((Date) value).toInstant().atOffset(ZoneOffset.UTC));
-                            break;
-                        case PARTITION_KEY_NAME:
-                            brokeredMessage.setPartitionKey((String) value);
-                            break;
-                        case VIA_PARTITION_KEY_NAME:
-                            brokeredMessage.setViaPartitionKey((String) value);
-                            break;
-                        case DEAD_LETTER_SOURCE_NAME:
-                            brokeredMessage.setDeadLetterSource((String) value);
-                            break;
-                        case ENQUEUED_SEQUENCE_NUMBER:
-                            brokeredMessage.setEnqueuedSequenceNumber((long) value);
-                            break;
-                        default:
-                            logger.info("Unrecognised key: {}, value: {}", key, value);
-                            break;
-                    }
-                }
-            }
-        }
-
-        if (amqpMessage instanceof MessageWithLockToken) {
-            brokeredMessage.setLockToken(((MessageWithLockToken) amqpMessage).getLockToken());
-        }
-
-        return brokeredMessage;
-    }*/
 
     private static int getPayloadSize(Message msg) {
         if (msg == null || msg.getBody() == null) {

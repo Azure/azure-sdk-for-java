@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
+import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
@@ -421,6 +422,34 @@ public abstract class IntegrationTestBase extends TestBase {
                     closeable.getClass().getSimpleName()), error);
             }
         }
+    }
+
+    protected ServiceBusMessage getMessage(String messageId, boolean isSessionEnabled, AmqpAnnotatedMessage amqpPropertiesToSet) {
+
+        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId);
+
+        message.getAmqpAnnotatedMessage().getMessageAnnotations().putAll(amqpPropertiesToSet.getMessageAnnotations());
+
+        message.getAmqpAnnotatedMessage().getApplicationProperties().putAll(amqpPropertiesToSet.getApplicationProperties());
+
+        message.getAmqpAnnotatedMessage().getDeliveryAnnotations().putAll(amqpPropertiesToSet.getDeliveryAnnotations());
+
+        message.getAmqpAnnotatedMessage().getFooter().putAll(amqpPropertiesToSet.getFooter());
+
+        message.getAmqpAnnotatedMessage().getHeader().setFirstAcquirer(amqpPropertiesToSet.getHeader().getFirstAcquirer());
+        message.getAmqpAnnotatedMessage().getHeader().setDurable(amqpPropertiesToSet.getHeader().getDurable());
+        message.getAmqpAnnotatedMessage().getHeader().setDeliveryCount(amqpPropertiesToSet.getHeader().getDeliveryCount());
+        message.getAmqpAnnotatedMessage().getHeader().setPriority(amqpPropertiesToSet.getHeader().getPriority());
+
+
+        message.getAmqpAnnotatedMessage().getProperties().setReplyTo((amqpPropertiesToSet.getProperties().getReplyTo()));
+        message.getAmqpAnnotatedMessage().getProperties().setAbsoluteExpiryTime((amqpPropertiesToSet.getProperties().getAbsoluteExpiryTime()));
+        message.getAmqpAnnotatedMessage().getProperties().setSubject((amqpPropertiesToSet.getProperties().getSubject()));
+        message.getAmqpAnnotatedMessage().getProperties().setContentType(amqpPropertiesToSet.getProperties().getContentType());
+        message.getAmqpAnnotatedMessage().getProperties().setCorrelationId(amqpPropertiesToSet.getProperties().getCorrelationId());
+
+        logger.verbose("Message id {}.", messageId);
+        return isSessionEnabled ? message.setSessionId(sessionId) : message;
     }
 
     protected ServiceBusMessage getMessage(String messageId, boolean isSessionEnabled) {
