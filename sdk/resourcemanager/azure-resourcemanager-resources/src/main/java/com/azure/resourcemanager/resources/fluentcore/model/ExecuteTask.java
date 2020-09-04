@@ -19,7 +19,7 @@ public class ExecuteTask<ResultT extends Indexable> implements TaskItem {
     /**
      * the underlying instance that can execute the task.
      */
-    private Executor<ResultT> executor;
+    private final Executor<ResultT> executor;
     /**
      * result of execution.
      */

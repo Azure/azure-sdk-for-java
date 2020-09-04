@@ -18,7 +18,7 @@ public class CreateUpdateTask<ResourceT extends Indexable> implements TaskItem {
     /**
      * the underlying instance that can create and update the resource.
      */
-    private ResourceCreatorUpdater<ResourceT> resourceCreatorUpdater;
+    private final ResourceCreatorUpdater<ResourceT> resourceCreatorUpdater;
     /**
      * created or updated resource.
      */
