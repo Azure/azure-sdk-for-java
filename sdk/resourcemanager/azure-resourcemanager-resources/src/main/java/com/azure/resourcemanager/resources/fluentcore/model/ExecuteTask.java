@@ -78,7 +78,7 @@ public class ExecuteTask<ResultT extends Indexable> implements TaskItem {
         void beforeGroupExecute();
 
         /**
-         * @return true if the observable returned by {@link this#executeWorkAsync()} is hot, false if it is
+         * @return true if the observable returned by {@link #executeWorkAsync()} is hot, false if it is
          * cold observable.
          */
         boolean isHot();
@@ -92,7 +92,7 @@ public class ExecuteTask<ResultT extends Indexable> implements TaskItem {
 
         /**
          * Perform any action followed by the processing of work scheduled to be invoked
-         * (i.e. "post run") after {@link this#executeWorkAsync()}.
+         * (i.e. "post run") after {@link #executeWorkAsync()}.
          *
          * @param isGroupFaulted true if one or more tasks in the group this work belongs
          *                       to are in faulted state.
