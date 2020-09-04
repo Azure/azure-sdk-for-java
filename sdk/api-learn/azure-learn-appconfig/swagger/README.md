@@ -6,7 +6,6 @@
 ``` yaml
 input-file: appconfiguration.json
 java: true
-use: @autorest/java@4.0.2
 output-folder: ..\
 generate-client-as-impl: true
 namespace: com.azure.learn.appconfig
@@ -18,11 +17,4 @@ models-subpackage: implementation.models
 context-client-method-parameter: true
 artifact-id: azure-learn-appconfig
 credential-types: tokencredential
-custom-types-subpackage: models
-custom-types: ConfigurationSetting
-required-fields-as-ctor-args: true
-directive:
-    - rename-model:
-        from: KeyValue
-        to: ConfigurationSetting
 ```
