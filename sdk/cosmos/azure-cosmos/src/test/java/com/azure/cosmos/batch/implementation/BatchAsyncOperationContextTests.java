@@ -4,9 +4,6 @@
 package com.azure.cosmos.batch.implementation;
 
 import com.azure.cosmos.batch.TransactionalBatchOperationResult;
-import com.azure.cosmos.batch.implementation.BatchPartitionKeyRangeGoneRetryPolicy;
-import com.azure.cosmos.batch.implementation.ItemBatchOperation;
-import com.azure.cosmos.batch.implementation.ItemBatchOperationContext;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IRetryPolicy;
 import com.azure.cosmos.implementation.OperationType;
@@ -17,7 +14,11 @@ import org.testng.annotations.Test;
 
 import java.util.UUID;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.fail;
 
 public class BatchAsyncOperationContextTests {
 
@@ -63,7 +64,7 @@ public class BatchAsyncOperationContextTests {
         ItemBatchOperationContext batchAsyncOperationContext = new ItemBatchOperationContext("");
         operation.attachContext(batchAsyncOperationContext);
 
-        TransactionalBatchOperationResult<?> expected = new TransactionalBatchOperationResult<Object>(HttpResponseStatus.OK);
+        TransactionalBatchOperationResult<?> expected = new TransactionalBatchOperationResult<Object>(HttpResponseStatus.OK.code());
 
         batchAsyncOperationContext.complete(null, expected);
 
@@ -112,7 +113,7 @@ public class BatchAsyncOperationContextTests {
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void shouldRetry_NoPolicy() {
-        TransactionalBatchOperationResult<?> result = new TransactionalBatchOperationResult<Object>(HttpResponseStatus.OK);
+        TransactionalBatchOperationResult<?> result = new TransactionalBatchOperationResult<Object>(HttpResponseStatus.OK.code());
         ItemBatchOperation<?> operation = new ItemBatchOperation.Builder<Object>(OperationType.Create,0)
             .partitionKey(PartitionKey.NONE)
             .id("0")
@@ -127,7 +128,7 @@ public class BatchAsyncOperationContextTests {
     public void shouldRetry_WithPolicy_OnSuccess() {
         BatchPartitionKeyRangeGoneRetryPolicy retryPolicy = new BatchPartitionKeyRangeGoneRetryPolicy(
             new ResourceThrottleRetryPolicy(1));
-        TransactionalBatchOperationResult<?> result = new TransactionalBatchOperationResult<Object>(HttpResponseStatus.OK);
+        TransactionalBatchOperationResult<?> result = new TransactionalBatchOperationResult<Object>(HttpResponseStatus.OK.code());
         ItemBatchOperation<?> operation = new ItemBatchOperation.Builder<Object>(OperationType.Create,0)
             .partitionKey(PartitionKey.NONE)
             .id("0")
@@ -141,7 +142,7 @@ public class BatchAsyncOperationContextTests {
     public void shouldRetry_WithPolicy_On429() {
         BatchPartitionKeyRangeGoneRetryPolicy retryPolicy = new BatchPartitionKeyRangeGoneRetryPolicy(
             new ResourceThrottleRetryPolicy(1));
-        TransactionalBatchOperationResult<?> result = new TransactionalBatchOperationResult<Object>(HttpResponseStatus.TOO_MANY_REQUESTS);
+        TransactionalBatchOperationResult<?> result = new TransactionalBatchOperationResult<Object>(HttpResponseStatus.TOO_MANY_REQUESTS.code());
         ItemBatchOperation<?> operation = new ItemBatchOperation.Builder<Object>(OperationType.Create,0)
             .partitionKey(PartitionKey.NONE)
             .id("0")
@@ -155,7 +156,7 @@ public class BatchAsyncOperationContextTests {
     public void shouldRetry_WithPolicy_OnSplit() {
         BatchPartitionKeyRangeGoneRetryPolicy retryPolicy = new BatchPartitionKeyRangeGoneRetryPolicy(
             new ResourceThrottleRetryPolicy(1));
-        TransactionalBatchOperationResult<?> result = new TransactionalBatchOperationResult<Object>(HttpResponseStatus.GONE);
+        TransactionalBatchOperationResult<?> result = new TransactionalBatchOperationResult<Object>(HttpResponseStatus.GONE.code());
         result.setSubStatusCode(HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE);
 
         ItemBatchOperation<?> operation = new ItemBatchOperation.Builder<Object>(OperationType.Create,0)

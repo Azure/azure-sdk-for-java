@@ -27,7 +27,10 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import static com.azure.cosmos.batch.implementation.BatchRequestResponseConstant.MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES;
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.fail;
 
 public class BatchAsyncContainerExecutorTests extends BatchTestBase {
 
@@ -48,7 +51,7 @@ public class BatchAsyncContainerExecutorTests extends BatchTestBase {
 
         for (int i = 500; i < 600; i++) {
             TransactionalBatchOperationResult<?> response = responseMonos.get(i - 500).block();
-            assertEquals(HttpResponseStatus.CREATED.code(), response.getStatusCode());
+            assertEquals(HttpResponseStatus.CREATED.code(), response.getResponseStatus());
 
             TestDoc document = Utils.parse(response.getResourceObject().toString(), TestDoc.class);
             assertEquals(String.valueOf(i), document.getId());

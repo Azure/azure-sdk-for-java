@@ -51,7 +51,7 @@ public class PartitionKeyRangeBatchResponse extends TransactionalBatchResponse {
             final int operationIndex = serverResponse.getBatchOperations().get(index).getOperationIndex();
             final TransactionalBatchOperationResult<?> result = this.resultsByOperationIndex[operationIndex];
 
-            if (result == null || result.getResponseStatus() == HttpResponseStatus.TOO_MANY_REQUESTS) {
+            if (result == null || result.getResponseStatus() == HttpResponseStatus.TOO_MANY_REQUESTS.code()) {
                 this.resultsByOperationIndex[operationIndex] = serverResponse.get(index);
             }
         }

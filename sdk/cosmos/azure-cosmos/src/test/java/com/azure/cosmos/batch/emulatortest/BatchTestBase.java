@@ -3,12 +3,22 @@
 
 package com.azure.cosmos.batch.emulatortest;
 
-import com.azure.cosmos.*;
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.ISessionToken;
 import com.azure.cosmos.implementation.SessionTokenHelper;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
-import com.azure.cosmos.models.*;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerResponse;
+import com.azure.cosmos.models.CosmosDatabaseResponse;
+import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.testng.annotations.AfterClass;
@@ -18,7 +28,8 @@ import java.util.Random;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 public class BatchTestBase extends TestSuiteBase {
 
@@ -89,18 +100,16 @@ public class BatchTestBase extends TestSuiteBase {
 
         database = client.getDatabase(client.createDatabaseIfNotExists(UUID.randomUUID().toString()).block().getProperties().getId());
 
-        PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
-        partitionKeyDefinition.getPaths().add("/status");
+        this.partitionKeyDefinition = new PartitionKeyDefinition();
+        this.partitionKeyDefinition.getPaths().add("/status");
 
         // Create a container with at least 2 physical partitions for effective cross-partition testing
         this.jsonContainer = database.getContainer(
             database.createContainerIfNotExists(
                 new CosmosContainerProperties(
                     UUID.randomUUID().toString(),
-                    partitionKeyDefinition),
+                    this.partitionKeyDefinition),
                 ThroughputProperties.createManualThroughput(12000)).block().getProperties().getId());
-
-        this.partitionKeyDefinition = this.jsonContainer.getCollectionInfoAsync().block().getPartitionKey();
     }
 
     private void initializeBulkContainers() {

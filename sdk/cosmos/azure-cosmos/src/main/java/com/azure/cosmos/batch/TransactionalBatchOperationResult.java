@@ -4,21 +4,12 @@
 package com.azure.cosmos.batch;
 
 import com.azure.cosmos.CosmosDiagnostics;
-import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.JsonSerializable;
-import com.azure.cosmos.implementation.RxDocumentServiceResponse;
-import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
-import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.netty.handler.codec.http.HttpResponseStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
-import static com.azure.cosmos.batch.implementation.BatchRequestResponseConstant.*;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -27,6 +18,8 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * @param <TResource> the type parameter
  */
 public class TransactionalBatchOperationResult<TResource> implements AutoCloseable {
+
+    private final static Logger logger = LoggerFactory.getLogger(TransactionalBatchOperationResult.class);
 
     private String eTag;
     private double requestCharge;
@@ -38,7 +31,7 @@ public class TransactionalBatchOperationResult<TResource> implements AutoCloseab
     /**
      * Gets the completion status of the operation.
      */
-    private HttpResponseStatus responseStatus;
+    private int responseStatus;
 
     /**
      * In case the operation is rate limited, indicates the time post which a retry can be attempted.
@@ -55,7 +48,7 @@ public class TransactionalBatchOperationResult<TResource> implements AutoCloseab
      *
      * @param responseStatus the response status
      */
-    public TransactionalBatchOperationResult(final HttpResponseStatus responseStatus) {
+    public TransactionalBatchOperationResult(final int responseStatus) {
         this.responseStatus = responseStatus;
     }
 
@@ -74,6 +67,7 @@ public class TransactionalBatchOperationResult<TResource> implements AutoCloseab
         this.requestCharge = other.requestCharge;
         this.retryAfter = other.retryAfter;
         this.resourceObject = other.resourceObject;
+        this.cosmosDiagnostics = other.cosmosDiagnostics;
     }
 
     /**
@@ -90,81 +84,7 @@ public class TransactionalBatchOperationResult<TResource> implements AutoCloseab
     /**
      * Initializes a new instance of the {@link TransactionalBatchOperationResult} class.
      */
-    protected TransactionalBatchOperationResult() {
-    }
-
-  /**
-   * Read batch operation result result.
-   *
-   *  TODO(rakkuma): Similarly hybrid row result needs to be parsed.
-   *
-   * @param objectNode having response for a single operation.
-   *
-   * @return the result
-   */
-  public static TransactionalBatchOperationResult<?> readBatchOperationJsonResult(ObjectNode objectNode) {
-        TransactionalBatchOperationResult<?> transactionalBatchOperationResult = new TransactionalBatchOperationResult<>();
-
-        JsonSerializable jsonSerializable = new JsonSerializable(objectNode);
-        transactionalBatchOperationResult.setResponseStatus(HttpResponseStatus.valueOf(jsonSerializable.getInt(FIELD_STATUS_CODE)));
-
-        Integer subStatusCode = jsonSerializable.getInt(FIELD_SUBSTATUS_CODE);
-        if(subStatusCode != null) {
-            transactionalBatchOperationResult.setSubStatusCode(subStatusCode);
-        }
-
-        Double requestCharge = jsonSerializable.getDouble(FIELD_REQUEST_CHARGE);
-        if(requestCharge != null) {
-            transactionalBatchOperationResult.setRequestCharge(requestCharge);
-        }
-
-        Integer retryAfterMilliseconds = jsonSerializable.getInt(FIELD_RETRY_AFTER_MILLISECONDS);
-        if(retryAfterMilliseconds != null) {
-            transactionalBatchOperationResult.setRetryAfter(Duration.ofMillis(retryAfterMilliseconds));
-        }
-
-        String etag = jsonSerializable.getString(FIELD_ETAG);
-        if(etag != null) {
-            transactionalBatchOperationResult.setETag(etag);
-        }
-
-        ObjectNode resourceBody = jsonSerializable.getObject(FIELD_RESOURCE_BODY);
-        if(resourceBody != null) {
-            transactionalBatchOperationResult.setResourceObject(resourceBody);
-        }
-
-        return transactionalBatchOperationResult;
-    }
-
-    /**
-     * Converts the current {@link TransactionalBatchOperationResult transactional batch operation result} to a {@link
-     * RxDocumentServiceResponse batch response message}.
-     *
-     * @return a new {@link RxDocumentServiceResponse batch response message}.
-     */
-    public final RxDocumentServiceResponse toResponseMessage() {
-
-        Map<String, String> headers =  new HashMap<String, String>() {{
-            put(HttpConstants.HttpHeaders.SUB_STATUS, String.valueOf(getSubStatusCode()));
-            put(HttpConstants.HttpHeaders.E_TAG, getETag());
-            put(HttpConstants.HttpHeaders.REQUEST_CHARGE, String.valueOf(requestCharge));
-        }};
-
-        if (getRetryAfter() != null) {
-            headers.put(HttpConstants.HttpHeaders.RETRY_AFTER_IN_MILLISECONDS, String.valueOf(getRetryAfter().toMillis()));
-        }
-
-        StoreResponse storeResponse = new StoreResponse(
-            this.getResponseStatus().code(),
-            new ArrayList<>(headers.entrySet()),
-            this.getResourceObject() != null ? Utils.getUTF8BytesOrNull(this.getResourceObject().toString()) : null);
-
-
-        if (this.getCosmosDiagnostics() != null) {
-            DirectBridgeInternal.setCosmosDiagnostics(storeResponse, this.getCosmosDiagnostics());
-        }
-
-        return new RxDocumentServiceResponse(storeResponse);
+    public TransactionalBatchOperationResult() {
     }
 
     /**
@@ -272,24 +192,6 @@ public class TransactionalBatchOperationResult<TResource> implements AutoCloseab
     }
 
     /**
-     * Gets status.
-     *
-     * @return the status
-     */
-    public HttpResponseStatus getStatus() {
-        return this.responseStatus;
-    }
-
-    /**
-     * Gets status code.
-     *
-     * @return the status code
-     */
-    public int getStatusCode() {
-        return this.responseStatus.code();
-    }
-
-    /**
      * Gets sub status code.
      *
      * @return the sub status code
@@ -316,8 +218,7 @@ public class TransactionalBatchOperationResult<TResource> implements AutoCloseab
      * @return {@code true} if the current operation completed successfully; {@code false} otherwise.
      */
     public boolean isSuccessStatusCode() {
-        final int statusCode = this.responseStatus.code();
-        return 200 <= statusCode && statusCode <= 299;
+        return 200 <= this.responseStatus && this.responseStatus <= 299;
     }
 
     /**
@@ -325,13 +226,12 @@ public class TransactionalBatchOperationResult<TResource> implements AutoCloseab
      *
      * @return the response status
      */
-    public HttpResponseStatus getResponseStatus() {
+    public int getResponseStatus() {
         return this.responseStatus;
     }
 
-    private TransactionalBatchOperationResult<?> setResponseStatus(HttpResponseStatus value) {
+    public void setResponseStatus(int value) {
         this.responseStatus = value;
-        return this;
     }
 
     public ObjectNode getResourceObject() {
@@ -349,7 +249,7 @@ public class TransactionalBatchOperationResult<TResource> implements AutoCloseab
                 ((AutoCloseable) this.resource).close();  // assumes an idempotent close implementation
             }
         } catch (Exception ex) {
-            //
+            logger.debug("Unexpected failure in closing resource", ex);
         }
 
         this.resource = null;

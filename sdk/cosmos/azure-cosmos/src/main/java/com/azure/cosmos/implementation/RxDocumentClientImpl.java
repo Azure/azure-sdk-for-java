@@ -7,6 +7,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.batch.implementation.BatchResponseParser;
 import com.azure.cosmos.batch.implementation.PartitionKeyRangeServerBatchRequest;
 import com.azure.cosmos.batch.implementation.ServerBatchRequest;
 import com.azure.cosmos.batch.implementation.SinglePartitionKeyServerBatchRequest;
@@ -30,7 +31,11 @@ import com.azure.cosmos.implementation.query.IDocumentQueryExecutionContext;
 import com.azure.cosmos.implementation.query.Paginator;
 import com.azure.cosmos.implementation.query.PipelinedDocumentQueryExecutionContext;
 import com.azure.cosmos.implementation.query.QueryInfo;
-import com.azure.cosmos.implementation.routing.*;
+import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
+import com.azure.cosmos.implementation.routing.PartitionKeyAndResourceTokenPair;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
+import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -2312,8 +2317,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Mono<RxDocumentServiceResponse> responseObservable = create(documentServiceRequest, requestRetryPolicy);
 
             return responseObservable
-                .flatMap(serviceResponse -> TransactionalBatchResponse.fromResponseMessageAsync(serviceResponse, serverBatchRequest, true))
-                .onErrorResume(throwable -> TransactionalBatchResponse.fromResponseMessageAsync(throwable, serverBatchRequest));
+                .flatMap(serviceResponse -> BatchResponseParser.fromDocumentServiceResponseAsync(serviceResponse, serverBatchRequest, true))
+                .onErrorResume(throwable -> BatchResponseParser.fromErrorResponseAsync(throwable, serverBatchRequest));
 
         } catch (Exception e) {
             logger.debug("Failure in executing a batch due to [{}]", e.getMessage(), e);

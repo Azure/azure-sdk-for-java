@@ -51,7 +51,7 @@ public final class TestConfigurations {
         properties.getProperty("ACCOUNT_HOST",
                     StringUtils.defaultString(Strings.emptyToNull(
                             System.getenv().get("ACCOUNT_HOST")),
-                            "https://localhost:8081/"));
+                            "https://localhost:443/"));
 
     public final static String CONSISTENCY =
         properties.getProperty("ACCOUNT_CONSISTENCY",

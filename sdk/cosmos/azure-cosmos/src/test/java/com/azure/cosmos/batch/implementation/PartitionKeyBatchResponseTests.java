@@ -5,10 +5,6 @@ package com.azure.cosmos.batch.implementation;
 
 import com.azure.cosmos.batch.TransactionalBatchOperationResult;
 import com.azure.cosmos.batch.TransactionalBatchResponse;
-import com.azure.cosmos.batch.implementation.BatchResponsePayloadWriter;
-import com.azure.cosmos.batch.implementation.ItemBatchOperation;
-import com.azure.cosmos.batch.implementation.PartitionKeyRangeBatchResponse;
-import com.azure.cosmos.batch.implementation.SinglePartitionKeyServerBatchRequest;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
@@ -37,7 +33,7 @@ public class PartitionKeyBatchResponseTests {
             .id("0")
             .build();
 
-        TransactionalBatchOperationResult<?> transactionalBatchOperationResult = new TransactionalBatchOperationResult<Object>(HttpResponseStatus.OK);
+        TransactionalBatchOperationResult<?> transactionalBatchOperationResult = new TransactionalBatchOperationResult<Object>(HttpResponseStatus.OK.code());
         transactionalBatchOperationResult.setETag(operation.getId());
 
         results.add(transactionalBatchOperationResult);
@@ -55,7 +51,7 @@ public class PartitionKeyBatchResponseTests {
             new ArrayList<>(),
             responseContent.getBytes(StandardCharsets.UTF_8));
 
-        TransactionalBatchResponse batchresponse = TransactionalBatchResponse.fromResponseMessageAsync(
+        TransactionalBatchResponse batchresponse = BatchResponseParser.fromDocumentServiceResponseAsync(
             new RxDocumentServiceResponse(storeResponse),
             batchRequest,
             true).block();
@@ -64,6 +60,6 @@ public class PartitionKeyBatchResponseTests {
             arrayOperations.length,
             batchresponse);
 
-        assertEquals(HttpResponseStatus.OK, response.getResponseStatus());
+        assertEquals(HttpResponseStatus.OK.code(), response.getResponseStatus());
     }
 }

@@ -9,8 +9,11 @@ import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.batch.TransactionalBatchOperationResult;
 import com.azure.cosmos.batch.TransactionalBatchResponse;
-import com.azure.cosmos.implementation.*;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.HttpConstants.HttpHeaders;
+import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.ResourceThrottleRetryPolicy;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants.BackendHeaders;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
@@ -25,7 +28,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Semaphore;
 
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.*;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
 import static com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper.getEffectivePartitionKeyString;
 
 /**
@@ -112,12 +117,17 @@ public class BatchAsyncContainerExecutor implements AutoCloseable {
         return operation.materializeResource();
     }
 
-    private Mono<PartitionKeyRangeBatchExecutionResult> executeAsync(PartitionKeyRangeServerBatchRequest request) throws Exception {
+    private Mono<PartitionKeyRangeBatchExecutionResult> executeAsync(PartitionKeyRangeServerBatchRequest request) {
         request.setAtomicBatch(false);
         request.setShouldContinueOnError(true);
 
         final Semaphore limiter = this.getOrAddLimiterForPartitionKeyRange(request.getPartitionKeyRangeId());
-        limiter.acquire();
+
+        try {
+            limiter.acquire();
+        } catch (Exception ex) {
+            return Mono.error(ex);
+        }
 
         Mono<TransactionalBatchResponse> transactionalBatchResponse = this.docClientWrapper
             .executeBatchRequest(BridgeInternal.getLink(container), request, new RequestOptions(), false);
@@ -170,20 +180,21 @@ public class BatchAsyncContainerExecutor implements AutoCloseable {
             throw new IllegalStateException("EPK is not supported");
         }
 
-        Mono<String> pkRangeIdMono = this.container.getCollectionInfoAsync().flatMap(collection -> {
-            PartitionKeyDefinition definition = collection.getPartitionKey();
-            PartitionKeyInternal partitionKeyInternal = getPartitionKeyInternal(operation, definition);
-            operation.setPartitionKeyJson(partitionKeyInternal.toJson());
+        Mono<String> pkRangeIdMono = BatchExecUtils.getCollectionInfoAsync(this.docClientWrapper, container)
+            .flatMap(collection -> {
+                PartitionKeyDefinition definition = collection.getPartitionKey();
+                PartitionKeyInternal partitionKeyInternal = getPartitionKeyInternal(operation, definition);
+                operation.setPartitionKeyJson(partitionKeyInternal.toJson());
 
-            return this.docClientWrapper.getPartitionKeyRangeCache()
-                .tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(null), collection.getResourceId(), null, null)
-                .map((Utils.ValueHolder<CollectionRoutingMap> routingMap) -> {
+                return this.docClientWrapper.getPartitionKeyRangeCache()
+                    .tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(null), collection.getResourceId(), null, null)
+                    .map((Utils.ValueHolder<CollectionRoutingMap> routingMap) -> {
 
-                    return routingMap.v.getRangeByEffectivePartitionKey(
-                        getEffectivePartitionKeyString(
-                            partitionKeyInternal,
-                            definition)).getId();
-                });
+                        return routingMap.v.getRangeByEffectivePartitionKey(
+                            getEffectivePartitionKeyString(
+                                partitionKeyInternal,
+                                definition)).getId();
+                    });
         });
 
         return pkRangeIdMono;

@@ -115,7 +115,7 @@ public class TracerProvider {
                                                                                String databaseId,
                                                                                String endpoint) {
         return traceEnabledPublisher(resultPublisher, context, spanName, databaseId, endpoint,
-            (TransactionalBatchResponse response) -> response.getResponseStatus().code());
+            TransactionalBatchResponse::getResponseStatus);
     }
 
     public <T> Mono<CosmosItemResponse<T>> traceEnabledCosmosItemResponsePublisher(Mono<CosmosItemResponse<T>> resultPublisher,

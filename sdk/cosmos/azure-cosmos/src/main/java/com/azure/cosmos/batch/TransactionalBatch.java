@@ -3,10 +3,7 @@
 
 package com.azure.cosmos.batch;
 
-import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.models.PartitionKey;
-import io.netty.handler.codec.http.HttpResponseStatus;
-import io.netty.handler.codec.http.HttpStatusClass;
 import reactor.core.publisher.Mono;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -15,7 +12,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * Represents a batch of operations against items with the same {@link PartitionKey} in a container.
  * <p>
  * The batch operations will be performed in a transactional manner at the Azure Cosmos DB service. Use
- * <h3>Example</h3>
+ * <h2>Example</h2>
  * <p>
  * This example atomically modifies a set of documents as a batch.<pre>{@code
  * public class ToDoActivity {
@@ -35,14 +32,11 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * ToDoActivity test2 = new ToDoActivity(activityType, "shopping", "Done");
  * ToDoActivity test3 = new ToDoActivity(activityType, "swimming", "ToBeDone");
  *
- * try (TransactionalBatchResponse response = container.CreateTransactionalBatch(new Cosmos.PartitionKey(activityType))
- *     .CreateItem<ToDoActivity>(test1)
- *     .ReplaceItem<ToDoActivity>(test2.id, test2)
- *     .UpsertItem<ToDoActivity>(test3)
- *     .DeleteItem("reading")
- *     .CreateItemStream(streamPayload1)
- *     .ReplaceItemStream("eating", streamPayload2)
- *     .UpsertItemStream(streamPayload3)
+ * try (TransactionalBatchResponse response = container.createTransactionalBatch(new Cosmos.PartitionKey(activityType))
+ *     .createItem<ToDoActivity>(test1)
+ *     .replaceItem<ToDoActivity>(test2.id, test2)
+ *     .upsertItem<ToDoActivity>(test3)
+ *     .deleteItem("reading")
  *     .ExecuteAsync()) {
  *
  *     if (!response.IsSuccessStatusCode) {
@@ -52,29 +46,27 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  *
  *     // Look up interested results - e.g., via typed access on operation results
  *
- *     TransactionalBatchOperationResult<ToDoActivity> result = response.GetOperationResultAtIndex<ToDoActivity>(0);
- *     ToDoActivity readActivity = result.Resource;
+ *     TransactionalBatchOperationResult<ToDoActivity> result = response.getOperationResultAtIndex<ToDoActivity>(0, ToDoActivity.class);
+ *     ToDoActivity readActivity = result.getResource();
  * }
  * }</pre>
- * <h3>Example</h3>
+ * <h2>Example</h2>
  * <p>This example atomically reads a set of documents as a batch.<pre>{@code
  * String activityType = "personal";
  *
- * try (TransactionalBatchResponse response = container.CreateTransactionalBatch(new Cosmos.PartitionKey(activityType))
- *    .ReadItem("playing")
- *    .ReadItem("walking")
- *    .ReadItem("jogging")
- *    .ReadItem("running")
+ * try (TransactionalBatchResponse response = container.createTransactionalBatch(new Cosmos.PartitionKey(activityType))
+ *    .readItem("playing")
+ *    .readItem("walking")
+ *    .readItem("jogging")
+ *    .readItem("running")
  *    .ExecuteAsync()) {
  *
  *     // Look up interested results - eg. via direct access to operation result stream
  *
- *     List<String> items = new ArrayList<String>();
+ *     List<String> resultItems = new ArrayList<String>();
  *
  *     for (TransactionalBatchOperationResult result : response) {
- *         try (InputStreamReader reader = new InputStreamReader(result.ResourceStream)) {
- *             resultItems.addAsync(await reader.ReadToEndAsync());
- *         }
+ *         resultItems.add(result.getResourceObject().toString())
  *     }
  * }
  * }</pre>
@@ -94,7 +86,7 @@ public interface TransactionalBatch {
      */
     default <T> TransactionalBatch createItem(T item) {
         checkNotNull(item, "expected non-null item");
-        return this.createItem(item, null);
+        return this.createItem(item, new TransactionalBatchItemRequestOptions());
     }
 
     /**
@@ -106,7 +98,7 @@ public interface TransactionalBatch {
      * @param requestOptions The options for the item request.
      * @return The transactional batch instance with the operation added.
      */
-    <T> TransactionalBatch createItem(T item, RequestOptions requestOptions);
+    <T> TransactionalBatch createItem(T item, TransactionalBatchItemRequestOptions requestOptions);
 
     /**
      * Adds an operation to delete an item into the batch.
@@ -117,7 +109,7 @@ public interface TransactionalBatch {
      */
     default TransactionalBatch deleteItem(String id) {
         checkNotNull(id, "expected non-null id");
-        return this.deleteItem(id, null);
+        return this.deleteItem(id, new TransactionalBatchItemRequestOptions());
     }
 
     /**
@@ -128,16 +120,15 @@ public interface TransactionalBatch {
      *
      * @return The transactional batch instance with the operation added.
      */
-    TransactionalBatch deleteItem(String id, RequestOptions requestOptions);
+    TransactionalBatch deleteItem(String id, TransactionalBatchItemRequestOptions requestOptions);
 
     /**
      * Executes the transactional batch at the Azure Cosmos service as an asynchronous operation.
      *
-     * @return An awaitable response which contains details of execution of the transactional batch.
+     * @return A Mono response which contains details of execution of the transactional batch.
      * <p>
      * If the transactional batch executes successfully, the value returned by {@link
-     * TransactionalBatchResponse#getResponseStatus} on the response returned will be set to {@link
-     * HttpResponseStatus#OK}.
+     * TransactionalBatchResponse#getResponseStatus} on the response returned will be set to 200}.
      * <p>
      * If an operation within the transactional batch fails during execution, no changes from the batch will be
      * committed and the status of the failing operation is made available by {@link
@@ -147,18 +138,47 @@ public interface TransactionalBatch {
      * corresponding to an operation within the transactional batch, use
      * {@link TransactionalBatchOperationResult#getResponseStatus}
      * to access the status of the operation. If the operation was not executed or it was aborted due to the failure of
-     * another operation within the transactional batch, the value of this field will be {@link
-     * HttpResponseStatus#FAILED_DEPENDENCY}; for the operation that caused the batch to abort, the value of this field
-     * will indicate the cause of failure as an {@link HttpResponseStatus}.
+     * another operation within the transactional batch, the value of this field will be 424;
+     * for the operation that caused the batch to abort, the value of this field
+     * will indicate the cause of failure.
      * <p>
      * The value returned by {@link TransactionalBatchResponse#getResponseStatus} on the response returned may also have
-     * values such as {@link HttpStatusClass#SERVER_ERROR} in case of server errors and {@link
-     * HttpResponseStatus#TOO_MANY_REQUESTS}.
+     * values such as 500 in case of server errors and 429.
      * <p>
      * Use {@link TransactionalBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
      * transactional batch succeeded.
      */
     Mono<TransactionalBatchResponse> executeAsync();
+
+    /**
+     * Executes the transactional batch at the Azure Cosmos service as an asynchronous operation.
+     *
+     * @param requestOptions Options that apply specifically to batch request.
+     *
+     * @return A Mono response which contains details of execution of the transactional batch.
+     * <p>
+     * If the transactional batch executes successfully, the value returned by {@link
+     * TransactionalBatchResponse#getResponseStatus} on the response returned will be set to 200}.
+     * <p>
+     * If an operation within the transactional batch fails during execution, no changes from the batch will be
+     * committed and the status of the failing operation is made available by {@link
+     * TransactionalBatchResponse#getResponseStatus}. To obtain information about the operations that failed, the
+     * response can be enumerated. This returns {@link TransactionalBatchOperationResult} instances corresponding to
+     * each operation in the transactional batch in the order they were added to the transactional batch. For a result
+     * corresponding to an operation within the transactional batch, use
+     * {@link TransactionalBatchOperationResult#getResponseStatus}
+     * to access the status of the operation. If the operation was not executed or it was aborted due to the failure of
+     * another operation within the transactional batch, the value of this field will be 424;
+     * for the operation that caused the batch to abort, the value of this field
+     * will indicate the cause of failure.
+     * <p>
+     * The value returned by {@link TransactionalBatchResponse#getResponseStatus} on the response returned may also have
+     * values such as 500 in case of server errors and 429.
+     * <p>
+     * Use {@link TransactionalBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
+     * transactional batch succeeded.
+     */
+    Mono<TransactionalBatchResponse> executeAsync(TransactionalBatchRequestOptions requestOptions);
 
     /**
      * Adds an operation to read an item into the batch.
@@ -169,7 +189,7 @@ public interface TransactionalBatch {
      */
     default TransactionalBatch readItem(String id) {
         checkNotNull(id, "expected non-null id");
-        return this.readItem(id, null);
+        return this.readItem(id, new TransactionalBatchItemRequestOptions());
     }
 
     /**
@@ -180,7 +200,7 @@ public interface TransactionalBatch {
      *
      * @return The transactional batch instance with the operation added.
      */
-    TransactionalBatch readItem(String id, RequestOptions requestOptions);
+    TransactionalBatch readItem(String id, TransactionalBatchItemRequestOptions requestOptions);
 
     /**
      * Adds an operation to replace an item into the batch.
@@ -194,7 +214,7 @@ public interface TransactionalBatch {
     default <TItem> TransactionalBatch replaceItem(String id, TItem item) {
         checkNotNull(id, "expected non-null id");
         checkNotNull(item, "expected non-null item");
-        return this.replaceItem(id, item, null);
+        return this.replaceItem(id, item, new TransactionalBatchItemRequestOptions());
     }
 
     /**
@@ -208,7 +228,7 @@ public interface TransactionalBatch {
      * @return The transactional batch instance with the operation added.
      */
     <TItem> TransactionalBatch replaceItem(
-        String id, TItem item, RequestOptions requestOptions);
+        String id, TItem item, TransactionalBatchItemRequestOptions requestOptions);
 
     /**
      * Adds an operation to upsert an item into the batch.
@@ -220,7 +240,7 @@ public interface TransactionalBatch {
      */
     default <TItem> TransactionalBatch upsertItem(TItem item) {
         checkNotNull(item, "expected non-null item");
-        return this.upsertItem(item, null);
+        return this.upsertItem(item, new TransactionalBatchItemRequestOptions());
     }
 
     /**
@@ -232,5 +252,5 @@ public interface TransactionalBatch {
      * @param requestOptions The options for the item request.
      * @return The transactional batch instance with the operation added.
      */
-    <TItem> TransactionalBatch upsertItem(TItem item, RequestOptions requestOptions);
+    <TItem> TransactionalBatch upsertItem(TItem item, TransactionalBatchItemRequestOptions requestOptions);
 }

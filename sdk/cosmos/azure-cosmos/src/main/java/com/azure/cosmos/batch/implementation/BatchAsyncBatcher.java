@@ -16,7 +16,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.Semaphore;
 
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.*;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
 import static io.netty.handler.codec.http.HttpResponseStatus.TOO_MANY_REQUESTS;
 
 /**
@@ -167,7 +169,7 @@ public class BatchAsyncBatcher {
             .subscribe((PartitionKeyRangeBatchExecutionResult executionResult) -> {
 
                 // Fill partition metric
-                boolean throttled = executionResult.getServerResponse().stream().anyMatch(r -> r.getStatus() == TOO_MANY_REQUESTS);
+                boolean throttled = executionResult.getServerResponse().stream().anyMatch(r -> r.getResponseStatus() == TOO_MANY_REQUESTS.code());
                 partitionMetric.add(
                     executionResult.getServerResponse().size(),
                     Duration.between(startBatchExecution, Instant.now()).toMillis(),

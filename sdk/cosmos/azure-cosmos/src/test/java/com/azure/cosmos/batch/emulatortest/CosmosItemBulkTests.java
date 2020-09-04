@@ -18,7 +18,9 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
 
 public class CosmosItemBulkTests extends BatchTestBase {
 
@@ -27,16 +29,16 @@ public class CosmosItemBulkTests extends BatchTestBase {
         super(clientBuilder);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT * 100)
     public void createItem_withBulk() {
         CosmosAsyncContainer container = this.bulkContainer;
 
         List<Mono<CosmosItemResponse<TestDoc>>> responseMonos = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 10; i++) {
             responseMonos.add(executeCreateAsync(container, this.populateTestDoc(String.valueOf(i), String.valueOf(i))));
         }
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 10; i++) {
             CosmosItemResponse<TestDoc> response = responseMonos.get(i).block();
             assertEquals(HttpResponseStatus.CREATED.code(), response.getStatusCode());
             assertTrue(response.getRequestCharge() > 0);

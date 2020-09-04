@@ -5,7 +5,6 @@ package com.azure.cosmos.batch.implementation;
 
 import com.azure.cosmos.batch.TransactionalBatchOperationResult;
 import com.azure.cosmos.batch.TransactionalBatchResponse;
-import com.azure.cosmos.batch.implementation.*;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
@@ -51,7 +50,7 @@ public class PartitionKeyRangeBatchExecutionResultTests {
             .id("0")
             .build();
 
-        results.add(new TransactionalBatchOperationResult<Object>(HttpResponseStatus.OK));
+        results.add(new TransactionalBatchOperationResult<Object>(HttpResponseStatus.OK.code()));
 
         arrayOperations.add(operation);
 
@@ -66,7 +65,7 @@ public class PartitionKeyRangeBatchExecutionResultTests {
             new ArrayList<>(),
             responseContent.getBytes(StandardCharsets.UTF_8));
 
-        TransactionalBatchResponse batchresponse = TransactionalBatchResponse.fromResponseMessageAsync(
+        TransactionalBatchResponse batchresponse = BatchResponseParser.fromDocumentServiceResponseAsync(
             new RxDocumentServiceResponse(storeResponse),
             batchRequest,
             true).block();
@@ -74,7 +73,7 @@ public class PartitionKeyRangeBatchExecutionResultTests {
         PartitionKeyRangeBatchResponse response = new PartitionKeyRangeBatchResponse(
             arrayOperations.size(),
             batchresponse);
-        assertEquals(HttpResponseStatus.OK, response.getResponseStatus());
+        assertEquals(HttpResponseStatus.OK.code(), response.getResponseStatus());
     }
 
     private boolean containsSplitIsTrueInternal(HttpResponseStatus statusCode, int subStatusCode) {
@@ -86,7 +85,7 @@ public class PartitionKeyRangeBatchExecutionResultTests {
             .id("0")
             .build();
 
-        results.add(new TransactionalBatchOperationResult<Object>(HttpResponseStatus.OK));
+        results.add(new TransactionalBatchOperationResult<Object>(HttpResponseStatus.OK.code()));
 
         arrayOperations.add(operation);
 
@@ -103,7 +102,7 @@ public class PartitionKeyRangeBatchExecutionResultTests {
 
         RxDocumentServiceResponse response = new RxDocumentServiceResponse(storeResponseBuilder.build());
 
-        TransactionalBatchResponse batchresponse = TransactionalBatchResponse.fromResponseMessageAsync(
+        TransactionalBatchResponse batchresponse = BatchResponseParser.fromDocumentServiceResponseAsync(
             response,
             batchRequest,
             true).block();

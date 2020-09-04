@@ -21,7 +21,9 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Semaphore;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.fail;
 
 public class BatchAsyncStreamerTests {
 
@@ -32,12 +34,12 @@ public class BatchAsyncStreamerTests {
     private HashedWheelTimer timer = new HashedWheelTimer();
     private Semaphore limiter = new Semaphore(1);
 
-    public Mono<PartitionKeyRangeBatchExecutionResult> executeAsync(PartitionKeyRangeServerBatchRequest request) throws Exception {
+    public Mono<PartitionKeyRangeBatchExecutionResult> executeAsync(PartitionKeyRangeServerBatchRequest request) {
         List<TransactionalBatchOperationResult<?>> results = new ArrayList<>();
         ItemBatchOperation<?>[] arrayOperations = new ItemBatchOperation<?>[request.getOperations().size()];
         int index = 0;
         for (ItemBatchOperation<?> operation : request.getOperations()) {
-            TransactionalBatchOperationResult<?> result = new TransactionalBatchOperationResult<Object>(HttpResponseStatus.OK);
+            TransactionalBatchOperationResult<?> result = new TransactionalBatchOperationResult<Object>(HttpResponseStatus.OK.code());
             result.setETag(operation.getId());
             results.add(result);
 
@@ -61,7 +63,7 @@ public class BatchAsyncStreamerTests {
             new ArrayList<>(),
             responseContent.getBytes(StandardCharsets.UTF_8));
 
-        TransactionalBatchResponse batchresponse = TransactionalBatchResponse.fromResponseMessageAsync(
+        TransactionalBatchResponse batchresponse = BatchResponseParser.fromDocumentServiceResponseAsync(
             new RxDocumentServiceResponse(storeResponse),
             batchRequest,
             true).block();
@@ -69,8 +71,8 @@ public class BatchAsyncStreamerTests {
         return Mono.just(new PartitionKeyRangeBatchExecutionResult(request.getPartitionKeyRangeId(), request.getOperations(), batchresponse));
     }
 
-    private Mono<PartitionKeyRangeBatchExecutionResult> executorWithFailure(PartitionKeyRangeServerBatchRequest request) throws Exception {
-        throw expectedException;
+    private Mono<PartitionKeyRangeBatchExecutionResult> executorWithFailure(PartitionKeyRangeServerBatchRequest request) {
+        return Mono.error(expectedException);
      }
 
     private CompletableFuture<Void> reBatchAsync(ItemBatchOperation<?> operation)  {

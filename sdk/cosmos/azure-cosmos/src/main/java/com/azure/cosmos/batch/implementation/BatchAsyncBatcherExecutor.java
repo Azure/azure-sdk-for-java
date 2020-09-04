@@ -9,5 +9,5 @@ import reactor.core.publisher.Mono;
  * Executor implementation that processes a list of operations.
  */
 interface BatchAsyncBatcherExecutor {
-    Mono<PartitionKeyRangeBatchExecutionResult> apply(PartitionKeyRangeServerBatchRequest request) throws Exception;
+    Mono<PartitionKeyRangeBatchExecutionResult> apply(PartitionKeyRangeServerBatchRequest request);
 }

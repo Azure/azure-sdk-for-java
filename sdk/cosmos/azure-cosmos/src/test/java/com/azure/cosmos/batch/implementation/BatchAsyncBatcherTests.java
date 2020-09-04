@@ -5,7 +5,11 @@ package com.azure.cosmos.batch.implementation;
 
 import com.azure.cosmos.batch.TransactionalBatchOperationResult;
 import com.azure.cosmos.batch.TransactionalBatchResponse;
-import com.azure.cosmos.implementation.*;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.ResourceThrottleRetryPolicy;
+import com.azure.cosmos.implementation.RxDocumentServiceResponse;
+import com.azure.cosmos.implementation.StoreResponseBuilder;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.models.PartitionKey;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -19,8 +23,13 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
-import static org.testng.Assert.*;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.fail;
 
 public class BatchAsyncBatcherTests {
 
@@ -42,12 +51,12 @@ public class BatchAsyncBatcherTests {
         return operation;
     }
 
-    public Mono<PartitionKeyRangeBatchExecutionResult> executeAsync(PartitionKeyRangeServerBatchRequest request) throws Exception {
+    public Mono<PartitionKeyRangeBatchExecutionResult> executeAsync(PartitionKeyRangeServerBatchRequest request) {
         List<TransactionalBatchOperationResult<?>> results = new ArrayList<>();
         ItemBatchOperation<?>[] arrayOperations = new ItemBatchOperation<?>[request.getOperations().size()];
         int index = 0;
         for (ItemBatchOperation<?> operation : request.getOperations()) {
-            TransactionalBatchOperationResult<?> result = new TransactionalBatchOperationResult<>(HttpResponseStatus.OK);
+            TransactionalBatchOperationResult<?> result =  new TransactionalBatchOperationResult<Object>(HttpResponseStatus.OK.code());
             result.setETag(operation.getId());
             results.add(result);
 
@@ -64,7 +73,7 @@ public class BatchAsyncBatcherTests {
         storeResponseBuilder.withStatus(HttpResponseStatus.OK.code());
         storeResponseBuilder.withContent(responseContent);
 
-        TransactionalBatchResponse batchresponse = TransactionalBatchResponse.fromResponseMessageAsync(
+        TransactionalBatchResponse batchresponse = BatchResponseParser.fromDocumentServiceResponseAsync(
             new RxDocumentServiceResponse(storeResponseBuilder.build()),
             batchRequest,
             true).block();
@@ -72,12 +81,12 @@ public class BatchAsyncBatcherTests {
         return Mono.just(new PartitionKeyRangeBatchExecutionResult(request.getPartitionKeyRangeId(), request.getOperations(), batchresponse));
     }
 
-    public Mono<PartitionKeyRangeBatchExecutionResult> executorWithSplit(PartitionKeyRangeServerBatchRequest request) throws Exception {
+    public Mono<PartitionKeyRangeBatchExecutionResult> executorWithSplit(PartitionKeyRangeServerBatchRequest request) {
         List<TransactionalBatchOperationResult<?>> results = new ArrayList<>();
         ItemBatchOperation<?>[] arrayOperations = new ItemBatchOperation<?>[request.getOperations().size()];
         int index = 0;
         for (ItemBatchOperation<?> operation : request.getOperations()) {
-            TransactionalBatchOperationResult<?> result = new TransactionalBatchOperationResult<Object>(HttpResponseStatus.GONE);
+            TransactionalBatchOperationResult<?> result = new TransactionalBatchOperationResult<Object>(HttpResponseStatus.GONE.code());
             result.setETag(operation.getId());
             result.setSubStatusCode(HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE);
             results.add(result);
@@ -96,7 +105,7 @@ public class BatchAsyncBatcherTests {
         storeResponseBuilder.withHeader(WFConstants.BackendHeaders.SUB_STATUS, String.valueOf(HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE));
         storeResponseBuilder.withContent(responseContent);
 
-        TransactionalBatchResponse batchresponse = TransactionalBatchResponse.fromResponseMessageAsync(
+        TransactionalBatchResponse batchresponse = BatchResponseParser.fromDocumentServiceResponseAsync(
             new RxDocumentServiceResponse(storeResponseBuilder.build()),
             batchRequest,
             true).block();
@@ -104,7 +113,7 @@ public class BatchAsyncBatcherTests {
         return Mono.just(new PartitionKeyRangeBatchExecutionResult(request.getPartitionKeyRangeId(), request.getOperations(), batchresponse));
     }
 
-    public Mono<PartitionKeyRangeBatchExecutionResult> executorWithLessResponses(PartitionKeyRangeServerBatchRequest request) throws Exception {
+    public Mono<PartitionKeyRangeBatchExecutionResult> executorWithLessResponses(PartitionKeyRangeServerBatchRequest request) {
         int operationCount = request.getOperations().size() - 2;
         List<TransactionalBatchOperationResult<?>> results = new ArrayList<>();
         ItemBatchOperation<?>[] arrayOperations = new ItemBatchOperation<?>[operationCount];
@@ -112,7 +121,7 @@ public class BatchAsyncBatcherTests {
         List<ItemBatchOperation<?>> operationWithResponse = request.getOperations().subList(1, request.getOperations().size() - 1);
 
         for (ItemBatchOperation<?> operation : operationWithResponse) {
-            TransactionalBatchOperationResult<?> result = new TransactionalBatchOperationResult<Object>(HttpResponseStatus.OK);
+            TransactionalBatchOperationResult<?> result = new TransactionalBatchOperationResult<Object>(HttpResponseStatus.OK.code());
             result.setETag(operation.getId());
             results.add(result);
 
@@ -129,7 +138,7 @@ public class BatchAsyncBatcherTests {
         storeResponseBuilder.withStatus(HttpResponseStatus.OK.code());
         storeResponseBuilder.withContent(responseContent);
 
-        TransactionalBatchResponse batchresponse = TransactionalBatchResponse.fromResponseMessageAsync(
+        TransactionalBatchResponse batchresponse = BatchResponseParser.fromDocumentServiceResponseAsync(
             new RxDocumentServiceResponse(storeResponseBuilder.build()),
             batchRequest,
             true).block();
@@ -137,8 +146,8 @@ public class BatchAsyncBatcherTests {
         return Mono.just(new PartitionKeyRangeBatchExecutionResult(request.getPartitionKeyRangeId(), request.getOperations(), batchresponse));
     }
 
-    private Mono<PartitionKeyRangeBatchExecutionResult> executorWithFailure(PartitionKeyRangeServerBatchRequest request) throws Exception {
-        throw expectedException;
+    private Mono<PartitionKeyRangeBatchExecutionResult> executorWithFailure(PartitionKeyRangeServerBatchRequest request) {
+        return Mono.error(expectedException);
     }
 
     private CompletableFuture<Void> reBatchAsync(ItemBatchOperation<?> operation)  {
@@ -186,7 +195,7 @@ public class BatchAsyncBatcherTests {
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
-    public void exceptionsFailOperationsAsync() throws Exception {
+    public void exceptionsFailOperationsAsync() {
         BatchAsyncBatcher batchAsyncBatcher = new BatchAsyncBatcher(2, 1000, this::executorWithFailure, this::reBatchAsync);
         ItemBatchOperation<?> operation1 = this.createItemBatchOperation(false);
         ItemBatchOperation<?> operation2 = this.createItemBatchOperation(false);

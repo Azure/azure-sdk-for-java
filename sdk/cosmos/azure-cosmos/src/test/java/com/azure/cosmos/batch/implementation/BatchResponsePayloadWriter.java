@@ -10,8 +10,6 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import java.util.List;
 
-import static com.azure.cosmos.batch.implementation.BatchRequestResponseConstant.*;
-
 public class BatchResponsePayloadWriter {
 
     private List<TransactionalBatchOperationResult<?>> results;
@@ -38,10 +36,10 @@ public class BatchResponsePayloadWriter {
     private JsonSerializable writeResult(TransactionalBatchOperationResult<?> result) {
 
         JsonSerializable jsonSerializable = new JsonSerializable();
-        jsonSerializable.set(FIELD_STATUS_CODE, result.getStatus().code());
-        jsonSerializable.set(FIELD_SUBSTATUS_CODE, result.getSubStatusCode());
-        jsonSerializable.set(FIELD_ETAG, result.getETag());
-        jsonSerializable.set(FIELD_RESOURCE_BODY, result.getResourceObject());
+        jsonSerializable.set(BatchRequestResponseConstant.FIELD_STATUS_CODE, result.getResponseStatus());
+        jsonSerializable.set(BatchRequestResponseConstant.FIELD_SUBSTATUS_CODE, result.getSubStatusCode());
+        jsonSerializable.set(BatchRequestResponseConstant.FIELD_ETAG, result.getETag());
+        jsonSerializable.set(BatchRequestResponseConstant.FIELD_RESOURCE_BODY, result.getResourceObject());
 
         return jsonSerializable;
     }

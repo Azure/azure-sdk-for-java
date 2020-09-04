@@ -799,11 +799,11 @@ public interface AsyncDocumentClient {
      * Executes a batch request
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response with the created document.
+     * The {@link Mono} upon successful completion will contain a batch response which will have individual responses.
      * In case of failure the {@link Mono} will error.
      *
      * @param collectionLink               the link to the parent document collection.
-     * @param serverBatchRequest           the batch request with the content and flags
+     * @param serverBatchRequest           the batch request with the content and flags.
      * @param options                      the request options.
      * @param disableAutomaticIdGeneration the flag for disabling automatic id generation.
      * @return a {@link Mono} containing the single resource response with the created document or an error.

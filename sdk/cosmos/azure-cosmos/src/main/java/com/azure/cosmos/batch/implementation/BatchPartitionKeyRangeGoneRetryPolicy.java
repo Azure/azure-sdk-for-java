@@ -6,16 +6,14 @@ package com.azure.cosmos.batch.implementation;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
-import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.HttpConstants.StatusCodes;
 import com.azure.cosmos.implementation.HttpConstants.SubStatusCodes;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.Map;
 
-import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders.SUB_STATUS;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -60,18 +58,14 @@ public final class BatchPartitionKeyRangeGoneRetryPolicy extends DocumentClientR
         return this.nextRetryPolicy.shouldRetry(exception);
     }
 
-    public Mono<ShouldRetryResult> shouldRetry(final RxDocumentServiceResponse message) {
+    public Mono<ShouldRetryResult> shouldRetry(int statusCode, int subStatusCode, Map<String, String> responseHeaders) {
 
-        if (message != null) {
-            int responseSubStatusCode = Integer.parseInt(
-                message.getResponseHeaders().getOrDefault(SUB_STATUS, String.valueOf(HttpConstants.SubStatusCodes.UNKNOWN)));
-            final ShouldRetryResult result = this.shouldRetryInternal(
-                message.getStatusCode(),
-                responseSubStatusCode);
+        final ShouldRetryResult result = this.shouldRetryInternal(
+            statusCode,
+            subStatusCode);
 
-            if (result != null) {
-                return Mono.just(result);
-            }
+        if (result != null) {
+            return Mono.just(result);
         }
 
         if (this.nextRetryPolicy == null) {
@@ -79,7 +73,7 @@ public final class BatchPartitionKeyRangeGoneRetryPolicy extends DocumentClientR
         }
 
         // Create CosmosException for the next retry policy to understand:
-        CosmosException exception = BridgeInternal.createCosmosException(message.getStatusCode(), null, message.getResponseHeaders());
+        CosmosException exception = BridgeInternal.createCosmosException(statusCode, null, responseHeaders);
 
         return this.nextRetryPolicy.shouldRetry(exception);
     }

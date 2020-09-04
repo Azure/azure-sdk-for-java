@@ -3,7 +3,11 @@
 
 package com.azure.cosmos.batch.implementation;
 
-import com.azure.cosmos.implementation.*;
+import com.azure.cosmos.implementation.JsonSerializable;
+import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.models.PartitionKey;
@@ -12,7 +16,12 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
-import static com.azure.cosmos.batch.implementation.BatchRequestResponseConstant.*;
+import static com.azure.cosmos.batch.implementation.BatchRequestResponseConstant.FIELD_ID;
+import static com.azure.cosmos.batch.implementation.BatchRequestResponseConstant.FIELD_IF_MATCH;
+import static com.azure.cosmos.batch.implementation.BatchRequestResponseConstant.FIELD_IF_NONE_MATCH;
+import static com.azure.cosmos.batch.implementation.BatchRequestResponseConstant.FIELD_OPERATION_TYPE;
+import static com.azure.cosmos.batch.implementation.BatchRequestResponseConstant.FIELD_PARTITION_KEY;
+import static com.azure.cosmos.batch.implementation.BatchRequestResponseConstant.FIELD_RESOURCE_BODY;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -57,7 +66,9 @@ public final class ItemBatchOperation<TResource> implements AutoCloseable {
 
         jsonSerializable.set(FIELD_OPERATION_TYPE, BatchExecUtils.getStringOperationType(operation.getOperationType()));
 
-        if (operation.getPartitionKey() != null && StringUtils.isNotEmpty(operation.getPartitionKey().toString())) {
+        if (StringUtils.isNotEmpty(operation.getPartitionKeyJson())) {
+            // This is set in BatchAsyncContainerExecutor.resolvePartitionKeyRangeIdAsync. For transactional no need to
+            // pass partition key in operations as batch will have it.
             jsonSerializable.set(FIELD_PARTITION_KEY, operation.getPartitionKeyJson());
         }
 

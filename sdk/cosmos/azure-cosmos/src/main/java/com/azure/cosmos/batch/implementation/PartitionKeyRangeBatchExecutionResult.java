@@ -4,7 +4,6 @@
 package com.azure.cosmos.batch.implementation;
 
 import com.azure.cosmos.batch.TransactionalBatchResponse;
-import com.azure.cosmos.batch.implementation.ItemBatchOperation;
 import com.azure.cosmos.implementation.HttpConstants.SubStatusCodes;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
@@ -27,7 +26,7 @@ public final class PartitionKeyRangeBatchExecutionResult {
     public boolean isSplit() {
         TransactionalBatchResponse response = this.getServerResponse();
 
-        return response != null && response.getResponseStatus() == HttpResponseStatus.GONE
+        return response != null && response.getResponseStatus() == HttpResponseStatus.GONE.code()
             && (response.getSubStatusCode() == SubStatusCodes.COMPLETING_SPLIT
             || response.getSubStatusCode() == SubStatusCodes.COMPLETING_PARTITION_MIGRATION
             || response.getSubStatusCode() == SubStatusCodes.PARTITION_KEY_RANGE_GONE);

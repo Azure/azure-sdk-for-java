@@ -6,10 +6,10 @@ package com.azure.cosmos.batch.emulatortest;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.batch.TransactionalBatch;
+import com.azure.cosmos.batch.TransactionalBatchItemRequestOptions;
 import com.azure.cosmos.batch.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ISessionToken;
-import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.guava25.base.Function;
 import com.azure.cosmos.models.CosmosItemResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -20,7 +20,9 @@ import java.util.UUID;
 
 import static com.azure.cosmos.batch.implementation.BatchRequestResponseConstant.MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES;
 import static com.azure.cosmos.batch.implementation.BatchRequestResponseConstant.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
 
 public class BatchSinglePartitionKeyTests extends BatchTestBase {
 
@@ -61,8 +63,8 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
 
         this.verifyBatchProcessed(batchResponse, 2);
 
-        assertEquals(HttpResponseStatus.CREATED, batchResponse.get(0).getStatus());
-        assertEquals(HttpResponseStatus.OK, batchResponse.get(1).getStatus());
+        assertEquals(HttpResponseStatus.CREATED.code(), batchResponse.get(0).getResponseStatus());
+        assertEquals(HttpResponseStatus.OK.code(), batchResponse.get(1).getResponseStatus());
 
         // Ensure that the replace overwrote the doc from the first operation
         this.verifyByReadAsync(container, replaceDoc);
@@ -86,7 +88,7 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
 
             assertEquals(HttpResponseStatus.OK.code(), response.getStatusCode());
 
-            RequestOptions firstReplaceOptions = new RequestOptions();
+            TransactionalBatchItemRequestOptions firstReplaceOptions = new TransactionalBatchItemRequestOptions();
             firstReplaceOptions.setIfMatchETag(response.getETag());
 
             TransactionalBatchResponse batchResponse = container.createTransactionalBatch(this.getPartitionKey(this.partitionKey1))
@@ -96,8 +98,8 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
 
             this.verifyBatchProcessed(batchResponse, 2);
 
-            assertEquals(HttpResponseStatus.CREATED, batchResponse.get(0).getStatus());
-            assertEquals(HttpResponseStatus.OK, batchResponse.get(1).getStatus());
+            assertEquals(HttpResponseStatus.CREATED.code(), batchResponse.get(0).getResponseStatus());
+            assertEquals(HttpResponseStatus.OK.code(), batchResponse.get(1).getResponseStatus());
 
             // Ensure that the replace overwrote the doc from the first operation
             this.verifyByReadAsync(container, testDocToCreate, batchResponse.get(0).getETag());
@@ -108,7 +110,7 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
             TestDoc testDocToReplace = this.getTestDocCopy(this.TestDocPk1ExistingB);
             testDocToReplace.setCost(testDocToReplace.getCost() + 1);
 
-            RequestOptions replaceOptions = new RequestOptions();
+            TransactionalBatchItemRequestOptions replaceOptions = new TransactionalBatchItemRequestOptions();
             replaceOptions.setIfMatchETag(String.valueOf(this.getRandom().nextInt()));
 
             TransactionalBatchResponse batchResponse = container.createTransactionalBatch(this.getPartitionKey(this.partitionKey1))
@@ -117,7 +119,7 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
 
             this.verifyBatchProcessed(batchResponse, 1, HttpResponseStatus.PRECONDITION_FAILED);
 
-            assertEquals(HttpResponseStatus.PRECONDITION_FAILED, batchResponse.get(0).getStatus());
+            assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), batchResponse.get(0).getResponseStatus());
 
             // ensure the document was not updated
             this.verifyByReadAsync(container, this.TestDocPk1ExistingB);
@@ -150,8 +152,8 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
 
         this.verifyBatchProcessed(batchResponse, 2);
 
-        assertEquals(HttpResponseStatus.CREATED, batchResponse.get(0).getStatus());
-        assertEquals(HttpResponseStatus.OK, batchResponse.get(1).getStatus());
+        assertEquals(HttpResponseStatus.CREATED.code(), batchResponse.get(0).getResponseStatus());
+        assertEquals(HttpResponseStatus.OK.code(), batchResponse.get(1).getResponseStatus());
 
         ISessionToken afterRequestSessionToken = this.getSessionToken(batchResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN));
         assertTrue(afterRequestSessionToken.getLSN() > beforeRequestSessionToken.getLSN(), "Response session token should be more than request session token");
@@ -174,7 +176,7 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
         }
 
         TransactionalBatchResponse batchResponse = batch.executeAsync().block();
-        assertEquals(HttpResponseStatus.REQUEST_ENTITY_TOO_LARGE, batchResponse.getResponseStatus());
+        assertEquals(HttpResponseStatus.REQUEST_ENTITY_TOO_LARGE.code(), batchResponse.getResponseStatus());
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
@@ -190,7 +192,7 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
         }
 
         TransactionalBatchResponse batchResponse = batch.executeAsync().block();
-        assertEquals(HttpResponseStatus.BAD_REQUEST, batchResponse.getResponseStatus());
+        assertEquals(HttpResponseStatus.BAD_REQUEST.code(), batchResponse.getResponseStatus());
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
@@ -214,8 +216,8 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
             operationCount,
             HttpResponseStatus.REQUEST_ENTITY_TOO_LARGE);
 
-        assertEquals(HttpResponseStatus.FAILED_DEPENDENCY, batchResponse.get(0).getStatus());
-        assertEquals(HttpResponseStatus.REQUEST_ENTITY_TOO_LARGE, batchResponse.get(operationCount - 1).getStatus());
+        assertEquals(HttpResponseStatus.FAILED_DEPENDENCY.code(), batchResponse.get(0).getResponseStatus());
+        assertEquals(HttpResponseStatus.REQUEST_ENTITY_TOO_LARGE.code(), batchResponse.get(operationCount - 1).getResponseStatus());
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
@@ -231,9 +233,9 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
 
         this.verifyBatchProcessed(batchResponse, 3);
 
-        assertEquals(HttpResponseStatus.OK,  batchResponse.get(0).getStatus());
-        assertEquals(HttpResponseStatus.OK,  batchResponse.get(1).getStatus());
-        assertEquals(HttpResponseStatus.OK,  batchResponse.get(2).getStatus());
+        assertEquals(HttpResponseStatus.OK.code(),  batchResponse.get(0).getResponseStatus());
+        assertEquals(HttpResponseStatus.OK.code(),  batchResponse.get(1).getResponseStatus());
+        assertEquals(HttpResponseStatus.OK.code(),  batchResponse.get(2).getResponseStatus());
 
         assertEquals(this.TestDocPk1ExistingA, batchResponse.getOperationResultAtIndex(0, TestDoc.class).getResource());
         assertEquals(this.TestDocPk1ExistingB, batchResponse.getOperationResultAtIndex(1, TestDoc.class).getResource());
@@ -264,12 +266,12 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
 
         this.verifyBatchProcessed(batchResponse, 6);
 
-        assertEquals(HttpResponseStatus.CREATED, batchResponse.get(0).getStatus());
-        assertEquals(HttpResponseStatus.OK, batchResponse.get(1).getStatus());
-        assertEquals(HttpResponseStatus.OK, batchResponse.get(2).getStatus());
-        assertEquals(HttpResponseStatus.CREATED, batchResponse.get(3).getStatus());
-        assertEquals(HttpResponseStatus.OK, batchResponse.get(4).getStatus());
-        assertEquals(HttpResponseStatus.NO_CONTENT, batchResponse.get(5).getStatus());
+        assertEquals(HttpResponseStatus.CREATED.code(), batchResponse.get(0).getResponseStatus());
+        assertEquals(HttpResponseStatus.OK.code(), batchResponse.get(1).getResponseStatus());
+        assertEquals(HttpResponseStatus.OK.code(), batchResponse.get(2).getResponseStatus());
+        assertEquals(HttpResponseStatus.CREATED.code(), batchResponse.get(3).getResponseStatus());
+        assertEquals(HttpResponseStatus.OK.code(), batchResponse.get(4).getResponseStatus());
+        assertEquals(HttpResponseStatus.NO_CONTENT.code(), batchResponse.get(5).getResponseStatus());
 
         assertEquals(this.TestDocPk1ExistingC, batchResponse.getOperationResultAtIndex(1, TestDoc.class).getResource());
 
@@ -325,7 +327,7 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
         TestDoc staleTestDocToReplace = this.getTestDocCopy(this.TestDocPk1ExistingA);
         staleTestDocToReplace.setCost(staleTestDocToReplace.getCost() + 1);
 
-        RequestOptions staleReplaceOptions = new RequestOptions();
+        TransactionalBatchItemRequestOptions staleReplaceOptions = new TransactionalBatchItemRequestOptions();
         staleReplaceOptions.setIfMatchETag(UUID.randomUUID().toString());
 
         this.runWithErrorAsync(
@@ -383,9 +385,9 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
 
         this.verifyBatchProcessed(batchResponse, 3, expectedFailedOperationStatusCode);
 
-        assertEquals(HttpResponseStatus.FAILED_DEPENDENCY, batchResponse.get(0).getStatus());
-        assertEquals(expectedFailedOperationStatusCode, batchResponse.get(1).getStatus());
-        assertEquals(HttpResponseStatus.FAILED_DEPENDENCY, batchResponse.get(2).getStatus());
+        assertEquals(HttpResponseStatus.FAILED_DEPENDENCY.code(), batchResponse.get(0).getResponseStatus());
+        assertEquals(expectedFailedOperationStatusCode.code(), batchResponse.get(1).getResponseStatus());
+        assertEquals(HttpResponseStatus.FAILED_DEPENDENCY.code(), batchResponse.get(2).getResponseStatus());
 
         this.verifyNotFoundAsync(container, testDocToCreate);
         this.verifyNotFoundAsync(container, anotherTestDocToCreate);
@@ -399,7 +401,7 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
         assertNotNull(batchResponse);
         assertEquals(
             batchResponse.getResponseStatus(),
-            expectedStatusCode,
+            expectedStatusCode.code(),
             "Batch server response had StatusCode {0} instead of {1} expected and had ErrorMessage {2}");
 
         assertEquals(numberOfOperations, batchResponse.size());

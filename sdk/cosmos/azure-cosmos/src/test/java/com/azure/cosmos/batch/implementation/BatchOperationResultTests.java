@@ -21,7 +21,7 @@ public class BatchOperationResultTests {
     private static final int TIMEOUT = 40000;
 
     private TransactionalBatchOperationResult<?> createTestResult() {
-        TransactionalBatchOperationResult<?> result = new TransactionalBatchOperationResult<Object>(HttpResponseStatus.OK);
+        TransactionalBatchOperationResult<?> result = new TransactionalBatchOperationResult<Object>(HttpResponseStatus.OK.code());
         result.setSubStatusCode(HttpConstants.SubStatusCodes.NAME_CACHE_IS_STALE);
         result.setETag("TestETag");
         result.setRequestCharge(1.4);
@@ -36,7 +36,7 @@ public class BatchOperationResultTests {
         TransactionalBatchOperationResult<?> other = createTestResult();
         TransactionalBatchOperationResult<?> result = new TransactionalBatchOperationResult<Object>(other);
 
-        assertEquals(other.getStatus(), result.getStatus());
+        assertEquals(other.getResponseStatus(), result.getResponseStatus());
         assertEquals(other.getSubStatusCode(), result.getSubStatusCode());
         assertEquals(other.getETag(), result.getETag());
         assertEquals(other.getRequestCharge(), result.getRequestCharge());
@@ -50,7 +50,7 @@ public class BatchOperationResultTests {
         Object testObject = new Object();
         TransactionalBatchOperationResult<Object> result = new TransactionalBatchOperationResult<Object>(other, testObject);
 
-        assertEquals(other.getStatus(), result.getStatus());
+        assertEquals(other.getResponseStatus(), result.getResponseStatus());
         assertEquals(other.getSubStatusCode(), result.getSubStatusCode());
         assertEquals(other.getETag(), result.getETag());
         assertEquals(other.getRequestCharge(), result.getRequestCharge());
@@ -62,10 +62,9 @@ public class BatchOperationResultTests {
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void toResponseMessageHasPropertiesMapped() {
         TransactionalBatchOperationResult<?> result = createTestResult();
+        RxDocumentServiceResponse response = BatchExecUtils.toResponseMessage(result);
 
-        RxDocumentServiceResponse response = result.toResponseMessage();
-
-        assertEquals(result.getStatus().code(), response.getStatusCode());
+        assertEquals(result.getResponseStatus(), response.getStatusCode());
         assertEquals(String.valueOf(result.getSubStatusCode()), response.getResponseHeaders().get(HttpConstants.HttpHeaders.SUB_STATUS));
         assertEquals(result.getETag(), response.getResponseHeaders().get(HttpConstants.HttpHeaders.E_TAG));
         assertEquals(String.valueOf(result.getRequestCharge()), response.getResponseHeaders().get(HttpConstants.HttpHeaders.REQUEST_CHARGE));
@@ -76,7 +75,7 @@ public class BatchOperationResultTests {
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void isSuccessStatusCodeTrueFor200To299() {
         for (int x = 100; x < 999; ++x) {
-            TransactionalBatchOperationResult<?> result = new TransactionalBatchOperationResult<Object>(HttpResponseStatus.valueOf(x));
+            TransactionalBatchOperationResult<?> result = new TransactionalBatchOperationResult<Object>(x);
             boolean success = x >= 200 && x <= 299;
             assertEquals(success, result.isSuccessStatusCode());
         }
