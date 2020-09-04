@@ -6,7 +6,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.models.LockRenewalStatus;
 import reactor.core.Disposable;
-import reactor.core.Disposables;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
@@ -23,13 +22,14 @@ import java.util.function.Function;
 /**
  * Represents a renewal session or message lock renewal operation that.
  */
-public class LockRenewalOperation implements AutoCloseable {
+class LockRenewalOperation implements AutoCloseable {
     private final ClientLogger logger = new ClientLogger(LockRenewalOperation.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final AtomicReference<OffsetDateTime> lockedUntil = new AtomicReference<>();
     private final AtomicReference<Throwable> throwable = new AtomicReference<>();
     private final AtomicReference<LockRenewalStatus> status = new AtomicReference<>(LockRenewalStatus.RUNNING);
     private final MonoProcessor<Void> cancellationProcessor = MonoProcessor.create();
+    private final Mono<Void> completionMono;
 
     private final String lockToken;
     private final boolean isSession;
@@ -53,27 +53,55 @@ public class LockRenewalOperation implements AutoCloseable {
      * Creates a new lock renewal operation.
      *
      * @param lockToken Lock or session id to renew.
-     * @param lockedUntil The initial period the message or session is locked until.
+     * @param tokenLockedUntil The initial period the message or session is locked until.
      * @param maxLockRenewalDuration The maximum duration this lock should be renewed.
      * @param isSession Whether the lock represents a session lock or message lock.
      * @param renewalOperation The renewal operation to call.
      */
     LockRenewalOperation(String lockToken, Duration maxLockRenewalDuration, boolean isSession,
-        Function<String, Mono<OffsetDateTime>> renewalOperation, OffsetDateTime lockedUntil) {
+        Function<String, Mono<OffsetDateTime>> renewalOperation, OffsetDateTime tokenLockedUntil) {
         this.lockToken = Objects.requireNonNull(lockToken, "'lockToken' cannot be null.");
         this.renewalOperation = Objects.requireNonNull(renewalOperation, "'renewalOperation' cannot be null.");
         this.isSession = isSession;
 
-        Objects.requireNonNull(lockedUntil, "'lockedUntil cannot be null.'");
+        Objects.requireNonNull(tokenLockedUntil, "'lockedUntil cannot be null.'");
         Objects.requireNonNull(maxLockRenewalDuration, "'maxLockRenewalDuration' cannot be null.");
 
         if (maxLockRenewalDuration.isNegative()) {
-            throw logger.logThrowableAsError(new IllegalArgumentException(
+            throw logger.logExceptionAsError(new IllegalArgumentException(
                 "'maxLockRenewalDuration' cannot be negative."));
         }
 
-        this.lockedUntil.set(lockedUntil);
-        this.subscription = getRenewLockOperation(lockedUntil, maxLockRenewalDuration);
+        this.lockedUntil.set(tokenLockedUntil);
+
+        final Flux<OffsetDateTime> renewLockOperation = getRenewLockOperation(tokenLockedUntil,
+            maxLockRenewalDuration)
+            .takeUntilOther(cancellationProcessor)
+            .cache(Duration.ofMinutes(2));
+
+        this.completionMono = renewLockOperation.then();
+        this.subscription = renewLockOperation.subscribe(until -> this.lockedUntil.set(until),
+            error -> {
+                logger.error("token[{}]. Error occurred while renewing lock token.", error);
+                status.set(LockRenewalStatus.FAILED);
+                throwable.set(error);
+                cancellationProcessor.onComplete();
+            }, () -> {
+                if (status.compareAndSet(LockRenewalStatus.RUNNING, LockRenewalStatus.COMPLETE)) {
+                    logger.verbose("token[{}]. Renewing session lock task completed.", lockToken);
+                }
+
+                cancellationProcessor.onComplete();
+            });
+    }
+
+    /**
+     * Gets a mono that completes when the operation does.
+     *
+     * @return A mono that completes when the renewal operation does.
+     */
+    Mono<Void> getCompletionOperation() {
+        return completionMono;
     }
 
     /**
@@ -81,7 +109,7 @@ public class LockRenewalOperation implements AutoCloseable {
      *
      * @return the datetime the message or session is locked until.
      */
-    public OffsetDateTime getLockedUntil() {
+    OffsetDateTime getLockedUntil() {
         return lockedUntil.get();
     }
 
@@ -90,7 +118,7 @@ public class LockRenewalOperation implements AutoCloseable {
      *
      * @return The message lock token or {@code null} if a session is being renewed instead.
      */
-    public String getLockToken() {
+    String getLockToken() {
         return isSession ? null : lockToken;
     }
 
@@ -99,7 +127,7 @@ public class LockRenewalOperation implements AutoCloseable {
      *
      * @return The session id or {@code null} if it is not a session renewal.
      */
-    public String getSessionId() {
+    String getSessionId() {
         return isSession ? lockToken : null;
     }
 
@@ -108,7 +136,7 @@ public class LockRenewalOperation implements AutoCloseable {
      *
      * @return The current status of the renewal operation.
      */
-    public LockRenewalStatus getStatus() {
+    LockRenewalStatus getStatus() {
         return status.get();
     }
 
@@ -117,7 +145,7 @@ public class LockRenewalOperation implements AutoCloseable {
      *
      * @return the exception if an error occurred whilst renewing the message or session lock, otherwise {@code null}.
      */
-    public Throwable getThrowable() {
+    Throwable getThrowable() {
         return throwable.get();
     }
 
@@ -146,10 +174,11 @@ public class LockRenewalOperation implements AutoCloseable {
      * @param maxLockRenewalDuration Duration to renew lock for.
      * @return The subscription for the operation.
      */
-    private Disposable getRenewLockOperation(OffsetDateTime initialLockedUntil, Duration maxLockRenewalDuration) {
+    private Flux<OffsetDateTime> getRenewLockOperation(OffsetDateTime initialLockedUntil,
+        Duration maxLockRenewalDuration) {
         if (maxLockRenewalDuration.isZero()) {
             status.set(LockRenewalStatus.COMPLETE);
-            return Disposables.single();
+            return Flux.empty();
         }
 
         final OffsetDateTime now = OffsetDateTime.now();
@@ -174,7 +203,6 @@ public class LockRenewalOperation implements AutoCloseable {
         sink.next(initialInterval);
 
         final Flux<Object> cancellationSignals = Flux.first(cancellationProcessor, Mono.delay(maxLockRenewalDuration));
-
         return Flux.switchOnNext(emitterProcessor.map(interval -> Mono.delay(interval)
             .thenReturn(Flux.create(s -> s.next(interval)))))
             .takeUntilOther(cancellationSignals)
@@ -189,19 +217,6 @@ public class LockRenewalOperation implements AutoCloseable {
 
                 sink.next(MessageUtils.adjustServerTimeout(next));
                 return offsetDateTime;
-            })
-            .subscribe(until -> lockedUntil.set(until),
-                error -> {
-                    logger.error("token[{}]. Error occurred while renewing lock token.", error);
-                    status.set(LockRenewalStatus.FAILED);
-                    throwable.set(error);
-                    cancellationProcessor.onComplete();
-                }, () -> {
-                    if (status.compareAndSet(LockRenewalStatus.RUNNING, LockRenewalStatus.COMPLETE)) {
-                        logger.verbose("token[{}]. Renewing session lock task completed.", lockToken);
-                    }
-
-                    cancellationProcessor.onComplete();
-                });
+            });
     }
 }

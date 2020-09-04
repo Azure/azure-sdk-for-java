@@ -7,7 +7,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.administration.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
-import com.azure.messaging.servicebus.models.LockRenewalStatus;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
 import org.junit.jupiter.api.Assertions;
@@ -930,37 +929,27 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
 
-        sendMessage(message).block(TIMEOUT);
+        final ServiceBusReceivedMessageContext receivedContext = sendMessage(message)
+            .then(receiver.receiveMessages().next())
+            .block(TIMEOUT);
+        assertNotNull(receivedContext);
+
+        final ServiceBusReceivedMessage receivedMessage = receivedContext.getMessage();
+        assertNotNull(receivedMessage);
+
+        final OffsetDateTime lockedUntil = receivedMessage.getLockedUntil();
+        assertNotNull(lockedUntil);
 
         // Assert & Act
-        StepVerifier.create(receiver.receiveMessages())
-            .assertNext(receivedContext -> {
-                final ServiceBusReceivedMessage receivedMessage = receivedContext.getMessage();
-                assertNotNull(receivedMessage);
+        StepVerifier.create(receiver.getAutoRenewMessageLock(receivedMessage.getLockToken(), maximumDuration))
+            .thenAwait(sleepDuration)
+            .then(() -> {
+                logger.info("Completing message.");
+                int numberCompleted = completeMessages(receiver, Collections.singletonList(receivedMessage));
 
-                final OffsetDateTime lockedUntil = receivedMessage.getLockedUntil();
-                assertNotNull(lockedUntil);
-
-                final LockRenewalOperation operation = receiver.getAutoRenewMessageLock(
-                    receivedMessage.getLockToken(), maximumDuration);
-
-                assertEquals(LockRenewalStatus.RUNNING, operation.getStatus());
-                try {
-                    Thread.sleep(sleepDuration.toMillis());
-
-                    assertTrue(lockedUntil.isBefore(operation.getLockedUntil()));
-                    assertEquals(LockRenewalStatus.COMPLETE, operation.getStatus());
-                } catch (InterruptedException e) {
-                    logger.error("Could not sleep.", e);
-
-                    operation.close();
-                    assertEquals(LockRenewalStatus.CANCELLED, operation.getStatus());
-                } finally {
-                    int numberCompleted = completeMessages(receiver,
-                        Collections.singletonList(receivedMessage));
-                    messagesPending.addAndGet(-numberCompleted);
-                }
-            }).thenCancel()
+                messagesPending.addAndGet(-numberCompleted);
+            })
+            .expectComplete()
             .verify(Duration.ofMinutes(3));
     }
 

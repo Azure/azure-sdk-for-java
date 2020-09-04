@@ -295,7 +295,7 @@
   "servicebus": {
     "dir": "azure-resourcemanager-servicebus",
     "source": "specification/servicebus/resource-manager/readme.md",
-    "package": "com.microsoft.azure.resourcemanager.servicebus",
+    "package": "com.azure.resourcemanager.servicebus",
     "args": "--payload-flattening-threshold=1 --tag=package-2015-08"
   },
   "servicefabric": {

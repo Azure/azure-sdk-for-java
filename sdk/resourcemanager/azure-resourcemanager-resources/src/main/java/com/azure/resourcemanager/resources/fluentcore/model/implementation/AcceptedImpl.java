@@ -23,6 +23,7 @@ import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.resources.fluentcore.rest.ActivationResponse;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -285,7 +286,7 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
                 activationResponse,
                 client.getSerializerAdapter(),
                 client.getHttpPipeline(),
-                client.getDefaultPollInterval(),
+                SdkContext.getDelayDuration(client.getDefaultPollInterval()),
                 innerType, innerType,
                 convertOperation);
 
