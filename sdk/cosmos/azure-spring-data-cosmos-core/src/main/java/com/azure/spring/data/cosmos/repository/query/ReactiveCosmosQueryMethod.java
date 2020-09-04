@@ -10,14 +10,11 @@ import org.springframework.data.repository.core.EntityMetadata;
 import org.springframework.data.repository.core.RepositoryMetadata;
 import org.springframework.data.repository.query.QueryMethod;
 import org.springframework.lang.Nullable;
-import org.springframework.util.ConcurrentReferenceHashMap;
 import org.springframework.util.StringUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -27,7 +24,6 @@ public class ReactiveCosmosQueryMethod extends QueryMethod {
 
     private ReactiveCosmosEntityMetadata<?> metadata;
     private final Method method;
-    private final Map<Class<? extends Annotation>, Optional<Annotation>> annotationCache;
 
     /**
      * Creates a new {@link QueryMethod} from the given parameters. Looks up the correct query to use for following
@@ -40,7 +36,6 @@ public class ReactiveCosmosQueryMethod extends QueryMethod {
     public ReactiveCosmosQueryMethod(Method method, RepositoryMetadata metadata, ProjectionFactory factory) {
         super(method, metadata, factory);
         this.method = method;
-        this.annotationCache = new ConcurrentReferenceHashMap<>();
     }
 
     @Override
@@ -80,7 +75,7 @@ public class ReactiveCosmosQueryMethod extends QueryMethod {
      * @return the annotated query String or null
      */
     @Nullable
-    public String getQueryAnnotatation() {
+    public String getQueryAnnotation() {
         return findAnnotatedQuery().orElse(null);
     }
 
@@ -91,16 +86,8 @@ public class ReactiveCosmosQueryMethod extends QueryMethod {
                    .filter(StringUtils::hasText);
     }
 
-    Optional<Query> lookupQueryAnnotation() {
-        return doFindAnnotation(Query.class);
-    }
-
-    @SuppressWarnings("unchecked")
-    private <A extends Annotation> Optional<A> doFindAnnotation(Class<A> annotationType) {
-
-        return (Optional<A>) this.annotationCache
-                                 .computeIfAbsent(annotationType, it -> Optional.ofNullable(AnnotatedElementUtils
-                                                                                .findMergedAnnotation(method, it)));
+    private Optional<Query> lookupQueryAnnotation() {
+        return Optional.ofNullable(AnnotatedElementUtils.findMergedAnnotation(method, Query.class));
     }
 
 }

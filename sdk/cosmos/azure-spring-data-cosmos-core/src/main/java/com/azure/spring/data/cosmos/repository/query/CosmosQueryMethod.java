@@ -10,12 +10,9 @@ import org.springframework.data.repository.core.EntityMetadata;
 import org.springframework.data.repository.core.RepositoryMetadata;
 import org.springframework.data.repository.query.QueryMethod;
 import org.springframework.lang.Nullable;
-import org.springframework.util.ConcurrentReferenceHashMap;
 import org.springframework.util.StringUtils;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -23,7 +20,6 @@ import java.util.Optional;
  */
 public class CosmosQueryMethod extends QueryMethod {
 
-    private final Map<Class<? extends Annotation>, Optional<Annotation>> annotationCache;
     private CosmosEntityMetadata<?> metadata;
     final Method method;
 
@@ -38,7 +34,6 @@ public class CosmosQueryMethod extends QueryMethod {
     public CosmosQueryMethod(Method method, RepositoryMetadata metadata, ProjectionFactory factory) {
         super(method, metadata, factory);
         this.method = method;
-        this.annotationCache = new ConcurrentReferenceHashMap<>();
     }
 
     @Override
@@ -79,14 +74,8 @@ public class CosmosQueryMethod extends QueryMethod {
                    .filter(StringUtils::hasText);
     }
 
-    Optional<Query> lookupQueryAnnotation() {
-        return doFindAnnotation(Query.class);
+    private Optional<Query> lookupQueryAnnotation() {
+        return Optional.ofNullable(AnnotatedElementUtils.findMergedAnnotation(method, Query.class));
     }
 
-    @SuppressWarnings("unchecked")
-    private <A extends Annotation> Optional<A> doFindAnnotation(Class<A> annotationType) {
-        return (Optional<A>) this.annotationCache
-                                 .computeIfAbsent(annotationType, it -> Optional.ofNullable(AnnotatedElementUtils
-                                                                                .findMergedAnnotation(method, it)));
-    }
 }

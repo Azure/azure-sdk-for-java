@@ -251,8 +251,7 @@ public class ContactRepositoryIT {
 
     @Test
     public void testAnnotatedQueries() {
-        String name = "faketitle3";
-        List<Contact> valueContacts = repository.getContactsByTitleAndValue(43, name);
+         List<Contact> valueContacts = repository.getContactsByTitleAndValue(43, TEST_CONTACT5.getTitle());
         Assert.assertEquals(1, valueContacts.size());
         Assert.assertEquals(TEST_CONTACT5, valueContacts.get(0));
 

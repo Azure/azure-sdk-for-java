@@ -32,7 +32,7 @@ public class StringBasedReactiveCosmosQuery extends AbstractReactiveCosmosQuery 
     public StringBasedReactiveCosmosQuery(ReactiveCosmosQueryMethod queryMethod,
                                           ReactiveCosmosOperations dbOperations) {
         super(queryMethod, dbOperations);
-        this.query = queryMethod.getQueryAnnotatation();
+        this.query = queryMethod.getQueryAnnotation();
     }
 
     @Override
