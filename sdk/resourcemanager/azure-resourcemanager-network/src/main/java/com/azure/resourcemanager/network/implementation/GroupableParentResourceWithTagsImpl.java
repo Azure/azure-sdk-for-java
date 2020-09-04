@@ -4,7 +4,7 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.models.AppliableWithTags;
 import com.azure.resourcemanager.network.models.UpdatableWithTags;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.ManagerBase;
+import com.azure.resourcemanager.resources.fluentcore.arm.ManagerBase;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
