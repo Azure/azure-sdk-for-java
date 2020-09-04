@@ -45,8 +45,8 @@ public class ModelsLifecycleSyncSamples {
     }
 
     public static void RunModelLifecycleSample() {
-        // For the purpose of this example we will create temporary models using random model Ids and then decommission a model.
-        // We have to make sure these model Ids are unique within the DT instance.
+        // For the purpose of this sample we will create temporary models using random model Ids and then decommission a model.
+        // We have to make sure these model Ids are unique within the DigitalTwin instance.
         String componentModelId = UniqueIdHelper.getUniqueModelId(SamplesConstants.TemporaryComponentModelPrefix, client);
         String sampleModelId = UniqueIdHelper.getUniqueModelId(SamplesConstants.TemporaryModelPrefix, client);
 
@@ -81,7 +81,7 @@ public class ModelsLifecycleSyncSamples {
         }
 
         ConsoleLogger.PrintHeader("Get models");
-        // Get model
+
         try {
             ModelData sampleModelResponse = client.getModel(sampleModelId);
             ConsoleLogger.PrintSuccess("Retrieved model " + sampleModelResponse.getId());
@@ -91,7 +91,6 @@ public class ModelsLifecycleSyncSamples {
             System.exit(0);
         }
 
-        // Decommission models
         ConsoleLogger.PrintHeader("Decommission models");
 
         try {
@@ -106,7 +105,7 @@ public class ModelsLifecycleSyncSamples {
         }
 
         ConsoleLogger.PrintHeader("Delete models");
-        // Delete models
+
         try {
             client.deleteModel(sampleModelId);
             client.deleteModel(componentModelId);
