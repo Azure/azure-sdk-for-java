@@ -1,5 +1,8 @@
 # Release History
 
+## 1.7.0-beta.1 (Unreleased)
+
+
 ## 1.6.0 (2020-09-03)
 
 - Added new APIs to configure request write timeout, response timeout, and response body read timeout.
