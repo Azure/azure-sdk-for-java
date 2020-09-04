@@ -13,8 +13,6 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import reactor.core.publisher.Mono;
 
-import java.util.Locale;
-
 /** The implementation for AppServicePlan. */
 class AppServicePlanImpl
     extends GroupableResourceImpl<AppServicePlan, AppServicePlanInner, AppServicePlanImpl, AppServiceManager>
