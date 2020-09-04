@@ -355,19 +355,19 @@ public class TablesAsyncClientTest extends TestBase {
         createdEntity.getProperties().remove(oldPropertyKey);
         createdEntity.addProperty(newPropertyKey, "valueB");
 
-        // Act
-        StepVerifier.create(runner.run(tableClient -> tableClient.updateEntityWithResponse(createdEntity, true, mode)))
-            .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
-            .expectComplete()
-            .verify();
-
-        // Assert and verify that the new properties are in there.
+        // Act & Assert
         if (mode == UpdateMode.MERGE && runner.getClient().getTableUrl().contains("cosmos.azure.com")) {
             // This scenario is currently broken when using the CosmosDB Table API
-            StepVerifier.create(runner.run(tableClient -> tableClient.getEntity(partitionKeyValue, rowKeyValue)))
+            StepVerifier.create(runner.run(tableClient -> tableClient.updateEntityWithResponse(createdEntity, true, mode)))
                 .expectError(com.azure.data.tables.implementation.models.TableServiceErrorException.class)
                 .verify();
         } else {
+            StepVerifier.create(runner.run(tableClient -> tableClient.updateEntityWithResponse(createdEntity, true, mode)))
+                .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
+                .expectComplete()
+                .verify();
+
+            // Assert and verify that the new properties are in there.
             StepVerifier.create(runner.run(tableClient -> tableClient.getEntity(partitionKeyValue, rowKeyValue)))
                 .assertNext(entity -> {
                     final Map<String, Object> properties = entity.getProperties();
