@@ -65,7 +65,7 @@ public class ModelsLifecycleSyncSamples {
 
             ConsoleLogger.PrintSuccess("Created models " + componentModelId + " and " + sampleModelId);
         }
-        catch (ErrorResponseException ex){
+        catch (ErrorResponseException ex) {
             if (ex.getResponse().getStatusCode() == HttpURLConnection.HTTP_CONFLICT) {
                 ConsoleLogger.PrintWarning("One or more models already existed");
             }
@@ -81,7 +81,7 @@ public class ModelsLifecycleSyncSamples {
             ModelData sampleModelResponse = client.getModel(sampleModelId);
             ConsoleLogger.PrintSuccess("Retrieved model " + sampleModelResponse.getId());
         }
-        catch (Exception ex){
+        catch (Exception ex) {
             ConsoleLogger.PrintFatal("Failed to get the model due to:\n" + ex);
             System.exit(0);
         }
@@ -94,7 +94,7 @@ public class ModelsLifecycleSyncSamples {
 
             ConsoleLogger.PrintSuccess("Decommissioned "+ sampleModelId + " and " + componentModelId);
         }
-        catch (Exception ex){
+        catch (Exception ex) {
             ConsoleLogger.PrintFatal("Failed to decommission models due to:\n" + ex);
             System.exit(0);
         }
@@ -107,7 +107,7 @@ public class ModelsLifecycleSyncSamples {
 
             ConsoleLogger.PrintSuccess("Deleted "+ sampleModelId + " and " + componentModelId);
         }
-        catch (Exception ex){
+        catch (Exception ex) {
             ConsoleLogger.PrintFatal("Failed to deleteModel models due to:\n" + ex);
             System.exit(0);
         }
