@@ -1,7 +1,9 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.3 (2020-09-03)
 
+- Added `AvroSerializer` interface containing Avro specific serializer APIs.
+- Added `AvroSerializerProvider` interface as a service provider for `AvroSerializer`.
 
 ## 1.0.0-beta.2 (2020-08-07)
 
