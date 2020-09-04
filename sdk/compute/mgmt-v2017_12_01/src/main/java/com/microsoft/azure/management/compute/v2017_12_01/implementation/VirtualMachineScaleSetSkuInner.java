@@ -35,7 +35,7 @@ public class VirtualMachineScaleSetSkuInner {
     private VirtualMachineScaleSetSkuCapacity capacity;
 
     /**
-     * Get the resourceType value.
+     * Get the type of resource the sku applies to.
      *
      * @return the resourceType value
      */
@@ -44,7 +44,7 @@ public class VirtualMachineScaleSetSkuInner {
     }
 
     /**
-     * Get the sku value.
+     * Get the Sku.
      *
      * @return the sku value
      */
@@ -53,7 +53,7 @@ public class VirtualMachineScaleSetSkuInner {
     }
 
     /**
-     * Get the capacity value.
+     * Get specifies the number of virtual machines in the scale set.
      *
      * @return the capacity value
      */

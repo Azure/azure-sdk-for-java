@@ -43,10 +43,14 @@ class VirtualMachineRunCommandsImpl extends WrapperImpl<VirtualMachineRunCommand
     public Observable<RunCommandDocument> getAsync(String location, String commandId) {
         VirtualMachineRunCommandsInner client = this.inner();
         return client.getAsync(location, commandId)
-        .map(new Func1<RunCommandDocumentInner, RunCommandDocument>() {
+        .flatMap(new Func1<RunCommandDocumentInner, Observable<RunCommandDocument>>() {
             @Override
-            public RunCommandDocument call(RunCommandDocumentInner inner) {
-                return wrapRunCommandDocumentModel(inner);
+            public Observable<RunCommandDocument> call(RunCommandDocumentInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((RunCommandDocument)wrapRunCommandDocumentModel(inner));
+                }
             }
        });
     }
