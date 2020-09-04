@@ -94,7 +94,7 @@ public class SdkContext {
      *
      * @param milliseconds number of millisecond for which thread should put on sleep.
      */
-    public static void sleep(int milliseconds) {
+    public static void sleep(long milliseconds) {
         try {
             Thread.sleep(delayProvider.getDelayDuration(Duration.ofMillis(milliseconds)).toMillis());
         } catch (InterruptedException e) {
