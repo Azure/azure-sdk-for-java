@@ -2,6 +2,7 @@
 
 ## 1.0.0-beta.4 (Unreleased)
 
+- Fixed long-running operation, PUT method, response 201 and Azure-AsyncOperation, succeeded without poll.
 - Added `Region` class.
 
 ## 1.0.0-beta.3 (2020-08-07)
