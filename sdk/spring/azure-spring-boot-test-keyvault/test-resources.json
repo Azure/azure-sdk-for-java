@@ -208,9 +208,10 @@
         "autoUpgradeMinorVersion": true,
         "settings": {
           "fileUris": [
-            "https://raw.githubusercontent.com/chenrujun/azure-sdk-for-java/enable-KeyVaultIT.keyVaultWithVirtualMachineMSI-1/sdk/spring/azure-spring-boot-test-keyvault/install_java.sh"
+            "https://raw.githubusercontent.com/chenrujun/azure-sdk-for-java/enable-KeyVaultIT.keyVaultWithVirtualMachineMSI-1/sdk/spring/azure-spring-boot-test-keyvault/install_java.sh",
+            "https://raw.githubusercontent.com/chenrujun/azure-sdk-for-java/enable-KeyVaultIT.keyVaultWithVirtualMachineMSI-1/sdk/spring/azure-spring-boot-test-keyvault/install_java_with_retry.sh"
           ],
-          "commandToExecute": "bash install_java.sh"
+          "commandToExecute": "bash install_java_with_retry.sh"
         },
         "protectedSettings": {
           "commandToExecute": ""
