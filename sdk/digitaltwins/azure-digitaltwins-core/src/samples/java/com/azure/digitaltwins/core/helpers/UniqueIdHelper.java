@@ -2,8 +2,8 @@ package com.azure.digitaltwins.core.helpers;
 
 import com.azure.digitaltwins.core.DigitalTwinsClient;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
-import org.apache.http.HttpStatus;
 
+import java.net.HttpURLConnection;
 import java.util.Random;
 import java.util.function.Function;
 
@@ -25,7 +25,7 @@ public class UniqueIdHelper {
                 getResource.apply(id);
             }
             catch (ErrorResponseException ex){
-                if (ex.getResponse().getStatusCode() == HttpStatus.SC_NOT_FOUND) {
+                if (ex.getResponse().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
                     return id;
                 }
             }

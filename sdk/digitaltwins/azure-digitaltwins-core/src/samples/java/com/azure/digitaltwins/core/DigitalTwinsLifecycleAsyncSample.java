@@ -238,7 +238,7 @@ public class DigitalTwinsLifecycleAsyncSample {
 
         // Call API to create the models. For each async operation, once the operation is completed successfully, a latch is counted down.
         client.createModels(modelsToCreate)
-            .doOnNext(modelData -> System.out.println("Created model: " + modelData.getId()))
+            .doOnNext(listOfModelData -> System.out.println("Count of created models: " + listOfModelData.size()))
             .doOnError(IgnoreConflictError)
             .doOnTerminate(createModelsLatch::countDown)
             .subscribe();

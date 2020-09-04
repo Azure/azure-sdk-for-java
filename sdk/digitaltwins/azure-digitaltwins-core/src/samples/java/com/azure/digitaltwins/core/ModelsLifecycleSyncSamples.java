@@ -41,10 +41,10 @@ public class ModelsLifecycleSyncSamples {
                     .setLogLevel(parsedArguments.getHttpLogDetailLevel()))
             .buildClient();
 
-        RunModelLifecycleSample();
+        runModelLifecycleSample();
     }
 
-    public static void RunModelLifecycleSample() {
+    public static void runModelLifecycleSample() {
         // For the purpose of this sample we will create temporary models using random model Ids and then decommission a model.
         // We have to make sure these model Ids are unique within the DigitalTwin instance.
         String componentModelId = UniqueIdHelper.getUniqueModelId(SamplesConstants.TemporaryComponentModelPrefix, client);
@@ -63,10 +63,7 @@ public class ModelsLifecycleSyncSamples {
             // Create the model
             // TODO: azabbasi: Discuss the usability of this API with SDK team and change the return type if possible
             // Currently we have to iterate through the response for the lazy method invocation to run.
-            client.createModels(new ArrayList<String>(Arrays.asList(newComponentModelPayload, newModelPayload)))
-                .forEach((modelData -> {
-                    System.out.println("Created model " + modelData.getId());
-                }));
+            client.createModels(new ArrayList<String>(Arrays.asList(newComponentModelPayload, newModelPayload)));
 
             ConsoleLogger.PrintSuccess("Created models " + componentModelId + " and " + sampleModelId);
         }
