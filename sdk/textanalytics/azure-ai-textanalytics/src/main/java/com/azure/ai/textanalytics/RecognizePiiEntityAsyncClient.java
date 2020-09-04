@@ -82,6 +82,7 @@ class RecognizePiiEntityAsyncClient {
                             throw logger.logExceptionAsError(toTextAnalyticsException(entitiesResult.getError()));
                         }
                         entityCollection = new PiiEntityCollection(entitiesResult.getEntities(),
+                            entitiesResult.getEntities().getRedactedText(),
                             entitiesResult.getEntities().getWarnings());
                     }
                     return entityCollection;
@@ -161,7 +162,8 @@ class RecognizePiiEntityAsyncClient {
                 documentEntities.getStatistics() == null ? null
                     : toTextDocumentStatistics(documentEntities.getStatistics()),
                 null,
-                new PiiEntityCollection(new IterableStream<>(piiEntities), new IterableStream<>(warnings))
+                new PiiEntityCollection(new IterableStream<>(piiEntities), documentEntities.getRedactedText(),
+                    new IterableStream<>(warnings))
             ));
         });
         // Document errors
