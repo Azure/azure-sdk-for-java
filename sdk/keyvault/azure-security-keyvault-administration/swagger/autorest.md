@@ -7,7 +7,7 @@ Increase max memory if you're using Autorest older than 3. Set the environment v
 This is the AutoRest configuration file for KeyVaultBackupClient.
 ---
 ## Getting Started 
-To build the SDK for KeyVaultBackupClient, simply [Install AutoRest](https://aka.ms/autorest/install) and in this folder, run:
+To build the SDK for KeyVaultBackupClient, simply [Install AutoRest](https://github.com/Azure/autorest/blob/master/docs/installing-autorest.md) and in this folder, run:
 
 > `autorest`
 
