@@ -28,7 +28,7 @@ public class SnapshotSku {
     private String tier;
 
     /**
-     * Get the name value.
+     * Get the sku name. Possible values include: 'Standard_LRS', 'Premium_LRS', 'Standard_ZRS'.
      *
      * @return the name value
      */
@@ -37,7 +37,7 @@ public class SnapshotSku {
     }
 
     /**
-     * Set the name value.
+     * Set the sku name. Possible values include: 'Standard_LRS', 'Premium_LRS', 'Standard_ZRS'.
      *
      * @param name the name value to set
      * @return the SnapshotSku object itself.
@@ -48,7 +48,7 @@ public class SnapshotSku {
     }
 
     /**
-     * Get the tier value.
+     * Get the sku tier.
      *
      * @return the tier value
      */
