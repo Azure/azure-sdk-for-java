@@ -58,6 +58,10 @@ public class GoneException extends CosmosException {
         this(message, null, new HashMap<>(), requestUri);
     }
 
+    public GoneException(String message, URI requestUri, Exception cause) {
+        this(message, cause, requestUri, (String) null);
+    }
+
     GoneException(String message,
                   Exception innerException,
                   URI requestUri,

@@ -241,7 +241,8 @@ public final class RntbdTransportClient extends TransportClient {
 
                 error = new GoneException(
                     lenientFormat("an unexpected %s occurred: %s", unexpectedError),
-                    address.toString());
+                    address,
+                    error instanceof Exception ? (Exception) error : new RuntimeException(error));
             }
 
             if (this.connectionStateListener != null && error instanceof GoneException) {

@@ -79,7 +79,6 @@ public final class RntbdRequest {
     void encode(final ByteBuf out) {
 
         final int expectedLength = RntbdRequestFrame.LENGTH + this.headers.computeLength();
-        checkState(out.readerIndex() == out.writerIndex());
         final int start = out.writerIndex();
 
         out.writeIntLE(expectedLength);
