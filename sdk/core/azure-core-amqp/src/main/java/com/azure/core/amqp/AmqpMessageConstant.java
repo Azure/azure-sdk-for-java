@@ -98,7 +98,17 @@ public enum AmqpMessageConstant {
     /**
      * The published sequence number when a message was sent from an idempotent producer.
      */
-    PUBLISHED_SEQUENCE_NUMBER_ANNOTATION_NAME("x-opt-published-sequence-number");  // TODO: to confirm with service what string to use
+    PUBLISHED_SEQUENCE_NUMBER_ANNOTATION_NAME("com.microsoft:producer-sequence-number"),
+
+    /**
+     * The published epoch when a message was sent from an idempotent producer.
+     */
+    PUBLISHED_EPOCH("com.microsoft:producer-epoch"),
+
+    /**
+     * The published producer id when a message was sent from an idempotent producer.
+     */
+    PUBLISHED_PRODUCER_ID("com.microsoft:producer-id");
 
     private static final Map<String, AmqpMessageConstant> RESERVED_CONSTANTS_MAP = new HashMap<>();
     private final String constant;

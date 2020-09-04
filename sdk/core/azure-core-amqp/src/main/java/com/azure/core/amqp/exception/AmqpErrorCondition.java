@@ -111,12 +111,12 @@ public enum AmqpErrorCondition {
     /**
      * A producer is disconnected because another higher epoc producer connects to the service.
      */
-    PRODUCER_DISCONNECTED("com.microsoft:publisher-disconnected"),  // TODO: to confirm with service what string to use
+    PRODUCER_DISCONNECTED("com.microsoft:producer-epoch-stolen"),
 
     /**
-     * An idempotent producer is sending an event without a consecutive publishing sequence number.
+     * An idempotent producer is sending an event without a consecutive producer sequence number.
      */
-    INVALID_CLIENT_STATE("com.microsoft:invalid-client-state");  // TODO: to confirm with service what string to use
+    INVALID_CLIENT_STATE("com.microsoft:out-of-order-sequence");
 
     private static final Map<String, AmqpErrorCondition> ERROR_CONSTANT_MAP = new HashMap<>();
     private final String errorCondition;

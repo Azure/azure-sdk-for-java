@@ -45,6 +45,7 @@ import java.util.PriorityQueue;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -89,6 +90,7 @@ class ReactorSender implements AmqpSendLink {
     private volatile Exception lastKnownLinkError;
     private volatile Instant lastKnownErrorReportedAt;
     private volatile int linkSize;
+    private volatile Map<Symbol, Object> remoteProperties;
 
     ReactorSender(String entityPath, Sender sender, SendLinkHandler handler, ReactorProvider reactorProvider,
         TokenManager tokenManager, MessageSerializer messageSerializer, Duration timeout, AmqpRetryPolicy retry) {
@@ -281,6 +283,26 @@ class ReactorSender implements AmqpSendLink {
                         }
 
                         return this.linkSize;
+                    })),
+                timeout, retry);
+        }
+    }
+
+    @Override
+    public Mono<Map<Symbol, Object>> getRemoteProperties() {
+        if (this.remoteProperties != null) {
+            return Mono.just(this.remoteProperties);
+        }
+        synchronized (this) {
+            if (this.remoteProperties != null) {
+                return Mono.just(this.remoteProperties);
+            }
+            return RetryUtil.withRetry(
+                getEndpointStates()
+                    .takeUntil(state -> state == AmqpEndpointState.ACTIVE)
+                    .then(Mono.fromCallable(() -> {
+                        this.remoteProperties = sender.getRemoteProperties();
+                        return this.remoteProperties;
                     })),
                 timeout, retry);
         }
