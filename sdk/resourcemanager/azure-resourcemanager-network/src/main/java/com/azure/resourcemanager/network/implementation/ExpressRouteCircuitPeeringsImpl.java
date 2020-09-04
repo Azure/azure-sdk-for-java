@@ -12,7 +12,7 @@ import com.azure.resourcemanager.network.models.ExpressRouteCircuit;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeering;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeerings;
 import com.azure.resourcemanager.network.models.ExpressRoutePeeringType;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.IndependentChildrenImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.IndependentChildrenImpl;
 import reactor.core.publisher.Mono;
 
 /** Represents Express Route Circuit Peerings collection associated with Network Watcher. */

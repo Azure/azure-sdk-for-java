@@ -8,7 +8,7 @@ import com.azure.resourcemanager.appplatform.fluent.inner.BindingResourceInner;
 import com.azure.resourcemanager.appplatform.models.BindingResourceProperties;
 import com.azure.resourcemanager.appplatform.models.SpringApp;
 import com.azure.resourcemanager.appplatform.models.SpringAppServiceBinding;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.ExternalChildResourceImpl;
 import reactor.core.publisher.Mono;
 
 public class SpringAppServiceBindingImpl

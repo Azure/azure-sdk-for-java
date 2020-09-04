@@ -4,7 +4,7 @@ package com.azure.resourcemanager.cosmos.implementation;
 
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountListReadOnlyKeysResult;
 import com.azure.resourcemanager.cosmos.fluent.inner.DatabaseAccountListReadOnlyKeysResultInner;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.WrapperImpl;
 
 /** The implementation for DatabaseAccountListReadOnlyKeysResult. */
 public class DatabaseAccountListReadOnlyKeysResultImpl extends WrapperImpl<DatabaseAccountListReadOnlyKeysResultInner>

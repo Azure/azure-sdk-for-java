@@ -10,7 +10,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineAgentInstanceView;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionInstanceView;
 import com.azure.resourcemanager.compute.models.VirtualMachineInstanceView;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineInstanceViewInner;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.WrapperImpl;
 import java.util.List;
 
 /** The implementation of ComputeUsage. */

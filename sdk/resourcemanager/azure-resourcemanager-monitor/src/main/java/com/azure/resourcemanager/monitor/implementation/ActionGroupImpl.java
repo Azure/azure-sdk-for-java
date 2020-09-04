@@ -16,7 +16,7 @@ import com.azure.resourcemanager.monitor.models.VoiceReceiver;
 import com.azure.resourcemanager.monitor.models.WebhookReceiver;
 import com.azure.resourcemanager.monitor.fluent.inner.ActionGroupResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.GroupableResourceImpl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;

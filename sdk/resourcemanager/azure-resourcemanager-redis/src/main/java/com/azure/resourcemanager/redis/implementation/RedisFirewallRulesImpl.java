@@ -6,7 +6,7 @@ package com.azure.resourcemanager.redis.implementation;
 import com.azure.resourcemanager.redis.fluent.inner.RedisFirewallRuleInner;
 import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.resourcemanager.redis.models.RedisFirewallRule;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.ExternalChildResourcesCachedImpl;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayConne
 import com.azure.resourcemanager.network.models.VirtualNetworkGateway;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnection;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnections;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.GroupableResourcesImpl;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import reactor.core.publisher.Mono;
 

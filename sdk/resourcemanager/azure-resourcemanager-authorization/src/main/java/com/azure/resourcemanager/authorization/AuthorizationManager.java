@@ -18,7 +18,7 @@ import com.azure.resourcemanager.authorization.models.RoleAssignments;
 import com.azure.resourcemanager.authorization.models.RoleDefinitions;
 import com.azure.resourcemanager.authorization.models.ServicePrincipals;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.internal.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;

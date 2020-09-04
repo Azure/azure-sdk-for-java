@@ -6,7 +6,7 @@ package com.azure.resourcemanager.eventhubs.implementation;
 import com.azure.resourcemanager.eventhubs.EventHubsManager;
 import com.azure.resourcemanager.eventhubs.fluent.NamespacesClient;
 import com.azure.resourcemanager.eventhubs.fluent.inner.EHNamespaceInner;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.TopLevelModifiableResourcesImpl;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceAuthorizationRules;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaces;

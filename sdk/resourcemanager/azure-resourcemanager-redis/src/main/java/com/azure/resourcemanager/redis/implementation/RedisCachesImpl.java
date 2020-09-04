@@ -11,7 +11,7 @@ import com.azure.resourcemanager.redis.fluent.inner.OperationInner;
 import com.azure.resourcemanager.redis.fluent.inner.RedisResourceInner;
 import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.resourcemanager.redis.models.RedisCaches;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.TopLevelModifiableResourcesImpl;
 
 /** The implementation of RedisCaches and its parent interfaces. */
 public class RedisCachesImpl

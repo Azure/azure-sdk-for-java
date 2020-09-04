@@ -7,7 +7,7 @@ import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImage;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImageVersion;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineExtensionImageInner;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.WrapperImpl;
 
 /** The implementation for {@link VirtualMachineExtensionImage}. */
 class VirtualMachineExtensionImageImpl extends WrapperImpl<VirtualMachineExtensionImageInner>

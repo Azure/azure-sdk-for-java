@@ -12,7 +12,7 @@ import com.azure.resourcemanager.appplatform.models.SpringApp;
 import com.azure.resourcemanager.appplatform.models.SpringAppDeployment;
 import com.azure.resourcemanager.appplatform.models.SpringAppDeployments;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesNonCachedImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.ExternalChildResourcesNonCachedImpl;
 import reactor.core.publisher.Mono;
 
 public class SpringAppDeploymentsImpl

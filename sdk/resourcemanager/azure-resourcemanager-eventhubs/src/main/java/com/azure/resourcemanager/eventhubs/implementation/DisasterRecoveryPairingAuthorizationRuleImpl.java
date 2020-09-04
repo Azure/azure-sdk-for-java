@@ -8,7 +8,7 @@ import com.azure.resourcemanager.eventhubs.fluent.inner.AuthorizationRuleInner;
 import com.azure.resourcemanager.eventhubs.models.AccessRights;
 import com.azure.resourcemanager.eventhubs.models.DisasterRecoveryPairingAuthorizationKey;
 import com.azure.resourcemanager.eventhubs.models.DisasterRecoveryPairingAuthorizationRule;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.WrapperImpl;
 import reactor.core.publisher.Mono;
 
 import java.util.List;

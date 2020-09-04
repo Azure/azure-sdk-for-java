@@ -9,7 +9,7 @@ import com.azure.resourcemanager.network.fluent.inner.PacketCaptureResultInner;
 import com.azure.resourcemanager.network.models.PacketCapture;
 import com.azure.resourcemanager.network.models.PacketCaptures;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.CreatableResourcesImpl;
 import reactor.core.publisher.Mono;
 
 /** Represents Packet Captures collection associated with Network Watcher. */

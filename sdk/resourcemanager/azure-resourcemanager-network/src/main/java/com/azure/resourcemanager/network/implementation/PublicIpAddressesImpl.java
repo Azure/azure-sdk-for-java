@@ -10,9 +10,9 @@ import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.PublicIpAddressDnsSettings;
 import com.azure.resourcemanager.network.models.PublicIpAddresses;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.TopLevelModifiableResourcesImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.AcceptedImpl;
 
 import java.util.function.Function;
 

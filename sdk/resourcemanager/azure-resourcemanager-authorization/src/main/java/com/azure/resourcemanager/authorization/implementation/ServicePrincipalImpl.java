@@ -16,7 +16,7 @@ import com.azure.resourcemanager.authorization.fluent.inner.PasswordCredentialIn
 import com.azure.resourcemanager.authorization.fluent.inner.ServicePrincipalInner;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.CreatableUpdatableImpl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;

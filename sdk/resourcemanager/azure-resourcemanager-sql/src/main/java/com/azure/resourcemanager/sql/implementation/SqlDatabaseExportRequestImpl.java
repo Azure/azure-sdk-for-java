@@ -6,7 +6,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.resources.fluentcore.dag.FunctionalTaskItem;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.ExecutableImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.ExecutableImpl;
 import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.sql.models.AuthenticationType;
 import com.azure.resourcemanager.sql.models.ExportRequest;

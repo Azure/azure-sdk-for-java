@@ -8,7 +8,7 @@ import com.azure.resourcemanager.monitor.models.ActivityLogAlert;
 import com.azure.resourcemanager.monitor.models.ActivityLogAlerts;
 import com.azure.resourcemanager.monitor.fluent.inner.ActivityLogAlertResourceInner;
 import com.azure.resourcemanager.monitor.fluent.ActivityLogAlertsClient;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.TopLevelModifiableResourcesImpl;
 
 /** Implementation for {@link ActivityLogAlerts}. */
 class ActivityLogAlertsImpl

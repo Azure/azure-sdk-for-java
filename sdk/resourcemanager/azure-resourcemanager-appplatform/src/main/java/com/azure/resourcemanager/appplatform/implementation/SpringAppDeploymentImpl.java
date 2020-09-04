@@ -17,7 +17,7 @@ import com.azure.resourcemanager.appplatform.models.SpringApp;
 import com.azure.resourcemanager.appplatform.models.SpringAppDeployment;
 import com.azure.resourcemanager.appplatform.models.UserSourceInfo;
 import com.azure.resourcemanager.appplatform.models.UserSourceType;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.ExternalChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.storage.file.share.ShareFileAsyncClient;
 import com.azure.storage.file.share.ShareFileClientBuilder;

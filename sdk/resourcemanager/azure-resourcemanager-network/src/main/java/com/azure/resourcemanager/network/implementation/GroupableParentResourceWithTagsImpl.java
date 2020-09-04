@@ -7,7 +7,7 @@ import com.azure.resourcemanager.network.models.UpdatableWithTags;
 import com.azure.resourcemanager.resources.fluentcore.arm.ManagerBase;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.GroupableParentResourceImpl;
 import reactor.core.publisher.Mono;
 
 /**

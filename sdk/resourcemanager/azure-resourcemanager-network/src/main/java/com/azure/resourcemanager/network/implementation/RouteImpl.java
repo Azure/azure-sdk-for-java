@@ -6,7 +6,7 @@ import com.azure.resourcemanager.network.models.Route;
 import com.azure.resourcemanager.network.models.RouteNextHopType;
 import com.azure.resourcemanager.network.models.RouteTable;
 import com.azure.resourcemanager.network.fluent.inner.RouteInner;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.ChildResourceImpl;
 
 /** Implementation of Route. */
 class RouteImpl extends ChildResourceImpl<RouteInner, RouteTableImpl, RouteTable>

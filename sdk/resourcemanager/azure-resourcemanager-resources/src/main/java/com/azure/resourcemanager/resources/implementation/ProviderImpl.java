@@ -5,7 +5,7 @@ package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.resourcemanager.resources.models.Provider;
 import com.azure.resourcemanager.resources.models.ProviderResourceType;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableWrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.IndexableWrapperImpl;
 import com.azure.resourcemanager.resources.fluent.inner.ProviderInner;
 
 import java.util.List;

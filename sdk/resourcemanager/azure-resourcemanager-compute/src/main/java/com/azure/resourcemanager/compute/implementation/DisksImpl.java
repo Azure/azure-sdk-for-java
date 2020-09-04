@@ -12,9 +12,9 @@ import com.azure.resourcemanager.compute.models.GrantAccessData;
 import com.azure.resourcemanager.compute.fluent.inner.DiskInner;
 import com.azure.resourcemanager.compute.fluent.DisksClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.TopLevelModifiableResourcesImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.AcceptedImpl;
 import reactor.core.publisher.Mono;
 
 import java.util.function.Function;

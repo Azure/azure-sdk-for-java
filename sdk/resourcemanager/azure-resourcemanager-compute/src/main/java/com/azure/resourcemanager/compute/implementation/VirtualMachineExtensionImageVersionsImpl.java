@@ -9,7 +9,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImageVers
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImageVersions;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineExtensionImageInner;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineExtensionImagesClient;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.ReadableWrappersImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation for VirtualMachineExtensionImageVersions. */

@@ -13,7 +13,7 @@ import com.azure.resourcemanager.appservice.models.WebAppBase;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableWrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.IndexableWrapperImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import reactor.core.publisher.Mono;
 

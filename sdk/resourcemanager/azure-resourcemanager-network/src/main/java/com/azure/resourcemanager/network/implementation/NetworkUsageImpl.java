@@ -6,7 +6,7 @@ import com.azure.resourcemanager.network.models.NetworkUsage;
 import com.azure.resourcemanager.network.models.UsageName;
 import com.azure.resourcemanager.network.fluent.inner.UsageInner;
 import com.azure.resourcemanager.network.models.UsageUnit;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.WrapperImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 
 /** The implementation of {@link NetworkUsage}. */

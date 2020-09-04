@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.privatedns.fluent.inner.RecordSetInner;
 import com.azure.resourcemanager.privatedns.models.PrivateDnsRecordSets;
 import com.azure.resourcemanager.privatedns.models.RecordType;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.ReadableWrappersImpl;
 import reactor.core.publisher.Mono;
 
 /** The base implementation for Private Dns Record sets. */

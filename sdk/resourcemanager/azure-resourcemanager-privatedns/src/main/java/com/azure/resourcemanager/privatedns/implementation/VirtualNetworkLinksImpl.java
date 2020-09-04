@@ -10,7 +10,7 @@ import com.azure.resourcemanager.privatedns.models.PrivateDnsZone;
 import com.azure.resourcemanager.privatedns.models.VirtualNetworkLink;
 import com.azure.resourcemanager.privatedns.models.VirtualNetworkLinks;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesNonCachedImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.ExternalChildResourcesNonCachedImpl;
 import reactor.core.publisher.Mono;
 
 /** Implementation of {@link VirtualNetworkLinks}. */

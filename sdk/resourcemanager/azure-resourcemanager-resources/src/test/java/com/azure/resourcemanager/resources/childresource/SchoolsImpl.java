@@ -3,8 +3,8 @@
 
 package com.azure.resourcemanager.resources.childresource;
 
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.ExternalChildResourcesCachedImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.ExternalChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
 import com.azure.resourcemanager.resources.fluentcore.dag.TaskItem;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;

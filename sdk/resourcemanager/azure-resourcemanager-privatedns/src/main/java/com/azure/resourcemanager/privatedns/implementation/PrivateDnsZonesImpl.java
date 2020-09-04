@@ -8,7 +8,7 @@ import com.azure.resourcemanager.privatedns.fluent.inner.PrivateZoneInner;
 import com.azure.resourcemanager.privatedns.models.PrivateDnsZone;
 import com.azure.resourcemanager.privatedns.models.PrivateDnsZones;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.TopLevelModifiableResourcesImpl;
 import reactor.core.publisher.Mono;
 
 /** Implementation of {@link PrivateDnsZones}. */

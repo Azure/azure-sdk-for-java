@@ -20,7 +20,7 @@ import com.azure.resourcemanager.compute.models.SnapshotSkuType;
 import com.azure.resourcemanager.compute.models.SnapshotStorageAccountTypes;
 import com.azure.resourcemanager.compute.fluent.inner.SnapshotInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import reactor.core.publisher.Mono;
 

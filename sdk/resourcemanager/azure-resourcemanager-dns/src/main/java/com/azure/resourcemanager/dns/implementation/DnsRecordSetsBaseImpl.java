@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.dns.models.DnsRecordSets;
 import com.azure.resourcemanager.dns.models.RecordType;
 import com.azure.resourcemanager.dns.fluent.inner.RecordSetInner;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.ReadableWrappersImpl;
 
 /** The base implementation for Dns Record sets. */
 abstract class DnsRecordSetsBaseImpl<RecordSetT, RecordSetImplT extends RecordSetT>

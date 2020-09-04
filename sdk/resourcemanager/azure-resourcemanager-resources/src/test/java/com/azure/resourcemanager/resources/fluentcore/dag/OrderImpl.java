@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.resources.fluentcore.dag;
 
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.CreatableUpdatableImpl;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;

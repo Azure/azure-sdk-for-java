@@ -13,7 +13,7 @@ import com.azure.resourcemanager.monitor.models.ResultType;
 import com.azure.resourcemanager.monitor.models.Unit;
 import com.azure.resourcemanager.monitor.fluent.inner.LocalizableStringInner;
 import com.azure.resourcemanager.monitor.fluent.inner.MetricDefinitionInner;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.WrapperImpl;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;

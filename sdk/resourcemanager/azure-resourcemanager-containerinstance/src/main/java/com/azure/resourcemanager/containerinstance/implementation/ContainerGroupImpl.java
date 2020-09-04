@@ -34,7 +34,7 @@ import com.azure.resourcemanager.network.fluent.inner.NetworkProfileInner;
 import com.azure.resourcemanager.network.fluent.inner.SubnetInner;
 import com.azure.resourcemanager.network.models.ContainerNetworkInterfaceConfiguration;
 import com.azure.resourcemanager.network.models.Network;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.GroupableParentResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccount;

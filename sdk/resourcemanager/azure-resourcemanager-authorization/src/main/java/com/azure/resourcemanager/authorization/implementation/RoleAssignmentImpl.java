@@ -15,7 +15,7 @@ import com.azure.resourcemanager.authorization.models.ServicePrincipal;
 import com.azure.resourcemanager.authorization.fluent.inner.RoleAssignmentInner;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.CreatableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;

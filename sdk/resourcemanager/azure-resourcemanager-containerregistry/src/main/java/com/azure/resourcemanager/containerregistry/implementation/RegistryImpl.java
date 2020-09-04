@@ -19,7 +19,7 @@ import com.azure.resourcemanager.containerregistry.models.WebhookOperations;
 import com.azure.resourcemanager.containerregistry.fluent.inner.RegistryInner;
 import com.azure.resourcemanager.containerregistry.fluent.inner.RunInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.StorageManager;

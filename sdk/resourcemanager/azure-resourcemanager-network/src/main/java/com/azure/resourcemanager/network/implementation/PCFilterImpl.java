@@ -6,7 +6,7 @@ import com.azure.resourcemanager.network.models.PCFilter;
 import com.azure.resourcemanager.network.models.PacketCapture;
 import com.azure.resourcemanager.network.models.PacketCaptureFilter;
 import com.azure.resourcemanager.network.models.PcProtocol;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableWrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.IndexableWrapperImpl;
 import java.util.List;
 
 /** Represents Packet Capture filter. */

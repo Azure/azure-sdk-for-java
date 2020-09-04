@@ -18,7 +18,7 @@ import com.azure.resourcemanager.appplatform.models.SpringService;
 import com.azure.resourcemanager.appplatform.models.SpringServiceCertificates;
 import com.azure.resourcemanager.appplatform.models.TestKeyType;
 import com.azure.resourcemanager.appplatform.models.TestKeys;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.dag.FunctionalTaskItem;
 import reactor.core.publisher.Mono;
 

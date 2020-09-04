@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.storage.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.WrapperImpl;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.fluent.BlobContainersClient;
 import com.azure.resourcemanager.storage.models.BlobContainer;

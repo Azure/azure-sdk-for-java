@@ -5,7 +5,7 @@ package com.azure.resourcemanager.dns.implementation;
 import com.azure.resourcemanager.dns.models.DnsRecordSet;
 import com.azure.resourcemanager.dns.models.DnsZone;
 import com.azure.resourcemanager.dns.fluent.inner.RecordSetInner;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesNonCachedImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.ExternalChildResourcesNonCachedImpl;
 
 /** Represents an record set collection associated with a DNS zone. */
 class DnsRecordSetsImpl

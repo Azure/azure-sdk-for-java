@@ -17,7 +17,7 @@ import com.azure.resourcemanager.containerregistry.models.Registry;
 import com.azure.resourcemanager.containerregistry.models.RegistryCredentials;
 import com.azure.resourcemanager.containerregistry.models.RegistryUsage;
 import com.azure.resourcemanager.containerregistry.models.SourceUploadDefinition;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.GroupableResourcesImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import com.azure.resourcemanager.storage.StorageManager;
 import reactor.core.publisher.Mono;

@@ -13,7 +13,7 @@ import com.azure.resourcemanager.appplatform.models.SpringService;
 import com.azure.resourcemanager.appplatform.models.SpringServiceCertificate;
 import com.azure.resourcemanager.appplatform.models.SpringServiceCertificates;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesNonCachedImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.ExternalChildResourcesNonCachedImpl;
 import reactor.core.publisher.Mono;
 
 public class SpringServiceCertificatesImpl

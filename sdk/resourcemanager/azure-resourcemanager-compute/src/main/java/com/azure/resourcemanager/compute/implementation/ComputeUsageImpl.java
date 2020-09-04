@@ -6,7 +6,7 @@ import com.azure.resourcemanager.compute.models.ComputeUsage;
 import com.azure.resourcemanager.compute.models.ComputeUsageUnit;
 import com.azure.resourcemanager.compute.models.UsageName;
 import com.azure.resourcemanager.compute.fluent.inner.UsageInner;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.WrapperImpl;
 
 /** The implementation of ComputeUsage. */
 class ComputeUsageImpl extends WrapperImpl<UsageInner> implements ComputeUsage {

@@ -6,7 +6,7 @@ import com.azure.resourcemanager.containerregistry.models.EventRequestMessage;
 import com.azure.resourcemanager.containerregistry.models.EventResponseMessage;
 import com.azure.resourcemanager.containerregistry.models.WebhookEventInfo;
 import com.azure.resourcemanager.containerregistry.fluent.inner.EventInner;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.WrapperImpl;
 
 /** Response containing the webhook event info. */
 public class WebhookEventInfoImpl extends WrapperImpl<EventInner> implements WebhookEventInfo {

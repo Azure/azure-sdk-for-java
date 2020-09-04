@@ -8,11 +8,11 @@ import com.azure.resourcemanager.dns.fluent.inner.ZoneInner;
 import com.azure.resourcemanager.dns.models.DnsZone;
 import com.azure.resourcemanager.dns.models.DnsZones;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.TopLevelModifiableResourcesImpl;
 import reactor.core.publisher.Mono;
 
 /** Implementation of DnsZones. */
-public class DnsZonesImpl 
+public class DnsZonesImpl
     extends TopLevelModifiableResourcesImpl<DnsZone, DnsZoneImpl, ZoneInner, ZonesClient, DnsZoneManager>
     implements DnsZones {
 

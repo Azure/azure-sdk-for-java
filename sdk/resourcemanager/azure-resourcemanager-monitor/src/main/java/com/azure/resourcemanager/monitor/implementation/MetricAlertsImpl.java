@@ -8,7 +8,7 @@ import com.azure.resourcemanager.monitor.models.MetricAlert;
 import com.azure.resourcemanager.monitor.models.MetricAlerts;
 import com.azure.resourcemanager.monitor.fluent.inner.MetricAlertResourceInner;
 import com.azure.resourcemanager.monitor.fluent.MetricAlertsClient;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.TopLevelModifiableResourcesImpl;
 
 /** Implementation for {@link MetricAlerts}. */
 class MetricAlertsImpl

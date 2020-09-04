@@ -6,7 +6,7 @@ import com.azure.resourcemanager.network.models.NextHop;
 import com.azure.resourcemanager.network.models.NextHopParameters;
 import com.azure.resourcemanager.network.models.NextHopType;
 import com.azure.resourcemanager.network.fluent.inner.NextHopResultInner;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.ExecutableImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.ExecutableImpl;
 import reactor.core.publisher.Mono;
 
 /** Implementation of NextHop. */

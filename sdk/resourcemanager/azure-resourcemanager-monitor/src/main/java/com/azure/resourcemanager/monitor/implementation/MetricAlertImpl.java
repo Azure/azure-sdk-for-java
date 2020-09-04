@@ -18,7 +18,7 @@ import com.azure.resourcemanager.monitor.models.MultiMetricCriteria;
 import com.azure.resourcemanager.monitor.fluent.inner.MetricAlertResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.GroupableResourceImpl;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;

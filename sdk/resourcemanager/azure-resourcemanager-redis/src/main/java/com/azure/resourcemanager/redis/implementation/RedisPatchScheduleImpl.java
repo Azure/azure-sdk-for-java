@@ -8,7 +8,7 @@ import com.azure.resourcemanager.redis.models.DefaultName;
 import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.resourcemanager.redis.models.RedisPatchSchedule;
 import com.azure.resourcemanager.redis.models.ScheduleEntry;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.ExternalChildResourceImpl;
 import java.util.Collections;
 import java.util.List;
 import reactor.core.publisher.Mono;

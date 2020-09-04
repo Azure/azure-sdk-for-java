@@ -20,7 +20,7 @@ import com.azure.resourcemanager.privatedns.models.SoaRecordSet;
 import com.azure.resourcemanager.privatedns.models.SrvRecordSets;
 import com.azure.resourcemanager.privatedns.models.TxtRecordSets;
 import com.azure.resourcemanager.privatedns.models.VirtualNetworkLinks;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ETagState;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import reactor.core.publisher.Mono;

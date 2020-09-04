@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.RefreshableWrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.RefreshableWrapperImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.sql.models.ReplicationLink;

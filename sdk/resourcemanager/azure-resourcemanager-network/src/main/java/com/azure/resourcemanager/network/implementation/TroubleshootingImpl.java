@@ -7,7 +7,7 @@ import com.azure.resourcemanager.network.models.Troubleshooting;
 import com.azure.resourcemanager.network.models.TroubleshootingDetails;
 import com.azure.resourcemanager.network.models.TroubleshootingParameters;
 import com.azure.resourcemanager.network.fluent.inner.TroubleshootingResultInner;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.ExecutableImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.ExecutableImpl;
 import java.time.OffsetDateTime;
 import java.util.List;
 import reactor.core.publisher.Mono;

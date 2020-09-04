@@ -6,7 +6,7 @@ package com.azure.resourcemanager.keyvault.implementation;
 import com.azure.resourcemanager.keyvault.models.CheckNameAvailabilityResult;
 import com.azure.resourcemanager.keyvault.models.Reason;
 import com.azure.resourcemanager.keyvault.fluent.inner.CheckNameAvailabilityResultInner;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.WrapperImpl;
 
 /** The CheckNameAvailability operation response. */
 public class CheckNameAvailabilityResultImpl extends WrapperImpl<CheckNameAvailabilityResultInner>

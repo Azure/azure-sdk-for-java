@@ -9,7 +9,7 @@ import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.models.Deployment;
 import com.azure.resourcemanager.resources.models.Deployments;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.SupportsGettingByResourceGroupImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.SupportsGettingByResourceGroupImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import com.azure.resourcemanager.resources.fluent.inner.DeploymentExtendedInner;

@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.trafficmanager.implementation;
 
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.resourcemanager.trafficmanager.TrafficManager;
 import com.azure.resourcemanager.trafficmanager.fluent.ProfilesClient;

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.resources.models.ResourceGroups;
 import com.azure.resourcemanager.resources.fluent.inner.PolicyAssignmentInner;
 import com.azure.resourcemanager.resources.fluent.PolicyAssignmentsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.CreatableWrappersImpl;
 import reactor.core.publisher.Mono;
 
 /**

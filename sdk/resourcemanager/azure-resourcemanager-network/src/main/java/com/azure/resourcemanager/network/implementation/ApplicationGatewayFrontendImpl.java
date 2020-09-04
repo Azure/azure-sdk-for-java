@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.Subnet;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.ChildResourceImpl;
 
 /** Implementation for ApplicationGatewayFrontend. */
 class ApplicationGatewayFrontendImpl

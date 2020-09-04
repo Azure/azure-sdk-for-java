@@ -9,7 +9,7 @@ import com.azure.resourcemanager.network.models.ApplicationGateway;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySkuName;
 import com.azure.resourcemanager.network.models.ApplicationGateways;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.TopLevelModifiableResourcesImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ReactorMapper;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

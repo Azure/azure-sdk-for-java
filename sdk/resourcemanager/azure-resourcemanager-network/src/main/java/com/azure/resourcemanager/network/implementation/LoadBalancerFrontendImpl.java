@@ -19,7 +19,7 @@ import com.azure.resourcemanager.network.fluent.inner.PublicIpAddressInner;
 import com.azure.resourcemanager.network.fluent.inner.SubnetInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.ChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import java.util.ArrayList;
 import java.util.Collections;

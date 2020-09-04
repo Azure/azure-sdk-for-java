@@ -7,7 +7,7 @@ import com.azure.resourcemanager.cosmos.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.cosmos.fluent.inner.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.cosmos.models.CosmosDBAccount;
 import com.azure.resourcemanager.cosmos.models.PrivateEndpointConnection;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.ExternalChildResourcesCachedImpl;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

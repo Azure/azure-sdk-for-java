@@ -8,7 +8,7 @@ import com.azure.resourcemanager.monitor.models.AutoscaleSetting;
 import com.azure.resourcemanager.monitor.models.AutoscaleSettings;
 import com.azure.resourcemanager.monitor.fluent.inner.AutoscaleSettingResourceInner;
 import com.azure.resourcemanager.monitor.fluent.AutoscaleSettingsClient;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.TopLevelModifiableResourcesImpl;
 
 /** Implementation for {@link AutoscaleSettings}. */
 public class AutoscaleSettingsImpl

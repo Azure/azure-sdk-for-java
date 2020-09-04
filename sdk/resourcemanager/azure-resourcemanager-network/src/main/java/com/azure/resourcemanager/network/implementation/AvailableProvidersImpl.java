@@ -7,7 +7,7 @@ import com.azure.resourcemanager.network.models.AvailableProvidersListCountry;
 import com.azure.resourcemanager.network.models.AvailableProvidersListParameters;
 import com.azure.resourcemanager.network.models.NetworkWatcher;
 import com.azure.resourcemanager.network.fluent.inner.AvailableProvidersListInner;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.ExecutableImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.ExecutableImpl;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;

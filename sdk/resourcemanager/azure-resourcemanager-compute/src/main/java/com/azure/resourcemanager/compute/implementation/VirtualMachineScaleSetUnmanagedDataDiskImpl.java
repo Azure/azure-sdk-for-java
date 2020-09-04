@@ -8,7 +8,7 @@ import com.azure.resourcemanager.compute.models.DiskCreateOptionTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSet;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetDataDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetUnmanagedDataDisk;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.ChildResourceImpl;
 import java.util.ArrayList;
 import java.util.List;
 

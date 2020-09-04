@@ -15,7 +15,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineSize;
 import com.azure.resourcemanager.compute.fluent.inner.AvailabilitySetInner;
 import com.azure.resourcemanager.compute.fluent.inner.ProximityPlacementGroupInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import java.util.Collections;
 import java.util.HashSet;

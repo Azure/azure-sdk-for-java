@@ -11,7 +11,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPool
 import com.azure.resourcemanager.containerservice.models.OSType;
 import com.azure.resourcemanager.containerservice.models.OrchestratorServiceBase;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.ChildResourceImpl;
 
 /** The implementation for KubernetesClusterAgentPool and its create and update interfaces. */
 public class KubernetesClusterAgentPoolImpl

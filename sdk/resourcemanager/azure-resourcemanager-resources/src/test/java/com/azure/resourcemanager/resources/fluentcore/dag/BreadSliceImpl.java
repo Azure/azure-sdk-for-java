@@ -5,7 +5,7 @@ package com.azure.resourcemanager.resources.fluentcore.dag;
 
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Executable;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.ExecutableImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.ExecutableImpl;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;

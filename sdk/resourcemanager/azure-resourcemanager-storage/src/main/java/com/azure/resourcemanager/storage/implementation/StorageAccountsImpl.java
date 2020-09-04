@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.storage.implementation;
 
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.TopLevelModifiableResourcesImpl;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.fluent.StorageAccountsClient;
 import com.azure.resourcemanager.storage.models.CheckNameAvailabilityResult;

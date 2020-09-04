@@ -10,7 +10,7 @@ import com.azure.resourcemanager.compute.models.DiskCreateOptionTypes;
 import com.azure.resourcemanager.compute.models.VirtualHardDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineUnmanagedDataDisk;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.ChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import java.util.ArrayList;

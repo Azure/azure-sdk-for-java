@@ -9,7 +9,7 @@ import com.azure.resourcemanager.network.fluent.inner.ConnectionMonitorResultInn
 import com.azure.resourcemanager.network.models.ConnectionMonitor;
 import com.azure.resourcemanager.network.models.ConnectionMonitors;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.CreatableResourcesImpl;
 import reactor.core.publisher.Mono;
 
 /** Represents Connection Monitors collection associated with Network Watcher. */

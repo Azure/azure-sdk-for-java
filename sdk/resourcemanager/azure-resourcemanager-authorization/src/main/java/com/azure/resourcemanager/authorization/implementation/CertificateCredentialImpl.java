@@ -8,7 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.models.CertificateCredential;
 import com.azure.resourcemanager.authorization.models.CertificateType;
 import com.azure.resourcemanager.authorization.fluent.inner.KeyCredentialInner;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.IndexableRefreshableWrapperImpl;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;

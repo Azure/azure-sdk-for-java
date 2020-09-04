@@ -6,7 +6,7 @@ package com.azure.resourcemanager.monitor.implementation;
 import com.azure.resourcemanager.monitor.models.Metric;
 import com.azure.resourcemanager.monitor.models.MetricCollection;
 import com.azure.resourcemanager.monitor.fluent.inner.ResponseInner;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.WrapperImpl;
 import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;

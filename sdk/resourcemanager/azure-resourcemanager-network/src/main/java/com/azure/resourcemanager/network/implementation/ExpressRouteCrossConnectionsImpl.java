@@ -10,7 +10,7 @@ import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCrossConnectio
 import com.azure.resourcemanager.network.models.ExpressRouteCrossConnection;
 import com.azure.resourcemanager.network.models.ExpressRouteCrossConnections;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.ReadableWrappersImpl;
 import reactor.core.publisher.Mono;
 
 public class ExpressRouteCrossConnectionsImpl

@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.trafficmanager.implementation;
 
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.WrapperImpl;
 import com.azure.resourcemanager.trafficmanager.models.GeographicLocation;
 import com.azure.resourcemanager.trafficmanager.models.Region;
 import java.util.ArrayList;

@@ -6,7 +6,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineExtensionInstanceV
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVM;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMInstanceExtension;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineExtensionInner;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.ChildResourceImpl;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;

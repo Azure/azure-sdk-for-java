@@ -8,7 +8,7 @@ import com.azure.resourcemanager.appplatform.fluent.inner.CustomDomainResourceIn
 import com.azure.resourcemanager.appplatform.models.CustomDomainProperties;
 import com.azure.resourcemanager.appplatform.models.SpringApp;
 import com.azure.resourcemanager.appplatform.models.SpringAppDomain;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.ExternalChildResourceImpl;
 import reactor.core.publisher.Mono;
 
 public class SpringAppDomainImpl

@@ -15,7 +15,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterAddonProf
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePrincipalProfile;
 import com.azure.resourcemanager.containerservice.fluent.inner.ManagedClusterInner;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.GroupableResourceImpl;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

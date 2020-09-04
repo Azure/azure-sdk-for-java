@@ -20,7 +20,7 @@ import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceAuthorization
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaces;
 import com.azure.resourcemanager.eventhubs.models.EventHubs;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.internal.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;

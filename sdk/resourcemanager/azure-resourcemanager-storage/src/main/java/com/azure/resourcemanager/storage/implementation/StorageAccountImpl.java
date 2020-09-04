@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.storage.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.fluent.StorageAccountsClient;

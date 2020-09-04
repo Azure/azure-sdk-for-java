@@ -8,7 +8,7 @@ import com.azure.resourcemanager.appplatform.fluent.inner.CertificateResourceInn
 import com.azure.resourcemanager.appplatform.models.CertificateProperties;
 import com.azure.resourcemanager.appplatform.models.SpringService;
 import com.azure.resourcemanager.appplatform.models.SpringServiceCertificate;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.ExternalChildResourceImpl;
 import reactor.core.publisher.Mono;
 
 public class SpringServiceCertificateImpl

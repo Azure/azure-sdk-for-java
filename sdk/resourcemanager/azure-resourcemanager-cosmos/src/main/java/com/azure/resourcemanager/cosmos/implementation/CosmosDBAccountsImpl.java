@@ -18,7 +18,7 @@ import com.azure.resourcemanager.cosmos.models.FailoverPolicies;
 import com.azure.resourcemanager.cosmos.models.FailoverPolicy;
 import com.azure.resourcemanager.cosmos.models.KeyKind;
 import com.azure.resourcemanager.cosmos.models.Location;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.GroupableResourcesImpl;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;

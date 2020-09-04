@@ -7,7 +7,7 @@ import com.azure.resourcemanager.network.fluent.RouteTablesClient;
 import com.azure.resourcemanager.network.fluent.inner.RouteTableInner;
 import com.azure.resourcemanager.network.models.RouteTable;
 import com.azure.resourcemanager.network.models.RouteTables;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.TopLevelModifiableResourcesImpl;
 
 /** Implementation for RouteTables. */
 public class RouteTablesImpl

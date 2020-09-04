@@ -9,7 +9,7 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.resourcemanager.keyvault.models.Key;
 import com.azure.resourcemanager.keyvault.models.Keys;
 import com.azure.resourcemanager.keyvault.models.Vault;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.CreatableWrappersImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;

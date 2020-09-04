@@ -8,7 +8,7 @@ import com.azure.resourcemanager.appservice.models.Contact;
 import com.azure.resourcemanager.appservice.models.DomainContact;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryPhoneCode;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.ChildResourceImpl;
 
 /** Implementation for {@link DomainContact} and its create and update interfaces. */
 class DomainContactImpl extends ChildResourceImpl<Contact, AppServiceDomainImpl, AppServiceDomain>

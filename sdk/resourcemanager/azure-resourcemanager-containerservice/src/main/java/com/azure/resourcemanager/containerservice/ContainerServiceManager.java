@@ -8,7 +8,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.containerservice.implementation.KubernetesClustersImpl;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusters;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.internal.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;

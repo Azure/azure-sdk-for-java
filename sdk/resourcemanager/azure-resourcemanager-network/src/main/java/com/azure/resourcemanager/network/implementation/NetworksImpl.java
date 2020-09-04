@@ -10,7 +10,7 @@ import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.DhcpOptions;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.Networks;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.TopLevelModifiableResourcesImpl;
 
 import java.util.ArrayList;
 

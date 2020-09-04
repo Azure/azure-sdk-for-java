@@ -7,7 +7,7 @@ import com.azure.resourcemanager.appservice.models.MSDeployCore;
 import com.azure.resourcemanager.appservice.models.WebAppBase;
 import com.azure.resourcemanager.appservice.models.WebDeployment;
 import com.azure.resourcemanager.appservice.fluent.inner.MSDeployStatusInner;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.ExecutableImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.ExecutableImpl;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -7,7 +7,7 @@ import com.azure.resourcemanager.appservice.models.WebAppBase;
 import com.azure.resourcemanager.appservice.models.WebAppSourceControl;
 import com.azure.resourcemanager.appservice.fluent.inner.SiteSourceControlInner;
 import com.azure.resourcemanager.appservice.fluent.inner.SourceControlInner;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableWrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.IndexableWrapperImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import reactor.core.publisher.Mono;
 

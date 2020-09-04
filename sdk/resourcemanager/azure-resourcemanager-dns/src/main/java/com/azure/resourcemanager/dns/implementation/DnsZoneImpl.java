@@ -22,7 +22,7 @@ import com.azure.resourcemanager.dns.models.TxtRecordSets;
 import com.azure.resourcemanager.dns.models.ZoneType;
 import com.azure.resourcemanager.dns.fluent.inner.RecordSetInner;
 import com.azure.resourcemanager.dns.fluent.inner.ZoneInner;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ETagState;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;

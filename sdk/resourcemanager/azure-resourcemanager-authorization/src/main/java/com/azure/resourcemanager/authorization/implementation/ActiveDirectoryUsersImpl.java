@@ -11,7 +11,7 @@ import com.azure.resourcemanager.authorization.models.ActiveDirectoryUsers;
 import com.azure.resourcemanager.authorization.models.GraphErrorException;
 import com.azure.resourcemanager.authorization.fluent.inner.UserInner;
 import com.azure.resourcemanager.authorization.fluent.UsersClient;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.CreatableWrappersImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 

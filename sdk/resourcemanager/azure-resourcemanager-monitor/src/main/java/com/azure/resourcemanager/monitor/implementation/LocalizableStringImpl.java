@@ -5,7 +5,7 @@ package com.azure.resourcemanager.monitor.implementation;
 
 import com.azure.resourcemanager.monitor.models.LocalizableString;
 import com.azure.resourcemanager.monitor.fluent.inner.LocalizableStringInner;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.WrapperImpl;
 
 /** The {@link LocalizableString} wrapper class implementation. */
 class LocalizableStringImpl extends WrapperImpl<LocalizableStringInner> implements LocalizableString {

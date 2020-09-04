@@ -8,7 +8,7 @@ import com.azure.resourcemanager.monitor.models.Metric;
 import com.azure.resourcemanager.monitor.models.TimeSeriesElement;
 import com.azure.resourcemanager.monitor.models.Unit;
 import com.azure.resourcemanager.monitor.fluent.inner.MetricInner;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.WrapperImpl;
 import java.util.List;
 
 /** The Azure {@link Metric} wrapper class implementation. */

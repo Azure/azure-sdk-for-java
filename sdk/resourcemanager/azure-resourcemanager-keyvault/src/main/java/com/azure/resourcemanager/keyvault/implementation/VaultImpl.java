@@ -26,7 +26,7 @@ import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.keyvault.models.VaultCreateOrUpdateParameters;
 import com.azure.resourcemanager.keyvault.models.VaultProperties;
 import com.azure.resourcemanager.keyvault.models.VirtualNetworkRule;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.security.keyvault.keys.KeyAsyncClient;

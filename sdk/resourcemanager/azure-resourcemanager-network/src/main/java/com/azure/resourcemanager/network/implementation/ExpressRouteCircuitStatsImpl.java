@@ -4,7 +4,7 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitStats;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitStatsInner;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.WrapperImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 
 /** Implementation for {@link ExpressRouteCircuitStats}. */

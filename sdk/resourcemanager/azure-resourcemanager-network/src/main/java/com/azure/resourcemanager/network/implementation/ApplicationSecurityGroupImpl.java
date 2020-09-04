@@ -5,7 +5,7 @@ package com.azure.resourcemanager.network.implementation;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.models.ApplicationSecurityGroup;
 import com.azure.resourcemanager.network.fluent.inner.ApplicationSecurityGroupInner;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.GroupableResourceImpl;
 import reactor.core.publisher.Mono;
 
 /** Implementation for ApplicationSecurityGroup and its create and update interfaces. */

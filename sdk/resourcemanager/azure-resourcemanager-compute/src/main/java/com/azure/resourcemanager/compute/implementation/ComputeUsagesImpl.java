@@ -9,7 +9,7 @@ import com.azure.resourcemanager.compute.models.ComputeUsages;
 import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.UsageInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.ReadableWrappersImpl;
 
 /** The implementation of {@link ComputeUsages}. */
 public class ComputeUsagesImpl extends ReadableWrappersImpl<ComputeUsage, ComputeUsageImpl, UsageInner>

@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.resources.childresource;
 
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.ExternalChildResourcesCachedImpl;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;

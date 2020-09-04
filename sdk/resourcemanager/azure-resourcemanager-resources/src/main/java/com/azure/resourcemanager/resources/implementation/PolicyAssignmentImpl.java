@@ -7,7 +7,7 @@ import com.azure.resourcemanager.resources.models.GenericResource;
 import com.azure.resourcemanager.resources.models.PolicyAssignment;
 import com.azure.resourcemanager.resources.models.PolicyDefinition;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.CreatableImpl;
 import com.azure.resourcemanager.resources.fluent.inner.PolicyAssignmentInner;
 import com.azure.resourcemanager.resources.fluent.PolicyAssignmentsClient;
 import reactor.core.publisher.Mono;

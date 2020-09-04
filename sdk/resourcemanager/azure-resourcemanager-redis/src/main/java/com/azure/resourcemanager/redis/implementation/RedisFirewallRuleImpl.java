@@ -7,7 +7,7 @@ import com.azure.resourcemanager.redis.fluent.inner.RedisFirewallRuleInner;
 import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.resourcemanager.redis.models.RedisFirewallRule;
 import com.azure.resourcemanager.redis.models.RedisFirewallRuleCreateParameters;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.ExternalChildResourceImpl;
 import reactor.core.publisher.Mono;
 
 /** The Azure {@link RedisFirewallRule} wrapper class implementation. */

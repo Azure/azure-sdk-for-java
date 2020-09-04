@@ -12,7 +12,7 @@ import com.azure.resourcemanager.monitor.models.EmailNotification;
 import com.azure.resourcemanager.monitor.models.WebhookNotification;
 import com.azure.resourcemanager.monitor.fluent.inner.AutoscaleProfileInner;
 import com.azure.resourcemanager.monitor.fluent.inner.AutoscaleSettingResourceInner;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.GroupableResourceImpl;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

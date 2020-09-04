@@ -12,7 +12,7 @@ import com.azure.resourcemanager.compute.models.ComputeSkus;
 import com.azure.resourcemanager.compute.fluent.inner.ResourceSkuInner;
 import com.azure.resourcemanager.compute.fluent.ResourceSkusClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.ReadableWrappersImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Mono;
 

@@ -9,7 +9,7 @@ import com.azure.resourcemanager.compute.models.PurchasePlan;
 import com.azure.resourcemanager.compute.models.VirtualMachineImage;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineImageInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableWrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.IndexableWrapperImpl;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;

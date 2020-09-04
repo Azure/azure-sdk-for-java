@@ -12,7 +12,7 @@ import com.azure.resourcemanager.network.models.PacketCaptureFilter;
 import com.azure.resourcemanager.network.models.PacketCaptureStatus;
 import com.azure.resourcemanager.network.models.PacketCaptureStorageLocation;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.CreatableUpdatableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import reactor.core.publisher.Mono;
 

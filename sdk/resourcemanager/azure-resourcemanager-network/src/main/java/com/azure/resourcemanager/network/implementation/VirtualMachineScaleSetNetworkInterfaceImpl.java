@@ -12,7 +12,7 @@ import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNicIpConfi
 import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceIpConfigurationInner;
 import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.ResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import java.util.ArrayList;
 import java.util.Collections;

@@ -8,7 +8,7 @@ import com.azure.resourcemanager.eventhubs.fluent.inner.AuthorizationRuleInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.WrapperImpl;
 import reactor.core.publisher.Mono;
 
 abstract class AuthorizationRulesBaseImpl<InnerT, RuleT, RuleImpl>

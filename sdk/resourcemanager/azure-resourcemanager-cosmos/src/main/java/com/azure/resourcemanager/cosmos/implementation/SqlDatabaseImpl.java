@@ -4,7 +4,7 @@ package com.azure.resourcemanager.cosmos.implementation;
 
 import com.azure.resourcemanager.cosmos.models.SqlDatabase;
 import com.azure.resourcemanager.cosmos.fluent.inner.SqlDatabaseGetResultsInner;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.WrapperImpl;
 
 /** An Azure Cosmos DB SQL database. */
 public class SqlDatabaseImpl extends WrapperImpl<SqlDatabaseGetResultsInner> implements SqlDatabase {

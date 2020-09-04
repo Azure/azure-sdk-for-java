@@ -7,7 +7,7 @@ import com.azure.resourcemanager.network.fluent.ApplicationSecurityGroupsClient;
 import com.azure.resourcemanager.network.fluent.inner.ApplicationSecurityGroupInner;
 import com.azure.resourcemanager.network.models.ApplicationSecurityGroup;
 import com.azure.resourcemanager.network.models.ApplicationSecurityGroups;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.TopLevelModifiableResourcesImpl;
 
 /** Implementation for ApplicationSecurityGroups. */
 public class ApplicationSecurityGroupsImpl

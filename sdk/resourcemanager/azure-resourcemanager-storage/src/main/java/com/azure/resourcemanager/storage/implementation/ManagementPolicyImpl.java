@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.storage.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.CreatableUpdatableImpl;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.fluent.ManagementPoliciesClient;
 import com.azure.resourcemanager.storage.models.BlobTypes;

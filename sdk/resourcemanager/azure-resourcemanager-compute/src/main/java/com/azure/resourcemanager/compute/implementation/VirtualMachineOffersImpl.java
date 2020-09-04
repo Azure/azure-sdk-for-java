@@ -9,7 +9,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineOffers;
 import com.azure.resourcemanager.compute.models.VirtualMachinePublisher;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineImageResourceInner;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineImagesClient;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.ReadableWrappersImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation for {@link VirtualMachineOffers}. */

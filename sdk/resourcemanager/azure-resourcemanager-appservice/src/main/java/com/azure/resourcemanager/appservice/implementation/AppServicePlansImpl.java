@@ -8,7 +8,7 @@ import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.AppServicePlans;
 import com.azure.resourcemanager.appservice.fluent.inner.AppServicePlanInner;
 import com.azure.resourcemanager.appservice.fluent.AppServicePlansClient;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.TopLevelModifiableResourcesImpl;
 
 /** The implementation for AppServicePlans. */
 public class AppServicePlansImpl

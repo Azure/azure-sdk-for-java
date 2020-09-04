@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.trafficmanager.implementation;
 
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.TopLevelModifiableResourcesImpl;
 import com.azure.resourcemanager.trafficmanager.TrafficManager;
 import com.azure.resourcemanager.trafficmanager.fluent.ProfilesClient;
 import com.azure.resourcemanager.trafficmanager.fluent.inner.EndpointInner;

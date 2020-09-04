@@ -5,7 +5,7 @@ package com.azure.resourcemanager.compute.implementation;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
 import com.azure.resourcemanager.compute.models.RunCommandResult;
 import com.azure.resourcemanager.compute.fluent.inner.RunCommandResultInner;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.WrapperImpl;
 import java.util.List;
 
 /** The implementation of ComputeUsage. */

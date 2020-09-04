@@ -7,7 +7,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineExtension;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineExtensionInner;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineExtensionsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.ExternalChildResourcesCachedImpl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

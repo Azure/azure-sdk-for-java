@@ -17,7 +17,7 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayUrlPathMap;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayRequestRoutingRuleInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.ChildResourceImpl;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;

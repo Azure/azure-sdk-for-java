@@ -12,7 +12,7 @@ import com.azure.resourcemanager.network.models.Subnet;
 import com.azure.resourcemanager.network.models.TransportProtocol;
 import com.azure.resourcemanager.network.fluent.inner.InboundNatRuleInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.ChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 

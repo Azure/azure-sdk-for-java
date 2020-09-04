@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.models.ExpressRouteCrossConnection;
 import com.azure.resourcemanager.network.models.ExpressRouteCrossConnectionPeering;
 import com.azure.resourcemanager.network.models.ExpressRouteCrossConnectionPeerings;
 import com.azure.resourcemanager.network.models.ExpressRoutePeeringType;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.IndependentChildrenImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.IndependentChildrenImpl;
 import reactor.core.publisher.Mono;
 
 /** Represents Express Route Cross Connection Peerings collection associated with Network Watcher. */

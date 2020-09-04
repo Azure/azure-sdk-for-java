@@ -11,7 +11,7 @@ import com.azure.resourcemanager.compute.models.Gallery;
 import com.azure.resourcemanager.compute.fluent.GalleriesClient;
 import com.azure.resourcemanager.compute.fluent.inner.GalleryInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.GroupableResourcesImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ReactorMapper;
 import java.util.ArrayList;
 import java.util.Arrays;

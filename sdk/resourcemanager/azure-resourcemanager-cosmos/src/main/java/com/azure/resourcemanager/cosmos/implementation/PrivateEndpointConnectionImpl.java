@@ -8,7 +8,7 @@ import com.azure.resourcemanager.cosmos.models.CosmosDBAccount;
 import com.azure.resourcemanager.cosmos.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.cosmos.models.PrivateEndpointProperty;
 import com.azure.resourcemanager.cosmos.models.PrivateLinkServiceConnectionStateProperty;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.ExternalChildResourceImpl;
 import reactor.core.publisher.Mono;
 
 /** A private endpoint connection. */

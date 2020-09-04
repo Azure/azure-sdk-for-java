@@ -4,7 +4,7 @@ package com.azure.resourcemanager.cosmos.implementation;
 
 import com.azure.resourcemanager.cosmos.models.PrivateLinkResource;
 import com.azure.resourcemanager.cosmos.fluent.inner.PrivateLinkResourceInner;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.WrapperImpl;
 import java.util.List;
 
 /** A private link resource. */

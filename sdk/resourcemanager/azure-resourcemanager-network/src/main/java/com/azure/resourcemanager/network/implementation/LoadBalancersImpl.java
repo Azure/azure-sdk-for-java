@@ -7,7 +7,7 @@ import com.azure.resourcemanager.network.models.LoadBalancer;
 import com.azure.resourcemanager.network.models.LoadBalancers;
 import com.azure.resourcemanager.network.fluent.inner.LoadBalancerInner;
 import com.azure.resourcemanager.network.fluent.LoadBalancersClient;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.TopLevelModifiableResourcesImpl;
 
 /** Implementation for {@link LoadBalancers}. */
 public class LoadBalancersImpl

@@ -10,7 +10,7 @@ import com.azure.resourcemanager.authorization.models.UserCreateParameters;
 import com.azure.resourcemanager.authorization.models.UserUpdateParameters;
 import com.azure.resourcemanager.authorization.fluent.inner.UserInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.CreatableUpdatableImpl;
 import reactor.core.publisher.Mono;
 
 /** Implementation for User and its parent interfaces. */

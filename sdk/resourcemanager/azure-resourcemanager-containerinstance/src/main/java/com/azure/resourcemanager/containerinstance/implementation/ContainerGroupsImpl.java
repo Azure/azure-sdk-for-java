@@ -14,7 +14,7 @@ import com.azure.resourcemanager.containerinstance.models.Capabilities;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroups;
 import com.azure.resourcemanager.containerinstance.models.Operation;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.TopLevelModifiableResourcesImpl;
 import reactor.core.publisher.Mono;
 
 /** Implementation for ContainerGroups. */

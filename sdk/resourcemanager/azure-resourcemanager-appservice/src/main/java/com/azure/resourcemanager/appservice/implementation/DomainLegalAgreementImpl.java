@@ -5,7 +5,7 @@ package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.resourcemanager.appservice.models.DomainLegalAgreement;
 import com.azure.resourcemanager.appservice.fluent.inner.TldLegalAgreementInner;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.WrapperImpl;
 
 /** Implementation for {@link DomainLegalAgreement}. */
 final class DomainLegalAgreementImpl extends WrapperImpl<TldLegalAgreementInner> implements DomainLegalAgreement {

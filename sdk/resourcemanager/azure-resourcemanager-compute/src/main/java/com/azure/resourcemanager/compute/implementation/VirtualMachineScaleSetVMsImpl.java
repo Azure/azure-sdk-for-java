@@ -10,7 +10,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMs;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetVMInner;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetVMsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetsClient;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.ReadableWrappersImpl;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;

@@ -9,7 +9,7 @@ import com.azure.resourcemanager.eventhubs.EventHubsManager;
 import com.azure.resourcemanager.eventhubs.fluent.EventHubsClient;
 import com.azure.resourcemanager.eventhubs.fluent.inner.EventhubInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.WrapperImpl;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.eventhubs.models.EventHub;
 import com.azure.resourcemanager.eventhubs.models.EventHubAuthorizationRules;

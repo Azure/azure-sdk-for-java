@@ -11,7 +11,7 @@ import com.azure.resourcemanager.appservice.models.DomainLegalAgreement;
 import com.azure.resourcemanager.appservice.models.TopLevelDomainAgreementOption;
 import com.azure.resourcemanager.appservice.fluent.inner.DomainInner;
 import com.azure.resourcemanager.appservice.fluent.DomainsClient;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.TopLevelModifiableResourcesImpl;
 
 /** The implementation for AppServiceDomains. */
 public class AppServiceDomainsImpl

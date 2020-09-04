@@ -14,7 +14,7 @@ import com.azure.resourcemanager.keyvault.models.Permissions;
 import com.azure.resourcemanager.keyvault.models.SecretPermissions;
 import com.azure.resourcemanager.keyvault.models.StoragePermissions;
 import com.azure.resourcemanager.keyvault.models.Vault;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.ChildResourceImpl;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

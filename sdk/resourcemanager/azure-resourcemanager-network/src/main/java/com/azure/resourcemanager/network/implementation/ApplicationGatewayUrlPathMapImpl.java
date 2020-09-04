@@ -12,7 +12,7 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayUrlPathMap;
 import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayPathRuleInner;
 import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayUrlPathMapInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.ChildResourceImpl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;

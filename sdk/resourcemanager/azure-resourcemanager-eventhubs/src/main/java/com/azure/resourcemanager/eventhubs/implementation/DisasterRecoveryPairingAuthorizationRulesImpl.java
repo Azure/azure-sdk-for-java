@@ -11,7 +11,7 @@ import com.azure.resourcemanager.eventhubs.fluent.inner.AuthorizationRuleInner;
 import com.azure.resourcemanager.eventhubs.models.DisasterRecoveryPairingAuthorizationRule;
 import com.azure.resourcemanager.eventhubs.models.DisasterRecoveryPairingAuthorizationRules;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.ReadableWrappersImpl;
 import reactor.core.publisher.Mono;
 
 /**

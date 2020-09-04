@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.resources.childresource;
 
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.ExternalChildResourceImpl;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 

@@ -14,7 +14,7 @@ import com.azure.resourcemanager.authorization.fluent.inner.ADGroupInner;
 import com.azure.resourcemanager.authorization.fluent.inner.ApplicationInner;
 import com.azure.resourcemanager.authorization.fluent.inner.ServicePrincipalInner;
 import com.azure.resourcemanager.authorization.fluent.inner.UserInner;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.CreatableUpdatableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

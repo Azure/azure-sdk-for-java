@@ -7,7 +7,7 @@ import com.azure.resourcemanager.network.fluent.RouteFiltersClient;
 import com.azure.resourcemanager.network.fluent.inner.RouteFilterInner;
 import com.azure.resourcemanager.network.models.RouteFilter;
 import com.azure.resourcemanager.network.models.RouteFilters;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.TopLevelModifiableResourcesImpl;
 
 /** Implementation for RouteFilters. */
 public class RouteFiltersImpl

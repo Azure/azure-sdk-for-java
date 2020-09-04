@@ -15,7 +15,7 @@ import com.azure.resourcemanager.appservice.fluent.inner.HostnameBindingInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableWrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.IndexableWrapperImpl;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.regex.Matcher;

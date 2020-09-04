@@ -8,7 +8,7 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayProbe;
 import com.azure.resourcemanager.network.models.ApplicationGatewayProbeHealthResponseMatch;
 import com.azure.resourcemanager.network.models.ApplicationGatewayProtocol;
 import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayProbeInner;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.ChildResourceImpl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

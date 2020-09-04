@@ -10,7 +10,7 @@ import com.azure.resourcemanager.network.fluent.LocalNetworkGatewaysClient;
 import com.azure.resourcemanager.network.fluent.inner.LocalNetworkGatewayInner;
 import com.azure.resourcemanager.network.models.LocalNetworkGateway;
 import com.azure.resourcemanager.network.models.LocalNetworkGateways;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.GroupableResourcesImpl;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import reactor.core.publisher.Mono;
 

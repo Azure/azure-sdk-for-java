@@ -12,7 +12,7 @@ import com.azure.resourcemanager.eventhubs.models.DisasterRecoveryPairingAuthori
 import com.azure.resourcemanager.eventhubs.models.EventHubDisasterRecoveryPairing;
 import com.azure.resourcemanager.eventhubs.models.EventHubDisasterRecoveryPairings;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.WrapperImpl;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;

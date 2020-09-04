@@ -5,7 +5,7 @@ package com.azure.resourcemanager.privatedns.implementation;
 import com.azure.resourcemanager.privatedns.fluent.inner.RecordSetInner;
 import com.azure.resourcemanager.privatedns.models.PrivateDnsRecordSet;
 import com.azure.resourcemanager.privatedns.models.PrivateDnsZone;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesNonCachedImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.ExternalChildResourcesNonCachedImpl;
 
 /** Represents an record set collection associated with a private DNS zone. */
 class PrivateDnsRecordSetsImpl

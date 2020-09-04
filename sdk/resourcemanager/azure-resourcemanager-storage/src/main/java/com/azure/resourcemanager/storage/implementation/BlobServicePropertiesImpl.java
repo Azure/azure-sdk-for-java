@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.storage.implementation;
 
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.CreatableUpdatableImpl;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.fluent.BlobServicesClient;
 import com.azure.resourcemanager.storage.models.BlobServiceProperties;

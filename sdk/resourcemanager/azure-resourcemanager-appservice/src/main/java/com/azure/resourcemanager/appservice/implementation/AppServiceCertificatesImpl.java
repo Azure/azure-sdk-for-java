@@ -10,7 +10,7 @@ import com.azure.resourcemanager.appservice.models.AppServiceCertificate;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificates;
 import com.azure.resourcemanager.appservice.fluent.inner.CertificateInner;
 import com.azure.resourcemanager.appservice.fluent.CertificatesClient;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.GroupableResourcesImpl;
 import reactor.core.publisher.Mono;
 
 /** The implementation for AppServiceCertificates. */

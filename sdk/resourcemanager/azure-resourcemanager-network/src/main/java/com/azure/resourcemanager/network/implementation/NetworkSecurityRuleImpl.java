@@ -10,7 +10,7 @@ import com.azure.resourcemanager.network.models.SecurityRuleDirection;
 import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
 import com.azure.resourcemanager.network.fluent.inner.ApplicationSecurityGroupInner;
 import com.azure.resourcemanager.network.fluent.inner.SecurityRuleInner;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.ChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import java.util.ArrayList;
 import java.util.Arrays;

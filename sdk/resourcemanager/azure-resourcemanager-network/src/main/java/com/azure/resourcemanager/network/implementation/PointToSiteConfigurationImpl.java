@@ -9,7 +9,7 @@ import com.azure.resourcemanager.network.models.VpnClientConfiguration;
 import com.azure.resourcemanager.network.models.VpnClientProtocol;
 import com.azure.resourcemanager.network.models.VpnClientRevokedCertificate;
 import com.azure.resourcemanager.network.models.VpnClientRootCertificate;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableWrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.IndexableWrapperImpl;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

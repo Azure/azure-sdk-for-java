@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.models.ExpressRouteCrossConnectionPeeri
 import com.azure.resourcemanager.network.models.ExpressRoutePeeringState;
 import com.azure.resourcemanager.network.models.ExpressRoutePeeringType;
 import com.azure.resourcemanager.network.models.Ipv6ExpressRouteCircuitPeeringConfig;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.CreatableUpdatableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import reactor.core.publisher.Mono;
 

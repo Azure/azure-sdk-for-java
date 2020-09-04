@@ -6,7 +6,7 @@ import com.azure.resourcemanager.network.models.PacketCaptureStatus;
 import com.azure.resourcemanager.network.models.PcError;
 import com.azure.resourcemanager.network.models.PcStatus;
 import com.azure.resourcemanager.network.fluent.inner.PacketCaptureQueryStatusResultInner;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.WrapperImpl;
 import java.time.OffsetDateTime;
 import java.util.List;
 

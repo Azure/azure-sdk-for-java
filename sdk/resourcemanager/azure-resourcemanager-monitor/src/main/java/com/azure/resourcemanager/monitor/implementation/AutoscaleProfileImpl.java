@@ -14,7 +14,7 @@ import com.azure.resourcemanager.monitor.models.ScaleRule;
 import com.azure.resourcemanager.monitor.models.TimeWindow;
 import com.azure.resourcemanager.monitor.fluent.inner.AutoscaleProfileInner;
 import com.azure.resourcemanager.monitor.fluent.inner.ScaleRuleInner;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.WrapperImpl;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;

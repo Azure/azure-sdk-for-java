@@ -7,8 +7,8 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.eventhubs.EventHubsManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.CreatableUpdatableImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.IndexableRefreshableWrapperImpl;
 import com.azure.resourcemanager.eventhubs.models.NestedResource;
 
 /**

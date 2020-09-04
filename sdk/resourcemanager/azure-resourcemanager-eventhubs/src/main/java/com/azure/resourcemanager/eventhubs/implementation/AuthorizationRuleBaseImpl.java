@@ -10,7 +10,7 @@ import com.azure.resourcemanager.eventhubs.models.AccessRights;
 import com.azure.resourcemanager.eventhubs.models.AuthorizationRule;
 import com.azure.resourcemanager.eventhubs.models.EventHubAuthorizationKey;
 import com.azure.resourcemanager.eventhubs.models.KeyType;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.IndexableRefreshableWrapperImpl;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;

@@ -18,7 +18,7 @@ import com.azure.resourcemanager.containerregistry.models.WebhookStatus;
 import com.azure.resourcemanager.containerregistry.models.WebhookUpdateParameters;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.ExternalChildResourceImpl;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;

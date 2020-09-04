@@ -8,7 +8,7 @@ import com.azure.resourcemanager.authorization.models.Permission;
 import com.azure.resourcemanager.authorization.models.RoleDefinition;
 import com.azure.resourcemanager.authorization.fluent.inner.PermissionInner;
 import com.azure.resourcemanager.authorization.fluent.inner.RoleDefinitionInner;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.WrapperImpl;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;

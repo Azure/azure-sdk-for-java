@@ -10,7 +10,7 @@ import com.azure.resourcemanager.network.models.AppliableWithTags;
 import com.azure.resourcemanager.network.fluent.inner.FlowLogInformationInner;
 import com.azure.resourcemanager.network.fluent.inner.NetworkWatcherInner;
 import com.azure.resourcemanager.network.fluent.inner.SecurityGroupViewResultInner;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.GroupableResourceImpl;
 import reactor.core.publisher.Mono;
 
 /** Implementation for Network Watcher and its create and update interfaces. */

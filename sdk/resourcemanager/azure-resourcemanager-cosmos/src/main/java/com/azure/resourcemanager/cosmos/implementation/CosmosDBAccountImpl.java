@@ -27,11 +27,10 @@ import com.azure.resourcemanager.cosmos.models.RegionForOnlineOffline;
 import com.azure.resourcemanager.cosmos.models.SqlDatabase;
 import com.azure.resourcemanager.cosmos.models.VirtualNetworkRule;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;

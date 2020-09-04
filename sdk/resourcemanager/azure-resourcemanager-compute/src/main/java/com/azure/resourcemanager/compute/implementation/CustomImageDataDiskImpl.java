@@ -8,7 +8,7 @@ import com.azure.resourcemanager.compute.models.CachingTypes;
 import com.azure.resourcemanager.compute.models.Disk;
 import com.azure.resourcemanager.compute.models.ImageDataDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachineCustomImage;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.ChildResourceImpl;
 
 /** The implementation for {@link VirtualMachineCustomImage.CustomImageDataDisk}. */
 class CustomImageDataDiskImpl

@@ -20,7 +20,7 @@ import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.keyvault.models.VaultCreateOrUpdateParameters;
 import com.azure.resourcemanager.keyvault.models.VaultProperties;
 import com.azure.resourcemanager.keyvault.models.Vaults;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.GroupableResourcesImpl;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;

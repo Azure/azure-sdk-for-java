@@ -7,7 +7,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImageVers
 import com.azure.resourcemanager.compute.models.VirtualMachinePublisher;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineExtensionImageInner;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineExtensionImagesClient;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.WrapperImpl;
 
 /** The implementation for VirtualMachineExtensionImageType. */
 class VirtualMachineExtensionImageTypeImpl extends WrapperImpl<VirtualMachineExtensionImageInner>

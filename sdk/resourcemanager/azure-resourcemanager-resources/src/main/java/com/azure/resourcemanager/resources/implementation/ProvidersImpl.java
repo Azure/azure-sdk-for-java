@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.resources.models.Provider;
 import com.azure.resourcemanager.resources.models.Providers;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.ReadableWrappersImpl;
 import com.azure.resourcemanager.resources.fluent.inner.ProviderInner;
 import com.azure.resourcemanager.resources.fluent.ProvidersClient;
 import reactor.core.publisher.Mono;

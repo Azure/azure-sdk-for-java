@@ -7,7 +7,7 @@ import com.azure.resourcemanager.resources.models.DeploymentOperation;
 import com.azure.resourcemanager.resources.models.ProvisioningOperation;
 import com.azure.resourcemanager.resources.models.TargetResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.IndexableRefreshableWrapperImpl;
 import com.azure.resourcemanager.resources.fluent.inner.DeploymentOperationInner;
 import com.azure.resourcemanager.resources.fluent.DeploymentOperationsClient;
 import reactor.core.publisher.Mono;

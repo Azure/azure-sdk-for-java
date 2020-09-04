@@ -18,7 +18,7 @@ import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceInner;
 import com.azure.resourcemanager.network.fluent.inner.NetworkSecurityGroupInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.AcceptedImpl;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;

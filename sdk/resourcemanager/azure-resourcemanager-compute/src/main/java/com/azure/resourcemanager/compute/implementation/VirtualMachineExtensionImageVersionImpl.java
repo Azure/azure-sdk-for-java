@@ -7,7 +7,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImageType
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImageVersion;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineExtensionImageInner;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineExtensionImagesClient;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.WrapperImpl;
 import reactor.core.publisher.Mono;
 
 /** The implementation for VirtualMachineExtensionImageVersion. */

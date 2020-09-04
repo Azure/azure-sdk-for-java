@@ -13,7 +13,7 @@ import com.azure.resourcemanager.compute.models.TargetRegion;
 import com.azure.resourcemanager.compute.models.VirtualMachineCustomImage;
 import com.azure.resourcemanager.compute.fluent.inner.GalleryImageVersionInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.CreatableUpdatableImpl;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;

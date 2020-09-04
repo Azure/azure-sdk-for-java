@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.models.RouteFilterRuleType;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitPeeringInner;
 import com.azure.resourcemanager.network.fluent.inner.RouteFilterInner;
 import com.azure.resourcemanager.network.fluent.inner.RouteFilterRuleInner;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.GroupableParentResourceImpl;
 import reactor.core.publisher.Mono;
 
 import java.util.Collections;

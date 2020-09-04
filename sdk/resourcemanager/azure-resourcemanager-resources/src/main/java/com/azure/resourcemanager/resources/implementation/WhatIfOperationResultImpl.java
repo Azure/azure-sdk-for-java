@@ -6,7 +6,7 @@ package com.azure.resourcemanager.resources.implementation;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.resources.models.WhatIfChange;
 import com.azure.resourcemanager.resources.models.WhatIfOperationResult;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.WrapperImpl;
 import com.azure.resourcemanager.resources.fluent.inner.WhatIfOperationResultInner;
 
 import java.util.List;

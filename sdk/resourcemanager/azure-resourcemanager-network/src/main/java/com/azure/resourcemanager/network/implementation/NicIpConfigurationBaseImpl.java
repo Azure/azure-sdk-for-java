@@ -20,7 +20,7 @@ import com.azure.resourcemanager.network.fluent.inner.InboundNatRuleInner;
 import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceIpConfigurationInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.ChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import java.util.ArrayList;
 import java.util.Collection;

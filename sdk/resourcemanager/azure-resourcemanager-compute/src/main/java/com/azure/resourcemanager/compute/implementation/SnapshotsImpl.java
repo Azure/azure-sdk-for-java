@@ -10,7 +10,7 @@ import com.azure.resourcemanager.compute.models.Snapshot;
 import com.azure.resourcemanager.compute.models.Snapshots;
 import com.azure.resourcemanager.compute.fluent.inner.SnapshotInner;
 import com.azure.resourcemanager.compute.fluent.SnapshotsClient;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.TopLevelModifiableResourcesImpl;
 import reactor.core.publisher.Mono;
 
 /** The implementation for Snapshots. */

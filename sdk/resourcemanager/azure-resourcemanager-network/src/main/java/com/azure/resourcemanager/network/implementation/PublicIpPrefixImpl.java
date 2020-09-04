@@ -14,7 +14,7 @@ import com.azure.resourcemanager.network.models.PublicIpPrefix;
 import com.azure.resourcemanager.network.models.PublicIpPrefixSku;
 import com.azure.resourcemanager.network.models.ReferencedPublicIpAddress;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.GroupableResourceImpl;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;

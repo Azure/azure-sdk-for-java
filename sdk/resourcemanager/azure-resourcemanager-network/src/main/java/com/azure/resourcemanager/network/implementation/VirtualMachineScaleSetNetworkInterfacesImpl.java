@@ -10,7 +10,7 @@ import com.azure.resourcemanager.network.fluent.NetworkInterfacesClient;
 import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceInner;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNetworkInterface;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNetworkInterfaces;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.ReadableWrappersImpl;
 
 /** Implementation for VirtualMachineScaleSetNetworkInterfaces. */
 class VirtualMachineScaleSetNetworkInterfacesImpl

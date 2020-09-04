@@ -8,7 +8,7 @@ import com.azure.resourcemanager.compute.models.DataDisk;
 import com.azure.resourcemanager.compute.models.DiskCreateOptionTypes;
 import com.azure.resourcemanager.compute.models.StorageAccountTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineDataDisk;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.WrapperImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 
 /** The implementation for {@link VirtualMachineDataDisk} interface. */

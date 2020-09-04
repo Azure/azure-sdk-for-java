@@ -6,7 +6,7 @@ import com.azure.resourcemanager.containerregistry.models.AccessKeyType;
 import com.azure.resourcemanager.containerregistry.models.RegistryCredentials;
 import com.azure.resourcemanager.containerregistry.models.RegistryPassword;
 import com.azure.resourcemanager.containerregistry.fluent.inner.RegistryListCredentialsResultInner;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.WrapperImpl;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;

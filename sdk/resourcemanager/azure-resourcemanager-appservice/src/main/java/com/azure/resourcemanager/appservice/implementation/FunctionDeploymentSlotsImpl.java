@@ -13,7 +13,7 @@ import com.azure.resourcemanager.appservice.fluent.inner.SiteLogsConfigInner;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.appservice.models.FunctionDeploymentSlot;
 import com.azure.resourcemanager.appservice.models.FunctionDeploymentSlots;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.IndependentChildResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.IndependentChildResourcesImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Mono;
 

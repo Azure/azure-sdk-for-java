@@ -12,7 +12,7 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayCookieBasedAff
 import com.azure.resourcemanager.network.models.ApplicationGatewayProbe;
 import com.azure.resourcemanager.network.models.ApplicationGatewayProtocol;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.ChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import java.io.File;
 import java.io.IOException;

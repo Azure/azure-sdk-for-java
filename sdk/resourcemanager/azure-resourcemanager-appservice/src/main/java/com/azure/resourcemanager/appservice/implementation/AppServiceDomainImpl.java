@@ -16,7 +16,7 @@ import com.azure.resourcemanager.appservice.fluent.inner.DomainOwnershipIdentifi
 import com.azure.resourcemanager.appservice.fluent.DomainsClient;
 import com.azure.resourcemanager.appservice.fluent.inner.TldLegalAgreementInner;
 import com.azure.resourcemanager.dns.models.DnsZone;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;

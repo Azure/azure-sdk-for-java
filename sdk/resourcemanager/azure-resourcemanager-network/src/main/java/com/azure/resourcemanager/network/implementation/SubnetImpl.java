@@ -18,7 +18,7 @@ import com.azure.resourcemanager.network.fluent.inner.RouteTableInner;
 import com.azure.resourcemanager.network.fluent.inner.SubnetInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.ChildResourceImpl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;

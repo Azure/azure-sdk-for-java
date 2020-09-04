@@ -10,7 +10,7 @@ import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroup;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroups;
 import com.azure.resourcemanager.authorization.fluent.inner.ADGroupInner;
 import com.azure.resourcemanager.authorization.fluent.GroupsClient;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.CreatableWrappersImpl;
 import reactor.core.publisher.Mono;
 
 /** The implementation of Users and its parent interfaces. */

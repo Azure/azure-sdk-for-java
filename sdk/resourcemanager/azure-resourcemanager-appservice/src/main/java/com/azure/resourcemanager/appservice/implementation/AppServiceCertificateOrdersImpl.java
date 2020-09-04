@@ -9,7 +9,7 @@ import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrders;
 import com.azure.resourcemanager.appservice.models.AppServicePlans;
 import com.azure.resourcemanager.appservice.fluent.inner.AppServiceCertificateOrderInner;
 import com.azure.resourcemanager.appservice.fluent.AppServiceCertificateOrdersClient;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.TopLevelModifiableResourcesImpl;
 
 /** The implementation for {@link AppServicePlans}. */
 public class AppServiceCertificateOrdersImpl

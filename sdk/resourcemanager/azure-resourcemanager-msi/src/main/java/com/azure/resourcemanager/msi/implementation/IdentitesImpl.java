@@ -8,7 +8,7 @@ import com.azure.resourcemanager.msi.models.Identities;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.msi.fluent.inner.IdentityInner;
 import com.azure.resourcemanager.msi.fluent.UserAssignedIdentitiesClient;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.TopLevelModifiableResourcesImpl;
 
 /**
  * The implementation for Identities.

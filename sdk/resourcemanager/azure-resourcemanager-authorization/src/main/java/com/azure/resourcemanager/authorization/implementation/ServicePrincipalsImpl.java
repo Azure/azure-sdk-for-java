@@ -10,7 +10,7 @@ import com.azure.resourcemanager.authorization.models.ServicePrincipal;
 import com.azure.resourcemanager.authorization.models.ServicePrincipals;
 import com.azure.resourcemanager.authorization.fluent.inner.ServicePrincipalInner;
 import com.azure.resourcemanager.authorization.fluent.ServicePrincipalsClient;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.CreatableWrappersImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;

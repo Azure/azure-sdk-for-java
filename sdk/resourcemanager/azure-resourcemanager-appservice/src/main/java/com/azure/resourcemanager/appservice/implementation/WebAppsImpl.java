@@ -11,7 +11,7 @@ import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
 import com.azure.resourcemanager.appservice.fluent.inner.SiteLogsConfigInner;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.models.WebApps;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.TopLevelModifiableResourcesImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Mono;
 

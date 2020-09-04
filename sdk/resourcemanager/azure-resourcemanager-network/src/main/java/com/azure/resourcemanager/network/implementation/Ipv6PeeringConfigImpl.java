@@ -7,7 +7,7 @@ import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeeringConfig
 import com.azure.resourcemanager.network.models.ExpressRouteCrossConnectionPeering;
 import com.azure.resourcemanager.network.models.Ipv6ExpressRouteCircuitPeeringConfig;
 import com.azure.resourcemanager.network.models.Ipv6PeeringConfig;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableWrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.IndexableWrapperImpl;
 import java.util.ArrayList;
 import java.util.List;
 

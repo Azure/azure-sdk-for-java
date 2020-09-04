@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.models.NetworkPeeringGatewayUse;
 import com.azure.resourcemanager.network.models.VirtualNetworkPeeringState;
 import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkPeeringInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.IndependentChildImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.IndependentChildImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import java.util.Collections;

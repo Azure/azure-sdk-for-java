@@ -10,7 +10,7 @@ import com.azure.resourcemanager.compute.models.GalleryImage;
 import com.azure.resourcemanager.compute.models.GalleryImages;
 import com.azure.resourcemanager.compute.fluent.inner.GalleryImageInner;
 import com.azure.resourcemanager.compute.fluent.GalleryImagesClient;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.WrapperImpl;
 import reactor.core.publisher.Mono;
 
 /** The implementation for GalleryImages. */

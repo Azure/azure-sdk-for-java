@@ -9,7 +9,7 @@ import com.azure.resourcemanager.resources.models.PolicyType;
 import com.azure.resourcemanager.resources.fluent.inner.PolicyDefinitionInner;
 import com.azure.resourcemanager.resources.fluent.PolicyDefinitionsClient;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.internal.CreatableUpdatableImpl;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;

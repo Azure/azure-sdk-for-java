@@ -15,7 +15,7 @@ import com.azure.resourcemanager.monitor.fluent.DiagnosticSettingsClient;
 import com.azure.resourcemanager.monitor.fluent.inner.DiagnosticSettingsResourceCollectionInner;
 import com.azure.resourcemanager.monitor.fluent.inner.DiagnosticSettingsResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.CreatableResourcesImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import com.azure.resourcemanager.resources.fluentcore.utils.ReactorMapper;
 import java.util.ArrayList;
