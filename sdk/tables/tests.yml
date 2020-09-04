@@ -7,7 +7,7 @@ jobs:
       Timeout: 60
       MaxParallel: 12
       EnvVars:
-        AZURE_TEST_MODE: RECORD
+        AZURE_TEST_MODE: LIVE
       Artifacts:
         - name: azure-data-tables
           groupId: com.azure

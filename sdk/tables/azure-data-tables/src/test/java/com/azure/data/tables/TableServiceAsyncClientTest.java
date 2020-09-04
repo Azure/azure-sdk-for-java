@@ -49,9 +49,11 @@ public class TableServiceAsyncClientTest extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());
         } else {
-            builder.httpClient(HttpClient.createDefault())
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .addPolicy(new RetryPolicy());
+            builder.httpClient(HttpClient.createDefault());
+            if (!interceptorManager.isLiveMode()) {
+                builder.addPolicy(interceptorManager.getRecordPolicy());
+            }
+            builder.addPolicy(new RetryPolicy());
         }
 
         serviceClient = builder.buildAsyncClient();
@@ -233,7 +235,7 @@ public class TableServiceAsyncClientTest extends TestBase {
             serviceClient.createTable(tableName2),
             serviceClient.createTable(tableName3)
         ).block(TIMEOUT);
-        
+
         // Act & Assert
         StepVerifier.create(serviceClient.listTables(options))
             .expectNextCount(2)

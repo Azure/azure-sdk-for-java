@@ -99,8 +99,10 @@ public class AzureTableImplTest extends TestBase {
             httpClientToUse = interceptorManager.getPlaybackClient();
         } else {
             httpClientToUse = HttpClient.createDefault();
-            HttpPipelinePolicy recordPolicy = interceptorManager.getRecordPolicy();
-            policies.add(recordPolicy);
+            if (!interceptorManager.isLiveMode()) {
+                HttpPipelinePolicy recordPolicy = interceptorManager.getRecordPolicy();
+                policies.add(recordPolicy);
+            }
             policies.add(new RetryPolicy());
         }
 

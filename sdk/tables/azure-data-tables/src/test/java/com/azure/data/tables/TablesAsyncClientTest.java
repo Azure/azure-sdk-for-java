@@ -51,10 +51,11 @@ public class TablesAsyncClientTest extends TestBase {
             playbackClient = interceptorManager.getPlaybackClient();
             builder.httpClient(playbackClient);
         } else {
-            recordPolicy = interceptorManager.getRecordPolicy();
-            builder.httpClient(HttpClient.createDefault())
-                .addPolicy(recordPolicy)
-                .addPolicy(new RetryPolicy());
+            builder.httpClient(HttpClient.createDefault());
+            if (!interceptorManager.isLiveMode()) {
+                builder.addPolicy(interceptorManager.getRecordPolicy());
+            }
+            builder.addPolicy(new RetryPolicy());
         }
 
         tableClient = builder.buildAsyncClient();
