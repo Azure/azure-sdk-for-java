@@ -118,6 +118,10 @@ The key concepts of Azure Management Libraries includes:
 - Web app and Function app
 - Key Vault
 - Cosmos
+- Monitor
+- Spring Cloud
+- Event Hubs
+- Redis Cache
 
 ## Examples
 
