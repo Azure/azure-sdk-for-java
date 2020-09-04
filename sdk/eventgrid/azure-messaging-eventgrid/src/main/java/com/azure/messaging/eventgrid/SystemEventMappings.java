@@ -4,13 +4,73 @@
 
 package com.azure.messaging.eventgrid;
 
-import com.azure.messaging.eventgrid.systemevents.*;
+import com.azure.messaging.eventgrid.systemevents.AppConfigurationKeyValueDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.AppConfigurationKeyValueModifiedEventData;
+import com.azure.messaging.eventgrid.systemevents.ContainerRegistryChartDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.ContainerRegistryChartPushedEventData;
+import com.azure.messaging.eventgrid.systemevents.ContainerRegistryImageDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.ContainerRegistryImagePushedEventData;
+import com.azure.messaging.eventgrid.systemevents.EventHubCaptureFileCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.IotHubDeviceConnectedEventData;
+import com.azure.messaging.eventgrid.systemevents.IotHubDeviceCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.IotHubDeviceDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.IotHubDeviceDisconnectedEventData;
+import com.azure.messaging.eventgrid.systemevents.IotHubDeviceTelemetryEventData;
+import com.azure.messaging.eventgrid.systemevents.MapsGeofenceEnteredEventData;
+import com.azure.messaging.eventgrid.systemevents.MapsGeofenceExitedEventData;
+import com.azure.messaging.eventgrid.systemevents.MapsGeofenceResultEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobCanceledEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobCancelingEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobErroredEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobFinishedEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobOutputCanceledEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobOutputCancelingEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobOutputErroredEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobOutputFinishedEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobOutputProcessingEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobOutputProgressEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobOutputScheduledEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobOutputStateChangeEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobProcessingEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobScheduledEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobStateChangeEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaLiveEventConnectionRejectedEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaLiveEventEncoderConnectedEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaLiveEventEncoderDisconnectedEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaLiveEventIncomingDataChunkDroppedEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaLiveEventIncomingStreamReceivedEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaLiveEventIncomingStreamsOutOfSyncEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaLiveEventIncomingVideoStreamsOutOfSyncEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaLiveEventIngestHeartbeatEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaLiveEventTrackDiscontinuityDetectedEventData;
+import com.azure.messaging.eventgrid.systemevents.ResourceActionCancelData;
+import com.azure.messaging.eventgrid.systemevents.ResourceActionFailureData;
+import com.azure.messaging.eventgrid.systemevents.ResourceActionSuccessData;
+import com.azure.messaging.eventgrid.systemevents.ResourceDeleteCancelData;
+import com.azure.messaging.eventgrid.systemevents.ResourceDeleteFailureData;
+import com.azure.messaging.eventgrid.systemevents.ResourceDeleteSuccessData;
+import com.azure.messaging.eventgrid.systemevents.ResourceWriteCancelData;
+import com.azure.messaging.eventgrid.systemevents.ResourceWriteFailureData;
+import com.azure.messaging.eventgrid.systemevents.ResourceWriteSuccessData;
+import com.azure.messaging.eventgrid.systemevents.ServiceBusActiveMessagesAvailableWithNoListenersEventData;
+import com.azure.messaging.eventgrid.systemevents.ServiceBusDeadletterMessagesAvailableWithNoListenersEventData;
+import com.azure.messaging.eventgrid.systemevents.StorageBlobCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.StorageBlobDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.SubscriptionDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.SubscriptionValidationEventData;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ * This class contains a number of constants that correspond to the value of {@code eventType} of {@link EventGridEvent}s
+ * and {@code type} of {@link CloudEvent}s, when the event originated from an Azure service. This list should be
+ * updated with all the service event strings. It also contains a mapping from each service event string to the
+ * model class that the event string corresponds to in the {@code data} field, which is used to automatically deserialize
+ * system events by their known string.
+ */
 public final class SystemEventMappings {
     // Keep this sorted by the name of the service publishing the events.
 
@@ -276,6 +336,7 @@ public final class SystemEventMappings {
      */
     public static final String STORAGE_BLOB_DELETED_EVENT = "Microsoft.Storage.BlobDeleted";
 
+    //TODO: When a new service adds an event, add a constant above and a mapping to the corresponding data class below.
 
     private static final Map<String, Class<?>> systemEventMappings = new HashMap<String, Class<?>>() {{
         //

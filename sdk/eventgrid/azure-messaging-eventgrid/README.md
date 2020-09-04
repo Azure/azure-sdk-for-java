@@ -95,7 +95,7 @@ EventGridSharedAccessSignatureCredential signature = new EventGridSharedAccessSi
 In order to start sending events, we need an `EventGridPublisherClient`. Here is code to 
 create the synchronous and the asynchronous versions. Note that a shared access signature can
 be used instead of a key in any of these samples by calling the `sharedAccessSignatureCredential` 
-method instead of `keyCredential'. 
+method instead of `keyCredential`. 
 
 
 <!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L19-L22 -->

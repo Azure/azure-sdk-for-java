@@ -9,9 +9,13 @@ package com.azure.messaging.eventgrid;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.*;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.util.serializer.TypeReference;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -31,6 +35,8 @@ public final class CloudEvent {
 
     private final com.azure.messaging.eventgrid.implementation.models.CloudEvent cloudEvent;
 
+    private static final ClientLogger logger = new ClientLogger(CloudEvent.class);
+
     private boolean parsed = false;
 
     private static final JsonSerializer deserializer = new JacksonJsonSerializerBuilder()
@@ -45,9 +51,9 @@ public final class CloudEvent {
      */
     public CloudEvent(String source, String type) {
         if (CoreUtils.isNullOrEmpty(source)) {
-            throw new IllegalArgumentException("Source cannot be null or empty");
+            throw logger.logExceptionAsError(new IllegalArgumentException("Source cannot be null or empty"));
         } else if (CoreUtils.isNullOrEmpty(type)) {
-            throw new IllegalArgumentException("type cannot be null or empty");
+            throw logger.logExceptionAsError(new IllegalArgumentException("type cannot be null or empty"));
         }
 
         this.cloudEvent = new com.azure.messaging.eventgrid.implementation.models.CloudEvent()
@@ -115,14 +121,15 @@ public final class CloudEvent {
     /**
      * Get the data associated with this event. For use in a parsed event only.
      * @return If the event was parsed from a Json, this method will return the rich
-     * system event data if it is a system event, and a {@code byte[]} otherwise, such as in the case of custom event
+     * system event data if it is a system event, and a {@code byte[]} otherwise, such as in the case of binary event
      * data, including data set through {@link CloudEvent#setData(byte[], String)}.
      * @throws IllegalStateException If the event was not created through {@link EventGridEvent#parse(String)}.
      */
     public Object getData() {
         if (!parsed) {
             // data was set instead of parsed, throw error
-            throw new IllegalStateException("This method should only be called on events created through the parse method");
+            throw logger.logExceptionAsError(new IllegalStateException(
+                "This method should only be called on events created through the parse method"));
         }
         if (cloudEvent.getDataBase64() != null) { // this means normal data is null
             return cloudEvent.getDataBase64();
@@ -137,36 +144,65 @@ public final class CloudEvent {
     }
 
     /**
-     * Get the deserialized data property from the parsed event. The behavior is unspecified if this method is called
-     * on an event that was not created through the parse method. Note that this is only intended to work on
-     * events with {@code application/json} data and has unspecified results on other media types.
+     * Get the deserialized data property from the parsed event. Note that this is only intended to work on
+     * events with {@code application/json} data and has unspecified results on other media types, such as binary data.
      * @param clazz the class of the type to deserialize the data into, using a default deserializer.
      * @param <T>   the type to deserialize the data into.
      *
      * @return the data deserialized into the given type using a default deserializer.
+     * @throws IllegalStateException If the event was not created through {@link CloudEvent#parse(String)}.
      */
     public <T> T getData(Class<T> clazz) {
-        return getData(clazz, deserializer);
+        return getDataAsync(clazz, deserializer).block();
     }
 
     /**
-     * Deserialize and get the data property from the parsed event. The behavior is unspecified if this method is called
-     * on an event that was not created through the parse method. Note that this is only intended to work on
+     * Get the deserialized data property from the parsed event. Note that this is only intended to work on
+     * events with {@code application/json} data and has unspecified results on other media types, such as binary data.
+     * @param clazz the class of the type to deserialize the data into, using a default deserializer.
+     * @param <T>   the type to deserialize the data into.
+     *
+     * @return the data deserialized into the given type using a default deserializer, wrapped asynchronously in a
+     * {@link Mono}.
+     * @throws IllegalStateException If the event was not created through {@link CloudEvent#parse(String)}.
+     */
+    public <T> Mono<T> getDataAsync(Class<T> clazz) {
+        return getDataAsync(clazz, deserializer);
+    }
+
+    /**
+     * Deserialize and get the data property from the parsed event. Note that this is only intended to work on
      * events with {@code application/json} data and has unspecified results on other media types.
      * @param clazz            the class of the type to deserialize the data into.
      * @param dataDeserializer the deserializer to use.
      * @param <T>              the type to deserialize the data into.
      *
      * @return the data deserialized into the given type using the given deserializer.
-     * @throws IllegalStateException If the event was not created through {@link EventGridEvent#parse(String)}.
+     * @throws IllegalStateException If the event was not created through {@link CloudEvent#parse(String)}.
      */
     public <T> T getData(Class<T> clazz, JsonSerializer dataDeserializer) {
+        return getDataAsync(clazz, dataDeserializer).block();
+    }
+
+    /**
+     * Deserialize and get the data property from the parsed event. Note that this is only intended to work on
+     * events with {@code application/json} data and has unspecified results on other media types.
+     * @param clazz            the class of the type to deserialize the data into.
+     * @param dataDeserializer the deserializer to use.
+     * @param <T>              the type to deserialize the data into.
+     *
+     * @return the data deserialized into the given type using the given deserializer, wrapped asynchronously in a
+     * {@link Mono}.
+     * @throws IllegalStateException If the event was not created through {@link CloudEvent#parse(String)}.
+     */
+    public <T> Mono<T> getDataAsync(Class<T> clazz, JsonSerializer dataDeserializer) {
         if (!parsed) {
             // data was set instead of parsed, throw exception because we don't know how the data relates to clazz
-            throw new IllegalStateException("This method should only be called on events created through the parse method");
+            throw logger.logExceptionAsError(new IllegalStateException(
+                "This method should only be called on events created through the parse method"));
         }
 
-        return dataDeserializer.deserialize(new ByteArrayInputStream((byte[]) this.cloudEvent.getData()),
+        return dataDeserializer.deserializeAsync(new ByteArrayInputStream((byte[]) this.cloudEvent.getData()),
             TypeReference.createInstance(clazz));
     }
 

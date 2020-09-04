@@ -4,11 +4,20 @@
 
 package com.azure.messaging.eventgrid;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.*;
-import com.azure.core.http.policy.*;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AzureKeyCredentialPolicy;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -29,7 +38,6 @@ import java.util.Objects;
  * @see CloudEvent
  */
 @ServiceClientBuilder(serviceClients = {EventGridPublisherClient.class, EventGridPublisherAsyncClient.class})
-@Fluent
 public final class EventGridPublisherClientBuilder {
 
     private static final String AEG_SAS_KEY = "aeg-sas-key";
@@ -53,6 +61,8 @@ public final class EventGridPublisherClientBuilder {
     private AzureKeyCredential keyCredential;
 
     private EventGridSasCredential sasToken;
+
+    private EventGridServiceVersion serviceVersion;
 
     private String endpoint;
 
@@ -97,8 +107,12 @@ public final class EventGridPublisherClientBuilder {
             JacksonAdapter.createDefaultSerializerAdapter() :
             serializer;
 
+        EventGridServiceVersion buildServiceVersion = serviceVersion == null ?
+            EventGridServiceVersion.getLatest() :
+            serviceVersion;
+
         if (httpPipeline != null) {
-            return new EventGridPublisherAsyncClient(httpPipeline, hostname, buildSerializer);
+            return new EventGridPublisherAsyncClient(httpPipeline, hostname, buildSerializer, buildServiceVersion);
         }
 
         Configuration buildConfiguration = (configuration == null)
@@ -139,7 +153,7 @@ public final class EventGridPublisherClientBuilder {
             .build();
 
 
-        return new EventGridPublisherAsyncClient(buildPipeline, hostname, buildSerializer);
+        return new EventGridPublisherAsyncClient(buildPipeline, hostname, buildSerializer, buildServiceVersion);
     }
 
     /**
@@ -192,7 +206,7 @@ public final class EventGridPublisherClientBuilder {
      *
      * @return the builder itself.
      */
-    public EventGridPublisherClientBuilder keyCredential(AzureKeyCredential credential) {
+    public EventGridPublisherClientBuilder credential(AzureKeyCredential credential) {
         this.keyCredential = credential;
         return this;
     }
@@ -203,8 +217,7 @@ public final class EventGridPublisherClientBuilder {
      *
      * @return the builder itself.
      */
-    public EventGridPublisherClientBuilder sharedAccessSignatureCredential(EventGridSasCredential
-                                                                               credential) {
+    public EventGridPublisherClientBuilder credential(EventGridSasCredential credential) {
         this.sasToken = credential;
         return this;
     }
@@ -256,6 +269,18 @@ public final class EventGridPublisherClientBuilder {
             logger.info("Http client is set to null when it was not previously null");
         }
         this.httpPipeline = httpPipeline;
+        return this;
+    }
+
+    /**
+     * Set the service version to use for requests to the event grid service. See {@link EventGridServiceVersion} for
+     * more information about possible service versions.
+     * @param serviceVersion the service version to set. By default this will use the latest available version.
+     *
+     * @return the builder itself
+     */
+    public EventGridPublisherClientBuilder serviceVersion(EventGridServiceVersion serviceVersion) {
+        this.serviceVersion = serviceVersion;
         return this;
     }
 

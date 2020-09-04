@@ -6,6 +6,7 @@ package com.azure.messaging.eventgrid;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -26,6 +27,8 @@ import java.util.Base64;
 public final class EventGridSasCredential {
 
     private String sas;
+
+    private static final ClientLogger logger = new ClientLogger(EventGridSasCredential.class);
 
     /**
      * Generate a shared access signature to provide time-limited authentication for requests to the Event Grid
@@ -63,9 +66,8 @@ public final class EventGridSasCredential {
             return String.format("%s&%s=%s", unsignedSas, signKey, encodedSignature);
 
         } catch (NoSuchAlgorithmException | UnsupportedEncodingException | InvalidKeyException e) {
-            e.printStackTrace();
+            throw new RuntimeException(logger.logThrowableAsError(e));
         }
-        return null;
     }
 
     /**
@@ -74,7 +76,7 @@ public final class EventGridSasCredential {
      */
     public EventGridSasCredential(String sas) {
         if (CoreUtils.isNullOrEmpty(sas)) {
-            throw new IllegalArgumentException("the access signature cannot be null or empty");
+            throw logger.logExceptionAsError(new IllegalArgumentException("the access signature cannot be null or empty"));
         }
         this.sas = sas;
     }

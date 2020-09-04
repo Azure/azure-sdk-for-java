@@ -26,7 +26,9 @@ in this folder, with the following tags:
 `--api-spec-location=<path to rest-api-spec clone>`
 
 If you are adding or updating swagger files, please make sure that they are included 
-in the input file list.
+in the input file list. Also, if you are adding an additional service event, make sure that 
+its `eventType` string is added as a constant and a mapping to the event data model in the
+`SystemEventMappings` file.
 
 ``` yaml $(java)
 title: EventGridPublisherClient

@@ -1,3 +1,7 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for
+// license information.
+
 package com.azure.messaging.eventgrid;
 
 import com.azure.core.credential.AzureKeyCredential;
@@ -24,14 +28,14 @@ public class ReadmeSamples {
     public void createPublisherClient() {
         EventGridPublisherClient egClient = new EventGridPublisherClientBuilder()
             .endpoint(endpoint)
-            .keyCredential(new AzureKeyCredential(key))
+            .credential(new AzureKeyCredential(key))
             .buildClient();
     }
 
     public void createAsyncPublisherClient() {
         EventGridPublisherAsyncClient egAsyncClient = new EventGridPublisherClientBuilder()
             .endpoint(endpoint)
-            .keyCredential(new AzureKeyCredential(key))
+            .credential(new AzureKeyCredential(key))
             .buildAsyncClient();
     }
 

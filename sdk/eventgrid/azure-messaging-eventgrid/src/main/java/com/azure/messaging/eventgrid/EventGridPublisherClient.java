@@ -40,7 +40,7 @@ public final class EventGridPublisherClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void sendEvents(Iterable<EventGridEvent> events) {
-        asyncClient.publishEvents(events, Context.NONE).block();
+        asyncClient.sendEvents(events, Context.NONE).block();
     }
 
     /**
@@ -49,7 +49,7 @@ public final class EventGridPublisherClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void sendCloudEvents(Iterable<CloudEvent> events) {
-        asyncClient.publishCloudEvents(events, Context.NONE).block();
+        asyncClient.sendCloudEvents(events, Context.NONE).block();
     }
 
     /**
@@ -58,7 +58,7 @@ public final class EventGridPublisherClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void sendCustomEvents(Iterable<Object> events) {
-        asyncClient.publishCustomEvents(events, Context.NONE).block();
+        asyncClient.sendCustomEvents(events, Context.NONE).block();
     }
 
     /**
@@ -70,7 +70,7 @@ public final class EventGridPublisherClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendEventsWithResponse(Iterable<EventGridEvent> events, Context context) {
-        return asyncClient.publishEventsWithResponse(events, context).block();
+        return asyncClient.sendEventsWithResponse(events, context).block();
     }
 
     /**
@@ -82,7 +82,7 @@ public final class EventGridPublisherClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendCloudEventsWithResponse(Iterable<CloudEvent> events, Context context) {
-        return asyncClient.publishCloudEventsWithResponse(events, context).block();
+        return asyncClient.sendCloudEventsWithResponse(events, context).block();
     }
 
     /**
@@ -94,6 +94,6 @@ public final class EventGridPublisherClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendCustomEventsWithResponse(Iterable<Object> events, Context context) {
-        return asyncClient.publishCustomEventsWithResponse(events, context).block();
+        return asyncClient.sendCustomEventsWithResponse(events, context).block();
     }
 }

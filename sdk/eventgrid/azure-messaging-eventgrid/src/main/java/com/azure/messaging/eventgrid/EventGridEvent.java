@@ -9,11 +9,13 @@ package com.azure.messaging.eventgrid;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -32,6 +34,8 @@ public final class EventGridEvent {
 
     private final com.azure.messaging.eventgrid.implementation.models.EventGridEvent event;
 
+    private static final ClientLogger logger = new ClientLogger(EventGridEvent.class);
+
     private boolean parsed = false;
 
     private static final JsonSerializer deserializer = new JacksonJsonSerializerBuilder()
@@ -47,11 +51,11 @@ public final class EventGridEvent {
      */
     public EventGridEvent(String subject, String eventType, String dataVersion) {
         if (CoreUtils.isNullOrEmpty(subject)) {
-            throw new IllegalArgumentException("subject cannot be null or empty");
+            throw logger.logExceptionAsError(new IllegalArgumentException("subject cannot be null or empty"));
         } else if (CoreUtils.isNullOrEmpty(eventType)) {
-            throw new IllegalArgumentException("event type cannot be null or empty");
+            throw logger.logExceptionAsError(new IllegalArgumentException("event type cannot be null or empty"));
         } else if (CoreUtils.isNullOrEmpty(dataVersion)) {
-            throw new IllegalArgumentException("data version cannot be null or empty");
+            throw logger.logExceptionAsError(new IllegalArgumentException("data version cannot be null or empty"));
         }
 
         this.event = new com.azure.messaging.eventgrid.implementation.models.EventGridEvent()
@@ -73,7 +77,7 @@ public final class EventGridEvent {
         return Flux.fromArray(deserializer
             .deserialize(new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8)),
                 TypeReference.createInstance(com.azure.messaging.eventgrid.implementation.models.EventGridEvent[].class))
-        )
+            )
             .map(event1 -> {
                 if (event1.getData() == null) {
                     return new EventGridEvent(event1);
@@ -103,7 +107,7 @@ public final class EventGridEvent {
      */
     public EventGridEvent setId(String id) {
         if (CoreUtils.isNullOrEmpty(id)) {
-            throw new IllegalArgumentException("id cannot be null or empty");
+            throw logger.logExceptionAsError(new IllegalArgumentException("id cannot be null or empty"));
         }
         this.event.setId(id);
         return this;
@@ -147,7 +151,8 @@ public final class EventGridEvent {
     public Object getData() {
         if (!parsed) {
             // data was set instead of parsed, throw error
-            throw new IllegalStateException("This method should only be called on events created through the parse method");
+            throw logger.logExceptionAsError(new IllegalStateException(
+                "This method should only be called on events created through the parse method"));
         }
         String eventType = SystemEventMappings.canonicalizeEventType(event.getEventType());
         if (SystemEventMappings.getSystemEventMappings().containsKey(eventType)) {
@@ -165,9 +170,23 @@ public final class EventGridEvent {
      * @param <T>   the type to deserialize the data into.
      *
      * @return the data deserialized into the given type using a default deserializer.
+     * @throws IllegalStateException If the event was not created through {@link EventGridEvent#parse(String)}.
      */
     public <T> T getData(Class<T> clazz) {
-        return getData(clazz, deserializer);
+        return getDataAsync(clazz, deserializer).block();
+    }
+
+    /**
+     * Get the deserialized data property from the parsed event.
+     * @param clazz the class of the type to deserialize the data into.
+     * @param <T>   the type to deserialize the data into.
+     *
+     * @return the data deserialized into the given type using a default deserializer, delivered asynchronously through
+     * a {@link Mono}.
+     * @throws IllegalStateException If the event was not created through {@link EventGridEvent#parse(String)}.
+     */
+    public <T> Mono<T> getDataAsync(Class<T> clazz) {
+        return getDataAsync(clazz, deserializer);
     }
 
     /**
@@ -180,12 +199,27 @@ public final class EventGridEvent {
      * @throws IllegalStateException If the event was not created through {@link EventGridEvent#parse(String)}.
      */
     public <T> T getData(Class<T> clazz, JsonSerializer dataDeserializer) {
+        return getDataAsync(clazz, dataDeserializer).block();
+    }
+
+    /**
+     * Get the deserialized data property from the parsed event.
+     * @param clazz            the class of the type to deserialize the data into.
+     * @param dataDeserializer the deserializer to use.
+     * @param <T>              the type to deserialize the data into.
+     *
+     * @return the data deserialized into the given type using the given deserializer, delivered asynchronously through
+     * a {@link Mono}.
+     * @throws IllegalStateException If the event was not created through {@link EventGridEvent#parse(String)}.
+     */
+    public <T> Mono<T> getDataAsync(Class<T> clazz, JsonSerializer dataDeserializer) {
         if (!parsed) {
             // data was set instead of parsed, throw exception because we don't know how the data relates to clazz
-            throw new IllegalStateException("This method should only be called on events created through the parse method");
+            throw logger.logExceptionAsError(new IllegalStateException(
+                "This method should only be called on events created through the parse method"));
         }
 
-        return dataDeserializer.deserialize(new ByteArrayInputStream((byte[]) this.event.getData()),
+        return dataDeserializer.deserializeAsync(new ByteArrayInputStream((byte[]) this.event.getData()),
             TypeReference.createInstance(clazz));
     }
 

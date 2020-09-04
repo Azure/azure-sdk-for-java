@@ -1,3 +1,7 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for
+// license information.
+
 package com.azure.messaging.eventgrid;
 
 import com.azure.core.credential.AzureKeyCredential;
@@ -12,6 +16,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * This Sample is an example of using a custom serializer to send custom event data to an EventGrid topic.
+ *
+ * To run this sample, first create an EventGrid topic and store the key and endpoint as system environment variables.
+ * See the README in the library folder for more help on getting started with EventGrid.
+ *
+ * Run the main method with no arguments to start publishing! By the end, you should have published 50 batches of
+ * events to your topic, with each batch containing a number of individual events.
+ */
 public class PublishClassTime {
 
     private static final int REPEATS = 50;
@@ -21,8 +34,8 @@ public class PublishClassTime {
     }
 
     public static void publishEvents() throws InterruptedException {
-        String key = System.getenv("DEMO_KEY");
-        String endpoint = System.getenv("DEMO_ENDPOINT");
+        String key = System.getenv("TOPIC_KEY");
+        String endpoint = System.getenv("TOPIC_ENDPOINT");
 
         JacksonAdapter customSerializer = new JacksonAdapter();
 
@@ -42,7 +55,7 @@ public class PublishClassTime {
 
         // EG client
         EventGridPublisherClient egClient = new EventGridPublisherClientBuilder()
-            .keyCredential(new AzureKeyCredential(key))
+            .credential(new AzureKeyCredential(key))
             .endpoint(endpoint)
             .serializer(customSerializer)
             .buildClient();

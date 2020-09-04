@@ -13,10 +13,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImpl;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImplBuilder;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.azure.core.util.FluxUtil.withContext;
 
@@ -34,11 +32,18 @@ public final class EventGridPublisherAsyncClient {
 
     private final EventGridPublisherClientImpl impl;
 
-    EventGridPublisherAsyncClient(HttpPipeline pipeline, String hostname, SerializerAdapter serializerAdapter) {
+    private final EventGridServiceVersion serviceVersion;
+
+    EventGridPublisherAsyncClient(HttpPipeline pipeline, String hostname, SerializerAdapter serializerAdapter,
+                                  EventGridServiceVersion serviceVersion) {
         this.impl = new EventGridPublisherClientImplBuilder()
             .pipeline(pipeline)
             .serializerAdapter(serializerAdapter)
             .buildClient();
+
+        // currently the service version is hardcoded into the Impl client, but once another service version gets
+        // released we should add this to the impl builder options
+        this.serviceVersion = serviceVersion;
 
         this.hostname = hostname;
     }
@@ -48,7 +53,7 @@ public final class EventGridPublisherAsyncClient {
      * @return the Service version of the rest API
      */
     public EventGridServiceVersion getServiceVersion() {
-        return EventGridServiceVersion.V2018_01_01;
+        return this.serviceVersion;
     }
 
     /**
@@ -59,15 +64,14 @@ public final class EventGridPublisherAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendEvents(Iterable<EventGridEvent> events) {
-        return withContext(context -> publishEvents(events, context));
+        return withContext(context -> sendEvents(events, context));
     }
 
-    Mono<Void> publishEvents(Iterable<EventGridEvent> events, Context context) {
-        List<com.azure.messaging.eventgrid.implementation.models.EventGridEvent> implList = new ArrayList<>();
-        for (EventGridEvent event : events) {
-            implList.add(event.toImpl());
-        }
-        return impl.publishEventsAsync(hostname, implList, context);
+    Mono<Void> sendEvents(Iterable<EventGridEvent> events, Context context) {
+        return Flux.fromIterable(events)
+            .map(EventGridEvent::toImpl)
+            .collectList()
+            .flatMap(list -> this.impl.publishEventsAsync(this.hostname, list, context));
     }
 
     /**
@@ -78,16 +82,14 @@ public final class EventGridPublisherAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendCloudEvents(Iterable<CloudEvent> events) {
-        return withContext(context -> publishCloudEvents(events, context));
+        return withContext(context -> sendCloudEvents(events, context));
     }
 
-    Mono<Void> publishCloudEvents(Iterable<CloudEvent> events, Context context) {
-        List<com.azure.messaging.eventgrid.implementation.models.CloudEvent> implList = new ArrayList<>();
-        for (CloudEvent event : events) {
-            implList.add(event.toImpl());
-        }
-
-        return impl.publishCloudEventEventsAsync(hostname, implList, context);
+    Mono<Void> sendCloudEvents(Iterable<CloudEvent> events, Context context) {
+        return Flux.fromIterable(events)
+            .map(CloudEvent::toImpl)
+            .collectList()
+            .flatMap(list -> this.impl.publishCloudEventEventsAsync(this.hostname, list, context));
     }
 
     /**
@@ -98,16 +100,13 @@ public final class EventGridPublisherAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendCustomEvents(Iterable<Object> events) {
-        return withContext(context -> publishCustomEvents(events, context));
+        return withContext(context -> sendCustomEvents(events, context));
     }
 
-    Mono<Void> publishCustomEvents(Iterable<Object> events, Context context) {
-        List<Object> objList = new ArrayList<>();
-
-        for (Object event : events) {
-            objList.add(event);
-        }
-        return impl.publishCustomEventEventsAsync(hostname, objList, context);
+    Mono<Void> sendCustomEvents(Iterable<Object> events, Context context) {
+        return Flux.fromIterable(events)
+            .collectList()
+            .flatMap(list -> this.impl.publishCustomEventEventsAsync(this.hostname, list, context));
     }
 
     /**
@@ -118,15 +117,14 @@ public final class EventGridPublisherAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendEventsWithResponse(Iterable<EventGridEvent> events) {
-        return withContext(context -> publishEventsWithResponse(events, context));
+        return withContext(context -> sendEventsWithResponse(events, context));
     }
 
-    Mono<Response<Void>> publishEventsWithResponse(Iterable<EventGridEvent> events, Context context) {
-        List<com.azure.messaging.eventgrid.implementation.models.EventGridEvent> implList = new ArrayList<>();
-        for (EventGridEvent event : events) {
-            implList.add(event.toImpl());
-        }
-        return impl.publishEventsWithResponseAsync(hostname, implList, context);
+    Mono<Response<Void>> sendEventsWithResponse(Iterable<EventGridEvent> events, Context context) {
+        return Flux.fromIterable(events)
+            .map(EventGridEvent::toImpl)
+            .collectList()
+            .flatMap(list -> this.impl.publishEventsWithResponseAsync(this.hostname, list, context));
     }
 
     /**
@@ -137,16 +135,14 @@ public final class EventGridPublisherAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendCloudEventsWithResponse(Iterable<CloudEvent> events) {
-        return withContext(context -> publishCloudEventsWithResponse(events, context));
+        return withContext(context -> sendCloudEventsWithResponse(events, context));
     }
 
-    Mono<Response<Void>> publishCloudEventsWithResponse(Iterable<CloudEvent> events, Context context) {
-        List<com.azure.messaging.eventgrid.implementation.models.CloudEvent> implList = new ArrayList<>();
-        for (CloudEvent event : events) {
-            implList.add(event.toImpl());
-        }
-
-        return impl.publishCloudEventEventsWithResponseAsync(hostname, implList, context);
+    Mono<Response<Void>> sendCloudEventsWithResponse(Iterable<CloudEvent> events, Context context) {
+        return Flux.fromIterable(events)
+            .map(CloudEvent::toImpl)
+            .collectList()
+            .flatMap(list -> this.impl.publishCloudEventEventsWithResponseAsync(this.hostname, list, context));
     }
 
     /**
@@ -157,15 +153,12 @@ public final class EventGridPublisherAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendCustomEventsWithResponse(Iterable<Object> events) {
-        return withContext(context -> publishCustomEventsWithResponse(events, context));
+        return withContext(context -> sendCustomEventsWithResponse(events, context));
     }
 
-    Mono<Response<Void>> publishCustomEventsWithResponse(Iterable<Object> events, Context context) {
-        List<Object> objList = new ArrayList<>();
-
-        for (Object event : events) {
-            objList.add(event);
-        }
-        return impl.publishCustomEventEventsWithResponseAsync(hostname, objList, context);
+    Mono<Response<Void>> sendCustomEventsWithResponse(Iterable<Object> events, Context context) {
+        return Flux.fromIterable(events)
+            .collectList()
+            .flatMap(list -> this.impl.publishCustomEventEventsWithResponseAsync(this.hostname, list, context));
     }
 }
