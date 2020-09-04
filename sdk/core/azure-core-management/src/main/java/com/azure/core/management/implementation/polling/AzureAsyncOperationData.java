@@ -109,15 +109,15 @@ final class AzureAsyncOperationData {
                 pollResponseHeaders.toMap(),
                 pollResponseBody);
         } else {
-            String state = tryParseAsyncOperationResource(pollResponseBody, adapter);
-            if (state == null) {
+            AsyncOperationResource resource = tryParseAsyncOperationResource(pollResponseBody, adapter);
+            if (resource == null || resource.getProvisioningState() == null) {
                 this.provisioningState = ProvisioningState.FAILED;
                 this.pollError = new Error("Polling response does not contain a valid body.",
                     pollResponseStatusCode,
                     pollResponseHeaders.toMap(),
                     pollResponseBody);
             } else {
-                this.provisioningState = state;
+                this.provisioningState = resource.getProvisioningState();
                 if (ProvisioningState.FAILED.equalsIgnoreCase(this.provisioningState)
                     || ProvisioningState.CANCELED.equalsIgnoreCase(this.provisioningState)) {
                     this.pollError = new Error("Long running operation is Failed or Cancelled.",
@@ -165,16 +165,12 @@ final class AzureAsyncOperationData {
      * @param value the value
      * @return AsyncOperationResource or null if value cannot be parsed
      */
-    static String tryParseAsyncOperationResource(String value, SerializerAdapter adapter) {
+    private static AsyncOperationResource tryParseAsyncOperationResource(String value, SerializerAdapter adapter) {
         if (value == null || value.isEmpty()) {
             return null;
         }
         try {
-            AsyncOperationResource resource =  adapter.deserialize(value, AsyncOperationResource.class,
-                SerializerEncoding.JSON);
-            return resource != null
-                ? resource.getProvisioningState()
-                : null;
+            return adapter.deserialize(value, AsyncOperationResource.class, SerializerEncoding.JSON);
         } catch (IOException ignored) {
             return null;
         }

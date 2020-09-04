@@ -448,16 +448,10 @@ public final class PollingState {
                     "<POST|DELETE, 201, AzureAsyncOperation> combination violate ARM guideline, "
                         + "defaulting to async operation based polling.");
             }
-            String value = AzureAsyncOperationData.tryParseAsyncOperationResource(lroResponseBody,
-                this.serializerAdapter);
-            if (ProvisioningState.SUCCEEDED.equalsIgnoreCase(value)) {
-                return this.setData(new SynchronouslySucceededLroData(lroResponseBody));
-            } else {
-                return this.setData(new AzureAsyncOperationData(this.lroRequestMethod,
-                    this.lroOperationUri,
-                    azAsyncOpUrl,
-                    locationUrl));
-            }
+            return this.setData(new AzureAsyncOperationData(this.lroRequestMethod,
+                this.lroOperationUri,
+                azAsyncOpUrl,
+                locationUrl));
         }
         if (locationUrl != null) {
             LOGGER.info("The LRO {}:{}, received StatusCode:201, Location:{} without AzureAsyncOperation. {}",
