@@ -64,8 +64,7 @@ final public class ItemOperations {
             List<CosmosItemIdentity> itemIdentities = new ArrayList<>(itemKeyList.size());
             for (int i = 0; i < itemKeyList.size(); i++) {
 
-                itemIdentities.set(
-                    i,
+                itemIdentities.add(
                     new CosmosItemIdentity(
                         itemKeyList.get(i).getRight(),
                         itemKeyList.get(i).getLeft()));
