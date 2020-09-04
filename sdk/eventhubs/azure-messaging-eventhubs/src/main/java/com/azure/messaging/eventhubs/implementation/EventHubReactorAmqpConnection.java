@@ -18,6 +18,7 @@ import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.PartitionPublishingState;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
@@ -96,14 +97,24 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
      * @return A new or existing send link that is connected to the given {@code entityPath}.
      */
     @Override
-    public Mono<AmqpSendLink> createSendLink(String linkName, String entityPath, AmqpRetryOptions retryOptions) {
-        return createSession(entityPath).flatMap(session -> {
+    public Mono<AmqpSendLink> createSendLink(
+        String linkName, String entityPath, AmqpRetryOptions retryOptions,
+        boolean enableIdempotentPartitions, PartitionPublishingState publishingState
+    ) {
+        return createSession(entityPath).cast(EventHubSession.class).
+            flatMap(session -> {
             logger.verbose("Get or create producer for path: '{}'", entityPath);
             final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
-            return session.createProducer(linkName, entityPath, retryOptions.getTryTimeout(), retryPolicy)
-                .cast(AmqpSendLink.class);
+            return session.createProducer(linkName, entityPath, retryOptions.getTryTimeout(), retryPolicy, enableIdempotentPartitions, publishingState);
         });
+    }
+
+    @Override
+    public Mono<AmqpSendLink> createSendLink(
+        String linkName, String entityPath, AmqpRetryOptions retryOptions
+    ) {
+        return this.createSendLink(linkName, entityPath, retryOptions, false, null);
     }
 
     /**

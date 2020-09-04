@@ -37,7 +37,7 @@ public final class PartitionPublishingProperties {
     /**
      * @see PartitionPublishingOptions#getOwnerLevel()
      * @return The owner level of this producer for publishing to the associated partition.
-     * {@link null} if the producer is not idempotent.
+     * null if the producer is not idempotent.
      */
     public Short getOwnerLevel() {
         return ownerLevel;
@@ -46,7 +46,7 @@ public final class PartitionPublishingProperties {
     /**
      * @see PartitionPublishingOptions#getProducerGroupId()
      * @return The identifier of the producer group for which this producer is publishing to the associated partition.
-     * {@link null} if the producer is not idempotent.
+     * null if the producer is not idempotent.
      */
     public Long getProducerGroupId() {
         return producerGroupId;
@@ -57,7 +57,7 @@ public final class PartitionPublishingProperties {
      * @see PartitionPublishingOptions#getStartingSequenceNumber()
      * @return The sequence number assigned to the event that was most recently published to the associated partition
      * successfully.
-     * {@link null} if the producer is not idempotent.
+     * null if the producer is not idempotent.
      */
     public Integer getLastSequenceNumber() {
         return lastSequenceNumber;

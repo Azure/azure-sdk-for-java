@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.AmqpSendLink;
+import com.azure.messaging.eventhubs.PartitionPublishingState;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import reactor.core.publisher.Mono;
@@ -29,8 +30,13 @@ public interface EventHubAmqpConnection extends AmqpConnection {
      * @param linkName The name of the link.
      * @param entityPath The remote address to connect to for the message broker.
      * @param retryOptions Options to use when creating the link.
+     * @param enableIdempotentPartitions Enable the idempotent producer feature when creating the link.
+     * @param publishingState Set the starting state
      * @return A new or existing send link that is connected to the given {@code entityPath}.
      */
+    Mono<AmqpSendLink> createSendLink(String linkName, String entityPath, AmqpRetryOptions retryOptions,
+                                      boolean enableIdempotentPartitions, PartitionPublishingState publishingState);
+
     Mono<AmqpSendLink> createSendLink(String linkName, String entityPath, AmqpRetryOptions retryOptions);
 
     /**

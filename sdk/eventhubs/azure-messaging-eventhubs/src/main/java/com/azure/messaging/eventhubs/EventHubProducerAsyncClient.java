@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
@@ -23,6 +24,7 @@ import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
+import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Flux;
@@ -46,6 +48,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 
+import static com.azure.core.amqp.implementation.AmqpConstants.VENDOR;
 import static com.azure.core.amqp.implementation.RetryUtil.getRetryPolicy;
 import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -96,6 +99,14 @@ public class EventHubProducerAsyncClient implements Closeable {
     private static final int MAX_PARTITION_KEY_LENGTH = 128;
     private static final String SENDER_ENTITY_PATH_FORMAT = "%s/Partitions/%s";
 
+    private static final Symbol PRODUCER_EPOCH = Symbol.valueOf(
+        AmqpMessageConstant.PRODUCER_EPOCH_ANNOTATION_NAME.getValue());
+    private static final Symbol PRODUCER_ID = Symbol.valueOf(
+        AmqpMessageConstant.PRODUCER_ID_ANNOTATION_NAME.getValue());
+    private static final Symbol PRODUCER_SEQUENCE_NUMBER = Symbol.valueOf(
+        AmqpMessageConstant.PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
+
+
     private static final SendOptions DEFAULT_SEND_OPTIONS = new SendOptions();
     private static final CreateBatchOptions DEFAULT_BATCH_OPTIONS = new CreateBatchOptions();
 
@@ -112,7 +123,7 @@ public class EventHubProducerAsyncClient implements Closeable {
     private final boolean isSharedConnection;
     private final Runnable onClientClose;
     private final boolean enableIdempotentPartitions;
-    private final Map<String, PartitionPublishingOptions> partitionOptions;
+    private Map<String, PartitionPublishingState> partitionPublishingStates;
 
     /**
      * Creates a new instance of this {@link EventHubProducerAsyncClient} that can send messages to a single partition
@@ -123,7 +134,7 @@ public class EventHubProducerAsyncClient implements Closeable {
         String fullyQualifiedNamespace, String eventHubName,
         EventHubConnectionProcessor connectionProcessor, AmqpRetryOptions retryOptions, TracerProvider tracerProvider,
         MessageSerializer messageSerializer, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose,
-        boolean enableIdempotentPartitions, Map<String, PartitionPublishingOptions> partitionOptions
+        boolean enableIdempotentPartitions, Map<String, PartitionPublishingState> startingPartitionPublishingStates
     ) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
@@ -139,7 +150,23 @@ public class EventHubProducerAsyncClient implements Closeable {
         this.scheduler = scheduler;
         this.isSharedConnection = isSharedConnection;
         this.enableIdempotentPartitions = enableIdempotentPartitions;
-        this.partitionOptions = partitionOptions;
+        if (enableIdempotentPartitions) {
+            if (startingPartitionPublishingStates == null) {
+                this.partitionPublishingStates = new HashMap<>();
+            } else {
+                this.partitionPublishingStates = startingPartitionPublishingStates;
+            }
+        }
+    }
+
+    EventHubProducerAsyncClient(
+        String fullyQualifiedNamespace, String eventHubName,
+        EventHubConnectionProcessor connectionProcessor, AmqpRetryOptions retryOptions, TracerProvider tracerProvider,
+        MessageSerializer messageSerializer, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose
+    ) {
+        this(fullyQualifiedNamespace, eventHubName, connectionProcessor, retryOptions, tracerProvider,
+            messageSerializer, scheduler, isSharedConnection, onClientClose,
+            false, null);
     }
 
     /**
@@ -196,6 +223,33 @@ public class EventHubProducerAsyncClient implements Closeable {
     }
 
     /**
+     * Indicate whether this client is an idempotent producer.
+     * @return Whether this client is an idempotent producer.
+     */
+    public boolean isIdempotentProducer() {
+        return this.enableIdempotentPartitions;
+    }
+
+    public PartitionPublishingState getPartitionPublishingState(String partitionId) {
+        if (!this.enableIdempotentPartitions) {
+            throw new IllegalStateException("getPartitionPublishingState() shouldn't be called if the producer" +
+                " is not an idempotent producer.");
+        }
+        if (this.partitionPublishingStates.containsKey(partitionId)) {
+            return this.partitionPublishingStates.get(partitionId);
+        } else {
+            synchronized (this) {
+                if (this.partitionPublishingStates.containsKey(partitionId)) { // recheck after locked.
+                    return this.partitionPublishingStates.get(partitionId);
+                }
+                PartitionPublishingState state = new PartitionPublishingState();
+                this.partitionPublishingStates.put(partitionId, state);
+                return state;
+            }
+        }
+    }
+
+    /**
      * Creates an {@link EventDataBatch} that can fit as many events as the transport allows.
      *
      * @return A new {@link EventDataBatch} that can fit as many events as the transport allows.
@@ -214,6 +268,13 @@ public class EventHubProducerAsyncClient implements Closeable {
     public Mono<EventDataBatch> createBatch(CreateBatchOptions options) {
         if (options == null) {
             return monoError(logger, new NullPointerException("'options' cannot be null."));
+        }
+
+        if (this.enableIdempotentPartitions) {
+            if(CoreUtils.isNullOrEmpty(options.getPartitionId())) {
+                return monoError(logger, new IllegalArgumentException(
+                    "An idempotent producer can not create an EventDataBatch without partition id"));
+            }
         }
 
         final String partitionKey = options.getPartitionKey();
@@ -239,7 +300,6 @@ public class EventHubProducerAsyncClient implements Closeable {
                     final int maximumLinkSize = size > 0
                         ? size
                         : MAX_MESSAGE_LENGTH_BYTES;
-
                     if (batchMaxSize > maximumLinkSize) {
                         return monoError(logger,
                             new IllegalArgumentException(String.format(Locale.US,
@@ -252,7 +312,7 @@ public class EventHubProducerAsyncClient implements Closeable {
                         : maximumLinkSize;
 
                     return Mono.just(new EventDataBatch(batchSize, partitionId, partitionKey, link::getErrorContext,
-                        tracerProvider, link.getEntityPath(), link.getHostname(), null));
+                        tracerProvider, link.getEntityPath(), link.getHostname(), this.enableIdempotentPartitions));
                 }));
     }
 
@@ -455,18 +515,55 @@ public class EventHubProducerAsyncClient implements Closeable {
             // Start send span and store updated context
             parentContext.set(tracerProvider.startSpan(finalSharedContext, ProcessKind.SEND));
         }
-
-        return withRetry(getSendLink(batch.getPartitionId())
-            .flatMap(link ->
-                messages.size() == 1
+        if(this.enableIdempotentPartitions) {
+            PartitionPublishingState publishingState = this.getPartitionPublishingState(batch.getPartitionId());
+            try {
+                // Ensure only one EventDataBatch of a partition is being sent at a time.
+                publishingState.getSendingSemaphore().acquire();
+            } catch (InterruptedException e) {
+                return monoError(logger, new RuntimeException(e));
+            }
+            return withRetry(
+                getSendLink(batch.getPartitionId())
+                .map(link -> {
+                    int seqNumber = publishingState.getSequenceNumber();
+                    batch.setStartingPublishedSequenceNumber(seqNumber);
+                    for(EventData eventData : batch.getEvents()) {
+                        eventData.getSystemProperties().put(
+                            AmqpMessageConstant.PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(),
+                            seqNumber);
+                        seqNumber = PartitionPublishingUtils.incrementSequenceNumber(seqNumber);
+                    }
+                    return link;
+                })
+                .flatMap(link -> messages.size() == 1
+                    ? link.send(messages.get(0))
+                    : link.send(messages))
+                , retryOptions.getTryTimeout(), retryPolicy
+            ).publishOn(scheduler)
+                .doOnEach(signal -> {
+                    if (isTracingEnabled) {
+                        tracerProvider.endSpan(parentContext.get(), signal);
+                    }
+                })
+                .then(Mono.fromRunnable(() -> {
+                    publishingState.setSequenceNumber(PartitionPublishingUtils.incrementSequenceNumber(
+                        publishingState.getSequenceNumber(), batch.getCount()));
+                }))
+                // Release the partition state semaphore
+                .doFinally(signal -> publishingState.getSendingSemaphore().release()).then();
+        } else {
+            return withRetry(getSendLink(batch.getPartitionId())
+                .flatMap(link -> messages.size() == 1
                     ? link.send(messages.get(0))
                     : link.send(messages)), retryOptions.getTryTimeout(), retryPolicy)
-            .publishOn(scheduler)
-            .doOnEach(signal -> {
-                if (isTracingEnabled) {
-                    tracerProvider.endSpan(parentContext.get(), signal);
-                }
-            });
+                .publishOn(scheduler)
+                .doOnEach(signal -> {
+                    if (isTracingEnabled) {
+                        tracerProvider.endSpan(parentContext.get(), signal);
+                    }
+                });
+        }
     }
 
     private Mono<Void> sendInternal(Flux<EventData> events, SendOptions options) {
@@ -490,7 +587,7 @@ public class EventHubProducerAsyncClient implements Closeable {
                         .setPartitionId(options.getPartitionId())
                         .setMaximumSizeInBytes(batchSize);
                     return events.collect(new EventDataCollector(batchOptions, 1, link::getErrorContext,
-                        tracerProvider, link.getEntityPath(), link.getHostname()));
+                        tracerProvider, link.getEntityPath(), link.getHostname(), this.enableIdempotentPartitions));
                 })
                 .flatMap(list -> sendInternal(Flux.fromIterable(list))));
     }
@@ -510,12 +607,39 @@ public class EventHubProducerAsyncClient implements Closeable {
             : String.format(Locale.US, SENDER_ENTITY_PATH_FORMAT, eventHubName, partitionId);
     }
 
+    private Mono<AmqpSendLink> updatePublishingState(String partitionId, AmqpSendLink amqpSendLink) {
+        if (this.enableIdempotentPartitions) {
+            return amqpSendLink.getRemoteProperties().map(properties -> {
+                this.setPartitionPublishingState(
+                    partitionId, (Long) properties.get(PRODUCER_ID),
+                    (Short) properties.get(PRODUCER_EPOCH), (Integer) properties.get(PRODUCER_SEQUENCE_NUMBER)
+                );
+                return amqpSendLink;
+            });
+        } else {
+            return Mono.just(amqpSendLink);
+        }
+    }
+
+    private void setPartitionPublishingState(
+        String partitionId, Long producerGroupId, Short ownerLevel, Integer sequenceNumber) {
+        PartitionPublishingState publishingState = getPartitionPublishingState(partitionId);
+        if(publishingState != null) {
+            publishingState.setOwnerLevel(ownerLevel);
+            publishingState.setProducerGroupId(producerGroupId);
+            publishingState.setSequenceNumber(sequenceNumber);
+        }
+    }
+
     private Mono<AmqpSendLink> getSendLink(String partitionId) {
         final String entityPath = getEntityPath(partitionId);
         final String linkName = getEntityPath(partitionId);
+        final PartitionPublishingState publishingState = getPartitionPublishingState(partitionId);
 
         return connectionProcessor
-            .flatMap(connection -> connection.createSendLink(linkName, entityPath, retryOptions));
+            .flatMap(connection -> connection.createSendLink(
+                linkName, entityPath, retryOptions, enableIdempotentPartitions, publishingState)
+                .flatMap(amqpSendLink -> this.updatePublishingState(partitionId, amqpSendLink)));
     }
 
     /**
@@ -551,11 +675,12 @@ public class EventHubProducerAsyncClient implements Closeable {
         private final TracerProvider tracerProvider;
         private final String entityPath;
         private final String hostname;
+        private final boolean isCreatedByIdempotentProducer;
 
         private volatile EventDataBatch currentBatch;
 
         EventDataCollector(CreateBatchOptions options, Integer maxNumberOfBatches, ErrorContextProvider contextProvider,
-            TracerProvider tracerProvider, String entityPath, String hostname) {
+            TracerProvider tracerProvider, String entityPath, String hostname, boolean isCreatedByIdempotentProducer) {
             this.maxNumberOfBatches = maxNumberOfBatches;
             this.maxMessageSize = options.getMaximumSizeInBytes() > 0
                 ? options.getMaximumSizeInBytes()
@@ -566,9 +691,10 @@ public class EventHubProducerAsyncClient implements Closeable {
             this.tracerProvider = tracerProvider;
             this.entityPath = entityPath;
             this.hostname = hostname;
+            this.isCreatedByIdempotentProducer = isCreatedByIdempotentProducer;
 
             currentBatch = new EventDataBatch(maxMessageSize, partitionId, partitionKey, contextProvider,
-                tracerProvider, entityPath, hostname, null);
+                tracerProvider, entityPath, hostname, isCreatedByIdempotentProducer);
         }
 
         @Override
@@ -593,7 +719,7 @@ public class EventHubProducerAsyncClient implements Closeable {
                 }
 
                 currentBatch = new EventDataBatch(maxMessageSize, partitionId, partitionKey, contextProvider,
-                    tracerProvider, entityPath, hostname, null);
+                    tracerProvider, entityPath, hostname, isCreatedByIdempotentProducer);
                 currentBatch.tryAdd(event);
                 list.add(batch);
             };

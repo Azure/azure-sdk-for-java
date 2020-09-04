@@ -57,7 +57,7 @@ public final class PartitionPublishingOptions {
      *
      * @see EventHubClientBuilder#enableIdempotentPartitionPublishing()
      *
-     * @return The relative priority to associate with an exclusive publisher; if {@link null}, the Event Hubs service will control the value.
+     * @return The relative priority to associate with an exclusive publisher; if null, the Event Hubs service will control the value.
      */
     public Short getOwnerLevel() {
         return ownerLevel;
@@ -72,7 +72,7 @@ public final class PartitionPublishingOptions {
      *
      * @see EventHubClientBuilder#enableIdempotentPartitionPublishing()
      *
-     * @return The identifier of the producer group to associate with the partition; if {@link null},
+     * @return The identifier of the producer group to associate with the partition; if null,
      * the Event Hubs service will control the value.
      */
     public Long getProducerGroupId() {
@@ -87,7 +87,7 @@ public final class PartitionPublishingOptions {
      *
      * @see EventHubClientBuilder#enableIdempotentPartitionPublishing()
      *
-     * @return The starting sequence number to associate with the partition; if {@link null}, the Event Hubs service will control the value.
+     * @return The starting sequence number to associate with the partition; if null, the Event Hubs service will control the value.
      */
     public Integer getStartingSequenceNumber() {
         return startingSequenceNumber;

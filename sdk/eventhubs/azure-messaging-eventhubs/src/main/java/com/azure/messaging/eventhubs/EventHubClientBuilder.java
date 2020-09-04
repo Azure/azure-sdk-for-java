@@ -140,7 +140,7 @@ public class EventHubClientBuilder {
     private EventHubConnectionProcessor eventHubConnectionProcessor;
     private Integer prefetchCount;
     private boolean enableIdempotentPartitionPublishing;
-    private Map<String, PartitionPublishingOptions> partitionPublishingOptions;
+    private Map<String, PartitionPublishingState> startingPartitionPublishingStates;
 
     /**
      * Keeps track of the open clients that were created from this builder when there is a shared connection.
@@ -396,13 +396,13 @@ public class EventHubClientBuilder {
      * These options are ignored when publishing to the Event Hubs gateway for automatic routing or when using a
      * partition key.
      *
-     * @param partitionPublishingOptions The {@link PartitionPublishingOptions} for each partition. The keys of the map
+     * @param states The {@link PartitionPublishingOptions} for each partition. The keys of the map
      * are the partition ids.
      * @return The updated {@link EventHubClientBuilder} object.
      */
-    public EventHubClientBuilder partitionPublishingOptions(Map<String,
-        PartitionPublishingOptions> partitionPublishingOptions) {
-        this.partitionPublishingOptions = partitionPublishingOptions;
+    public EventHubClientBuilder startingPartitionPublishingStates(Map<String,
+        PartitionPublishingState> states) {
+        this.startingPartitionPublishingStates = states;
         return this;
     }
 
@@ -535,7 +535,8 @@ public class EventHubClientBuilder {
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
         return new EventHubAsyncClient(processor, tracerProvider, messageSerializer, scheduler,
-            isSharedConnection.get(), this::onClientClose, enableIdempotentPartitionPublishing, partitionPublishingOptions);
+            isSharedConnection.get(), this::onClientClose,
+            enableIdempotentPartitionPublishing, startingPartitionPublishingStates);
     }
 
     /**

@@ -226,7 +226,9 @@ public class EventData {
      * @return The publishing sequence number assigned to the event at the time it was successfully published.
      * {@code null} if the {@link EventData} hasn't been sent or it's sent without idempotent publishing enabled.
      */
-    public Integer getPublishedSequenceNumber() { return systemProperties.getPublishedSequenceNumber(); }
+    public Integer getPublishedSequenceNumber() {
+        return systemProperties.getPublishedSequenceNumber();
+    }
 
     /**
      * {@inheritDoc}
@@ -294,7 +296,7 @@ public class EventData {
             partitionKey = null;
             enqueuedTime = null;
             sequenceNumber = null;
-            publishedSequenceNumber=null;
+            publishedSequenceNumber = null;
         }
 
         SystemProperties(final Map<String, Object> map) {
@@ -370,7 +372,9 @@ public class EventData {
             return sequenceNumber;
         }
 
-        private Integer getPublishedSequenceNumber() { return publishedSequenceNumber; }
+        private Integer getPublishedSequenceNumber() {
+            return publishedSequenceNumber;
+        }
 
         @SuppressWarnings("unchecked")
         private <T> T removeSystemProperty(final String key) {

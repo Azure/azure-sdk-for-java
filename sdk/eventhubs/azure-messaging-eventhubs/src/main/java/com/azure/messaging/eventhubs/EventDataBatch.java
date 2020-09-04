@@ -58,10 +58,11 @@ public final class EventDataBatch {
     private final TracerProvider tracerProvider;
     private final String entityPath;
     private final String hostname;
-    private final Integer startingPublishedSequenceNumber;
+    private final boolean isCreatedByIdempotentProducer;
+    private Integer startingPublishedSequenceNumber;
 
     EventDataBatch(int maxMessageSize, String partitionId, String partitionKey, ErrorContextProvider contextProvider,
-        TracerProvider tracerProvider, String entityPath, String hostname, Integer startingPublishedSequenceNumber) {
+        TracerProvider tracerProvider, String entityPath, String hostname, boolean isCreatedByIdempotentProducer) {
         this.maxMessageSize = maxMessageSize;
         this.partitionKey = partitionKey;
         this.partitionId = partitionId;
@@ -72,7 +73,12 @@ public final class EventDataBatch {
         this.tracerProvider = tracerProvider;
         this.entityPath = entityPath;
         this.hostname = hostname;
-        this.startingPublishedSequenceNumber = startingPublishedSequenceNumber;
+        this.isCreatedByIdempotentProducer = isCreatedByIdempotentProducer;
+    }
+
+    EventDataBatch(int maxMessageSize, String partitionId, String partitionKey, ErrorContextProvider contextProvider,
+                   TracerProvider tracerProvider, String entityPath, String hostname) {
+        this(maxMessageSize, partitionId, partitionKey, contextProvider, tracerProvider, entityPath, hostname, false);
     }
 
     /**
@@ -112,8 +118,9 @@ public final class EventDataBatch {
      * the batch was successfully published. {@code null} if the producer was not configured to apply
      * sequence numbering or if the batch has not yet been successfully published.
      */
-    public Integer getStartingPublishedSequenceNumber() { return this.startingPublishedSequenceNumber; }
-
+    public Integer getStartingPublishedSequenceNumber() {
+        return this.startingPublishedSequenceNumber;
+    }
 
     /**
      * Tries to add an {@link EventData event} to the batch.
@@ -181,6 +188,10 @@ public final class EventDataBatch {
         return eventData;
     }
 
+    void setStartingPublishedSequenceNumber(Integer startingPublishedSequenceNumber) {
+        this.startingPublishedSequenceNumber = startingPublishedSequenceNumber;
+    }
+
     List<EventData> getEvents() {
         return events;
     }
@@ -207,6 +218,8 @@ public final class EventDataBatch {
             amqpMessage.setDeliveryAnnotations(null);
 
             eventSize += amqpMessage.encode(this.eventBytes, 0, maxMessageSize);
+        } else if (this.isCreatedByIdempotentProducer) {
+            eventSize += 20; // TODO: to test the overhead size of idempotent producer. Should be over 20.
         }
 
         return eventSize;

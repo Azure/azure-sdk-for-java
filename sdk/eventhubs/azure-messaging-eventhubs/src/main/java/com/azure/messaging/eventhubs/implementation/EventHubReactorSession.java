@@ -5,16 +5,10 @@ package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
-import com.azure.core.amqp.implementation.AmqpConstants;
-import com.azure.core.amqp.implementation.AmqpReceiveLink;
-import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.amqp.implementation.ReactorHandlerProvider;
-import com.azure.core.amqp.implementation.ReactorProvider;
-import com.azure.core.amqp.implementation.ReactorSession;
-import com.azure.core.amqp.implementation.TokenManager;
-import com.azure.core.amqp.implementation.TokenManagerProvider;
+import com.azure.core.amqp.implementation.*;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.PartitionPublishingState;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -43,6 +37,12 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
     private static final Symbol ENABLE_RECEIVER_RUNTIME_METRIC_NAME =
         Symbol.valueOf(VENDOR + ":enable-receiver-runtime-metric");
 
+    private static final Symbol PRODUCER_EPOCH = Symbol.valueOf(VENDOR+":producer-epoch");
+    private static final Symbol PRODUCER_ID = Symbol.valueOf(VENDOR+":producer-id");
+    private static final Symbol PRODUCER_SEQUENCE_NUMBER = Symbol.valueOf(VENDOR+":producer-sequence-number");
+    private static final Symbol ENABLE_IDEMPOTENT_PRODUCER =
+        Symbol.valueOf(VENDOR + ":idempotent-producer");
+
     private final ClientLogger logger = new ClientLogger(EventHubReactorSession.class);
 
     /**
@@ -66,6 +66,30 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
                            Duration openTimeout, AmqpRetryPolicy retryPolicy, MessageSerializer messageSerializer) {
         super(session, sessionHandler, sessionName, provider, handlerProvider, cbsNodeSupplier, tokenManagerProvider,
             messageSerializer, openTimeout, retryPolicy);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Mono<AmqpSendLink> createProducer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry, boolean enableIdempotentPartitions, PartitionPublishingState publishingState) {
+        Objects.requireNonNull(linkName, "'linkName' cannot be null.");
+        Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
+        Objects.requireNonNull(timeout, "'timeout' cannot be null.");
+        Objects.requireNonNull(retry, "'retry' cannot be null.");
+
+        Symbol[] desiredCapabilities = null;
+        Map<Symbol, Object> properties = null;
+        if (enableIdempotentPartitions) {
+            desiredCapabilities = new Symbol[]{ENABLE_IDEMPOTENT_PRODUCER};
+
+            properties = new HashMap<>();
+            properties.put(PRODUCER_EPOCH, publishingState.getOwnerLevel());
+            properties.put(PRODUCER_ID, publishingState.getProducerGroupId());
+            properties.put(PRODUCER_SEQUENCE_NUMBER, publishingState.getProducerGroupId());
+        }
+        return createProducer(linkName, entityPath, timeout, retry, properties, desiredCapabilities)
+            .cast(AmqpSendLink.class);
     }
 
     /**

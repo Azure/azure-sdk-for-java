@@ -34,12 +34,12 @@ class EventHubAsyncClient implements Closeable {
     private final Runnable onClientClose;
     private final TracerProvider tracerProvider;
     private final boolean enableIdempotentPartitions;
-    private final Map<String, PartitionPublishingOptions> partitionPublishingOptions;
+    private final Map<String, PartitionPublishingState> partitionPublishingStates;
 
     EventHubAsyncClient(
         EventHubConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
         MessageSerializer messageSerializer, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose,
-        boolean enableIdempotentPartitions, Map<String, PartitionPublishingOptions> partitionPublishingOptions) {
+        boolean enableIdempotentPartitions, Map<String, PartitionPublishingState> partitionPublishingStates) {
         this.tracerProvider = Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.connectionProcessor = Objects.requireNonNull(connectionProcessor,
@@ -49,7 +49,7 @@ class EventHubAsyncClient implements Closeable {
 
         this.isSharedConnection = isSharedConnection;
         this.enableIdempotentPartitions = enableIdempotentPartitions;
-        this.partitionPublishingOptions = partitionPublishingOptions;
+        this.partitionPublishingStates = partitionPublishingStates;
     }
 
     /**
@@ -112,7 +112,7 @@ class EventHubAsyncClient implements Closeable {
     EventHubProducerAsyncClient createProducer() {
         return new EventHubProducerAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), getEventHubName(),
             connectionProcessor, connectionProcessor.getRetryOptions(), tracerProvider, messageSerializer, scheduler,
-            isSharedConnection, onClientClose, enableIdempotentPartitions, partitionPublishingOptions);
+            isSharedConnection, onClientClose, enableIdempotentPartitions, partitionPublishingStates);
     }
 
     /**
