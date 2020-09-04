@@ -9,11 +9,12 @@ import reactor.core.publisher.Mono;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
- * Represents a batch of operations against items with the same {@link PartitionKey} in a container.
+ * Represents a batch of operations against items with the same {@link PartitionKey} in a container that will be performed
+ * in a transactional manner at the Azure Cosmos DB service.
  * <p>
- * The batch operations will be performed in a transactional manner at the Azure Cosmos DB service. Use
- * <h2>Example</h2>
- * <p>
+ * Use {@link com.azure.cosmos.CosmosAsyncContainer#createTransactionalBatch(PartitionKey)} to create an instance of
+ * TransactionalBatch
+ * <h3>Example</h3>
  * This example atomically modifies a set of documents as a batch.<pre>{@code
  * public class ToDoActivity {
  *     public final String type;
@@ -50,7 +51,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  *     ToDoActivity readActivity = result.getResource();
  * }
  * }</pre>
- * <h2>Example</h2>
+ * <h3>Example</h3>
  * <p>This example atomically reads a set of documents as a batch.<pre>{@code
  * String activityType = "personal";
  *
