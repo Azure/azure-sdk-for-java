@@ -347,7 +347,7 @@ class KuduClient {
                                     throw logger.logExceptionAsError(Exceptions.propagate(throwable));
                                 }
                             })
-                        .flatMap(i -> Mono.delay(Duration.ofSeconds(i * 10))));
+                        .flatMap(i -> Mono.delay(Duration.ofSeconds(((long) i) * 10))));
     }
 
 }
