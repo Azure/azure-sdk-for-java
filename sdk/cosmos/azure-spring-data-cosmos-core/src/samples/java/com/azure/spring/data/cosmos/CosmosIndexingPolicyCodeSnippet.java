@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos;
+package com.azure.spring.data.cosmos;
 
 /**
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
@@ -9,7 +9,6 @@ package com.azure.cosmos;
  */
 
 import com.azure.cosmos.models.IndexingMode;
-import com.azure.spring.data.cosmos.Constants;
 
 public @interface CosmosIndexingPolicyCodeSnippet {
 

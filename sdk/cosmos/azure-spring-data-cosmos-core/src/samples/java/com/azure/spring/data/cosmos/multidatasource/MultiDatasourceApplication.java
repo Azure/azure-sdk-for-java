@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos.multidatasource;
+package com.azure.spring.data.cosmos.multidatasource;
 
-import com.azure.cosmos.multidatasource.primarydatasource.first.User;
-import com.azure.cosmos.multidatasource.primarydatasource.first.UserRepository;
-import com.azure.cosmos.multidatasource.secondarydatasource.first.Book;
-import com.azure.cosmos.multidatasource.secondarydatasource.first.BookRepository;
+import com.azure.spring.data.cosmos.multidatasource.primarydatasource.first.User;
+import com.azure.spring.data.cosmos.multidatasource.primarydatasource.first.UserRepository;
+import com.azure.spring.data.cosmos.multidatasource.secondarydatasource.first.Book;
+import com.azure.spring.data.cosmos.multidatasource.secondarydatasource.first.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

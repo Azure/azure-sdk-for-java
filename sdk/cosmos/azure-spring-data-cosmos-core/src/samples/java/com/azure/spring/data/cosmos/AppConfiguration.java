@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos;
+package com.azure.spring.data.cosmos;
 /**
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
  * ARE USED TO EXTRACT APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING
@@ -8,56 +8,65 @@ package com.azure.cosmos;
  */
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.ResponseDiagnostics;
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
-import com.azure.spring.data.cosmos.repository.config.EnableReactiveCosmosRepositories;
+import com.azure.spring.data.cosmos.repository.config.EnableCosmosRepositories;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.lang.Nullable;
 
 @Configuration
-@EnableConfigurationProperties(CosmosProperties.class)
-@EnableReactiveCosmosRepositories
-@PropertySource("classpath:application.properties")
-public class UserRepositoryConfiguration extends AbstractCosmosConfiguration {
-    private static final Logger logger = LoggerFactory.getLogger(UserRepositoryConfiguration.class);
+@EnableCosmosRepositories
+public class AppConfiguration extends AbstractCosmosConfiguration {
 
-    @Autowired
-    private CosmosProperties properties;
+    private static final Logger logger = LoggerFactory.getLogger(AppConfiguration.class);
+
+    @Value("${azure.cosmos.uri}")
+    private String uri;
+
+    @Value("${azure.cosmos.key}")
+    private String key;
+
+    @Value("${azure.cosmos.secondaryKey}")
+    private String secondaryKey;
+
+    @Value("${azure.cosmos.database}")
+    private String dbName;
+
+    @Value("${azure.cosmos.queryMetricsEnabled}")
+    private boolean queryMetricsEnabled;
 
     private AzureKeyCredential azureKeyCredential;
 
     @Bean
-    public CosmosClientBuilder cosmosClientBuilder() {
-        this.azureKeyCredential = new AzureKeyCredential(properties.getKey());
-        return new CosmosClientBuilder().credential(azureKeyCredential);
+    public CosmosClientBuilder getCosmosClientBuilder() {
+        this.azureKeyCredential = new AzureKeyCredential(key);
+        DirectConnectionConfig directConnectionConfig = new DirectConnectionConfig();
+        GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
+        return new CosmosClientBuilder()
+            .endpoint(uri)
+            .credential(azureKeyCredential)
+            .directMode(directConnectionConfig, gatewayConnectionConfig);
     }
 
-    @Bean
+    @Override
     public CosmosConfig cosmosConfig() {
         return CosmosConfig.builder()
+                           .enableQueryMetrics(queryMetricsEnabled)
                            .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
-                           .enableQueryMetrics(properties.isQueryMetricsEnabled())
                            .build();
     }
 
     public void switchToSecondaryKey() {
-        this.azureKeyCredential.update(properties.getSecondaryKey());
-    }
-
-    public void switchToPrimaryKey() {
-        this.azureKeyCredential.update(properties.getKey());
-    }
-
-    public void switchKey(String key) {
-        this.azureKeyCredential.update(key);
+        this.azureKeyCredential.update(secondaryKey);
     }
 
     @Override
@@ -72,4 +81,5 @@ public class UserRepositoryConfiguration extends AbstractCosmosConfiguration {
             logger.info("Response Diagnostics {}", responseDiagnostics);
         }
     }
+
 }
