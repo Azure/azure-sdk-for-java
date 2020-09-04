@@ -8,6 +8,7 @@ import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpDataBody;
 import com.azure.core.amqp.models.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -44,8 +45,11 @@ import java.util.stream.Collectors;
 public class ServiceBusMessage {
     private static final String SCHEDULED_ENQUEUE_TIME_NAME = "x-opt-scheduled-enqueue-time";
     private static final String VIA_PARTITION_KEY_NAME = "x-opt-via-partition-key";
-    private Context context;
+    private static final String PARTITION_KEY_NAME = "x-opt-partition-key";
     private final AmqpAnnotatedMessage amqpAnnotatedMessage;
+    private final ClientLogger logger = new ClientLogger(ServiceBusMessage.class);
+
+    private Context context;
 
     /**
      * Creates a {@link ServiceBusMessage} with a {@link java.nio.charset.StandardCharsets#UTF_8 UTF_8} encoded body.
@@ -140,7 +144,13 @@ public class ServiceBusMessage {
                     body = Arrays.copyOf(firstData, firstData.length);
                 }
                 break;
+            case SEQUENCE:
+            case VALUE:
+                throw logger.logThrowableAsError(new UnsupportedOperationException("Not supported AmqpBodyType: "
+                    + amqpAnnotatedMessage.getBody().getBodyType()));
             default:
+            throw logger.logThrowableAsError(new IllegalArgumentException("Unknown AmqpBodyType: "
+                + amqpAnnotatedMessage.getBody().getBodyType()));
         }
         return body;
     }
@@ -247,7 +257,6 @@ public class ServiceBusMessage {
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-partitioning">Partitioned
      *     entities</a>
      */
-    private static final String PARTITION_KEY_NAME = "x-opt-partition-key";
     public String getPartitionKey() {
         return (String)amqpAnnotatedMessage.getMessageAnnotations().get(PARTITION_KEY_NAME);
     }
