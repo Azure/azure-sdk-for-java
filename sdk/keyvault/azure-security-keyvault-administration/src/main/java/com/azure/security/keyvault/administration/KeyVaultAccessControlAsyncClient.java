@@ -353,7 +353,7 @@ public final class KeyVaultAccessControlAsyncClient {
         RoleAssignmentProperties roleAssignmentProperties =
             new RoleAssignmentProperties()
                 .setRoleDefinitionId(properties.getRoleDefinitionId())
-                .setPrincipalId(properties.getRoleDefinitionId());
+                .setPrincipalId(properties.getPrincipalId());
         RoleAssignmentCreateParameters parameters =
             new RoleAssignmentCreateParameters()
                 .setProperties(roleAssignmentProperties);
