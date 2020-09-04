@@ -1010,10 +1010,6 @@ public class AzureTests extends ResourceManagerTestBase {
 
     @Test
     public void testVirtualMachineSyncPoller() throws Exception {
-        if (skipInPlayback()) {
-            return; // skip now as taking too long time for PLAYBACK
-        }
-
         new TestVirtualMachineSyncPoller(azure.networks().manager())
             .runTest(azure.virtualMachines(), azure.resourceGroups());
     }

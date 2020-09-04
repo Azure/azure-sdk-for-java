@@ -788,7 +788,7 @@ public final class DigitalTwinsAsyncClient {
                         objectPagedResponse.getHeaders(),
                         convertedList,
                         null,
-                        ((PagedResponseBase) objectPagedResponse).getDeserializedHeaders());
+                        ((ResponseBase) objectPagedResponse).getDeserializedHeaders());
                 }
             );
     }
@@ -909,7 +909,7 @@ public final class DigitalTwinsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteModel(String modelId) {
         return deleteModelWithResponse(modelId)
-            .map(Response::getValue);
+            .flatMap(voidResponse -> Mono.empty());
     }
 
     /**
@@ -939,7 +939,7 @@ public final class DigitalTwinsAsyncClient {
      */
     public Mono<Void> decommissionModel(String modelId) {
         return decommissionModelWithResponse(modelId)
-            .map(Response::getValue);
+            .flatMap(voidResponse -> Mono.empty());
     }
 
     /**
@@ -1047,7 +1047,7 @@ public final class DigitalTwinsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateComponent(String digitalTwinId, String componentPath, List<Object> componentUpdateOperations) {
         return updateComponentWithResponse(digitalTwinId, componentPath, componentUpdateOperations, new UpdateComponentRequestOptions())
-            .map(DigitalTwinsResponse::getValue);
+            .flatMap(voidResponse -> Mono.empty());
     }
 
     /**
