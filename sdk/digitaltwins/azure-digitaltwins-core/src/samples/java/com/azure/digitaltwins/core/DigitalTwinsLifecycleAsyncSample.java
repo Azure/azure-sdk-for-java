@@ -4,6 +4,8 @@
 package com.azure.digitaltwins.core;
 
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.digitaltwins.core.helpers.FileHelper;
+import com.azure.digitaltwins.core.helpers.SamplesArguments;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
 import com.azure.digitaltwins.core.implementation.serialization.BasicRelationship;
 import com.azure.identity.ClientSecretCredentialBuilder;
@@ -26,8 +28,8 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 import static com.azure.digitaltwins.core.SamplesConstants.*;
-import static com.azure.digitaltwins.core.SamplesUtil.IgnoreConflictError;
-import static com.azure.digitaltwins.core.SamplesUtil.IgnoreNotFoundError;
+import static com.azure.digitaltwins.core.helpers.SamplesUtil.IgnoreConflictError;
+import static com.azure.digitaltwins.core.helpers.SamplesUtil.IgnoreNotFoundError;
 import static java.util.Arrays.asList;
 
 /**
