@@ -4,7 +4,11 @@ package com.azure.core.test;
 
 import com.azure.core.test.annotation.DoNotRecord;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
@@ -12,12 +16,25 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
  * This class handles managing context about a test, such as custom testing annotations and verifying whether the test
  * is capable of running.
  */
+@SuppressWarnings("unchecked")
 public class TestContextManager {
+    private static final Map<String, AtomicInteger> TEST_ITERATION_CACHE = new ConcurrentHashMap<>();
+    private static final String PARAMETERIZED_TEST_CLASS_NAME = "org.junit.jupiter.params.ParameterizedTest";
+    private static final Class<? extends Annotation> PARAMETERIZED_TEST_CLASS;
     private final String testName;
+    private final String className;
+    private final Integer testIteration;
     private final TestMode testMode;
     private final boolean doNotRecord;
-    private final boolean skipInPlayback;
     private final boolean testRan;
+
+    static {
+        try {
+            PARAMETERIZED_TEST_CLASS = (Class<? extends Annotation>) Class.forName(PARAMETERIZED_TEST_CLASS_NAME);
+        } catch (ClassNotFoundException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
 
     /**
      * Constructs a {@link TestContextManager} based on the test method.
@@ -27,15 +44,25 @@ public class TestContextManager {
      */
     public TestContextManager(Method testMethod, TestMode testMode) {
         this.testName = testMethod.getName();
+        this.className = testMethod.getDeclaringClass().getSimpleName();
+        if (testMethod.isAnnotationPresent(PARAMETERIZED_TEST_CLASS)) {
+            this.testIteration = TEST_ITERATION_CACHE
+                .computeIfAbsent(className + "." + testName, ignored -> new AtomicInteger())
+                .getAndIncrement();
+        } else {
+            this.testIteration = null;
+        }
+
         this.testMode = testMode;
 
         DoNotRecord doNotRecordAnnotation = testMethod.getAnnotation(DoNotRecord.class);
+        boolean skipInPlayback;
         if (doNotRecordAnnotation != null) {
             this.doNotRecord = true;
-            this.skipInPlayback = doNotRecordAnnotation.skipInPlayback();
+            skipInPlayback = doNotRecordAnnotation.skipInPlayback();
         } else {
             this.doNotRecord = false;
-            this.skipInPlayback = false;
+            skipInPlayback = false;
         }
 
         this.testRan = !(skipInPlayback && testMode == TestMode.PLAYBACK);
@@ -49,6 +76,20 @@ public class TestContextManager {
      */
     public String getTestName() {
         return testName;
+    }
+
+    public String getTestPlaybackRecordingName() {
+        StringBuilder builder = new StringBuilder(className)
+            .append(".")
+            .append(testName);
+
+        if (testIteration != null) {
+            builder.append("[")
+                .append(testIteration)
+                .append("]");
+        }
+
+        return builder.toString();
     }
 
     /**

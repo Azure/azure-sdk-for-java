@@ -8,8 +8,6 @@ import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import java.util.Arrays;
-import java.util.stream.Stream;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -20,7 +18,9 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 
 import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Locale;
+import java.util.stream.Stream;
 
 /**
  * Base class for running live and playback tests using {@link InterceptorManager}.
