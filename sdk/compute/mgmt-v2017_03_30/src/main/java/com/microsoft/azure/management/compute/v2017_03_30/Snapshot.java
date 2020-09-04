@@ -10,12 +10,12 @@ package com.microsoft.azure.management.compute.v2017_03_30;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.Resource;
+import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasResourceGroup;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
-import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.compute.v2017_03_30.implementation.ComputeManager;
 import org.joda.time.DateTime;
@@ -93,46 +93,56 @@ public interface Snapshot extends HasInner<SnapshotInner>, Resource, GroupableRe
         interface WithCreationData {
            /**
             * Specifies creationData.
-            */
+            * @param creationData Disk source information. CreationData information cannot be changed after the disk has been created
+            * @return the next definition stage
+*/
             WithCreate withCreationData(CreationData creationData);
         }
 
         /**
-         * The stage of the snapshot update allowing to specify DiskSizeGB.
+         * The stage of the snapshot definition allowing to specify DiskSizeGB.
          */
         interface WithDiskSizeGB {
             /**
              * Specifies diskSizeGB.
+             * @param diskSizeGB If creationData.createOption is Empty, this field is mandatory and it indicates the size of the VHD to create. If this field is present for updates or creation with other options, it indicates a resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size
+             * @return the next definition stage
              */
             WithCreate withDiskSizeGB(Integer diskSizeGB);
         }
 
         /**
-         * The stage of the snapshot update allowing to specify EncryptionSettings.
+         * The stage of the snapshot definition allowing to specify EncryptionSettings.
          */
         interface WithEncryptionSettings {
             /**
              * Specifies encryptionSettings.
+             * @param encryptionSettings Encryption settings for disk or snapshot
+             * @return the next definition stage
              */
             WithCreate withEncryptionSettings(EncryptionSettings encryptionSettings);
         }
 
         /**
-         * The stage of the snapshot update allowing to specify OsType.
+         * The stage of the snapshot definition allowing to specify OsType.
          */
         interface WithOsType {
             /**
              * Specifies osType.
+             * @param osType The Operating System type. Possible values include: 'Windows', 'Linux'
+             * @return the next definition stage
              */
             WithCreate withOsType(OperatingSystemTypes osType);
         }
 
         /**
-         * The stage of the snapshot update allowing to specify Sku.
+         * The stage of the snapshot definition allowing to specify Sku.
          */
         interface WithSku {
             /**
              * Specifies sku.
+             * @param sku the sku parameter value
+             * @return the next definition stage
              */
             WithCreate withSku(DiskSku sku);
         }
@@ -156,41 +166,49 @@ public interface Snapshot extends HasInner<SnapshotInner>, Resource, GroupableRe
      */
     interface UpdateStages {
         /**
-         * The stage of the snapshot {0} allowing to specify DiskSizeGB.
+         * The stage of the snapshot update allowing to specify DiskSizeGB.
          */
         interface WithDiskSizeGB {
             /**
              * Specifies diskSizeGB.
+             * @param diskSizeGB If creationData.createOption is Empty, this field is mandatory and it indicates the size of the VHD to create. If this field is present for updates or creation with other options, it indicates a resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size
+             * @return the next update stage
              */
             Update withDiskSizeGB(Integer diskSizeGB);
         }
 
         /**
-         * The stage of the snapshot {0} allowing to specify EncryptionSettings.
+         * The stage of the snapshot update allowing to specify EncryptionSettings.
          */
         interface WithEncryptionSettings {
             /**
              * Specifies encryptionSettings.
+             * @param encryptionSettings Encryption settings for disk or snapshot
+             * @return the next update stage
              */
             Update withEncryptionSettings(EncryptionSettings encryptionSettings);
         }
 
         /**
-         * The stage of the snapshot {0} allowing to specify OsType.
+         * The stage of the snapshot update allowing to specify OsType.
          */
         interface WithOsType {
             /**
              * Specifies osType.
+             * @param osType the Operating System type. Possible values include: 'Windows', 'Linux'
+             * @return the next update stage
              */
             Update withOsType(OperatingSystemTypes osType);
         }
 
         /**
-         * The stage of the snapshot {0} allowing to specify Sku.
+         * The stage of the snapshot update allowing to specify Sku.
          */
         interface WithSku {
             /**
              * Specifies sku.
+             * @param sku the sku parameter value
+             * @return the next update stage
              */
             Update withSku(DiskSku sku);
         }
