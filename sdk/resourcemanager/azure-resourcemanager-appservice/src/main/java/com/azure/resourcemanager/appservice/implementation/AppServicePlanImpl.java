@@ -68,11 +68,9 @@ class AppServicePlanImpl
 
     @Override
     public OperatingSystem operatingSystem() {
-        if (inner().kind().toLowerCase(Locale.ROOT).contains("linux")) {
-            return OperatingSystem.LINUX;
-        } else {
-            return OperatingSystem.WINDOWS;
-        }
+        return (inner().reserved() == null || !inner().reserved())
+            ? OperatingSystem.WINDOWS
+            : OperatingSystem.LINUX;
     }
 
     @Override
