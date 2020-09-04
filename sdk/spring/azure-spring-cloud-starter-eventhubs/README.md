@@ -1,8 +1,8 @@
-# Azure Spring cloud starter Event Hubs client library for Java
+# Azure Event Hubs Spring cloud starter client library for Java
 
 The Spring Cloud Event Hubs starter helps developers to finish the auto-configuration of Event Hubs and provides Spring Integration on Event Hubs.
 
-For Spring Integration on Event Hubs, please refer to the [source code](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-integration-eventhubs).
+For Spring Integration on Event Hubs, please refer to the [source code][source_code].
 
 [Source code][src] | [Package (Maven)][package] | [API reference documentation][refdocs] | [Samples][sample]
 
@@ -10,7 +10,7 @@ For Spring Integration on Event Hubs, please refer to the [source code](https://
 ### Prerequisites
 - Java Development Kit (JDK) with version 8 or above
 - [Azure Subscription][azure_subscription]
-- [Maven](http://maven.apache.org/) 3.0 and above
+- [Maven][maven] 3.0 and above
 
 ### Include the package
 [//]: # "{x-version-update-start;com.microsoft.azure:spring-cloud-starter-azure-eventhubs;current}"
@@ -44,24 +44,29 @@ logging.level.org.springframework.web=DEBUG
 logging.level.org.hibernate=ERROR
 ```
 
-For more information about setting logging in spring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging).
+For more information about setting logging in spring, please refer to the [official doc][logging_doc].
  
 
 ## Next steps
 
 The following section provide a sample project illustrating how to use the starter.
 ### More sample code
-- [Eventhubs Integration Sample](../azure-spring-boot-samples/azure-spring-cloud-eventhubs-integration-sample)
+- [Eventhubs Integration Sample][eventhubs_integration_sample]
 
 ## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
 
-Please follow [instructions here](../CONTRIBUTING.md) to build from source or contribute.
+Please follow [instructions here][contributing_md] to build from source or contribute.
 
-
+<!-- Link -->
 [src]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-autoconfigure/src/main/java/com/microsoft/azure/spring/cloud/autoconfigure/eventhub
 [package]: https://mvnrepository.com/artifact/com.microsoft.azure/spring-cloud-starter-azure-eventhubs
 [refdocs]: https://azure.github.io/azure-sdk-for-java/spring.html#spring-cloud-starter-azure-eventhubs
 [sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-eventhubs-integration-sample
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [azure_subscription]: https://azure.microsoft.com/free
+[logging_doc]: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging
+[contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/CONTRIBUTING.md
+[maven]: http://maven.apache.org/
+[source_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-integration-eventhubs
+[eventhubs_integration_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-eventhubs-integration-sample

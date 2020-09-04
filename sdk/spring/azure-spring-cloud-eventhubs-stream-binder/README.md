@@ -1,7 +1,7 @@
-# Spring Cloud Azure Event Hubs Stream Binder client library for Java
+# Azure Event Hubs Spring Cloud Stream Binder client library for Java
 
 The project provides **Spring Cloud Stream Binder for Azure Event Hub** which allows you to build message-driven 
-microservice using **Spring Cloud Stream** based on [Azure Event Hub](https://azure.microsoft.com/en-us/services/event-hubs/) service.
+microservice using **Spring Cloud Stream** based on [Azure Event Hub][azure_event_hub] service.
 
 [Source code][src] | [Package (Maven)][package] | [API reference documentation][refdocs] | [Product documentation][docs] | [Samples][sample]
 
@@ -9,7 +9,7 @@ microservice using **Spring Cloud Stream** based on [Azure Event Hub](https://az
 ### Prerequisites
 - Java Development Kit (JDK) with version 8 or above
 - [Azure Subscription][azure_subscription]
-- [Maven](http://maven.apache.org/) 3.0 and above
+- [Maven][maven] 3.0 and above
 
 ### Include the package
 [//]: # "{x-version-update-start;com.microsoft.azure:spring-cloud-azure-eventhubs-stream-binder;current}"
@@ -48,34 +48,11 @@ from most heavy-loaded consumer to achieve workload balancing.
 
 Please use this `sample` as a reference for how to use this binder. 
 
-### Feature List 
-
-- [Dependency Management](#dependency-management)
-- [Configuration Options](#configuration-options)
-- [Error Channel](#error-channels)
-
-#### Dependency Management
-
-**Maven Coordinates** 
-```
-<dependency>
-    <groupId>com.microsoft.azure</groupId>
-    <artifactId>spring-cloud-azure-eventhub-stream-binder</artifactId>
-</dependency>
-
-```
-**Gradle Coordinates** 
-```
-dependencies {
-    compile group: 'com.microsoft.azure', name: 'spring-cloud-azure-eventhub-stream-binder'
-}
-```
-
-#### Configuration Options 
+### Configuration Options 
 
 The binder provides the following configuration options in `application.properties`.
 
-##### Spring Cloud Azure Properties #####
+#### Spring Cloud Azure Properties ####
 
 Name | Description | Required | Default 
 ---|---|---|---
@@ -85,7 +62,7 @@ Name | Description | Required | Default
  spring.cloud.azure.eventhub.namespace | Event Hub Namespace. Auto creating if missing | Yes |
  spring.cloud.azure.eventhub.checkpoint-storage-account | StorageAccount name for checkpoint message successfully consumed | Yes
 
- ##### Event Hub Producer Properties #####
+ #### Event Hub Producer Properties ####
 
  It supports the following configurations with the format of `spring.cloud.stream.eventhub.bindings.<channelName>.producer`.
  
@@ -102,7 +79,7 @@ Name | Description | Required | Default
 
  Default: `10000`
  
- ##### Event Hub Consumer Properties #####
+ #### Event Hub Consumer Properties ####
 
   It supports the following configurations with the format of `spring.cloud.stream.eventhub.bindings.<channelName>.consumer`.
 
@@ -141,7 +118,7 @@ Name | Description | Required | Default
 
   Default: `5s`
 
-#### Error Channels
+### Error Channels
 **_consumer error channel_**
 
 this channel is open by default, you can handle the error message in this way:
@@ -185,21 +162,22 @@ logging.level.org.springframework.web=DEBUG
 logging.level.org.hibernate=ERROR
 ```
 
-For more information about setting logging in spring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging).
+For more information about setting logging in spring, please refer to the [official doc][logging_doc].
  
 
 ## Next steps
 
 The following section provide a sample project illustrating how to use the starter.
 ### More sample code
-- [Eventhubs Binder Sample](../azure-spring-boot-samples/azure-spring-cloud-eventhubs-binder-sample)
-- [Eventhubs Multibinders Sample](../azure-spring-boot-samples/azure-spring-cloud-eventhubs-multibinders-sample)
+- [Eventhubs Binder Sample][eventhubs_binder_sample]
+- [Eventhubs Multibinders Sample][eventhubs_multibinders_sample]
 
 ## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
 
-Please follow [instructions here](../CONTRIBUTING.md) to build from source or contribute.
+Please follow [instructions here][contributing_md] to build from source or contribute.
 
+<!-- Link -->
 [src]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-eventhubs-stream-binder/src
 [package]: https://mvnrepository.com/artifact/com.microsoft.azure/spring-cloud-azure-eventhubs-stream-binder
 [refdocs]: https://azure.github.io/azure-sdk-for-java/spring.html#spring-cloud-azure-eventhubs-stream-binder
@@ -207,3 +185,9 @@ Please follow [instructions here](../CONTRIBUTING.md) to build from source or co
 [sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-eventhubs-binder-sample
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [azure_subscription]: https://azure.microsoft.com/free
+[logging_doc]: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging
+[eventhubs_binder_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-eventhubs-binder-sample
+[eventhubs_multibinders_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-eventhubs-multibinders-sample
+[contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/CONTRIBUTING.md
+[maven]: http://maven.apache.org/
+[azure_event_hub]: https://azure.microsoft.com/services/event-hubs/
