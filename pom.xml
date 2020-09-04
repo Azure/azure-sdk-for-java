@@ -12,6 +12,7 @@
     <module>eng/jacoco-test-coverage</module>
     <module>eng/code-quality-reports</module>
     <module>sdk/anomalydetector</module>
+    <module>sdk/api-learn</module>
     <module>sdk/appconfiguration</module>
     <module>sdk/authorization</module>
     <module>sdk/batch</module>
