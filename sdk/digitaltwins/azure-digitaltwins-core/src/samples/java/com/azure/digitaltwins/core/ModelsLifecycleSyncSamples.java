@@ -60,9 +60,6 @@ public class ModelsLifecycleSyncSamples {
         ConsoleLogger.PrintHeader("Create models");
 
         try {
-            // Create the model
-            // TODO: azabbasi: Discuss the usability of this API with SDK team and change the return type if possible
-            // Currently we have to iterate through the response for the lazy method invocation to run.
             client.createModels(new ArrayList<String>(Arrays.asList(newComponentModelPayload, newModelPayload)));
 
             ConsoleLogger.PrintSuccess("Created models " + componentModelId + " and " + sampleModelId);

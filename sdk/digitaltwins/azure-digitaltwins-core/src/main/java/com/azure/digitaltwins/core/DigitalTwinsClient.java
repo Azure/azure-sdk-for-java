@@ -461,7 +461,7 @@ public final class DigitalTwinsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public List<ModelData> createModels(List<String> models) {
-        return digitalTwinsAsyncClient.createModels(models).block();
+        return createModelsWithResponse(models, Context.NONE).getValue();
     }
 
     /**
@@ -482,7 +482,8 @@ public final class DigitalTwinsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ModelData getModel(String modelId) {
-        return digitalTwinsAsyncClient.getModel(modelId).block();
+
+        return getModelWithResponse(modelId, Context.NONE).getValue();
     }
 
     /**
