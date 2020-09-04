@@ -95,7 +95,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
     public static String password() {
         // do not record
         String password = new ResourceNamer("").randomName("Pa5$", 12);
-        new ClientLogger(ResourceManagerTestBase.class).info("Password: %s%n", password);
+        new ClientLogger(ResourceManagerTestBase.class).info("Password: {}", password);
         return password;
     }
 

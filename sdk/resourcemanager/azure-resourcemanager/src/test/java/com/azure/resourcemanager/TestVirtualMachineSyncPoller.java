@@ -17,6 +17,7 @@ import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import org.junit.jupiter.api.Assertions;
 
@@ -89,7 +90,7 @@ public class TestVirtualMachineSyncPoller extends TestTemplate<VirtualMachine, V
         PollResponse<?> networkInterfacePollResponse = networkInterfaceSyncPoller.poll();
         PollResponse<?> diskPollResponse = diskSyncPoller.poll();
         while (!networkInterfacePollResponse.getStatus().isComplete() || !diskPollResponse.getStatus().isComplete()) {
-            Thread.sleep(Duration.ofSeconds(10).toMillis());
+            SdkContext.sleep(Duration.ofSeconds(2).toMillis());
 
             if (!networkInterfacePollResponse.getStatus().isComplete()) {
                 networkInterfacePollResponse = networkInterfaceSyncPoller.poll();
