@@ -36,7 +36,7 @@ description: EventGrid Publisher Client
 openapi-type: data-plane
 output-folder: ../
 namespace: com.azure.messaging.eventgrid
-license-header: MICROSOFT_MIT_NO_CODEGEN
+license-header: MICROSOFT_MIT_SMALL
 generate-client-as-impl: true
 context-client-method-parameter: true
 models-subpackage: systemevents

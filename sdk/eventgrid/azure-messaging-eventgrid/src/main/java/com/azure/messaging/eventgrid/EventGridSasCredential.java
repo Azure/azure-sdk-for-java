@@ -1,11 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See License.txt in the project root for
-// license information.
+// Licensed under the MIT License.
 
 package com.azure.messaging.eventgrid;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
 import javax.crypto.Mac;
@@ -66,7 +64,7 @@ public final class EventGridSasCredential {
             return String.format("%s&%s=%s", unsignedSas, signKey, encodedSignature);
 
         } catch (NoSuchAlgorithmException | UnsupportedEncodingException | InvalidKeyException e) {
-            throw new RuntimeException(logger.logThrowableAsError(e));
+            throw logger.logExceptionAsError(new RuntimeException(e));
         }
     }
 
@@ -75,8 +73,11 @@ public final class EventGridSasCredential {
      * @param sas the shared access signature to use.
      */
     public EventGridSasCredential(String sas) {
-        if (CoreUtils.isNullOrEmpty(sas)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("the access signature cannot be null or empty"));
+        if (sas == null) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("the access signature cannot be null"));
+        }
+        if (sas.isEmpty()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("the access signature cannot be empty"));
         }
         this.sas = sas;
     }
