@@ -22,7 +22,6 @@ import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorReceiver;
-import com.azure.messaging.servicebus.models.LockRenewalStatus;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.amqp.messaging.Rejected;
 import org.apache.qpid.proton.amqp.transport.DeliveryState.DeliveryStateType;
@@ -58,15 +57,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static com.azure.messaging.servicebus.TestUtils.getMessage;
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -103,7 +98,6 @@ class ServiceBusReceiverAsyncClientTest {
     private ServiceBusConnectionProcessor connectionProcessor;
     private ServiceBusReceiverAsyncClient receiver;
     private ServiceBusReceiverAsyncClient sessionReceiver;
-    private Duration maxAutoLockRenewalDuration;
 
     @Mock
     private ServiceBusReactorReceiver amqpReceiveLink;
@@ -125,8 +119,6 @@ class ServiceBusReceiverAsyncClientTest {
     private ServiceBusReceivedMessage receivedMessage2;
     @Mock
     private Runnable onClientClose;
-    @Mock
-    private Function<String, Mono<OffsetDateTime>> renewalOperation;
 
     @BeforeAll
     static void beforeAll() {
@@ -246,7 +238,7 @@ class ServiceBusReceiverAsyncClientTest {
     void receivesNumberOfEvents() {
         // Arrange
         final int numberOfEvents = 1;
-        final List<Message> messages = getMessages(10);
+        final List<Message> messages = getMessages();
 
         ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
         when(receivedMessage.getLockToken()).thenReturn(UUID.randomUUID().toString());
@@ -737,12 +729,11 @@ class ServiceBusReceiverAsyncClientTest {
      * Verifies that we can auto-renew a message lock.
      */
     @Test
-    void autoRenewMessageLock() throws InterruptedException {
+    void autoRenewMessageLock() {
         // Arrange
         final Duration maxDuration = Duration.ofSeconds(8);
         final Duration renewalPeriod = Duration.ofSeconds(3);
         final String lockToken = "some-token";
-        final OffsetDateTime startTime = OffsetDateTime.now();
 
         // At most 4 times because we renew the lock before it expires (by some seconds).
         final int atMost = 5;
@@ -752,30 +743,24 @@ class ServiceBusReceiverAsyncClientTest {
             .thenReturn(Mono.fromCallable(() -> Instant.now().plus(renewalPeriod)));
 
         // Act & Assert
-        final LockRenewalOperation operation = receiver.getAutoRenewMessageLock(lockToken, maxDuration);
-        Thread.sleep(totalSleepPeriod.toMillis());
-        logger.info("Finished renewals for first sleep.");
-
-        // Assert
-        assertEquals(LockRenewalStatus.COMPLETE, operation.getStatus());
-        assertNull(operation.getThrowable());
-        assertTrue(startTime.isBefore(operation.getLockedUntil()), String.format(
-            "initial lockedUntil[%s] is not before lockedUntil[%s]", startTime, operation.getLockedUntil()));
+        StepVerifier.create(receiver.getAutoRenewMessageLock(lockToken, maxDuration))
+            .thenAwait(totalSleepPeriod)
+            .then(() -> logger.info("Finished renewals for first sleep."))
+            .expectComplete()
+            .verify(Duration.ofSeconds(5));
 
         verify(managementNode, Mockito.atMost(atMost)).renewMessageLock(lockToken, null);
     }
 
-
     /**
-     * Verifies that we can auto-renew a message lock.
+     * Verifies that we can auto-renew a session lock.
      */
     @Test
-    void autoRenewSessionLock() throws InterruptedException {
+    void autoRenewSessionLock() {
         // Arrange
         final Duration maxDuration = Duration.ofSeconds(8);
         final Duration renewalPeriod = Duration.ofSeconds(3);
         final String sessionId = "some-token";
-        final OffsetDateTime startTime = OffsetDateTime.now();
 
         // At most 4 times because we renew the lock before it expires (by some seconds).
         final int atMost = 5;
@@ -785,23 +770,19 @@ class ServiceBusReceiverAsyncClientTest {
             .thenReturn(Mono.fromCallable(() -> Instant.now().plus(renewalPeriod)));
 
         // Act & Assert
-        final LockRenewalOperation operation = sessionReceiver.getAutoRenewSessionLock(sessionId, maxDuration);
-        Thread.sleep(totalSleepPeriod.toMillis());
-        logger.info("Finished renewals for first sleep.");
-
-        // Assert
-        assertEquals(LockRenewalStatus.COMPLETE, operation.getStatus());
-        assertNull(operation.getThrowable());
-        assertTrue(startTime.isBefore(operation.getLockedUntil()), String.format(
-            "initial lockedUntil[%s] is not before lockedUntil[%s]", startTime, operation.getLockedUntil()));
+        StepVerifier.create(sessionReceiver.getAutoRenewSessionLock(sessionId, maxDuration))
+            .thenAwait(totalSleepPeriod)
+            .then(() -> logger.info("Finished renewals for first sleep."))
+            .expectComplete()
+            .verify(Duration.ofSeconds(5));
 
         verify(managementNode, Mockito.atMost(atMost)).renewSessionLock(sessionId, null);
     }
 
-    private List<Message> getMessages(int numberOfEvents) {
+    private List<Message> getMessages() {
         final Map<String, String> map = Collections.singletonMap("SAMPLE_HEADER", "foo");
 
-        return IntStream.range(0, numberOfEvents)
+        return IntStream.range(0, 10)
             .mapToObj(index -> getMessage(PAYLOAD_BYTES, messageTrackingUUID, map))
             .collect(Collectors.toList());
     }

@@ -59,7 +59,7 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
-[samples]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos-core/src/samples/java/com/azure/cosmos
+[samples]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos-core/src/samples/java/com/azure/spring/data/cosmos
 [sql_api_query]: https://docs.microsoft.com/azure/cosmos-db/sql-api-sql-query
 [spring_data_2_2_commons]: https://mvnrepository.com/artifact/org.springframework.data/spring-data-commons/2.2.0.RELEASE
 [api_documentation]: https://azure.github.io/azure-sdk-for-java/cosmos.html#azure-spring-data-2-2-cosmos
