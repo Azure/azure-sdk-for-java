@@ -259,7 +259,7 @@ public class AzureTableImplTest extends TestBase {
     void queryTableWithTopImpl() {
         // Arrange
         afterTest(); // Clean up any tables that may have been made by other tests before this one
-        
+
         QueryOptions queryOptions = new QueryOptions()
             .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_MINIMALMETADATA);
         String tableA = testResourceNamer.randomName("AtestA", 20);

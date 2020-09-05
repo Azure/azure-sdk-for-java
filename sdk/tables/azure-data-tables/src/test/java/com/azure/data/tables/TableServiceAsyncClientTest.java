@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -186,10 +185,8 @@ public class TableServiceAsyncClientTest extends TestBase {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
         final String tableName2 = testResourceNamer.randomName("test", 20);
-        Mono.when(
-            runner.run(serviceClient -> serviceClient.createTable(tableName)),
-            runner.run(serviceClient -> serviceClient.createTable(tableName2))
-        ).block(TIMEOUT);
+        runner.run(serviceClient -> serviceClient.createTable(tableName)).block(TIMEOUT);
+        runner.run(serviceClient -> serviceClient.createTable(tableName2)).block(TIMEOUT);
 
         // Act & Assert
         StepVerifier.create(runner.run(serviceClient -> serviceClient.listTables()))
@@ -206,10 +203,8 @@ public class TableServiceAsyncClientTest extends TestBase {
         final String tableName = testResourceNamer.randomName("test", 20);
         final String tableName2 = testResourceNamer.randomName("test", 20);
         ListTablesOptions options = new ListTablesOptions().setFilter("TableName eq '" + tableName + "'");
-        Mono.when(
-            runner.run(serviceClient -> serviceClient.createTable(tableName)),
-            runner.run(serviceClient -> serviceClient.createTable(tableName2))
-        ).block(TIMEOUT);
+        runner.run(serviceClient -> serviceClient.createTable(tableName)).block(TIMEOUT);
+        runner.run(serviceClient -> serviceClient.createTable(tableName2)).block(TIMEOUT);
 
         // Act & Assert
         StepVerifier.create(runner.run(serviceClient -> serviceClient.listTables(options)))
@@ -230,11 +225,9 @@ public class TableServiceAsyncClientTest extends TestBase {
         final String tableName2 = testResourceNamer.randomName("test", 20);
         final String tableName3 = testResourceNamer.randomName("test", 20);
         ListTablesOptions options = new ListTablesOptions().setTop(2);
-        Mono.when(
-            runner.run(serviceClient -> serviceClient.createTable(tableName)),
-            runner.run(serviceClient -> serviceClient.createTable(tableName2)),
-            runner.run(serviceClient -> serviceClient.createTable(tableName3))
-        ).block(TIMEOUT);
+        runner.run(serviceClient -> serviceClient.createTable(tableName)).block(TIMEOUT);
+        runner.run(serviceClient -> serviceClient.createTable(tableName2)).block(TIMEOUT);
+        runner.run(serviceClient -> serviceClient.createTable(tableName3)).block(TIMEOUT);
 
         // Act & Assert
         StepVerifier.create(runner.run(serviceClient -> serviceClient.listTables(options)))

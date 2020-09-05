@@ -14,7 +14,6 @@ import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.UpdateMode;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -385,10 +384,10 @@ public class TablesAsyncClientTest extends TestBase {
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
         final String rowKeyValue2 = testResourceNamer.randomName("rowKey", 20);
-        Mono.when(
-            runner.run(tableClient -> tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue))),
-            runner.run(tableClient -> tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue2)))
-        ).block(TIMEOUT);
+        runner.run(tableClient -> tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue)))
+            .block(TIMEOUT);
+        runner.run(tableClient -> tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue2)))
+            .block(TIMEOUT);
 
         // Act & Assert
         StepVerifier.create(runner.run(tableClient -> tableClient.listEntities()))
@@ -406,10 +405,10 @@ public class TablesAsyncClientTest extends TestBase {
         final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
         final String rowKeyValue2 = testResourceNamer.randomName("rowKey", 20);
         ListEntitiesOptions options = new ListEntitiesOptions().setFilter("RowKey eq '" + rowKeyValue + "'");
-        Mono.when(
-            runner.run(tableClient -> tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue))),
-            runner.run(tableClient -> tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue2)))
-        ).block(TIMEOUT);
+        runner.run(tableClient -> tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue)))
+            .block(TIMEOUT);
+        runner.run(tableClient -> tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue2)))
+            .block(TIMEOUT);
 
         // Act & Assert
         StepVerifier.create(runner.run(tableClient -> tableClient.listEntities(options)))
@@ -457,11 +456,12 @@ public class TablesAsyncClientTest extends TestBase {
         final String rowKeyValue2 = testResourceNamer.randomName("rowKey", 20);
         final String rowKeyValue3 = testResourceNamer.randomName("rowKey", 20);
         ListEntitiesOptions options = new ListEntitiesOptions().setTop(2);
-        Mono.when(
-            runner.run(tableClient -> tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue))),
-            runner.run(tableClient -> tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue2))),
-            runner.run(tableClient -> tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue3)))
-        ).block(TIMEOUT);
+        runner.run(tableClient -> tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue)))
+            .block(TIMEOUT);
+        runner.run(tableClient -> tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue2)))
+            .block(TIMEOUT);
+        runner.run(tableClient -> tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue3)))
+            .block(TIMEOUT);
 
         // Act & Assert
         StepVerifier.create(runner.run(tableClient -> tableClient.listEntities(options)))
