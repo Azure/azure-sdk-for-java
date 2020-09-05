@@ -112,6 +112,14 @@ Controls if is a session aware consumer. Set it to `true` if is a queue with ses
 
 Default: `false`
 
+**_requeueRejected_**
+
+Controls if is a message that trigger any exception in consumer will be force to DLQ. 
+Set it to `true` if a message that trigger any exception in consumer will be force to DLQ.
+Set it to `false` if a message that trigger any exception in consumer will be re-queued. 
+
+Default: `false`
+
 ## Troubleshooting
 ## Next steps
 ## Contributing
