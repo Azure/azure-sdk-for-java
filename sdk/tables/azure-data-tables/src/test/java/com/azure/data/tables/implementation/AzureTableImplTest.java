@@ -18,7 +18,6 @@ import com.azure.core.test.TestBase;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.tables.CosmosThrottled;
-import com.azure.data.tables.TableAsyncClient;
 import com.azure.data.tables.TablesServiceVersion;
 import com.azure.data.tables.TablesSharedKeyCredential;
 import com.azure.data.tables.TablesSharedKeyCredentialPolicy;
@@ -126,13 +125,12 @@ public class AzureTableImplTest extends TestBase {
         QueryOptions queryOptions = new QueryOptions()
             .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_MINIMALMETADATA);
 
-        Mono.when(runner.run(azureTable -> azureTable.getTables().queryWithResponseAsync(testResourceNamer.randomUuid(),
-            null, queryOptions, Context.NONE)).flatMapMany(tablesQueryResponse -> {
-                return Flux.fromIterable(tablesQueryResponse.getValue().getValue()).flatMap(tableResponseProperty -> {
-                    return runner.run(azureTable ->azureTable.getTables().deleteWithResponseAsync(
-                        tableResponseProperty.getTableName(), testResourceNamer.randomUuid(), Context.NONE));
-                });
-            })).block();
+        List<TableResponseProperties> result = runner.run(azureTable -> azureTable.getTables().queryWithResponseAsync(testResourceNamer.randomUuid(),
+            null, queryOptions, Context.NONE)).block().getValue().getValue();
+
+        Mono.when(Flux.fromIterable(result).flatMap(tableResponseProperty -> runner.run(azureTable ->
+            azureTable.getTables().deleteWithResponseAsync(tableResponseProperty.getTableName(),
+                testResourceNamer.randomUuid(), Context.NONE)))).block();
     }
 
     void createTable(String tableName) {
@@ -227,6 +225,8 @@ public class AzureTableImplTest extends TestBase {
     @Test
     void queryTableImpl() {
         // Arrange
+        afterTest(); // Clean up any tables that may have been made by other tests before this one
+
         QueryOptions queryOptions = new QueryOptions()
             .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_MINIMALMETADATA);
         String tableA = testResourceNamer.randomName("AtestA", 20);
@@ -234,6 +234,7 @@ public class AzureTableImplTest extends TestBase {
         createTable(tableA);
         createTable(tableB);
         int expectedStatusCode = 200;
+        int expectedSize = 2;
         String requestId = testResourceNamer.randomUuid();
 
         // Act & Assert
@@ -246,9 +247,9 @@ public class AzureTableImplTest extends TestBase {
                 List<TableResponseProperties> results = response.getValue().getValue();
 
                 Assertions.assertNotNull(results, "Expected there to be a set of items.");
-                Assertions.assertTrue(results.size() >= 2);
-                Assertions.assertEquals(response.getValue().getValue().get(0).getTableName(), tableA);
-                Assertions.assertEquals(response.getValue().getValue().get(1).getTableName(), tableB);
+                Assertions.assertEquals(expectedSize, results.size());
+                Assertions.assertEquals(tableA, results.get(0).getTableName());
+                Assertions.assertEquals(tableB, results.get(1).getTableName());
             })
             .expectComplete()
             .verify();
@@ -257,6 +258,8 @@ public class AzureTableImplTest extends TestBase {
     @Test
     void queryTableWithTopImpl() {
         // Arrange
+        afterTest(); // Clean up any tables that may have been made by other tests before this one
+        
         QueryOptions queryOptions = new QueryOptions()
             .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_MINIMALMETADATA);
         String tableA = testResourceNamer.randomName("AtestA", 20);
