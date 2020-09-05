@@ -55,7 +55,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
+      <version>1.1.1</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
     </dependency>
 
     <!-- Added this provided dependency to include necessary annotations used by "reactor-core".
