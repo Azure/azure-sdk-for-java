@@ -105,8 +105,7 @@ public final class KeyVaultBackupAsyncClient {
             backupActivationOperation(blobStorageUrl, sasToken),
             backupPollOperation(),
             (pollingContext, firstResponse) -> Mono.error(new RuntimeException("Cancellation is not supported")),
-            (pollingContext) ->
-                Mono.just(pollingContext.getLatestResponse().getValue().getAzureStorageBlobContainerUri()));
+            backupFetchOperation());
     }
 
     /**
@@ -183,6 +182,19 @@ public final class KeyVaultBackupAsyncClient {
         };
     }
 
+    private Function<PollingContext<KeyVaultBackupOperation>, Mono<String>> backupFetchOperation() {
+        return (pollingContext) -> {
+            String blobContainerUri =
+                pollingContext.getLatestResponse().getValue().getAzureStorageBlobContainerUri();
+
+            if (blobContainerUri == null) {
+                return Mono.empty();
+            } else {
+                return Mono.just(blobContainerUri);
+            }
+        };
+    }
+
     private static Mono<PollResponse<KeyVaultBackupOperation>> processBackupOperationResponse(Response<KeyVaultBackupOperation> response) {
         String operationStatus = response.getValue().getStatus().toLowerCase();
 
@@ -194,7 +206,7 @@ public final class KeyVaultBackupAsyncClient {
         switch (operationStatus) {
             case "inprogress":
                 return LongRunningOperationStatus.IN_PROGRESS;
-            case "success":
+            case "succeeded":
                 return LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
             case "failed":
                 return LongRunningOperationStatus.FAILED;
@@ -472,11 +484,11 @@ public final class KeyVaultBackupAsyncClient {
     }
 
     private static KeyVaultError createKeyVaultErrorFromError(Error error) {
-        if (error.getInnerError() == null) {
-            return new KeyVaultError(error.getCode(), error.getMessage(), null);
-        } else {
-            return new KeyVaultError(error.getCode(), error.getMessage(),
-                createKeyVaultErrorFromError(error.getInnerError()));
+        if (error == null) {
+            return null;
         }
+
+        return
+            new KeyVaultError(error.getCode(), error.getMessage(), createKeyVaultErrorFromError(error.getInnerError()));
     }
 }

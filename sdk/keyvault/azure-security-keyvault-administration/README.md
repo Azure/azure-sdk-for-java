@@ -24,7 +24,7 @@ Maven dependency for the Azure Key Vault Administration library. Add it to your 
     ```
 
 ### Authenticate the client
-In order to interact with the Azure Key Vault service, you'll need to create an instance of the [KeyClient](#create-backup-client) class. You would need a **vault url** and **client secret credentials (client id, client secret, tenant id)** to instantiate a client object using the default `DefaultAzureCredential` examples shown in this document.
+In order to interact with the Azure Key Vault service, you'll need to create an instance of the [KeyVaultBackupClient](#create-backup-client) class. You would need a **vault url** and **client secret credentials (client id, client secret, tenant id)** to instantiate a client object using the default `DefaultAzureCredential` examples shown in this document.
 
 The `DefaultAzureCredential` way of authentication by providing client secret credentials is being used in this getting started section but you can find more ways to authenticate with [azure-identity][azure_identity].
 
@@ -92,7 +92,7 @@ KeyVaultBackupClient backupClient = new KeyVaultBackupClientBuilder()
 > NOTE: For using an asynchronous client use KeyVaultBackupAsyncClient instead of KeyVaultBackupClient and call `buildAsyncClient()`
 
 ## Key concepts
-### Key Vault Access Control client
+### Key Vault Backup client
 The Key Vault Backup Client provides both synchronous and asynchronous operations for performing full key backups, full key restores, and selective key restores. Asynchronous (KeyVaultBackupAsyncClient) and synchronous (KeyVaultBackupClient) clients exist in the SDK allowing for the selection of a client based on an application's use case.
 
 > NOTE: The backing store for key backups is a blob storage container using Shared Access Signature authentication. For more details on creating a SAS token using the BlobServiceClient, see the [Azure Storage Blobs client README][storage_readme_sas_token]. Alternatively, it is possible to [generate a SAS token in Storage Explorer][portal_sas_token].
@@ -105,7 +105,7 @@ A restore operation represents a long running operation for both a full key and 
 
 ## Examples
 ### Sync API
-The following sections provide several code snippets covering some of the most common Azure Key Vault Backup service tasks, including:
+The following sections provide several code snippets covering some of the most common Azure Key Vault Backup client tasks, including:
 - [Backup a Key Vault](#backup-a-key-vault)
 - [Restore a Key Vault](#restore-a-collection-of-keys)
 - [Restore a key](#selectively-restore-a-key)
@@ -136,7 +136,7 @@ System.out.printf("Backup restored from: %s%n", blobUri);
 ```
 
 ### Selectively restore a key
-Restore an entire collection of keys from a backup using `beginSelectiveRestore`.
+Restore a specific key from a backup using `beginSelectiveRestore`.
 
 ```java
 SyncPoller<KeyVaultBackupOperation, String> selectiveRestorePoller =
@@ -150,7 +150,7 @@ System.out.printf("Key backup restored from: %s%n", blobUri);
 ```
 
 ### Async API
-The following sections provide several code snippets covering some of the most common asynchronous Azure Key Vault Backup service tasks, including:
+The following sections provide several code snippets covering some of the most common asynchronous Azure Key Vault Backup client tasks, including:
 - [Backup a Key Vault asynchronously](#backup-a-key-vault-asynchronously)
 - [Restore a Key Vault asynchronously](#restore-a-collection-of-keys-asynchronously)
 - [Restore a key asynchronously](#selectively-restore-a-key-asynchronously)
@@ -230,7 +230,7 @@ Azure Key Vault Access Control clients raise exceptions. For example, if you try
 
 ```java
 try {
-    backupClient.getRoleAssignment(KeyVaultRoleAssignmentScope.GLOBAL, "<deleted-role-assginment-name>")
+    client.getRoleAssignment(KeyVaultRoleAssignmentScope.GLOBAL, "<role-assginment-name>")
 } catch (HttpResponseException e) {
     System.out.println(e.getMessage());
 }
@@ -245,7 +245,7 @@ All client libraries, by default, use the Tomcat-native Boring SSL library to en
 ## Next steps
 Several Key Vault Java SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Azure Key Vault.
 
-###  Additional documentation
+### Additional documentation
 For more extensive documentation on Azure Key Vault, see the [API reference documentation][azkeyvault_rest].
 
 ## Contributing
