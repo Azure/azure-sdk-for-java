@@ -1,4 +1,4 @@
-package com.azure.digitaltwins.core;
+package com.azure.digitaltwins.core.helpers;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import org.apache.commons.cli.*;
@@ -49,7 +49,7 @@ public class SamplesArguments {
             System.out.println(e.getMessage());
             formatter.printHelp("java <sampleClass>.jar", options);
 
-            System.exit(1);
+            System.exit(0);
         }
 
         this.digitalTwinEndpoint = cmd.getOptionValue(DIGITALTWINS_URL);
@@ -70,7 +70,7 @@ public class SamplesArguments {
                 System.out.println("Provided log detail level must be an integer ranging from 0 - 4");
                 formatter.printHelp("java <sampleClass>.jar", options);
 
-                System.exit(1);
+                System.exit(0);
             }
         }
     }
