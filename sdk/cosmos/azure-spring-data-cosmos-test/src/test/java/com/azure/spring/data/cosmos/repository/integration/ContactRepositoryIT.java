@@ -36,7 +36,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ContactRepositoryIT {
 
     private static final Contact TEST_CONTACT1 = new Contact("testId", "faketitle", 25, true);
-    private static final Contact TEST_CONTACT2 = new Contact("testId2", "faketitle2",  32, false);
+    private static final Contact TEST_CONTACT2 = new Contact("testId2", "faketitle2", 32, false);
     private static final Contact TEST_CONTACT3 = new Contact("testId3", "faketitle3", 25, false);
     private static final Contact TEST_CONTACT4 = new Contact("testId4", "faketitle4", 43, true);
     private static final Contact TEST_CONTACT5 = new Contact("testId5", "faketitle3", 43, true);
@@ -52,6 +52,11 @@ public class ContactRepositoryIT {
 
     @Autowired
     private CosmosTemplate template;
+
+    @AfterClass
+    public static void afterClassCleanup() {
+        staticTemplate.deleteContainer(entityInformation.getContainerName());
+    }
 
     @Before
     public void setUp() {
@@ -70,11 +75,6 @@ public class ContactRepositoryIT {
     @After
     public void cleanup() {
         repository.deleteAll();
-    }
-
-    @AfterClass
-    public static void afterClassCleanup() {
-        staticTemplate.deleteContainer(entityInformation.getContainerName());
     }
 
     @Test
@@ -251,7 +251,7 @@ public class ContactRepositoryIT {
 
     @Test
     public void testAnnotatedQueries() {
-         List<Contact> valueContacts = repository.getContactsByTitleAndValue(43, TEST_CONTACT5.getTitle());
+        List<Contact> valueContacts = repository.getContactsByTitleAndValue(43, TEST_CONTACT5.getTitle());
         Assert.assertEquals(1, valueContacts.size());
         Assert.assertEquals(TEST_CONTACT5, valueContacts.get(0));
 
