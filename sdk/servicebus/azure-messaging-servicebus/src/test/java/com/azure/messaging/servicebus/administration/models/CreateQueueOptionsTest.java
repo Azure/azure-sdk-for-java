@@ -5,12 +5,14 @@
 package com.azure.messaging.servicebus.administration.models;
 
 import com.azure.messaging.servicebus.implementation.EntityHelper;
+import com.azure.messaging.servicebus.implementation.models.AuthorizationRuleImpl;
 import com.azure.messaging.servicebus.implementation.models.QueueDescription;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DEFAULT_DUPLICATE_DETECTION_DURATION;
@@ -20,11 +22,11 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.MAX_DURATION;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CreateQueueOptionsTest {
-
     /**
      * Creates an instance with the given defaults.
      */
@@ -52,13 +54,13 @@ class CreateQueueOptionsTest {
     @Test
     void constructorWithOptions() {
         // Arrange
-        final List<AuthorizationRule> rules = Arrays.asList(
-            new AuthorizationRule().setClaimType("a").setClaimValue("b").setKeyName("c").setPrimaryKey("pk")
+        final List<AuthorizationRuleImpl> rules = Arrays.asList(
+            new AuthorizationRuleImpl().setClaimType("a").setClaimValue("b").setKeyName("c").setPrimaryKey("pk")
                 .setSecondaryKey("sk").setRights(Arrays.asList(AccessRights.LISTEN, AccessRights.MANAGE)),
-            new AuthorizationRule().setClaimType("a2").setClaimValue("b2").setKeyName("c2").setPrimaryKey("pk2")
+            new AuthorizationRuleImpl().setClaimType("a2").setClaimValue("b2").setKeyName("c2").setPrimaryKey("pk2")
                 .setSecondaryKey("sk2").setRights(Collections.singletonList(AccessRights.LISTEN))
         );
-        final QueueProperties expected = EntityHelper.toModel(new QueueDescription())
+        final QueueProperties expected = EntityHelper.toModel(new QueueDescription().setAuthorizationRules(rules))
             .setAutoDeleteOnIdle(Duration.ofSeconds(15))
             .setDefaultMessageTimeToLive(Duration.ofSeconds(50))
             .setDuplicateDetectionHistoryTimeWindow(Duration.ofSeconds(13))
@@ -96,5 +98,26 @@ class CreateQueueOptionsTest {
         assertEquals(expected.requiresSession(), actual.requiresSession());
         assertEquals(expected.getUserMetadata(), actual.getUserMetadata());
         assertEquals(expected.getStatus(), actual.getStatus());
+
+        final List<AuthorizationRule> actualRules = actual.getAuthorizationRules();
+        assertNotNull(actualRules);
+        assertEquals(rules.size(), actualRules.size());
+
+        for (int i = 0; i < rules.size(); i++) {
+            final AuthorizationRuleImpl expectedRule = rules.get(i);
+            final AuthorizationRule actualRule = actualRules.get(i);
+
+            assertEquals(expectedRule.getKeyName(), actualRule.getKeyName());
+            assertEquals(expectedRule.getClaimType(), actualRule.getClaimType());
+            assertEquals(expectedRule.getClaimValue(), actualRule.getClaimValue());
+            assertEquals(expectedRule.getPrimaryKey(), actualRule.getPrimaryKey());
+            assertEquals(expectedRule.getSecondaryKey(), actualRule.getSecondaryKey());
+
+            final HashSet<AccessRights> expectedRights = new HashSet<>(expectedRule.getRights());
+            final HashSet<AccessRights> actualRights = new HashSet<>(actualRule.getAccessRights());
+
+            assertEquals(expectedRights.size(), actualRights.size());
+            expectedRights.forEach(right -> assertTrue(actualRights.contains(right)));
+        }
     }
 }

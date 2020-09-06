@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.administration.models.AuthorizationRule;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
 import com.azure.messaging.servicebus.administration.models.CreateTopicOptions;
@@ -13,6 +14,7 @@ import com.azure.messaging.servicebus.administration.models.RuleFilter;
 import com.azure.messaging.servicebus.administration.models.RuleProperties;
 import com.azure.messaging.servicebus.administration.models.SubscriptionProperties;
 import com.azure.messaging.servicebus.administration.models.TopicProperties;
+import com.azure.messaging.servicebus.implementation.models.AuthorizationRuleImpl;
 import com.azure.messaging.servicebus.implementation.models.QueueDescription;
 import com.azure.messaging.servicebus.implementation.models.RuleActionImpl;
 import com.azure.messaging.servicebus.implementation.models.RuleDescription;
@@ -20,7 +22,10 @@ import com.azure.messaging.servicebus.implementation.models.RuleFilterImpl;
 import com.azure.messaging.servicebus.implementation.models.SubscriptionDescription;
 import com.azure.messaging.servicebus.implementation.models.TopicDescription;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Used to access internal methods on {@link QueueProperties}.
@@ -70,7 +75,7 @@ public final class EntityHelper {
             .setUserMetadata(options.getUserMetadata());
 
         if (!options.getAuthorizationRules().isEmpty()) {
-            description.setAuthorizationRules(options.getAuthorizationRules());
+            description.setAuthorizationRules(toImplementation(options.getAuthorizationRules()));
         }
 
         return description;
@@ -108,7 +113,7 @@ public final class EntityHelper {
             .setUserMetadata(options.getUserMetadata());
 
         if (!options.getAuthorizationRules().isEmpty()) {
-            description.setAuthorizationRules(options.getAuthorizationRules());
+            description.setAuthorizationRules(toImplementation(options.getAuthorizationRules()));
         }
 
         return description;
@@ -117,19 +122,23 @@ public final class EntityHelper {
     /**
      * Creates a new queue given the existing queue.
      *
-     * @param description Options to create queue with.
+     * @param properties Options to create queue with.
      *
      * @return A new {@link QueueProperties} with the set options.
      */
-    public static QueueDescription toImplementation(QueueProperties description) {
-        Objects.requireNonNull(description, "'description' cannot be null.");
+    public static QueueDescription toImplementation(QueueProperties properties) {
+        Objects.requireNonNull(properties, "'properties' cannot be null.");
 
         if (queueAccessor == null) {
             throw new ClientLogger(EntityHelper.class).logExceptionAsError(
                 new IllegalStateException("'queueAccessor' should not be null."));
         }
 
-        return queueAccessor.toImplementation(description);
+        final List<AuthorizationRuleImpl> rules = !properties.getAuthorizationRules().isEmpty()
+            ? toImplementation(properties.getAuthorizationRules())
+            : Collections.emptyList();
+
+        return queueAccessor.toImplementation(properties, rules);
     }
 
     /**
@@ -216,7 +225,11 @@ public final class EntityHelper {
                 new IllegalStateException("'topicAccessor' should not be null."));
         }
 
-        return topicAccessor.toImplementation(properties);
+        final List<AuthorizationRuleImpl> rules = !properties.getAuthorizationRules().isEmpty()
+            ? toImplementation(properties.getAuthorizationRules())
+            : Collections.emptyList();
+
+        return topicAccessor.toImplementation(properties, rules);
     }
 
     /**
@@ -448,6 +461,19 @@ public final class EntityHelper {
         topicAccessor.setName(topicProperties, topicName);
     }
 
+    private static List<AuthorizationRuleImpl> toImplementation(List<AuthorizationRule> rules) {
+        return rules.stream().map(rule -> {
+            return new AuthorizationRuleImpl()
+                .setClaimType(rule.getClaimType())
+                .setClaimValue(rule.getClaimValue())
+                .setCreatedTime(rule.getCreatedAt())
+                .setKeyName(rule.getKeyName())
+                .setModifiedTime(rule.getModifiedAt())
+                .setPrimaryKey(rule.getPrimaryKey())
+                .setSecondaryKey(rule.getSecondaryKey());
+        }).collect(Collectors.toList());
+    }
+
     /**
      * Interface for accessing methods on a queue.
      */
@@ -459,7 +485,7 @@ public final class EntityHelper {
          *
          * @return A new queue with the properties set.
          */
-        QueueDescription toImplementation(QueueProperties queueDescription);
+        QueueDescription toImplementation(QueueProperties queueDescription, List<AuthorizationRuleImpl> rules);
 
         /**
          * Creates a new queue from the given {@code queueDescription}.
@@ -542,20 +568,20 @@ public final class EntityHelper {
         /**
          * Sets properties on the TopicProperties based on the CreateTopicOptions.
          *
+         * @param topic The model topic.
+         *
+         * @return A new topic with the properties set.
+         */
+        TopicDescription toImplementation(TopicProperties topic, List<AuthorizationRuleImpl> rules);
+
+        /**
+         * Sets properties on the TopicProperties based on the CreateTopicOptions.
+         *
          * @param topic The implementation topic.
          *
          * @return A new topic with the properties set.
          */
         TopicProperties toModel(TopicDescription topic);
-
-        /**
-         * Sets properties on the TopicProperties based on the CreateTopicOptions.
-         *
-         * @param topic The model topic.
-         *
-         * @return A new topic with the properties set.
-         */
-        TopicDescription toImplementation(TopicProperties topic);
 
         /**
          * Sets the name on a topicDescription.

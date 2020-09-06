@@ -5,7 +5,6 @@
 package com.azure.messaging.servicebus.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.messaging.servicebus.administration.models.AuthorizationRule;
 import com.azure.messaging.servicebus.administration.models.EntityStatus;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
@@ -131,11 +130,11 @@ public final class QueueDescription {
 
     private static final class AuthorizationRulesWrapper {
         @JacksonXmlProperty(localName = "AuthorizationRule")
-        private final List<AuthorizationRule> items;
+        private final List<AuthorizationRuleImpl> items;
 
         @JsonCreator
         private AuthorizationRulesWrapper(
-                @JacksonXmlProperty(localName = "AuthorizationRule") List<AuthorizationRule> items) {
+                @JacksonXmlProperty(localName = "AuthorizationRule") List<AuthorizationRuleImpl> items) {
             this.items = items;
         }
     }
@@ -523,9 +522,9 @@ public final class QueueDescription {
      *
      * @return the authorizationRules value.
      */
-    public List<AuthorizationRule> getAuthorizationRules() {
+    public List<AuthorizationRuleImpl> getAuthorizationRules() {
         if (this.authorizationRules == null) {
-            this.authorizationRules = new AuthorizationRulesWrapper(new ArrayList<AuthorizationRule>());
+            this.authorizationRules = new AuthorizationRulesWrapper(new ArrayList<AuthorizationRuleImpl>());
         }
         return this.authorizationRules.items;
     }
@@ -536,7 +535,7 @@ public final class QueueDescription {
      * @param authorizationRules the authorizationRules value to set.
      * @return the QueueDescription object itself.
      */
-    public QueueDescription setAuthorizationRules(List<AuthorizationRule> authorizationRules) {
+    public QueueDescription setAuthorizationRules(List<AuthorizationRuleImpl> authorizationRules) {
         this.authorizationRules = new AuthorizationRulesWrapper(authorizationRules);
         return this;
     }
