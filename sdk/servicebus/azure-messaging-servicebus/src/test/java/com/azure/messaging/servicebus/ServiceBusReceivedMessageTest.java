@@ -11,6 +11,8 @@ import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
@@ -77,15 +79,15 @@ public class ServiceBusReceivedMessageTest {
         when(amqpMessage.getBody()).thenReturn(data);
         //
         final ServiceBusReceivedMessage originalMessage = new ServiceBusReceivedMessage(amqpMessage);
-        /*originalMessage.setMessageId("mid");
+        originalMessage.setMessageId("mid");
         originalMessage.setContentType("type");
         originalMessage.setCorrelationId("cid");
         originalMessage.setReplyTo("rto");
         originalMessage.setViaPartitionKey("something");
         originalMessage.setTimeToLive(Duration.ofSeconds(10));
         originalMessage.setReplyToSessionId("rsessionid");
-        originalMessage.setLabel("label");
-        originalMessage.setTo("to");*/
+        originalMessage.setSubject("subject");
+        originalMessage.setTo("to");
 
         // Act
         final ServiceBusMessage messageToSend = new ServiceBusMessage(originalMessage);

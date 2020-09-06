@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Test class for  {@link AmqpAnnotatedMessage}
@@ -20,35 +21,42 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class AmqpAnnotatedMessageTest {
 
     private static final byte[] CONTENTS_BYTES = "Some-contents".getBytes(StandardCharsets.UTF_8);
+    private static final BinaryData DATA_BYTES = new BinaryData(CONTENTS_BYTES);
 
     /**
      * Verifies we correctly set values via constructor for {@link AmqpAnnotatedMessage}.
      */
     @Test
     public void constructorValidValues() {
-        // Arrange & Act
-        AmqpAnnotatedMessage actual = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(new BinaryData(CONTENTS_BYTES))));
+        // Arrange
+        final List<BinaryData> binaryDataList = Collections.singletonList(DATA_BYTES);
+        final AmqpDataBody amqpDataBody = new AmqpDataBody(binaryDataList);
+
+        // Act
+        AmqpAnnotatedMessage actual = new AmqpAnnotatedMessage(amqpDataBody);
 
         // Assert
-        Assertions.assertEquals(AmqpBodyType.DATA, actual.getBody().getBodyType());
-        Assertions.assertNotNull(actual.getProperties());
-        Assertions.assertNotNull(actual.getHeader());
-        Assertions.assertNotNull(actual.getFooter());
-        Assertions.assertNotNull(actual.getApplicationProperties());
-        Assertions.assertNotNull(actual.getDeliveryAnnotations());
-        Assertions.assertNotNull(actual.getMessageAnnotations());
-        Assertions.assertNotNull(actual.getApplicationProperties());
-
-        // Validate Message Body
-        Assertions.assertNotNull(actual.getBody());
-        List<BinaryData> dataList = ((AmqpDataBody) actual.getBody()).getData().stream().collect(Collectors.toList());
-        assertEquals(1, dataList.size());
-        byte[] actualData = dataList.get(0).getData();
-        assertArrayEquals(CONTENTS_BYTES, actualData);
+        assertMessageCreation(actual, AmqpBodyType.DATA, binaryDataList.size());
     }
 
     /**
-     * Verifies {@link AmqpAnnotatedMessage} constructor for null valeus.
+     * Verifies we correctly set values via constructor for {@link AmqpAnnotatedMessage}.
+     */
+    @Test
+    public void constructorAmqpValidValues() {
+        // Arrange
+        final List<BinaryData> listBinaryData = Collections.singletonList(DATA_BYTES);
+        final AmqpDataBody amqpDataBody = new AmqpDataBody(listBinaryData);
+        AmqpAnnotatedMessage expected = new AmqpAnnotatedMessage(amqpDataBody);
+        // Act
+        AmqpAnnotatedMessage actual = new AmqpAnnotatedMessage(expected);
+
+        // Assert
+        assertMessageCreation(actual, AmqpBodyType.DATA, listBinaryData.size());
+    }
+
+    /**
+     * Verifies {@link AmqpAnnotatedMessage} constructor for null values.
      */
     @Test
     public void constructorNullValidValues() {
@@ -57,5 +65,24 @@ public class AmqpAnnotatedMessageTest {
 
         // Act & Assert
         Assertions.assertThrows(NullPointerException.class, () -> new AmqpAnnotatedMessage(body));
+    }
+
+    private void assertMessageCreation(AmqpAnnotatedMessage actual, AmqpBodyType expectedType,
+        int messageSizeExpected) {
+        assertEquals(expectedType, actual.getBody().getBodyType());
+        assertNotNull(actual.getProperties());
+        assertNotNull(actual.getHeader());
+        assertNotNull(actual.getFooter());
+        assertNotNull(actual.getApplicationProperties());
+        assertNotNull(actual.getDeliveryAnnotations());
+        assertNotNull(actual.getMessageAnnotations());
+        assertNotNull(actual.getApplicationProperties());
+
+        // Validate Message Body
+        assertNotNull(actual.getBody());
+        List<BinaryData> dataList = ((AmqpDataBody) actual.getBody()).getData().stream().collect(Collectors.toList());
+        assertEquals(messageSizeExpected, dataList.size());
+        byte[] actualData = dataList.get(0).getData();
+        assertArrayEquals(CONTENTS_BYTES, actualData);
     }
 }

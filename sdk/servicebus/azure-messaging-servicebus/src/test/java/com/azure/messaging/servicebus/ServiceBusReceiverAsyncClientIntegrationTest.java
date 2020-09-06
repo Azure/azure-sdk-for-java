@@ -970,10 +970,11 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final String subject = "subject";
         final Map<String, Object> footer = new HashMap<>();
         footer.put("footer-key-1", "footer-value-1");
+        footer.put("footer-key-2", "footer-value-2");
 
         final Map<String, Object> aplicaitonProperties = new HashMap<>();
-        footer.put("ap-key-1", "ap-value-1");
-        footer.put("ap-key-2", "ap-value-2");
+        aplicaitonProperties.put("ap-key-1", "ap-value-1");
+        aplicaitonProperties.put("ap-key-2", "ap-value-2");
 
         final Map<String, Object> deliveryAnnotation = new HashMap<>();
         deliveryAnnotation.put("delivery-annotations-key-1", "delivery-annotations-value-1");
@@ -985,15 +986,29 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .buildAsyncClient();
 
         final String messageId = UUID.randomUUID().toString();
-        final AmqpAnnotatedMessage amqpProperties = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(new BinaryData(CONTENTS_BYTES))));
-        amqpProperties.getProperties().setSubject(subject);
-        amqpProperties.getHeader().setPriority((short)2);
-        amqpProperties.getFooter().putAll(footer);
-        amqpProperties.getDeliveryAnnotations().putAll(deliveryAnnotation);
-        amqpProperties.getApplicationProperties().putAll(aplicaitonProperties);
+        final AmqpAnnotatedMessage expectedAmqpProperties = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(new BinaryData(CONTENTS_BYTES))));
+        expectedAmqpProperties.getProperties().setSubject(subject);
+        expectedAmqpProperties.getProperties().setReplyToGroupId("r-gid");
+        expectedAmqpProperties.getProperties().setReplyTo("replyto");
+        expectedAmqpProperties.getProperties().setContentType("content-type");
+        expectedAmqpProperties.getProperties().setCorrelationId("corelation-id");
+        expectedAmqpProperties.getProperties().setTo("to");
+        expectedAmqpProperties.getProperties().setAbsoluteExpiryTime(OffsetDateTime.now().plusSeconds(60));
+        expectedAmqpProperties.getProperties().setUserId("user-id-1".getBytes());
+        expectedAmqpProperties.getProperties().setContentEncoding("string");
+        expectedAmqpProperties.getProperties().setGroupSequence(2);
+        expectedAmqpProperties.getProperties().setCreationTime(OffsetDateTime.now().plusSeconds(30));
+
+        expectedAmqpProperties.getHeader().setPriority((short)2);
+        expectedAmqpProperties.getHeader().setFirstAcquirer(true);
+        expectedAmqpProperties.getHeader().setDurable(true);
+
+        expectedAmqpProperties.getFooter().putAll(footer);
+        expectedAmqpProperties.getDeliveryAnnotations().putAll(deliveryAnnotation);
+        expectedAmqpProperties.getApplicationProperties().putAll(aplicaitonProperties);
 
 
-        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled, amqpProperties);
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled, expectedAmqpProperties);
 
         sendMessage(message).block(TIMEOUT);
 
@@ -1003,19 +1018,27 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 AmqpAnnotatedMessage actual = received.getAmqpAnnotatedMessage();
                 try {
                     assertArrayEquals(CONTENTS_BYTES, message.getBody());
-                    assertEquals(amqpProperties.getHeader().getPriority(), actual.getHeader().getPriority(), "Header.priority is not equal.");
+                    assertEquals(expectedAmqpProperties.getHeader().getPriority(), actual.getHeader().getPriority(), "Header.priority is not equal.");
+                    assertEquals(expectedAmqpProperties.getHeader().isFirstAcquirer(), actual.getHeader().isFirstAcquirer(), "Header.FirstAcquirer is not equal.");
+                    assertEquals(expectedAmqpProperties.getHeader().isDurable(), actual.getHeader().isDurable(), "Header.Durable is not equal.");
 
-                    assertEquals(amqpProperties.getProperties().getSubject(), actual.getProperties().getSubject(), "Properties.subject is not equal.");
-                    assertEquals(amqpProperties.getProperties().getSubject(), actual.getProperties().getSubject(), "Properties.subject is not equal.");
+                    assertEquals(expectedAmqpProperties.getProperties().getSubject(), actual.getProperties().getSubject(), "Properties.subject is not equal.");
+                    assertEquals(expectedAmqpProperties.getProperties().getReplyToGroupId(), actual.getProperties().getReplyToGroupId(), "Properties.ReplyToGroupId is not equal.");
+                    assertEquals(expectedAmqpProperties.getProperties().getReplyTo(), actual.getProperties().getReplyTo(), "Properties.replyTo is not equal.");
+                    assertEquals(expectedAmqpProperties.getProperties().getContentType(), actual.getProperties().getContentType(), "Properties.contentType is not equal.");
+                    assertEquals(expectedAmqpProperties.getProperties().getCorrelationId(), actual.getProperties().getCorrelationId(), "Properties.correlationId is not equal.");
+                    assertEquals(expectedAmqpProperties.getProperties().getTo(), actual.getProperties().getTo(), "Properties.to is not equal.");
+                    assertEquals(expectedAmqpProperties.getProperties().getAbsoluteExpiryTime().toEpochSecond(), actual.getProperties().getAbsoluteExpiryTime().toEpochSecond(), "Properties.absoluteExpiryTime is not equal.");
+                    assertEquals(expectedAmqpProperties.getProperties().getSubject(), actual.getProperties().getSubject(), "Properties.subject is not equal.");
+                    assertEquals(expectedAmqpProperties.getProperties().getContentEncoding(), actual.getProperties().getContentEncoding(), "Properties.contentEncoding is not equal.");
+                    assertEquals(expectedAmqpProperties.getProperties().getGroupSequence(), actual.getProperties().getGroupSequence(), "Properties.groupSequence is not equal.");
+                    assertEquals(expectedAmqpProperties.getProperties().getCreationTime().toEpochSecond(), actual.getProperties().getCreationTime().toEpochSecond(), "Properties.absoluteExpiryTime is not equal.");
+                    assertArrayEquals(expectedAmqpProperties.getProperties().getUserId(), actual.getProperties().getUserId(), "Properties.userId is not equal.");
 
-                    Map<String, Object> actualDeliveryAnnotationMap = actual.getDeliveryAnnotations();
-                    Iterator<String> ite  = deliveryAnnotation.keySet().iterator();
-                    while (ite.hasNext()) {
-                        String key = ite.next();
-                        assertEquals(amqpProperties.getDeliveryAnnotations().get(key), actualDeliveryAnnotationMap.get(key), "Delivery annotations is not equal for Key " + key);
-                    }
-                    assertEquals(amqpProperties.getProperties().getSubject(), actual.getProperties().getSubject(), "Properties.subject is not equal.");
-
+                    assertMapValues(expectedAmqpProperties.getDeliveryAnnotations(), actual.getDeliveryAnnotations());
+                    assertMapValues(expectedAmqpProperties.getMessageAnnotations(), actual.getMessageAnnotations());
+                    assertMapValues(expectedAmqpProperties.getApplicationProperties(), actual.getApplicationProperties());
+                    assertMapValues(expectedAmqpProperties.getFooter(), actual.getFooter());
                 } finally {
                     logger.info("Completing message.");
                     receiver.complete(received).block(Duration.ofSeconds(15));
@@ -1024,6 +1047,15 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             })
             .thenCancel()
             .verify(Duration.ofMinutes(2));
+    }
+
+    private void assertMapValues(Map<String, Object> expectedMap, Map<String, Object> actualMap) {
+        assertTrue(actualMap.size() >= expectedMap.size());
+        Iterator<String> expectedKeys = expectedMap.keySet().iterator();
+        while (expectedKeys.hasNext()) {
+            String key = expectedKeys.next();
+            assertEquals(expectedMap.get(key), actualMap.get(key), "Value is not equal for Key " + key);
+        }
     }
 
     /**
@@ -1134,17 +1166,26 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         message.getAmqpAnnotatedMessage().getFooter().putAll(amqpPropertiesToSet.getFooter());
 
-        message.getAmqpAnnotatedMessage().getHeader().setFirstAcquirer(amqpPropertiesToSet.getHeader().getFirstAcquirer());
-        message.getAmqpAnnotatedMessage().getHeader().setDurable(amqpPropertiesToSet.getHeader().getDurable());
+        message.getAmqpAnnotatedMessage().getHeader().setFirstAcquirer(amqpPropertiesToSet.getHeader().isFirstAcquirer());
+        message.getAmqpAnnotatedMessage().getHeader().setTimeToLive(amqpPropertiesToSet.getHeader().getTimeToLive());
+        message.getAmqpAnnotatedMessage().getHeader().setDurable(amqpPropertiesToSet.getHeader().isDurable());
         message.getAmqpAnnotatedMessage().getHeader().setDeliveryCount(amqpPropertiesToSet.getHeader().getDeliveryCount());
         message.getAmqpAnnotatedMessage().getHeader().setPriority(amqpPropertiesToSet.getHeader().getPriority());
 
 
         message.getAmqpAnnotatedMessage().getProperties().setReplyTo((amqpPropertiesToSet.getProperties().getReplyTo()));
+        message.getAmqpAnnotatedMessage().getProperties().setContentEncoding((amqpPropertiesToSet.getProperties().getContentEncoding()));
         message.getAmqpAnnotatedMessage().getProperties().setAbsoluteExpiryTime((amqpPropertiesToSet.getProperties().getAbsoluteExpiryTime()));
         message.getAmqpAnnotatedMessage().getProperties().setSubject((amqpPropertiesToSet.getProperties().getSubject()));
         message.getAmqpAnnotatedMessage().getProperties().setContentType(amqpPropertiesToSet.getProperties().getContentType());
         message.getAmqpAnnotatedMessage().getProperties().setCorrelationId(amqpPropertiesToSet.getProperties().getCorrelationId());
+        message.getAmqpAnnotatedMessage().getProperties().setTo(amqpPropertiesToSet.getProperties().getTo());
+        message.getAmqpAnnotatedMessage().getProperties().setGroupSequence(amqpPropertiesToSet.getProperties().getGroupSequence());
+        message.getAmqpAnnotatedMessage().getProperties().setUserId(amqpPropertiesToSet.getProperties().getUserId());
+        message.getAmqpAnnotatedMessage().getProperties().setAbsoluteExpiryTime(amqpPropertiesToSet.getProperties().getAbsoluteExpiryTime());
+        message.getAmqpAnnotatedMessage().getProperties().setCreationTime(amqpPropertiesToSet.getProperties().getCreationTime());
+        message.getAmqpAnnotatedMessage().getProperties().setReplyToGroupId(amqpPropertiesToSet.getProperties().getReplyToGroupId());
+
 
         logger.verbose("Message id {}.", messageId);
         return isSessionEnabled ? message.setSessionId(sessionId) : message;

@@ -11,6 +11,7 @@ import java.util.Objects;
  */
 public final class BinaryData {
     private final byte[] data;
+
     /**
      *Create {@link BinaryData} instance with given byte array data.
      *
@@ -22,6 +23,7 @@ public final class BinaryData {
     }
 
     /**
+     * Gets the data.
      *
      * @return byte array representing {@link BinaryData}.
      */

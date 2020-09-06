@@ -8,7 +8,10 @@ import com.azure.core.annotation.Fluent;
 import java.time.Duration;
 
 /**
- * Represents Header from Amqp message.
+ * The representation of message header as defined by AMQP protocol.
+ *
+ * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#section-message-format">
+ *     Amqp Message Format.</a>
  */
 @Fluent
 public class AmqpMessageHeader {
@@ -24,9 +27,9 @@ public class AmqpMessageHeader {
     }
 
     /**
-     * Gets delivery count.
+     * Gets the delivery count from amqp message header.
      *
-     * @return delivery count.
+     * @return the delivery count value.
      */
     public Long getDeliveryCount() {
         return deliveryCount;
@@ -44,18 +47,19 @@ public class AmqpMessageHeader {
     }
 
     /**
-     * Gets durable boolean flag.
+     * Gets durable boolean flag from amqp message header.
      *
-     * @return The durable.
+     * @return the durable flag.
      */
-    public Boolean getDurable() {
-        return this.durable;
+    public Boolean isDurable() {
+        return durable;
     }
 
     /**
      * Sets the given {@code durable} value on {@link AmqpMessageHeader} object.
      *
      * @param durable to set on {@link AmqpMessageHeader}.
+     *
      * @return updated {@link AmqpMessageHeader} object.
      */
     public AmqpMessageHeader setDurable(Boolean durable) {
@@ -64,11 +68,11 @@ public class AmqpMessageHeader {
     }
 
     /**
-     * Gets boolean flag for {@code firstAcquirer}
+     * Gets boolean flag for {@code firstAcquirer} from amqp message header.
      *
-     * @return The {@code firstAcquirer}.
+     * @return the {@code firstAcquirer} value.
      */
-    public Boolean getFirstAcquirer() {
+    public Boolean isFirstAcquirer() {
         return this.firstAcquirer;
     }
 
@@ -76,6 +80,7 @@ public class AmqpMessageHeader {
      * Sets the given {@code firstAcquirer} value on {@link AmqpMessageHeader} object.
      *
      * @param firstAcquirer to set on {@link AmqpMessageHeader}.
+     *
      * @return updated {@link AmqpMessageHeader} object.
      */
     public AmqpMessageHeader setFirstAcquirer(Boolean firstAcquirer) {
@@ -84,17 +89,19 @@ public class AmqpMessageHeader {
     }
 
     /**
-     * Gets the priority on {@code amqpMessage}.
-     * @return the priority.
+     * Gets the priority on {@code amqpMessage} from amqp message header.
+     *
+     * @return the {@code priority} value.
      */
     public Short getPriority() {
-        return this.priority;
+        return priority;
     }
 
     /**
      * Sets the given {@code priority} value on {@link AmqpMessageHeader} object.
      *
      * @param priority to set on {@link AmqpMessageHeader}.
+     *
      * @return updated {@link AmqpMessageHeader} object.
      */
     public AmqpMessageHeader setPriority(short priority) {
@@ -103,17 +110,19 @@ public class AmqpMessageHeader {
     }
 
     /**
-     * Gets {@code timeToLive}.
-     * @return {@code timeToLive}.
+     * Gets {@code timeToLive} from amqp message header.
+     *
+     * @return the {@code timeToLive} value.
      */
     public Duration getTimeToLive() {
-        return this.timeToLive;
+        return timeToLive;
     }
 
     /**
      * Sets the given {@code timeToLive} value on {@link AmqpMessageHeader} object.
      *
      * @param timeToLive to set on {@link AmqpMessageHeader}.
+     *
      * @return updated {@link AmqpMessageHeader} object.
      */
     public AmqpMessageHeader setTimeToLive(Duration timeToLive) {

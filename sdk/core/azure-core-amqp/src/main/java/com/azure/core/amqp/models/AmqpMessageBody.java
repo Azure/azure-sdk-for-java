@@ -8,6 +8,7 @@ package com.azure.core.amqp.models;
  */
 public interface AmqpMessageBody {
     /**
+     * Type representing various supported amqp body types.
      *
      * @return The {@link AmqpBodyType}.
      */

@@ -7,10 +7,8 @@ import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseUtils;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
-import com.azure.core.amqp.models.AmqpDataBody;
 import com.azure.core.amqp.models.AmqpMessageHeader;
 import com.azure.core.amqp.models.AmqpMessageProperties;
-import com.azure.core.amqp.models.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.ManagementConstants;
 import com.azure.messaging.servicebus.implementation.MessageWithLockToken;
@@ -61,18 +59,9 @@ import java.util.stream.Collectors;
  */
 class ServiceBusMessageSerializer implements MessageSerializer {
     private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
-    private static final String ENQUEUED_TIME_UTC_NAME = "x-opt-enqueued-time";
     private static final String SCHEDULED_ENQUEUE_TIME_NAME = "x-opt-scheduled-enqueue-time";
-    private static final String SEQUENCE_NUMBER_NAME = "x-opt-sequence-number";
-    private static final String LOCKED_UNTIL_NAME = "x-opt-locked-until";
     private static final String PARTITION_KEY_NAME = "x-opt-partition-key";
     private static final String VIA_PARTITION_KEY_NAME = "x-opt-via-partition-key";
-    private static final String DEAD_LETTER_SOURCE_NAME = "x-opt-deadletter-source";
-    private static final String DEAD_LETTER_DESCRIPTION = "DeadLetterErrorDescription";
-    private static final String DEAD_LETTER_REASON = "DeadLetterReason";
-
-    // This one appears to always be 0, but is always returned with each message.
-    private static final String ENQUEUED_SEQUENCE_NUMBER = "x-opt-enqueue-sequence-number";
 
     private final ClientLogger logger = new ClientLogger(ServiceBusMessageSerializer.class);
 
@@ -151,15 +140,25 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         if (amqpMessage.getProperties() == null) {
             amqpMessage.setProperties(new Properties());
         }
-
+        AmqpMessageProperties brokeredProperties = brokeredMessage.getAmqpAnnotatedMessage().getProperties();
         amqpMessage.setMessageId(brokeredMessage.getMessageId());
         amqpMessage.setContentType(brokeredMessage.getContentType());
         amqpMessage.setCorrelationId(brokeredMessage.getCorrelationId());
         amqpMessage.setSubject(brokeredMessage.getSubject());
-        amqpMessage.getProperties().setTo(brokeredMessage.getTo());
         amqpMessage.setReplyTo(brokeredMessage.getReplyTo());
         amqpMessage.setReplyToGroupId(brokeredMessage.getReplyToSessionId());
         amqpMessage.setGroupId(brokeredMessage.getSessionId());
+        amqpMessage.setContentEncoding(brokeredProperties.getContentEncoding());
+        amqpMessage.setGroupSequence(brokeredProperties.getGroupSequence());
+        amqpMessage.getProperties().setTo(brokeredMessage.getTo());
+        amqpMessage.getProperties().setUserId(new Binary(brokeredProperties.getUserId()));
+
+        if (brokeredProperties.getAbsoluteExpiryTime() != null) {
+            amqpMessage.getProperties().setAbsoluteExpiryTime(Date.from(brokeredProperties.getAbsoluteExpiryTime().toInstant()));
+        }
+        if (brokeredProperties.getCreationTime() != null) {
+            amqpMessage.getProperties().setCreationTime(Date.from(brokeredProperties.getCreationTime().toInstant()));
+        }
 
         //set footer
         amqpMessage.setFooter(new Footer(brokeredMessage.getAmqpAnnotatedMessage().getFooter()));
@@ -170,16 +169,15 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             amqpMessage.setDeliveryCount(brokeredMessage.getAmqpAnnotatedMessage().getHeader().getDeliveryCount());
         }
         amqpMessage.setPriority(brokeredMessage.getAmqpAnnotatedMessage().getHeader().getPriority());
-        if (header.getDurable() != null) {
-            amqpMessage.setDurable(brokeredMessage.getAmqpAnnotatedMessage().getHeader().getDurable());
+        if (header.isDurable() != null) {
+            amqpMessage.setDurable(brokeredMessage.getAmqpAnnotatedMessage().getHeader().isDurable());
         }
-        if (header.getFirstAcquirer() != null) {
-            amqpMessage.setFirstAcquirer(brokeredMessage.getAmqpAnnotatedMessage().getHeader().getFirstAcquirer());
+        if (header.isFirstAcquirer() != null) {
+            amqpMessage.setFirstAcquirer(brokeredMessage.getAmqpAnnotatedMessage().getHeader().isFirstAcquirer());
         }
         if (header.getTimeToLive() != null) {
             amqpMessage.setTtl(brokeredMessage.getAmqpAnnotatedMessage().getHeader().getTimeToLive().toMillis());
         }
-
 
         final Map<Symbol, Object> messageAnnotationsMap = new HashMap<>();
         if (brokeredMessage.getScheduledEnqueueTime() != null) {
@@ -393,9 +391,12 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         // Footer
         final Footer footer = amqpMessage.getFooter();
         if (footer != null && footer.getValue() != null) {
-            final Map<String, Object> footerValue = footer.getValue();
-            brokeredAmqpAnnotatedMessage.getFooter().putAll(footerValue);
-
+            final Map<Symbol, Object> footerValue = footer.getValue();
+            Iterator<Symbol> footerKeys = footerValue.keySet().iterator();
+            while (footerKeys.hasNext()) {
+                Symbol key = footerKeys.next();
+                brokeredAmqpAnnotatedMessage.getFooter().put(key.toString(), footerValue.get(key));
+            }
         }
 
         // Properties
@@ -419,12 +420,18 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         }
 
         brokeredProperties.setSubject(amqpMessage.getSubject());
-        brokeredProperties.setReplyTo(amqpMessage.getReplyTo());
-        brokeredProperties.setReplyToGroupId(amqpMessage.getReplyToGroupId());
         brokeredProperties.setGroupId(amqpMessage.getGroupId());
         brokeredProperties.setContentEncoding(amqpMessage.getContentEncoding());
         brokeredProperties.setGroupSequence(amqpMessage.getGroupSequence());
         brokeredProperties.setUserId(amqpMessage.getUserId());
+        if (amqpProperties.getAbsoluteExpiryTime() != null) {
+            brokeredProperties.setAbsoluteExpiryTime(amqpProperties.getAbsoluteExpiryTime().toInstant()
+                .atOffset(ZoneOffset.UTC));
+        }
+        if (amqpProperties.getCreationTime() != null) {
+            brokeredProperties.setCreationTime(amqpProperties.getCreationTime().toInstant()
+                .atOffset(ZoneOffset.UTC));
+        }
 
         // DeliveryAnnotations
         final DeliveryAnnotations deliveryAnnotations = amqpMessage.getDeliveryAnnotations();

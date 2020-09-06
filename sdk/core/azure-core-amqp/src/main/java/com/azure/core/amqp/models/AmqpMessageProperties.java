@@ -9,7 +9,10 @@ import java.time.OffsetDateTime;
 import java.util.Arrays;
 
 /**
- * Represents properties from Amqp message.
+ * The representation of message properties as defined by AMQP protocol.
+ *
+ * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#section-message-format">
+ *     Amqp Message Format.</a>
  */
 @Fluent
 public class AmqpMessageProperties {
@@ -28,19 +31,22 @@ public class AmqpMessageProperties {
     private String subject;
     private byte[] userId;
 
+    AmqpMessageProperties() {
+        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
+    }
     /**
-     * Gets AbsoluteExpiryTime from Amqp message.
+     * Gets {@code absoluteExpiryTime} from amqp message properties.
      *
-     * @return The {@code absoluteExpiryTime}.
+     * @return the {@code absoluteExpiryTime} value.
      */
     public OffsetDateTime getAbsoluteExpiryTime() {
-        return this.absoluteExpiryTime;
+        return absoluteExpiryTime;
     }
 
     /**
      * Sets the given {@code absoluteExpiryTime} value on {@link AmqpMessageProperties} object.
      *
-     * @param absoluteExpiryTime to be set .
+     * @param absoluteExpiryTime to be set.
      * @return updated {@link AmqpMessageProperties} object.
      */
     public AmqpMessageProperties setAbsoluteExpiryTime(OffsetDateTime absoluteExpiryTime) {
@@ -49,18 +55,19 @@ public class AmqpMessageProperties {
     }
 
     /**
-     * Gets AbsoluteExpiryTime from Amqp message.
+     * Gets AbsoluteExpiryTime from amqp message properties.
      *
-     * @return The {@code absoluteExpiryTime}.
+     * @return the {@code absoluteExpiryTime} value.
      */
     public String getContentEncoding() {
-        return this.contentEncoding;
+        return contentEncoding;
     }
 
     /**
      * Sets the given {@code contentEncoding} value on {@link AmqpMessageProperties} object.
      *
-     * @param contentEncoding to be set .
+     * @param contentEncoding to be set.
+     *
      * @return updated {@link AmqpMessageProperties} object.
      */
     public AmqpMessageProperties setContentEncoding(String contentEncoding) {
@@ -69,9 +76,9 @@ public class AmqpMessageProperties {
     }
 
     /**
-     * Gets {@code contentType} from the Amqp message.
+     * Gets {@code contentType} from amqp message properties.
      *
-     * @return The {@code contentType}.
+     * @return the {@code contentType} value.
      */
     public String getContentType() {
         return contentType;
@@ -80,7 +87,8 @@ public class AmqpMessageProperties {
     /**
      * Sets the given {@code contentType} value on {@link AmqpMessageProperties} object.
      *
-     * @param contentType to be set .
+     * @param contentType to be set.
+     *
      * @return updated {@link AmqpMessageProperties} object.
      */
     public AmqpMessageProperties setContentType(String contentType) {
@@ -89,18 +97,19 @@ public class AmqpMessageProperties {
     }
 
     /**
-     * Gets {@code correlationId} from the Amqp message.
+     * Gets {@code correlationId} from amqp message properties.
      *
-     * @return The {@code correlationId}.
+     * @return the {@code correlationId} value.
      */
     public String getCorrelationId() {
-        return this.correlationId;
+        return correlationId;
     }
 
     /**
      * Sets the given {@code correlationId} value on {@link AmqpMessageProperties} object.
      *
-     * @param correlationId to be set .
+     * @param correlationId to be set.
+     *
      * @return updated {@link AmqpMessageProperties} object.
      */
     public AmqpMessageProperties setCorrelationId(String correlationId) {
@@ -109,18 +118,19 @@ public class AmqpMessageProperties {
     }
 
     /**
-     * Gets {@code creationTime} from the Amqp message.
+     * Gets {@code creationTime} from amqp message properties.
      *
-     * @return The {@code creationTime}.
+     * @return the {@code creationTime} value.
      */
     public OffsetDateTime getCreationTime() {
-        return this.creationTime;
+        return creationTime;
     }
 
     /**
      * Sets the given {@code creationTime} value on {@link AmqpMessageProperties} object.
      *
-     * @param creationTime to be set .
+     * @param creationTime to be set.
+     *
      * @return updated {@link AmqpMessageProperties} object.
      */
     public AmqpMessageProperties setCreationTime(OffsetDateTime creationTime) {
@@ -129,18 +139,19 @@ public class AmqpMessageProperties {
     }
 
     /**
-     * Gets {@code groupId} from the Amqp message.
+     * Gets {@code groupId} from amqp message properties.
      *
-     * @return The {@code groupId}.
+     * @return the {@code groupId} value.
      */
     public String getGroupId() {
-        return this.groupId;
+        return groupId;
     }
 
     /**
      * Sets the given {@code groupId} value on {@link AmqpMessageProperties} object.
      *
-     * @param groupId to be set .
+     * @param groupId to be set.
+     *
      * @return updated {@link AmqpMessageProperties} object.
      */
     public AmqpMessageProperties setGroupId(String groupId) {
@@ -149,18 +160,19 @@ public class AmqpMessageProperties {
     }
 
     /**
-     * Gets {@code groupSequence} from the Amqp message.
+     * Gets {@code groupSequence} from amqp message properties.
      *
-     * @return The {@code groupSequence}.
+     * @return the {@code groupSequence} value.
      */
     public long getGroupSequence() {
-        return this.groupSequence;
+        return groupSequence;
     }
 
     /**
      * Sets the given {@code groupSequence} value on {@link AmqpMessageProperties} object.
      *
-     * @param groupSequence to be set .
+     * @param groupSequence to be set.
+     *
      * @return updated {@link AmqpMessageProperties} object.
      */
     public AmqpMessageProperties setGroupSequence(long groupSequence) {
@@ -169,18 +181,19 @@ public class AmqpMessageProperties {
     }
 
     /**
-     * Gets {@code messageId} from the Amqp message.
+     * Gets {@code messageId} from amqp message properties.
      *
-     * @return The {@code messageId}.
+     * @return the {@code messageId} value.
      */
     public String getMessageId() {
-        return this.messageId;
+        return messageId;
     }
 
     /**
      * Sets the given {@code messageId} value on {@link AmqpMessageProperties} object.
      *
      * @param messageId to be set .
+     *
      * @return updated {@link AmqpMessageProperties} object.
      */
     public AmqpMessageProperties setMessageId(String messageId) {
@@ -189,18 +202,19 @@ public class AmqpMessageProperties {
     }
 
     /**
-     * Gets {@code replyTo} from the Amqp message.
+     * Gets {@code replyTo} from amqp message properties.
      *
-     * @return The {@code replyTo}.
+     * @return The {@code replyTo} value.
      */
     public String getReplyTo() {
-        return this.replyTo;
+        return replyTo;
     }
 
     /**
      * Sets the given {@code replyTo} value on {@link AmqpMessageProperties} object.
      *
-     * @param replyTo to be set .
+     * @param replyTo to be set.
+     *
      * @return updated {@link AmqpMessageProperties} object.
      */
     public AmqpMessageProperties setReplyTo(String replyTo) {
@@ -209,18 +223,19 @@ public class AmqpMessageProperties {
     }
 
     /**
-     * Gets {@code replyToGroupId} from the Amqp message.
+     * Gets {@code replyToGroupId} from amqp message properties.
      *
-     * @return The {@code replyToGroupId}.
+     * @return The {@code replyToGroupId} value.
      */
     public String getReplyToGroupId() {
-        return this.replyToGroupId;
+        return replyToGroupId;
     }
 
     /**
      * Sets the given {@code replyToGroupId} value on {@link AmqpMessageProperties} object.
      *
-     * @param replyToGroupId to be set .
+     * @param replyToGroupId to be set.
+     *
      * @return updated {@link AmqpMessageProperties} object.
      */
     public AmqpMessageProperties setReplyToGroupId(String replyToGroupId) {
@@ -229,18 +244,19 @@ public class AmqpMessageProperties {
     }
 
     /**
-     * Gets {@code subject} from the Amqp message.
+     * Gets {@code subject} from amqp message properties.
      *
-     * @return The {@code subject}.
+     * @return the {@code subject} value.
      */
     public String getSubject() {
-        return this.subject;
+        return subject;
     }
 
     /**
      * Sets the given {@code subject} value on {@link AmqpMessageProperties} object.
      *
-     * @param subject to be set .
+     * @param subject to be set.
+     *
      * @return updated {@link AmqpMessageProperties} object.
      */
     public AmqpMessageProperties setSubject(String subject) {
@@ -249,18 +265,19 @@ public class AmqpMessageProperties {
     }
 
     /**
-     * Gets {@code to} from the Amqp message.
+     * Gets {@code to} from amqp message properties.
      *
-     * @return The {@code to}.
+     * @return the {@code to} value.
      */
     public String getTo() {
-        return this.to;
+        return to;
     }
 
     /**
      * Sets the given {@code to} value on {@link AmqpMessageProperties} object.
      *
-     * @param to to be set .
+     * @param to to be set.
+     *
      * @return updated {@link AmqpMessageProperties} object.
      */
     public AmqpMessageProperties setTo(String to) {
@@ -269,12 +286,12 @@ public class AmqpMessageProperties {
     }
 
     /**
-     * Gets {@code userId} from Amqp message.
+     * Gets {@code userId} from amqp message properties.
      *
-     * @return The {@code userId}.
+     * @return the {@code userId} value.
      */
     public byte[] getUserId() {
-        return userId != null ? Arrays.copyOf(this.userId, userId.length) : new byte[0];
+        return userId != null ? Arrays.copyOf(userId, userId.length) : new byte[0];
     }
 
     /**
@@ -287,6 +304,4 @@ public class AmqpMessageProperties {
         this.userId = userId != null ? Arrays.copyOf(userId, userId.length) : new byte[0];
         return this;
     }
-
-
 }

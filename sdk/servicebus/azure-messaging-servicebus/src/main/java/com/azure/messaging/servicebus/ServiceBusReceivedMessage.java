@@ -4,24 +4,11 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
+import com.azure.core.amqp.models.AmqpBodyType;
 import com.azure.core.amqp.models.AmqpDataBody;
-import com.azure.core.amqp.models.AmqpMessageHeader;
-import com.azure.core.amqp.models.AmqpMessageProperties;
 import com.azure.core.amqp.models.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.implementation.MessageWithLockToken;
-import com.azure.messaging.servicebus.implementation.Messages;
 import com.azure.messaging.servicebus.models.ReceiveMode;
-import org.apache.qpid.proton.amqp.Binary;
-import org.apache.qpid.proton.amqp.Symbol;
-import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
-import org.apache.qpid.proton.amqp.messaging.Data;
-import org.apache.qpid.proton.amqp.messaging.DeliveryAnnotations;
-import org.apache.qpid.proton.amqp.messaging.Footer;
-import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
-import org.apache.qpid.proton.amqp.messaging.Properties;
-import org.apache.qpid.proton.amqp.messaging.Section;
-import org.apache.qpid.proton.message.Message;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -38,7 +25,8 @@ import java.util.stream.Collectors;
  * This class represents a received message from Service Bus.
  */
 public final class ServiceBusReceivedMessage {
-    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
+    private final ClientLogger logger = new ClientLogger(ServiceBusReceivedMessage.class);
+
     private static final String ENQUEUED_TIME_UTC_NAME = "x-opt-enqueued-time";
     private static final String SEQUENCE_NUMBER_NAME = "x-opt-sequence-number";
     private static final String LOCKED_UNTIL_NAME = "x-opt-locked-until";
@@ -51,13 +39,15 @@ public final class ServiceBusReceivedMessage {
 
     // This one appears to always be 0, but is always returned with each message.
     private static final String ENQUEUED_SEQUENCE_NUMBER = "x-opt-enqueue-sequence-number";
-    private static final ClientLogger logger = new ClientLogger(ServiceBusReceivedMessage.class);
 
     private AmqpAnnotatedMessage amqpAnnotatedMessage;
     private UUID lockToken;
 
     /**
+     * The representation of message as defined by AMQP protocol.
      *
+     * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#section-message-format">
+     *     Amqp Message Format.</a>
      * @return
      */
     public AmqpAnnotatedMessage getAmqpAnnotatedMessage() {
@@ -66,111 +56,6 @@ public final class ServiceBusReceivedMessage {
 
     ServiceBusReceivedMessage(byte[] body) {
         amqpAnnotatedMessage = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(new BinaryData(body))));
-    }
-
-    ServiceBusReceivedMessage(Message amqpMessage) {
-
-        //final ServiceBusReceivedMessage brokeredMessage;
-        byte[] bytes = null;
-        final Section body = amqpMessage.getBody();
-        if (body != null) {
-            //TODO (conniey): Support other AMQP types like AmqpValue and AmqpSequence.
-            if (body instanceof Data) {
-                final Binary messageData = ((Data) body).getValue();
-                bytes = messageData.getArray();
-                //brokeredMessage = new ServiceBusReceivedMessage(bytes);
-            } else {
-                logger.warning(String.format(Messages.MESSAGE_NOT_OF_TYPE, body.getType()));
-                bytes = EMPTY_BYTE_ARRAY;
-                //brokeredMessage = new ServiceBusReceivedMessage(EMPTY_BYTE_ARRAY);
-            }
-        } else {
-            logger.warning(String.format(Messages.MESSAGE_NOT_OF_TYPE, "null"));
-            bytes = EMPTY_BYTE_ARRAY;
-            //brokeredMessage = new ServiceBusReceivedMessage(EMPTY_BYTE_ARRAY);
-        }
-        amqpAnnotatedMessage = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(new BinaryData(bytes))));
-
-        // Application properties
-        ApplicationProperties applicationProperties = amqpMessage.getApplicationProperties();
-        if (applicationProperties != null) {
-            final Map<String, Object> propertiesValue = applicationProperties.getValue();
-            amqpAnnotatedMessage.getApplicationProperties().putAll(propertiesValue);
-        }
-
-        // Header
-        final AmqpMessageHeader header = amqpAnnotatedMessage.getHeader();
-        header.setTimeToLive(Duration.ofMillis(amqpMessage.getTtl()));
-        header.setDeliveryCount(amqpMessage.getDeliveryCount());
-        header.setDurable(amqpMessage.getHeader().getDurable());
-        header.setFirstAcquirer(amqpMessage.getHeader().getFirstAcquirer());
-        header.setPriority(amqpMessage.getPriority());
-
-        // Footer
-        final Footer footer = amqpMessage.getFooter();
-        if (footer != null && footer.getValue() != null) {
-            final Map<String, Object> footerValue = footer.getValue();
-            amqpAnnotatedMessage.getFooter().putAll(footerValue);
-
-        }
-
-        // Properties
-        final AmqpMessageProperties properties = amqpAnnotatedMessage.getProperties();
-        properties.setReplyToGroupId(amqpMessage.getReplyToGroupId());
-        properties.setReplyTo(amqpMessage.getReplyTo());
-        final Object messageId = amqpMessage.getMessageId();
-        if (messageId != null) {
-            properties.setMessageId(messageId.toString());
-        }
-
-        properties.setContentType(amqpMessage.getContentType());
-        final Object correlationId = amqpMessage.getCorrelationId();
-        if (correlationId != null) {
-            properties.setCorrelationId(correlationId.toString());
-        }
-
-        final Properties amqpProperties = amqpMessage.getProperties();
-        if (amqpProperties != null) {
-            properties.setTo(amqpProperties.getTo());
-        }
-
-        properties.setSubject(amqpMessage.getSubject());
-        properties.setReplyTo(amqpMessage.getReplyTo());
-        properties.setReplyToGroupId(amqpMessage.getReplyToGroupId());
-        properties.setGroupId(amqpMessage.getGroupId());
-        properties.setContentEncoding(amqpMessage.getContentEncoding());
-        properties.setGroupSequence(amqpMessage.getGroupSequence());
-        properties.setUserId(amqpMessage.getUserId());
-
-        // DeliveryAnnotations
-        final DeliveryAnnotations deliveryAnnotations = amqpMessage.getDeliveryAnnotations();
-        if (deliveryAnnotations != null && deliveryAnnotations.getValue() != null) {
-            final Map<Symbol, Object> deliveryAnnotationMap = deliveryAnnotations.getValue();
-            if (deliveryAnnotationMap != null) {
-                for (Map.Entry<Symbol, Object> entry : deliveryAnnotationMap.entrySet()) {
-                    final String key = entry.getKey().toString();
-                    final Object value = entry.getValue();
-                    amqpAnnotatedMessage.getDeliveryAnnotations().put(key, value);
-                }
-            }
-        }
-
-        // Message Annotations
-        final MessageAnnotations messageAnnotations = amqpMessage.getMessageAnnotations();
-        if (messageAnnotations != null) {
-            Map<Symbol, Object> messageAnnotationsMap = messageAnnotations.getValue();
-            if (messageAnnotationsMap != null) {
-                for (Map.Entry<Symbol, Object> entry : messageAnnotationsMap.entrySet()) {
-                    final String key = entry.getKey().toString();
-                    final Object value = entry.getValue();
-                    amqpAnnotatedMessage.getMessageAnnotations().put(key, value);
-                }
-            }
-        }
-
-        if (amqpMessage instanceof MessageWithLockToken) {
-            this.lockToken = ((MessageWithLockToken) amqpMessage).getLockToken();
-        }
     }
 
     /**
@@ -186,7 +71,8 @@ public final class ServiceBusReceivedMessage {
      */
     public byte[] getBody() {
         byte[] body = null;
-        switch(amqpAnnotatedMessage.getBody().getBodyType()) {
+        final AmqpBodyType bodyType = amqpAnnotatedMessage.getBody().getBodyType();
+        switch(bodyType) {
             case DATA:
                 List<BinaryData> binaryData = ((AmqpDataBody)amqpAnnotatedMessage.getBody()).getData().stream()
                     .collect(Collectors.toList());
@@ -194,8 +80,14 @@ public final class ServiceBusReceivedMessage {
                     byte[] firstData = binaryData.get(0).getData();
                     body = Arrays.copyOf(firstData, firstData.length);
                 }
-                break;
+            case SEQUENCE:
+            case VALUE:
+                throw logger.logThrowableAsError(new UnsupportedOperationException("Body type not supported "
+                    + bodyType));
             default:
+                logger.warning("Invalid body type {}.", bodyType);
+                throw logger.logThrowableAsError(new IllegalStateException("Body type not valid "
+                    + bodyType));
         }
         return body;
     }
