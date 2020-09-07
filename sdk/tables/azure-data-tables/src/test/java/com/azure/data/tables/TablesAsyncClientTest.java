@@ -4,6 +4,7 @@
 package com.azure.data.tables;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -12,6 +13,8 @@ import com.azure.core.test.TestBase;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.UpdateMode;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
@@ -31,11 +34,21 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Tests {@link TableAsyncClient}.
  */
 public class TablesAsyncClientTest extends TestBase {
-    private static final Duration TIMEOUT = Duration.ofSeconds(30);
+    private static final Duration TIMEOUT = Duration.ofSeconds(100);
 
     private CosmosThrottled<TableAsyncClient> runner;
     private HttpPipelinePolicy recordPolicy;
     private HttpClient playbackClient;
+
+    @BeforeAll
+    static void beforeAll() {
+        StepVerifier.setDefaultTimeout(TIMEOUT);
+    }
+
+    @AfterAll
+    static void afterAll() {
+        StepVerifier.resetDefaultTimeout();
+    }
 
     @Override
     protected void beforeTest() {
@@ -55,7 +68,8 @@ public class TablesAsyncClientTest extends TestBase {
                 recordPolicy = interceptorManager.getRecordPolicy();
                 builder.addPolicy(recordPolicy);
             }
-            builder.addPolicy(new RetryPolicy());
+            builder.addPolicy(new RetryPolicy(new ExponentialBackoff(6, Duration.ofMillis(1500),
+                Duration.ofSeconds(100))));
         }
 
         runner = CosmosThrottled.get(builder.buildAsyncClient(), interceptorManager.isPlaybackMode());
@@ -79,7 +93,8 @@ public class TablesAsyncClientTest extends TestBase {
             if (!interceptorManager.isLiveMode()) {
                 builder.addPolicy(recordPolicy);
             }
-            builder.addPolicy(new RetryPolicy());
+            builder.addPolicy(new RetryPolicy(new ExponentialBackoff(6, Duration.ofMillis(1500),
+                Duration.ofSeconds(100))));
         }
 
         final CosmosThrottled<TableAsyncClient> runner2 = CosmosThrottled.get(builder.buildAsyncClient(),
@@ -108,7 +123,8 @@ public class TablesAsyncClientTest extends TestBase {
             if (!interceptorManager.isLiveMode()) {
                 builder.addPolicy(recordPolicy);
             }
-            builder.addPolicy(new RetryPolicy());
+            builder.addPolicy(new RetryPolicy(new ExponentialBackoff(6, Duration.ofMillis(1500),
+                Duration.ofSeconds(100))));
         }
 
         final CosmosThrottled<TableAsyncClient> runner2 = CosmosThrottled.get(builder.buildAsyncClient(),
@@ -355,7 +371,7 @@ public class TablesAsyncClientTest extends TestBase {
         createdEntity.addProperty(newPropertyKey, "valueB");
 
         // Act & Assert
-        if (mode == UpdateMode.MERGE && runner.getClient().getTableUrl().contains("cosmos.azure.com")) {
+        if (mode == UpdateMode.MERGE && runner.isCosmos()) {
             // This scenario is currently broken when using the CosmosDB Table API
             StepVerifier.create(runner.run(tableClient -> tableClient.updateEntityWithResponse(createdEntity, true, mode)))
                 .expectError(com.azure.data.tables.implementation.models.TableServiceErrorException.class)

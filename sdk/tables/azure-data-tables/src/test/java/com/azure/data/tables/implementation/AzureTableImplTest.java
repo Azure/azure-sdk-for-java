@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -56,7 +57,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * This class tests the Autorest code for the Tables track 2 SDK
  */
 public class AzureTableImplTest extends TestBase {
-    private static final int TIMEOUT_IN_MS = 5000;
+    private static final int TIMEOUT_IN_MS = 100_000;
 
     private final QueryOptions defaultQueryOptions = new QueryOptions()
         .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
@@ -104,7 +105,7 @@ public class AzureTableImplTest extends TestBase {
                 HttpPipelinePolicy recordPolicy = interceptorManager.getRecordPolicy();
                 policies.add(recordPolicy);
             }
-            policies.add(new RetryPolicy());
+            policies.add(new RetryPolicy(new ExponentialBackoff(6, Duration.ofMillis(1500), Duration.ofSeconds(100))));
         }
 
         HttpPipeline pipeline = new HttpPipelineBuilder()

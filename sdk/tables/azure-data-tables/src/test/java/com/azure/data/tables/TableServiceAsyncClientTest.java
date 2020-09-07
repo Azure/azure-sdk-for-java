@@ -4,6 +4,7 @@
 package com.azure.data.tables;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
@@ -25,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * Tests methods for {@link TableServiceAsyncClient}.
  */
 public class TableServiceAsyncClientTest extends TestBase {
-    private static final Duration TIMEOUT = Duration.ofSeconds(30);
+    private static final Duration TIMEOUT = Duration.ofSeconds(100);
     private CosmosThrottled<TableServiceAsyncClient> runner;
 
     @BeforeAll
@@ -52,7 +53,8 @@ public class TableServiceAsyncClientTest extends TestBase {
             if (!interceptorManager.isLiveMode()) {
                 builder.addPolicy(interceptorManager.getRecordPolicy());
             }
-            builder.addPolicy(new RetryPolicy());
+            builder.addPolicy(new RetryPolicy(new ExponentialBackoff(6, Duration.ofMillis(1500),
+                Duration.ofSeconds(100))));
         }
 
         runner = CosmosThrottled.get(builder.buildAsyncClient(), interceptorManager.isPlaybackMode());
