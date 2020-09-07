@@ -1,7 +1,7 @@
 # Azure Event Hubs Kafka Spring cloud starter client library for Java
 The Spring Cloud Stream Kafka binder for Azure Event Hubs helps developers to finish the auto-configuration of Event Hubs.  
 
-[Source code][src] | [Package (Maven)][package] | [API reference documentation][refdocs] | [Product documentation][docs] | [Samples][sample]
+[Package (Maven)][package] | [API reference documentation][refdocs] | [Product documentation][docs] | [Samples][sample]
 
 ## Getting started
 ### Prerequisites
@@ -48,7 +48,7 @@ For more information about setting logging in spring, please refer to the [offic
 
 The following section provide a sample project illustrating how to use the starter.
 ### More sample code
-- [Eventhubs Kafka Sample][eventhubs_kafka_sample]
+- [Eventhubs Kafka Sample][sample]
 
 ## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
@@ -56,7 +56,6 @@ This project welcomes contributions and suggestions.  Most contributions require
 Please follow [instructions here][contributing_md] to build from source or contribute.
 
 <!-- Link -->
-[src]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-autoconfigure/src/main/java/com/microsoft/azure/spring/cloud/autoconfigure/eventhub
 [package]: https://mvnrepository.com/artifact/com.microsoft.azure/spring-cloud-starter-azure-eventhubs-kafka
 [refdocs]: https://azure.github.io/azure-sdk-for-java/spring.html#spring-cloud-starter-azure-eventhubs-kafka
 [docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-cloud-stream-binder-java-app-kafka-azure-event-hub
@@ -66,4 +65,3 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [logging_doc]: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging
 [contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/CONTRIBUTING.md
 [maven]: http://maven.apache.org/
-[eventhubs_kafka_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-eventhubs-kafka-sample

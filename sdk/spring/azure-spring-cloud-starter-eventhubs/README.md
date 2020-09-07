@@ -4,7 +4,7 @@ The Spring Cloud Event Hubs starter helps developers to finish the auto-configur
 
 For Spring Integration on Event Hubs, please refer to the [source code][source_code].
 
-[Source code][src] | [Package (Maven)][package] | [API reference documentation][refdocs] | [Samples][sample]
+[Package (Maven)][package] | [API reference documentation][refdocs] | [Samples][sample]
 
 ## Getting started
 ### Prerequisites
@@ -51,7 +51,7 @@ For more information about setting logging in spring, please refer to the [offic
 
 The following section provide a sample project illustrating how to use the starter.
 ### More sample code
-- [Eventhubs Integration Sample][eventhubs_integration_sample]
+- [Eventhubs Integration Sample][sample]
 
 ## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
@@ -59,7 +59,6 @@ This project welcomes contributions and suggestions.  Most contributions require
 Please follow [instructions here][contributing_md] to build from source or contribute.
 
 <!-- Link -->
-[src]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-autoconfigure/src/main/java/com/microsoft/azure/spring/cloud/autoconfigure/eventhub
 [package]: https://mvnrepository.com/artifact/com.microsoft.azure/spring-cloud-starter-azure-eventhubs
 [refdocs]: https://azure.github.io/azure-sdk-for-java/spring.html#spring-cloud-starter-azure-eventhubs
 [sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-eventhubs-integration-sample
@@ -69,4 +68,3 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/CONTRIBUTING.md
 [maven]: http://maven.apache.org/
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-integration-eventhubs
-[eventhubs_integration_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-eventhubs-integration-sample

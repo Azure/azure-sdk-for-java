@@ -169,7 +169,7 @@ For more information about setting logging in spring, please refer to the [offic
 
 The following section provide a sample project illustrating how to use the starter.
 ### More sample code
-- [Eventhubs Binder Sample][eventhubs_binder_sample]
+- [Eventhubs Binder Sample][sample]
 - [Eventhubs Multibinders Sample][eventhubs_multibinders_sample]
 
 ## Contributing
@@ -186,7 +186,6 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [azure_subscription]: https://azure.microsoft.com/free
 [logging_doc]: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging
-[eventhubs_binder_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-eventhubs-binder-sample
 [eventhubs_multibinders_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-eventhubs-multibinders-sample
 [contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/CONTRIBUTING.md
 [maven]: http://maven.apache.org/
