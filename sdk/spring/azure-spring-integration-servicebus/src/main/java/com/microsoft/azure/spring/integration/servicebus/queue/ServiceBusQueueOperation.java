@@ -10,7 +10,7 @@ import org.springframework.messaging.Message;
 
 /**
  * Azure service bus queue operation to support send
- * {@link org.springframework.messaging.Message}, subscribe, dead letter queue and abandon
+ * {@link org.springframework.messaging.Message} asynchronously and subscribe and abandon
  *
  *
  * @author Warren Zhu
