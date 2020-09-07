@@ -250,7 +250,6 @@ public final class HeatMapsClient {
     public Mono<HeatMapModelInner> getAsync(String resourceGroupName, String profileName) {
         final List<Double> topLeft = null;
         final List<Double> botRight = null;
-        final Context context = null;
         return getWithResponseAsync(resourceGroupName, profileName, topLeft, botRight)
             .flatMap(
                 (Response<HeatMapModelInner> res) -> {
@@ -294,7 +293,6 @@ public final class HeatMapsClient {
     public HeatMapModelInner get(String resourceGroupName, String profileName) {
         final List<Double> topLeft = null;
         final List<Double> botRight = null;
-        final Context context = null;
         return getAsync(resourceGroupName, profileName, topLeft, botRight).block();
     }
 
