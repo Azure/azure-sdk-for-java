@@ -1,6 +1,6 @@
 # Azure Spring cloud starter App Configuration client library for Java
 
-This project allows Spring Application to load properties from Azure Configuration Store.
+This package helps Spring Application to load properties from Azure Configuration Store.
 
 [Package (Maven)][package] | [API reference documentation][refdocs] | [Samples][app_configuration_sample]
 
