@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.appservice.implementation;
 
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.AppServicePlans;
@@ -36,5 +37,10 @@ public class AppServicePlansImpl
     @Override
     public AppServicePlanImpl define(String name) {
         return wrapModel(name);
+    }
+
+    @Override
+    public PagedFlux<AppServicePlan> listAsync() {
+        return wrapPageAsync(inner().listAsync(true));
     }
 }
