@@ -35,7 +35,6 @@ import com.azure.storage.common.implementation.connectionstring.StorageConnectio
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -49,6 +48,7 @@ import java.util.Map;
 
 import static com.azure.data.tables.implementation.TablesConstants.PARTITION_KEY;
 import static com.azure.data.tables.implementation.TablesConstants.ROW_KEY;
+import static com.azure.data.tables.implementation.TablesConstants.TABLE_NAME_KEY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -243,14 +243,38 @@ public class AzureTableImplTest extends TestBase {
             queryOptions, Context.NONE)))
             .assertNext(response -> {
                 Assertions.assertEquals(expectedStatusCode, response.getStatusCode());
-                Assertions.assertNotNull(response.getValue(), "Expected there to be a result.");
-
                 List<TableResponseProperties> results = response.getValue().getValue();
-
-                Assertions.assertNotNull(results, "Expected there to be a set of items.");
                 Assertions.assertEquals(expectedSize, results.size());
-                Assertions.assertEquals(tableA, results.get(0).getTableName());
-                Assertions.assertEquals(tableB, results.get(1).getTableName());
+                assertTrue(results.stream().anyMatch(p -> tableA.equals(p.getTableName())));
+                assertTrue(results.stream().anyMatch(p -> tableB.equals(p.getTableName())));
+            })
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
+    void queryTableWithFilterImpl() {
+        // Arrange
+        afterTest(); // Clean up any tables that may have been made by other tests before this one
+
+        QueryOptions queryOptions = new QueryOptions()
+            .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_MINIMALMETADATA);
+        String tableA = testResourceNamer.randomName("AtestA", 20);
+        String tableB = testResourceNamer.randomName("BtestB", 20);
+        createTable(tableA);
+        createTable(tableB);
+        int expectedStatusCode = 200;
+        int expectedSize = 1;
+        String requestId = testResourceNamer.randomUuid();
+        queryOptions.setFilter(TABLE_NAME_KEY + " eq '" + tableA + "'");
+
+        // Act & Assert
+        StepVerifier.create(runner.run(azureTable -> azureTable.getTables().queryWithResponseAsync(requestId, null,
+            queryOptions, Context.NONE)))
+            .assertNext(response -> {
+                Assertions.assertEquals(expectedStatusCode, response.getStatusCode());
+                Assertions.assertEquals(expectedSize, response.getValue().getValue().size());
+                Assertions.assertEquals(tableA, response.getValue().getValue().get(0).getTableName());
             })
             .expectComplete()
             .verify();
@@ -278,7 +302,10 @@ public class AzureTableImplTest extends TestBase {
             .assertNext(response -> {
                 Assertions.assertEquals(expectedStatusCode, response.getStatusCode());
                 Assertions.assertEquals(expectedSize, response.getValue().getValue().size());
-                Assertions.assertEquals(tableA, response.getValue().getValue().get(0).getTableName());
+                String tableName = response.getValue().getValue().get(0).getTableName();
+                // Query results returned by the Table API aren't sorted in partition key/row key order as they are
+                // in Azure Table storage.
+                Assertions.assertTrue(tableA.equals(tableName) || tableB.equals(tableName));
             })
             .expectComplete()
             .verify();
@@ -323,7 +350,7 @@ public class AzureTableImplTest extends TestBase {
         properties.put("extraProperty", testResourceNamer.randomName("extraProperty", 16));
 
         // Act & Assert
-        if (runner.getClient().getUrl().contains("cosmos.azure.com")) {
+        if (runner.isCosmos()) {
             // This scenario is currently broken when using the CosmosDB Table API
             StepVerifier.create(runner.run(azureTable -> azureTable.getTables().mergeEntityWithResponseAsync(tableName,
                 partitionKeyValue, rowKeyValue, TIMEOUT_IN_MS, requestId, "*", properties, null, Context.NONE)))
@@ -439,7 +466,6 @@ public class AzureTableImplTest extends TestBase {
             .verify();
     }
 
-    @Disabled("Multiple entity deserialization not supported yet.")
     @Test
     void queryEntityImpl() {
         // Arrange
@@ -466,14 +492,14 @@ public class AzureTableImplTest extends TestBase {
             TIMEOUT_IN_MS, requestId, null, null, queryOptions, Context.NONE)))
             .assertNext(response -> {
                 Assertions.assertEquals(expectedStatusCode, response.getStatusCode());
-                assertTrue(response.getValue().getValue().get(0).containsValue(partitionKeyEntityA));
-                assertTrue(response.getValue().getValue().get(1).containsValue(partitionKeyEntityB));
+                List<Map<String, Object>> results = response.getValue().getValue();
+                assertTrue(results.stream().anyMatch(p -> p.containsValue(partitionKeyEntityA)));
+                assertTrue(results.stream().anyMatch(p -> p.containsValue(partitionKeyEntityB)));
             })
             .expectComplete()
             .verify();
     }
 
-    @Disabled("Multiple entity deserialization not supported yet.")
     @Test
     void queryEntityImplWithSelect() {
         // Arrange
@@ -481,6 +507,7 @@ public class AzureTableImplTest extends TestBase {
         QueryOptions queryOptions = new QueryOptions().setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
         String tableName = testResourceNamer.randomName("test", 20);
         createTable(tableName);
+
         //insert entity A
         Map<String, Object> entityA = new HashMap<>();
         String partitionKeyEntityA = testResourceNamer.randomName("partitionKeyA", 20);
@@ -488,6 +515,7 @@ public class AzureTableImplTest extends TestBase {
         entityA.put(PARTITION_KEY, partitionKeyEntityA);
         entityA.put(ROW_KEY, rowKeyEntityA);
         insertNoETag(tableName, entityA);
+
         //insert entity B
         Map<String, Object> entityB = new HashMap<>();
         String partitionKeyEntityB = testResourceNamer.randomName("partitionKeyB", 20);
@@ -495,7 +523,9 @@ public class AzureTableImplTest extends TestBase {
         entityB.put(PARTITION_KEY, partitionKeyEntityB);
         entityB.put(ROW_KEY, rowKeyEntityB);
         insertNoETag(tableName, entityB);
+
         int expectedStatusCode = 200;
+        int expectedSize = 2;
         queryOptions.setSelect(ROW_KEY);
 
         // Act & Assert
@@ -503,15 +533,15 @@ public class AzureTableImplTest extends TestBase {
             TIMEOUT_IN_MS, requestId, null, null, queryOptions, Context.NONE)))
             .assertNext(response -> {
                 Assertions.assertEquals(expectedStatusCode, response.getStatusCode());
-                Assertions.assertEquals(true, response.getValue().getValue().get(0).containsValue(rowKeyEntityA));
-                Assertions.assertEquals(true, response.getValue().getValue().get(1).containsValue(rowKeyEntityB));
-
+                List<Map<String, Object>> results = response.getValue().getValue();
+                Assertions.assertEquals(expectedSize, results.size());
+                assertTrue(results.stream().anyMatch(p -> p.containsValue(rowKeyEntityA)));
+                assertTrue(results.stream().anyMatch(p -> p.containsValue(rowKeyEntityB)));
             })
             .expectComplete()
             .verify();
     }
 
-    @Disabled("Multiple entity deserialization not supported yet.")
     @Test
     void queryEntityImplWithFilter() {
         // Arrange
@@ -519,26 +549,38 @@ public class AzureTableImplTest extends TestBase {
         QueryOptions queryOptions = new QueryOptions().setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
         String tableName = testResourceNamer.randomName("test", 20);
         createTable(tableName);
+
+        //insert entity A
         Map<String, Object> entityA = new HashMap<>();
         String partitionKeyEntityA = testResourceNamer.randomName("partitionKeyA", 20);
         entityA.put(PARTITION_KEY, partitionKeyEntityA);
         entityA.put(ROW_KEY, testResourceNamer.randomName("rowKeyA", 20));
         insertNoETag(tableName, entityA);
+
+        //insert entity B
+        Map<String, Object> entityB = new HashMap<>();
+        String partitionKeyEntityB = testResourceNamer.randomName("partitionKeyB", 20);
+        String rowKeyEntityB = testResourceNamer.randomName("rowKeyB", 20);
+        entityB.put(PARTITION_KEY, partitionKeyEntityB);
+        entityB.put(ROW_KEY, rowKeyEntityB);
+        insertNoETag(tableName, entityB);
+
         int expectedStatusCode = 200;
-        queryOptions.setSelect(PARTITION_KEY + "eq" + partitionKeyEntityA);
+        int expectedSize = 1;
+        queryOptions.setFilter(PARTITION_KEY + " eq '" + partitionKeyEntityA + "'");
 
         // Act & Assert
         StepVerifier.create(runner.run(azureTable -> azureTable.getTables().queryEntitiesWithResponseAsync(tableName,
             TIMEOUT_IN_MS, requestId, null, null, queryOptions, Context.NONE)))
             .assertNext(response -> {
                 Assertions.assertEquals(expectedStatusCode, response.getStatusCode());
-
+                Assertions.assertEquals(expectedSize, response.getValue().getValue().size());
+                assertTrue(response.getValue().getValue().get(0).containsValue(partitionKeyEntityA));
             })
             .expectComplete()
             .verify();
     }
 
-    @Disabled("Multiple entity deserialization not supported yet.")
     @Test
     void queryEntityImplWithTop() {
         // Arrange
@@ -546,39 +588,37 @@ public class AzureTableImplTest extends TestBase {
         QueryOptions queryOptions = new QueryOptions().setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
         String tableName = testResourceNamer.randomName("test", 20);
         createTable(tableName);
+
+        //insert entity A
+        Map<String, Object> entityA = new HashMap<>();
+        String partitionKeyEntityA = testResourceNamer.randomName("partitionKeyA", 20);
+        entityA.put(PARTITION_KEY, partitionKeyEntityA);
+        entityA.put(ROW_KEY, testResourceNamer.randomName("rowKeyA", 20));
+        insertNoETag(tableName, entityA);
+
+        //insert entity B
+        Map<String, Object> entityB = new HashMap<>();
+        String partitionKeyEntityB = testResourceNamer.randomName("partitionKeyB", 20);
+        String rowKeyEntityB = testResourceNamer.randomName("rowKeyB", 20);
+        entityB.put(PARTITION_KEY, partitionKeyEntityB);
+        entityB.put(ROW_KEY, rowKeyEntityB);
+        insertNoETag(tableName, entityB);
+
         int expectedStatusCode = 200;
-        queryOptions.setTop(0);
+        int expectedSize = 1;
+        queryOptions.setTop(1);
 
         // Act & Assert
         StepVerifier.create(runner.run(azureTable -> azureTable.getTables().queryEntitiesWithResponseAsync(tableName,
             TIMEOUT_IN_MS, requestId, null, null, queryOptions, Context.NONE)))
             .assertNext(response -> {
                 Assertions.assertEquals(expectedStatusCode, response.getStatusCode());
-
-            })
-            .expectComplete()
-            .verify();
-    }
-
-    @Test
-    void queryEntitiesImplWithPartitionAndRowKey() {
-        // Arrange
-        QueryOptions queryOptions = new QueryOptions().setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
-        String tableName = testResourceNamer.randomName("test", 20);
-        createTable(tableName);
-        Map<String, Object> properties = new HashMap<>();
-        String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
-        String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
-        properties.put(PARTITION_KEY, partitionKeyValue);
-        properties.put(ROW_KEY, rowKeyValue);
-        insertNoETag(tableName, properties);
-
-        // Act & Assert
-        StepVerifier.create(runner.run(azureTable -> azureTable.getTables()
-            .queryEntitiesWithPartitionAndRowKeyWithResponseAsync(tableName, partitionKeyValue, rowKeyValue,
-                TIMEOUT_IN_MS, testResourceNamer.randomUuid(), queryOptions, Context.NONE)))
-            .assertNext(response -> {
-                Assertions.assertEquals(200, response.getStatusCode());
+                Assertions.assertEquals(expectedSize, response.getValue().getValue().size());
+                Map<String, Object> properties = response.getValue().getValue().get(0);
+                // Query results returned by the Table API aren't sorted in partition key/row key order as they are
+                // in Azure Table storage.
+                Assertions.assertTrue(properties.containsValue(partitionKeyEntityA)
+                    || properties.containsValue(partitionKeyEntityB));
             })
             .expectComplete()
             .verify();
