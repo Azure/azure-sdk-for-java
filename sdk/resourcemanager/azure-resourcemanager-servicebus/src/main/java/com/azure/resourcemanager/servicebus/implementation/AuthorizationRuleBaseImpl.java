@@ -6,7 +6,7 @@ package com.azure.resourcemanager.servicebus.implementation;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.IndependentChildResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.IndependentChildResourceImpl;
 import com.azure.resourcemanager.servicebus.fluent.inner.ResourceListKeysInner;
 import com.azure.resourcemanager.servicebus.fluent.inner.SharedAccessAuthorizationRuleResourceInner;
 import com.azure.resourcemanager.servicebus.models.AccessRights;

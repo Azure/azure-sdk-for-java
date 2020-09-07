@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.servicebus.implementation;
 
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.internal.TopLevelModifiableResourcesImpl;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
 import com.azure.resourcemanager.servicebus.fluent.NamespacesClient;
 import com.azure.resourcemanager.servicebus.fluent.inner.NamespaceResourceInner;

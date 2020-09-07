@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.servicebus.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.internal.IndependentChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
