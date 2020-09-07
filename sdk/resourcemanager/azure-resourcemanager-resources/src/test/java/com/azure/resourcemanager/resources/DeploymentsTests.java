@@ -250,9 +250,9 @@ public class DeploymentsTests extends ResourceManagementTest {
         Assertions.assertNotEquals("Succeeded", createdDeployment.provisioningState());
 
         LongRunningOperationStatus pollStatus = acceptedDeployment.getActivationResponse().getStatus();
-        int delayInMills = acceptedDeployment.getActivationResponse().getRetryAfter() == null
+        long delayInMills = acceptedDeployment.getActivationResponse().getRetryAfter() == null
             ? 0
-            : (int) acceptedDeployment.getActivationResponse().getRetryAfter().toMillis();
+            : acceptedDeployment.getActivationResponse().getRetryAfter().toMillis();
         while (!pollStatus.isComplete()) {
             SdkContext.sleep(delayInMills);
 
@@ -260,7 +260,7 @@ public class DeploymentsTests extends ResourceManagementTest {
             pollStatus = pollResponse.getStatus();
             delayInMills = pollResponse.getRetryAfter() == null
                 ? 10000
-                : (int) pollResponse.getRetryAfter().toMillis();
+                : pollResponse.getRetryAfter().toMillis();
         }
         Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollStatus);
         Deployment deployment = acceptedDeployment.getFinalResult();
@@ -284,9 +284,9 @@ public class DeploymentsTests extends ResourceManagementTest {
         Assertions.assertNotEquals("Succeeded", createdDeployment.provisioningState());
 
         LongRunningOperationStatus pollStatus = acceptedDeployment.getActivationResponse().getStatus();
-        int delayInMills = acceptedDeployment.getActivationResponse().getRetryAfter() == null
+        long delayInMills = acceptedDeployment.getActivationResponse().getRetryAfter() == null
             ? 0
-            : (int) acceptedDeployment.getActivationResponse().getRetryAfter().toMillis();
+            : acceptedDeployment.getActivationResponse().getRetryAfter().toMillis();
         while (!pollStatus.isComplete()) {
             SdkContext.sleep(delayInMills);
 
@@ -294,7 +294,7 @@ public class DeploymentsTests extends ResourceManagementTest {
             pollStatus = pollResponse.getStatus();
             delayInMills = pollResponse.getRetryAfter() == null
                 ? 10000
-                : (int) pollResponse.getRetryAfter().toMillis();
+                : pollResponse.getRetryAfter().toMillis();
         }
         Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollStatus);
         Deployment deployment = acceptedDeployment.getFinalResult();

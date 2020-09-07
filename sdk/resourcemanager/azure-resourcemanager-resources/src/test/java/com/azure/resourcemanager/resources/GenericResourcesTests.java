@@ -110,9 +110,9 @@ public class GenericResourcesTests extends ResourceManagementTest {
             .beginCreate();
 
         LongRunningOperationStatus pollStatus = acceptedResource.getActivationResponse().getStatus();
-        int delayInMills = acceptedResource.getActivationResponse().getRetryAfter() == null
+        long delayInMills = acceptedResource.getActivationResponse().getRetryAfter() == null
             ? 0
-            : (int) acceptedResource.getActivationResponse().getRetryAfter().toMillis();
+            : acceptedResource.getActivationResponse().getRetryAfter().toMillis();
         while (!pollStatus.isComplete()) {
             SdkContext.sleep(delayInMills);
 
@@ -120,7 +120,7 @@ public class GenericResourcesTests extends ResourceManagementTest {
             pollStatus = pollResponse.getStatus();
             delayInMills = pollResponse.getRetryAfter() == null
                 ? 10000
-                : (int) pollResponse.getRetryAfter().toMillis();
+                : pollResponse.getRetryAfter().toMillis();
         }
         Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollStatus);
         GenericResource resource = acceptedResource.getFinalResult();

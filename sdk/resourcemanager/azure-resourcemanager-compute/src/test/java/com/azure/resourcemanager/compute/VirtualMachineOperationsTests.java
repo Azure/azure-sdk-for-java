@@ -215,9 +215,9 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertNotEquals("Succeeded", createdVirtualMachine.provisioningState());
 
         LongRunningOperationStatus pollStatus = acceptedVirtualMachine.getActivationResponse().getStatus();
-        int delayInMills = acceptedVirtualMachine.getActivationResponse().getRetryAfter() == null
+        long delayInMills = acceptedVirtualMachine.getActivationResponse().getRetryAfter() == null
             ? 0
-            : (int) acceptedVirtualMachine.getActivationResponse().getRetryAfter().toMillis();
+            : acceptedVirtualMachine.getActivationResponse().getRetryAfter().toMillis();
         while (!pollStatus.isComplete()) {
             SdkContext.sleep(delayInMills);
 
@@ -225,7 +225,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             pollStatus = pollResponse.getStatus();
             delayInMills = pollResponse.getRetryAfter() == null
                 ? 10000
-                : (int) pollResponse.getRetryAfter().toMillis();
+                : pollResponse.getRetryAfter().toMillis();
         }
         Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollStatus);
         VirtualMachine virtualMachine = acceptedVirtualMachine.getFinalResult();
