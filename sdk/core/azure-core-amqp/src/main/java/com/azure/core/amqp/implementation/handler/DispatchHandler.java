@@ -23,8 +23,7 @@ public class DispatchHandler extends BaseHandler {
      * @param work The work to run on the {@link Reactor}.
      */
     public DispatchHandler(Runnable work) {
-        Objects.requireNonNull(work);
-        this.work = work;
+        this.work = Objects.requireNonNull(work, "'work' cannot be null.");
     }
 
     /**
