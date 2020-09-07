@@ -194,6 +194,8 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
     @Test
     public void canCreateVirtualMachineSyncPoll() throws Exception {
+        final long defaultDelayInMillis = 10 * 1000;
+
         Accepted<VirtualMachine> acceptedVirtualMachine = computeManager
             .virtualMachines()
             .define(vmName)
@@ -216,7 +218,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
         LongRunningOperationStatus pollStatus = acceptedVirtualMachine.getActivationResponse().getStatus();
         long delayInMills = acceptedVirtualMachine.getActivationResponse().getRetryAfter() == null
-            ? 0
+            ? defaultDelayInMillis
             : acceptedVirtualMachine.getActivationResponse().getRetryAfter().toMillis();
         while (!pollStatus.isComplete()) {
             SdkContext.sleep(delayInMills);
@@ -224,7 +226,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             PollResponse<?> pollResponse = acceptedVirtualMachine.getSyncPoller().poll();
             pollStatus = pollResponse.getStatus();
             delayInMills = pollResponse.getRetryAfter() == null
-                ? 10000
+                ? defaultDelayInMillis
                 : pollResponse.getRetryAfter().toMillis();
         }
         Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollStatus);
@@ -236,7 +238,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
         pollStatus = acceptedDelete.getActivationResponse().getStatus();
         delayInMills = acceptedDelete.getActivationResponse().getRetryAfter() == null
-            ? 0
+            ? defaultDelayInMillis
             : (int) acceptedDelete.getActivationResponse().getRetryAfter().toMillis();
 
         while (!pollStatus.isComplete()) {
@@ -245,7 +247,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             PollResponse<?> pollResponse = acceptedDelete.getSyncPoller().poll();
             pollStatus = pollResponse.getStatus();
             delayInMills = pollResponse.getRetryAfter() == null
-                ? 10000
+                ? defaultDelayInMillis
                 : (int) pollResponse.getRetryAfter().toMillis();
         }
 
