@@ -4,14 +4,14 @@ The Spring Integration for Azure Service Bus extension project provides inbound 
 Microsoft Azure Service Bus is a fully managed enterprise integration message broker. Service Bus can decouple applications and services. 
 Service Bus offers a reliable and secure platform for asynchronous transfer of data and state. 
 
-[Package (Maven)][package] | [API reference documentation][refdocs] | [Samples][sample]
+[Source code][src_code] | [Package (Maven)][package] | [API reference documentation][refdocs] | [Samples][sample]
 
 ## Getting started
 
 ### Prerequisites
 - Java Development Kit (JDK) with version 8 or above
 - [Azure Subscription][azure_subscription]
-- [Maven](http://maven.apache.org/) 3.0 and above
+- [Maven][maven] 3.0 and above
 
 ### Include the package
 [//]: # ({x-version-update-start;com.microsoft.azure:spring-integration-servicebus;current})
@@ -63,10 +63,12 @@ Please follow [instructions here][contributing_md] to build from source or contr
 <!-- Links -->
 [azure_subscription]: https://azure.microsoft.com/free
 [contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/CONTRIBUTING.md
+[maven]: http://maven.apache.org
 [package]: https://mvnrepository.com/artifact/com.microsoft.azure/spring-integration-servicebus
 [refdocs]: https://azure.github.io/azure-sdk-for-java/spring.html#spring-integration-servicebus
 [sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/
 [spring_boot_logging]: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging
 [spring_integration]: https://spring.io/projects/spring-integration
 [spring_integration_sample_with_service_bus]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-servicebus-integration-sample
+[src_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-integration-servicebus
 

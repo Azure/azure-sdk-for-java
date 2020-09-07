@@ -3,14 +3,14 @@
 The project provides **Spring Cloud Stream Binder for Azure Service Bus Topic** which allows you to build message-driven 
 microservice using **Spring Cloud Stream** based on [Azure Service Bus Topic][azure_service_bus].
 
-[Package (Maven)][package] | [API reference documentation][refdocs] | [Product documentation][docs] | [Samples][sample]
+[Source code][src_code] | [Package (Maven)][package] | [API reference documentation][refdocs] | [Product documentation][docs] | [Samples][sample]
 
 ## Getting started
 
 ### Prerequisites
 - Java Development Kit (JDK) with version 8 or above
 - [Azure Subscription][azure_subscription]
-- [Maven](http://maven.apache.org/) 3.0 and above
+- [Maven][maven] 3.0 and above
 
 ### Include the package
 [//]: # ({x-version-update-start;com.microsoft.azure:spring-cloud-azure-servicebus-topic-stream-binder;current})
@@ -108,6 +108,7 @@ Default: `false`
 
 Please use this `sample` as a reference
 for how to use this binder in your projects. 
+- [Service Bus Topic][spring_cloud_stream_binder_service_bus_topic]
 
 ## Troubleshooting
 
@@ -131,7 +132,6 @@ The following section provides sample projects illustrating how to use the start
 
 ### More sample code
 - [Service Bus Queue][spring_cloud_stream_binder_service_bus_queue]
-- [Service Bus Topic][spring_cloud_stream_binder_service_bus_topic]
 - [Service Bus Multiple Binders][spring_cloud_stream_binder_service_bus_multiple_binders]
 
 ## Contributing
@@ -144,8 +144,9 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [azure_subscription]: https://azure.microsoft.com/free
 [contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/CONTRIBUTING.md
 [docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-cloud-stream-binder-java-app-with-service-bus
+[maven]: http://maven.apache.org
 [package]: https://mvnrepository.com/artifact/com.microsoft.azure/spring-cloud-azure-servicebus-topic-stream-binder
-[refdocs]: https://azure.github.io/azure-sdk-for-java/spring.html#https://azure.github.io/azure-sdk-for-java/spring.html#spring-cloud-azure-servicebus-topic-stream-binder
+[refdocs]: https://azure.github.io/azure-sdk-for-java/spring.html#spring-cloud-azure-servicebus-topic-stream-binder
 [sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/
 [spring_boot_logging]: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging
 [service_bus_queue_binder]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-servicebus-queue-stream-binder
@@ -154,3 +155,4 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [spring_cloud_stream_binder_service_bus_queue]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-servicebus-queue-binder-sample
 [spring_cloud_stream_binder_service_bus_topic]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-servicebus-topic-binder-sample
 [spring_integration]: https://spring.io/projects/spring-integration
+[src_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-servicebus-topic-stream-binder
