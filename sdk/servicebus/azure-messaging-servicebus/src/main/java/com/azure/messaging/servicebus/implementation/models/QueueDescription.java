@@ -136,7 +136,8 @@ public final class QueueDescription {
         @JsonCreator
         private AuthorizationRulesWrapper(
                 @JacksonXmlProperty(localName = "AuthorizationRule",
-                    namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect") List<AuthorizationRuleImpl> items) {
+                    namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
+                    List<AuthorizationRuleImpl> items) {
             this.items = items;
         }
     }
