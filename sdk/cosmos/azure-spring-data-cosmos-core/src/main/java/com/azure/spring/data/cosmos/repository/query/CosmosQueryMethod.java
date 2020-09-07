@@ -21,7 +21,7 @@ import java.util.Optional;
 public class CosmosQueryMethod extends QueryMethod {
 
     private CosmosEntityMetadata<?> metadata;
-    final Method method;
+    private final String annotatedQueryValue;
 
     /**
      * Creates a new {@link CosmosQueryMethod} from the given parameters. Looks up the correct query to use
@@ -33,7 +33,7 @@ public class CosmosQueryMethod extends QueryMethod {
      */
     public CosmosQueryMethod(Method method, RepositoryMetadata metadata, ProjectionFactory factory) {
         super(method, metadata, factory);
-        this.method = method;
+        this.annotatedQueryValue = findAnnotatedQuery(method).orElse(null);
     }
 
     @Override
@@ -49,10 +49,11 @@ public class CosmosQueryMethod extends QueryMethod {
 
     /**
      * Returns whether the method has an annotated query.
+     *
      * @return if the query method has an annotated query
      */
     public boolean hasAnnotatedQuery() {
-        return findAnnotatedQuery().isPresent();
+        return annotatedQueryValue != null;
     }
 
     /**
@@ -64,18 +65,13 @@ public class CosmosQueryMethod extends QueryMethod {
      */
     @Nullable
     public String getQueryAnnotation() {
-        return findAnnotatedQuery().orElse(null);
+        return annotatedQueryValue;
     }
 
-    private Optional<String> findAnnotatedQuery() {
-
-        return lookupQueryAnnotation()
+    private Optional<String> findAnnotatedQuery(Method method) {
+        return Optional.ofNullable(AnnotatedElementUtils.findMergedAnnotation(method, Query.class))
                    .map(Query::value)
                    .filter(StringUtils::hasText);
-    }
-
-    private Optional<Query> lookupQueryAnnotation() {
-        return Optional.ofNullable(AnnotatedElementUtils.findMergedAnnotation(method, Query.class));
     }
 
 }

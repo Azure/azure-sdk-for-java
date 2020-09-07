@@ -24,6 +24,7 @@ public class ReactiveCosmosQueryMethod extends QueryMethod {
 
     private ReactiveCosmosEntityMetadata<?> metadata;
     private final Method method;
+    private final String annotatedQueryValue;
 
     /**
      * Creates a new {@link QueryMethod} from the given parameters. Looks up the correct query to use for following
@@ -36,6 +37,7 @@ public class ReactiveCosmosQueryMethod extends QueryMethod {
     public ReactiveCosmosQueryMethod(Method method, RepositoryMetadata metadata, ProjectionFactory factory) {
         super(method, metadata, factory);
         this.method = method;
+        this.annotatedQueryValue = findAnnotatedQuery(method).orElse(null);
     }
 
     @Override
@@ -67,7 +69,7 @@ public class ReactiveCosmosQueryMethod extends QueryMethod {
      * @return if the query method has an annotated query
      */
     public boolean hasAnnotatedQuery() {
-        return findAnnotatedQuery().isPresent();
+        return annotatedQueryValue != null;
     }
 
     /**
@@ -76,18 +78,13 @@ public class ReactiveCosmosQueryMethod extends QueryMethod {
      */
     @Nullable
     public String getQueryAnnotation() {
-        return findAnnotatedQuery().orElse(null);
+        return annotatedQueryValue;
     }
 
-    private Optional<String> findAnnotatedQuery() {
-
-        return lookupQueryAnnotation()
+    private Optional<String> findAnnotatedQuery(Method method) {
+        return Optional.ofNullable(AnnotatedElementUtils.findMergedAnnotation(method, Query.class))
                    .map(Query::value)
                    .filter(StringUtils::hasText);
-    }
-
-    private Optional<Query> lookupQueryAnnotation() {
-        return Optional.ofNullable(AnnotatedElementUtils.findMergedAnnotation(method, Query.class));
     }
 
 }
