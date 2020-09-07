@@ -20,6 +20,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -132,6 +133,7 @@ public class KeyVaultIT {
     }
 
     @Test
+    @Ignore
     public void keyVaultWithVirtualMachineMSI() throws Exception {
         final VirtualMachine vm = AZURE.virtualMachines().getByResourceGroup(SPRING_RESOURCE_GROUP, VM_NAME);
 
