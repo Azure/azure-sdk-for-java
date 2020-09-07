@@ -38,6 +38,7 @@ import java.time.Clock;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static com.azure.messaging.servicebus.TestUtils.assertAuthorizationRules;
@@ -131,10 +132,14 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
     @MethodSource("createHttpClients")
     void createQueueAuthorizationRules(HttpClient httpClient) {
         // Arrange
+        final String keyName = "test-rule";
+        final List<AccessRights> accessRights = Collections.singletonList(AccessRights.SEND);
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
         final String queueName = testResourceNamer.randomName("test", 10);
-        final SharedAccessAuthorizationRule rule = new SharedAccessAuthorizationRule("test-rule",
-            Collections.singletonList(AccessRights.SEND));
+        final SharedAccessAuthorizationRule rule = interceptorManager.isPlaybackMode()
+            ? new SharedAccessAuthorizationRule(keyName, "Uobo65ke57pwWehaL9JzGXAK30MZgErqVyn5E+rHl1c=",
+            "B4ENtK9Ze1nVMQ1mGdDsy9TuuQuGC4/K8q7OnPl8mn0=", accessRights)
+            : new SharedAccessAuthorizationRule(keyName, accessRights);
 
         final CreateQueueOptions expected = new CreateQueueOptions()
             .setMaxSizeInMegabytes(1024)
