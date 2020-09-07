@@ -7,11 +7,13 @@ import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.messaging.servicebus.TestUtils;
+import com.azure.messaging.servicebus.administration.models.AccessRights;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
 import com.azure.messaging.servicebus.administration.models.CreateTopicOptions;
@@ -19,6 +21,7 @@ import com.azure.messaging.servicebus.administration.models.EmptyRuleAction;
 import com.azure.messaging.servicebus.administration.models.NamespaceType;
 import com.azure.messaging.servicebus.administration.models.QueueRuntimeProperties;
 import com.azure.messaging.servicebus.administration.models.RuleProperties;
+import com.azure.messaging.servicebus.administration.models.SharedAccessAuthorizationRule;
 import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeProperties;
 import com.azure.messaging.servicebus.administration.models.TopicProperties;
 import com.azure.messaging.servicebus.administration.models.TopicRuntimeProperties;
@@ -34,8 +37,10 @@ import reactor.test.StepVerifier;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.Collections;
 import java.util.stream.Stream;
 
+import static com.azure.messaging.servicebus.TestUtils.assertAuthorizationRules;
 import static com.azure.messaging.servicebus.TestUtils.getEntityName;
 import static com.azure.messaging.servicebus.TestUtils.getSessionSubscriptionBaseName;
 import static com.azure.messaging.servicebus.TestUtils.getSubscriptionBaseName;
@@ -63,7 +68,9 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
     }
 
     static Stream<Arguments> createHttpClients() {
-        return TestBase.getHttpClients().map(Arguments::of);
+        return Stream.of(
+            Arguments.of(new NettyAsyncHttpClientBuilder().build())
+        );
     }
 
     @ParameterizedTest
@@ -118,6 +125,51 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         StepVerifier.create(client.createQueue(queueName, options))
             .expectError(ResourceExistsException.class)
             .verify();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void createQueueAuthorizationRules(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
+        final String queueName = testResourceNamer.randomName("test", 10);
+        final SharedAccessAuthorizationRule rule = new SharedAccessAuthorizationRule("test-rule",
+            Collections.singletonList(AccessRights.SEND));
+
+        final CreateQueueOptions expected = new CreateQueueOptions()
+            .setMaxSizeInMegabytes(1024)
+            .setMaxDeliveryCount(7)
+            .setLockDuration(Duration.ofSeconds(45))
+            .setRequiresSession(true)
+            .setRequiresDuplicateDetection(true)
+            .setDuplicateDetectionHistoryTimeWindow(Duration.ofMinutes(2))
+            .setUserMetadata("some-metadata-for-testing");
+
+        expected.getAuthorizationRules().add(rule);
+
+        // Act & Assert
+        StepVerifier.create(client.createQueue(queueName, expected))
+            .assertNext(actual -> {
+                assertEquals(queueName, actual.getName());
+
+                assertEquals(expected.getLockDuration(), actual.getLockDuration());
+                assertEquals(expected.getMaxDeliveryCount(), actual.getMaxDeliveryCount());
+                assertEquals(expected.getMaxSizeInMegabytes(), actual.getMaxSizeInMegabytes());
+                assertEquals(expected.getUserMetadata(), actual.getUserMetadata());
+
+                assertEquals(expected.deadLetteringOnMessageExpiration(), actual.isDeadLetteringOnMessageExpiration());
+                assertEquals(expected.enablePartitioning(), actual.enablePartitioning());
+                assertEquals(expected.requiresDuplicateDetection(), actual.requiresDuplicateDetection());
+                assertEquals(expected.requiresSession(), actual.requiresSession());
+
+                final QueueRuntimeProperties runtimeProperties = new QueueRuntimeProperties(actual);
+                assertEquals(0, runtimeProperties.getTotalMessageCount());
+                assertEquals(0, runtimeProperties.getSizeInBytes());
+                assertNotNull(runtimeProperties.getCreatedAt());
+
+                assertAuthorizationRules(expected.getAuthorizationRules(), actual.getAuthorizationRules());
+            })
+            .verifyComplete();
     }
 
     @ParameterizedTest
