@@ -28,7 +28,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.servicebus.ServiceBusManagementClient;
 import com.azure.resourcemanager.servicebus.fluent.inner.SubscriptionListResultInner;
 import com.azure.resourcemanager.servicebus.fluent.inner.SubscriptionResourceInner;
 import com.azure.resourcemanager.servicebus.models.SubscriptionCreateOrUpdateParameters;
