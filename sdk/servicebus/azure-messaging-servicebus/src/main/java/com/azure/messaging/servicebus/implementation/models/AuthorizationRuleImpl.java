@@ -23,7 +23,8 @@ public final class AuthorizationRuleImpl {
     /*
      * The authorization type.
      */
-    @JacksonXmlProperty(localName = "type", isAttribute = true)
+    @JacksonXmlProperty(localName = "type", namespace = "http://www.w3.org/2001/XMLSchema-instance",
+        isAttribute = true)
     private String type;
 
     /*
@@ -43,11 +44,14 @@ public final class AuthorizationRuleImpl {
     private String claimValue;
 
     private static final class RightsWrapper {
-        @JacksonXmlProperty(localName = "AccessRights")
+        @JacksonXmlProperty(localName = "AccessRights",
+            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
         private final List<AccessRights> items;
 
         @JsonCreator
-        private RightsWrapper(@JacksonXmlProperty(localName = "AccessRights") List<AccessRights> items) {
+        private RightsWrapper(@JacksonXmlProperty(localName = "AccessRights",
+            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
+            List<AccessRights> items) {
             this.items = items;
         }
     }

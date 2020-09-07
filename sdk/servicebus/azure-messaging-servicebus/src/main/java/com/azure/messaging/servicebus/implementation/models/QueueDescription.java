@@ -129,12 +129,14 @@ public final class QueueDescription {
     private Boolean isAnonymousAccessible;
 
     private static final class AuthorizationRulesWrapper {
-        @JacksonXmlProperty(localName = "AuthorizationRule")
+        @JacksonXmlProperty(localName = "AuthorizationRule",
+            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
         private final List<AuthorizationRuleImpl> items;
 
         @JsonCreator
         private AuthorizationRulesWrapper(
-                @JacksonXmlProperty(localName = "AuthorizationRule") List<AuthorizationRuleImpl> items) {
+                @JacksonXmlProperty(localName = "AuthorizationRule",
+                    namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect") List<AuthorizationRuleImpl> items) {
             this.items = items;
         }
     }
