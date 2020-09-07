@@ -12,6 +12,7 @@ import com.azure.messaging.servicebus.administration.models.QueueProperties;
 import com.azure.messaging.servicebus.administration.models.RuleAction;
 import com.azure.messaging.servicebus.administration.models.RuleFilter;
 import com.azure.messaging.servicebus.administration.models.RuleProperties;
+import com.azure.messaging.servicebus.administration.models.SharedAccessAuthorizationRule;
 import com.azure.messaging.servicebus.administration.models.SubscriptionProperties;
 import com.azure.messaging.servicebus.administration.models.TopicProperties;
 import com.azure.messaging.servicebus.implementation.models.AuthorizationRuleImpl;
@@ -463,14 +464,26 @@ public final class EntityHelper {
 
     private static List<AuthorizationRuleImpl> toImplementation(List<AuthorizationRule> rules) {
         return rules.stream().map(rule -> {
-            return new AuthorizationRuleImpl()
+            final AuthorizationRuleImpl implementation = new AuthorizationRuleImpl()
                 .setClaimType(rule.getClaimType())
                 .setClaimValue(rule.getClaimValue())
                 .setCreatedTime(rule.getCreatedAt())
                 .setKeyName(rule.getKeyName())
                 .setModifiedTime(rule.getModifiedAt())
                 .setPrimaryKey(rule.getPrimaryKey())
-                .setSecondaryKey(rule.getSecondaryKey());
+                .setSecondaryKey(rule.getSecondaryKey())
+                .setRights(rule.getAccessRights());
+
+            if (rule instanceof SharedAccessAuthorizationRule) {
+                // This is the type name constant.
+                implementation.setType("SharedAccessAuthorizationRule");
+            } else {
+                final String className = rule.getClass().getName();
+                new ClientLogger(EntityHelper.class).warning("AuthorizationRule type '{}' is unknown.", className);
+                implementation.setType(className);
+            }
+
+            return implementation;
         }).collect(Collectors.toList());
     }
 
