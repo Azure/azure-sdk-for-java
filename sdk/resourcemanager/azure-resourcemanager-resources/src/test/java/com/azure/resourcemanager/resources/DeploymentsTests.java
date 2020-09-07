@@ -236,6 +236,8 @@ public class DeploymentsTests extends ResourceManagementTest {
 
     @Test
     public void canDeployVirtualNetworkSyncPoll() throws Exception {
+        final long defaultDelayInMillis = 10 * 1000;
+
         final String dp = "dpD" + testId;
 
         // Begin create
@@ -251,7 +253,7 @@ public class DeploymentsTests extends ResourceManagementTest {
 
         LongRunningOperationStatus pollStatus = acceptedDeployment.getActivationResponse().getStatus();
         long delayInMills = acceptedDeployment.getActivationResponse().getRetryAfter() == null
-            ? 0
+            ? defaultDelayInMillis
             : acceptedDeployment.getActivationResponse().getRetryAfter().toMillis();
         while (!pollStatus.isComplete()) {
             SdkContext.sleep(delayInMills);
@@ -259,7 +261,7 @@ public class DeploymentsTests extends ResourceManagementTest {
             PollResponse<?> pollResponse = acceptedDeployment.getSyncPoller().poll();
             pollStatus = pollResponse.getStatus();
             delayInMills = pollResponse.getRetryAfter() == null
-                ? 10000
+                ? defaultDelayInMillis
                 : pollResponse.getRetryAfter().toMillis();
         }
         Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollStatus);
