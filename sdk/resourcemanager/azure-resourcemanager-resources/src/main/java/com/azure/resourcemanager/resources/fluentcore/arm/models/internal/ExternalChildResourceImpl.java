@@ -298,8 +298,6 @@ public abstract class ExternalChildResourceImpl<FluentModelT extends Indexable,
      * Add an executable "post-run" dependent for this model.
      *
      * @param executable the executable "post-run" dependent
-     * @return the key to be used as parameter to taskResult(string) method to retrieve result of executing
-     * the executable "post-run" dependent
      */
     @SuppressWarnings("unchecked")
     protected void addPostRunDependent(Executable<? extends Indexable> executable) {

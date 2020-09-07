@@ -22,7 +22,7 @@ import java.util.Map;
  * are not present in the parent payload, using cached version in this case requires fetching the child resource
  * using separate GET call, that can be expensive if the child resources are pagable.
  *
- * @param <FluentModelTImpl> the implementation of {@param FluentModelT}
+ * @param <FluentModelTImpl> the implementation of {@link FluentModelT}
  * @param <FluentModelT> the fluent model type of the child resource
  * @param <InnerModelT> Azure inner resource class type representing the child resource
  * @param <ParentImplT> the parent Azure resource impl class type that implements {@link ParentT}
@@ -51,6 +51,8 @@ public abstract class ExternalChildResourcesCachedImpl<
 
     /**
      * Refresh the child resource collection.
+     *
+     * @return the Mono stream
      */
     public Mono<Void> refreshAsync() {
         return cacheCollectionAsync();
@@ -200,6 +202,8 @@ public abstract class ExternalChildResourcesCachedImpl<
 
     /**
      * Initializes the external child resource collection.
+     *
+     * @return the Mono stream
      */
     protected Mono<Void> cacheCollectionAsync() {
         this.clear();

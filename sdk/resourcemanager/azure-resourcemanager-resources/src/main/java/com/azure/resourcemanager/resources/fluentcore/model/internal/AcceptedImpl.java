@@ -37,6 +37,9 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+/**
+ * The implementation for {@link Accepted}.
+ */
 public class AcceptedImpl<InnerT, T> implements Accepted<T> {
 
     private final ClientLogger logger = new ClientLogger(getClass());
@@ -53,6 +56,17 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
     private PollerFlux<PollResult<InnerT>, InnerT> pollerFlux;
     private SyncPoller<Void, T> syncPoller;
 
+    /**
+     * Creates AcceptedImpl.
+     *
+     * @param activationResponse the activation response.
+     * @param serializerAdapter the serializer adapter.
+     * @param httpPipeline the http pipeline.
+     * @param defaultPollInterval the default poll interval.
+     * @param pollResultType the poll result type.
+     * @param finalResultType the final result type.
+     * @param wrapOperation the function for wrap operation.
+     */
     public AcceptedImpl(Response<Flux<ByteBuffer>> activationResponse,
                         SerializerAdapter serializerAdapter,
                         HttpPipeline httpPipeline,
@@ -238,6 +252,19 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
         }
     }
 
+    /**
+     * Creates new Accepted.
+     *
+     * @param logger the logger.
+     * @param client the service client.
+     * @param activationOperation the activation operation.
+     * @param convertOperation the convert operation.
+     * @param innerType the inner type.
+     * @param preActivation the runnable for pre activation.
+     * @param <T> the type of resource.
+     * @param <InnerT> the type of resource inner.
+     * @return the new accepted instance.
+     */
     public static <T, InnerT> Accepted<T> newAccepted(
         ClientLogger logger,
         AzureServiceClient client,
@@ -266,13 +293,28 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
         }
     }
 
+    /**
+     * Creates new Accepted.
+     *
+     * @param logger the logger.
+     * @param client the service client.
+     * @param activationOperation the activation operation.
+     * @param convertOperation the convert operation.
+     * @param innerType the inner type.
+     * @param preActivation the runnable for pre activation.
+     * @param postActivation the consumer for post activation.
+     * @param <T> the type of resource.
+     * @param <InnerT> the type of resource inner.
+     * @return the new accepted instance.
+     */
     public static <T extends HasInner<InnerT>, InnerT> Accepted<T> newAccepted(
         ClientLogger logger,
         AzureServiceClient client,
         Supplier<Response<Flux<ByteBuffer>>> activationOperation,
         Function<InnerT, T> convertOperation,
         Type innerType,
-        Runnable preActivation, Consumer<InnerT> postActivation) {
+        Runnable preActivation,
+        Consumer<InnerT> postActivation) {
 
         if (preActivation != null) {
             preActivation.run();

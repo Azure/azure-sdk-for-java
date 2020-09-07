@@ -129,6 +129,7 @@ public abstract class ExecutableImpl<FluentModelT extends Indexable>
     /**
      * Add a "post-run" dependent for this executable.
      *
+     * @param dependent the "post-run" dependent task item.
      * @return key to be used as parameter to taskResult(string) method to retrieve result of root
      * task in the dependent task group
      */
@@ -141,6 +142,7 @@ public abstract class ExecutableImpl<FluentModelT extends Indexable>
     /**
      * Add a creatable "post-run" dependent for this executable.
      *
+     * @param creatable the "post-run" dependent task item.
      * @return the key to be used as parameter to taskResult(string) method to retrieve created "post-run" dependent
      */
     @SuppressWarnings("unchecked")
@@ -152,6 +154,7 @@ public abstract class ExecutableImpl<FluentModelT extends Indexable>
     /**
      * Add an appliable "post-run" dependent for this executable.
      *
+     * @param appliable the "post-run" dependent task item.
      * @return the key to be used as parameter to taskResult(string) method to retrieve updated "post-run" dependent
      */
     @SuppressWarnings("unchecked")
@@ -163,6 +166,7 @@ public abstract class ExecutableImpl<FluentModelT extends Indexable>
     /**
      * Add an executable "post-run" dependent for this executable.
      *
+     * @param executable the "post-run" dependent task item.
      * @return the key to be used as parameter to taskResult(string) method to retrieve result of executing
      * the executable "post-run" dependent
      */

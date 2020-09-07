@@ -19,7 +19,7 @@ public class CreateUpdateTask<ResourceT extends Indexable> implements TaskItem {
     /**
      * the underlying instance that can create and update the resource.
      */
-    private ResourceCreatorUpdater<ResourceT> resourceCreatorUpdater;
+    private final ResourceCreatorUpdater<ResourceT> resourceCreatorUpdater;
     /**
      * created or updated resource.
      */
@@ -106,16 +106,16 @@ public class CreateUpdateTask<ResourceT extends Indexable> implements TaskItem {
         Mono<T> updateResourceAsync();
 
         /**
-         * @return true if the observable returned by {@link this#createResourceAsync()} and
-         * {@link this#updateResourceAsync()} are hot observables, false if they are cold
+         * @return true if the observable returned by {@link #createResourceAsync()} and
+         * {@link #updateResourceAsync()} are hot observables, false if they are cold
          * observables.
          */
         boolean isHot();
 
         /**
          * Perform any action followed by the processing of work scheduled to be invoked
-         * (i.e. "post run") after {@link this#createResourceAsync()} or
-         * {@link this#updateResourceAsync()}.
+         * (i.e. "post run") after {@link #createResourceAsync()} or
+         * {@link #updateResourceAsync()}.
          *
          * @param isGroupFaulted true if one or more tasks in the group this creatorUpdater
          *                       belongs to are in faulted state.

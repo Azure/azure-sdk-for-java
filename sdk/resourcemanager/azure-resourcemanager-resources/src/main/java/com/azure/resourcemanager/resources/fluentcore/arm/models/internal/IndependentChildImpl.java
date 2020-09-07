@@ -44,6 +44,7 @@ public abstract class IndependentChildImpl<
      *
      * @param name the name of the resource
      * @param innerObject the inner object
+     * @param manager the manager
      */
     protected IndependentChildImpl(String name, InnerModelT innerObject, ManagerT manager) {
         super(name, innerObject);
@@ -73,7 +74,7 @@ public abstract class IndependentChildImpl<
     }
 
     /**
-     * @return <tt>true</tt> if currently in define..create mode
+     * @return <code>true</code> if currently in define..create mode
      */
     @Override
     public boolean isInCreateMode() {

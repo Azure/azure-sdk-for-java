@@ -23,7 +23,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
  * externalized child resource collection.
  * (Internal use only)
  *
- * @param <FluentModelTImpl> the implementation of {@param FluentModelT}
+ * @param <FluentModelTImpl> the implementation of {@link FluentModelT}
  * @param <FluentModelT> the fluent model type of the child resource
  * @param <InnerModelT> Azure inner resource class type representing the child resource
  * @param <ParentImplT> the parent Azure resource impl class type that implements {@link ParentT}
@@ -84,7 +84,7 @@ public abstract class ExternalChildResourceCollectionImpl<
 
     /**
      * Indicates that the pending operations on the resources are performed via explicit call to
-     * {@link this#commitAsync()}.
+     * {@link #commitAsync()}.
      */
     public void enableCommitMode() {
         this.isPostRunMode = false;
@@ -104,6 +104,7 @@ public abstract class ExternalChildResourceCollectionImpl<
      * Mark the given child resource as the post run dependent of the parent of this collection.
      *
      * @param childResource the child resource
+     * @return the implementation of the fluent model
      */
     protected FluentModelTImpl prepareForFutureCommitOrPostRun(FluentModelTImpl childResource) {
         if (this.isPostRunMode) {
@@ -115,8 +116,8 @@ public abstract class ExternalChildResourceCollectionImpl<
     }
 
     /**
-     * Commits the changes in the external child resource childCollection.
-     * <p/>
+     * <p>Commits the changes in the external child resource childCollection.</p>
+     *
      * This method returns a Flux stream, its Flux's onNext will be called for each successfully
      * committed resource followed by one call to 'onCompleted' or one call to 'onError' with a
      * {@link RuntimeException} containing the list of exceptions where each exception describes the reason
@@ -201,8 +202,8 @@ public abstract class ExternalChildResourceCollectionImpl<
     }
 
     /**
-     * Commits the changes in the external child resource childCollection.
-     * <p/>
+     * <p>Commits the changes in the external child resource childCollection.</p>
+     *
      * This method returns a observable stream, either its observer's onError will be called with
      * {@link RuntimeException} if some resources failed to commit or onNext will be called if all resources
      * committed successfully.

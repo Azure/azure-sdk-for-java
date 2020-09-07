@@ -155,7 +155,7 @@ public abstract class ResourceImpl<
     }
 
     /**
-     * @return <tt>true</tt> if currently in define..create mode
+     * @return <code>true</code> if currently in define..create mode
      */
     @Override
     public boolean isInCreateMode() {

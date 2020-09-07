@@ -85,8 +85,8 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
     private class CreatedResourcesImpl<ResourceT extends Indexable>
             implements CreatedResources<ResourceT> {
         private final ClientLogger logger = new ClientLogger(this.getClass());
-        private CreatableUpdatableResourcesRoot<ResourceT> creatableUpdatableResourcesRoot;
-        private Map<String, ResourceT> resources = new HashMap<>();
+        private final CreatableUpdatableResourcesRoot<ResourceT> creatableUpdatableResourcesRoot;
+        private final Map<String, ResourceT> resources = new HashMap<>();
 
         CreatedResourcesImpl(CreatableUpdatableResourcesRoot<ResourceT> creatableUpdatableResourcesRoot) {
             this.creatableUpdatableResourcesRoot = creatableUpdatableResourcesRoot;
@@ -186,7 +186,7 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
         /**
          * Collection of keys of top level resources in this batch.
          */
-        private List<String> keys;
+        private final List<String> keys;
 
         CreatableUpdatableResourcesRootImpl() {
             super("CreatableUpdatableResourcesRoot", null);

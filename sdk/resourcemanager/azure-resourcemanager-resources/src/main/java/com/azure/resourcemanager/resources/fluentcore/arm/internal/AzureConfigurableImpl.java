@@ -31,11 +31,11 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
     implements AzureConfigurable<T> {
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
-    private List<HttpPipelinePolicy> policies;
-    private List<String> scopes;
+    private final List<HttpPipelinePolicy> policies;
+    private final List<String> scopes;
     private RetryPolicy retryPolicy;
     private Configuration configuration;
-    private List<TokenCredential> tokens;
+    private final List<TokenCredential> tokens;
 
     protected AzureConfigurableImpl() {
         policies = new ArrayList<>();

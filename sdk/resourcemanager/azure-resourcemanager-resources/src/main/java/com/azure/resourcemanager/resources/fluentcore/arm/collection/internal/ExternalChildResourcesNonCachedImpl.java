@@ -17,7 +17,7 @@ import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
  * present in the parent payload, in case of update this can save addition GET operation required before the
  * child resource PUT if PATCH is not supported.
  *
- * @param <FluentModelTImpl> the implementation of {@param FluentModelT}
+ * @param <FluentModelTImpl> the implementation of {@link FluentModelT}
  * @param <FluentModelT> the fluent model type of the child resource
  * @param <InnerModelT> Azure inner resource class type representing the child resource
  * @param <ParentImplT> the parent Azure resource impl class type that implements {@link ParentT}
@@ -30,7 +30,7 @@ public abstract class ExternalChildResourcesNonCachedImpl<
         ParentImplT extends ParentT,
         ParentT>
         extends ExternalChildResourceCollectionImpl<FluentModelTImpl, FluentModelT, InnerModelT, ParentImplT, ParentT> {
-    private ClientLogger logger = new ClientLogger(this.getClass());
+    private final ClientLogger logger = new ClientLogger(this.getClass());
     /**
      * Creates a new ExternalNonInlineChildResourcesImpl.
      *
