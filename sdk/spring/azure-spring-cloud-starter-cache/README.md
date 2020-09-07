@@ -20,7 +20,7 @@ This starter provides auto-configuration of Azure Cache for Redis. Azure Cache f
 ```
 [//]: # "{x-version-update-end}"
 
-## Key Concepts
+## Key concepts
 Redis improves the performance and scalability of an application that uses on backend data stores heavily. It is able to process large volumes of application request by keeping frequently accessed data in the server memory that can be written to and read from quickly.
 
 Azure Cache for Redis offers Redis as a managed service. It provides secure and dedicated Redis server instances and full Redis API compatibility. The service is operated by Microsoft, hosted on Azure, and accessible to any application within or outside of Azure.
