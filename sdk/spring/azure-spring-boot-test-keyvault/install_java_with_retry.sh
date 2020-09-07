@@ -4,6 +4,8 @@ set -eux
 
 cd "$(dirname "$0")"
 
+chmod +x install_java.sh
+
 for i in $(seq 1 5)
 do
     if [ $i -gt 1 ]
