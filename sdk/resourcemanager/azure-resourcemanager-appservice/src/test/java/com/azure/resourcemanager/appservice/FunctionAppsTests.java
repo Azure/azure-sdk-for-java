@@ -217,7 +217,7 @@ public class FunctionAppsTests extends AppServiceTest {
                 .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
                 .create();
         Assertions.assertNotNull(functionApp1);
-        assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_8.getLinuxFxVersionForConsumptionPlan());
+        assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_8.getLinuxFxVersion());
 
         AppServicePlan plan1 = appServiceManager.appServicePlans().getById(functionApp1.appServicePlanId());
         Assertions.assertNotNull(plan1);
@@ -246,7 +246,7 @@ public class FunctionAppsTests extends AppServiceTest {
                 .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
                 .create();
         Assertions.assertNotNull(functionApp2);
-        assertLinuxJava(functionApp2, FunctionRuntimeStack.JAVA_8.getLinuxFxVersionForDedicatedPlan());
+        assertLinuxJava(functionApp2, FunctionRuntimeStack.JAVA_8.getLinuxFxVersion());
 
         AppServicePlan plan2 = appServiceManager.appServicePlans().getById(functionApp2.appServicePlanId());
         Assertions.assertNotNull(plan2);
@@ -265,7 +265,7 @@ public class FunctionAppsTests extends AppServiceTest {
                 .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
                 .create();
         Assertions.assertNotNull(functionApp3);
-        assertLinuxJava(functionApp3, FunctionRuntimeStack.JAVA_8.getLinuxFxVersionForDedicatedPlan());
+        assertLinuxJava(functionApp3, FunctionRuntimeStack.JAVA_8.getLinuxFxVersion());
 
         // wait for deploy
         if (!isPlaybackMode()) {
@@ -310,7 +310,7 @@ public class FunctionAppsTests extends AppServiceTest {
         Assertions.assertNotNull(plan1);
         Assertions.assertEquals(new PricingTier(SkuName.ELASTIC_PREMIUM.toString(), "EP1"), plan1.pricingTier());
         Assertions.assertTrue(plan1.inner().reserved());
-        assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_8.getLinuxFxVersionForDedicatedPlan());
+        assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_8.getLinuxFxVersion());
 
         // wait for deploy
         if (!isPlaybackMode()) {
@@ -361,7 +361,7 @@ public class FunctionAppsTests extends AppServiceTest {
             .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
             .create();
         Assertions.assertNotNull(functionApp1);
-        assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_11.getLinuxFxVersionForConsumptionPlan());
+        assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_11.getLinuxFxVersion());
     }
 
     private static Map<String, AppSetting> assertLinuxJava(FunctionApp functionApp, String linuxFxVersion) {

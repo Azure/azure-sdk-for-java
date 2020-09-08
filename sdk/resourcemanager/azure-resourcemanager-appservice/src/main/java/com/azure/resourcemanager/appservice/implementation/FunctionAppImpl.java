@@ -59,7 +59,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
 /** The implementation for FunctionApp. */
 class FunctionAppImpl
@@ -87,10 +86,6 @@ class FunctionAppImpl
     private final FunctionAppKeyService functionAppKeyService;
     private FunctionService functionService;
     private FunctionDeploymentSlots deploymentSlots;
-
-    private Function<AppServicePlan, SiteConfigResourceInner> linuxFxVersionSetter = null;
-    private Mono<AppServicePlan> cachedAppServicePlanObservable =
-        null; // potentially shared between submitSiteConfig and submitAppSettings
 
     private String functionAppKeyServiceHost;
     private String functionServiceHost;
@@ -182,18 +177,6 @@ class FunctionAppImpl
     }
 
     @Override
-    Mono<Indexable> submitSiteConfig() {
-        if (linuxFxVersionSetter != null) {
-            cachedAppServicePlanObservable = this.cachedAppServicePlanObservable(); // first usage, so get a new one
-            return cachedAppServicePlanObservable
-                .map(linuxFxVersionSetter)
-                .flatMap(ignored -> FunctionAppImpl.super.submitSiteConfig());
-        } else {
-            return super.submitSiteConfig();
-        }
-    }
-
-    @Override
     Mono<Indexable> submitAppSettings() {
         if (storageAccountCreatable != null && this.taskResult(storageAccountCreatable.key()) != null) {
             storageAccountToSet = this.taskResult(storageAccountCreatable.key());
@@ -201,16 +184,13 @@ class FunctionAppImpl
         if (storageAccountToSet == null) {
             return super.submitAppSettings();
         } else {
-            if (cachedAppServicePlanObservable == null) {
-                cachedAppServicePlanObservable = this.cachedAppServicePlanObservable();
-            }
             return Flux
                 .concat(
                     storageAccountToSet
                         .getKeysAsync()
                         .map(storageAccountKeys -> storageAccountKeys.get(0))
                         .zipWith(
-                            cachedAppServicePlanObservable,
+                            this.manager().appServicePlans().getByIdAsync(this.appServicePlanId()),
                             (StorageAccountKey storageAccountKey, AppServicePlan appServicePlan) -> {
                                 String connectionString = com.azure.resourcemanager.resources.fluentcore.utils.Utils
                                     .getStorageConnectionString(storageAccountToSet.name(), storageAccountKey.value(),
@@ -237,7 +217,6 @@ class FunctionAppImpl
                                 currentStorageAccount = storageAccountToSet;
                                 storageAccountToSet = null;
                                 storageAccountCreatable = null;
-                                cachedAppServicePlanObservable = null;
                                 return this;
                             }));
         }
@@ -409,15 +388,7 @@ class FunctionAppImpl
         }
         withRuntime(runtimeStack.runtime());
         withRuntimeVersion(runtimeStack.version());
-        linuxFxVersionSetter =
-            appServicePlan -> {
-                if (appServicePlan == null || isConsumptionPlan(appServicePlan.pricingTier())) {
-                    siteConfig.withLinuxFxVersion(runtimeStack.getLinuxFxVersionForConsumptionPlan());
-                } else {
-                    siteConfig.withLinuxFxVersion(runtimeStack.getLinuxFxVersionForDedicatedPlan());
-                }
-                return siteConfig;
-            };
+        siteConfig.withLinuxFxVersion(runtimeStack.getLinuxFxVersion());
         return this;
     }
 
@@ -441,7 +412,6 @@ class FunctionAppImpl
 
     @Override
     protected void cleanUpContainerSettings() {
-        linuxFxVersionSetter = null;
         if (siteConfig != null && siteConfig.linuxFxVersion() != null) {
             siteConfig.withLinuxFxVersion(null);
         }
@@ -459,11 +429,6 @@ class FunctionAppImpl
         return (appServicePlan.inner().reserved() == null || !appServicePlan.inner().reserved())
             ? OperatingSystem.WINDOWS
             : OperatingSystem.LINUX;
-    }
-
-    private Mono<AppServicePlan> cachedAppServicePlanObservable() {
-        // it could get more than one subscriber, so hot observable + caching
-        return this.manager().appServicePlans().getByIdAsync(this.appServicePlanId()).cache();
     }
 
     @Override
