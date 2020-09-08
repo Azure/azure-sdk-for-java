@@ -1,11 +1,12 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.security.keyvault.administration;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
-import com.azure.core.util.polling.PollResponse;
-import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.administration.models.KeyVaultBackupOperation;
 import com.azure.security.keyvault.administration.models.KeyVaultRestoreOperation;
 import org.junit.jupiter.params.ParameterizedTest;

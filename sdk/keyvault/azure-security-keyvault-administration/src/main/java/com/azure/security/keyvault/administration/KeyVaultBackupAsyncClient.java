@@ -20,7 +20,13 @@ import com.azure.security.keyvault.administration.implementation.KeyVaultBackupC
 import com.azure.security.keyvault.administration.implementation.KeyVaultBackupClientImplBuilder;
 import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
 import com.azure.security.keyvault.administration.implementation.models.Error;
-import com.azure.security.keyvault.administration.implementation.models.*;
+import com.azure.security.keyvault.administration.implementation.models.FullBackupOperation;
+import com.azure.security.keyvault.administration.implementation.models.KeyVaultErrorException;
+import com.azure.security.keyvault.administration.implementation.models.RestoreOperation;
+import com.azure.security.keyvault.administration.implementation.models.RestoreOperationParameters;
+import com.azure.security.keyvault.administration.implementation.models.SASTokenParameter;
+import com.azure.security.keyvault.administration.implementation.models.SelectiveKeyRestoreOperation;
+import com.azure.security.keyvault.administration.implementation.models.SelectiveKeyRestoreOperationParameters;
 import com.azure.security.keyvault.administration.models.KeyVaultBackupOperation;
 import com.azure.security.keyvault.administration.models.KeyVaultError;
 import com.azure.security.keyvault.administration.models.KeyVaultLongRunningOperation;
@@ -29,6 +35,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.URL;
 import java.time.Duration;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -196,10 +203,10 @@ public final class KeyVaultBackupAsyncClient {
     }
 
     private static Mono<PollResponse<KeyVaultBackupOperation>> processBackupOperationResponse(Response<KeyVaultBackupOperation> response) {
-        String operationStatus = response.getValue().getStatus().toLowerCase();
+        String operationStatus = response.getValue().getStatus().toLowerCase(Locale.US);
 
-        return Mono.just(
-            new PollResponse<>(toLongRunningOperationStatus(operationStatus.toLowerCase()), response.getValue()));
+        return Mono.just(new PollResponse<>(
+            toLongRunningOperationStatus(operationStatus.toLowerCase(Locale.US)), response.getValue()));
     }
 
     private static LongRunningOperationStatus toLongRunningOperationStatus(String operationStatus) {
@@ -327,10 +334,10 @@ public final class KeyVaultBackupAsyncClient {
     }
 
     private static Mono<PollResponse<KeyVaultRestoreOperation>> processRestoreOperationResponse(Response<KeyVaultRestoreOperation> response) {
-        String operationStatus = response.getValue().getStatus().toLowerCase();
+        String operationStatus = response.getValue().getStatus().toLowerCase(Locale.US);
 
         return Mono.just(new PollResponse<>(
-            toLongRunningOperationStatus(operationStatus.toLowerCase()), response.getValue()));
+            toLongRunningOperationStatus(operationStatus.toLowerCase(Locale.US)), response.getValue()));
     }
 
     /**
