@@ -3,7 +3,7 @@
 The project provides core functionality of **Spring Cloud Stream Binder for Azure Service Bus** which allows you to build message-driven 
 microservice using **Spring Cloud Stream** based on [Azure Service Bus][azure_service_bus].
 
-[Source code][src_code] | [Package (Maven)][package] | [API reference documentation][refdocs] | [Product documentation][docs] | [Samples][sample]
+[Source code][src_code] | [Package (Maven)][package] | [API reference documentation][refdocs] | [Product documentation][docs]
 
 ## Getting started
 
@@ -72,7 +72,6 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [maven]: http://maven.apache.org
 [package]: https://mvnrepository.com/artifact/com.microsoft.azure/spring-cloud-azure-servicebus-stream-binder-core
 [refdocs]: https://azure.github.io/azure-sdk-for-java/spring.html#spring-cloud-azure-servicebus-stream-binder-core
-[sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/
 [spring_boot_logging]: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging
 [service_bus_queue_binder]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-servicebus-queue-stream-binder
 [service_bus_topic_binder]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-servicebus-topic-stream-binder
