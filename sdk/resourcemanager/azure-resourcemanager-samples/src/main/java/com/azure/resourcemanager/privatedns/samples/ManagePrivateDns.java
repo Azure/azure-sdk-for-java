@@ -38,7 +38,7 @@ public class ManagePrivateDns {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws Exception {
         final String rgName = azure.sdkContext().randomResourceName("rgNEMV", 24);
         final String vnetName = azure.sdkContext().randomResourceName("vnetwork-1", 24);
         final String subnetName = azure.sdkContext().randomResourceName("subnet-1", 24);

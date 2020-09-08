@@ -50,7 +50,7 @@ public final class ManageLinuxWebAppWithTrafficManager {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws Exception {
         rgName = azure.sdkContext().randomResourceName("rgNEMV_", 24);
 
         if (ManageLinuxWebAppWithTrafficManager.azure == null) {

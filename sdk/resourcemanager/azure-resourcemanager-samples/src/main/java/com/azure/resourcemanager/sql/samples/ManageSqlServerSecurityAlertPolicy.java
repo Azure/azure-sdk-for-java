@@ -32,7 +32,7 @@ public class ManageSqlServerSecurityAlertPolicy {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws Exception {
         final String sqlServerName = azure.sdkContext().randomResourceName("sql", 20);
         final String storageAccountName = azure.sdkContext().randomResourceName("sqlsa", 20);
         final String rgName = azure.sdkContext().randomResourceName("rgsql", 20);

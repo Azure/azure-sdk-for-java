@@ -40,7 +40,7 @@ public final class DeployUsingARMTemplateWithDeploymentOperations {
      * @param defaultPollingInterval polling interval in seconds
      * @return true if sample runs successfully
      */
-    public static boolean runSample(final Azure azure, int defaultPollingInterval) {
+    public static boolean runSample(final Azure azure, int defaultPollingInterval) throws Exception {
         final String rgPrefix = azure.sdkContext().randomResourceName("rgJavaTest", 16);
         final String deploymentPrefix = azure.sdkContext().randomResourceName("javaTest", 16);
         final String sshKey = getSSHPublicKey();

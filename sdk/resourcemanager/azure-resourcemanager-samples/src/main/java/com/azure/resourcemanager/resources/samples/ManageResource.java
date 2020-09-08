@@ -30,7 +30,7 @@ public final class ManageResource {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws Exception {
         final String rgName = azure.sdkContext().randomResourceName("rgRSMR", 24);
         final String resourceName1 = azure.sdkContext().randomResourceName("rn1", 24);
         final String resourceName2 = azure.sdkContext().randomResourceName("rn2", 24);

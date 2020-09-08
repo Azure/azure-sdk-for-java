@@ -45,7 +45,7 @@ public final class ManageVirtualMachineAsync {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(final Azure azure) {
+    public static boolean runSample(final Azure azure) throws Exception {
         final Region region = Region.US_WEST_CENTRAL;
         final String windowsVMName = azure.sdkContext().randomResourceName("wVM", 15);
         final String linuxVMName = azure.sdkContext().randomResourceName("lVM", 15);

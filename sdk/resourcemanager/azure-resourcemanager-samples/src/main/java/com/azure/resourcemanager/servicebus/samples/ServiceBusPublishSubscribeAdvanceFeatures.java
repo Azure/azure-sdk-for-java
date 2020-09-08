@@ -44,7 +44,7 @@ public final class ServiceBusPublishSubscribeAdvanceFeatures {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws Exception {
         // New resources
         final String rgName = azure.sdkContext().randomResourceName("rgSB04_", 24);
         final String namespaceName = azure.sdkContext().randomResourceName("namespace", 20);

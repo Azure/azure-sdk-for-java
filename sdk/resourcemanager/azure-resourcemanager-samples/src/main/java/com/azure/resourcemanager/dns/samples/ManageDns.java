@@ -46,7 +46,7 @@ public class ManageDns {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws Exception {
         final String customDomainName         = "THE CUSTOM DOMAIN THAT YOU OWN (e.g. contoso.com)";
         final String rgName                   = azure.sdkContext().randomResourceName("rgNEMV_", 24);
         final String webAppName               = azure.sdkContext().randomResourceName("webapp1-", 20);

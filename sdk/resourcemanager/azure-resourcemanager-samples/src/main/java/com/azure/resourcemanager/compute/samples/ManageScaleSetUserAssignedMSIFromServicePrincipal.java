@@ -39,7 +39,7 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
      * @param authenticated instance of Authenticated
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure.Authenticated authenticated) {
+    public static boolean runSample(Azure.Authenticated authenticated) throws Exception {
         Region region = Region.US_WEST_CENTRAL;
         String vmssName = authenticated.sdkContext().randomResourceName("vmss", 15);
         String spName1 = authenticated.sdkContext().randomResourceName("sp1", 21);

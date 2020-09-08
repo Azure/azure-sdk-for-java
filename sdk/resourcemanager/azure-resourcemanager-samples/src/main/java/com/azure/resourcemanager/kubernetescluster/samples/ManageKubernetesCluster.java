@@ -34,7 +34,7 @@ public class ManageKubernetesCluster {
      * @param secret secondary service principal secret
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure, String clientId, String secret) {
+    public static boolean runSample(Azure azure, String clientId, String secret) throws Exception {
         final String rgName = azure.sdkContext().randomResourceName("rgaks", 15);
         final String aksName = azure.sdkContext().randomResourceName("akssample", 30);
         final Region region = Region.US_EAST;

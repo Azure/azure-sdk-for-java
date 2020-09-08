@@ -35,7 +35,7 @@ public final class ManageWebAppSlots {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws Exception {
         // New resources
         final String resourceGroupName     = azure.sdkContext().randomResourceName("rg", 24);
         final String app1Name       = azure.sdkContext().randomResourceName("webapp1-", 20);

@@ -41,7 +41,7 @@ public class ManageSqlServerKeysWithAzureKeyVaultKey {
      * @param objectId the object ID of the service principal/user used to authenticate to Azure
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure, String objectId) {
+    public static boolean runSample(Azure azure, String objectId) throws Exception {
         final String sqlServerName = azure.sdkContext().randomResourceName("sqlsrv", 20);
         final String rgName = azure.sdkContext().randomResourceName("rgsql", 20);
         final String vaultName = azure.sdkContext().randomResourceName("sqlkv", 20);

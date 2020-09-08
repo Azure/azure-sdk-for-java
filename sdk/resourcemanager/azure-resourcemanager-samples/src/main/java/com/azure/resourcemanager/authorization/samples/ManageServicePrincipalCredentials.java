@@ -38,7 +38,7 @@ public final class ManageServicePrincipalCredentials {
      * @param profile the profile the sample is running in
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure.Authenticated authenticated, AzureProfile profile) {
+    public static boolean runSample(Azure.Authenticated authenticated, AzureProfile profile) throws Exception {
         final String spName         = authenticated.sdkContext().randomResourceName("sp", 20);
         final String appName        = authenticated.sdkContext().randomResourceName("app", 20);
         final String appUrl         = "https://" + appName;

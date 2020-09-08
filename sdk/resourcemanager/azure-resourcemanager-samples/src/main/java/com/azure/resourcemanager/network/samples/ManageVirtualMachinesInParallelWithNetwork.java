@@ -41,7 +41,7 @@ public final class ManageVirtualMachinesInParallelWithNetwork {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws Exception {
         final int frontendVMCount = 4;
         final int backendVMCount = 4;
         final String rgName = azure.sdkContext().randomResourceName("rgNEPP", 24);

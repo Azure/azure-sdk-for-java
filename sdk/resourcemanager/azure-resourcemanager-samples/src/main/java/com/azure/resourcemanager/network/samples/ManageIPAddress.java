@@ -35,7 +35,7 @@ public final class ManageIPAddress {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws Exception {
         final String publicIPAddressName1 = azure.sdkContext().randomResourceName("pip1", 20);
         final String publicIPAddressName2 = azure.sdkContext().randomResourceName("pip2", 20);
         final String publicIPAddressLeafDNS1 = azure.sdkContext().randomResourceName("pip1", 20);

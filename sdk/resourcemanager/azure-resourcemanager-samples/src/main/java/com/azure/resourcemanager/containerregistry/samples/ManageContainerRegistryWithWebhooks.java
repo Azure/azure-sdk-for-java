@@ -48,7 +48,7 @@ public class ManageContainerRegistryWithWebhooks {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws Exception {
         final String rgName = azure.sdkContext().randomResourceName("rgACR", 15);
         final String acrName = azure.sdkContext().randomResourceName("acrsample", 20);
         final Region region = Region.US_WEST_CENTRAL;

@@ -47,7 +47,7 @@ public final class ManageVirtualMachineScaleSetAsync {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(final Azure azure) {
+    public static boolean runSample(final Azure azure) throws Exception {
         final Region region = Region.US_WEST_CENTRAL;
         final String rgName = azure.sdkContext().randomResourceName("rgCOVS", 15);
         final String vnetName = azure.sdkContext().randomResourceName("vnet", 24);

@@ -58,7 +58,7 @@ public final class VerifyNetworkPeeringWithNetworkWatcher {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws Exception {
         final Region region = Region.US_SOUTH_CENTRAL;
         final String resourceGroupName = azure.sdkContext().randomResourceName("rg", 15);
         final String vnetAName = azure.sdkContext().randomResourceName("net", 15);

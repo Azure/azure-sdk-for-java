@@ -34,7 +34,7 @@ public class ManageEventHub {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws Exception {
         final String rgName = azure.sdkContext().randomResourceName("rgNEMV_", 24);
         final String namespaceName1 = azure.sdkContext().randomResourceName("ns", 14);
         final String namespaceName2 = azure.sdkContext().randomResourceName("ns", 14);

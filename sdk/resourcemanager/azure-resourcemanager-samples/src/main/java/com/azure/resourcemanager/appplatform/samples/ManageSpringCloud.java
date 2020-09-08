@@ -68,7 +68,7 @@ public class ManageSpringCloud {
      * @return true if sample runs successfully
      * @throws IllegalStateException unexcepted state
      */
-    public static boolean runSample(Azure azure, String clientId) {
+    public static boolean runSample(Azure azure, String clientId) throws Exception {
         final String rgName = azure.sdkContext().randomResourceName("rg", 24);
         final String serviceName  = azure.sdkContext().randomResourceName("service", 24);
         final Region region = Region.US_EAST;

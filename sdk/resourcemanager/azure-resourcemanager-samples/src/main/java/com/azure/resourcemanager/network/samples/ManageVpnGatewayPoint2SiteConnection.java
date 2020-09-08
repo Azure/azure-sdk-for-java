@@ -42,7 +42,7 @@ public final class ManageVpnGatewayPoint2SiteConnection {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws Exception {
         final String certPath = System.getenv("CERT_PATH");
         final String clientCertThumbprint = System.getenv("CLIENT_CERT_THUMBPRINT");
         final Region region = Region.US_WEST2;

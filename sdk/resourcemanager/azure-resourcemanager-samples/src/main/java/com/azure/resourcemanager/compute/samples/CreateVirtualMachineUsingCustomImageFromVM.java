@@ -42,7 +42,7 @@ public final class CreateVirtualMachineUsingCustomImageFromVM {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws Exception {
         final String linuxVMName1 = azure.sdkContext().randomResourceName("VM1", 15);
         final String linuxVMName2 = azure.sdkContext().randomResourceName("VM2", 15);
         final String linuxVMName3 = azure.sdkContext().randomResourceName("VM3", 15);

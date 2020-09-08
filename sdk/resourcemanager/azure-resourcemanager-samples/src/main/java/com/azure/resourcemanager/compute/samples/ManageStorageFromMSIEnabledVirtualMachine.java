@@ -36,7 +36,7 @@ public final class ManageStorageFromMSIEnabledVirtualMachine {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws Exception {
         final String linuxVMName = azure.sdkContext().randomResourceName("VM1", 15);
         final String rgName = azure.sdkContext().randomResourceName("rgCOMV", 15);
         final String pipName = azure.sdkContext().randomResourceName("pip1", 15);

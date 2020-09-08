@@ -32,7 +32,7 @@ public class ManageEventHubEvents {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws Exception {
         final Region region = Region.US_EAST;
         final String rgName = azure.sdkContext().randomResourceName("rgEvHb", 24);
         final String namespaceName = azure.sdkContext().randomResourceName("ns", 24);

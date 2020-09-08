@@ -40,7 +40,7 @@ public final class ManageUserAssignedMSIEnabledVirtualMachine {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws Exception {
         final String rgName1 = azure.sdkContext().randomResourceName("uamsi-rg-1", 15);
         final String rgName2 = azure.sdkContext().randomResourceName("uamsi-rg-2", 15);
         final String identityName = azure.sdkContext().randomResourceName("id", 15);

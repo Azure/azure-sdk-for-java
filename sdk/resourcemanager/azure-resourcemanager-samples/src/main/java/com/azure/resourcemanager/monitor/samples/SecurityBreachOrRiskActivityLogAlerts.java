@@ -36,7 +36,7 @@ public final class SecurityBreachOrRiskActivityLogAlerts {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws Exception {
         final String storageAccountName = azure.sdkContext().randomResourceName("saMonitor", 20);
         final String rgName = azure.sdkContext().randomResourceName("rgMonitor", 20);
 

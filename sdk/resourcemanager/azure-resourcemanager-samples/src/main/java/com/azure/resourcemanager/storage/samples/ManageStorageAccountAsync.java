@@ -30,7 +30,7 @@ public final class ManageStorageAccountAsync {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(final Azure azure) {
+    public static boolean runSample(final Azure azure) throws Exception {
         final String storageAccountName = azure.sdkContext().randomResourceName("sa", 8);
         final String storageAccountName2 = azure.sdkContext().randomResourceName("sa2", 8);
         final String rgName = azure.sdkContext().randomResourceName("rgSTMS", 8);
