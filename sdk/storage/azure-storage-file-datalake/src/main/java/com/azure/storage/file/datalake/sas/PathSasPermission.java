@@ -31,9 +31,9 @@ public final class PathSasPermission {
 
     private boolean executePermission;
 
-    private boolean changeOwnershipPermission;
+    private boolean manageOwnershipPermission;
 
-    private boolean changePermissionPermission;
+    private boolean managePermissionPermission;
 
 
     /**
@@ -82,10 +82,10 @@ public final class PathSasPermission {
                     permissions.executePermission = true;
                     break;
                 case 'o':
-                    permissions.changeOwnershipPermission = true;
+                    permissions.manageOwnershipPermission = true;
                     break;
                 case 'p':
-                    permissions.changePermissionPermission = true;
+                    permissions.managePermissionPermission = true;
                     break;
                 default:
                     throw new IllegalArgumentException(
@@ -241,38 +241,38 @@ public final class PathSasPermission {
     }
 
     /**
-     * @return the change ownership permission status.
+     * @return the manage ownership permission status.
      */
-    public boolean hasChangeOwnershipPermission() {
-        return changeOwnershipPermission;
+    public boolean hasManageOwnershipPermission() {
+        return manageOwnershipPermission;
     }
 
     /**
-     * Sets the change ownership permission status.
+     * Sets the manage ownership permission status.
      *
-     * @param hasChangeOwnershipPermission Permission status to set
+     * @param hasManageOwnershipPermission Permission status to set
      * @return the updated PathSasPermission object.
      */
-    public PathSasPermission setChangeOwnershipPermission(boolean hasChangeOwnershipPermission) {
-        this.changeOwnershipPermission = hasChangeOwnershipPermission;
+    public PathSasPermission setManageOwnershipPermission(boolean hasManageOwnershipPermission) {
+        this.manageOwnershipPermission = hasManageOwnershipPermission;
         return this;
     }
 
     /**
-     * @return the change permission permission status.
+     * @return the manage permission permission status.
      */
-    public boolean hasChangePermissionPermission() {
-        return changePermissionPermission;
+    public boolean hasManagePermissionPermission() {
+        return managePermissionPermission;
     }
 
     /**
-     * Sets the change permission permission status.
+     * Sets the manage permission permission status.
      *
-     * @param hasChangePermissionPermission Permission status to set
+     * @param hasManagePermissionPermission Permission status to set
      * @return the updated PathSasPermission object.
      */
-    public PathSasPermission setChangePermissionPermission(boolean hasChangePermissionPermission) {
-        this.changePermissionPermission = hasChangePermissionPermission;
+    public PathSasPermission setManagePermissionPermission(boolean hasManagePermissionPermission) {
+        this.managePermissionPermission = hasManagePermissionPermission;
         return this;
     }
 
@@ -321,11 +321,11 @@ public final class PathSasPermission {
             builder.append('e');
         }
 
-        if (this.changeOwnershipPermission) {
+        if (this.manageOwnershipPermission) {
             builder.append('o');
         }
 
-        if (this.changePermissionPermission) {
+        if (this.managePermissionPermission) {
             builder.append('p');
         }
 

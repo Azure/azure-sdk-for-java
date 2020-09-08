@@ -35,8 +35,8 @@ class DataLakeServiceSasModelsTest extends Specification {
             .setListPermission(list)
             .setMovePermission(move)
             .setExecutePermission(execute)
-            .setChangeOwnershipPermission(owner)
-            .setChangePermissionPermission(permission)
+            .setManageOwnershipPermission(owner)
+            .setManagePermissionPermission(permission)
 
         expect:
         perms.toString() == expectedString
@@ -70,8 +70,8 @@ class DataLakeServiceSasModelsTest extends Specification {
         perms.hasListPermission() == list
         perms.hasMovePermission() == move
         perms.hasExecutePermission() == execute
-        perms.hasChangeOwnershipPermission() == owner
-        perms.hasChangePermissionPermission() == permission
+        perms.hasManageOwnershipPermission() == owner
+        perms.hasManagePermissionPermission() == permission
 
         where:
         permString   || read  | write | delete | create | add   | list  | move  | execute | owner | permission
@@ -117,8 +117,8 @@ class DataLakeServiceSasModelsTest extends Specification {
             .setListPermission(list)
             .setMovePermission(move)
             .setExecutePermission(execute)
-            .setChangeOwnershipPermission(owner)
-            .setChangePermissionPermission(permission)
+            .setManageOwnershipPermission(owner)
+            .setManagePermissionPermission(permission)
 
         expect:
         perms.toString() == expectedString
@@ -152,8 +152,8 @@ class DataLakeServiceSasModelsTest extends Specification {
         perms.hasListPermission() == list
         perms.hasMovePermission() == move
         perms.hasExecutePermission() == execute
-        perms.hasChangeOwnershipPermission() == owner
-        perms.hasChangePermissionPermission() == permission
+        perms.hasManageOwnershipPermission() == owner
+        perms.hasManagePermissionPermission() == permission
 
         where:
         permString   || read  | write | delete | create | add   | list  | move  | execute | owner | permission

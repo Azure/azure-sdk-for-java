@@ -223,7 +223,7 @@ public class BlobSasImplUtil {
      *    b. Otherwise, if "SnapshotId" is set, it is a blob snapshot resource.
      *    c. Otherwise, if "VersionId" is set, it is a blob version resource.
      *    d. Otherwise, it is a blob resource.
-     * 4. Reparse permissions depending on what the resource is. If it is an unrecognised resource, do nothing.
+     * 4. Reparse permissions depending on what the resource is. If it is an unrecognized resource, do nothing.
      *
      * Taken from:
      * https://github.com/Azure/azure-storage-blob-go/blob/master/azblob/sas_service.go#L33

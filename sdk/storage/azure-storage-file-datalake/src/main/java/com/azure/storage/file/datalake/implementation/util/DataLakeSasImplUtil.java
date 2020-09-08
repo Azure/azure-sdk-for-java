@@ -234,7 +234,7 @@ public class DataLakeSasImplUtil {
      *    b. Otherwise, if "SnapshotId" is set, it is a blob snapshot resource.
      *    c. Otherwise, if "VersionId" is set, it is a blob version resource.
      *    d. Otherwise, it is a blob resource.
-     * 3. Reparse permissions depending on what the resource is. If it is an unrecognised resource, do nothing.
+     * 3. Reparse permissions depending on what the resource is. If it is an unrecognized resource, do nothing.
      * 4. Ensure saoid is not set when suoid is set and vice versa.
      *
      * Taken from:
