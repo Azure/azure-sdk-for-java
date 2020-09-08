@@ -40,7 +40,7 @@ class WebSiteBaseImpl implements WebSiteBase {
     private final Map<String, HostnameSslState> hostNameSslStateMap;
     private final Set<String> clientCertExclusionPathSet;
 
-    public WebSiteBaseImpl(SiteInner innerObject) {
+    WebSiteBaseImpl(SiteInner innerObject) {
         this.key = UUID.randomUUID().toString();
         this.innerObject = innerObject;
 

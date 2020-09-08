@@ -10,6 +10,7 @@ import com.azure.resourcemanager.appservice.models.NetFrameworkVersion;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.RemoteVisualStudioVersion;
 import com.azure.resourcemanager.appservice.models.WebApp;
+import com.azure.resourcemanager.appservice.models.WebAppBasic;
 import com.azure.resourcemanager.appservice.models.WebAppRuntimeStack;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
@@ -81,7 +82,7 @@ public class WebAppsTests extends AppServiceTest {
         Assertions.assertEquals(webApp2.name(), webApp.name());
 
         // List
-        PagedIterable<WebApp> webApps = appServiceManager.webApps().listByResourceGroup(rgName1);
+        PagedIterable<WebAppBasic> webApps = appServiceManager.webApps().listByResourceGroup(rgName1);
         Assertions.assertEquals(1, TestUtilities.getSize(webApps));
         webApps = appServiceManager.webApps().listByResourceGroup(rgName2);
         Assertions.assertEquals(1, TestUtilities.getSize(webApps));
