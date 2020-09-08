@@ -21,7 +21,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.MonitorClient;
 import com.azure.resourcemanager.monitor.fluent.inner.DiagnosticSettingsCategoryResourceCollectionInner;
 import com.azure.resourcemanager.monitor.fluent.inner.DiagnosticSettingsCategoryResourceInner;
 import reactor.core.publisher.Mono;

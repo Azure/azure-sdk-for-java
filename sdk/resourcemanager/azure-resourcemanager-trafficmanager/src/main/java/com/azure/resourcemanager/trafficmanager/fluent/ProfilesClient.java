@@ -33,7 +33,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import com.azure.resourcemanager.trafficmanager.TrafficManagerManagementClient;
 import com.azure.resourcemanager.trafficmanager.fluent.inner.DeleteOperationResultInner;
 import com.azure.resourcemanager.trafficmanager.fluent.inner.ProfileInner;
 import com.azure.resourcemanager.trafficmanager.fluent.inner.TrafficManagerNameAvailabilityInner;

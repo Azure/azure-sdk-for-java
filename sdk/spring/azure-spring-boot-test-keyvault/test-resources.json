@@ -208,9 +208,10 @@
         "autoUpgradeMinorVersion": true,
         "settings": {
           "fileUris": [
-            "https://raw.githubusercontent.com/Azure/azure-libraries-for-java/master/azure-samples/src/main/resources/install_jva_mvn_git.sh"
+            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/spring/azure-spring-boot-test-keyvault/install_java.sh",
+            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/spring/azure-spring-boot-test-keyvault/install_java_with_retry.sh"
           ],
-          "commandToExecute": "bash install_jva_mvn_git.sh"
+          "commandToExecute": "bash install_java_with_retry.sh"
         },
         "protectedSettings": {
           "commandToExecute": ""

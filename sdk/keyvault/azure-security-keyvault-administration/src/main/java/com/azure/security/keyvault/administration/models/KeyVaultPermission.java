@@ -9,10 +9,10 @@ import java.util.List;
  * A class describing allowed and denied actions and data actions of a {@link KeyVaultRoleDefinition}.
  */
 public final class KeyVaultPermission {
-    private List<String> actions;
-    private List<String> deniedActions;
-    private List<String> dataActions;
-    private List<String> deniedDataActions;
+    private final List<String> actions;
+    private final List<String> deniedActions;
+    private final List<String> dataActions;
+    private final List<String> deniedDataActions;
 
     /**
      * Creates a new {@link KeyVaultPermission} with the specified allowed and denied actions and data actions.

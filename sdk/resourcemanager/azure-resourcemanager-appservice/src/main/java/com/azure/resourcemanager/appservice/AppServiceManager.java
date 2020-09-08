@@ -5,6 +5,8 @@ package com.azure.resourcemanager.appservice;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.resourcemanager.appservice.fluent.WebSiteManagementClient;
+import com.azure.resourcemanager.appservice.fluent.WebSiteManagementClientBuilder;
 import com.azure.resourcemanager.appservice.implementation.AppServiceCertificateOrdersImpl;
 import com.azure.resourcemanager.appservice.implementation.AppServiceCertificatesImpl;
 import com.azure.resourcemanager.appservice.implementation.AppServiceDomainsImpl;
