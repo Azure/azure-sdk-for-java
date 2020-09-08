@@ -47,6 +47,13 @@ public final class LinkedEntity {
     @JsonProperty(value = "dataSource", required = true)
     private String dataSource;
 
+    /*
+     * Bing unique identifier of the recognized entity. Use in conjunction with
+     * the Bing Entity Search API to fetch additional relevant information.
+     */
+    @JsonProperty(value = "bingId")
+    private String bingId;
+
     /**
      * Get the name property: Entity Linking formal name.
      *
@@ -164,6 +171,28 @@ public final class LinkedEntity {
      */
     public LinkedEntity setDataSource(String dataSource) {
         this.dataSource = dataSource;
+        return this;
+    }
+
+    /**
+     * Get the bingId property: Bing unique identifier of the recognized entity. Use in conjunction with the Bing Entity
+     * Search API to fetch additional relevant information.
+     *
+     * @return the bingId value.
+     */
+    public String getBingId() {
+        return this.bingId;
+    }
+
+    /**
+     * Set the bingId property: Bing unique identifier of the recognized entity. Use in conjunction with the Bing Entity
+     * Search API to fetch additional relevant information.
+     *
+     * @param bingId the bingId value to set.
+     * @return the LinkedEntity object itself.
+     */
+    public LinkedEntity setBingId(String bingId) {
+        this.bingId = bingId;
         return this;
     }
 }

@@ -45,23 +45,25 @@ import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNetworkInterface;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNicIpConfiguration;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.resourcemanager.resources.core.TestUtilities;
+import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountKey;
-import com.microsoft.azure.storage.CloudStorageAccount;
-import com.microsoft.azure.storage.blob.CloudBlobClient;
-import com.microsoft.azure.storage.blob.CloudBlobContainer;
-import com.microsoft.azure.storage.blob.CloudBlockBlob;
-import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.blob.specialized.BlockBlobClient;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -106,39 +108,32 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         Assertions.assertTrue(keys.size() > 0);
         String storageAccountKey = keys.get(0).value();
 
-        final String storageConnectionString =
-            String
-                .format(
-                    "DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s",
-                    storageAccount.name(), storageAccountKey);
-        // Get the script to upload
-        //
-        InputStream scriptFileAsStream =
-            VirtualMachineScaleSetOperationsTests.class.getResourceAsStream("/install_apache.sh");
-        // Get the size of the stream
-        //
-        int fileSize;
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        byte[] buffer = new byte[256];
-        int bytesRead;
-        while ((bytesRead = scriptFileAsStream.read(buffer)) != -1) {
-            outputStream.write(buffer, 0, bytesRead);
-        }
-        fileSize = outputStream.size();
-        outputStream.close();
         // Upload the script file as block blob
         //
         URI fileUri;
         if (isPlaybackMode()) {
             fileUri = new URI("http://nonexisting.blob.core.windows.net/scripts/install_apache.sh");
         } else {
-            CloudStorageAccount account = CloudStorageAccount.parse(storageConnectionString);
-            CloudBlobClient cloudBlobClient = account.createCloudBlobClient();
-            CloudBlobContainer container = cloudBlobClient.getContainerReference("scripts");
-            container.createIfNotExists();
-            CloudBlockBlob blob = container.getBlockBlobReference("install_apache.sh");
-            blob.upload(scriptFileAsStream, fileSize);
-            fileUri = blob.getUri();
+            final String storageConnectionString = Utils.getStorageConnectionString(
+                storageAccount.name(), storageAccountKey, storageManager.environment());
+            // Get the script to upload
+            //
+            String filePath = VirtualMachineScaleSetOperationsTests.class.getResource("/install_apache.sh").getPath();
+            File file = new File(filePath);
+            InputStream inputStream = VirtualMachineScaleSetOperationsTests.class
+                .getResourceAsStream("/install_apache.sh");
+
+            BlobServiceClient storageClient = new BlobServiceClientBuilder()
+                .connectionString(storageConnectionString)
+                .httpClient(storageManager.httpPipeline().getHttpClient())
+                .buildClient();
+            BlobContainerClient blobContainerClient = storageClient.getBlobContainerClient("scripts");
+            blobContainerClient.create();
+
+            BlockBlobClient blockBlobClient = blobContainerClient.getBlobClient("install_apache.sh")
+                .getBlockBlobClient();
+            blockBlobClient.upload(inputStream, file.length());
+            fileUri = new URI(blockBlobClient.getBlobUrl());
         }
         List<String> fileUris = new ArrayList<>();
         fileUris.add(fileUri.toString());

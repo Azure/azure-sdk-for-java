@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.models.RouteTable;
 import com.azure.resourcemanager.network.models.ServiceEndpointType;
 import com.azure.resourcemanager.network.models.Subnet;
 import com.azure.resourcemanager.network.models.VirtualNetworkPeeringState;
-import com.azure.resourcemanager.resources.core.TestUtilities;
+import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;

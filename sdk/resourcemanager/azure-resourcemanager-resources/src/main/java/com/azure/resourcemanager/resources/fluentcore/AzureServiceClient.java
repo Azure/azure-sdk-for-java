@@ -70,15 +70,6 @@ public abstract class AzureServiceClient {
     }
 
     /**
-     * Gets The default poll interval for long-running operation.
-     *
-     * @return the defaultPollInterval value.
-     */
-    public Duration getDefaultPollInterval() {
-        return SdkContext.getLroRetryDuration();
-    }
-
-    /**
      * Gets The HTTP pipeline to send requests through.
      *
      * @return the httpPipeline value.
@@ -86,6 +77,13 @@ public abstract class AzureServiceClient {
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
+
+    /**
+     * Gets The default poll interval for long-running operation.
+     *
+     * @return the defaultPollInterval value.
+     */
+    public abstract Duration getDefaultPollInterval();
 
     /**
      * Gets default client context.

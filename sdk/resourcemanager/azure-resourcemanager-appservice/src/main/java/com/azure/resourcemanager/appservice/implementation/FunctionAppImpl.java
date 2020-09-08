@@ -39,6 +39,9 @@ import com.azure.resourcemanager.appservice.models.SkuDescription;
 import com.azure.resourcemanager.appservice.models.SkuName;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
+import com.azure.resourcemanager.resources.fluentcore.policy.AuthenticationPolicy;
+import com.azure.resourcemanager.resources.fluentcore.policy.AuxiliaryAuthenticationPolicy;
+import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountKey;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
@@ -119,7 +122,12 @@ class FunctionAppImpl
 
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             for (int i = 0, count = manager().httpPipeline().getPolicyCount(); i < count; ++i) {
-                policies.add(manager().httpPipeline().getPolicy(i));
+                HttpPipelinePolicy policy = manager().httpPipeline().getPolicy(i);
+                if (!(policy instanceof AuthenticationPolicy)
+                    && !(policy instanceof ProviderRegistrationPolicy)
+                    && !(policy instanceof AuxiliaryAuthenticationPolicy)) {
+                    policies.add(policy);
+                }
             }
             policies.add(new FunctionAuthenticationPolicy(this));
             HttpPipeline httpPipeline = new HttpPipelineBuilder()

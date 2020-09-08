@@ -5,12 +5,14 @@ package com.azure.resourcemanager.containerservice;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.resourcemanager.containerservice.fluent.ContainerServiceManagementClient;
+import com.azure.resourcemanager.containerservice.fluent.ContainerServiceManagementClientBuilder;
 import com.azure.resourcemanager.containerservice.implementation.KubernetesClustersImpl;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusters;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.Manager;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
@@ -90,9 +92,9 @@ public final class ContainerServiceManager
             httpPipeline,
             profile,
             new ContainerServiceManagementClientBuilder()
-                .endpoint(profile.environment().getResourceManagerEndpoint())
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .pipeline(httpPipeline)
-                .subscriptionId(profile.subscriptionId())
+                .subscriptionId(profile.getSubscriptionId())
                 .buildClient(),
             sdkContext);
     }

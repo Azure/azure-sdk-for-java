@@ -87,9 +87,6 @@ extends:
       - name: spring-cloud-azure-messaging
         groupId: com.microsoft.azure
         safeName: springcloudazuremessaging
-      - name: spring-cloud-starter-azure-appconfiguration-config
-        groupId: com.microsoft.azure
-        safeName: springcloudstarterazureappconfigurationconfig
       - name: spring-starter-azure-cache
         groupId: com.microsoft.azure
         safeName: springstarterazurecache
