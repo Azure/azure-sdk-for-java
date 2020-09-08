@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sql.SqlManagementClient;
 import com.azure.resourcemanager.sql.fluent.inner.SensitivityLabelInner;
 import com.azure.resourcemanager.sql.fluent.inner.SensitivityLabelListResultInner;
 import com.azure.resourcemanager.sql.models.SensitivityLabelSource;

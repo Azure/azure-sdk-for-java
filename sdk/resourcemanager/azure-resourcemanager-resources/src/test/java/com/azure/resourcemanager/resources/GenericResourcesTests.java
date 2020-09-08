@@ -97,6 +97,8 @@ public class GenericResourcesTests extends ResourceManagementTest {
 
     @Test
     public void canCreateDeleteResourceSyncPoll() throws Exception {
+        final long defaultDelayInMillis = 10 * 1000;
+
         final String resourceName = "rs" + testId;
         // Create
         Accepted<GenericResource> acceptedResource = genericResources.define(resourceName)
@@ -110,17 +112,17 @@ public class GenericResourcesTests extends ResourceManagementTest {
             .beginCreate();
 
         LongRunningOperationStatus pollStatus = acceptedResource.getActivationResponse().getStatus();
-        int delayInMills = acceptedResource.getActivationResponse().getRetryAfter() == null
-            ? 0
-            : (int) acceptedResource.getActivationResponse().getRetryAfter().toMillis();
+        long delayInMills = acceptedResource.getActivationResponse().getRetryAfter() == null
+            ? defaultDelayInMillis
+            : acceptedResource.getActivationResponse().getRetryAfter().toMillis();
         while (!pollStatus.isComplete()) {
             SdkContext.sleep(delayInMills);
 
             PollResponse<?> pollResponse = acceptedResource.getSyncPoller().poll();
             pollStatus = pollResponse.getStatus();
             delayInMills = pollResponse.getRetryAfter() == null
-                ? 10000
-                : (int) pollResponse.getRetryAfter().toMillis();
+                ? defaultDelayInMillis
+                : pollResponse.getRetryAfter().toMillis();
         }
         Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollStatus);
         GenericResource resource = acceptedResource.getFinalResult();

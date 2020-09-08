@@ -26,7 +26,9 @@ in this folder, with the following tags:
 `--api-spec-location=<path to rest-api-spec clone>`
 
 If you are adding or updating swagger files, please make sure that they are included 
-in the input file list.
+in the input file list. Also, if you are adding an additional service event, make sure that 
+its `eventType` string is added as a constant and a mapping to the event data model in the
+`SystemEventMappings` file.
 
 ``` yaml $(java)
 title: EventGridPublisherClient
@@ -34,7 +36,7 @@ description: EventGrid Publisher Client
 openapi-type: data-plane
 output-folder: ../
 namespace: com.azure.messaging.eventgrid
-license-header: MICROSOFT_MIT_NO_CODEGEN
+license-header: MICROSOFT_MIT_SMALL
 generate-client-as-impl: true
 context-client-method-parameter: true
 models-subpackage: systemevents
@@ -57,6 +59,3 @@ input-file:
 - $(api-spec-location)/specification/eventgrid/data-plane/Microsoft.Cache/stable/2018-01-01/RedisCache.json
 - $(api-spec-location)/specification/eventgrid/data-plane/Microsoft.Web/stable/2018-01-01/Web.json
 ```
-
-
-

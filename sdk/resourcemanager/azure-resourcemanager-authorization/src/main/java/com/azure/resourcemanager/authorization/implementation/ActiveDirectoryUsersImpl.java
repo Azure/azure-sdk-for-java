@@ -6,11 +6,11 @@ package com.azure.resourcemanager.authorization.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
+import com.azure.resourcemanager.authorization.fluent.UsersClient;
+import com.azure.resourcemanager.authorization.fluent.inner.UserInner;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryUser;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryUsers;
 import com.azure.resourcemanager.authorization.models.GraphErrorException;
-import com.azure.resourcemanager.authorization.fluent.inner.UserInner;
-import com.azure.resourcemanager.authorization.fluent.UsersClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
@@ -114,5 +114,15 @@ public class ActiveDirectoryUsersImpl
     @Override
     public UsersClient inner() {
         return manager().inner().getUsers();
+    }
+
+    @Override
+    public PagedIterable<ActiveDirectoryUser> listByFilter(String filter) {
+        return new PagedIterable<>(listByFilterAsync(filter));
+    }
+
+    @Override
+    public PagedFlux<ActiveDirectoryUser> listByFilterAsync(String filter) {
+        return inner().listAsync(filter, null).mapPage(this::wrapModel);
     }
 }
