@@ -3,7 +3,7 @@
 package com.azure.core.test;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.implementation.http.HttpClientProviders;
+import com.azure.core.http.HttpClientProvider;
 import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -20,7 +20,9 @@ import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.ServiceLoader;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * Base class for running live and playback tests using {@link InterceptorManager}.
@@ -137,12 +139,16 @@ public abstract class TestBase implements BeforeEachCallback {
      * @return A list of {@link HttpClient HttpClients} to be tested.
      */
     public static Stream<HttpClient> getHttpClients() {
-        if (testMode == TestMode.PLAYBACK) {
-            // Call to @MethodSource method happens @BeforeEach call, so the interceptorManager is
-            // not yet initialized. So, playbackClient will not be available until later.
-            return Stream.of(new HttpClient[]{null});
-        }
-        return HttpClientProviders.getAllHttpClients().stream().filter(TestBase::shouldClientBeTested);
+        /*
+         * In PLAYBACK mode PlaybackClient is used, so there is no need to load HttpClient instances from the classpath.
+         * In LIVE or RECORD mode load all HttpClient instances and let the test run determine which HttpClient
+         * implementation it will use.
+         */
+        return (testMode == TestMode.PLAYBACK)
+            ? Stream.of(new HttpClient[]{null})
+            : StreamSupport.stream(ServiceLoader.load(HttpClientProvider.class).spliterator(), false)
+                .map(HttpClientProvider::createInstance)
+                .filter(TestBase::shouldClientBeTested);
     }
 
     /**
