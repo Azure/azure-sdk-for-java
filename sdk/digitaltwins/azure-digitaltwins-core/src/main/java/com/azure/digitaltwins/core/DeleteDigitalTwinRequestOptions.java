@@ -6,7 +6,7 @@ package com.azure.digitaltwins.core;
 /**
  * Optional settings that are specific to calls to {@link DigitalTwinsClient#deleteDigitalTwin(String)} and its overloads.
  */
-public class DeleteDigitalTwinRequestOptions extends RequestOptions {
+public final class DeleteDigitalTwinRequestOptions extends RequestOptions {
     // This class exists to be added to later if the deleteDigitalTwin APIs get a new optional parameter in later service
     // API versions and so that we don't have to expose that new optional parameter for other APIs using RequestOptions
 

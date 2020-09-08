@@ -5,6 +5,8 @@ package com.azure.resourcemanager.appservice;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.resourcemanager.appservice.fluent.WebSiteManagementClient;
+import com.azure.resourcemanager.appservice.fluent.WebSiteManagementClientBuilder;
 import com.azure.resourcemanager.appservice.implementation.AppServiceCertificateOrdersImpl;
 import com.azure.resourcemanager.appservice.implementation.AppServiceCertificatesImpl;
 import com.azure.resourcemanager.appservice.implementation.AppServiceDomainsImpl;
@@ -22,7 +24,7 @@ import com.azure.resourcemanager.dns.DnsZoneManager;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.Manager;
+import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;

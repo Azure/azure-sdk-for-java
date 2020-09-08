@@ -25,7 +25,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.SubscriptionClient;
 import com.azure.resourcemanager.resources.fluent.inner.LocationInner;
 import com.azure.resourcemanager.resources.fluent.inner.LocationListResultInner;
 import com.azure.resourcemanager.resources.fluent.inner.SubscriptionInner;

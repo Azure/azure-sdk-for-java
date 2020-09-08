@@ -70,7 +70,7 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
         final String sessionId = "singleUnnamedSession-" + Instant.now().toString();
         final String contents = "Some-contents";
         final int numberToSend = 5;
-        final List<String> lockTokens = new ArrayList<>();
+        final List<ServiceBusReceivedMessage> receivedMessages = new ArrayList<>();
 
         setSenderAndReceiver(entityType, entityIndex, TIMEOUT, builder -> builder);
 
@@ -98,7 +98,7 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
                 .verify(Duration.ofMinutes(2));
         } finally {
             subscription.dispose();
-            Mono.when(lockTokens.stream().map(e -> receiver.complete(e, sessionId))
+            Mono.when(receivedMessages.stream().map(e -> receiver.complete(e))
                 .collect(Collectors.toList()))
                 .block(TIMEOUT);
         }

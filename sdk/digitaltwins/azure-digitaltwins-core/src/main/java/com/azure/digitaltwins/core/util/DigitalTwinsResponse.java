@@ -10,7 +10,7 @@ import com.azure.core.http.rest.ResponseBase;
 /**
  * A helper class to represent the HTTP response returned by the service.
  */
-public class DigitalTwinsResponse<T> extends ResponseBase<DigitalTwinsResponseHeaders, T> {
+public final class DigitalTwinsResponse<T> extends ResponseBase<DigitalTwinsResponseHeaders, T> {
     /**
      * Creates an instance of DigitalTwinsResponse.
      *

@@ -11,7 +11,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.digitaltwins.core.implementation.models.IncomingRelationship;
+import com.azure.digitaltwins.core.models.IncomingRelationship;
 import com.azure.digitaltwins.core.models.ModelData;
 import com.azure.digitaltwins.core.util.DigitalTwinsResponse;
 import com.azure.digitaltwins.core.util.ListModelOptions;
@@ -457,12 +457,22 @@ public final class DigitalTwinsClient {
     /**
      * Creates one or many models.
      * @param models The list of models to create. Each string corresponds to exactly one model.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link PagedIterable} of created models and the http response.
+     * @return A List of created models.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ModelData> createModels(List<String> models, Context context) {
-        return new PagedIterable<>(digitalTwinsAsyncClient.createModels(models, context));
+    public List<ModelData> createModels(List<String> models) {
+        return createModelsWithResponse(models, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates one or many models.
+     * @param models The list of models to create. Each string corresponds to exactly one model.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A List of created models and the http response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Response<List<ModelData>> createModelsWithResponse(List<String> models, Context context) {
+        return digitalTwinsAsyncClient.createModelsWithResponse(models, context).block();
     }
 
     /**
@@ -472,7 +482,8 @@ public final class DigitalTwinsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ModelData getModel(String modelId) {
-        return digitalTwinsAsyncClient.getModel(modelId).block();
+
+        return getModelWithResponse(modelId, Context.NONE).getValue();
     }
 
     /**
