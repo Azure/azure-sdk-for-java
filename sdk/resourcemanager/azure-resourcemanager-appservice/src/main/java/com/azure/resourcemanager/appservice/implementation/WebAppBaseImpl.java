@@ -202,6 +202,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
     }
 
     private void normalizeProperties() {
+        this.hostNameBindingsToCreate = new TreeMap<>();
         this.hostNameBindingsToDelete = new ArrayList<>();
         this.appSettingsToAdd = new HashMap<>();
         this.appSettingsToRemove = new ArrayList<>();
