@@ -33,7 +33,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.cdn.CdnManagementClient;
 import com.azure.resourcemanager.cdn.fluent.inner.ProfileInner;
 import com.azure.resourcemanager.cdn.fluent.inner.ProfileListResultInner;
 import com.azure.resourcemanager.cdn.fluent.inner.ResourceUsageInner;

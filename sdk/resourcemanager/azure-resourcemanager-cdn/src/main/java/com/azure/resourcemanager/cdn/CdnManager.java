@@ -6,6 +6,8 @@ package com.azure.resourcemanager.cdn;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.cdn.fluent.CdnManagementClient;
+import com.azure.resourcemanager.cdn.fluent.CdnManagementClientBuilder;
 import com.azure.resourcemanager.cdn.implementation.CdnProfilesImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
