@@ -7,6 +7,9 @@ import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATI
 import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SCHEDULED_ENQUEUE_UTC_TIME_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.VIA_PARTITION_KEY_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.LOCKED_UNTIL_KEY_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpBodyType;
 import com.azure.core.amqp.models.AmqpDataBody;
@@ -17,13 +20,10 @@ import com.azure.messaging.servicebus.models.ReceiveMode;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * This class represents a received message from Service Bus.
@@ -31,9 +31,6 @@ import java.util.stream.Collectors;
 public final class ServiceBusReceivedMessage {
     private final ClientLogger logger = new ClientLogger(ServiceBusReceivedMessage.class);
 
-    private static final String SEQUENCE_NUMBER_NAME = "x-opt-sequence-number";
-    private static final String LOCKED_UNTIL_NAME = "x-opt-locked-until";
-    private static final String DEAD_LETTER_SOURCE_NAME = "x-opt-deadletter-source";
     private static final String DEAD_LETTER_DESCRIPTION = "DeadLetterErrorDescription";
     private static final String DEAD_LETTER_REASON = "DeadLetterReason";
 
@@ -76,11 +73,9 @@ public final class ServiceBusReceivedMessage {
         final AmqpBodyType bodyType = amqpAnnotatedMessage.getBody().getBodyType();
         switch (bodyType) {
             case DATA:
-                final List<BinaryData> binaryData = ((AmqpDataBody) amqpAnnotatedMessage.getBody()).getData().stream()
-                    .collect(Collectors.toList());
-                if (binaryData.size() > 0) {
-                    final byte[] firstData = binaryData.get(0).getData();
-                    body = Arrays.copyOf(firstData, firstData.length);
+                final BinaryData binaryData = ((AmqpDataBody) amqpAnnotatedMessage.getBody()).getBinaryData();
+                if (binaryData != null) {
+                    body = binaryData.getData();
                 }
                 break;
             case SEQUENCE:
@@ -161,8 +156,8 @@ public final class ServiceBusReceivedMessage {
      */
     public String getDeadLetterSource() {
         final Map<String, Object> properties = amqpAnnotatedMessage.getApplicationProperties();
-        if (properties.containsKey(DEAD_LETTER_SOURCE_NAME)) {
-            return String.valueOf(properties.get(DEAD_LETTER_SOURCE_NAME));
+        if (properties.containsKey(DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME.toString())) {
+            return String.valueOf(properties.get(DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME.toString()));
         }
         return null;
     }
@@ -292,8 +287,8 @@ public final class ServiceBusReceivedMessage {
     public OffsetDateTime getLockedUntil() {
         OffsetDateTime lockedUntil = null;
         final Map<String, Object> messageAnnotations = amqpAnnotatedMessage.getMessageAnnotations();
-        if (messageAnnotations.containsKey(LOCKED_UNTIL_NAME)) {
-            Object value = messageAnnotations.get(LOCKED_UNTIL_NAME);
+        if (messageAnnotations.containsKey(LOCKED_UNTIL_KEY_ANNOTATION_NAME.toString())) {
+            Object value = messageAnnotations.get(LOCKED_UNTIL_KEY_ANNOTATION_NAME.toString());
             lockedUntil = ((Date) value).toInstant().atOffset(ZoneOffset.UTC);
         }
         return lockedUntil;
@@ -413,8 +408,8 @@ public final class ServiceBusReceivedMessage {
     public long getSequenceNumber() {
         long sequenceNumber = 0;
         final Map<String, Object> messageAnnotations = amqpAnnotatedMessage.getMessageAnnotations();
-        if (messageAnnotations.containsKey(SEQUENCE_NUMBER_NAME)) {
-            Object value = messageAnnotations.get(SEQUENCE_NUMBER_NAME);
+        if (messageAnnotations.containsKey(SEQUENCE_NUMBER_ANNOTATION_NAME.toString())) {
+            Object value = messageAnnotations.get(SEQUENCE_NUMBER_ANNOTATION_NAME.toString());
             sequenceNumber = (long) value;
         }
         return sequenceNumber;
@@ -522,7 +517,8 @@ public final class ServiceBusReceivedMessage {
      * before it was deadlettered.
      */
     void setDeadLetterSource(String deadLetterSource) {
-        amqpAnnotatedMessage.getApplicationProperties().put(DEAD_LETTER_SOURCE_NAME, deadLetterSource);
+        amqpAnnotatedMessage.getApplicationProperties().put(DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME.toString(),
+            deadLetterSource);
     }
 
     /**
@@ -577,7 +573,8 @@ public final class ServiceBusReceivedMessage {
     void setLockedUntil(OffsetDateTime lockedUntil) {
         if (lockedUntil != null) {
             long epochMilli = lockedUntil.toInstant().toEpochMilli();
-            amqpAnnotatedMessage.getMessageAnnotations().put(LOCKED_UNTIL_NAME, new Date(epochMilli));
+            amqpAnnotatedMessage.getMessageAnnotations().put(LOCKED_UNTIL_KEY_ANNOTATION_NAME.toString(),
+                new Date(epochMilli));
         }
     }
 
@@ -622,7 +619,7 @@ public final class ServiceBusReceivedMessage {
      * @param sequenceNumber the unique number assigned to a message by Service Bus.
      */
     void setSequenceNumber(long sequenceNumber) {
-        amqpAnnotatedMessage.getMessageAnnotations().put(SEQUENCE_NUMBER_NAME, sequenceNumber);
+        amqpAnnotatedMessage.getMessageAnnotations().put(SEQUENCE_NUMBER_ANNOTATION_NAME.toString(), sequenceNumber);
     }
 
     /**

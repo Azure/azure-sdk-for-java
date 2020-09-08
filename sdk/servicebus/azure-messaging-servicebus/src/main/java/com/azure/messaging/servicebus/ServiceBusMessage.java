@@ -17,13 +17,9 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * The data structure encapsulating the message being sent-to Service Bus.
@@ -71,8 +67,7 @@ public class ServiceBusMessage {
      */
     public ServiceBusMessage(byte[] body) {
         this.context = Context.NONE;
-        amqpAnnotatedMessage = new AmqpAnnotatedMessage(new AmqpDataBody(Collections
-            .singletonList(new BinaryData(body))));
+        amqpAnnotatedMessage = new AmqpAnnotatedMessage(new AmqpDataBody(new BinaryData(body)));
     }
 
     /**

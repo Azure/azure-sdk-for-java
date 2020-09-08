@@ -101,7 +101,15 @@ public enum AmqpMessageConstant {
     /**
      * The identifier associated with a given via-partition.
      */
-    VIA_PARTITION_KEY_ANNOTATION_NAME("x-opt-via-partition-key");
+    VIA_PARTITION_KEY_ANNOTATION_NAME("x-opt-via-partition-key"),
+    /**
+     * The identifier for locked until.
+     */
+    LOCKED_UNTIL_KEY_ANNOTATION_NAME("x-opt-locked-until"),
+    /**
+     * The identifier for deadletter source.
+     */
+    DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME("x-opt-deadletter-source");
 
     private static final Map<String, AmqpMessageConstant> RESERVED_CONSTANTS_MAP = new HashMap<>();
     private final String constant;
