@@ -11,7 +11,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.azure.resourcemanager.resources.fluent.inner.ResourceGroupInner;
 import com.azure.resourcemanager.resources.fluent.ResourceGroupsClient;
-import com.azure.resourcemanager.resources.ResourceManagementClient;
+import com.azure.resourcemanager.resources.fluent.ResourceManagementClient;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;

@@ -147,7 +147,7 @@ public class ReadmeSamples {
             ServiceBusReceivedMessage message = context.getMessage();
 
             // Process message and then complete it.
-            receiver.complete(message.getLockToken());
+            receiver.complete(message);
         });
     }
 

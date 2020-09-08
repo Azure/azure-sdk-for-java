@@ -14,12 +14,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
@@ -87,7 +87,7 @@ class LockRenewalOperationTest {
      * Verify that when an error occurs, it is displayed.
      */
     @Test
-    void errors() throws InterruptedException {
+    void errors() {
         // Arrange
         final boolean isSession = true;
         final Duration renewalPeriod = Duration.ofSeconds(2);
@@ -119,7 +119,11 @@ class LockRenewalOperationTest {
         operation = new LockRenewalOperation(A_LOCK_TOKEN, maxDuration, isSession, renewalOperation, lockedUntil);
 
         // Act
-        TimeUnit.MILLISECONDS.sleep(totalSleepPeriod.toMillis());
+        StepVerifier.create(operation.getCompletionOperation())
+            .thenAwait(totalSleepPeriod)
+            .expectErrorMatches(e -> e instanceof IllegalAccessException
+                && e.getMessage().equals(testError.getMessage()))
+            .verify();
 
         // Assert
         assertEquals(LockRenewalStatus.FAILED, operation.getStatus());
@@ -131,7 +135,7 @@ class LockRenewalOperationTest {
      * Verifies that it stops renewing after the duration has elapsed.
      */
     @Test
-    void completes() throws InterruptedException {
+    void completes() {
         // Arrange
         final Duration maxDuration = Duration.ofSeconds(8);
         final Duration renewalPeriod = Duration.ofSeconds(3);
@@ -147,10 +151,11 @@ class LockRenewalOperationTest {
         operation = new LockRenewalOperation(A_LOCK_TOKEN, maxDuration, false, renewalOperation, lockedUntil);
 
         // Act
-        Thread.sleep(totalSleepPeriod.toMillis());
-        logger.info("Finished renewals for first sleep.");
-        Thread.sleep(2000);
-        System.out.println("Finished second sleep. Should not have any more renewals.");
+        StepVerifier.create(operation.getCompletionOperation())
+            .thenAwait(totalSleepPeriod)
+            .then(() -> logger.info("Finished renewals for first sleep."))
+            .expectComplete()
+            .verify(Duration.ofMillis(2000));
 
         // Assert
         assertEquals(LockRenewalStatus.COMPLETE, operation.getStatus());
@@ -165,7 +170,7 @@ class LockRenewalOperationTest {
      * Verify that we can cancel the operation.
      */
     @Test
-    void cancellation() throws InterruptedException {
+    void cancellation() {
         // Arrange
         final Duration maxDuration = Duration.ofSeconds(20);
         final Duration renewalPeriod = Duration.ofSeconds(3);
@@ -181,12 +186,14 @@ class LockRenewalOperationTest {
         operation = new LockRenewalOperation(A_LOCK_TOKEN, maxDuration, false, renewalOperation, lockedUntil);
 
         // Act
-        Thread.sleep(totalSleepPeriod.toMillis());
-        logger.info("Finished renewals for first sleep. Cancelling");
-        operation.close();
-
-        Thread.sleep(2000);
-        System.out.println("Finished second sleep. Should not have any more renewals.");
+        StepVerifier.create(operation.getCompletionOperation())
+            .thenAwait(totalSleepPeriod)
+            .then(() -> {
+                logger.info("Finished renewals for first sleep. Cancelling");
+                operation.close();
+            })
+            .expectComplete()
+            .verify(Duration.ofMillis(1000));
 
         // Assert
         assertEquals(LockRenewalStatus.CANCELLED, operation.getStatus());

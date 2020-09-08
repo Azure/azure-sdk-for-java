@@ -25,7 +25,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appplatform.AppPlatformManagementClient;
 import com.azure.resourcemanager.appplatform.fluent.inner.ResourceSkuCollectionInner;
 import com.azure.resourcemanager.appplatform.models.ResourceSku;
 import reactor.core.publisher.Mono;

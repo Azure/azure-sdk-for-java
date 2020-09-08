@@ -14,6 +14,9 @@ import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.MinedOpinion;
 import com.azure.ai.textanalytics.models.OpinionSentiment;
 import com.azure.ai.textanalytics.models.PiiEntity;
+import com.azure.ai.textanalytics.models.PiiEntityCollection;
+import com.azure.ai.textanalytics.models.PiiEntityDomainType;
+import com.azure.ai.textanalytics.models.RecognizePiiEntityOptions;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
@@ -155,6 +158,15 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     @Test
     abstract void recognizePiiEntitiesBatchTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizePiiEntitiesForDomainFilter(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizePiiEntitiesForBatchInputStringForDomainFilter(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizePiiEntitiesForBatchInputForDomainFilter(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     // Linked Entities
     @Test
@@ -368,6 +380,11 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept(PII_ENTITY_INPUTS.get(0));
     }
 
+    void recognizePiiDomainFilterRunner(BiConsumer<String, RecognizePiiEntityOptions> testRunner) {
+        testRunner.accept(PII_ENTITY_INPUTS.get(0),
+            new RecognizePiiEntityOptions().setDomainFilter(PiiEntityDomainType.PROTECTED_HEALTH_INFORMATION));
+    }
+
     void recognizePiiLanguageHintRunner(BiConsumer<List<String>, String> testRunner) {
         testRunner.accept(PII_ENTITY_INPUTS, "en");
     }
@@ -390,16 +407,16 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     void recognizeBatchPiiEntitiesShowStatsRunner(
-        BiConsumer<List<TextDocumentInput>, TextAnalyticsRequestOptions> testRunner) {
+        BiConsumer<List<TextDocumentInput>, RecognizePiiEntityOptions> testRunner) {
         final List<TextDocumentInput> textDocumentInputs = TestUtils.getTextDocumentInputs(PII_ENTITY_INPUTS);
-        TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
+        RecognizePiiEntityOptions options = new RecognizePiiEntityOptions().setIncludeStatistics(true);
 
         testRunner.accept(textDocumentInputs, options);
     }
 
     void recognizeStringBatchPiiEntitiesShowStatsRunner(
-        BiConsumer<List<String>, TextAnalyticsRequestOptions> testRunner) {
-        testRunner.accept(PII_ENTITY_INPUTS, new TextAnalyticsRequestOptions().setIncludeStatistics(true));
+        BiConsumer<List<String>, RecognizePiiEntityOptions> testRunner) {
+        testRunner.accept(PII_ENTITY_INPUTS, new RecognizePiiEntityOptions().setIncludeStatistics(true));
     }
 
     // Linked Entity runner
@@ -438,7 +455,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     // Key Phrases runner
     void extractKeyPhrasesForSingleTextInputRunner(Consumer<String> testRunner) {
         testRunner.accept(KEY_PHRASE_INPUTS.get(1));
-    };
+    }
 
     void extractBatchStringKeyPhrasesShowStatsRunner(BiConsumer<List<String>, TextAnalyticsRequestOptions> testRunner) {
         testRunner.accept(KEY_PHRASE_INPUTS, new TextAnalyticsRequestOptions().setIncludeStatistics(true));
@@ -533,13 +550,50 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept(Arrays.asList(new TextDocumentInput("", CATEGORIZED_ENTITY_INPUTS.get(0))));
     }
 
-    void tooManyDocumentsRunner(
-        Consumer<List<String>> testRunner) {
+    void tooManyDocumentsRunner(Consumer<List<String>> testRunner) {
         final String documentInput = CATEGORIZED_ENTITY_INPUTS.get(0);
         // max num of document size is 10
         testRunner.accept(Arrays.asList(
             documentInput, documentInput, documentInput, documentInput, documentInput, documentInput,
             documentInput, documentInput, documentInput, documentInput, documentInput, documentInput));
+    }
+
+    // offset runners
+    void emojiRunner(Consumer<String> testRunner, String text) {
+        testRunner.accept("👩 " + text); // count as 3 units
+    }
+
+    void emojiWithSkinToneModifierRunner(Consumer<String> testRunner, String text) {
+        testRunner.accept("👩🏻 " + text); // count as 5 units
+    }
+
+    void emojiFamilyRunner(Consumer<String> testRunner, String text) {
+        testRunner.accept("👩‍👩‍👧‍👧 " + text); // count as 12 units
+    }
+
+    void emojiFamilyWithSkinToneModifierRunner(Consumer<String> testRunner, String text) {
+        testRunner.accept("👩🏻‍👩🏽‍👧🏾‍👦🏿 " + text); // count as 20 units
+    }
+
+    void diacriticsNfcRunner(Consumer<String> testRunner, String text) {
+        testRunner.accept("año " + text); // count as 4 units
+    }
+
+    void diacriticsNfdRunner(Consumer<String> testRunner, String text) {
+        testRunner.accept("año " + text); // count as 5 units
+    }
+
+    void koreanNfcRunner(Consumer<String> testRunner, String text) {
+        testRunner.accept("아가 " + text); // count as 3 units
+    }
+
+    void koreanNfdRunner(Consumer<String> testRunner, String text) {
+        testRunner.accept("아가 " + text); // count as 3 units
+    }
+
+    void zalgoTextRunner(Consumer<String> testRunner, String text) {
+        // count as 116 units
+        testRunner.accept("ơ̵̧̧̢̳̘̘͕͔͕̭̟̙͎͈̞͔̈̇̒̃͋̇̅͛̋͛̎́͑̄̐̂̎͗͝m̵͍͉̗̄̏͌̂̑̽̕͝͠g̵̢̡̢̡̨̡̧̛͉̞̯̠̤̣͕̟̫̫̼̰͓̦͖̣̣͎̋͒̈́̓̒̈̍̌̓̅͑̒̓̅̅͒̿̏́͗̀̇͛̏̀̈́̀̊̾̀̔͜͠͝ͅ " + text);
     }
 
     String getEndpoint() {
@@ -606,10 +660,14 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     static void validatePiiEntitiesResultCollection(boolean showStatistics,
         RecognizePiiEntitiesResultCollection expected, RecognizePiiEntitiesResultCollection actual) {
-        validateTextAnalyticsResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
+        validateTextAnalyticsResult(showStatistics, expected, actual, (expectedItem, actualItem) -> {
+            final PiiEntityCollection expectedPiiEntityCollection = expectedItem.getEntities();
+            final PiiEntityCollection actualPiiEntityCollection = actualItem.getEntities();
+            assertEquals(expectedPiiEntityCollection.getRedactedText(), actualPiiEntityCollection.getRedactedText());
             validatePiiEntities(
-                expectedItem.getEntities().stream().collect(Collectors.toList()),
-                actualItem.getEntities().stream().collect(Collectors.toList())));
+                expectedPiiEntityCollection.stream().collect(Collectors.toList()),
+                actualPiiEntityCollection.stream().collect(Collectors.toList()));
+        });
     }
 
     static void validateLinkedEntitiesResultCollectionWithResponse(boolean showStatistics,
@@ -714,6 +772,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expectedLinkedEntity.getLanguage(), actualLinkedEntity.getLanguage());
         assertEquals(expectedLinkedEntity.getUrl(), actualLinkedEntity.getUrl());
         assertEquals(expectedLinkedEntity.getDataSourceEntityId(), actualLinkedEntity.getDataSourceEntityId());
+        assertEquals(expectedLinkedEntity.getBingEntitySearchApiId(), actualLinkedEntity.getBingEntitySearchApiId());
         validateLinkedEntityMatches(expectedLinkedEntity.getMatches().stream().collect(Collectors.toList()),
             actualLinkedEntity.getMatches().stream().collect(Collectors.toList()));
     }

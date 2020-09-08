@@ -13,11 +13,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImpl;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImplBuilder;
+import com.azure.digitaltwins.core.implementation.converters.ModelDataConverter;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions;
-import com.azure.digitaltwins.core.implementation.models.IncomingRelationship;
 import com.azure.digitaltwins.core.implementation.serializer.DigitalTwinsStringSerializer;
+import com.azure.digitaltwins.core.models.IncomingRelationship;
 import com.azure.digitaltwins.core.models.ModelData;
-import com.azure.digitaltwins.core.implementation.models.DigitalTwinsGetComponentResponse;
 import com.azure.digitaltwins.core.util.DigitalTwinsResponse;
 import com.azure.digitaltwins.core.util.DigitalTwinsResponseHeaders;
 import com.azure.digitaltwins.core.util.ListModelOptions;
@@ -53,7 +53,7 @@ public final class DigitalTwinsAsyncClient {
     private static final ObjectMapper mapper = new ObjectMapper();
     private final DigitalTwinsServiceVersion serviceVersion;
     private final AzureDigitalTwinsAPIImpl protocolLayer;
-    private static final Boolean includeModelDefinition = true;
+    private static final Boolean includeModelDefinitionOnGet = true;
 
     DigitalTwinsAsyncClient(HttpPipeline pipeline, DigitalTwinsServiceVersion serviceVersion, String host) {
         final SimpleModule stringModule = new SimpleModule("String Serializer");
@@ -747,23 +747,25 @@ public final class DigitalTwinsAsyncClient {
     /**
      * Creates one or many models.
      * @param models The list of models to create. Each string corresponds to exactly one model.
-     * @return A {@link PagedFlux} of created models and the http response.
+     * @return A List of created models.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ModelData> createModels(List<String> models) {
-        return new PagedFlux<>(
-            () -> withContext(context -> createModelsSinglePageAsync(models, context)),
-            nextLink -> withContext(context -> Mono.empty()));
+    public Mono<List<ModelData>> createModels(List<String> models) {
+        return createModelsWithResponse(models)
+            .map(Response::getValue);
     }
 
-    PagedFlux<ModelData> createModels(List<String> models, Context context){
-        return new PagedFlux<>(
-            () -> createModelsSinglePageAsync(models, context),
-            nextLink -> Mono.empty());
+    /**
+     * Creates one or many models.
+     * @param models The list of models to create. Each string corresponds to exactly one model.
+     * @return A List of created models and the http response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Mono<Response<List<ModelData>>> createModelsWithResponse(List<String> models) {
+        return withContext(context -> createModelsWithResponse(models, context));
     }
 
-    Mono<PagedResponse<ModelData>> createModelsSinglePageAsync(List<String> models, Context context)
-    {
+    Mono<Response<List<ModelData>>> createModelsWithResponse(List<String> models, Context context) {
         List<Object> modelsPayload = new ArrayList<>();
         for (String model: models) {
             try {
@@ -776,14 +778,13 @@ public final class DigitalTwinsAsyncClient {
         }
 
         return protocolLayer.getDigitalTwinModels().addWithResponseAsync(modelsPayload, context)
-            .map(
-                listResponse -> new PagedResponseBase<>(
-                    listResponse.getRequest(),
-                    listResponse.getStatusCode(),
-                    listResponse.getHeaders(),
-                    listResponse.getValue(),
-                    null,
-                    ((ResponseBase)listResponse).getDeserializedHeaders()));
+            .map(listResponse -> {
+                List<ModelData> convertedList = listResponse.getValue().stream()
+                    .map(ModelDataConverter::map)
+                    .collect(Collectors.toList());
+
+                return new SimpleResponse<>(listResponse.getRequest(), listResponse.getStatusCode(), listResponse.getHeaders(), convertedList);
+            });
     }
 
     /**
@@ -810,7 +811,15 @@ public final class DigitalTwinsAsyncClient {
     Mono<Response<ModelData>> getModelWithResponse(String modelId, Context context){
         return protocolLayer
             .getDigitalTwinModels()
-            .getByIdWithResponseAsync(modelId, includeModelDefinition, context);
+            .getByIdWithResponseAsync(modelId, includeModelDefinitionOnGet, context)
+            .map(response -> {
+                com.azure.digitaltwins.core.implementation.models.ModelData modelData = response.getValue();
+                return new SimpleResponse<>(
+                    response.getRequest(),
+                    response.getStatusCode(),
+                    response.getHeaders(),
+                    ModelDataConverter.map(modelData));
+            });
     }
 
     /**
@@ -851,11 +860,39 @@ public final class DigitalTwinsAsyncClient {
             listModelOptions.getDependenciesFor(),
             listModelOptions.getIncludeModelDefinition(),
             new DigitalTwinModelsListOptions().setMaxItemCount(listModelOptions.getMaxItemCount()),
-            context);
+            context)
+            .map(
+                objectPagedResponse -> {
+                    List<ModelData> convertedList = objectPagedResponse.getValue().stream()
+                        .map(ModelDataConverter::map)
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toList());
+                    return new PagedResponseBase<>(
+                        objectPagedResponse.getRequest(),
+                        objectPagedResponse.getStatusCode(),
+                        objectPagedResponse.getHeaders(),
+                        convertedList,
+                        null,
+                        ((PagedResponseBase) objectPagedResponse).getDeserializedHeaders());
+                }
+            );
     }
 
     Mono<PagedResponse<ModelData>> listModelsNextSinglePageAsync(String nextLink, Context context){
-        return protocolLayer.getDigitalTwinModels().listNextSinglePageAsync(nextLink, context);
+        return protocolLayer.getDigitalTwinModels().listNextSinglePageAsync(nextLink, context)
+            .map(objectPagedResponse -> {
+            List<ModelData> convertedList = objectPagedResponse.getValue().stream()
+                .map(ModelDataConverter::map)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+            return new PagedResponseBase<>(
+                objectPagedResponse.getRequest(),
+                objectPagedResponse.getStatusCode(),
+                objectPagedResponse.getHeaders(),
+                convertedList,
+                objectPagedResponse.getContinuationToken(),
+                ((PagedResponseBase)objectPagedResponse).getDeserializedHeaders());
+        });
     }
 
     /**
@@ -866,7 +903,7 @@ public final class DigitalTwinsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteModel(String modelId) {
         return deleteModelWithResponse(modelId)
-            .map(Response::getValue);
+            .flatMap(voidResponse -> Mono.empty());
     }
 
     /**
@@ -896,7 +933,7 @@ public final class DigitalTwinsAsyncClient {
      */
     public Mono<Void> decommissionModel(String modelId) {
         return decommissionModelWithResponse(modelId)
-            .map(Response::getValue);
+            .flatMap(voidResponse -> Mono.empty());
     }
 
     /**
@@ -1004,7 +1041,7 @@ public final class DigitalTwinsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateComponent(String digitalTwinId, String componentPath, List<Object> componentUpdateOperations) {
         return updateComponentWithResponse(digitalTwinId, componentPath, componentUpdateOperations, new UpdateComponentRequestOptions())
-            .map(DigitalTwinsResponse::getValue);
+            .flatMap(voidResponse -> Mono.empty());
     }
 
     /**

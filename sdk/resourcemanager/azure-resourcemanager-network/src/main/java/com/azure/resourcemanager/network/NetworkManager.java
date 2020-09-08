@@ -4,6 +4,8 @@ package com.azure.resourcemanager.network;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.resourcemanager.network.fluent.NetworkManagementClient;
+import com.azure.resourcemanager.network.fluent.NetworkManagementClientBuilder;
 import com.azure.resourcemanager.network.implementation.ApplicationGatewaysImpl;
 import com.azure.resourcemanager.network.implementation.ApplicationSecurityGroupsImpl;
 import com.azure.resourcemanager.network.implementation.DdosProtectionPlansImpl;
@@ -40,7 +42,7 @@ import com.azure.resourcemanager.network.models.RouteTables;
 import com.azure.resourcemanager.network.models.VirtualNetworkGateways;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.Manager;
+import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;

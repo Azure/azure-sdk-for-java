@@ -31,7 +31,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.cosmos.CosmosDBManagementClient;
 import com.azure.resourcemanager.cosmos.fluent.inner.CassandraKeyspaceGetResultsInner;
 import com.azure.resourcemanager.cosmos.fluent.inner.CassandraKeyspaceListResultInner;
 import com.azure.resourcemanager.cosmos.fluent.inner.CassandraTableGetResultsInner;
