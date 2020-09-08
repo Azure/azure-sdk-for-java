@@ -21,6 +21,11 @@ class FunctionDeploymentSlotBasicImpl extends WebSiteBaseImpl
     }
 
     @Override
+    public String name() {
+        return super.name().replaceAll(".*/", "");
+    }
+
+    @Override
     public FunctionDeploymentSlot refresh() {
         return this.refreshAsync().block();
     }

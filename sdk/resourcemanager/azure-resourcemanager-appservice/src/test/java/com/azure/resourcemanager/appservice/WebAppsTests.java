@@ -158,6 +158,8 @@ public class WebAppsTests extends AppServiceTest {
 
         WebAppBasic webAppBasic1 = webApps.iterator().next();
         // verify basic info
+        Assertions.assertEquals(webApp1.id(), webAppBasic1.id());
+        Assertions.assertEquals(webApp1.name(), webAppBasic1.name());
         Assertions.assertEquals(webApp1.appServicePlanId(), webAppBasic1.appServicePlanId());
         Assertions.assertEquals(webApp1.operatingSystem(), webAppBasic1.operatingSystem());
         Assertions.assertEquals(webApp1.httpsOnly(), webAppBasic1.httpsOnly());

@@ -20,6 +20,11 @@ class WebDeploymentSlotBasicImpl extends WebSiteBaseImpl implements WebDeploymen
     }
 
     @Override
+    public String name() {
+        return super.name().replaceAll(".*/", "");
+    }
+
+    @Override
     public DeploymentSlot refresh() {
         return this.refreshAsync().block();
     }
