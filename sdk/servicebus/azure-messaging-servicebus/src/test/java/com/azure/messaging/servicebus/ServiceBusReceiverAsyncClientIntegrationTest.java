@@ -980,10 +980,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         deliveryAnnotation.put("delivery-annotations-key-1", "delivery-annotations-value-1");
         deliveryAnnotation.put("delivery-annotations-key-2", "delivery-annotations-value-2");
 
-        setSenderAndReceiver(entityType, 0, isSessionEnabled);
-        ServiceBusReceiverAsyncClient deadLetterReceiver = getDeadLetterReceiverBuilder(false, entityType,
-            0, Function.identity())
-            .buildAsyncClient();
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_VALIDATE_AMQP_PROPERTIES, isSessionEnabled);
 
         final String messageId = UUID.randomUUID().toString();
         final AmqpAnnotatedMessage expectedAmqpProperties = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(new BinaryData(CONTENTS_BYTES))));
@@ -1006,7 +1003,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         expectedAmqpProperties.getFooter().putAll(footer);
         expectedAmqpProperties.getDeliveryAnnotations().putAll(deliveryAnnotation);
         expectedAmqpProperties.getApplicationProperties().putAll(aplicaitonProperties);
-
 
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled, expectedAmqpProperties);
 

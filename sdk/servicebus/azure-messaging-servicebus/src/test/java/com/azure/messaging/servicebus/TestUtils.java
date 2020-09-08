@@ -55,6 +55,7 @@ public class TestUtils {
     static final int USE_CASE_SEND_VIA_QUEUE_2 = 14;
     static final int USE_CASE_SEND_VIA_TOPIC_1 = 15;
     static final int USE_CASE_SEND_VIA_TOPIC_2 = 16;
+    static final int USE_CASE_VALIDATE_AMQP_PROPERTIES = 17;
 
     // An application property key to identify where in the stream this message was created.
     static final String MESSAGE_POSITION_ID = "message-position";

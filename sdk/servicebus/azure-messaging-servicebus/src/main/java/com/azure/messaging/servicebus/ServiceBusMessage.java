@@ -66,6 +66,7 @@ public class ServiceBusMessage {
      * @throws NullPointerException if {@code body} is {@code null}.
      */
     public ServiceBusMessage(byte[] body) {
+        Objects.requireNonNull(body, "'body' cannot be null.");
         this.context = Context.NONE;
         amqpAnnotatedMessage = new AmqpAnnotatedMessage(new AmqpDataBody(new BinaryData(body)));
     }
@@ -79,7 +80,8 @@ public class ServiceBusMessage {
      * @throws NullPointerException if {@code receivedMessage} is {@code null}.
      */
     public ServiceBusMessage(ServiceBusReceivedMessage receivedMessage) {
-        this.amqpAnnotatedMessage = new AmqpAnnotatedMessage(receivedMessage.getAmqpAnnotatedMessage());
+        Objects.requireNonNull(receivedMessage, "'receivedMessage' cannot be null.");
+        this.amqpAnnotatedMessage = new AmqpAnnotatedMessage(receivedMessage.getAmqpAnnotatedMessage().getBody());
         this.context = Context.NONE;
         setMessageId(receivedMessage.getMessageId());
         setScheduledEnqueueTime(receivedMessage.getScheduledEnqueueTime());
@@ -96,6 +98,7 @@ public class ServiceBusMessage {
 
         //TODO (Hemant): Cleanup the values from AmqpAnnotatedMessage which should never be set by user.
         // Some values of MessageAnnotations , Header.deliveryCount etc
+
     }
 
     /**

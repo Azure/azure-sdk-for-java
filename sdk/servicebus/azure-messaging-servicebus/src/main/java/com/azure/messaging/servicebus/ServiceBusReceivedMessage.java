@@ -23,6 +23,7 @@ import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -53,8 +54,8 @@ public final class ServiceBusReceivedMessage {
     }
 
     ServiceBusReceivedMessage(byte[] body) {
-        BinaryData binaryData = new BinaryData(body);
-        amqpAnnotatedMessage = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(binaryData)));
+        Objects.requireNonNull(body, "'body' cannot be null.");
+        amqpAnnotatedMessage = new AmqpAnnotatedMessage(new AmqpDataBody(new BinaryData(body)));
     }
 
     /**
@@ -80,7 +81,7 @@ public final class ServiceBusReceivedMessage {
                 break;
             case SEQUENCE:
             case VALUE:
-                throw logger.logExceptionAsError(new UnsupportedOperationException("Body type not supported "
+                throw logger.logExceptionAsError(new UnsupportedOperationException("Body type not supported yet "
                     + bodyType.toString()));
             default:
                 logger.warning("Invalid body type {}.", bodyType);

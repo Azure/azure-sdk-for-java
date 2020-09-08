@@ -149,7 +149,9 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         amqpMessage.setReplyToGroupId(brokeredMessage.getReplyToSessionId());
         amqpMessage.setGroupId(brokeredMessage.getSessionId());
         amqpMessage.setContentEncoding(brokeredProperties.getContentEncoding());
-        amqpMessage.setGroupSequence(brokeredProperties.getGroupSequence());
+        if (brokeredProperties.getGroupSequence() != null) {
+            amqpMessage.setGroupSequence(brokeredProperties.getGroupSequence());
+        }
         amqpMessage.getProperties().setTo(brokeredMessage.getTo());
         amqpMessage.getProperties().setUserId(new Binary(brokeredProperties.getUserId()));
 
@@ -169,7 +171,9 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         if (header.getDeliveryCount() != null) {
             amqpMessage.setDeliveryCount(brokeredMessage.getAmqpAnnotatedMessage().getHeader().getDeliveryCount());
         }
-        amqpMessage.setPriority(brokeredMessage.getAmqpAnnotatedMessage().getHeader().getPriority());
+        if (header.getPriority() != null) {
+            amqpMessage.setPriority(header.getPriority());
+        }
         if (header.isDurable() != null) {
             amqpMessage.setDurable(brokeredMessage.getAmqpAnnotatedMessage().getHeader().isDurable());
         }
