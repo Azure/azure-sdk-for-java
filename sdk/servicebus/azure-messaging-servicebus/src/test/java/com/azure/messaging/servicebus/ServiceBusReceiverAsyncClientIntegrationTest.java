@@ -1158,7 +1158,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     protected ServiceBusMessage getMessage(String messageId, boolean isSessionEnabled, AmqpAnnotatedMessage amqpPropertiesToSet) {
 
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId);
-        
+
         final AmqpAnnotatedMessage amqpAnnotatedMessage = message.getAmqpAnnotatedMessage();
         amqpAnnotatedMessage.getMessageAnnotations().putAll(amqpPropertiesToSet.getMessageAnnotations());
         amqpAnnotatedMessage.getApplicationProperties().putAll(amqpPropertiesToSet.getApplicationProperties());
