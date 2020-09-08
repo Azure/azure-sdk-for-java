@@ -31,7 +31,7 @@ public class ConnectionStringProperties {
     private static final String CS_WITH_ACCESS_KEY = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
         + "SharedAccessKey={sharedAccessKey};EntityPath={entityPath}";
     private static final String CS_WITH_SAS = "Endpoint={endpoint};SharedAccessSignature="
-        + "SharedAccessSignature {sharedAccessSignature}";
+        + "SharedAccessSignature {sharedAccessSignature};EntityPath={entityPath}";
     private static final String ERROR_MESSAGE_FORMAT = "Could not parse 'connectionString'. Expected format: "
         + CS_WITH_ACCESS_KEY + " or " + CS_WITH_SAS + ". Actual: %s";
     private static final String ERROR_MESSAGE_ENDPOINT_FORMAT = "'Endpoint' must be provided in 'connectionString'."
@@ -101,11 +101,11 @@ public class ConnectionStringProperties {
 
         // connection string should have an endpoint and either shared access signature or shared access key and value
         boolean includesSharedKey = sharedAccessKeyName != null || sharedAccessKeyValue != null;
-        boolean validSharedKey = sharedAccessKeyName != null && sharedAccessKeyValue != null;
+        boolean hasSharedKeyAndValue = sharedAccessKeyName != null && sharedAccessKeyValue != null;
         boolean includesSharedAccessSignature = sharedAccessSignature != null;
         if (endpoint == null
             || (includesSharedKey && includesSharedAccessSignature) // includes both SAS and key or value
-            || (!validSharedKey && !includesSharedAccessSignature)) { // invalid key, value and SAS
+            || (!hasSharedKeyAndValue && !includesSharedAccessSignature)) { // invalid key, value and SAS
             throw new IllegalArgumentException(String.format(Locale.US, ERROR_MESSAGE_FORMAT, connectionString));
         }
 
