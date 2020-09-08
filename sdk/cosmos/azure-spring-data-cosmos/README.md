@@ -1,6 +1,6 @@
-# Azure Spring Data Cosmos Core client library for Java
+# Azure Spring Data Cosmos client library for Java
 
-**Azure Spring Data Cosmos** provides core Spring Data support for Azure Cosmos DB using the [SQL API][sql_api_query], based on Spring Data framework.
+**Azure Spring Data Cosmos** provides Spring Data support for Azure Cosmos DB using the [SQL API][sql_api_query], based on Spring Data framework.
 [Azure Cosmos DB][cosmos_introduction] is a globally-distributed database service which allows developers to work with data using a variety of standard APIs, such as SQL, MongoDB, Cassandra, Graph, and Table.
 
 ## Spring data version support
@@ -9,7 +9,17 @@ This project supports both [spring-data-commons 2.2.x][azure_spring_data_2_2_cos
 ## Getting started
 
 ### Include the package
-Please refer to [azure-spring-data-2-2-cosmos readme][azure_spring_data_2_2_cosmos_readme] or [azure-spring-data-2-3-cosmos readme][azure_spring_data_2_3_cosmos_readme] on how to include the individual packages.
+If you are using Maven, add the following dependency.
+
+[//]: # ({x-version-update-start;com.azure:azure-spring-data-cosmos;current})
+```xml
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-spring-data-cosmos</artifactId>
+    <version>3.0.0-beta.1</version>
+</dependency>
+```
+[//]: # ({x-version-update-end})
 
 ### Prerequisites
 
@@ -391,7 +401,7 @@ azure.cosmos.secondary.database=your-secondary-cosmosDb-dbName
 azure.cosmos.secondary.populateQueryMetrics=if-populate-query-metrics
 ```
 
-- The [Entity](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos-core#define-an-entity) and [Repository](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos-core#create-repositories) definition is similar as above. You can put different database entities into different packages.
+- The [Entity](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos#define-an-entity) and [Repository](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos#create-repositories) definition is similar as above. You can put different database entities into different packages.
 
 - The `@EnableReactiveCosmosRepositories` or `@EnableCosmosRepositories` support user-define the cosmos template, use `reactiveCosmosTemplateRef` or `cosmosTemplateRef` to config the name of the `ReactiveCosmosTemplate` or `CosmosTemplate` bean to be used with the repositories detected.
 - If you have multiple cosmos database accounts, you can define multiple `CosmosAsyncClient`. If the single cosmos account has multiple databases, you can use the same `CosmosAsyncClient` to initialize the cosmos template.
@@ -634,7 +644,7 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
 [azure_subscription]: https://azure.microsoft.com/free/
-[samples]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos-core/src/samples/java/com/azure/spring/data/cosmos
+[samples]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos/src/samples/java/com/azure/spring/data/cosmos
 [sql_api_query]: https://docs.microsoft.com/azure/cosmos-db/sql-api-sql-query
 [local_emulator]: https://docs.microsoft.com/azure/cosmos-db/local-emulator
 [local_emulator_export_ssl_certificates]: https://docs.microsoft.com/azure/cosmos-db/local-emulator-export-ssl-certificates
@@ -648,4 +658,4 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [azure_spring_data_cosmos_docs]: https://docs.microsoft.com/azure/cosmos-db/sql-api-sdk-java-spring-v3
 [spring_data_custom_query]: https://docs.spring.io/spring-data/commons/docs/current/reference/html/#repositories.query-methods.details
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2F%2Fazure-spring-data-cosmos-core%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2F%2Fazure-spring-data-cosmos%2FREADME.png)
