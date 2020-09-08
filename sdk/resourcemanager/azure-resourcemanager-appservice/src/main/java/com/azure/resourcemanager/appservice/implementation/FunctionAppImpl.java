@@ -247,14 +247,6 @@ class FunctionAppImpl
             || SkuName.ELASTIC_PREMIUM.toString().equalsIgnoreCase(description.tier());
     }
 
-    private static boolean isConsumptionPlan(PricingTier pricingTier) {
-        if (pricingTier == null || pricingTier.toSkuDescription() == null) {
-            return true;
-        }
-        SkuDescription description = pricingTier.toSkuDescription();
-        return SkuName.DYNAMIC.toString().equalsIgnoreCase(description.tier());
-    }
-
     @Override
     FunctionAppImpl withNewAppServicePlan(OperatingSystem operatingSystem, PricingTier pricingTier) {
         return super.withNewAppServicePlan(operatingSystem, pricingTier).autoSetAlwaysOn(pricingTier);
