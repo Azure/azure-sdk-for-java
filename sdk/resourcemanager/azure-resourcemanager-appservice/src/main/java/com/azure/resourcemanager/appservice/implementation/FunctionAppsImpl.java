@@ -17,7 +17,6 @@ import com.azure.resourcemanager.appservice.models.FunctionEnvelope;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.BatchDeletionImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -100,29 +99,6 @@ public class FunctionAppsImpl
             return null;
         }
         return new FunctionAppImpl(inner.name(), inner, siteConfig, logConfig, this.manager());
-    }
-
-    @Override
-    protected PagedFlux<FunctionApp> wrapPageAsync(PagedFlux<SiteInner> innerPage) {
-        return PagedConverter
-            .flatMapPage(
-                innerPage,
-                siteInner -> {
-                    if (siteInner.kind() != null
-                        && Arrays.asList(siteInner.kind().split(",")).contains("functionapp")) {
-                        return Mono
-                            .zip(
-                                this.inner().getConfigurationAsync(siteInner.resourceGroup(), siteInner.name()),
-                                this
-                                    .inner()
-                                    .getDiagnosticLogsConfigurationAsync(
-                                        siteInner.resourceGroup(), siteInner.name()),
-                                (siteConfigResourceInner, logsConfigInner) ->
-                                    this.wrapModel(siteInner, siteConfigResourceInner, logsConfigInner));
-                    } else {
-                        return Mono.empty();
-                    }
-                });
     }
 
     @Override

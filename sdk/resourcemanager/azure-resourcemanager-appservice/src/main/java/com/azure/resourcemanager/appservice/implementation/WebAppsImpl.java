@@ -16,7 +16,6 @@ import com.azure.resourcemanager.appservice.models.WebApps;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.BatchDeletionImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -73,28 +72,6 @@ public class WebAppsImpl
     @Override
     protected WebAppImpl wrapModel(SiteInner inner) {
         return wrapModel(inner, null, null);
-    }
-
-    @Override
-    protected PagedFlux<WebApp> wrapPageAsync(PagedFlux<SiteInner> innerPage) {
-        return PagedConverter
-            .flatMapPage(
-                innerPage,
-                siteInner -> {
-                    if (siteInner.kind() == null || Arrays.asList(siteInner.kind().split(",")).contains("app")) {
-                        return Mono
-                            .zip(
-                                this.inner().getConfigurationAsync(siteInner.resourceGroup(), siteInner.name()),
-                                this
-                                    .inner()
-                                    .getDiagnosticLogsConfigurationAsync(
-                                        siteInner.resourceGroup(), siteInner.name()),
-                                (siteConfigResourceInner, logsConfigInner) ->
-                                    this.wrapModel(siteInner, siteConfigResourceInner, logsConfigInner));
-                    } else {
-                        return Mono.empty();
-                    }
-                });
     }
 
     @Override
