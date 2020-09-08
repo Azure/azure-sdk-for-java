@@ -17,6 +17,7 @@ import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
@@ -31,6 +32,7 @@ import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.appservice.models.FunctionAuthenticationPolicy;
 import com.azure.resourcemanager.appservice.models.FunctionDeploymentSlots;
+import com.azure.resourcemanager.appservice.models.FunctionEnvelope;
 import com.azure.resourcemanager.appservice.models.FunctionRuntimeStack;
 import com.azure.resourcemanager.appservice.models.NameValuePair;
 import com.azure.resourcemanager.appservice.models.OperatingSystem;
@@ -489,6 +491,11 @@ class FunctionAppImpl
             .map(ListKeysResult::getMasterKey)
             .subscriberContext(
                 context -> context.putAll(FluxUtil.toReactorContext(this.manager().inner().getContext())));
+    }
+
+    @Override
+    public PagedIterable<FunctionEnvelope> listFunctions() {
+        return this.manager().functionApps().listFunctions(resourceGroupName(), name());
     }
 
     @Override

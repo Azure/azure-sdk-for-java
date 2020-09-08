@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
@@ -29,6 +30,13 @@ public interface FunctionApp extends WebAppBase, Refreshable<FunctionApp>, Updat
 
     /** @return the master key for the function app */
     Mono<String> getMasterKeyAsync();
+
+    /**
+     * List function information elements.
+     *
+     * @return list of function information elements
+     */
+    PagedIterable<FunctionEnvelope> listFunctions();
 
     /**
      * Retrieve the function key for a specific function.
