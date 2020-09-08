@@ -28,8 +28,8 @@ public class ConnectionStringProperties {
     private static final String SHARED_ACCESS_SIGNATURE = "SharedAccessSignature";
     private static final String SAS_VALUE_PREFIX = "sharedaccesssignature ";
     private static final String ENTITY_PATH = "EntityPath";
-    private static final String CONNECTION_STRING_WITH_ACCESS_KEY = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
-        + "SharedAccessKey={sharedAccessKey};EntityPath={entityPath}";
+    private static final String CONNECTION_STRING_WITH_ACCESS_KEY = "Endpoint={endpoint};"
+        + "SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={entityPath}";
     private static final String CONNECTION_STRING_WITH_SAS = "Endpoint={endpoint};SharedAccessSignature="
         + "SharedAccessSignature {sharedAccessSignature};EntityPath={entityPath}";
     private static final String ERROR_MESSAGE_FORMAT = "Could not parse 'connectionString'. Expected format: "
