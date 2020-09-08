@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.digitaltwins.core;
+package com.azure.digitaltwins.core.util;
+
+import com.azure.digitaltwins.core.DigitalTwinsClient;
 
 /**
  * Optional settings that are specific to calls to {@link DigitalTwinsClient#deleteDigitalTwin(String)} and its overloads.

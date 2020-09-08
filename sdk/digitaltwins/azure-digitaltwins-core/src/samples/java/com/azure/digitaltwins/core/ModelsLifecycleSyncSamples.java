@@ -3,11 +3,11 @@ package com.azure.digitaltwins.core;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.digitaltwins.core.helpers.ConsoleLogger;
 import com.azure.digitaltwins.core.helpers.SamplesArguments;
+import com.azure.digitaltwins.core.helpers.SamplesConstants;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
 import com.azure.digitaltwins.core.models.ModelData;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import org.apache.http.HttpStatus;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;

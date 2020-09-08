@@ -27,7 +27,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
-import static com.azure.digitaltwins.core.SamplesConstants.*;
+import static com.azure.digitaltwins.core.helpers.SamplesConstants.*;
 import static com.azure.digitaltwins.core.helpers.SamplesUtil.IgnoreConflictError;
 import static com.azure.digitaltwins.core.helpers.SamplesUtil.IgnoreNotFoundError;
 import static java.util.Arrays.asList;
