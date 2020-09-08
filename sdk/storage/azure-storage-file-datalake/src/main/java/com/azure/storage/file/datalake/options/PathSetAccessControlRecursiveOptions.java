@@ -8,8 +8,6 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.models.AccessControlChanges;
 import com.azure.storage.file.datalake.models.PathAccessControlEntry;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -30,7 +28,7 @@ public class PathSetAccessControlRecursiveOptions {
      */
     public PathSetAccessControlRecursiveOptions(List<PathAccessControlEntry> accessControlList) {
         StorageImplUtils.assertNotNull("accessControllList", accessControlList);
-        this.accessControlList = new ArrayList<>(accessControlList);
+        this.accessControlList = accessControlList;
     }
 
     /**
@@ -39,7 +37,7 @@ public class PathSetAccessControlRecursiveOptions {
      * @return The POSIX access control list for the file or directory.
      */
     public List<PathAccessControlEntry> getAccessControlList() {
-        return Collections.unmodifiableList(this.accessControlList);
+        return this.accessControlList;
     }
 
     /**
