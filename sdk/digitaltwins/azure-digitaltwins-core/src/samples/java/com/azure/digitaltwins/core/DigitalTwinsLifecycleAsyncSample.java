@@ -146,30 +146,32 @@ public class DigitalTwinsLifecycleAsyncSample {
             // This list contains all the relationships that existing between the twins referenced by this sample.
             List<BasicRelationship> relationshipList = Collections.synchronizedList(new ArrayList<>());
 
-            // These semaphores indicate when the relationship list and relationship delete operations have completed.
-            // We cannot use a latch here since we do not know the no. of relationships that will be deleted (so we do cannot set the latch initial count).
-            Semaphore listRelationshipSemaphore = new Semaphore(0);
-            Semaphore deleteRelationshipsSemaphore = new Semaphore(0);
-
-            // This latch is to ensure that we wait for the delete twin operation to complete, before proceeding.
+            // This latch is to maintain a thread-safe count to ensure that we wait for both the list relationships and list incoming relationships operations to complete,
+            // before proceeding to the delete operation.
+            CountDownLatch listRelationshipSemaphore = new CountDownLatch(2);
+            // This latch is to maintain a thread-safe count to ensure that we wait for the delete twin operation to complete, before proceeding.
             CountDownLatch deleteTwinsLatch = new CountDownLatch(1);
+
+            // This semaphores indicates when the relationship delete operation has has completed.
+            // We cannot use a latch here since we do not know the no. of relationships that will be deleted (so we do cannot set the latch initial count).
+            Semaphore deleteRelationshipsSemaphore = new Semaphore(0);
 
             // Call APIs to retrieve all relationships.
             client.listRelationships(twinId, BasicRelationship.class)
                 .doOnNext(relationshipList::add)
                 .doOnError(IgnoreNotFoundError)
-                .doOnTerminate(listRelationshipSemaphore::release)
+                .doOnTerminate(listRelationshipSemaphore::countDown)
                 .subscribe();
 
             // Call APIs to retrieve all incoming relationships.
             client.listIncomingRelationships(twinId)
                 .doOnNext(e -> relationshipList.add(mapper.convertValue(e, BasicRelationship.class)))
                 .doOnError(IgnoreNotFoundError)
-                .doOnTerminate(listRelationshipSemaphore::release)
+                .doOnTerminate(listRelationshipSemaphore::countDown)
                 .subscribe();
 
             // Call APIs to delete all relationships.
-            if (listRelationshipSemaphore.tryAcquire(2, MaxWaitTimeAsyncOperationsInSeconds, TimeUnit.SECONDS)) {
+            if (listRelationshipSemaphore.await(MaxWaitTimeAsyncOperationsInSeconds, TimeUnit.SECONDS)) {
                 relationshipList
                     .forEach(relationship -> client.deleteRelationship(relationship.getSourceId(), relationship.getId())
                         .doOnSuccess(aVoid -> {
