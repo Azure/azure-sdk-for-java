@@ -31,7 +31,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.sql.SqlManagementClient;
 import com.azure.resourcemanager.sql.fluent.inner.ReplicationLinkInner;
 import com.azure.resourcemanager.sql.fluent.inner.ReplicationLinkListResultInner;
 import com.azure.resourcemanager.sql.models.UnlinkParameters;

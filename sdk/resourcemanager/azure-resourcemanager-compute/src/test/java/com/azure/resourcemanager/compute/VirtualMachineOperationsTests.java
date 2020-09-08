@@ -194,6 +194,8 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
     @Test
     public void canCreateVirtualMachineSyncPoll() throws Exception {
+        final long defaultDelayInMillis = 10 * 1000;
+
         Accepted<VirtualMachine> acceptedVirtualMachine = computeManager
             .virtualMachines()
             .define(vmName)
@@ -215,17 +217,17 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertNotEquals("Succeeded", createdVirtualMachine.provisioningState());
 
         LongRunningOperationStatus pollStatus = acceptedVirtualMachine.getActivationResponse().getStatus();
-        int delayInMills = acceptedVirtualMachine.getActivationResponse().getRetryAfter() == null
-            ? 0
-            : (int) acceptedVirtualMachine.getActivationResponse().getRetryAfter().toMillis();
+        long delayInMills = acceptedVirtualMachine.getActivationResponse().getRetryAfter() == null
+            ? defaultDelayInMillis
+            : acceptedVirtualMachine.getActivationResponse().getRetryAfter().toMillis();
         while (!pollStatus.isComplete()) {
             SdkContext.sleep(delayInMills);
 
             PollResponse<?> pollResponse = acceptedVirtualMachine.getSyncPoller().poll();
             pollStatus = pollResponse.getStatus();
             delayInMills = pollResponse.getRetryAfter() == null
-                ? 10000
-                : (int) pollResponse.getRetryAfter().toMillis();
+                ? defaultDelayInMillis
+                : pollResponse.getRetryAfter().toMillis();
         }
         Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollStatus);
         VirtualMachine virtualMachine = acceptedVirtualMachine.getFinalResult();
@@ -236,7 +238,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
         pollStatus = acceptedDelete.getActivationResponse().getStatus();
         delayInMills = acceptedDelete.getActivationResponse().getRetryAfter() == null
-            ? 0
+            ? defaultDelayInMillis
             : (int) acceptedDelete.getActivationResponse().getRetryAfter().toMillis();
 
         while (!pollStatus.isComplete()) {
@@ -245,7 +247,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             PollResponse<?> pollResponse = acceptedDelete.getSyncPoller().poll();
             pollStatus = pollResponse.getStatus();
             delayInMills = pollResponse.getRetryAfter() == null
-                ? 10000
+                ? defaultDelayInMillis
                 : (int) pollResponse.getRetryAfter().toMillis();
         }
 

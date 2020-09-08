@@ -5,6 +5,8 @@ package com.azure.resourcemanager.cosmos;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.resourcemanager.cosmos.fluent.CosmosDBManagementClient;
+import com.azure.resourcemanager.cosmos.fluent.CosmosDBManagementClientBuilder;
 import com.azure.resourcemanager.cosmos.implementation.CosmosDBAccountsImpl;
 import com.azure.resourcemanager.cosmos.models.CosmosDBAccounts;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;

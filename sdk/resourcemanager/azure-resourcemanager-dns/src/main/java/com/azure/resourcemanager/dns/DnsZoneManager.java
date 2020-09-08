@@ -5,6 +5,8 @@ package com.azure.resourcemanager.dns;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.resourcemanager.dns.fluent.DnsManagementClient;
+import com.azure.resourcemanager.dns.fluent.DnsManagementClientBuilder;
 import com.azure.resourcemanager.dns.implementation.DnsZonesImpl;
 import com.azure.resourcemanager.dns.models.DnsZones;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;

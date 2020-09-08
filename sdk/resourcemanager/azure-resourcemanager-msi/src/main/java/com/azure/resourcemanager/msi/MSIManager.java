@@ -6,6 +6,8 @@ package com.azure.resourcemanager.msi;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
+import com.azure.resourcemanager.msi.fluent.ManagedServiceIdentityClient;
+import com.azure.resourcemanager.msi.fluent.ManagedServiceIdentityClientBuilder;
 import com.azure.resourcemanager.msi.implementation.IdentitesImpl;
 import com.azure.resourcemanager.msi.models.Identities;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;

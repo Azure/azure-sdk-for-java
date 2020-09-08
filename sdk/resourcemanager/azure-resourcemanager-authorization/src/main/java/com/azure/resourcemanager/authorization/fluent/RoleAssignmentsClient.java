@@ -28,7 +28,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.AuthorizationManagementClient;
 import com.azure.resourcemanager.authorization.fluent.inner.RoleAssignmentInner;
 import com.azure.resourcemanager.authorization.fluent.inner.RoleAssignmentListResultInner;
 import com.azure.resourcemanager.authorization.models.RoleAssignmentCreateParameters;
