@@ -199,13 +199,13 @@ public final class ManageVirtualMachineAsync {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     private static boolean isWindowsVM(VirtualMachine vm) {
         if (vm != null && vm.osProfile() != null && vm.osProfile().windowsConfiguration() != null) {
             return true;
         }
+        return false;
     }
     /**
      * Main entry point.
