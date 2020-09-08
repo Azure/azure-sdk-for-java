@@ -5,6 +5,14 @@ package com.azure.resourcemanager.resources;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.resourcemanager.resources.fluent.FeatureClient;
+import com.azure.resourcemanager.resources.fluent.FeatureClientBuilder;
+import com.azure.resourcemanager.resources.fluent.PolicyClient;
+import com.azure.resourcemanager.resources.fluent.PolicyClientBuilder;
+import com.azure.resourcemanager.resources.fluent.ResourceManagementClient;
+import com.azure.resourcemanager.resources.fluent.ResourceManagementClientBuilder;
+import com.azure.resourcemanager.resources.fluent.SubscriptionClient;
+import com.azure.resourcemanager.resources.fluent.SubscriptionClientBuilder;
 import com.azure.resourcemanager.resources.implementation.DeploymentsImpl;
 import com.azure.resourcemanager.resources.implementation.FeaturesImpl;
 import com.azure.resourcemanager.resources.implementation.GenericResourcesImpl;

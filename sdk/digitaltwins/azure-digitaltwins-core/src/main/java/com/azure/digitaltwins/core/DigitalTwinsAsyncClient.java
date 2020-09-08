@@ -747,23 +747,25 @@ public final class DigitalTwinsAsyncClient {
     /**
      * Creates one or many models.
      * @param models The list of models to create. Each string corresponds to exactly one model.
-     * @return A {@link PagedFlux} of created models and the http response.
+     * @return A List of created models.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ModelData> createModels(List<String> models) {
-        return new PagedFlux<>(
-            () -> withContext(context -> createModelsSinglePageAsync(models, context)),
-            nextLink -> withContext(context -> Mono.empty()));
+    public Mono<List<ModelData>> createModels(List<String> models) {
+        return createModelsWithResponse(models)
+            .map(Response::getValue);
     }
 
-    PagedFlux<ModelData> createModels(List<String> models, Context context){
-        return new PagedFlux<>(
-            () -> createModelsSinglePageAsync(models, context),
-            nextLink -> Mono.empty());
+    /**
+     * Creates one or many models.
+     * @param models The list of models to create. Each string corresponds to exactly one model.
+     * @return A List of created models and the http response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Mono<Response<List<ModelData>>> createModelsWithResponse(List<String> models) {
+        return withContext(context -> createModelsWithResponse(models, context));
     }
 
-    Mono<PagedResponse<ModelData>> createModelsSinglePageAsync(List<String> models, Context context)
-    {
+    Mono<Response<List<ModelData>>> createModelsWithResponse(List<String> models, Context context) {
         List<Object> modelsPayload = new ArrayList<>();
         for (String model: models) {
             try {
@@ -776,21 +778,13 @@ public final class DigitalTwinsAsyncClient {
         }
 
         return protocolLayer.getDigitalTwinModels().addWithResponseAsync(modelsPayload, context)
-            .map(
-                objectPagedResponse -> {
-                    List<ModelData> convertedList = objectPagedResponse.getValue().stream()
-                        .map(ModelDataConverter::map)
-                        .filter(Objects::nonNull)
-                        .collect(Collectors.toList());
-                    return new PagedResponseBase<>(
-                        objectPagedResponse.getRequest(),
-                        objectPagedResponse.getStatusCode(),
-                        objectPagedResponse.getHeaders(),
-                        convertedList,
-                        null,
-                        ((ResponseBase) objectPagedResponse).getDeserializedHeaders());
-                }
-            );
+            .map(listResponse -> {
+                List<ModelData> convertedList = listResponse.getValue().stream()
+                    .map(ModelDataConverter::map)
+                    .collect(Collectors.toList());
+
+                return new SimpleResponse<>(listResponse.getRequest(), listResponse.getStatusCode(), listResponse.getHeaders(), convertedList);
+            });
     }
 
     /**

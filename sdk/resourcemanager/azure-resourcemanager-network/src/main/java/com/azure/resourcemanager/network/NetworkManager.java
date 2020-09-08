@@ -4,6 +4,8 @@ package com.azure.resourcemanager.network;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.resourcemanager.network.fluent.NetworkManagementClient;
+import com.azure.resourcemanager.network.fluent.NetworkManagementClientBuilder;
 import com.azure.resourcemanager.network.implementation.ApplicationGatewaysImpl;
 import com.azure.resourcemanager.network.implementation.ApplicationSecurityGroupsImpl;
 import com.azure.resourcemanager.network.implementation.DdosProtectionPlansImpl;

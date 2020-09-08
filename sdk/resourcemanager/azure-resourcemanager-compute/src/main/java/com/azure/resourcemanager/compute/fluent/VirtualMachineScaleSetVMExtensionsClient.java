@@ -27,7 +27,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineExtensionInner;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineExtensionsListResultInner;
 import com.azure.resourcemanager.compute.models.ApiErrorException;

@@ -33,7 +33,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.privatedns.PrivateDnsManagementClient;
 import com.azure.resourcemanager.privatedns.fluent.inner.VirtualNetworkLinkInner;
 import com.azure.resourcemanager.privatedns.fluent.inner.VirtualNetworkLinkListResultInner;
 import java.nio.ByteBuffer;
