@@ -33,7 +33,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.containerregistry.ContainerRegistryManagementClient;
 import com.azure.resourcemanager.containerregistry.fluent.inner.TaskInner;
 import com.azure.resourcemanager.containerregistry.fluent.inner.TaskListResultInner;
 import com.azure.resourcemanager.containerregistry.models.TaskUpdateParameters;

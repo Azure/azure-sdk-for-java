@@ -23,21 +23,26 @@ import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
+import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
 import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
 import com.azure.messaging.servicebus.administration.models.CreateTopicOptions;
 import com.azure.messaging.servicebus.administration.models.NamespaceProperties;
 import com.azure.messaging.servicebus.administration.models.QueueProperties;
-import com.azure.messaging.servicebus.administration.models.QueueRuntimeInfo;
+import com.azure.messaging.servicebus.administration.models.QueueRuntimeProperties;
+import com.azure.messaging.servicebus.administration.models.RuleProperties;
 import com.azure.messaging.servicebus.administration.models.SubscriptionProperties;
-import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeInfo;
+import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeProperties;
 import com.azure.messaging.servicebus.administration.models.TopicProperties;
-import com.azure.messaging.servicebus.administration.models.TopicRuntimeInfo;
+import com.azure.messaging.servicebus.administration.models.TopicRuntimeProperties;
 import com.azure.messaging.servicebus.implementation.EntitiesImpl;
 import com.azure.messaging.servicebus.implementation.EntityHelper;
+import com.azure.messaging.servicebus.implementation.RulesImpl;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementClientImpl;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementSerializer;
 import com.azure.messaging.servicebus.implementation.models.CreateQueueBody;
 import com.azure.messaging.servicebus.implementation.models.CreateQueueBodyContent;
+import com.azure.messaging.servicebus.implementation.models.CreateRuleBody;
+import com.azure.messaging.servicebus.implementation.models.CreateRuleBodyContent;
 import com.azure.messaging.servicebus.implementation.models.CreateSubscriptionBody;
 import com.azure.messaging.servicebus.implementation.models.CreateSubscriptionBodyContent;
 import com.azure.messaging.servicebus.implementation.models.CreateTopicBody;
@@ -47,6 +52,11 @@ import com.azure.messaging.servicebus.implementation.models.QueueDescription;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntry;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionFeed;
 import com.azure.messaging.servicebus.implementation.models.ResponseLink;
+import com.azure.messaging.servicebus.implementation.models.RuleActionImpl;
+import com.azure.messaging.servicebus.implementation.models.RuleDescription;
+import com.azure.messaging.servicebus.implementation.models.RuleDescriptionEntry;
+import com.azure.messaging.servicebus.implementation.models.RuleDescriptionFeed;
+import com.azure.messaging.servicebus.implementation.models.RuleFilterImpl;
 import com.azure.messaging.servicebus.implementation.models.ServiceBusManagementError;
 import com.azure.messaging.servicebus.implementation.models.ServiceBusManagementErrorException;
 import com.azure.messaging.servicebus.implementation.models.SubscriptionDescription;
@@ -102,6 +112,7 @@ public final class ServiceBusAdministrationAsyncClient {
     private final EntitiesImpl entityClient;
     private final ClientLogger logger = new ClientLogger(ServiceBusAdministrationAsyncClient.class);
     private final ServiceBusManagementSerializer serializer;
+    private final RulesImpl rulesClient;
 
     /**
      * Creates a new instance with the given management client and serializer.
@@ -111,9 +122,10 @@ public final class ServiceBusAdministrationAsyncClient {
      */
     ServiceBusAdministrationAsyncClient(ServiceBusManagementClientImpl managementClient,
         ServiceBusManagementSerializer serializer) {
+        this.serializer = Objects.requireNonNull(serializer, "'serializer' cannot be null.");
         this.managementClient = Objects.requireNonNull(managementClient, "'managementClient' cannot be null.");
         this.entityClient = managementClient.getEntities();
-        this.serializer = serializer;
+        this.rulesClient = managementClient.getRules();
     }
 
     /**
@@ -183,6 +195,82 @@ public final class ServiceBusAdministrationAsyncClient {
     }
 
     /**
+     * Creates a rule under the given topic and subscription
+     *
+     * @param topicName Name of the topic associated with rule.
+     * @param subscriptionName Name of the subscription associated with the rule.
+     * @param ruleName Name of the rule.
+     *
+     * @return A Mono that completes with information about the created rule.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
+     *     processing the request.
+     * @throws IllegalArgumentException if {@code topicName} or {@code ruleName} are are empty strings.
+     * @throws NullPointerException if {@code topicName} or {@code ruleName} are are null.
+     * @throws ResourceExistsException if a rule exists with the same topic, subscription, and rule name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RuleProperties> createRule(String topicName, String subscriptionName, String ruleName) {
+        try {
+            return createRule(topicName, subscriptionName, ruleName, new CreateRuleOptions());
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    /**
+     * Creates a rule with the {@link CreateRuleOptions}.
+     *
+     * @param topicName Name of the topic associated with rule.
+     * @param subscriptionName Name of the subscription associated with the rule.
+     * @param ruleName Name of the rule.
+     * @param ruleOptions Information about the rule to create.
+     *
+     * @return A Mono that completes with information about the created rule.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
+     *     processing the request.
+     * @throws IllegalArgumentException if {@code topicName} or {@code ruleName} are are empty strings.
+     * @throws NullPointerException if {@code topicName}, {@code ruleName}, or {@code ruleOptions}
+     *     are are null.
+     * @throws ResourceExistsException if a rule exists with the same topic and rule name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RuleProperties> createRule(String topicName, String subscriptionName, String ruleName,
+        CreateRuleOptions ruleOptions) {
+
+        return createRuleWithResponse(topicName, subscriptionName, ruleName, ruleOptions)
+            .map(Response::getValue);
+    }
+
+    /**
+     * Creates a rule and returns the created rule in addition to the HTTP response.
+     *
+     * @param topicName Name of the topic associated with rule.
+     * @param subscriptionName Name of the subscription associated with the rule.
+     * @param ruleName Name of the rule.
+     * @param ruleOptions Information about the rule to create.
+     *
+     * @return A Mono that returns the created rule in addition to the HTTP response.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
+     *     processing the request.
+     * @throws IllegalArgumentException if {@code topicName} or {@code ruleName} are are empty strings.
+     * @throws NullPointerException if {@code topicName}, {@code ruleName}, or {@code ruleOptions}
+     *     are are null.
+     * @throws ResourceExistsException if a rule exists with the same topic and rule name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<RuleProperties>> createRuleWithResponse(String topicName, String subscriptionName,
+        String ruleName, CreateRuleOptions ruleOptions) {
+        return withContext(context -> createRuleWithResponse(topicName, subscriptionName, ruleName, ruleOptions,
+            context));
+    }
+
+    /**
      * Creates a subscription with the given topic and subscription names.
      *
      * @param topicName Name of the topic associated with subscription.
@@ -208,7 +296,7 @@ public final class ServiceBusAdministrationAsyncClient {
     }
 
     /**
-     * Creates a subscription with the {@link SubscriptionProperties}.
+     * Creates a subscription with the {@link CreateSubscriptionOptions}.
      *
      * @param topicName Name of the topic associated with subscription.
      * @param subscriptionName Name of the subscription.
@@ -228,17 +316,19 @@ public final class ServiceBusAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SubscriptionProperties> createSubscription(String topicName, String subscriptionName,
         CreateSubscriptionOptions subscriptionOptions) {
-        return createSubscriptionWithResponse(topicName, subscriptionName, subscriptionOptions).map(Response::getValue);
+
+        return createSubscriptionWithResponse(topicName, subscriptionName, subscriptionOptions)
+            .map(Response::getValue);
     }
 
     /**
-     * Creates a queue and returns the created queue in addition to the HTTP response.
+     * Creates a subscription and returns the created subscription in addition to the HTTP response.
      *
      * @param topicName Name of the topic associated with subscription.
      * @param subscriptionName Name of the subscription.
      * @param subscriptionOptions Information about the subscription to create.
      *
-     * @return A Mono that returns the created queue in addition to the HTTP response.
+     * @return A Mono that returns the created subscription in addition to the HTTP response.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
@@ -359,6 +449,48 @@ public final class ServiceBusAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteQueueWithResponse(String queueName) {
         return withContext(context -> deleteQueueWithResponse(queueName, context));
+    }
+
+    /**
+     * Deletes a rule the matching {@code ruleName}.
+     *
+     * @param topicName Name of topic associated with rule to delete.
+     * @param subscriptionName Name of the subscription associated with the rule to delete.
+     * @param ruleName Name of rule to delete.
+     *
+     * @return A Mono that completes when the rule is deleted.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code topicName} or {@code ruleName} is an empty string.
+     * @throws NullPointerException if {@code topicName} or {@code ruleName} is null.
+     * @throws ResourceNotFoundException if the {@code ruleName} does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteRule(String topicName, String subscriptionName, String ruleName) {
+        return deleteRuleWithResponse(topicName, subscriptionName, ruleName).then();
+    }
+
+    /**
+     * Deletes a rule the matching {@code ruleName} and returns the HTTP response.
+     *
+     * @param topicName Name of topic associated with rule to delete.
+     * @param subscriptionName Name of the subscription associated with the rule to delete.
+     * @param ruleName Name of rule to delete.
+     *
+     * @return A Mono that completes when the rule is deleted and returns the HTTP response.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code topicName}, {@code subscriptionName}, or {@code ruleName} is an
+     *     empty string.
+     * @throws NullPointerException if {@code topicName}, {@code subscriptionName}, or {@code ruleName} is null.
+     * @throws ResourceNotFoundException if the {@code ruleName} does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteRuleWithResponse(String topicName, String subscriptionName,
+        String ruleName) {
+        return withContext(context -> deleteRuleWithResponse(topicName, subscriptionName, ruleName, context));
     }
 
     /**
@@ -512,11 +644,11 @@ public final class ServiceBusAdministrationAsyncClient {
     }
 
     /**
-     * Gets runtime information about the queue.
+     * Gets runtime properties about the queue.
      *
      * @param queueName Name of queue to get information about.
      *
-     * @return A Mono that completes with runtime information about the queue.
+     * @return A Mono that completes with runtime properties about the queue.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
@@ -526,16 +658,16 @@ public final class ServiceBusAdministrationAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<QueueRuntimeInfo> getQueueRuntimeInfo(String queueName) {
-        return getQueueRuntimeInfoWithResponse(queueName).map(response -> response.getValue());
+    public Mono<QueueRuntimeProperties> getQueueRuntimeProperties(String queueName) {
+        return getQueueRuntimePropertiesWithResponse(queueName).map(response -> response.getValue());
     }
 
     /**
-     * Gets runtime information about the queue along with its HTTP response.
+     * Gets runtime properties about the queue along with its HTTP response.
      *
      * @param queueName Name of queue to get information about.
      *
-     * @return A Mono that completes with runtime information about the queue and the associated HTTP response.
+     * @return A Mono that completes with runtime properties about the queue and the associated HTTP response.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
@@ -545,8 +677,8 @@ public final class ServiceBusAdministrationAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<QueueRuntimeInfo>> getQueueRuntimeInfoWithResponse(String queueName) {
-        return withContext(context -> getQueueWithResponse(queueName, context, QueueRuntimeInfo::new));
+    public Mono<Response<QueueRuntimeProperties>> getQueueRuntimePropertiesWithResponse(String queueName) {
+        return withContext(context -> getQueueWithResponse(queueName, context, QueueRuntimeProperties::new));
     }
 
     /**
@@ -572,6 +704,41 @@ public final class ServiceBusAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NamespaceProperties>> getNamespacePropertiesWithResponse() {
         return withContext(this::getNamespacePropertiesWithResponse);
+    }
+
+    /**
+     * Gets a rule from the service namespace.
+     *
+     * Only following data types are deserialized in Filters and Action parameters - string, int, long, boolean, double,
+     * and OffsetDateTime. Other data types would return its string value.
+     *
+     * @param topicName The name of the topic relative to service bus namespace.
+     * @param subscriptionName The subscription name the rule belongs to.
+     * @param ruleName The name of the rule to retrieve.
+     *
+     * @return The associated rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RuleProperties> getRule(String topicName, String subscriptionName, String ruleName) {
+        return getRuleWithResponse(topicName, subscriptionName, ruleName).map(response -> response.getValue());
+    }
+
+    /**
+     * Gets a rule from the service namespace.
+     *
+     * Only following data types are deserialized in Filters and Action parameters - string, int, long, bool, double,
+     * and OffsetDateTime. Other data types would return its string value.
+     *
+     * @param topicName The name of the topic relative to service bus namespace.
+     * @param subscriptionName The subscription name the rule belongs to.
+     * @param ruleName The name of the rule to retrieve.
+     *
+     * @return The associated rule with the corresponding HTTP response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<RuleProperties>> getRuleWithResponse(String topicName, String subscriptionName,
+        String ruleName) {
+        return withContext(context -> getRuleWithResponse(topicName, subscriptionName, ruleName, context));
     }
 
     /**
@@ -653,12 +820,12 @@ public final class ServiceBusAdministrationAsyncClient {
     }
 
     /**
-     * Gets runtime information about the subscription.
+     * Gets runtime properties about the subscription.
      *
      * @param topicName Name of topic associated with subscription.
      * @param subscriptionName Name of subscription to get information about.
      *
-     * @return A Mono that completes with runtime information about the subscription.
+     * @return A Mono that completes with runtime properties about the subscription.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
@@ -668,18 +835,19 @@ public final class ServiceBusAdministrationAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SubscriptionRuntimeInfo> getSubscriptionRuntimeInfo(String topicName, String subscriptionName) {
-        return getSubscriptionRuntimeInfoWithResponse(topicName, subscriptionName)
+    public Mono<SubscriptionRuntimeProperties> getSubscriptionRuntimeProperties(
+        String topicName, String subscriptionName) {
+        return getSubscriptionRuntimePropertiesWithResponse(topicName, subscriptionName)
             .map(response -> response.getValue());
     }
 
     /**
-     * Gets runtime information about the subscription.
+     * Gets runtime properties about the subscription.
      *
      * @param topicName Name of topic associated with subscription.
      * @param subscriptionName Name of subscription to get information about.
      *
-     * @return A Mono that completes with runtime information about the subscription.
+     * @return A Mono that completes with runtime properties about the subscription.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
@@ -689,11 +857,10 @@ public final class ServiceBusAdministrationAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SubscriptionRuntimeInfo>> getSubscriptionRuntimeInfoWithResponse(String topicName,
-        String subscriptionName) {
-
+    public Mono<Response<SubscriptionRuntimeProperties>> getSubscriptionRuntimePropertiesWithResponse(
+        String topicName, String subscriptionName) {
         return withContext(context -> getSubscriptionWithResponse(topicName, subscriptionName, context,
-            SubscriptionRuntimeInfo::new));
+            SubscriptionRuntimeProperties::new));
     }
 
     /**
@@ -769,11 +936,11 @@ public final class ServiceBusAdministrationAsyncClient {
     }
 
     /**
-     * Gets runtime information about the topic.
+     * Gets runtime properties about the topic.
      *
      * @param topicName Name of topic to get information about.
      *
-     * @return A Mono that completes with runtime information about the topic.
+     * @return A Mono that completes with runtime properties about the topic.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
@@ -783,16 +950,16 @@ public final class ServiceBusAdministrationAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TopicRuntimeInfo> getTopicRuntimeInfo(String topicName) {
-        return getTopicRuntimeInfoWithResponse(topicName).map(response -> response.getValue());
+    public Mono<TopicRuntimeProperties> getTopicRuntimeProperties(String topicName) {
+        return getTopicRuntimePropertiesWithResponse(topicName).map(response -> response.getValue());
     }
 
     /**
-     * Gets runtime information about the topic with its HTTP response.
+     * Gets runtime properties about the topic with its HTTP response.
      *
      * @param topicName Name of topic to get information about.
      *
-     * @return A Mono that completes with runtime information about the topic and the associated HTTP response.
+     * @return A Mono that completes with runtime properties about the topic and the associated HTTP response.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
@@ -802,8 +969,8 @@ public final class ServiceBusAdministrationAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TopicRuntimeInfo>> getTopicRuntimeInfoWithResponse(String topicName) {
-        return withContext(context -> getTopicWithResponse(topicName, context, TopicRuntimeInfo::new));
+    public Mono<Response<TopicRuntimeProperties>> getTopicRuntimePropertiesWithResponse(String topicName) {
+        return withContext(context -> getTopicWithResponse(topicName, context, TopicRuntimeProperties::new));
     }
 
     /**
@@ -820,6 +987,33 @@ public final class ServiceBusAdministrationAsyncClient {
         return new PagedFlux<>(
             () -> withContext(context -> listQueuesFirstPage(context)),
             token -> withContext(context -> listQueuesNextPage(token, context)));
+    }
+
+    /**
+     * Fetches all the rules for a topic and subscription.
+     *
+     * @param topicName The topic name under which all the rules need to be retrieved.
+     * @param subscriptionName The name of the subscription for which all rules need to be retrieved.
+     *
+     * @return A Flux of {@link RuleProperties rules} for the {@code topicName} and {@code subscriptionName}.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws NullPointerException if {@code topicName} or {@code subscriptionName} is null.
+     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} is an empty string.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/enumeration">List entities, rules, or
+     *     authorization rules</a>
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<RuleProperties> listRules(String topicName, String subscriptionName) {
+        if (topicName == null) {
+            return pagedFluxError(logger, new NullPointerException("'topicName' cannot be null."));
+        } else if (topicName.isEmpty()) {
+            return pagedFluxError(logger, new IllegalArgumentException("'topicName' cannot be an empty string."));
+        }
+
+        return new PagedFlux<>(
+            () -> withContext(context -> listRulesFirstPage(topicName, subscriptionName, context)),
+            token -> withContext(context -> listRulesNextPage(topicName, subscriptionName, token, context)));
     }
 
     /**
@@ -938,6 +1132,67 @@ public final class ServiceBusAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueueProperties>> updateQueueWithResponse(QueueProperties queue) {
         return withContext(context -> updateQueueWithResponse(queue, context));
+    }
+
+    /**
+     * Updates a rule with the given {@link RuleProperties}. The {@link RuleProperties} must be fully populated as all
+     * of the properties are replaced. If a property is not set the service default value is used.
+     *
+     * The suggested flow is:
+     * <ol>
+     *     <li>{@link #getRule(String, String, String) Get rule description.}</li>
+     *     <li>Update the required elements.</li>
+     *     <li>Pass the updated description into this method.</li>
+     * </ol>
+     *
+     * @param topicName The topic name under which the rule is updated.
+     * @param subscriptionName The name of the subscription for which the rule is updated.
+     * @param rule Information about the rule to update. You must provide all the property values that are desired
+     *     on the updated entity. Any values not provided are set to the service default values.
+     *
+     * @return A Mono that returns the updated rule.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the rule quota is exceeded, or an error
+     *     occurred processing the request.
+     * @throws IllegalArgumentException if {@link RuleProperties#getName()} is null or an empty string.
+     * @throws NullPointerException if {@code rule} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RuleProperties> updateRule(String topicName, String subscriptionName, RuleProperties rule) {
+        return updateRuleWithResponse(topicName, subscriptionName, rule).map(Response::getValue);
+    }
+
+    /**
+     * Updates a rule with the given {@link RuleProperties}. The {@link RuleProperties} must be fully populated as all
+     * of the properties are replaced. If a property is not set the service default value is used.
+     *
+     * The suggested flow is:
+     * <ol>
+     *     <li>{@link #getRule(String, String, String) Get rule description.}</li>
+     *     <li>Update the required elements.</li>
+     *     <li>Pass the updated description into this method.</li>
+     * </ol>
+     *
+     * @param topicName The topic name under which the rule is updated.
+     * @param subscriptionName The name of the subscription for which the rule is updated.
+     * @param rule Information about the rule to update. You must provide all the property values that are desired
+     *     on the updated entity. Any values not provided are set to the service default values.
+     *
+     * @return A Mono that returns the updated rule in addition to the HTTP response.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the rule quota is exceeded, or an error
+     *     occurred processing the request.
+     * @throws IllegalArgumentException if {@link RuleProperties#getName()} is null or an empty string.
+     * @throws NullPointerException if {@code rule} is null.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<RuleProperties>> updateRuleWithResponse(String topicName, String subscriptionName,
+        RuleProperties rule) {
+
+        return withContext(context -> updateRuleWithResponse(topicName, subscriptionName, rule, context));
     }
 
     /**
@@ -1135,16 +1390,15 @@ public final class ServiceBusAdministrationAsyncClient {
     }
 
     /**
-     * Creates a subscription with its context.
+     * Creates a rule with its context.
      *
-     * @param options Subscription to create.
+     * @param ruleOptions Rule to create.
      * @param context Context to pass into request.
      *
-     * @return A Mono that completes with the created {@link SubscriptionProperties}.
+     * @return A Mono that completes with the created {@link RuleProperties}.
      */
-    Mono<Response<SubscriptionProperties>> createSubscriptionWithResponse(String topicName, String subscriptionName,
-        CreateSubscriptionOptions options,
-        Context context) {
+    Mono<Response<RuleProperties>> createRuleWithResponse(String topicName, String subscriptionName, String ruleName,
+        CreateRuleOptions ruleOptions, Context context) {
         if (topicName == null) {
             return monoError(logger, new NullPointerException("'topicName' cannot be null."));
         } else if (topicName.isEmpty()) {
@@ -1157,11 +1411,71 @@ public final class ServiceBusAdministrationAsyncClient {
             return monoError(logger, new IllegalArgumentException("'subscriptionName' cannot be empty."));
         }
 
-        if (options == null) {
+        if (ruleName == null) {
+            return monoError(logger, new NullPointerException("'ruleName' cannot be null."));
+        } else if (ruleName.isEmpty()) {
+            return monoError(logger, new IllegalArgumentException("'ruleName' cannot be empty."));
+        }
+
+        if (ruleOptions == null) {
+            return monoError(logger, new NullPointerException("'rule' cannot be null."));
+        }
+
+        final RuleActionImpl action = ruleOptions.getAction() != null
+            ? EntityHelper.toImplementation(ruleOptions.getAction())
+            : null;
+        final RuleFilterImpl filter = ruleOptions.getFilter() != null
+            ? EntityHelper.toImplementation(ruleOptions.getFilter())
+            : null;
+        final RuleDescription rule = new RuleDescription()
+            .setAction(action)
+            .setFilter(filter)
+            .setName(ruleName);
+
+        final CreateRuleBodyContent content = new CreateRuleBodyContent()
+            .setType(CONTENT_TYPE)
+            .setRuleDescription(rule);
+        final CreateRuleBody createEntity = new CreateRuleBody().setContent(content);
+
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+
+        try {
+            return managementClient.getRules().putWithResponseAsync(topicName, subscriptionName, ruleName, createEntity,
+                null, withTracing)
+                .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
+                .map(response -> deserializeRule(response));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Creates a subscription with its context.
+     *
+     * @param subscriptionOptions Subscription to create.
+     * @param context Context to pass into request.
+     *
+     * @return A Mono that completes with the created {@link SubscriptionProperties}.
+     */
+    Mono<Response<SubscriptionProperties>> createSubscriptionWithResponse(String topicName, String subscriptionName,
+        CreateSubscriptionOptions subscriptionOptions, Context context) {
+        if (topicName == null) {
+            return monoError(logger, new NullPointerException("'topicName' cannot be null."));
+        } else if (topicName.isEmpty()) {
+            return monoError(logger, new IllegalArgumentException("'topicName' cannot be empty."));
+        }
+
+        if (subscriptionName == null) {
+            return monoError(logger, new NullPointerException("'subscriptionName' cannot be null."));
+        } else if (subscriptionName.isEmpty()) {
+            return monoError(logger, new IllegalArgumentException("'subscriptionName' cannot be empty."));
+        }
+
+        if (subscriptionOptions == null) {
             return monoError(logger, new NullPointerException("'subscription' cannot be null."));
         }
 
-        final SubscriptionDescription subscription = EntityHelper.getSubscriptionDescription(options);
+        final SubscriptionDescription subscription = EntityHelper.getSubscriptionDescription(subscriptionOptions);
         final CreateSubscriptionBodyContent content = new CreateSubscriptionBodyContent()
             .setType(CONTENT_TYPE)
             .setSubscriptionDescription(subscription);
@@ -1225,7 +1539,7 @@ public final class ServiceBusAdministrationAsyncClient {
      * @param queueName Name of queue to delete.
      * @param context Context to pass into request.
      *
-     * @return A Mono that completes with the created {@link QueueProperties}.
+     * @return A Mono that completes when the queue is deleted.
      */
     Mono<Response<Void>> deleteQueueWithResponse(String queueName, Context context) {
         if (queueName == null) {
@@ -1245,6 +1559,46 @@ public final class ServiceBusAdministrationAsyncClient {
                     return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                         response.getHeaders(), null);
                 });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Deletes a queue with its context.
+     *
+     * @param topicName Name of topic to delete.
+     * @param subscriptionName Name of the subscription for the rule.
+     * @param ruleName Name of the rule.
+     * @param context Context to pass into request.
+     *
+     * @return A Mono that completes with the created {@link QueueProperties}.
+     */
+    Mono<Response<Void>> deleteRuleWithResponse(String topicName, String subscriptionName, String ruleName,
+        Context context) {
+        if (topicName == null) {
+            return monoError(logger, new NullPointerException("'topicName' cannot be null"));
+        } else if (topicName.isEmpty()) {
+            return monoError(logger, new IllegalArgumentException("'topicName' cannot be an empty string."));
+        } else if (subscriptionName == null) {
+            return monoError(logger, new NullPointerException("'subscriptionName' cannot be null"));
+        } else if (subscriptionName.isEmpty()) {
+            return monoError(logger, new IllegalArgumentException("'subscriptionName' cannot be an empty string."));
+        } else if (ruleName == null) {
+            return monoError(logger, new NullPointerException("'ruleName' cannot be null"));
+        } else if (ruleName.isEmpty()) {
+            return monoError(logger, new IllegalArgumentException("'ruleName' cannot be an empty string."));
+        } else if (context == null) {
+            return monoError(logger, new NullPointerException("'context' cannot be null."));
+        }
+
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+
+        try {
+            return rulesClient.deleteWithResponseAsync(topicName, subscriptionName, ruleName, withTracing)
+                .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
+                .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), null));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1376,6 +1730,19 @@ public final class ServiceBusAdministrationAsyncClient {
                             response.getHeaders(), mapped));
                     }
                 });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<RuleProperties>> getRuleWithResponse(String topicName, String subscriptionName,
+        String ruleName, Context context) {
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+
+        try {
+            return rulesClient.getWithResponseAsync(topicName, subscriptionName, ruleName, true, withTracing)
+                .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
+                .map(this::deserializeRule);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1537,6 +1904,47 @@ public final class ServiceBusAdministrationAsyncClient {
     }
 
     /**
+     * Gets the first page of rules with context.
+     *
+     * @param context Context to pass into request.
+     *
+     * @return A Mono that completes with a page of rules.
+     */
+    Mono<PagedResponse<RuleProperties>> listRulesFirstPage(String topicName, String subscriptionName, Context context) {
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+
+        try {
+            return listRules(topicName, subscriptionName, 0, withTracing);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    /**
+     * Gets the next page of rules with context.
+     *
+     * @param continuationToken Number of items to skip in feed.
+     * @param context Context to pass into request.
+     *
+     * @return A Mono that completes with a page of rules or empty if there are no items left.
+     */
+    Mono<PagedResponse<RuleProperties>> listRulesNextPage(String topicName, String subscriptionName,
+        String continuationToken, Context context) {
+        if (continuationToken == null || continuationToken.isEmpty()) {
+            return Mono.empty();
+        }
+
+        try {
+            final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+            final int skip = Integer.parseInt(continuationToken);
+
+            return listRules(topicName, subscriptionName, skip, withTracing);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    /**
      * Gets the first page of subscriptions with context.
      *
      * @param context Context to pass into request.
@@ -1646,6 +2054,42 @@ public final class ServiceBusAdministrationAsyncClient {
             return entityClient.putWithResponseAsync(queue.getName(), createEntity, "*", withTracing)
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .map(response -> deserializeQueue(response));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Updates a rule with its context.
+     *
+     * @param rule Information about the rule to update. You must provide all the property values that are desired
+     *     on the updated entity. Any values not provided are set to the service default values.
+     * @param context Context to pass into request.
+     *
+     * @return A Mono that completes with the updated {@link RuleProperties}.
+     */
+    Mono<Response<RuleProperties>> updateRuleWithResponse(String topicName, String subscriptionName,
+        RuleProperties rule, Context context) {
+        if (rule == null) {
+            return monoError(logger, new NullPointerException("'rule' cannot be null"));
+        } else if (context == null) {
+            return monoError(logger, new NullPointerException("'context' cannot be null."));
+        }
+
+        final RuleDescription implementation = EntityHelper.toImplementation(rule);
+        final CreateRuleBodyContent content = new CreateRuleBodyContent()
+            .setType(CONTENT_TYPE)
+            .setRuleDescription(implementation);
+        final CreateRuleBody ruleBody = new CreateRuleBody()
+            .setContent(content);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+
+        try {
+            // If-Match == "*" to unconditionally update. This is in line with the existing client library behaviour.
+            return managementClient.getRules().putWithResponseAsync(topicName, subscriptionName, rule.getName(),
+                ruleBody, "*", withTracing)
+                .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
+                .map(response -> deserializeRule(response));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1784,6 +2228,30 @@ public final class ServiceBusAdministrationAsyncClient {
     }
 
     /**
+     * Converts a Response into its corresponding {@link RuleDescriptionEntry} then mapped into {@link RuleProperties}.
+     *
+     * @param response HTTP Response to deserialize.
+     *
+     * @return The corresponding HTTP response with convenience properties set.
+     */
+    private Response<RuleProperties> deserializeRule(Response<Object> response) {
+        final RuleDescriptionEntry entry = deserialize(response.getValue(), RuleDescriptionEntry.class);
+
+        // This was an empty response (ie. 204).
+        if (entry == null) {
+            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
+        } else if (entry.getContent() == null) {
+            logger.info("entry.getContent() is null. The entity may not exist. {}", entry);
+            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
+        }
+
+        final RuleDescription description = entry.getContent().getRuleDescription();
+        final RuleProperties result = EntityHelper.toModel(description);
+
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), result);
+    }
+
+    /**
      * Converts a Response into its corresponding {@link SubscriptionDescriptionEntry} then mapped into {@link
      * SubscriptionProperties}.
      *
@@ -1913,6 +2381,46 @@ public final class ServiceBusAdministrationAsyncClient {
                 } catch (MalformedURLException | UnsupportedEncodingException error) {
                     return Mono.error(new RuntimeException("Could not parse response into FeedPage<QueueDescription>",
                         error));
+                }
+            });
+    }
+
+
+    /**
+     * Helper method that invokes the service method, extracts the data and translates it to a PagedResponse.
+     *
+     * @param skip Number of elements to skip.
+     * @param context Context for the query.
+     *
+     * @return A Mono that completes with a paged response of rules.
+     */
+    private Mono<PagedResponse<RuleProperties>> listRules(String topicName, String subscriptionName, int skip,
+        Context context) {
+        return managementClient.listRulesWithResponseAsync(topicName, subscriptionName, skip, NUMBER_OF_ELEMENTS,
+            context)
+            .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
+            .flatMap(response -> {
+                final Response<RuleDescriptionFeed> feedResponse = deserialize(response,
+                    RuleDescriptionFeed.class);
+
+                final RuleDescriptionFeed feed = feedResponse.getValue();
+                if (feed == null) {
+                    logger.warning("Could not deserialize RuleDescriptionFeed. skip {}, top: {}", skip,
+                        NUMBER_OF_ELEMENTS);
+                    return Mono.empty();
+                }
+
+                final List<RuleProperties> entities = feed.getEntry().stream()
+                    .filter(e -> e.getContent() != null && e.getContent().getRuleDescription() != null)
+                    .map(e -> {
+                        return EntityHelper.toModel(e.getContent().getRuleDescription());
+                    })
+                    .collect(Collectors.toList());
+                try {
+                    return Mono.just(extractPage(feedResponse, entities, feed.getLink()));
+                } catch (MalformedURLException | UnsupportedEncodingException error) {
+                    return Mono.error(new RuntimeException(
+                        "Could not parse response into FeedPage<RuleDescription>", error));
                 }
             });
     }

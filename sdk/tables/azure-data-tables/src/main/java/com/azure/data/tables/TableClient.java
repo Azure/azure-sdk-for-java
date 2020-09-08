@@ -20,11 +20,9 @@ import java.time.Duration;
 @ServiceClient(
     builder = TableClientBuilder.class)
 public class TableClient {
-    final String tableName;
     final TableAsyncClient client;
 
-    TableClient(String tableName, TableAsyncClient client) {
-        this.tableName = tableName;
+    TableClient(TableAsyncClient client) {
         this.client = client;
     }
 
@@ -34,7 +32,7 @@ public class TableClient {
      * @return table name
      */
     public String getTableName() {
-        return this.tableName;
+        return this.client.getTableName();
     }
 
     /**
@@ -43,16 +41,16 @@ public class TableClient {
      * @return a string of the account name
      */
     public String getAccountName() {
-        return null;
+        return this.client.getAccountName();
     }
 
     /**
-     * returns Url of this service
+     * returns Url of this table
      *
      * @return Url
      */
     public String getTableUrl() {
-        return null;
+        return this.client.getTableUrl();
     }
 
     /**
@@ -61,7 +59,7 @@ public class TableClient {
      * @return the version
      */
     public TablesServiceVersion getApiVersion() {
-        return null;
+        return this.client.getApiVersion();
     }
 
     /**

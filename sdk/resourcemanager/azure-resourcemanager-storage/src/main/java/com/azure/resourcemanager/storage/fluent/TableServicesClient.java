@@ -23,7 +23,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.storage.StorageManagementClient;
 import com.azure.resourcemanager.storage.fluent.inner.ListTableServicesInner;
 import com.azure.resourcemanager.storage.fluent.inner.TableServicePropertiesInner;
 import com.azure.resourcemanager.storage.models.CorsRules;

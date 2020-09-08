@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 
 public class SpringAppDomainsImpl
     extends ExternalChildResourcesNonCachedImpl<
-    SpringAppDomainImpl, SpringAppDomain, CustomDomainResourceInner, SpringAppImpl, SpringApp>
+        SpringAppDomainImpl, SpringAppDomain, CustomDomainResourceInner, SpringAppImpl, SpringApp>
     implements SpringAppDomains {
     SpringAppDomainsImpl(SpringAppImpl parent) {
         super(parent, parent.taskGroup(), "SpringAppDomain");

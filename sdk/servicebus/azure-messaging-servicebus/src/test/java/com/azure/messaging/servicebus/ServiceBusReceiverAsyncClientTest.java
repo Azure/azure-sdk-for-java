@@ -22,7 +22,6 @@ import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorReceiver;
-import com.azure.messaging.servicebus.models.LockRenewalStatus;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.amqp.messaging.Rejected;
 import org.apache.qpid.proton.amqp.transport.DeliveryState.DeliveryStateType;
@@ -50,21 +49,19 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static com.azure.messaging.servicebus.TestUtils.getMessage;
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -101,7 +98,6 @@ class ServiceBusReceiverAsyncClientTest {
     private ServiceBusConnectionProcessor connectionProcessor;
     private ServiceBusReceiverAsyncClient receiver;
     private ServiceBusReceiverAsyncClient sessionReceiver;
-    private Duration maxAutoLockRenewalDuration;
 
     @Mock
     private ServiceBusReactorReceiver amqpReceiveLink;
@@ -123,8 +119,6 @@ class ServiceBusReceiverAsyncClientTest {
     private ServiceBusReceivedMessage receivedMessage2;
     @Mock
     private Runnable onClientClose;
-    @Mock
-    private Function<String, Mono<Instant>> renewalOperation;
 
     @BeforeAll
     static void beforeAll() {
@@ -168,11 +162,11 @@ class ServiceBusReceiverAsyncClientTest {
                     connectionOptions.getRetry()));
 
         receiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, maxAutoLockRenewalDuration), connectionProcessor, CLEANUP_INTERVAL,
+            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH), connectionProcessor, CLEANUP_INTERVAL,
             tracerProvider, messageSerializer, onClientClose);
 
         sessionReceiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, maxAutoLockRenewalDuration, "Some-Session", false, null),
+            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, "Some-Session", false, null),
             connectionProcessor, CLEANUP_INTERVAL, tracerProvider, messageSerializer, onClientClose);
     }
 
@@ -244,7 +238,7 @@ class ServiceBusReceiverAsyncClientTest {
     void receivesNumberOfEvents() {
         // Arrange
         final int numberOfEvents = 1;
-        final List<Message> messages = getMessages(10);
+        final List<Message> messages = getMessages();
 
         ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
         when(receivedMessage.getLockToken()).thenReturn(UUID.randomUUID().toString());
@@ -277,16 +271,16 @@ class ServiceBusReceiverAsyncClientTest {
         final Mono<Void> operation;
         switch (dispositionStatus) {
             case DEFERRED:
-                operation = receiver.defer(receivedMessage.getLockToken(), null, nullTransaction);
+                operation = receiver.defer(receivedMessage, null, nullTransaction);
                 break;
             case ABANDONED:
-                operation = receiver.abandon(receivedMessage.getLockToken(), null, nullTransaction);
+                operation = receiver.abandon(receivedMessage, null, nullTransaction);
                 break;
             case COMPLETED:
-                operation = receiver.complete(receivedMessage.getLockToken(), nullTransaction);
+                operation = receiver.complete(receivedMessage, nullTransaction);
                 break;
             case SUSPENDED:
-                operation = receiver.deadLetter(receivedMessage.getLockToken(), new DeadLetterOptions(), nullTransaction);
+                operation = receiver.deadLetter(receivedMessage, new DeadLetterOptions(), nullTransaction);
                 break;
             default:
                 throw new IllegalArgumentException("Unrecognized operation: " + dispositionStatus);
@@ -317,16 +311,16 @@ class ServiceBusReceiverAsyncClientTest {
         final Mono<Void> operation;
         switch (dispositionStatus) {
             case DEFERRED:
-                operation = receiver.defer(receivedMessage.getLockToken(), null, nullTransactionId);
+                operation = receiver.defer(receivedMessage, null, nullTransactionId);
                 break;
             case ABANDONED:
-                operation = receiver.abandon(receivedMessage.getLockToken(), null, nullTransactionId);
+                operation = receiver.abandon(receivedMessage, null, nullTransactionId);
                 break;
             case COMPLETED:
-                operation = receiver.complete(receivedMessage.getLockToken(), nullTransactionId);
+                operation = receiver.complete(receivedMessage, nullTransactionId);
                 break;
             case SUSPENDED:
-                operation = receiver.deadLetter(receivedMessage.getLockToken(), new DeadLetterOptions(), nullTransactionId);
+                operation = receiver.deadLetter(receivedMessage, new DeadLetterOptions(), nullTransactionId);
                 break;
             default:
                 throw new IllegalArgumentException("Unrecognized operation: " + dispositionStatus);
@@ -337,27 +331,6 @@ class ServiceBusReceiverAsyncClientTest {
             .verify();
 
         verify(managementNode, never()).updateDisposition(any(), eq(dispositionStatus), isNull(), isNull(),
-            isNull(), isNull(), isNull(), isNull());
-    }
-
-    /**
-     * Verifies that we error if we try to complete a message without a lock token.
-     */
-    @Test
-    void completeNullLockToken() {
-        // Arrange
-        when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE)).thenReturn(Mono.just(managementNode));
-        when(managementNode.updateDisposition(any(), eq(DispositionStatus.COMPLETED), isNull(), isNull(), isNull(),
-            isNull(), isNull(), isNull()))
-            .thenReturn(Mono.delay(Duration.ofMillis(250)).then());
-
-        when(receivedMessage.getLockToken()).thenReturn(null);
-
-        StepVerifier.create(receiver.complete(receivedMessage.getLockToken()))
-            .expectError(NullPointerException.class)
-            .verify();
-
-        verify(managementNode, never()).updateDisposition(any(), eq(DispositionStatus.COMPLETED), isNull(), isNull(),
             isNull(), isNull(), isNull(), isNull());
     }
 
@@ -374,7 +347,7 @@ class ServiceBusReceiverAsyncClientTest {
      */
     @Test
     void completeInReceiveAndDeleteMode() {
-        final ReceiverOptions options = new ReceiverOptions(ReceiveMode.RECEIVE_AND_DELETE, PREFETCH, maxAutoLockRenewalDuration);
+        final ReceiverOptions options = new ReceiverOptions(ReceiveMode.RECEIVE_AND_DELETE, PREFETCH);
         ServiceBusReceiverAsyncClient client = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, options, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
             messageSerializer, onClientClose);
@@ -384,7 +357,7 @@ class ServiceBusReceiverAsyncClientTest {
         when(receivedMessage.getLockToken()).thenReturn(lockToken1);
 
         try {
-            StepVerifier.create(client.complete(receivedMessage.getLockToken()))
+            StepVerifier.create(client.complete(receivedMessage))
                 .expectError(UnsupportedOperationException.class)
                 .verify();
         } finally {
@@ -442,7 +415,7 @@ class ServiceBusReceiverAsyncClientTest {
             .setDeadLetterErrorDescription(description)
             .setPropertiesToModify(propertiesToModify);
 
-        final Instant expiration = Instant.now().plus(Duration.ofMinutes(5));
+        final OffsetDateTime expiration = OffsetDateTime.now().plus(Duration.ofMinutes(5));
 
         final MessageWithLockToken message = mock(MessageWithLockToken.class);
 
@@ -456,7 +429,7 @@ class ServiceBusReceiverAsyncClientTest {
         // Act & Assert
         StepVerifier.create(receiver.receiveMessages()
             .take(1)
-            .flatMap(context -> receiver.deadLetter(context.getMessage().getLockToken(), deadLetterOptions)))
+            .flatMap(context -> receiver.deadLetter(context.getMessage(), deadLetterOptions)))
             .then(() -> messageSink.next(message))
             .expectNext()
             .verifyComplete();
@@ -473,7 +446,7 @@ class ServiceBusReceiverAsyncClientTest {
         // Arrange
         final String lockToken1 = UUID.randomUUID().toString();
         final String lockToken2 = UUID.randomUUID().toString();
-        final Instant expiration = Instant.now().plus(Duration.ofMinutes(5));
+        final OffsetDateTime expiration = OffsetDateTime.now().plus(Duration.ofMinutes(5));
         final long sequenceNumber = 10L;
         final long sequenceNumber2 = 15L;
 
@@ -521,16 +494,16 @@ class ServiceBusReceiverAsyncClientTest {
         final Mono<Void> operation;
         switch (dispositionStatus) {
             case DEFERRED:
-                operation = receiver.defer(receivedMessage.getLockToken());
+                operation = receiver.defer(receivedMessage);
                 break;
             case ABANDONED:
-                operation = receiver.abandon(receivedMessage.getLockToken());
+                operation = receiver.abandon(receivedMessage);
                 break;
             case COMPLETED:
-                operation = receiver.complete(receivedMessage.getLockToken());
+                operation = receiver.complete(receivedMessage);
                 break;
             case SUSPENDED:
-                operation = receiver.deadLetter(receivedMessage.getLockToken());
+                operation = receiver.deadLetter(receivedMessage);
                 break;
             default:
                 throw new IllegalArgumentException("Unrecognized operation: " + dispositionStatus);
@@ -613,8 +586,7 @@ class ServiceBusReceiverAsyncClientTest {
         ServiceBusReceiverClientBuilder builder = new ServiceBusClientBuilder()
             .connectionString(NAMESPACE_CONNECTION_STRING)
             .receiver()
-            .topicName("baz").subscriptionName("bar")
-            .maxAutoLockRenewalDuration(Duration.ofSeconds(-1))
+            .topicName("baz").subscriptionName("bar").prefetchCount(-1)
             .receiveMode(ReceiveMode.PEEK_LOCK);
 
         // Act & Assert
@@ -734,7 +706,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(sessionReceiver.renewSessionLock(SESSION_ID))
-            .expectNext(expiry)
+            .expectNext(expiry.atOffset(ZoneOffset.UTC))
             .expectComplete()
             .verify();
     }
@@ -757,12 +729,11 @@ class ServiceBusReceiverAsyncClientTest {
      * Verifies that we can auto-renew a message lock.
      */
     @Test
-    void autoRenewMessageLock() throws InterruptedException {
+    void autoRenewMessageLock() {
         // Arrange
         final Duration maxDuration = Duration.ofSeconds(8);
         final Duration renewalPeriod = Duration.ofSeconds(3);
         final String lockToken = "some-token";
-        final Instant startTime = Instant.now();
 
         // At most 4 times because we renew the lock before it expires (by some seconds).
         final int atMost = 5;
@@ -772,30 +743,24 @@ class ServiceBusReceiverAsyncClientTest {
             .thenReturn(Mono.fromCallable(() -> Instant.now().plus(renewalPeriod)));
 
         // Act & Assert
-        final LockRenewalOperation operation = receiver.getAutoRenewMessageLock(lockToken, maxDuration);
-        Thread.sleep(totalSleepPeriod.toMillis());
-        logger.info("Finished renewals for first sleep.");
-
-        // Assert
-        assertEquals(LockRenewalStatus.COMPLETE, operation.getStatus());
-        assertNull(operation.getThrowable());
-        assertTrue(startTime.isBefore(operation.getLockedUntil()), String.format(
-            "initial lockedUntil[%s] is not before lockedUntil[%s]", startTime, operation.getLockedUntil()));
+        StepVerifier.create(receiver.getAutoRenewMessageLock(lockToken, maxDuration))
+            .thenAwait(totalSleepPeriod)
+            .then(() -> logger.info("Finished renewals for first sleep."))
+            .expectComplete()
+            .verify(Duration.ofSeconds(5));
 
         verify(managementNode, Mockito.atMost(atMost)).renewMessageLock(lockToken, null);
     }
 
-
     /**
-     * Verifies that we can auto-renew a message lock.
+     * Verifies that we can auto-renew a session lock.
      */
     @Test
-    void autoRenewSessionLock() throws InterruptedException {
+    void autoRenewSessionLock() {
         // Arrange
         final Duration maxDuration = Duration.ofSeconds(8);
         final Duration renewalPeriod = Duration.ofSeconds(3);
         final String sessionId = "some-token";
-        final Instant startTime = Instant.now();
 
         // At most 4 times because we renew the lock before it expires (by some seconds).
         final int atMost = 5;
@@ -805,23 +770,19 @@ class ServiceBusReceiverAsyncClientTest {
             .thenReturn(Mono.fromCallable(() -> Instant.now().plus(renewalPeriod)));
 
         // Act & Assert
-        final LockRenewalOperation operation = sessionReceiver.getAutoRenewSessionLock(sessionId, maxDuration);
-        Thread.sleep(totalSleepPeriod.toMillis());
-        logger.info("Finished renewals for first sleep.");
-
-        // Assert
-        assertEquals(LockRenewalStatus.COMPLETE, operation.getStatus());
-        assertNull(operation.getThrowable());
-        assertTrue(startTime.isBefore(operation.getLockedUntil()), String.format(
-            "initial lockedUntil[%s] is not before lockedUntil[%s]", startTime, operation.getLockedUntil()));
+        StepVerifier.create(sessionReceiver.getAutoRenewSessionLock(sessionId, maxDuration))
+            .thenAwait(totalSleepPeriod)
+            .then(() -> logger.info("Finished renewals for first sleep."))
+            .expectComplete()
+            .verify(Duration.ofSeconds(5));
 
         verify(managementNode, Mockito.atMost(atMost)).renewSessionLock(sessionId, null);
     }
 
-    private List<Message> getMessages(int numberOfEvents) {
+    private List<Message> getMessages() {
         final Map<String, String> map = Collections.singletonMap("SAMPLE_HEADER", "foo");
 
-        return IntStream.range(0, numberOfEvents)
+        return IntStream.range(0, 10)
             .mapToObj(index -> getMessage(PAYLOAD_BYTES, messageTrackingUUID, map))
             .collect(Collectors.toList());
     }

@@ -1226,7 +1226,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-store, no-cache",
       "x-ms-request-id" : "49b5ad5e-45e9-4ea8-a0a3-03e54fdc5aed",
-      "Body" : "{\"primaryMasterKey\":\"cgx8Z7uUVMw2aREIvsSQA2tyrg7PZKjQanzskb0SWaqy8XPBRBimSa9dFtLyOd1388B41X7N6V0CjL7Oh4ROiw==\",\"secondaryMasterKey\":\"f1DwDXFCAA3zPUdvzSDaO5K8HZOQckR9R32AnoVSXvBnWEeRFaxhZBrpmqF4VXpOjzun1p5fZ8DcCas78aY6pQ==\",\"primaryReadonlyMasterKey\":\"LeNhbFOrT5uEGEQhwRTlI4MXAq2fMuG5MKkkTOysO9ypuF2gp0wAViUcnI14eWeWnRb9aenEzMHFwfFcfH74rA==\",\"secondaryReadonlyMasterKey\":\"RE7ipJ8EDlZg2GAnmmvvWtK2UmRsOfRFYoIqH7I3hdhyMY19rW836itaClImqcu6v3sVxpTgQ3uKm1taGB0jLg==\"}"
+      "Body" : "{\"primaryMasterKey\":\"***REMOVED***\",\"secondaryMasterKey\":\"***REMOVED***\",\"primaryReadonlyMasterKey\":\"***REMOVED***\",\"secondaryReadonlyMasterKey\":\"***REMOVED***\"}"
     }
   }, {
     "Method" : "POST",
@@ -1252,7 +1252,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-store, no-cache",
       "x-ms-request-id" : "5561a47e-c093-4a18-8ef6-1154a72e3f0c",
-      "Body" : "{\"primaryReadonlyMasterKey\":\"LeNhbFOrT5uEGEQhwRTlI4MXAq2fMuG5MKkkTOysO9ypuF2gp0wAViUcnI14eWeWnRb9aenEzMHFwfFcfH74rA==\",\"secondaryReadonlyMasterKey\":\"RE7ipJ8EDlZg2GAnmmvvWtK2UmRsOfRFYoIqH7I3hdhyMY19rW836itaClImqcu6v3sVxpTgQ3uKm1taGB0jLg==\"}"
+      "Body" : "{\"primaryReadonlyMasterKey\":\"***REMOVED***\",\"secondaryReadonlyMasterKey\":\"***REMOVED***\"}"
     }
   }, {
     "Method" : "PATCH",

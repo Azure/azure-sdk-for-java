@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.WebSiteManagementClient;
 import com.azure.resourcemanager.appservice.fluent.inner.CertificateCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.CertificateInner;
 import com.azure.resourcemanager.appservice.models.CertificatePatchResource;

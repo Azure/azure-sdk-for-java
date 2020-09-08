@@ -121,7 +121,7 @@ public class AADAuthenticationProperties {
          * Node is a UserGroup.
          */
         @NotEmpty
-        private String value = "Group";
+        private String value = AADGraphApiObjectType.GROUP;
 
         /**
          * Key of the JSON Node containing the Azure Object ID for the {@code UserGroup}.
