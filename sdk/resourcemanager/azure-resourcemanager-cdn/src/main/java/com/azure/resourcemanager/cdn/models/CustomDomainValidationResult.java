@@ -1,21 +1,15 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.cdn.models;
 
-import com.azure.resourcemanager.cdn.implementation.ValidateCustomDomainOutputInner;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.apigeneration.LangMethodDefinition;
+import com.azure.resourcemanager.cdn.fluent.inner.ValidateCustomDomainOutputInner;
 
 /**
  * The {@link CdnProfile#validateEndpointCustomDomain(String, String)} action result.
  */
-@LangDefinition
 public class CustomDomainValidationResult {
-    private ValidateCustomDomainOutputInner inner;
+    private final ValidateCustomDomainOutputInner inner;
 
     /**
      * Construct CustomDomainValidationResult object from server response object.
@@ -31,7 +25,6 @@ public class CustomDomainValidationResult {
      *
      * @return the customDomainValidated value
      */
-    @LangMethodDefinition(AsType = LangMethodDefinition.LangMethodType.Property)
     public boolean customDomainValidated() {
         return this.inner.customDomainValidated();
     }
@@ -41,7 +34,6 @@ public class CustomDomainValidationResult {
      *
      * @return the reason value
      */
-    @LangMethodDefinition(AsType = LangMethodDefinition.LangMethodType.Property)
     public String reason() {
         return this.inner.reason();
     }
@@ -51,7 +43,6 @@ public class CustomDomainValidationResult {
      *
      * @return the message value
      */
-    @LangMethodDefinition(AsType = LangMethodDefinition.LangMethodType.Property)
     public String message() {
         return this.inner.message();
     }

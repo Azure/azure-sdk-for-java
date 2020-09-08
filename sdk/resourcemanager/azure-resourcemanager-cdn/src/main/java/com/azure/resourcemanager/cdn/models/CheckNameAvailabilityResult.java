@@ -1,22 +1,15 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.cdn.models;
 
-import com.azure.resourcemanager.cdn.implementation.CheckNameAvailabilityOutputInner;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.apigeneration.LangMethodDefinition;
-import com.microsoft.azure.management.apigeneration.LangMethodDefinition.LangMethodType;
+import com.azure.resourcemanager.cdn.fluent.inner.CheckNameAvailabilityOutputInner;
 
 /**
  * Result of the custom domain validation.
  */
-@LangDefinition
 public class CheckNameAvailabilityResult {
-    private CheckNameAvailabilityOutputInner inner;
+    private final CheckNameAvailabilityOutputInner inner;
 
     /**
      * Construct CheckNameAvailabilityResult object from server response object.
@@ -32,7 +25,6 @@ public class CheckNameAvailabilityResult {
      *
      * @return the nameAvailable value
      */
-    @LangMethodDefinition(AsType = LangMethodType.Property)
     public boolean nameAvailable() {
         return this.inner.nameAvailable();
     }
@@ -42,7 +34,6 @@ public class CheckNameAvailabilityResult {
      *
      * @return the reason value
      */
-    @LangMethodDefinition(AsType = LangMethodType.Property)
     public String reason() {
         return this.inner.reason();
     }
@@ -52,7 +43,6 @@ public class CheckNameAvailabilityResult {
      *
      * @return the message value
      */
-    @LangMethodDefinition(AsType = LangMethodType.Property)
     public String message() {
         return this.inner.message();
     }

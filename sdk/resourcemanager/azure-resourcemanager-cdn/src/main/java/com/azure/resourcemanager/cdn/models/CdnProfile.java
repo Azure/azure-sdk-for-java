@@ -1,27 +1,19 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.cdn.models;
 
+import com.azure.core.annotation.Fluent;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.cdn.CdnManager;
-import com.azure.resourcemanager.cdn.implementation.ProfileInner;
-import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.apigeneration.Beta;
-import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.apigeneration.Method;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
-import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
-import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import rx.Completable;
-import rx.Observable;
+import com.azure.resourcemanager.cdn.fluent.inner.ProfileInner;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
+import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
+import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
+import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
+import reactor.core.publisher.Mono;
 
 import java.util.Map;
 import java.util.Set;
@@ -31,9 +23,9 @@ import java.util.Set;
  */
 @Fluent
 public interface CdnProfile extends
-        GroupableResource<CdnManager, ProfileInner>,
-        Refreshable<CdnProfile>,
-        Updatable<CdnProfile.Update> {
+    GroupableResource<CdnManager, ProfileInner>,
+    Refreshable<CdnProfile>,
+    Updatable<CdnProfile.Update> {
 
     /**
      * @return the SKU of the CDN profile
@@ -55,25 +47,15 @@ public interface CdnProfile extends
      *
      * @return URI used to login to the third party web portal
      */
-    @Method
     String generateSsoUri();
 
     /**
-     * Asynchronously generates a dynamic SSO URI used to sign into the CDN supplemental portal used for advanced management tasks.
+     * Asynchronously generates a dynamic SSO URI used to sign into
+     * the CDN supplemental portal used for advanced management tasks.
      *
-     * @return Observable to URI used to login to third party web portal
+     * @return a representation of the deferred computation of this call
      */
-    @Method
-    Observable<String> generateSsoUriAsync();
-
-    /**
-     * Asynchronously generates a dynamic SSO URI used to sign in to the CDN supplemental portal used for advanced management tasks.
-     *
-     * @param callback the callback to call on success or failure
-     * @return a handle to cancel the request
-     */
-    @Method
-    ServiceFuture<String> generateSsoUriAsync(ServiceCallback<String> callback);
+    Mono<String> generateSsoUriAsync();
 
     /**
      * Starts a stopped CDN endpoint.
@@ -88,16 +70,7 @@ public interface CdnProfile extends
      * @param endpointName a name of an endpoint under the profile
      * @return a representation of the deferred computation of this call
      */
-    Completable startEndpointAsync(String endpointName);
-
-    /**
-     * Starts a stopped CDN endpoint asynchronously.
-     *
-     * @param endpointName a name of an endpoint under the profile
-     * @param callback the callback to call on success or failure
-     * @return a representation of the deferred computation of this call
-     */
-    ServiceFuture<Void> startEndpointAsync(String endpointName, ServiceCallback<Void> callback);
+    Mono<Void> startEndpointAsync(String endpointName);
 
     /**
      * Stops a running CDN endpoint.
@@ -112,16 +85,7 @@ public interface CdnProfile extends
      * @param endpointName a name of an endpoint under the profile
      * @return a representation of the deferred computation of this call
      */
-    Completable stopEndpointAsync(String endpointName);
-
-    /**
-     * Stops a running CDN endpoint asynchronously.
-     *
-     * @param endpointName a name of an endpoint under the profile
-     * @param callback the callback to call on success or failure
-     * @return a representation of the deferred computation of this call
-     */
-    ServiceFuture<Void> stopEndpointAsync(String endpointName, ServiceCallback<Void> callback);
+    Mono<Void> stopEndpointAsync(String endpointName);
 
     /**
      * Forcibly purges CDN endpoint content in the CDN profile.
@@ -138,17 +102,7 @@ public interface CdnProfile extends
      * @param contentPaths the paths to the content to be purged, which can be file paths or directory wild cards
      * @return a representation of the deferred computation of this call
      */
-    Completable purgeEndpointContentAsync(String endpointName, Set<String> contentPaths);
-
-    /**
-     * Forcibly purges CDN endpoint content in the CDN profile asynchronously.
-     *
-     * @param endpointName a name of the endpoint under the profile
-     * @param contentPaths the paths to the content to be purged, which can be file paths or directory wild cards
-     * @param callback the callback to call on success or failure
-     * @return a representation of the deferred computation of this call
-     */
-    ServiceFuture<Void> purgeEndpointContentAsync(String endpointName, Set<String> contentPaths, ServiceCallback<Void> callback);
+    Mono<Void> purgeEndpointContentAsync(String endpointName, Set<String> contentPaths);
 
     /**
      * Forcibly pre-loads CDN endpoint content in the CDN profile.
@@ -169,19 +123,7 @@ public interface CdnProfile extends
      * @param contentPaths the paths to the content to be purged, which can be file paths or directory wild cards
      * @return a representation of the deferred computation of this call
      */
-    Completable loadEndpointContentAsync(String endpointName, Set<String> contentPaths);
-
-    /**
-     * Forcibly pre-loads CDN endpoint content in the CDN profile asynchronously.
-     * <p>
-     * Note, this is Available for Verizon Profiles only.
-     *
-     * @param endpointName a name of the endpoint under the profile
-     * @param contentPaths the paths to the content to be purged, which can be file paths or directory wild cards
-     * @param callback the callback to call on success or failure
-     * @return a representation of the deferred computation of this call
-     */
-    ServiceFuture<Void> loadEndpointContentAsync(String endpointName, Set<String> contentPaths, ServiceCallback<Void> callback);
+    Mono<Void> loadEndpointContentAsync(String endpointName, Set<String> contentPaths);
 
     /**
      * Validates a custom domain mapping to ensure it maps to the correct CNAME in DNS in current profile.
@@ -193,24 +135,14 @@ public interface CdnProfile extends
     CustomDomainValidationResult validateEndpointCustomDomain(String endpointName, String hostName);
 
     /**
-     * Validates a custom domain mapping to ensure it maps to the correct CNAME in DNS in current profile asynchronously.
+     * Validates a custom domain mapping to ensure it maps to the correct CNAME
+     * in DNS in current profile asynchronously.
      *
      * @param endpointName a name of the endpoint under the profile
      * @param hostName the host name of the custom domain, which must be a domain name
      * @return the Observable to CustomDomainValidationResult object if successful
      */
-    Observable<CustomDomainValidationResult> validateEndpointCustomDomainAsync(String endpointName, String hostName);
-
-
-    /**
-     * Validates a custom domain mapping to ensure it maps to the correct CNAME in DNS in current profile asynchronously.
-     *
-     * @param endpointName a name of the endpoint under the profile
-     * @param hostName the host name of the custom domain, which must be a domain name
-     * @param callback the callback to call on success or failure
-     * @return a representation of the deferred computation of this call
-     */
-    ServiceFuture<CustomDomainValidationResult> validateEndpointCustomDomainAsync(String endpointName, String hostName, ServiceCallback<CustomDomainValidationResult> callback);
+    Mono<CustomDomainValidationResult> validateEndpointCustomDomainAsync(String endpointName, String hostName);
 
     /**
      * Checks the availability of an endpoint name without creating the CDN endpoint.
@@ -226,16 +158,7 @@ public interface CdnProfile extends
      * @param name the endpoint resource name to validate.
      * @return a representation of the deferred computation of this call
      */
-    Observable<CheckNameAvailabilityResult> checkEndpointNameAvailabilityAsync(String name);
-
-    /**
-     * Checks the availability of an endpoint name without creating the CDN endpoint asynchronously.
-     *
-     * @param name the endpoint resource name to validate.
-     * @param callback the callback to call on success or failure
-     * @return a representation of the deferred computation of this call
-     */
-    ServiceFuture<CheckNameAvailabilityResult> checkEndpointNameAvailabilityAsync(String name, ServiceCallback<CheckNameAvailabilityResult> callback);
+    Mono<CheckNameAvailabilityResult> checkEndpointNameAvailabilityAsync(String name);
 
     /**
      * @return true if this CDN profile's SKU is of Premium Verizon, else false.
@@ -245,7 +168,7 @@ public interface CdnProfile extends
     /**
      * @return quotas and actual usages of endpoints under the current CDN profile
      */
-    PagedList<ResourceUsage> listResourceUsage();
+    PagedIterable<ResourceUsage> listResourceUsage();
 
     /**
      * The entirety of a CDN profile definition.
@@ -319,7 +242,7 @@ public interface CdnProfile extends
              *
              * @return the first stage of a new CDN endpoint definition
              */
-            @Beta // TODO: Why is define() not requiring a name?
+            // TODO: Why is define() not requiring a name?
             CdnEndpoint.DefinitionStages.Blank.StandardEndpoint<WithStandardCreate> defineNewEndpoint();
 
             /**
@@ -337,8 +260,9 @@ public interface CdnProfile extends
              * @param endpointOriginHostname an endpoint origin hostname
              * @return the first stage of a new CDN endpoint definition
              */
-            @Beta // Why is define() taking more than just the name?
-            CdnEndpoint.DefinitionStages.WithStandardAttach<WithStandardCreate> defineNewEndpoint(String name, String endpointOriginHostname);
+            // Why is define() taking more than just the name?
+            CdnEndpoint.DefinitionStages.WithStandardAttach<WithStandardCreate> defineNewEndpoint(
+                String name, String endpointOriginHostname);
         }
 
         /**
@@ -359,7 +283,7 @@ public interface CdnProfile extends
              *
              * @return the first stage of a new CDN endpoint definition
              */
-            @Beta // Why is define() not requiring a name?
+            // Why is define() not requiring a name?
             CdnEndpoint.DefinitionStages.Blank.PremiumEndpoint<WithPremiumVerizonCreate> defineNewPremiumEndpoint();
 
             /**
@@ -368,7 +292,8 @@ public interface CdnProfile extends
              * @param name a name for the endpoint
              * @return the first stage of a new CDN endpoint definition
              */
-            CdnEndpoint.DefinitionStages.Blank.PremiumEndpoint<WithPremiumVerizonCreate> defineNewPremiumEndpoint(String name);
+            CdnEndpoint.DefinitionStages.Blank.PremiumEndpoint<WithPremiumVerizonCreate> defineNewPremiumEndpoint(
+                String name);
 
             /**
              * Starts the definition of a new endpoint to be attached to the CDN profile.
@@ -377,8 +302,9 @@ public interface CdnProfile extends
              * @param endpointOriginHostname the endpoint origin hostname
              * @return the stage representing configuration for the endpoint
              */
-            @Beta // Why is define() taking more than just the name?
-            CdnEndpoint.DefinitionStages.WithPremiumAttach<WithPremiumVerizonCreate> defineNewPremiumEndpoint(String name, String endpointOriginHostname);
+            // Why is define() taking more than just the name?
+            CdnEndpoint.DefinitionStages.WithPremiumAttach<WithPremiumVerizonCreate> defineNewPremiumEndpoint(
+                String name, String endpointOriginHostname);
         }
 
         /**
@@ -386,8 +312,8 @@ public interface CdnProfile extends
          * but also allows for any other optional settings to be specified.
          */
         interface WithCreate extends
-                Creatable<CdnProfile>,
-                Resource.DefinitionWithTags<WithCreate> {
+            Creatable<CdnProfile>,
+            Resource.DefinitionWithTags<WithCreate> {
         }
     }
 
@@ -412,7 +338,7 @@ public interface CdnProfile extends
              *
              * @return the first stage of an endpoint definition
              */
-            @Beta // TODO: why is define() taking no name?
+            // TODO: why is define() taking no name?
             CdnEndpoint.UpdateDefinitionStages.Blank.StandardEndpoint<Update> defineNewEndpoint();
 
             /**
@@ -430,8 +356,9 @@ public interface CdnProfile extends
              * @param endpointOriginHostname the endpoint origin hostname
              * @return the first stage of an endpoint definition
              */
-            @Beta // TODO: Why define() is taking more than the name?
-            CdnEndpoint.UpdateDefinitionStages.WithStandardAttach<Update> defineNewEndpoint(String name, String endpointOriginHostname);
+            // TODO: Why define() is taking more than the name?
+            CdnEndpoint.UpdateDefinitionStages.WithStandardAttach<Update> defineNewEndpoint(
+                String name, String endpointOriginHostname);
 
             /**
              * Adds new endpoint to current Premium Verizon CDN profile.
@@ -446,7 +373,7 @@ public interface CdnProfile extends
              *
              * @return the first stage of an endpoint definition
              */
-            @Beta // TODO: why is this define* not requiring a name?
+            // TODO: why is this define* not requiring a name?
             CdnEndpoint.UpdateDefinitionStages.Blank.PremiumEndpoint<Update> defineNewPremiumEndpoint();
 
             /**
@@ -464,8 +391,9 @@ public interface CdnProfile extends
              * @param endpointOriginHostname the endpoint origin hostname.
              * @return the first stage of an endpoint definition
              */
-            @Beta // TODO: why is this taking more than just the name?
-            CdnEndpoint.UpdateDefinitionStages.WithPremiumAttach<Update> defineNewPremiumEndpoint(String name, String endpointOriginHostname);
+            // TODO: why is this taking more than just the name?
+            CdnEndpoint.UpdateDefinitionStages.WithPremiumAttach<Update> defineNewPremiumEndpoint(
+                String name, String endpointOriginHostname);
 
             /**
              * Begins the description of an update of an existing endpoint in current profile.
@@ -497,8 +425,8 @@ public interface CdnProfile extends
      * The template for an update operation, containing all the settings that can be modified.
      */
     interface Update extends
-            Appliable<CdnProfile>,
-            UpdateStages.WithEndpoint,
-            Resource.UpdateWithTags<Update> {
+        Appliable<CdnProfile>,
+        UpdateStages.WithEndpoint,
+        Resource.UpdateWithTags<Update> {
     }
 }

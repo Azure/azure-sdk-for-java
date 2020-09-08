@@ -1,23 +1,16 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.cdn.models;
 
-import com.azure.resourcemanager.cdn.implementation.EndpointInner;
-import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.apigeneration.Method;
-import com.microsoft.azure.management.resources.fluentcore.arm.CountryIsoCode;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
-import com.microsoft.azure.management.resources.fluentcore.model.Settable;
-import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import rx.Completable;
-import rx.Observable;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.resourcemanager.cdn.fluent.inner.EndpointInner;
+import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.ExternalChildResource;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.Settable;
+import reactor.core.publisher.Mono;
 
 import java.util.Collection;
 import java.util.List;
@@ -28,8 +21,8 @@ import java.util.Set;
  */
 @Fluent
 public interface CdnEndpoint extends
-        ExternalChildResource<CdnEndpoint, CdnProfile>,
-        HasInner<EndpointInner> {
+    ExternalChildResource<CdnEndpoint, CdnProfile>,
+    HasInner<EndpointInner> {
 
     /**
      * @return origin host header
@@ -80,7 +73,7 @@ public interface CdnEndpoint extends
     /**
      * @return endpoint host name
      */
-    String hostName();
+    String hostname();
 
     /**
      * @return endpoint state
@@ -122,15 +115,7 @@ public interface CdnEndpoint extends
      *
      * @return a representation of the deferred computation of this call
      */
-    Completable startAsync();
-
-    /**
-     * Starts the CDN endpoint asynchronously, if it is stopped.
-     *
-     * @param callback the callback to call on success or failure
-     * @return a handle to cancel the request
-     */
-    ServiceFuture<Void> startAsync(ServiceCallback<Void> callback);
+    Mono<Void> startAsync();
 
     /**
      * Stops the CDN endpoint, if it is running.
@@ -142,16 +127,7 @@ public interface CdnEndpoint extends
      *
      * @return a representation of the deferred computation of this call
      */
-    Completable stopAsync();
-
-
-    /**
-     * Stops the CDN endpoint asynchronously, if it is running.
-     *
-     * @param callback the callback to call on success or failure
-     * @return a handle to cancel the request
-     */
-    ServiceFuture<Void> stopAsync(ServiceCallback<Void> callback);
+    Mono<Void> stopAsync();
 
     /**
      * Forcibly purges the content of the CDN endpoint.
@@ -166,16 +142,7 @@ public interface CdnEndpoint extends
      * @param contentPaths the paths to the content to be purged, which can be file paths or directory wild cards.
      * @return a representation of the deferred computation of this call
      */
-    Completable purgeContentAsync(Set<String> contentPaths);
-
-    /**
-     * Forcibly purges the content of the CDN endpoint asynchronously.
-     *
-     * @param contentPaths the paths to the content to be purged, which can be file paths or directory wild cards.
-     * @param callback the callback to call on success or failure
-     * @return a handle to cancel the request
-     */
-    ServiceFuture<Void> purgeContentAsync(Set<String> contentPaths, ServiceCallback<Void> callback);
+    Mono<Void> purgeContentAsync(Set<String> contentPaths);
 
     /**
      * Forcibly preloads the content of the CDN endpoint.
@@ -194,18 +161,7 @@ public interface CdnEndpoint extends
      * @param contentPaths the file paths to the content to be loaded
      * @return a representation of the deferred computation of this call
      */
-    Completable loadContentAsync(Set<String> contentPaths);
-
-    /**
-     * Forcibly preloads the content of the CDN endpoint asynchronously.
-     * <p>
-     * Note: this is supported for Verizon profiles only.
-     *
-     * @param contentPaths the file paths to the content to be loaded
-     * @param callback the callback to call on success or failure
-     * @return a handle to cancel the request
-     */
-    ServiceFuture<Void> loadContentAsync(Set<String> contentPaths, ServiceCallback<Void> callback);
+    Mono<Void> loadContentAsync(Set<String> contentPaths);
 
     /**
      * Validates a custom domain mapping to ensure it maps to the correct CNAME in DNS for current endpoint.
@@ -216,28 +172,20 @@ public interface CdnEndpoint extends
     CustomDomainValidationResult validateCustomDomain(String hostName);
 
     /**
-     * Validates a custom domain mapping to ensure it maps to the correct CNAME in DNS for current endpoint asynchronously.
+     * Validates a custom domain mapping to ensure it maps to the correct CNAME
+     * in DNS for current endpoint asynchronously.
      *
      * @param hostName the host name, which must be a domain name, of the custom domain
      * @return an observable of the result
      */
-    Observable<CustomDomainValidationResult> validateCustomDomainAsync(String hostName);
-
-    /**
-     * Validates a custom domain mapping to ensure it maps to the correct CNAME in DNS for current endpoint asynchronously.
-     *
-     * @param hostName the host name, which must be a domain name, of the custom domain
-     * @param callback the callback to call on success or failure
-     * @return a handle to cancel the request
-     */
-    ServiceFuture<CustomDomainValidationResult> validateCustomDomainAsync(String hostName, ServiceCallback<CustomDomainValidationResult> callback);
+    Mono<CustomDomainValidationResult> validateCustomDomainAsync(String hostName);
 
     /**
      * Checks the quota and usage of geo filters and custom domains under the current endpoint.
      *
      * @return list of quotas and usages of geo filters and custom domains under the current endpoint
      */
-    PagedList<ResourceUsage> listResourceUsage();
+    PagedIterable<ResourceUsage> listResourceUsage();
 
     /**
      * Grouping of CDN profile endpoint definition stages as a part of parent CDN profile definition.
@@ -250,7 +198,8 @@ public interface CdnEndpoint extends
             /**
              * The stage of a CDN profile endpoint definition allowing to specify the origin.
              *
-             * @param <ParentT> the stage of the parent CDN profile definition to return to after attaching this definition
+             * @param <ParentT> the stage of the parent CDN profile definition to
+             *                 return to after attaching this definition
              */
             interface StandardEndpoint<ParentT> {
                 /**
@@ -275,7 +224,8 @@ public interface CdnEndpoint extends
              * The stage of a CDN profile endpoint definition allowing to specify the origin
              * for the CDN profile with teh Premium Verizon SKU.
              *
-             * @param <ParentT> the stage of the parent CDN profile definition to return to after attaching this definition
+             * @param <ParentT> the stage of the parent CDN profile definition to
+             *                 return to after attaching this definition
              */
             interface PremiumEndpoint<ParentT> {
                 /**
@@ -402,7 +352,8 @@ public interface CdnEndpoint extends
              * @param countryCode an ISO 2 letter country code
              * @return the next stage of the definition
              */
-            WithStandardAttach<ParentT> withGeoFilter(String relativePath, GeoFilterActions action, CountryIsoCode countryCode);
+            WithStandardAttach<ParentT> withGeoFilter(
+                String relativePath, GeoFilterActions action, CountryIsoCode countryCode);
 
             /**
              * Sets the geo filters list for the specified countries list.
@@ -412,7 +363,8 @@ public interface CdnEndpoint extends
              * @param countryCodes a list of the ISO 2 letter country codes.
              * @return the next stage of the definition
              */
-            WithStandardAttach<ParentT> withGeoFilter(String relativePath, GeoFilterActions action, Collection<CountryIsoCode> countryCodes);
+            WithStandardAttach<ParentT> withGeoFilter(
+                String relativePath, GeoFilterActions action, Collection<CountryIsoCode> countryCodes);
 
             /**
              * Adds a new CDN custom domain within an endpoint.
@@ -499,7 +451,6 @@ public interface CdnEndpoint extends
              * Attaches the defined endpoint to the parent CDN profile.
              * @return the stage of the parent CDN profile definition to return to after attaching this definition
              */
-            @Method
             ParentT attach();
         }
 
@@ -513,7 +464,6 @@ public interface CdnEndpoint extends
              * Attaches the defined endpoint to the parent CDN profile.
              * @return the stage of the parent CDN profile definition to return to after attaching this definition
              */
-            @Method
             ParentT attach();
         }
     }
@@ -564,7 +514,8 @@ public interface CdnEndpoint extends
                  * @param originHostName origin host name
                  * @return the next stage of the definition
                  */
-                UpdateDefinitionStages.WithPremiumAttach<ParentT> withPremiumOrigin(String originName, String originHostName);
+                UpdateDefinitionStages.WithPremiumAttach<ParentT> withPremiumOrigin(
+                    String originName, String originHostName);
 
                 /**
                  * Specifies the origin of the CDN endpoint.
@@ -682,7 +633,8 @@ public interface CdnEndpoint extends
              * @param countryCode an ISO 2 letter country code
              * @return the next stage of the definition
              */
-            WithStandardAttach<ParentT> withGeoFilter(String relativePath, GeoFilterActions action, CountryIsoCode countryCode);
+            WithStandardAttach<ParentT> withGeoFilter(
+                String relativePath, GeoFilterActions action, CountryIsoCode countryCode);
 
             /**
              * Sets the geo filters list for the specified countries list.
@@ -692,7 +644,8 @@ public interface CdnEndpoint extends
              * @param countryCodes a list of ISO 2 letter country codes
              * @return the next stage of the definition
              */
-            WithStandardAttach<ParentT> withGeoFilter(String relativePath, GeoFilterActions action, Collection<CountryIsoCode> countryCodes);
+            WithStandardAttach<ParentT> withGeoFilter(
+                String relativePath, GeoFilterActions action, Collection<CountryIsoCode> countryCodes);
 
             /**
              * Adds a new CDN custom domain within an endpoint.
@@ -780,7 +733,6 @@ public interface CdnEndpoint extends
              * Attaches the endpoint definition to the parent CDN profile update.
              * @return the stage of the parent CDN profile update to return to after attaching this definition
              */
-            @Method
             ParentT attach();
         }
 
@@ -794,7 +746,6 @@ public interface CdnEndpoint extends
              * Attaches the endpoint definition to the parent CDN profile update.
              * @return the stage of the parent CDN profile update to return to after attaching this definition
              */
-            @Method
             ParentT attach();
         }
     }
@@ -932,7 +883,8 @@ public interface CdnEndpoint extends
          * @param countryCodes a list of ISO 2 letter country codes
          * @return the next stage of the definition
          */
-        UpdateStandardEndpoint withGeoFilter(String relativePath, GeoFilterActions action, Collection<CountryIsoCode> countryCodes);
+        UpdateStandardEndpoint withGeoFilter(
+            String relativePath, GeoFilterActions action, Collection<CountryIsoCode> countryCodes);
 
         /**
          * Removes an entry from the geo filters list.
@@ -1033,6 +985,6 @@ public interface CdnEndpoint extends
      * The entirety of a CDN endpoint update as part of a CDN profile update.
      */
     interface Update extends
-            Settable<CdnProfile.Update> {
+        Settable<CdnProfile.Update> {
     }
 }

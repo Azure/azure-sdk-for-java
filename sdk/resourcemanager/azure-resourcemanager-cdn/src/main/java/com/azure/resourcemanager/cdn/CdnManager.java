@@ -1,28 +1,23 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.cdn;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.cdn.implementation.CdnProfilesImpl;
-import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.AzureResponseBuilder;
-import com.microsoft.azure.credentials.AzureTokenCredentials;
+import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
+import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
+import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
+import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.cdn.models.CdnProfiles;
-import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
-import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
-import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingInterceptor;
-import com.microsoft.azure.serializer.AzureJacksonAdapter;
-import com.microsoft.rest.RestClient;
 
 /**
  * Entry point to Azure CDN management.
  */
-public final class CdnManager extends Manager<CdnManager, CdnManagementClientImpl> {
+public final class CdnManager extends Manager<CdnManager, CdnManagementClient> {
     // Collections
     private CdnProfiles profiles;
 
@@ -39,30 +34,35 @@ public final class CdnManager extends Manager<CdnManager, CdnManagementClientImp
     /**
      * Creates an instance of CDN Manager that exposes CDN manager management API entry points.
      *
-     * @param credentials the credentials to use
-     * @param subscriptionId the subscription UUID
+     * @param credential the credential to use
+     * @param profile the profile to use
      * @return the CDN Manager
      */
-    public static CdnManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
-        return new CdnManager(new RestClient.Builder()
-                .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
-                .withCredentials(credentials)
-                .withSerializerAdapter(new AzureJacksonAdapter())
-                .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
-                .withInterceptor(new ProviderRegistrationInterceptor(credentials))
-                .withInterceptor(new ResourceManagerThrottlingInterceptor())
-                .build(), subscriptionId);
+    public static CdnManager authenticate(TokenCredential credential, AzureProfile profile) {
+        return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
     /**
      * Creates an instance of CDN Manager that exposes CDN manager management API entry points.
      *
-     * @param restClient the RestClient to be used for API calls.
-     * @param subscriptionId the subscription UUID
+     * @param httpPipeline the HttpPipeline to be used for API calls.
+     * @param profile the profile to use
      * @return the CDN Manager
      */
-    public static CdnManager authenticate(RestClient restClient, String subscriptionId) {
-        return new CdnManager(restClient, subscriptionId);
+    public static CdnManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        return authenticate(httpPipeline, profile, new SdkContext());
+    }
+
+    /**
+     * Creates an instance of CDN Manager that exposes CDN manager management API entry points.
+     *
+     * @param httpPipeline the HttpPipeline to be used for API calls.
+     * @param profile the profile to use
+     * @param sdkContext the sdk context
+     * @return the CDN Manager
+     */
+    public static CdnManager authenticate(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+        return new CdnManager(httpPipeline, profile, sdkContext);
     }
 
     /**
@@ -72,11 +72,11 @@ public final class CdnManager extends Manager<CdnManager, CdnManagementClientImp
         /**
          * Creates an instance of CDN Manager that exposes CDN manager management API entry points.
          *
-         * @param credentials the credentials to use
-         * @param subscriptionId the subscription UUID
+         * @param credential the credential to use
+         * @param profile the profile to use
          * @return the interface exposing CDN manager management API entry points that work across subscriptions
          */
-        CdnManager authenticate(AzureTokenCredentials credentials, String subscriptionId);
+        CdnManager authenticate(TokenCredential credential, AzureProfile profile);
     }
 
     /**
@@ -86,15 +86,22 @@ public final class CdnManager extends Manager<CdnManager, CdnManagementClientImp
             extends AzureConfigurableImpl<Configurable>
             implements Configurable {
 
-        public CdnManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
-            return CdnManager.authenticate(buildRestClient(credentials), subscriptionId);
+        public CdnManager authenticate(TokenCredential credential, AzureProfile profile) {
+            return CdnManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
     }
 
-    private CdnManager(RestClient restClient, String subscriptionId) {
-        super(restClient,
-                subscriptionId,
-                new CdnManagementClientImpl(restClient).withSubscriptionId(subscriptionId));
+    private CdnManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+        super(
+            httpPipeline,
+            profile,
+            new CdnManagementClientBuilder()
+                .pipeline(httpPipeline)
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
+                .buildClient(),
+            sdkContext
+        );
     }
 
     /**

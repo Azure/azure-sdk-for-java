@@ -1,29 +1,24 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.cdn.models;
 
+import com.azure.core.annotation.Fluent;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.cdn.CdnManager;
-import com.azure.resourcemanager.cdn.implementation.ProfilesInner;
-import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
-import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import rx.Observable;
+import com.azure.resourcemanager.cdn.fluent.ProfilesClient;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBatchCreation;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -32,17 +27,17 @@ import java.util.List;
  */
 @Fluent
 public interface CdnProfiles extends
-        SupportsCreating<CdnProfile.DefinitionStages.Blank>,
-        SupportsListing<CdnProfile>,
-        SupportsListingByResourceGroup<CdnProfile>,
-        SupportsGettingByResourceGroup<CdnProfile>,
-        SupportsGettingById<CdnProfile>,
-        SupportsDeletingById,
-        SupportsDeletingByResourceGroup,
-        SupportsBatchCreation<CdnProfile>,
-        SupportsBatchDeletion,
-        HasManager<CdnManager>,
-        HasInner<ProfilesInner> {
+    SupportsCreating<CdnProfile.DefinitionStages.Blank>,
+    SupportsListing<CdnProfile>,
+    SupportsListingByResourceGroup<CdnProfile>,
+    SupportsGettingByResourceGroup<CdnProfile>,
+    SupportsGettingById<CdnProfile>,
+    SupportsDeletingById,
+    SupportsDeletingByResourceGroup,
+    SupportsBatchCreation<CdnProfile>,
+    SupportsBatchDeletion,
+    HasManager<CdnManager>,
+    HasInner<ProfilesClient> {
 
     /**
      * Generates a dynamic SSO URI used to sign in to the CDN supplemental portal.
@@ -71,37 +66,28 @@ public interface CdnProfiles extends
      * @param name the endpoint resource name to validate.
      * @return a representation of the deferred computation of this call
      */
-    Observable<CheckNameAvailabilityResult> checkEndpointNameAvailabilityAsync(String name);
-
-    /**
-     * Checks the availability of a endpoint name without creating the CDN endpoint asynchronously.
-     *
-     * @param name the endpoint resource name to validate.
-     * @param callback the callback to call on success or failure
-     * @return a representation of the deferred computation of this call
-     */
-    ServiceFuture<CheckNameAvailabilityResult> checkEndpointNameAvailabilityAsync(String name, ServiceCallback<CheckNameAvailabilityResult> callback);
+    Mono<CheckNameAvailabilityResult> checkEndpointNameAvailabilityAsync(String name);
 
     /**
      * Lists all of the available CDN REST API operations.
      *
      * @return list of available CDN REST operations.
      */
-    PagedList<Operation> listOperations();
+    PagedIterable<Operation> listOperations();
 
     /**
      * Check the quota and actual usage of the CDN profiles under the current subscription.
      *
      * @return quotas and actual usages of the CDN profiles under the current subscription.
      */
-    PagedList<ResourceUsage> listResourceUsage();
+    PagedIterable<ResourceUsage> listResourceUsage();
 
     /**
      * Lists all the edge nodes of a CDN service.
      *
      * @return list of all the edge nodes of a CDN service.
      */
-    PagedList<EdgeNode> listEdgeNodes();
+    PagedIterable<EdgeNode> listEdgeNodes();
 
     /**
      * Starts an existing stopped CDN endpoint.
@@ -129,7 +115,8 @@ public interface CdnProfiles extends
      * @param endpointName name of the endpoint under the profile which is unique globally.
      * @param contentPaths the path to the content to be purged. Can describe a file path or a wild card directory.
      */
-    void purgeEndpointContent(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths);
+    void purgeEndpointContent(
+        String resourceGroupName, String profileName, String endpointName, List<String> contentPaths);
 
     /**
      * Forcibly pre-loads CDN endpoint content. Available for Verizon profiles.
@@ -139,5 +126,6 @@ public interface CdnProfiles extends
      * @param endpointName name of the endpoint under the profile which is unique globally.
      * @param contentPaths the path to the content to be loaded. Should describe a file path.
      */
-    void loadEndpointContent(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths);
+    void loadEndpointContent(
+        String resourceGroupName, String profileName, String endpointName, List<String> contentPaths);
 }

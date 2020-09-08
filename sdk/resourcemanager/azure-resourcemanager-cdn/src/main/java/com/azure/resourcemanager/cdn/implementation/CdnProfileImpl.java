@@ -1,48 +1,39 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.cdn.implementation;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.cdn.CdnManager;
+import com.azure.resourcemanager.cdn.fluent.inner.ProfileInner;
+import com.azure.resourcemanager.cdn.fluent.inner.SsoUriInner;
 import com.azure.resourcemanager.cdn.models.ResourceUsage;
 import com.azure.resourcemanager.cdn.models.Sku;
 import com.azure.resourcemanager.cdn.models.SkuName;
-import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.cdn.models.CdnEndpoint;
 import com.azure.resourcemanager.cdn.models.CdnProfile;
 import com.azure.resourcemanager.cdn.models.CheckNameAvailabilityResult;
 import com.azure.resourcemanager.cdn.models.CustomDomainValidationResult;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import rx.Completable;
-import rx.Observable;
-import rx.functions.Func1;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 /**
  * Implementation for CdnProfile.
  */
-@LangDefinition
 class CdnProfileImpl
-        extends GroupableResourceImpl<
-            CdnProfile,
-            ProfileInner,
-            CdnProfileImpl,
-    CdnManager>
-        implements
-            CdnProfile,
-            CdnProfile.Definition,
-            CdnProfile.Update {
+    extends GroupableResourceImpl<
+        CdnProfile,
+        ProfileInner,
+        CdnProfileImpl,
+        CdnManager>
+    implements
+        CdnProfile,
+        CdnProfile.Definition,
+        CdnProfile.Update {
 
     private CdnEndpointsImpl endpoints;
 
@@ -62,156 +53,100 @@ class CdnProfileImpl
 
     @Override
     public String generateSsoUri() {
-        return this.generateSsoUriAsync().toBlocking().last();
+        return this.generateSsoUriAsync().block();
     }
 
     @Override
-    public Observable<String> generateSsoUriAsync() {
-        return this.manager().inner().profiles().generateSsoUriAsync(
-                this.resourceGroupName(),
-                this.name()).map(new Func1<SsoUriInner, String>() {
-            @Override
-            public String call(SsoUriInner ssoUriInner) {
-                if (ssoUriInner != null) {
-                    return ssoUriInner.ssoUriValue();
-                }
-                return null;
-            }
-        });
-    }
-
-    @Override
-    public ServiceFuture<String> generateSsoUriAsync(ServiceCallback<String> callback) {
-        return ServiceFuture.fromBody(this.generateSsoUriAsync(), callback);
+    public Mono<String> generateSsoUriAsync() {
+        return this.manager().inner().getProfiles().generateSsoUriAsync(this.resourceGroupName(), this.name())
+            .map(SsoUriInner::ssoUriValue);
     }
 
     @Override
     public void startEndpoint(String endpointName) {
-        this.startEndpointAsync(endpointName).await();
+        this.startEndpointAsync(endpointName).block();
     }
 
     @Override
-    public Completable startEndpointAsync(String endpointName) {
-        return this.manager().inner().endpoints().startAsync(this.resourceGroupName(), this.name(), endpointName).toCompletable();
-    }
-
-    @Override
-    public ServiceFuture<Void> startEndpointAsync(String endpointName, ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(this.startEndpointAsync(endpointName), callback);
+    public Mono<Void> startEndpointAsync(String endpointName) {
+        return this.manager().inner().getEndpoints()
+            .startAsync(this.resourceGroupName(), this.name(), endpointName)
+            .then();
     }
 
     @Override
     public void stopEndpoint(String endpointName) {
-        this.stopEndpointAsync(endpointName).await();
+        this.stopEndpointAsync(endpointName).block();
     }
 
     @Override
-    public Completable stopEndpointAsync(String endpointName) {
-        return this.manager().inner().endpoints().stopAsync(this.resourceGroupName(), this.name(), endpointName).toCompletable();
+    public Mono<Void> stopEndpointAsync(String endpointName) {
+        return this.manager().inner().getEndpoints()
+            .stopAsync(this.resourceGroupName(), this.name(), endpointName)
+            .then();
     }
 
     @Override
-    public ServiceFuture<Void> stopEndpointAsync(String endpointName, ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(this.stopEndpointAsync(endpointName), callback);
-    }
-
-    @Override
-    public PagedList<ResourceUsage> listResourceUsage() {
-        return (new PagedListConverter<ResourceUsageInner, ResourceUsage>() {
-            @Override
-            public Observable<ResourceUsage> typeConvertAsync(ResourceUsageInner inner) {
-                return Observable.just((ResourceUsage) new ResourceUsage(inner));
-            }
-        }).convert(this.manager().inner().profiles().listResourceUsage(
-                this.resourceGroupName(),
-                this.name()));
+    public PagedIterable<ResourceUsage> listResourceUsage() {
+        return this.manager().inner().getProfiles().listResourceUsage(this.resourceGroupName(), this.name())
+            .mapPage(ResourceUsage::new);
     }
 
     @Override
     public void purgeEndpointContent(String endpointName, Set<String> contentPaths) {
-        this.purgeEndpointContentAsync(endpointName, contentPaths).await();
+        this.purgeEndpointContentAsync(endpointName, contentPaths).block();
     }
 
     @Override
-    public Completable purgeEndpointContentAsync(String endpointName, Set<String> contentPaths) {
+    public Mono<Void> purgeEndpointContentAsync(String endpointName, Set<String> contentPaths) {
         if (contentPaths != null) {
-            return this.manager().inner().endpoints().purgeContentAsync(this.resourceGroupName(), this.name(), endpointName, new ArrayList<>(contentPaths)).toCompletable();
-        } else {
-            return Observable.empty().toCompletable();
+            return this.manager().inner().getEndpoints()
+                .purgeContentAsync(this.resourceGroupName(), this.name(), endpointName, new ArrayList<>(contentPaths));
         }
-    }
-
-    @Override
-    public ServiceFuture<Void> purgeEndpointContentAsync(String endpointName, Set<String> contentPaths, ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(this.purgeEndpointContentAsync(endpointName, contentPaths), callback);
+        return Mono.empty();
     }
 
     @Override
     public void loadEndpointContent(String endpointName, Set<String> contentPaths) {
-        this.loadEndpointContentAsync(endpointName, contentPaths).await();
+        this.loadEndpointContentAsync(endpointName, contentPaths).block();
     }
 
     @Override
-    public Completable loadEndpointContentAsync(String endpointName, Set<String> contentPaths) {
+    public Mono<Void> loadEndpointContentAsync(String endpointName, Set<String> contentPaths) {
         if (contentPaths != null) {
-            return this.manager().inner().endpoints().loadContentAsync(this.resourceGroupName(), this.name(), endpointName, new ArrayList<>(contentPaths)).toCompletable();
-        } else {
-            return Observable.empty().toCompletable();
+            return this.manager().inner().getEndpoints()
+                .loadContentAsync(this.resourceGroupName(), this.name(), endpointName, new ArrayList<>(contentPaths));
         }
-    }
-
-    @Override
-    public ServiceFuture<Void> loadEndpointContentAsync(String endpointName, Set<String> contentPaths, ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(this.loadEndpointContentAsync(endpointName, contentPaths), callback);
+        return Mono.empty();
     }
 
     @Override
     public CustomDomainValidationResult validateEndpointCustomDomain(String endpointName, String hostName) {
-        return this.validateEndpointCustomDomainAsync(endpointName, hostName).toBlocking().last();
+        return this.validateEndpointCustomDomainAsync(endpointName, hostName).block();
     }
 
     @Override
-    public Observable<CustomDomainValidationResult> validateEndpointCustomDomainAsync(String endpointName, String hostName) {
-        return this.manager().inner().endpoints().validateCustomDomainAsync(
-                this.resourceGroupName(),
-                this.name(),
-                endpointName,
-                hostName).map(new Func1<ValidateCustomDomainOutputInner, CustomDomainValidationResult>() {
-            @Override
-            public CustomDomainValidationResult call(ValidateCustomDomainOutputInner validateCustomDomainOutputInner) {
-                return new CustomDomainValidationResult(validateCustomDomainOutputInner);
-            }
-        });
-    }
-
-    @Override
-    public ServiceFuture<CustomDomainValidationResult> validateEndpointCustomDomainAsync(String endpointName, String hostName, ServiceCallback<CustomDomainValidationResult> callback) {
-        return ServiceFuture.fromBody(this.validateEndpointCustomDomainAsync(endpointName, hostName), callback);
+    public Mono<CustomDomainValidationResult> validateEndpointCustomDomainAsync(String endpointName, String hostName) {
+        return this.manager().inner().getEndpoints().validateCustomDomainAsync(
+            this.resourceGroupName(), this.name(), endpointName, hostName)
+            .map(CustomDomainValidationResult::new);
     }
 
     @Override
     public CheckNameAvailabilityResult checkEndpointNameAvailability(String name) {
-        return this.checkEndpointNameAvailabilityAsync(name).toBlocking().last();
+        return this.checkEndpointNameAvailabilityAsync(name).block();
     }
 
     @Override
-    public Observable<CheckNameAvailabilityResult> checkEndpointNameAvailabilityAsync(String name) {
+    public Mono<CheckNameAvailabilityResult> checkEndpointNameAvailabilityAsync(String name) {
         return this.manager().profiles().checkEndpointNameAvailabilityAsync(name);
     }
 
     @Override
-    public ServiceFuture<CheckNameAvailabilityResult> checkEndpointNameAvailabilityAsync(String name, ServiceCallback<CheckNameAvailabilityResult> callback) {
-        return ServiceFuture.fromBody(this.checkEndpointNameAvailabilityAsync(name), callback);
-    }
-
-    @Override
     public boolean isPremiumVerizon() {
-        if (this.sku() != null
-                && this.sku().name() != null
-                && this.sku().name().equals(SkuName.PREMIUM_VERIZON)) {
-            return true;
-        }
-        return false;
+        return this.sku() != null
+            && this.sku().name() != null
+            && this.sku().name().equals(SkuName.PREMIUM_VERIZON);
     }
 
     @Override
@@ -230,8 +165,8 @@ class CdnProfileImpl
     }
 
     @Override
-    protected Observable<ProfileInner> getInnerAsync() {
-        return this.manager().inner().profiles().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+    protected Mono<ProfileInner> getInnerAsync() {
+        return this.manager().inner().getProfiles().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -242,49 +177,40 @@ class CdnProfileImpl
 
 
     @Override
-    public Observable<CdnProfile> createResourceAsync() {
-        return this.manager().inner().profiles().createAsync(resourceGroupName(), name(), inner())
+    public Mono<CdnProfile> createResourceAsync() {
+        return this.manager().inner().getProfiles().createAsync(resourceGroupName(), name(), inner())
                 .map(innerToFluentMap(this));
     }
 
     @Override
-    public Observable<CdnProfile> updateResourceAsync() {
+    public Mono<CdnProfile> updateResourceAsync() {
         final CdnProfileImpl self = this;
-        final ProfilesInner innerCollection = this.manager().inner().profiles();
-        return self.endpoints.commitAndGetAllAsync()
-                .flatMap(new Func1<List<CdnEndpointImpl>, Observable<? extends CdnProfile>>() {
-                    public Observable<? extends CdnProfile> call(List<CdnEndpointImpl> endpoints) {
-                        return innerCollection.updateAsync(resourceGroupName(), name(), inner().getTags())
-                                .map(new Func1<ProfileInner, CdnProfile>() {
-                                    @Override
-                                    public CdnProfile call(ProfileInner profileInner) {
-                                        self.setInner(profileInner);
-                                        return self;
-                                    }
-                                });
-                    }
-                });
+        return this.endpoints.commitAndGetAllAsync()
+            .flatMap(cdnEndpoints -> this.manager().inner().getProfiles()
+                .updateAsync(this.resourceGroupName(), this.name(), inner().tags())
+                .map(inner -> {
+                    self.setInner(inner);
+                    return self;
+                }));
     }
 
     @Override
-    public Completable afterPostRunAsync(final boolean isGroupFaulted) {
+    public Mono<Void> afterPostRunAsync(final boolean isGroupFaulted) {
         if (isGroupFaulted) {
             endpoints.clear();
-            return Completable.complete();
+            return Mono.empty();
         } else {
-            return this.refreshAsync().toCompletable();
+            return this.refreshAsync().then();
         }
     }
 
     @Override
-    public Observable<CdnProfile> refreshAsync() {
-        return super.refreshAsync().map(new Func1<CdnProfile, CdnProfile>() {
-            @Override
-            public CdnProfile call(CdnProfile profile) {
+    public Mono<CdnProfile> refreshAsync() {
+        return super.refreshAsync()
+            .map(cdnProfile -> {
                 endpoints.refresh();
-                return profile;
-            }
-        });
+                return cdnProfile;
+            });
     }
 
     @Override

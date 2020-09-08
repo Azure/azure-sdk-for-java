@@ -1,18 +1,16 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.cdn.implementation;
 
-import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.azure.resourcemanager.cdn.fluent.inner.CustomDomainInner;
+import com.azure.resourcemanager.cdn.fluent.inner.EndpointInner;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
 import com.azure.resourcemanager.cdn.models.CdnEndpoint;
 import com.azure.resourcemanager.cdn.models.CdnProfile;
 import com.azure.resourcemanager.cdn.models.CheckNameAvailabilityResult;
 import com.azure.resourcemanager.cdn.models.DeepCreatedOrigin;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
-import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
+import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,13 +21,12 @@ import java.util.Map;
 /**
  * Represents an endpoint collection associated with a CDN manager profile.
  */
-@LangDefinition
 class CdnEndpointsImpl extends
-        ExternalChildResourcesCachedImpl<CdnEndpointImpl,
-                        CdnEndpoint,
-                        EndpointInner,
-                        CdnProfileImpl,
-                        CdnProfile> {
+    ExternalChildResourcesCachedImpl<CdnEndpointImpl,
+        CdnEndpoint,
+        EndpointInner,
+        CdnProfileImpl,
+        CdnProfile> {
 
     CdnEndpointsImpl(CdnProfileImpl parent) {
         super(parent, parent.taskGroup(), "Endpoint");
@@ -71,16 +68,17 @@ class CdnEndpointsImpl extends
     @Override
     protected List<CdnEndpointImpl> listChildResources() {
         List<CdnEndpointImpl> childResources = new ArrayList<>();
-
-        for (EndpointInner innerEndpoint : this.parent().manager().inner().endpoints().listByProfile(
-                                        this.parent().resourceGroupName(),
-                                        this.parent().name())) {
-            CdnEndpointImpl endpointResource = new CdnEndpointImpl(innerEndpoint.name(), this.parent(), innerEndpoint);
-            for (CustomDomainInner customDomain : this.parent().manager().inner().customDomains().listByEndpoint(
-                    this.parent().resourceGroupName(),
-                    this.parent().name(),
+        for (EndpointInner innerEndpoint : this.getParent().manager().inner().getEndpoints().listByProfile(
+                                        this.getParent().resourceGroupName(),
+                                        this.getParent().name())) {
+            CdnEndpointImpl endpointResource = new CdnEndpointImpl(
+                innerEndpoint.name(), this.getParent(), innerEndpoint);
+            for (CustomDomainInner customDomain : this.getParent().manager().inner().getCustomDomains()
+                .listByEndpoint(
+                    this.getParent().resourceGroupName(),
+                    this.getParent().name(),
                     innerEndpoint.name())) {
-                endpointResource.withCustomDomain(customDomain.hostName());
+                endpointResource.withCustomDomain(customDomain.hostname());
             }
             childResources.add(endpointResource);
         }
@@ -88,8 +86,13 @@ class CdnEndpointsImpl extends
     }
 
     @Override
+    protected Flux<CdnEndpointImpl> listChildResourcesAsync() {
+        return Flux.fromIterable(listChildResources());
+    }
+
+    @Override
     protected CdnEndpointImpl newChildResource(String name) {
-        CdnEndpointImpl endpoint = new CdnEndpointImpl(name, this.parent(), new EndpointInner());
+        CdnEndpointImpl endpoint = new CdnEndpointImpl(name, this.getParent(), new EndpointInner());
         return endpoint;
     }
 
@@ -98,7 +101,7 @@ class CdnEndpointsImpl extends
         endpoint.inner().origins().add(
                 new DeepCreatedOrigin()
                         .withName(originName)
-                        .withHostName(endpointOriginHostname));
+                        .withHostname(endpointOriginHostname));
         return endpoint;
     }
 
@@ -134,8 +137,8 @@ class CdnEndpointsImpl extends
         CheckNameAvailabilityResult result;
 
         do {
-            endpointName = SdkContext.randomResourceName(endpointNamePrefix, 50);
-            result = this.parent().checkEndpointNameAvailability(endpointName);
+            endpointName = this.getParent().manager().sdkContext().randomResourceName(endpointNamePrefix, 50);
+            result = this.getParent().checkEndpointNameAvailability(endpointName);
         } while (!result.nameAvailable());
 
         return endpointName;

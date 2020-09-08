@@ -1,21 +1,15 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.resourcemanager.cdn.models;
 
-import com.azure.resourcemanager.cdn.implementation.OperationInner;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.apigeneration.LangMethodDefinition;
+import com.azure.resourcemanager.cdn.fluent.inner.OperationInner;
 
 /**
  * Operation that CDN service supports.
  */
-@LangDefinition
 public class Operation {
-    private OperationInner inner;
+    private final OperationInner inner;
 
     /**
      * Construct Operation object from server response object.
@@ -31,7 +25,6 @@ public class Operation {
      *
      * @return the name value
      */
-    @LangMethodDefinition(AsType = LangMethodDefinition.LangMethodType.Property)
     public String name() {
         return this.inner.name();
     }
@@ -41,7 +34,6 @@ public class Operation {
      *
      * @return the provider value
      */
-    @LangMethodDefinition(AsType = LangMethodDefinition.LangMethodType.Property)
     public String provider() {
         if (this.inner.display() == null) {
             return null;
@@ -54,7 +46,6 @@ public class Operation {
      *
      * @return the resource value
      */
-    @LangMethodDefinition(AsType = LangMethodDefinition.LangMethodType.Property)
     public String resource() {
         if (this.inner.display() == null) {
             return null;
@@ -67,7 +58,6 @@ public class Operation {
      *
      * @return the operation value
      */
-    @LangMethodDefinition(AsType = LangMethodDefinition.LangMethodType.Property)
     public String type() {
         if (this.inner.display() == null) {
             return null;
