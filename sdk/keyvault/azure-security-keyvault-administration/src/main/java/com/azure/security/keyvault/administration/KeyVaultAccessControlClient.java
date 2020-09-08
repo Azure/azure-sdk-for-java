@@ -9,7 +9,10 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.security.keyvault.administration.models.*;
+import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignment;
+import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignmentProperties;
+import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignmentScope;
+import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinition;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;

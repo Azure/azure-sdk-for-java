@@ -1,8 +1,19 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.security.keyvault.administration;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.*;
+import com.azure.core.http.policy.ExponentialBackoff;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.RetryStrategy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.identity.AzureCliCredentialBuilder;
@@ -55,8 +66,8 @@ public abstract class KeyVaultAdministrationClientTestBase extends TestBase {
     }
 
     public String getEndpoint() {
-        final String endpoint = interceptorManager.isPlaybackMode() ? "http://localhost:8080" :
-            System.getenv("AZURE_KEYVAULT_ENDPOINT");
+        final String endpoint = interceptorManager.isPlaybackMode() ? "http://localhost:8080"
+            : System.getenv("AZURE_KEYVAULT_ENDPOINT");
         Objects.requireNonNull(endpoint);
 
         return endpoint;
