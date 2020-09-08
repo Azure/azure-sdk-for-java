@@ -3,17 +3,6 @@
 
 package com.azure.messaging.servicebus;
 
-import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_REASON_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.LOCKED_UNTIL_KEY_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.SCHEDULED_ENQUEUE_UTC_TIME_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.VIA_PARTITION_KEY_ANNOTATION_NAME;
-
 import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpBodyType;
@@ -33,6 +22,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_REASON_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.LOCKED_UNTIL_KEY_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.SCHEDULED_ENQUEUE_UTC_TIME_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.VIA_PARTITION_KEY_ANNOTATION_NAME;
 
 /**
  * The data structure encapsulating the message being sent-to Service Bus.
@@ -99,16 +99,18 @@ public class ServiceBusMessage {
     public ServiceBusMessage(ServiceBusReceivedMessage receivedMessage) {
         Objects.requireNonNull(receivedMessage, "'receivedMessage' cannot be null.");
 
-        AmqpDataBody amqpDataBody = ((AmqpDataBody) receivedMessage.getAmqpAnnotatedMessage().getBody());
         this.amqpAnnotatedMessage = new AmqpAnnotatedMessage(receivedMessage.getAmqpAnnotatedMessage());
         this.context = Context.NONE;
 
-        List<BinaryData> dataList = amqpDataBody.getData().stream().collect(Collectors.toList());
-        if (dataList.size() > 0) {
-            binaryData = dataList.get(0).getData();
+        final AmqpDataBody amqpDataBody = ((AmqpDataBody) receivedMessage.getAmqpAnnotatedMessage().getBody());
+        final List<BinaryData> binaryDataList = amqpDataBody.getData().stream().collect(Collectors.toList());
+        if (binaryDataList.size() > 0) {
+            binaryData = binaryDataList.get(0).getData();
         } else {
             binaryData = EMPTY_BYTE_ARRAY;
         }
+
+        // clean up data which user is not allowed to set.
         amqpAnnotatedMessage.getHeader().setDeliveryCount(null);
 
         removeValues(amqpAnnotatedMessage.getMessageAnnotations(), LOCKED_UNTIL_KEY_ANNOTATION_NAME,

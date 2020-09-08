@@ -5,6 +5,8 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpDataBody;
+import com.azure.core.amqp.models.AmqpMessageHeader;
+import com.azure.core.amqp.models.AmqpMessageProperties;
 import com.azure.core.amqp.models.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.administration.models.DeadLetterOptions;
@@ -1045,6 +1047,9 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .verify(Duration.ofMinutes(2));
     }
 
+    /**
+     * Asserts the length and values with in the map.
+     */
     private void assertMapValues(Map<String, Object> expectedMap, Map<String, Object> actualMap) {
         assertTrue(actualMap.size() >= expectedMap.size());
         Iterator<String> expectedKeys = expectedMap.keySet().iterator();
@@ -1153,34 +1158,33 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     protected ServiceBusMessage getMessage(String messageId, boolean isSessionEnabled, AmqpAnnotatedMessage amqpPropertiesToSet) {
 
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId);
+        
+        final AmqpAnnotatedMessage amqpAnnotatedMessage = message.getAmqpAnnotatedMessage();
+        amqpAnnotatedMessage.getMessageAnnotations().putAll(amqpPropertiesToSet.getMessageAnnotations());
+        amqpAnnotatedMessage.getApplicationProperties().putAll(amqpPropertiesToSet.getApplicationProperties());
+        amqpAnnotatedMessage.getDeliveryAnnotations().putAll(amqpPropertiesToSet.getDeliveryAnnotations());
+        amqpAnnotatedMessage.getFooter().putAll(amqpPropertiesToSet.getFooter());
 
-        message.getAmqpAnnotatedMessage().getMessageAnnotations().putAll(amqpPropertiesToSet.getMessageAnnotations());
+        final AmqpMessageHeader header = amqpAnnotatedMessage.getHeader();
+        header.setFirstAcquirer(amqpPropertiesToSet.getHeader().isFirstAcquirer());
+        header.setTimeToLive(amqpPropertiesToSet.getHeader().getTimeToLive());
+        header.setDurable(amqpPropertiesToSet.getHeader().isDurable());
+        header.setDeliveryCount(amqpPropertiesToSet.getHeader().getDeliveryCount());
+        header.setPriority(amqpPropertiesToSet.getHeader().getPriority());
 
-        message.getAmqpAnnotatedMessage().getApplicationProperties().putAll(amqpPropertiesToSet.getApplicationProperties());
-
-        message.getAmqpAnnotatedMessage().getDeliveryAnnotations().putAll(amqpPropertiesToSet.getDeliveryAnnotations());
-
-        message.getAmqpAnnotatedMessage().getFooter().putAll(amqpPropertiesToSet.getFooter());
-
-        message.getAmqpAnnotatedMessage().getHeader().setFirstAcquirer(amqpPropertiesToSet.getHeader().isFirstAcquirer());
-        message.getAmqpAnnotatedMessage().getHeader().setTimeToLive(amqpPropertiesToSet.getHeader().getTimeToLive());
-        message.getAmqpAnnotatedMessage().getHeader().setDurable(amqpPropertiesToSet.getHeader().isDurable());
-        message.getAmqpAnnotatedMessage().getHeader().setDeliveryCount(amqpPropertiesToSet.getHeader().getDeliveryCount());
-        message.getAmqpAnnotatedMessage().getHeader().setPriority(amqpPropertiesToSet.getHeader().getPriority());
-
-
-        message.getAmqpAnnotatedMessage().getProperties().setReplyTo((amqpPropertiesToSet.getProperties().getReplyTo()));
-        message.getAmqpAnnotatedMessage().getProperties().setContentEncoding((amqpPropertiesToSet.getProperties().getContentEncoding()));
-        message.getAmqpAnnotatedMessage().getProperties().setAbsoluteExpiryTime((amqpPropertiesToSet.getProperties().getAbsoluteExpiryTime()));
-        message.getAmqpAnnotatedMessage().getProperties().setSubject((amqpPropertiesToSet.getProperties().getSubject()));
-        message.getAmqpAnnotatedMessage().getProperties().setContentType(amqpPropertiesToSet.getProperties().getContentType());
-        message.getAmqpAnnotatedMessage().getProperties().setCorrelationId(amqpPropertiesToSet.getProperties().getCorrelationId());
-        message.getAmqpAnnotatedMessage().getProperties().setTo(amqpPropertiesToSet.getProperties().getTo());
-        message.getAmqpAnnotatedMessage().getProperties().setGroupSequence(amqpPropertiesToSet.getProperties().getGroupSequence());
-        message.getAmqpAnnotatedMessage().getProperties().setUserId(amqpPropertiesToSet.getProperties().getUserId());
-        message.getAmqpAnnotatedMessage().getProperties().setAbsoluteExpiryTime(amqpPropertiesToSet.getProperties().getAbsoluteExpiryTime());
-        message.getAmqpAnnotatedMessage().getProperties().setCreationTime(amqpPropertiesToSet.getProperties().getCreationTime());
-        message.getAmqpAnnotatedMessage().getProperties().setReplyToGroupId(amqpPropertiesToSet.getProperties().getReplyToGroupId());
+        final AmqpMessageProperties amqpMessageProperties = amqpAnnotatedMessage.getProperties();
+        amqpMessageProperties.setReplyTo((amqpPropertiesToSet.getProperties().getReplyTo()));
+        amqpMessageProperties.setContentEncoding((amqpPropertiesToSet.getProperties().getContentEncoding()));
+        amqpMessageProperties.setAbsoluteExpiryTime((amqpPropertiesToSet.getProperties().getAbsoluteExpiryTime()));
+        amqpMessageProperties.setSubject((amqpPropertiesToSet.getProperties().getSubject()));
+        amqpMessageProperties.setContentType(amqpPropertiesToSet.getProperties().getContentType());
+        amqpMessageProperties.setCorrelationId(amqpPropertiesToSet.getProperties().getCorrelationId());
+        amqpMessageProperties.setTo(amqpPropertiesToSet.getProperties().getTo());
+        amqpMessageProperties.setGroupSequence(amqpPropertiesToSet.getProperties().getGroupSequence());
+        amqpMessageProperties.setUserId(amqpPropertiesToSet.getProperties().getUserId());
+        amqpMessageProperties.setAbsoluteExpiryTime(amqpPropertiesToSet.getProperties().getAbsoluteExpiryTime());
+        amqpMessageProperties.setCreationTime(amqpPropertiesToSet.getProperties().getCreationTime());
+        amqpMessageProperties.setReplyToGroupId(amqpPropertiesToSet.getProperties().getReplyToGroupId());
 
 
         logger.verbose("Message id {}.", messageId);

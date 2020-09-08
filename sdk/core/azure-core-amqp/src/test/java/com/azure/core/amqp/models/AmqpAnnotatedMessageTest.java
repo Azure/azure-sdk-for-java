@@ -3,6 +3,7 @@
 
 package com.azure.core.amqp.models;
 
+import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -22,6 +23,7 @@ public class AmqpAnnotatedMessageTest {
 
     private static final byte[] CONTENTS_BYTES = "Some-contents".getBytes(StandardCharsets.UTF_8);
     private static final BinaryData DATA_BYTES = new BinaryData(CONTENTS_BYTES);
+    private final ClientLogger logger = new ClientLogger(AmqpAnnotatedMessageTest.class);
 
     /**
      * Verifies we correctly set values via constructor for {@link AmqpAnnotatedMessage}.
@@ -81,8 +83,19 @@ public class AmqpAnnotatedMessageTest {
 
         // Validate Message Body
         assertNotNull(actual.getBody());
-        List<BinaryData> dataList = ((AmqpDataBody) actual.getBody()).getData().stream().collect(Collectors.toList());
-        assertEquals(messageSizeExpected, dataList.size());
-        assertArrayEquals(CONTENTS_BYTES, dataList.get(0).getData());
+        switch (expectedType) {
+            case DATA:
+                List<BinaryData> dataList = ((AmqpDataBody) actual.getBody()).getData().stream().collect(Collectors.toList());
+                assertEquals(messageSizeExpected, dataList.size());
+                assertArrayEquals(CONTENTS_BYTES, dataList.get(0).getData());
+                break;
+            case VALUE:
+            case SEQUENCE:
+                throw  logger.logExceptionAsError(new UnsupportedOperationException("type not supported yet :" + expectedType));
+            default:
+                throw  logger.logExceptionAsError(new IllegalStateException("Invalid type :" + expectedType));
+        }
+
+
     }
 }

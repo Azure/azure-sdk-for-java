@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,8 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * Test for {@link AmqpDataBody}.
  */
 public class AmqpDataBodyTest {
-    private static final byte[] CONTENTS_BYTES = "Some-contents".getBytes(StandardCharsets.UTF_8);
-    private static final BinaryData DATA_BYTES = new BinaryData(CONTENTS_BYTES);
+
 
     /**
      * Verifies we correctly set values via constructor for {@link AmqpAnnotatedMessage}.
@@ -27,18 +27,20 @@ public class AmqpDataBodyTest {
     @Test
     public void constructorValidValues() {
         // Arrange
-        final List<BinaryData> binaryDataList = Collections.singletonList(DATA_BYTES);
+        final List<BinaryData> expectedDataList = new ArrayList<>();
+        expectedDataList.add(new BinaryData("some data 1".getBytes()));
+        expectedDataList.add(new BinaryData("some data 2".getBytes()));
 
         // Act
-        final AmqpDataBody actual = new AmqpDataBody(binaryDataList);
+        final AmqpDataBody actual = new AmqpDataBody(expectedDataList);
 
         // Assert
         assertEquals(AmqpBodyType.DATA, actual.getBodyType());
 
         // Validate Message Body
         final List<BinaryData> dataList = actual.getData().stream().collect(Collectors.toList());
-        assertEquals(binaryDataList.size(), dataList.size());
-        assertArrayEquals(CONTENTS_BYTES, dataList.get(0).getData());
+        assertEquals(expectedDataList.size(), dataList.size());
+        assertArrayEquals(expectedDataList.toArray(), dataList.toArray());
     }
 
     /**

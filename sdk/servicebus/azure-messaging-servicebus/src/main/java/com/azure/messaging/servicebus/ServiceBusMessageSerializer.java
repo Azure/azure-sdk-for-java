@@ -140,7 +140,6 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         if (amqpMessage.getProperties() == null) {
             amqpMessage.setProperties(new Properties());
         }
-        AmqpMessageProperties brokeredProperties = brokeredMessage.getAmqpAnnotatedMessage().getProperties();
         amqpMessage.setMessageId(brokeredMessage.getMessageId());
         amqpMessage.setContentType(brokeredMessage.getContentType());
         amqpMessage.setCorrelationId(brokeredMessage.getCorrelationId());
@@ -148,6 +147,9 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         amqpMessage.setReplyTo(brokeredMessage.getReplyTo());
         amqpMessage.setReplyToGroupId(brokeredMessage.getReplyToSessionId());
         amqpMessage.setGroupId(brokeredMessage.getSessionId());
+
+        final AmqpMessageProperties brokeredProperties = brokeredMessage.getAmqpAnnotatedMessage().getProperties();
+
         amqpMessage.setContentEncoding(brokeredProperties.getContentEncoding());
         if (brokeredProperties.getGroupSequence() != null) {
             amqpMessage.setGroupSequence(brokeredProperties.getGroupSequence());

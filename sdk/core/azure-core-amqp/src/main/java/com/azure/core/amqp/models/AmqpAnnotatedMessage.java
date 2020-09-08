@@ -61,6 +61,7 @@ public final class AmqpAnnotatedMessage {
 
     /**
      * Gets the {@link Map} of application properties.
+     * 
      * @return The application properties.
      */
     public Map<String, Object> getApplicationProperties() {
