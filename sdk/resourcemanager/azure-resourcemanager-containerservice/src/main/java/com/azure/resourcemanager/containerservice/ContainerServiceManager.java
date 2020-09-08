@@ -5,6 +5,8 @@ package com.azure.resourcemanager.containerservice;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.resourcemanager.containerservice.fluent.ContainerServiceManagementClient;
+import com.azure.resourcemanager.containerservice.fluent.ContainerServiceManagementClientBuilder;
 import com.azure.resourcemanager.containerservice.implementation.KubernetesClustersImpl;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusters;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
