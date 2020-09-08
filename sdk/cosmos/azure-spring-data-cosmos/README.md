@@ -4,7 +4,7 @@
 [Azure Cosmos DB][cosmos_introduction] is a globally-distributed database service which allows developers to work with data using a variety of standard APIs, such as SQL, MongoDB, Cassandra, Graph, and Table.
 
 ## Spring data version support
-This project supports both [spring-data-commons 2.2.x][azure_spring_data_2_2_cosmos] and [spring-data-commons 2.3.x][azure_spring_data_2_3_cosmos] versions.
+This project supports both `spring-data-commons 2.2.x` and `spring-data-commons 2.3.x` versions.
 
 ## Getting started
 
@@ -648,10 +648,6 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [sql_api_query]: https://docs.microsoft.com/azure/cosmos-db/sql-api-sql-query
 [local_emulator]: https://docs.microsoft.com/azure/cosmos-db/local-emulator
 [local_emulator_export_ssl_certificates]: https://docs.microsoft.com/azure/cosmos-db/local-emulator-export-ssl-certificates
-[azure_spring_data_2_2_cosmos]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-2-2-cosmos
-[azure_spring_data_2_3_cosmos]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-2-3-cosmos
-[azure_spring_data_2_2_cosmos_readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/cosmos/azure-spring-data-2-2-cosmos/README.md
-[azure_spring_data_2_3_cosmos_readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/cosmos/azure-spring-data-2-3-cosmos/README.md
 [spring_data_commons_id_annotation]: https://github.com/spring-projects/spring-data-commons/blob/master/src/main/java/org/springframework/data/annotation/Id.java
 [azure_cosmos_db_partition]: https://docs.microsoft.com/azure/cosmos-db/partition-data
 [address_repository_it_test]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/cosmos/azure-spring-data-cosmos-test/src/test/java/com/azure/spring/data/cosmos/repository/integration/AddressRepositoryIT.java
