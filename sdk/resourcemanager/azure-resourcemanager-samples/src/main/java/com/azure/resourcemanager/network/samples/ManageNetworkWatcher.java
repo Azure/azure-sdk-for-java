@@ -309,8 +309,6 @@ public final class ManageNetworkWatcher {
                 g.printStackTrace();
             }
         }
-
-        return false;
     }
 
     /**

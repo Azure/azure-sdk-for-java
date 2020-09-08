@@ -238,7 +238,6 @@ public final class CreateVirtualMachineUsingCustomImageFromVHD {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

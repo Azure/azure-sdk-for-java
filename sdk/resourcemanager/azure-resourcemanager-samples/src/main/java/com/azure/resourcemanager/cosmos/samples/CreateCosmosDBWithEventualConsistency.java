@@ -96,8 +96,6 @@ public final class CreateCosmosDBWithEventualConsistency {
                 g.printStackTrace();
             }
         }
-
-        return false;
     }
 
     private static void createDBAndAddCollection(String masterKey, String endPoint) {

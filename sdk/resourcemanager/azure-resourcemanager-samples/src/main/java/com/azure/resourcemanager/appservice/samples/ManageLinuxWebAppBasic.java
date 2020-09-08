@@ -156,7 +156,6 @@ public final class ManageLinuxWebAppBasic {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

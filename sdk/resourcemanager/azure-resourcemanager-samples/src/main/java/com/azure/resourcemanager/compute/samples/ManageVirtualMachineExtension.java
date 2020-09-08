@@ -285,7 +285,6 @@ public final class ManageVirtualMachineExtension {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

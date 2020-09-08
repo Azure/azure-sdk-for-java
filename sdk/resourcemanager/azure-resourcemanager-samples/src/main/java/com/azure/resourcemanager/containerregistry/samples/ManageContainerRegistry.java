@@ -169,7 +169,6 @@ public class ManageContainerRegistry {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

@@ -208,7 +208,6 @@ public class ManageSqlServerDnsAliases {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             }
         }
-        return false;
     }
 
     /**

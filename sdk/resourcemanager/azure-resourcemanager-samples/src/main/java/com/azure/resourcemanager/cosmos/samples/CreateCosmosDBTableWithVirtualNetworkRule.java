@@ -137,8 +137,6 @@ public class CreateCosmosDBTableWithVirtualNetworkRule {
                 g.printStackTrace();
             }
         }
-
-        return false;
     }
 
     /**

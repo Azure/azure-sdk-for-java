@@ -145,7 +145,6 @@ public final class ManageZonalVirtualMachine {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

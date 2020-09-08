@@ -250,7 +250,6 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

@@ -105,7 +105,6 @@ public final class DeployUsingARMTemplate {
             }
 
         }
-        return false;
     }
 
     /**

@@ -262,8 +262,6 @@ public final class ManageVirtualNetworkAsync {
                 g.printStackTrace();
             }
         }
-
-        return false;
     }
 
     /**

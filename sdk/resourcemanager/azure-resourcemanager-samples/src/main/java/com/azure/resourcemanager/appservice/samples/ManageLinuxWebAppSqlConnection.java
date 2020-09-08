@@ -123,7 +123,6 @@ public final class ManageLinuxWebAppSqlConnection {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

@@ -196,7 +196,6 @@ public final class ManageWebAppSourceControlAsync {
                 g.printStackTrace();
             }
         }
-        return false;
     }
     /**
      * Main entry point.

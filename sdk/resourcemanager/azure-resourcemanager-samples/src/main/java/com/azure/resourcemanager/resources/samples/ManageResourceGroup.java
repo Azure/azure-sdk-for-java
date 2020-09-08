@@ -100,7 +100,6 @@ public final class ManageResourceGroup {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

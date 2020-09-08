@@ -267,7 +267,6 @@ public final class CreateVirtualMachinesAsyncTrackingRelatedResources {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

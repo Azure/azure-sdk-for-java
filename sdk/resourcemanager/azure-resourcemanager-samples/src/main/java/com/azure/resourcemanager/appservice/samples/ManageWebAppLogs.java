@@ -163,7 +163,6 @@ public final class ManageWebAppLogs {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

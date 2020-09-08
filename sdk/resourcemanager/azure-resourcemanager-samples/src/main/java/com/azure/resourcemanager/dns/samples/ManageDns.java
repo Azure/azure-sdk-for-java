@@ -268,7 +268,6 @@ public class ManageDns {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

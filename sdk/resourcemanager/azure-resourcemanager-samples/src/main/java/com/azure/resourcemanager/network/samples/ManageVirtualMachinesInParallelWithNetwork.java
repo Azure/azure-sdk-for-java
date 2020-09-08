@@ -231,7 +231,6 @@ public final class ManageVirtualMachinesInParallelWithNetwork {
             }
 
         }
-        return false;
     }
 
     /**

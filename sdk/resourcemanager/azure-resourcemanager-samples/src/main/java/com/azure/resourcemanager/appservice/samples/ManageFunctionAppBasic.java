@@ -140,7 +140,6 @@ public final class ManageFunctionAppBasic {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

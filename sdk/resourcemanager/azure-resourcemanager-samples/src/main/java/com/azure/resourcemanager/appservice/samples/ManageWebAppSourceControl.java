@@ -329,7 +329,6 @@ public final class ManageWebAppSourceControl {
                 g.printStackTrace();
             }
         }
-        return false;
     }
     /**
      * Main entry point.

@@ -207,7 +207,6 @@ public final class ManageVirtualMachine {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

@@ -152,7 +152,6 @@ public final class ManageWebAppBasic {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

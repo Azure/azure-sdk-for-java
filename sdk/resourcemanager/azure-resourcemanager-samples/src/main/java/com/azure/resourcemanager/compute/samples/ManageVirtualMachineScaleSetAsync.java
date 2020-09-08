@@ -326,7 +326,6 @@ public final class ManageVirtualMachineScaleSetAsync {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

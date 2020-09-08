@@ -88,7 +88,6 @@ public final class ManageWebAppSlots {
                 g.printStackTrace();
             }
         }
-        return false;
     }
     /**
      * Main entry point.

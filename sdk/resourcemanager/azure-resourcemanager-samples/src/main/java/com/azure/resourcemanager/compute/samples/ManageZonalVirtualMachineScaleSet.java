@@ -221,7 +221,6 @@ public final class ManageZonalVirtualMachineScaleSet {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

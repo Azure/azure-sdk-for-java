@@ -208,7 +208,6 @@ public final class ManageWebAppWithAuthentication {
                 g.printStackTrace();
             }
         }
-        return false;
     }
     /**
      * Main entry point.

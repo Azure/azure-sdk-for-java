@@ -172,8 +172,6 @@ public final class ManageWebAppWithDomainSsl {
                 g.printStackTrace();
             }
         }
-
-        return false;
     }
     /**
      * Main entry point.

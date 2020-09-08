@@ -130,7 +130,6 @@ public class ManageContainerInstanceWithManualAzureFileShareMountCreation {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

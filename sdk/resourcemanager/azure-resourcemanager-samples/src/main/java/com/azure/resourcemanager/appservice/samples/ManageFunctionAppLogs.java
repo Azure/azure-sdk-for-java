@@ -151,7 +151,6 @@ public final class ManageFunctionAppLogs {
                 g.printStackTrace();
             }
         }
-        return false;
     }
     /**
      * Main entry point.

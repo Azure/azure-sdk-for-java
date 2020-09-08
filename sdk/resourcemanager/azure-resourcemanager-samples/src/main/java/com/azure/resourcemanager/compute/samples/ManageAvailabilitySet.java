@@ -183,7 +183,6 @@ public final class ManageAvailabilitySet {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

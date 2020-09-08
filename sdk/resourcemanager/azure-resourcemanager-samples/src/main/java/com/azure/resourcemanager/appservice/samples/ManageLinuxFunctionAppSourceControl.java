@@ -132,7 +132,6 @@ public class ManageLinuxFunctionAppSourceControl {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

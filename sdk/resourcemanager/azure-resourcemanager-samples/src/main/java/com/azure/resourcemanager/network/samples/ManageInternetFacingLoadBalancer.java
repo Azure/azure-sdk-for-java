@@ -482,7 +482,6 @@ public final class ManageInternetFacingLoadBalancer {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

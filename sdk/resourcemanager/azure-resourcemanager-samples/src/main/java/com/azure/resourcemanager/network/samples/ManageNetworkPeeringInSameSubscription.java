@@ -160,7 +160,6 @@ public final class ManageNetworkPeeringInSameSubscription {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

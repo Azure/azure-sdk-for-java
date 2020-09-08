@@ -207,7 +207,6 @@ public final class CreateVirtualMachinesInParallel {
             }
 
         }
-        return false;
     }
     /**
      * Main entry point.

@@ -166,7 +166,6 @@ public class ManageLinuxWebAppWithContainerRegistry {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

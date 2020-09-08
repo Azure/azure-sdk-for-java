@@ -204,7 +204,6 @@ public final class ManageFunctionAppWithAuthentication {
                 g.printStackTrace();
             }
         }
-        return false;
     }
     /**
      * Main entry point.

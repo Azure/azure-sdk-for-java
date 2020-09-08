@@ -139,8 +139,6 @@ public final class ManageKeyVault {
                 g.printStackTrace();
             }
         }
-
-        return false;
     }
     /**
      * Main entry point.

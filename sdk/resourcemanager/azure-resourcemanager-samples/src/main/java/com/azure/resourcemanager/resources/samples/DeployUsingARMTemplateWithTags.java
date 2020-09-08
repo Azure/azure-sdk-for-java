@@ -109,7 +109,6 @@ public final class DeployUsingARMTemplateWithTags {
             }
 
         }
-        return false;
     }
 
     /**

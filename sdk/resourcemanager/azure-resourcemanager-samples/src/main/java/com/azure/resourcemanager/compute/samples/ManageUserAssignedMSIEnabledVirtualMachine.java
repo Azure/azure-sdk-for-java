@@ -151,7 +151,6 @@ public final class ManageUserAssignedMSIEnabledVirtualMachine {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     private static RunCommandResult runCommandOnVM(Azure azure, VirtualMachine virtualMachine, List<String> commands) {

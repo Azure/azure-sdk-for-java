@@ -172,7 +172,6 @@ public final class ServiceBusQueueAdvanceFeatures {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

@@ -175,7 +175,6 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
             }
 
         }
-        return false;
     }
     /**
      * Main entry point.

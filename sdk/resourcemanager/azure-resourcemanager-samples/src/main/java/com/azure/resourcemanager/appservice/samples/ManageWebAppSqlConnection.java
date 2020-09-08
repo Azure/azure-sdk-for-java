@@ -122,7 +122,6 @@ public final class ManageWebAppSqlConnection {
                 g.printStackTrace();
             }
         }
-        return false;
     }
     /**
      * Main entry point.

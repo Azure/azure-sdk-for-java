@@ -440,7 +440,6 @@ public class DeployImageFromContainerRegistryToKubernetes {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

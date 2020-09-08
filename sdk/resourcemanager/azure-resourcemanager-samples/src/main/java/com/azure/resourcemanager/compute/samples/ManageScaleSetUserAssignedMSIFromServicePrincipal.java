@@ -154,7 +154,6 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
                 e.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

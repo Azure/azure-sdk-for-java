@@ -89,7 +89,6 @@ public class DeployVirtualMachineUsingARMTemplate {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

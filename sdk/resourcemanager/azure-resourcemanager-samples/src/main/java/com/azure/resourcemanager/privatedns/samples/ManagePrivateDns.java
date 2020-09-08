@@ -173,7 +173,6 @@ public class ManagePrivateDns {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

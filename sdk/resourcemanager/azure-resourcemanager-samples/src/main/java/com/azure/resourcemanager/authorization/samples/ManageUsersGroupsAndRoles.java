@@ -152,7 +152,6 @@ public final class ManageUsersGroupsAndRoles {
                 System.out.println("Did not create Service Principal in Azure. No clean up is necessary");
             }
         }
-        return false;
     }
 
     /**

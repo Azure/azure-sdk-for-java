@@ -339,7 +339,6 @@ public final class ManageVirtualMachineScaleSet {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

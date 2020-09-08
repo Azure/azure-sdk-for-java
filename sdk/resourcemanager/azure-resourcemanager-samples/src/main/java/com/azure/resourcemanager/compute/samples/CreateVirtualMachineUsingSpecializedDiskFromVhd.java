@@ -205,7 +205,6 @@ public class CreateVirtualMachineUsingSpecializedDiskFromVhd {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

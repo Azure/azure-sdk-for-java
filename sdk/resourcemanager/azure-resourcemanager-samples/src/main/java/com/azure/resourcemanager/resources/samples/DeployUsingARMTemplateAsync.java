@@ -130,7 +130,6 @@ public final class DeployUsingARMTemplateAsync {
             }
 
         }
-        return false;
     }
 
     /**

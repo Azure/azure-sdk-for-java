@@ -342,7 +342,6 @@ public final class ManageManagedDisks {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

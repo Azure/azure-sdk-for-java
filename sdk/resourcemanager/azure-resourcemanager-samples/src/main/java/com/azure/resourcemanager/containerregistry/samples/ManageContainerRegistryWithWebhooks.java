@@ -188,7 +188,6 @@ public class ManageContainerRegistryWithWebhooks {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

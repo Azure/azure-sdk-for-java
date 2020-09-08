@@ -111,7 +111,6 @@ public class ManageSqlServerSecurityAlertPolicy {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             }
         }
-        return false;
     }
 
     /**

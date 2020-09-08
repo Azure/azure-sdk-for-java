@@ -105,8 +105,6 @@ public final class ManageVirtualMachinesInParallel {
                 g.printStackTrace();
             }
         }
-
-        return false;
     }
     /**
      * Main entry point.

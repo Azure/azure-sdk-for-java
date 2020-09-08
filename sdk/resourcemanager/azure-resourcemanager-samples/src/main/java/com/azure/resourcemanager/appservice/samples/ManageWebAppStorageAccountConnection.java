@@ -135,7 +135,6 @@ public final class ManageWebAppStorageAccountConnection {
                 g.printStackTrace();
             }
         }
-        return false;
     }
     /**
      * Main entry point.

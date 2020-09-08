@@ -116,7 +116,6 @@ public final class ManageStorageFromMSIEnabledVirtualMachine {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

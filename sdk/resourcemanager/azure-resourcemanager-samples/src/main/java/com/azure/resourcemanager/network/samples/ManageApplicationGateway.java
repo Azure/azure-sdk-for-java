@@ -308,7 +308,6 @@ public final class ManageApplicationGateway {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

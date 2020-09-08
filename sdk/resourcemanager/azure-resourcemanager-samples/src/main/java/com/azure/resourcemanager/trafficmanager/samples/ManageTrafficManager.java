@@ -241,7 +241,6 @@ public final class ManageTrafficManager {
                 g.printStackTrace();
             }
         }
-        return false;
     }
     /**
      * Main entry point.

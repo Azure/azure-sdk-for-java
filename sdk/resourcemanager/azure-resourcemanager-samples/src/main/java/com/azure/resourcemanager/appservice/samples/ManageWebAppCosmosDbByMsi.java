@@ -156,7 +156,6 @@ public final class ManageWebAppCosmosDbByMsi {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

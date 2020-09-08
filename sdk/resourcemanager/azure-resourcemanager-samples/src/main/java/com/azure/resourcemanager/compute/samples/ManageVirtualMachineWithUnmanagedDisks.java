@@ -241,7 +241,6 @@ public final class ManageVirtualMachineWithUnmanagedDisks {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

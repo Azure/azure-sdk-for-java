@@ -158,7 +158,6 @@ public class ManageEventHubGeoDisasterRecovery {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

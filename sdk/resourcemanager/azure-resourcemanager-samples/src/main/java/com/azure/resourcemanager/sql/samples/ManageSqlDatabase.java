@@ -122,7 +122,6 @@ public final class ManageSqlDatabase {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             }
         }
-        return false;
     }
     /**
      * Main entry point.

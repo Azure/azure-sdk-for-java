@@ -191,7 +191,6 @@ public final class VerifyNetworkPeeringWithNetworkWatcher {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

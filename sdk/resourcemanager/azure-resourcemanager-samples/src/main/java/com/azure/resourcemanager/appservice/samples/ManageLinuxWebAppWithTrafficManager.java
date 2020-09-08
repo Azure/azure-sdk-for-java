@@ -236,8 +236,6 @@ public final class ManageLinuxWebAppWithTrafficManager {
                 g.printStackTrace();
             }
         }
-
-        return false;
     }
 
     private static AppServicePlan createAppServicePlan(String name, Region region) {

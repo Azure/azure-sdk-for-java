@@ -90,7 +90,6 @@ public final class DeployUsingARMTemplateWithProgress {
             }
 
         }
-        return false;
     }
 
     /**

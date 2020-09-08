@@ -80,8 +80,6 @@ public final class CreateCosmosDBWithKindMongoDB {
                 g.printStackTrace();
             }
         }
-
-        return false;
     }
 
     /**

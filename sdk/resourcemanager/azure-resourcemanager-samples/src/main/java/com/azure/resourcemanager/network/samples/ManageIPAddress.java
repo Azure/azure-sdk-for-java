@@ -159,7 +159,6 @@ public final class ManageIPAddress {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

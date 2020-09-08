@@ -198,7 +198,6 @@ public final class CreateSimpleInternetFacingLoadBalancer {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

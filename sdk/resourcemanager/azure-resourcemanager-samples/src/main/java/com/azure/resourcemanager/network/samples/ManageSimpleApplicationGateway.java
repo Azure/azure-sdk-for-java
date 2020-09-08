@@ -134,7 +134,6 @@ public final class ManageSimpleApplicationGateway {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

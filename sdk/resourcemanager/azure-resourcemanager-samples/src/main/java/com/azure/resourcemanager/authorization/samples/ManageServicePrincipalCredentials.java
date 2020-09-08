@@ -214,7 +214,6 @@ public final class ManageServicePrincipalCredentials {
                 System.out.println("Did not create applications in Azure. No clean up is necessary");
             }
         }
-        return false;
     }
 
     /**

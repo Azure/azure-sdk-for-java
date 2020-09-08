@@ -99,7 +99,6 @@ public class ManageContainerInstanceWithMultipleContainerImages {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

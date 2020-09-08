@@ -116,7 +116,6 @@ public final class ManageResource {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

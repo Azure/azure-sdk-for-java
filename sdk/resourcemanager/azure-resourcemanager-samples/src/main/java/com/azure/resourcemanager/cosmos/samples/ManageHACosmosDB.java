@@ -110,8 +110,6 @@ public final class ManageHACosmosDB {
                 g.printStackTrace();
             }
         }
-
-        return false;
     }
 
     private static void createDBAndAddCollection(String masterKey, String endPoint) {

@@ -129,7 +129,6 @@ public class ManageKubernetesCluster {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

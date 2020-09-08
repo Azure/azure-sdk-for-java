@@ -233,8 +233,6 @@ public final class ManageVpnGatewayVNet2VNetConnection {
                 g.printStackTrace();
             }
         }
-
-        return false;
     }
 
     /**

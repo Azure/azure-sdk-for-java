@@ -136,7 +136,6 @@ public final class ServiceBusWithClaimBasedAuthorization {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

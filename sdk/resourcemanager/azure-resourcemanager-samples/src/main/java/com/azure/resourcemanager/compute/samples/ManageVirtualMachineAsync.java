@@ -206,7 +206,6 @@ public final class ManageVirtualMachineAsync {
         if (vm != null && vm.osProfile() != null && vm.osProfile().windowsConfiguration() != null) {
             return true;
         }
-        return false;
     }
     /**
      * Main entry point.

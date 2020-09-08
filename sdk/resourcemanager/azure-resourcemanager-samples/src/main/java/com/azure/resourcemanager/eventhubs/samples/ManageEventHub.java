@@ -170,7 +170,6 @@ public class ManageEventHub {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

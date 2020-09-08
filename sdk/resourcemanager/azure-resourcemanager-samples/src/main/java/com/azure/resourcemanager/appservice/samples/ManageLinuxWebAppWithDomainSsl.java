@@ -175,8 +175,6 @@ public final class ManageLinuxWebAppWithDomainSsl {
                 g.printStackTrace();
             }
         }
-
-        return false;
     }
     /**
      * Main entry point.

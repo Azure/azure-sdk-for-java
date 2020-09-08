@@ -172,7 +172,6 @@ public final class ManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

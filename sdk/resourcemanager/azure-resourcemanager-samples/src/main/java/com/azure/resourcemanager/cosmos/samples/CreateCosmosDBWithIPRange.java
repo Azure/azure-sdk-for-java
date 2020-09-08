@@ -70,8 +70,6 @@ public final class CreateCosmosDBWithIPRange {
                 g.printStackTrace();
             }
         }
-
-        return false;
     }
 
     /**

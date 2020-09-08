@@ -197,7 +197,6 @@ public final class ManageNetworkInterface {
             }
 
         }
-        return false;
     }
 
     /**

@@ -110,7 +110,6 @@ public final class ManageVpnGatewaySite2SiteConnection {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

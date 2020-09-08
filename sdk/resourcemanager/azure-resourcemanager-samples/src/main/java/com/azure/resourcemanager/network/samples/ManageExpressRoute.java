@@ -116,7 +116,6 @@ public final class ManageExpressRoute {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

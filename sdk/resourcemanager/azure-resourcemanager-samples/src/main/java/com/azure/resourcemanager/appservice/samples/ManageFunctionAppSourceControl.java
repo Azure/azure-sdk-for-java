@@ -254,7 +254,6 @@ public final class ManageFunctionAppSourceControl {
                 g.printStackTrace();
             }
         }
-        return false;
     }
     /**
      * Main entry point.

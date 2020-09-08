@@ -161,7 +161,6 @@ public class ManagedKubernetesClusterWithAdvancedNetworking {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

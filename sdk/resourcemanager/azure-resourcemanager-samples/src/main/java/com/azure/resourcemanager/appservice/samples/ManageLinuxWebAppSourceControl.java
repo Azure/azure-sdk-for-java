@@ -195,7 +195,6 @@ public final class ManageLinuxWebAppSourceControl {
                 g.printStackTrace();
             }
         }
-        return false;
     }
     /**
      * Main entry point.

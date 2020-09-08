@@ -123,8 +123,6 @@ public class ManageEventHubEvents {
                 g.printStackTrace();
             }
         }
-
-        return false;
     }
 
     /**

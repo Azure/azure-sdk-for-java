@@ -196,7 +196,6 @@ public final class ServiceBusPublishSubscribeAdvanceFeatures {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

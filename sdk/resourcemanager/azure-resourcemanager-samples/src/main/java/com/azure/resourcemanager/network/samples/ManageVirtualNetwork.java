@@ -247,8 +247,6 @@ public final class ManageVirtualNetwork {
                 g.printStackTrace();
             }
         }
-
-        return false;
     }
 
     /**

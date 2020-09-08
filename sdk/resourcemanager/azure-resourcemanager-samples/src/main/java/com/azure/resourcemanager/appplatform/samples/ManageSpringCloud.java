@@ -265,7 +265,6 @@ public class ManageSpringCloud {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

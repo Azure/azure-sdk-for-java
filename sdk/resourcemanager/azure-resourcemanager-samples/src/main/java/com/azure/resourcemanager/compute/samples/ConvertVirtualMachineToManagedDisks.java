@@ -96,8 +96,6 @@ public final class ConvertVirtualMachineToManagedDisks {
                 g.printStackTrace();
             }
         }
-
-        return false;
     }
 
     /**

@@ -195,7 +195,6 @@ public final class ManageVirtualMachineWithDisk {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

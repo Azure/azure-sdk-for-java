@@ -155,7 +155,6 @@ public final class ManageWebAppCosmosDbThroughKeyVault {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

@@ -287,7 +287,6 @@ public final class ManageNetworkSecurityGroup {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

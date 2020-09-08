@@ -168,8 +168,6 @@ public final class ManageFunctionAppWithDomainSsl {
                 g.printStackTrace();
             }
         }
-
-        return false;
     }
     /**
      * Main entry point.

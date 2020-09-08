@@ -176,7 +176,6 @@ public final class ServiceBusQueueBasic {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

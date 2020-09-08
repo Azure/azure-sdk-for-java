@@ -180,7 +180,6 @@ public final class ServiceBusPublishSubscribeBasic {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

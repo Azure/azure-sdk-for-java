@@ -325,7 +325,6 @@ public final class ManageVirtualMachineScaleSetWithUnmanagedDisks {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

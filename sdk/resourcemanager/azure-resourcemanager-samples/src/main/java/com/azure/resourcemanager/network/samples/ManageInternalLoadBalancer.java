@@ -421,7 +421,6 @@ public final class ManageInternalLoadBalancer {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**
