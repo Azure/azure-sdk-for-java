@@ -21,10 +21,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ReceiveLinkHandler extends LinkHandler {
     private final String linkName;
-    private AtomicBoolean isFirstResponse = new AtomicBoolean(true);
+    private final AtomicBoolean isFirstResponse = new AtomicBoolean(true);
     private final DirectProcessor<Delivery> deliveries;
-    private FluxSink<Delivery> deliverySink;
-    private Set<Delivery> queuedDeliveries = Collections.newSetFromMap(new ConcurrentHashMap<>());
+    private final FluxSink<Delivery> deliverySink;
+    private final Set<Delivery> queuedDeliveries = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
     public ReceiveLinkHandler(String connectionId, String hostname, String linkName, String entityPath) {
         super(connectionId, hostname, entityPath, new ClientLogger(ReceiveLinkHandler.class));
@@ -38,10 +38,8 @@ public class ReceiveLinkHandler extends LinkHandler {
     }
 
     public Flux<Delivery> getDeliveredMessages() {
-        return deliveries
-            .doOnNext(this::removeQueuedDelivery);
+        return deliveries.doOnNext(delivery -> queuedDeliveries.remove(delivery));
     }
-
 
     @Override
     public void close() {
@@ -137,9 +135,5 @@ public class ReceiveLinkHandler extends LinkHandler {
     public void onLinkRemoteClose(Event event) {
         super.onLinkRemoteClose(event);
         deliverySink.complete();
-    }
-
-    private void removeQueuedDelivery(Delivery delivery) {
-        queuedDeliveries.remove(delivery);
     }
 }

@@ -18,16 +18,20 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SendLinkHandler extends LinkHandler {
-    private final String senderName;
+    private final String linkName;
     private final AtomicBoolean isFirstFlow = new AtomicBoolean(true);
     private final UnicastProcessor<Integer> creditProcessor = UnicastProcessor.create();
     private final DirectProcessor<Delivery> deliveryProcessor = DirectProcessor.create();
     private final FluxSink<Integer> creditSink = creditProcessor.sink();
     private final FluxSink<Delivery> deliverySink = deliveryProcessor.sink();
 
-    public SendLinkHandler(String connectionId, String hostname, String senderName, String entityPath) {
+    public SendLinkHandler(String connectionId, String hostname, String linkName, String entityPath) {
         super(connectionId, hostname, entityPath, new ClientLogger(SendLinkHandler.class));
-        this.senderName = senderName;
+        this.linkName = linkName;
+    }
+
+    public String getLinkName() {
+        return linkName;
     }
 
     public Flux<Integer> getLinkCredits() {
