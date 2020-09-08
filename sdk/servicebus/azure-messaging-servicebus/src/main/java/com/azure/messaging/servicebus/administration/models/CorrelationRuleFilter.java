@@ -16,7 +16,7 @@ import java.util.Map;
  * A CorrelationRuleFilter holds a set of conditions that are matched against one of more of an arriving message's user
  * and system properties. A common use is a match against the {@link ServiceBusMessage#getCorrelationId()} property, but
  * the application can also choose to match against {@link ServiceBusMessage#getContentType()}, {@link
- * ServiceBusMessage#getLabel()}, {@link ServiceBusMessage#getMessageId()}, {@link ServiceBusMessage#getReplyTo()},
+ * ServiceBusMessage#getSubject()}, {@link ServiceBusMessage#getMessageId()}, {@link ServiceBusMessage#getReplyTo()},
  * {@link ServiceBusMessage#getReplyToSessionId()}, {@link ServiceBusMessage#getSessionId()}, {@link
  * ServiceBusMessage#getTo()}, and any user-defined properties. A match exists when an arriving message's value for a
  * property is equal to the value specified in the correlation filter. For string expressions, the comparison is
