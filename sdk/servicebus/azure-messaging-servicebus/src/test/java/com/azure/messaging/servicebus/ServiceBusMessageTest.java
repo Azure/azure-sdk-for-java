@@ -3,7 +3,6 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.messaging.servicebus.ServiceBusMessage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

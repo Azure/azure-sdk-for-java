@@ -3,8 +3,6 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.messaging.servicebus.ServiceBusMessage;
-import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.message.Message;
@@ -78,7 +76,7 @@ public class ServiceBusReceivedMessageTest {
         Data data = new Data(new Binary(PAYLOAD_BYTES));
         when(amqpMessage.getBody()).thenReturn(data);
         //
-        final ServiceBusReceivedMessage originalMessage = new ServiceBusReceivedMessage(amqpMessage);
+        final ServiceBusReceivedMessage originalMessage = new ServiceBusReceivedMessage(PAYLOAD_BYTES);
         originalMessage.setMessageId("mid");
         originalMessage.setContentType("type");
         originalMessage.setCorrelationId("cid");

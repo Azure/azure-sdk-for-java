@@ -33,7 +33,7 @@ public class AmqpAnnotatedMessageTest {
         final AmqpDataBody amqpDataBody = new AmqpDataBody(binaryDataList);
 
         // Act
-        AmqpAnnotatedMessage actual = new AmqpAnnotatedMessage(amqpDataBody);
+        final AmqpAnnotatedMessage actual = new AmqpAnnotatedMessage(amqpDataBody);
 
         // Assert
         assertMessageCreation(actual, AmqpBodyType.DATA, binaryDataList.size());
@@ -47,9 +47,10 @@ public class AmqpAnnotatedMessageTest {
         // Arrange
         final List<BinaryData> listBinaryData = Collections.singletonList(DATA_BYTES);
         final AmqpDataBody amqpDataBody = new AmqpDataBody(listBinaryData);
-        AmqpAnnotatedMessage expected = new AmqpAnnotatedMessage(amqpDataBody);
+        final AmqpAnnotatedMessage expected = new AmqpAnnotatedMessage(amqpDataBody);
+
         // Act
-        AmqpAnnotatedMessage actual = new AmqpAnnotatedMessage(expected);
+        final AmqpAnnotatedMessage actual = new AmqpAnnotatedMessage(expected);
 
         // Assert
         assertMessageCreation(actual, AmqpBodyType.DATA, listBinaryData.size());
@@ -61,7 +62,7 @@ public class AmqpAnnotatedMessageTest {
     @Test
     public void constructorNullValidValues() {
         // Arrange
-        AmqpDataBody body = null;
+        final AmqpDataBody body = null;
 
         // Act & Assert
         Assertions.assertThrows(NullPointerException.class, () -> new AmqpAnnotatedMessage(body));
@@ -82,7 +83,6 @@ public class AmqpAnnotatedMessageTest {
         assertNotNull(actual.getBody());
         List<BinaryData> dataList = ((AmqpDataBody) actual.getBody()).getData().stream().collect(Collectors.toList());
         assertEquals(messageSizeExpected, dataList.size());
-        byte[] actualData = dataList.get(0).getData();
-        assertArrayEquals(CONTENTS_BYTES, actualData);
+        assertArrayEquals(CONTENTS_BYTES, dataList.get(0).getData());
     }
 }

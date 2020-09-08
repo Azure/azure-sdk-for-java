@@ -996,10 +996,10 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         expectedAmqpProperties.getProperties().setAbsoluteExpiryTime(OffsetDateTime.now().plusSeconds(60));
         expectedAmqpProperties.getProperties().setUserId("user-id-1".getBytes());
         expectedAmqpProperties.getProperties().setContentEncoding("string");
-        expectedAmqpProperties.getProperties().setGroupSequence(2);
+        expectedAmqpProperties.getProperties().setGroupSequence(Long.valueOf(2));
         expectedAmqpProperties.getProperties().setCreationTime(OffsetDateTime.now().plusSeconds(30));
 
-        expectedAmqpProperties.getHeader().setPriority((short)2);
+        expectedAmqpProperties.getHeader().setPriority(Short.valueOf((short) 2));
         expectedAmqpProperties.getHeader().setFirstAcquirer(true);
         expectedAmqpProperties.getHeader().setDurable(true);
 

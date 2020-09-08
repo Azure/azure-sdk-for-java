@@ -93,7 +93,15 @@ public enum AmqpMessageConstant {
     /**
      * The name of the entity that published a message.
      */
-    PUBLISHER_ANNOTATION_NAME("x-opt-publisher");
+    PUBLISHER_ANNOTATION_NAME("x-opt-publisher"),
+    /**
+     * The name representing scheduled enqueue time.
+     */
+    SCHEDULED_ENQUEUE_UTC_TIME_NAME("x-opt-scheduled-enqueue-time"),
+    /**
+     * The identifier associated with a given via-partition.
+     */
+    VIA_PARTITION_KEY_ANNOTATION_NAME("x-opt-via-partition-key");
 
     private static final Map<String, AmqpMessageConstant> RESERVED_CONSTANTS_MAP = new HashMap<>();
     private final String constant;

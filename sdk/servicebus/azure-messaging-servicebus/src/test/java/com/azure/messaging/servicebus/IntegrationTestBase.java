@@ -7,7 +7,6 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
-import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;

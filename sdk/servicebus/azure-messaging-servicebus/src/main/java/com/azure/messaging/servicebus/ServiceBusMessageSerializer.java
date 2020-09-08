@@ -3,6 +3,9 @@
 
 package com.azure.messaging.servicebus;
 
+import static com.azure.core.amqp.AmqpMessageConstant.SCHEDULED_ENQUEUE_UTC_TIME_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.VIA_PARTITION_KEY_ANNOTATION_NAME;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseUtils;
@@ -59,9 +62,6 @@ import java.util.stream.Collectors;
  */
 class ServiceBusMessageSerializer implements MessageSerializer {
     private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
-    private static final String SCHEDULED_ENQUEUE_TIME_NAME = "x-opt-scheduled-enqueue-time";
-    private static final String PARTITION_KEY_NAME = "x-opt-partition-key";
-    private static final String VIA_PARTITION_KEY_NAME = "x-opt-via-partition-key";
 
     private final ClientLogger logger = new ClientLogger(ServiceBusMessageSerializer.class);
 
@@ -154,7 +154,8 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         amqpMessage.getProperties().setUserId(new Binary(brokeredProperties.getUserId()));
 
         if (brokeredProperties.getAbsoluteExpiryTime() != null) {
-            amqpMessage.getProperties().setAbsoluteExpiryTime(Date.from(brokeredProperties.getAbsoluteExpiryTime().toInstant()));
+            amqpMessage.getProperties().setAbsoluteExpiryTime(Date.from(brokeredProperties.getAbsoluteExpiryTime().
+                toInstant()));
         }
         if (brokeredProperties.getCreationTime() != null) {
             amqpMessage.getProperties().setCreationTime(Date.from(brokeredProperties.getCreationTime().toInstant()));
@@ -181,18 +182,19 @@ class ServiceBusMessageSerializer implements MessageSerializer {
 
         final Map<Symbol, Object> messageAnnotationsMap = new HashMap<>();
         if (brokeredMessage.getScheduledEnqueueTime() != null) {
-            messageAnnotationsMap.put(Symbol.valueOf(SCHEDULED_ENQUEUE_TIME_NAME),
+            messageAnnotationsMap.put(Symbol.valueOf(SCHEDULED_ENQUEUE_UTC_TIME_NAME.toString()),
                 Date.from(brokeredMessage.getScheduledEnqueueTime().toInstant()));
         }
 
         final String partitionKey = brokeredMessage.getPartitionKey();
         if (partitionKey != null && !partitionKey.isEmpty()) {
-            messageAnnotationsMap.put(Symbol.valueOf(PARTITION_KEY_NAME), brokeredMessage.getPartitionKey());
+            messageAnnotationsMap.put(Symbol.valueOf(PARTITION_KEY_ANNOTATION_NAME.toString()),
+                brokeredMessage.getPartitionKey());
         }
 
         final String viaPartitionKey = brokeredMessage.getViaPartitionKey();
         if (viaPartitionKey != null && !viaPartitionKey.isEmpty()) {
-            messageAnnotationsMap.put(Symbol.valueOf(VIA_PARTITION_KEY_NAME), viaPartitionKey);
+            messageAnnotationsMap.put(Symbol.valueOf(VIA_PARTITION_KEY_ANNOTATION_NAME.toString()), viaPartitionKey);
         }
 
         amqpMessage.setMessageAnnotations(new MessageAnnotations(messageAnnotationsMap));
@@ -200,14 +202,15 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         // Set Delivery Annotations.
         final Map<Symbol, Object> deliveryAnnotationsMap = new HashMap<>();
 
-        final Map<String, Object> deliveryAnnotations = brokeredMessage.getAmqpAnnotatedMessage().getDeliveryAnnotations();
-        Iterator<String> deliveryAnnotationIterator = deliveryAnnotations.keySet().iterator();
-        while (deliveryAnnotationIterator.hasNext()) {
-            String key = deliveryAnnotationIterator.next();
-            deliveryAnnotationsMap.put(Symbol.valueOf(key), deliveryAnnotations.get(key));
+        final Map<String, Object> deliveryAnnotations = brokeredMessage.getAmqpAnnotatedMessage()
+            .getDeliveryAnnotations();
+        Iterator<Map.Entry<String, Object>> deliveryEntries = deliveryAnnotations.entrySet().iterator();
+        while (deliveryEntries.hasNext()) {
+            Map.Entry<String, Object> deliveryEntry = deliveryEntries.next();
+            deliveryAnnotationsMap.put(Symbol.valueOf(deliveryEntry.getKey()), deliveryEntry.getValue());
         }
 
-        amqpMessage.setDeliveryAnnotations( new DeliveryAnnotations(deliveryAnnotationsMap));
+        amqpMessage.setDeliveryAnnotations(new DeliveryAnnotations(deliveryAnnotationsMap));
 
         return amqpMessage;
     }
@@ -391,11 +394,12 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         // Footer
         final Footer footer = amqpMessage.getFooter();
         if (footer != null && footer.getValue() != null) {
-            final Map<Symbol, Object> footerValue = footer.getValue();
-            Iterator<Symbol> footerKeys = footerValue.keySet().iterator();
-            while (footerKeys.hasNext()) {
-                Symbol key = footerKeys.next();
-                brokeredAmqpAnnotatedMessage.getFooter().put(key.toString(), footerValue.get(key));
+            @SuppressWarnings("unchecked") final Map<Symbol, Object> footerValue = footer.getValue();
+            Iterator<Map.Entry<Symbol, Object>> footerEntries = footerValue.entrySet().iterator();
+
+            while (footerEntries.hasNext()) {
+                Map.Entry<Symbol, Object> footerEntry = footerEntries.next();
+                brokeredAmqpAnnotatedMessage.getFooter().put(footerEntry.getKey().toString(), footerEntry.getValue());
             }
         }
 
@@ -417,6 +421,15 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         final Properties amqpProperties = amqpMessage.getProperties();
         if (amqpProperties != null) {
             brokeredProperties.setTo(amqpProperties.getTo());
+
+            if (amqpProperties.getAbsoluteExpiryTime() != null) {
+                brokeredProperties.setAbsoluteExpiryTime(amqpProperties.getAbsoluteExpiryTime().toInstant()
+                    .atOffset(ZoneOffset.UTC));
+            }
+            if (amqpProperties.getCreationTime() != null) {
+                brokeredProperties.setCreationTime(amqpProperties.getCreationTime().toInstant()
+                    .atOffset(ZoneOffset.UTC));
+            }
         }
 
         brokeredProperties.setSubject(amqpMessage.getSubject());
@@ -424,14 +437,6 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         brokeredProperties.setContentEncoding(amqpMessage.getContentEncoding());
         brokeredProperties.setGroupSequence(amqpMessage.getGroupSequence());
         brokeredProperties.setUserId(amqpMessage.getUserId());
-        if (amqpProperties.getAbsoluteExpiryTime() != null) {
-            brokeredProperties.setAbsoluteExpiryTime(amqpProperties.getAbsoluteExpiryTime().toInstant()
-                .atOffset(ZoneOffset.UTC));
-        }
-        if (amqpProperties.getCreationTime() != null) {
-            brokeredProperties.setCreationTime(amqpProperties.getCreationTime().toInstant()
-                .atOffset(ZoneOffset.UTC));
-        }
 
         // DeliveryAnnotations
         final DeliveryAnnotations deliveryAnnotations = amqpMessage.getDeliveryAnnotations();

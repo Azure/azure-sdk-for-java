@@ -23,7 +23,7 @@ public class BinaryDataTest {
     @Test
     public void constructorValidValues() {
         // Arrange & Act
-        BinaryData actual = new BinaryData(CONTENTS_BYTES);
+        final BinaryData actual = new BinaryData(CONTENTS_BYTES);
 
         // Assert
         assertArrayEquals(CONTENTS_BYTES, actual.getData());

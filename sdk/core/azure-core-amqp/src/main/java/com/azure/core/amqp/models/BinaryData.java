@@ -13,7 +13,7 @@ public final class BinaryData {
     private final byte[] data;
 
     /**
-     *Create {@link BinaryData} instance with given byte array data.
+     * Create {@link BinaryData} instance with given byte array data.
      *
      * @param data to use.
      */

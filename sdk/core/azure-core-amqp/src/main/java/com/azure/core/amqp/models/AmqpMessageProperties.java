@@ -23,7 +23,7 @@ public class AmqpMessageProperties {
     private String correlationId;
     private OffsetDateTime creationTime;
     private String groupId;
-    private long groupSequence;
+    private Long groupSequence;
     private String messageId;
     private String replyToGroupId;
     private String replyTo;
@@ -164,7 +164,7 @@ public class AmqpMessageProperties {
      *
      * @return the {@code groupSequence} value.
      */
-    public long getGroupSequence() {
+    public Long getGroupSequence() {
         return groupSequence;
     }
 
@@ -175,7 +175,7 @@ public class AmqpMessageProperties {
      *
      * @return updated {@link AmqpMessageProperties} object.
      */
-    public AmqpMessageProperties setGroupSequence(long groupSequence) {
+    public AmqpMessageProperties setGroupSequence(Long groupSequence) {
         this.groupSequence = groupSequence;
         return this;
     }

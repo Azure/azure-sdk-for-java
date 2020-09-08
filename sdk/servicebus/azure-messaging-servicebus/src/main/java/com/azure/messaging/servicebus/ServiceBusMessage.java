@@ -3,8 +3,11 @@
 
 package com.azure.messaging.servicebus;
 
-
+import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.SCHEDULED_ENQUEUE_UTC_TIME_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.VIA_PARTITION_KEY_ANNOTATION_NAME;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
+import com.azure.core.amqp.models.AmqpBodyType;
 import com.azure.core.amqp.models.AmqpDataBody;
 import com.azure.core.amqp.models.BinaryData;
 import com.azure.core.util.Context;
@@ -43,9 +46,6 @@ import java.util.stream.Collectors;
  * @see ServiceBusMessageBatch
  */
 public class ServiceBusMessage {
-    private static final String SCHEDULED_ENQUEUE_TIME_NAME = "x-opt-scheduled-enqueue-time";
-    private static final String VIA_PARTITION_KEY_NAME = "x-opt-via-partition-key";
-    private static final String PARTITION_KEY_NAME = "x-opt-partition-key";
     private final AmqpAnnotatedMessage amqpAnnotatedMessage;
     private final ClientLogger logger = new ClientLogger(ServiceBusMessage.class);
 
@@ -71,7 +71,8 @@ public class ServiceBusMessage {
      */
     public ServiceBusMessage(byte[] body) {
         this.context = Context.NONE;
-        amqpAnnotatedMessage = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(new BinaryData(body))));
+        amqpAnnotatedMessage = new AmqpAnnotatedMessage(new AmqpDataBody(Collections
+            .singletonList(new BinaryData(body))));
     }
 
     /**
@@ -103,8 +104,9 @@ public class ServiceBusMessage {
     }
 
     /**
+     * Gets the {@link AmqpAnnotatedMessage}.
      *
-     * @return
+     * @return the amqp message.
      */
     public AmqpAnnotatedMessage getAmqpAnnotatedMessage() {
         return amqpAnnotatedMessage;
@@ -127,30 +129,29 @@ public class ServiceBusMessage {
      *
      * <p>
      * If the means for deserializing the raw data is not apparent to consumers, a common technique is to make use of
-     * {@link #getApplicationProperties()} when creating the event, to associate serialization hints as an aid to consumers who
-     * wish to deserialize the binary data.
+     * {@link #getApplicationProperties()} when creating the event, to associate serialization hints as an aid to
+     * consumers who wish to deserialize the binary data.
      * </p>
      *
      * @return A byte array representing the data.
      */
     public byte[] getBody() {
         byte[] body = null;
-        switch(amqpAnnotatedMessage.getBody().getBodyType()) {
+        final AmqpBodyType type = amqpAnnotatedMessage.getBody().getBodyType();
+        switch (type) {
             case DATA:
-                List<BinaryData> binaryData = ((AmqpDataBody)amqpAnnotatedMessage.getBody()).getData().stream()
-                    .collect(Collectors.toList());
-                if (binaryData != null && binaryData.size() > 0) {
-                    byte[] firstData = binaryData.get(0).getData();
-                    body = Arrays.copyOf(firstData, firstData.length);
+                final BinaryData binaryData = ((AmqpDataBody) amqpAnnotatedMessage.getBody()).getBinaryData();
+                if (binaryData != null) {
+                    body = binaryData.getData();
                 }
                 break;
             case SEQUENCE:
             case VALUE:
-                throw logger.logThrowableAsError(new UnsupportedOperationException("Not supported AmqpBodyType: "
-                    + amqpAnnotatedMessage.getBody().getBodyType()));
+                throw logger.logExceptionAsError(new UnsupportedOperationException("Not supported AmqpBodyType: "
+                    + amqpAnnotatedMessage.getBody().getBodyType().toString()));
             default:
-            throw logger.logThrowableAsError(new IllegalArgumentException("Unknown AmqpBodyType: "
-                + amqpAnnotatedMessage.getBody().getBodyType()));
+                throw logger.logExceptionAsError(new IllegalArgumentException("Unknown AmqpBodyType: "
+                    + amqpAnnotatedMessage.getBody().getBodyType().toString()));
         }
         return body;
     }
@@ -258,7 +259,7 @@ public class ServiceBusMessage {
      *     entities</a>
      */
     public String getPartitionKey() {
-        return (String)amqpAnnotatedMessage.getMessageAnnotations().get(PARTITION_KEY_NAME);
+        return (String) amqpAnnotatedMessage.getMessageAnnotations().get(PARTITION_KEY_ANNOTATION_NAME.toString());
     }
 
     /**
@@ -270,7 +271,7 @@ public class ServiceBusMessage {
      * @see #getPartitionKey()
      */
     public ServiceBusMessage setPartitionKey(String partitionKey) {
-        amqpAnnotatedMessage.getMessageAnnotations().put(PARTITION_KEY_NAME, partitionKey);
+        amqpAnnotatedMessage.getMessageAnnotations().put(PARTITION_KEY_ANNOTATION_NAME.toString(), partitionKey);
         return this;
     }
 
@@ -373,11 +374,10 @@ public class ServiceBusMessage {
     public OffsetDateTime getScheduledEnqueueTime() {
         OffsetDateTime scheduledEnqueueTime = null;
         Map<String, Object> messageAnnotationMap = amqpAnnotatedMessage.getMessageAnnotations();
-        if (messageAnnotationMap.containsKey(SCHEDULED_ENQUEUE_TIME_NAME)) {
-            scheduledEnqueueTime = ((Date) messageAnnotationMap.get(SCHEDULED_ENQUEUE_TIME_NAME)).toInstant()
-                .atOffset(ZoneOffset.UTC) ;
+        if (messageAnnotationMap.containsKey(SCHEDULED_ENQUEUE_UTC_TIME_NAME.toString())) {
+            scheduledEnqueueTime = ((Date) messageAnnotationMap.get(SCHEDULED_ENQUEUE_UTC_TIME_NAME.toString()))
+                .toInstant().atOffset(ZoneOffset.UTC);
         }
-
         return scheduledEnqueueTime;
     }
 
@@ -390,8 +390,10 @@ public class ServiceBusMessage {
      * @see #getScheduledEnqueueTime()
      */
     public ServiceBusMessage setScheduledEnqueueTime(OffsetDateTime scheduledEnqueueTime) {
-        Objects.requireNonNull(scheduledEnqueueTime, "'scheduledEnqueueTime' cannot be null.");
-        amqpAnnotatedMessage.getMessageAnnotations().put(SCHEDULED_ENQUEUE_TIME_NAME, scheduledEnqueueTime);
+        if (scheduledEnqueueTime != null) {
+            amqpAnnotatedMessage.getMessageAnnotations().put(SCHEDULED_ENQUEUE_UTC_TIME_NAME.toString(),
+                scheduledEnqueueTime);
+        }
         return this;
     }
 
@@ -433,7 +435,7 @@ public class ServiceBusMessage {
      *     and Send Via</a>
      */
     public String getViaPartitionKey() {
-        return (String)amqpAnnotatedMessage.getMessageAnnotations().get(VIA_PARTITION_KEY_NAME);
+        return (String) amqpAnnotatedMessage.getMessageAnnotations().get(VIA_PARTITION_KEY_ANNOTATION_NAME.toString());
     }
 
     /**
@@ -445,7 +447,7 @@ public class ServiceBusMessage {
      * @see #getViaPartitionKey()
      */
     public ServiceBusMessage setViaPartitionKey(String viaPartitionKey) {
-        amqpAnnotatedMessage.getMessageAnnotations().put(VIA_PARTITION_KEY_NAME, viaPartitionKey);
+        amqpAnnotatedMessage.getMessageAnnotations().put(VIA_PARTITION_KEY_ANNOTATION_NAME.toString(), viaPartitionKey);
         return this;
     }
 
