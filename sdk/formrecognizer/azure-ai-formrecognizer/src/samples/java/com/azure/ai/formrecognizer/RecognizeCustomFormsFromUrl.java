@@ -3,7 +3,7 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
@@ -31,7 +31,7 @@ public class RecognizeCustomFormsFromUrl {
 
         String formUrl = "{form_url}";
         String modelId = "{custom_trained_model_id}";
-        SyncPoller<OperationResult, List<RecognizedForm>> recognizeFormPoller =
+        SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> recognizeFormPoller =
             client.beginRecognizeCustomFormsFromUrl(modelId, formUrl);
 
         List<RecognizedForm> recognizedForms = recognizeFormPoller.getFinalResult();

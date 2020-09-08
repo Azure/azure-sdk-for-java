@@ -58,7 +58,7 @@ public final class CertificateClientJavaDocCodeSnippets {
     /**
      * Method to insert code snippets for {@link CertificateClient#getCertificatePolicy(String)}
      */
-    public void getCertiificatePolicyCodeSnippets() {
+    public void getCertificatePolicyCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.getCertificatePolicy#string
         CertificatePolicy policy = certificateClient.getCertificatePolicy("certificateName");

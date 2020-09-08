@@ -4,8 +4,8 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.FormContentType;
-import com.azure.ai.formrecognizer.models.OperationResult;
-import com.azure.ai.formrecognizer.models.RecognizeOptions;
+import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
+import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.PollerFlux;
@@ -54,21 +54,21 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
             + "forms/Form_1.jpg");
         byte[] fileContent = Files.readAllBytes(analyzeFile.toPath());
 
-        PollerFlux<OperationResult, List<RecognizedForm>> labeledCustomFormPoller =
+        PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> labeledCustomFormPoller =
             client.beginRecognizeCustomForms("{labeled_model_Id}",
                 toFluxByteBuffer(new ByteArrayInputStream(fileContent)),
                 analyzeFile.length(),
-                    new RecognizeOptions()
-                    .setContentType(FormContentType.APPLICATION_PDF)
+                    new RecognizeCustomFormsOptions()
+                    .setContentType(FormContentType.IMAGE_JPEG)
                     .setFieldElementsIncluded(true)
                     .setPollInterval(Duration.ofSeconds(5)));
 
-        PollerFlux<OperationResult, List<RecognizedForm>> unlabeledCustomFormPoller =
+        PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> unlabeledCustomFormPoller =
             client.beginRecognizeCustomForms("{unlabeled_model_Id}",
                 toFluxByteBuffer(new ByteArrayInputStream(fileContent)),
                 analyzeFile.length(),
-                    new RecognizeOptions()
-                    .setContentType(FormContentType.APPLICATION_PDF)
+                    new RecognizeCustomFormsOptions()
+                    .setContentType(FormContentType.IMAGE_JPEG)
                     .setFieldElementsIncluded(true)
                     .setPollInterval(Duration.ofSeconds(5)));
 

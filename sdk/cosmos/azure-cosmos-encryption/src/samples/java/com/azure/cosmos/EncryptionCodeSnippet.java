@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
@@ -67,8 +68,8 @@ public class EncryptionCodeSnippet {
 
         return new DataEncryptionKeyProvider() {
             @Override
-            public DataEncryptionKey getDataEncryptionKey(String id, String algorithm) {
-                return key;
+            public Mono<DataEncryptionKey> getDataEncryptionKey(String id, String algorithm) {
+                return Mono.just(key);
             }
         };
     }

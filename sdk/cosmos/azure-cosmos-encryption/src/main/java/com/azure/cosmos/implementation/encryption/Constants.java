@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.encryption;
 
-public class Constants {
+class Constants {
     public static final String DOCUMENT_RESOURCE_PROPERTY_NAME = "Documents";
     public static final String ENCRYPTION_FORMAT_VERSION = "_ef";
     public static final String ENCRYPTION_ALGORITHM = "_ea";

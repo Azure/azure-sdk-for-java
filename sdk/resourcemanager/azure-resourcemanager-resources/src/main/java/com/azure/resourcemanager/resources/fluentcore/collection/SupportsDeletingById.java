@@ -24,5 +24,5 @@ public interface SupportsDeletingById {
      * @param id the resource ID of the resource to delete
      * @return a representation of the deferred computation of this call
      */
-    Mono<?> deleteByIdAsync(String id);
+    Mono<Void> deleteByIdAsync(String id);
 }

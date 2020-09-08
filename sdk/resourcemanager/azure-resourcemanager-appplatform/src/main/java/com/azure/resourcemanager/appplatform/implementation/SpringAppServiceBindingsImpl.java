@@ -65,7 +65,7 @@ public class SpringAppServiceBindingsImpl
     }
 
     @Override
-    public Mono<?> deleteByIdAsync(String id) {
+    public Mono<Void> deleteByIdAsync(String id) {
         return deleteByNameAsync(ResourceUtils.nameFromResourceId(id));
     }
 

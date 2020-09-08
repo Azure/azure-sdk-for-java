@@ -13,6 +13,12 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * This class represents a generic Java type, retaining information about generics.
  *
+ * <p><strong>Code sample</strong></p>
+ *
+ * {@codesnippet com.azure.core.util.serializer.constructor}
+ *
+ * {@codesnippet com.azure.core.util.serializer.createInstance#class}
+ *
  * @param <T> The type being represented.
  */
 public abstract class TypeReference<T> {

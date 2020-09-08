@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.encryption;
 
+import reactor.core.publisher.Mono;
+
 /**
  * Abstraction for performing client-side encryption.
  * See https://aka.ms/CosmosClientEncryption for more information on client-side encryption support in Azure Cosmos DB.
@@ -15,9 +17,9 @@ public interface Encryptor {
      * @param plainText           Plain text.
      * @param dataEncryptionKeyId Identifier of the data encryption key.
      * @param encryptionAlgorithm Identifier for the encryption algorithm.
-     * @return Cipher text.
+     * @return Mono of Cipher text byte array.
      */
-    byte[] encryptAsync(
+    Mono<byte[]> encryptAsync(
         byte[] plainText,
         String dataEncryptionKeyId,
         String encryptionAlgorithm);
@@ -28,11 +30,10 @@ public interface Encryptor {
      * @param cipherText          Ciphertext to be decrypted.
      * @param dataEncryptionKeyId Identifier of the data encryption key.
      * @param encryptionAlgorithm Identifier for the encryption algorithm.
-     * @return Plain text.
+     * @return Mono of Plain text byte array.
      */
-    byte[] decryptAsync(
+    Mono<byte[]> decryptAsync(
         byte[] cipherText,
         String dataEncryptionKeyId,
         String encryptionAlgorithm);
 }
-// TODO: how to do async api call?

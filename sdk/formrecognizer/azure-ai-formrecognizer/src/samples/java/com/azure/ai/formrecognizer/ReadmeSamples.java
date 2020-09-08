@@ -9,7 +9,7 @@ import com.azure.ai.formrecognizer.training.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.models.FieldValueType;
 import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.FormPage;
-import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.training.FormTrainingClient;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
@@ -87,7 +87,7 @@ public class ReadmeSamples {
     public void recognizeCustomForm() {
         String formUrl = "{form_url}";
         String modelId = "{custom_trained_model_id}";
-        SyncPoller<OperationResult, List<RecognizedForm>> recognizeFormPoller =
+        SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> recognizeFormPoller =
             formRecognizerClient.beginRecognizeCustomFormsFromUrl(modelId, formUrl);
 
         List<RecognizedForm> recognizedForms = recognizeFormPoller.getFinalResult();
@@ -115,7 +115,7 @@ public class ReadmeSamples {
         byte[] fileContent = Files.readAllBytes(form.toPath());
         InputStream inputStream = new ByteArrayInputStream(fileContent);
 
-        SyncPoller<OperationResult, List<FormPage>> recognizeContentPoller =
+        SyncPoller<FormRecognizerOperationResult, List<FormPage>> recognizeContentPoller =
             formRecognizerClient.beginRecognizeContent(inputStream, form.length());
 
         List<FormPage> contentPageResults = recognizeContentPoller.getFinalResult();
@@ -139,7 +139,7 @@ public class ReadmeSamples {
     public void recognizeReceipt() {
         String receiptUrl = "https://docs.microsoft.com/azure/cognitive-services/form-recognizer/media"
             + "/contoso-allinone.jpg";
-        SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
+        SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
             formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptUrl);
         List<RecognizedForm> receiptPageResults = syncPoller.getFinalResult();
 
@@ -198,7 +198,7 @@ public class ReadmeSamples {
 
     public void trainModel() {
         String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
-        SyncPoller<OperationResult, CustomFormModel> trainingPoller =
+        SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
             formTrainingClient.beginTraining(trainingFilesUrl, false);
 
         CustomFormModel customFormModel = trainingPoller.getFinalResult();

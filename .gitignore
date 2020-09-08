@@ -3,6 +3,8 @@
 #Javadoc files
 dist/
 .publish/
+output/
+temp/
 
 #javadoc overview files generated from README.md
 readme_overview.html

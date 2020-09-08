@@ -55,11 +55,11 @@ public class EncryptionKeyWrapMetadata {
 
     @JsonProperty("type")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String type;
+    String type;
 
     @JsonProperty("algorithm")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String algorithm;
+    String algorithm;
 
     /**
      * Serialized form of metadata.

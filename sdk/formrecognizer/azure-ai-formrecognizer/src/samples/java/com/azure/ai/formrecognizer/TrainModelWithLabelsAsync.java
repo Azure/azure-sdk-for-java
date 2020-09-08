@@ -4,7 +4,7 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.training.models.CustomFormModel;
-import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.training.FormTrainingAsyncClient;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
@@ -37,7 +37,7 @@ public class TrainModelWithLabelsAsync {
 
         String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
-        PollerFlux<OperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingFilesUrl, true);
+        PollerFlux<FormRecognizerOperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingFilesUrl, true);
 
         Mono<CustomFormModel> customFormModelResult = trainingPoller
             .last()

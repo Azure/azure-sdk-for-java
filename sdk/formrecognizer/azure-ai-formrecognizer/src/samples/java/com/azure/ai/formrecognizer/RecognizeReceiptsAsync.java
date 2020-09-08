@@ -5,7 +5,7 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.FieldValueType;
 import com.azure.ai.formrecognizer.models.FormField;
-import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.PollerFlux;
@@ -48,7 +48,7 @@ public class RecognizeReceiptsAsync {
         File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/"
             + "receipts/contoso-allinone.jpg");
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
-        PollerFlux<OperationResult, List<RecognizedForm>> recognizeReceiptPoller;
+        PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> recognizeReceiptPoller;
         try (InputStream targetStream = new ByteArrayInputStream(fileContent)) {
             recognizeReceiptPoller = client.beginRecognizeReceipts(toFluxByteBuffer(targetStream), sourceFile.length());
         }

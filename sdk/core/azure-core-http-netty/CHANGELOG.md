@@ -1,10 +1,16 @@
 # Release History
 
 ## 1.6.0-beta.1 (Unreleased)
-- Updated reactor-core version to `3.3.8.RELEASE`
-- Updated reactor-netty version to `0.9.10.RELEASE`
-- Updated netty version to `4.1.51.Final`
-- Updated netty-tcnative version to `2.0.31.Final`
+
+
+## 1.5.4 (2020-08-07)
+
+- Updated `reactor-core` version to `3.3.8.RELEASE`.
+- Updated `reactor-netty` version to `0.9.10.RELEASE`.
+- Updated `netty` version to `4.1.51.Final`.
+- Updated `netty-tcnative` version to `2.0.31.Final`.
+- Fixed a bug where connections weren't being re-used when using a proxy which lead to a new TCP and SSL session for each request.
+- Fixed a bug where a non-shareable proxy handler could be added twice into a `ChannelPipeline`.
 
 ## 1.5.3 (2020-07-02)
 

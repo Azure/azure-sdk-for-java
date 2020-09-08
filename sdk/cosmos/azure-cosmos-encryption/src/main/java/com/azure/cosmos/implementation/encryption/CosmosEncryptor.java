@@ -7,6 +7,7 @@ import com.azure.cosmos.encryption.DataEncryptionKey;
 import com.azure.cosmos.encryption.DataEncryptionKeyProvider;
 import com.azure.cosmos.encryption.Encryptor;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
+import reactor.core.publisher.Mono;
 
 /**
  * Provides the default implementation for client-side encryption for Cosmos DB.
@@ -32,28 +33,34 @@ public class CosmosEncryptor implements Encryptor {
     }
 
     @Override
-    public byte[] decryptAsync(
+    public Mono<byte[]> decryptAsync(
         byte[] cipherText,
         String dataEncryptionKeyId,
         String encryptionAlgorithm) {
-        DataEncryptionKey dek =  this.dataEncryptionKeyProvider.getDataEncryptionKey(
+
+        Mono<DataEncryptionKey> dekMono =  this.dataEncryptionKeyProvider.getDataEncryptionKey(
             dataEncryptionKeyId,
             encryptionAlgorithm);
 
-        Preconditions.checkNotNull(dek, "DataEncryptionKey returned from DataEncryptionKeyProvider.getDataEncryptionKey is null");
-        return dek.decryptData(cipherText);
+        return dekMono.switchIfEmpty(Mono.error(new NullPointerException("DataEncryptionKey returned from DataEncryptionKeyProvider.getDataEncryptionKey is null")))
+            .flatMap(
+                dek -> Mono.just(dek.decryptData(cipherText))
+            );
     }
 
     @Override
-    public byte[] encryptAsync(
+    public Mono<byte[]> encryptAsync(
         byte[] plainText,
         String dataEncryptionKeyId,
         String encryptionAlgorithm) {
-        DataEncryptionKey dek =  this.dataEncryptionKeyProvider.getDataEncryptionKey(
+
+        Mono<DataEncryptionKey> dekMono =  this.dataEncryptionKeyProvider.getDataEncryptionKey(
             dataEncryptionKeyId,
             encryptionAlgorithm);
 
-        Preconditions.checkNotNull(dek, "DataEncryptionKey returned from DataEncryptionKeyProvider.getDataEncryptionKey is null");
-        return dek.encryptData(plainText);
+        return dekMono.switchIfEmpty(Mono.error(new NullPointerException("DataEncryptionKey returned from DataEncryptionKeyProvider.getDataEncryptionKey is null")))
+                      .flatMap(
+                          dek -> Mono.just(dek.encryptData(plainText))
+                      );
     }
 }

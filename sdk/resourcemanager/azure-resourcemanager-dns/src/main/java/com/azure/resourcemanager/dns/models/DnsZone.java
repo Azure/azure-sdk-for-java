@@ -204,35 +204,6 @@ public interface DnsZone
             WithCreate withETagCheck();
         }
 
-        /** The stage of the DNS zone definition allowing to specify Zone access type. */
-        interface WithZoneType {
-            /**
-             * Sets the type of this zone to Public (default behavior).
-             *
-             * @return the next stage of the definition
-             */
-            WithCreate withPublicAccess();
-
-            /**
-             * Sets the type of this zone to Private.
-             *
-             * @return the next stage of the definition
-             */
-            WithCreate withPrivateAccess();
-
-            /**
-             * Sets the type of this zone to Private.
-             *
-             * @param registrationVirtualNetworkIds a list of references to virtual networks that register hostnames in
-             *     this DNS zone.
-             * @param resolutionVirtualNetworkIds a list of references to virtual networks that resolve records in this
-             *     DNS zone.
-             * @return the next stage of the definition
-             */
-            WithCreate withPrivateAccess(
-                List<String> registrationVirtualNetworkIds, List<String> resolutionVirtualNetworkIds);
-        }
-
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created
          * (via {@link WithCreate#create()}), but also allows for any other optional settings to be specified.
@@ -241,7 +212,6 @@ public interface DnsZone
             extends Creatable<DnsZone>,
                 DefinitionStages.WithRecordSet,
                 DefinitionStages.WithETagCheck,
-                DefinitionStages.WithZoneType,
                 Resource.DefinitionWithTags<WithCreate> {
         }
     }
@@ -581,36 +551,6 @@ public interface DnsZone
              */
             Update withETagCheck(String etagValue);
         }
-
-        /** The stage of the DNS zone update allowing to specify Zone access type. */
-        interface WithZoneType {
-            /**
-             * Sets the type of this zone to Public (default behavior).
-             *
-             * @return the next stage of the definition
-             */
-            Update withPublicAccess();
-
-            /**
-             * Sets the type of this zone to Private. Note that this method call will clean any previously set
-             * registrationVirtualNetworkIds and resolutionVirtualNetworkIds lists.
-             *
-             * @return the next stage of the definition
-             */
-            Update withPrivateAccess();
-
-            /**
-             * Sets the type of this zone to Private.
-             *
-             * @param registrationVirtualNetworkIds a list of references to virtual networks that register hostnames in
-             *     this DNS zone.
-             * @param resolutionVirtualNetworkIds a list of references to virtual networks that resolve records in this
-             *     DNS zone.
-             * @return the next stage of the definition
-             */
-            Update withPrivateAccess(
-                List<String> registrationVirtualNetworkIds, List<String> resolutionVirtualNetworkIds);
-        }
     }
 
     /**
@@ -622,7 +562,6 @@ public interface DnsZone
         extends Appliable<DnsZone>,
             UpdateStages.WithRecordSet,
             UpdateStages.WithETagCheck,
-            UpdateStages.WithZoneType,
             Resource.UpdateWithTags<Update> {
     }
 }

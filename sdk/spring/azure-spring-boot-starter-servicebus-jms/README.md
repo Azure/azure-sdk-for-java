@@ -6,14 +6,11 @@ With this starter you could easily use Spring JMS Queue and Topic with Azure Ser
 
 ## Getting started
 ### Prerequisites
-- JDK 1.8 and above
+- Java Development Kit (JDK) with version 8 or above
+- [Azure Subscription][azure_subscription]
 - [Maven](http://maven.apache.org/) 3.0 and above
 
 ### Include the package
-
-`azure-servicebus-jms-spring-boot-starter` is published on Maven Central Repository.  
-Add the following dependency to your project:
-
 [//]: # ({x-version-update-start;com.microsoft.azure:azure-servicebus-jms-spring-boot-starter;current})
 ```xml
 <dependency>
@@ -231,3 +228,4 @@ Please follow [instructions here](../CONTRIBUTING.md) to build from source or co
 [package]: https://mvnrepository.com/artifact/com.microsoft.azure/azure-servicebus-jms-spring-boot-starter
 [sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
+[azure_subscription]: https://azure.microsoft.com/free

@@ -14,7 +14,7 @@ Maven dependency for the Azure Key Vault Key client library. Add it to your proj
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-keys</artifactId>
-    <version>4.1.5</version>
+    <version>4.2.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -34,7 +34,7 @@ In order to interact with the Azure Key Vault service, you'll need to create an 
 The `DefaultAzureCredential` way of authentication by providing client secret credentials is being used in this getting started section but you can find more ways to authenticate with [azure-identity][azure_identity].
 
 #### Create/Get credentials
-To create/get client key credentials you can use the [Azure Portal][azure_create_application_in_portal], [Azure CLI][azure_keyvault_cli_full] or [Azure Cloud Shell](https://shell.azure.com/bash)
+To create/get client secret credentials you can use the [Azure Portal][azure_create_application_in_portal], [Azure CLI][azure_keyvault_cli_full] or [Azure Cloud Shell](https://shell.azure.com/bash)
 
 Here is an [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
 

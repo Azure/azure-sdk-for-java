@@ -88,6 +88,12 @@ public class CertificateProperties {
     @JsonProperty(value = "x5t", access = JsonProperty.Access.WRITE_ONLY)
     Base64Url x509Thumbprint;
 
+    /**
+     * The number of days a certificate is retained before being deleted for a soft delete-enabled Key Vault.
+     */
+    @JsonProperty(value = "recoverableDays", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer recoverableDays;
+
     CertificateProperties(String name) {
         this.name = name;
     }
@@ -110,6 +116,14 @@ public class CertificateProperties {
      */
     public OffsetDateTime getNotBefore() {
         return notBefore;
+    }
+
+    /**
+     * Gets the number of days a key is retained before being deleted for a soft delete-enabled Key Vault.
+     * @return the recoverable days.
+     */
+    public Integer getRecoverableDays() {
+        return recoverableDays;
     }
 
     /**
@@ -236,6 +250,7 @@ public class CertificateProperties {
         this.updatedOn = epochToOffsetDateTime(attributes.get("updated"));
         this.recoveryLevel = (String) attributes.get("recoveryLevel");
         this.tags = (Map<String, String>) lazyValueSelection(attributes.get("tags"), this.tags);
+        this.recoverableDays = (Integer) attributes.get("recoverableDays");
         unpackId((String) attributes.get("id"));
     }
 

@@ -5,7 +5,7 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.FieldValueType;
 import com.azure.ai.formrecognizer.models.FormField;
-import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
@@ -46,7 +46,7 @@ public class RecognizeReceipts {
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 
-        SyncPoller<OperationResult, List<RecognizedForm>> analyzeReceiptPoller =
+        SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> analyzeReceiptPoller =
             client.beginRecognizeReceipts(targetStream, sourceFile.length());
 
         List<RecognizedForm> receiptPageResults = analyzeReceiptPoller.getFinalResult();

@@ -3,23 +3,22 @@
 
 package com.azure.security.keyvault.keys;
 
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.util.CoreUtils;
-import com.azure.core.util.Configuration;
+import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -71,7 +70,7 @@ public final class KeyClientBuilder {
     private URL vaultUrl;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
-    private final RetryPolicy retryPolicy;
+    private RetryPolicy retryPolicy;
     private Configuration configuration;
     private KeyServiceVersion version;
 
@@ -272,6 +271,21 @@ public final class KeyClientBuilder {
      */
     public KeyClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
+        return this;
+    }
+
+    /**
+     * Sets the {@link RetryPolicy} that is used when each request is sent.
+     *
+     * The default retry policy will be used in the pipeline, if not provided.
+     *
+     * @param retryPolicy user's retry policy applied to each request.
+     * @return The updated KeyClientBuilder object.
+     * @throws NullPointerException if the specified {@code retryPolicy} is null.
+     */
+    public KeyClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+        Objects.requireNonNull(retryPolicy, "The retry policy cannot be bull");
+        this.retryPolicy = retryPolicy;
         return this;
     }
 

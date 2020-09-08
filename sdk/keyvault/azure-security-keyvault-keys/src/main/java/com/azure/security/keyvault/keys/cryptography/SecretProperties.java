@@ -130,6 +130,12 @@ class SecretProperties {
         return this.enabled;
     }
 
+    /**
+     * The number of days a secret is retained before being deleted for a soft delete-enabled Key Vault.
+     */
+    @JsonProperty(value = "recoverableDays", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer recoverableDays;
+
     /*
      * Set the enabled value.
      *
@@ -150,6 +156,14 @@ class SecretProperties {
      */
     OffsetDateTime getNotBefore() {
         return notBefore;
+    }
+
+    /**
+     * Gets the number of days a secret is retained before being deleted for a soft delete-enabled Key Vault.
+     * @return the recoverable days.
+     */
+    public Integer getRecoverableDays() {
+        return recoverableDays;
     }
 
     /*
@@ -299,6 +313,7 @@ class SecretProperties {
         this.keyId = (String) lazyValueSelection(attributes.get("keyId"), this.keyId);
         this.tags = (Map<String, String>) lazyValueSelection(attributes.get("tags"), this.tags);
         this.managed = (Boolean) lazyValueSelection(attributes.get("managed"), this.managed);
+        this.recoverableDays = (Integer) attributes.get("recoverableDays");
         unpackId((String) attributes.get("id"));
     }
 

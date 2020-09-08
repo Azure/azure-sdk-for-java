@@ -9,7 +9,8 @@ import com.azure.core.util.ServiceVersion;
  * The versions of Azure Key Vault Secret supported by this client library.
  */
 public enum SecretServiceVersion implements ServiceVersion {
-    V7_0("7.0");
+    V7_0("7.0"),
+    V7_1("7.1");
 
     private final String version;
 
@@ -31,6 +32,6 @@ public enum SecretServiceVersion implements ServiceVersion {
      * @return the latest {@link SecretServiceVersion}
      */
     public static SecretServiceVersion getLatest() {
-        return V7_0;
+        return V7_1;
     }
 }

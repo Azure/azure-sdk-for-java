@@ -15,9 +15,12 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
+
+import java.util.Objects;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link
@@ -106,7 +109,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
 
         if (builder.getCredential() == null) {
             throw logger.logExceptionAsError(new IllegalStateException(
-                "Key Vault credentials are required to build the key encryption key async client"));
+                "Key Vault credentials cannot be null and are required to build the key encryption key async client"));
         }
 
         HttpPipeline pipeline = builder.setupPipeline();
@@ -204,6 +207,21 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      */
     public KeyEncryptionKeyClientBuilder serviceVersion(CryptographyServiceVersion version) {
         builder.serviceVersion(version);
+        return this;
+    }
+
+    /**
+     * Sets the {@link RetryPolicy} that is used when each request is sent.
+     *
+     * The default retry policy will be used in the pipeline, if not provided.
+     *
+     * @param retryPolicy user's retry policy applied to each request.
+     * @return The updated KeyEncryptionKeyClientBuilder object.
+     * @throws NullPointerException if the specified {@code retryPolicy} is null.
+     */
+    public KeyEncryptionKeyClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+        Objects.requireNonNull(retryPolicy, "The retry policy cannot be bull");
+        builder.retryPolicy(retryPolicy);
         return this;
     }
 }

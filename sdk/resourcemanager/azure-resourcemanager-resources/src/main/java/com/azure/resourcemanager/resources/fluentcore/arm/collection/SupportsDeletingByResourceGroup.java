@@ -26,5 +26,5 @@ public interface SupportsDeletingByResourceGroup {
      * @param name the name of the resource
      * @return a representation of the deferred computation of this call
      */
-    Mono<?> deleteByResourceGroupAsync(String resourceGroupName, String name);
+    Mono<Void> deleteByResourceGroupAsync(String resourceGroupName, String name);
 }
