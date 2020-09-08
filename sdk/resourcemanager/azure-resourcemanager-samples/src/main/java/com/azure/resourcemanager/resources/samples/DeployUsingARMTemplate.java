@@ -70,11 +70,6 @@ public final class DeployUsingARMTemplate {
 
             System.out.println("Started a deployment for an Azure App Service: " + deploymentName);
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
             try {
                 Deployment deployment = azure.deployments()

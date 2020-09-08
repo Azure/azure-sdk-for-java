@@ -223,9 +223,6 @@ public final class ManageWebAppWithTrafficManager {
             Utils.print(plan3);
 
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);

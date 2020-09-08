@@ -210,11 +210,6 @@ public final class ManageZonalVirtualMachineScaleSet {
             System.out.println("Created zone aware virtual machine scale set: " + virtualMachineScaleSet2.id());
 
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);

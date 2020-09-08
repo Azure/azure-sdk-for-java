@@ -88,9 +88,6 @@ public final class WebAppPerformanceMonitoringAlerts {
             Utils.print(ma);
 
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
         } finally {
             if (azure.resourceGroups().getByName(rgName) != null) {
                 System.out.println("Deleting Resource Group: " + rgName);

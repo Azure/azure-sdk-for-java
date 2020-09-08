@@ -96,9 +96,6 @@ public final class ManageExpressRouteCrossConnection {
             crossConnection.peerings().deleteByName("MicrosoftPeering");
 
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
         }
         return false;
     }

@@ -139,9 +139,6 @@ public final class ManageStorageAccount {
 
             System.out.println("Deleted storage account");
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);

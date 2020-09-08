@@ -108,9 +108,6 @@ public class ManageEventHubEvents {
             // Listen for events from event hub using Event Hub dataplane APIs.
 
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
         } finally {
             try {
                 if (diagnosticSettingId != null) {

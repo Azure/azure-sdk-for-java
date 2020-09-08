@@ -297,11 +297,6 @@ public final class ManageApplicationGateway {
             System.out.println("Application gateway updated: (took " + (stopwatch.getTime() / 1000) + " seconds)");
             Utils.print(applicationGateway);
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);

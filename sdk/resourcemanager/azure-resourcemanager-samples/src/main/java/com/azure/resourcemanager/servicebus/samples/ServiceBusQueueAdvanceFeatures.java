@@ -161,9 +161,6 @@ public final class ServiceBusQueueAdvanceFeatures {
             System.out.println("Deleted namespace " + namespaceName + "...");
 
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);

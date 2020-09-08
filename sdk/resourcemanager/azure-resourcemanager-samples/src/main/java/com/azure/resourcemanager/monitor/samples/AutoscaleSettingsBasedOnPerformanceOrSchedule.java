@@ -117,9 +117,6 @@ public final class AutoscaleSettingsBasedOnPerformanceOrSchedule {
             // 7. Under the chart, you see the activity log entries for each scale action taken by this autoscale setting.
 
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
         } finally {
             if (azure.resourceGroups().getByName(rgName) != null) {
                 System.out.println("Deleting Resource Group: " + rgName);

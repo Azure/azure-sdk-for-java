@@ -275,11 +275,6 @@ public final class ManageNetworkSecurityGroup {
             System.out.println("Updated the front end network security group");
             Utils.print(frontEndNSG);
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
 
             try {

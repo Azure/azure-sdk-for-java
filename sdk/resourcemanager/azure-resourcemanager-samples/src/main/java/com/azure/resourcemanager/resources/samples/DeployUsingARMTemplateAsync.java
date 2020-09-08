@@ -115,11 +115,6 @@ public final class DeployUsingARMTemplateAsync {
                     String.join(", ", succeeded), String.join(", ", failed)));
 
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
             try {
                 for (int i = 1; i != numDeployments; i++) {

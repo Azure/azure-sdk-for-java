@@ -255,9 +255,6 @@ public class ManageSpringCloud {
             System.out.printf("Successfully expose domain ssl.%s%n", domainName);
 
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
         } finally {
             try {
                 System.out.println("Delete Resource Group: " + rgName);

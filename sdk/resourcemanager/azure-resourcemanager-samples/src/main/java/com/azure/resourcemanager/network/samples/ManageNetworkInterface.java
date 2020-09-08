@@ -184,11 +184,6 @@ public final class ManageNetworkInterface {
                 Utils.print(networkinterface);
             }
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
 
             try {

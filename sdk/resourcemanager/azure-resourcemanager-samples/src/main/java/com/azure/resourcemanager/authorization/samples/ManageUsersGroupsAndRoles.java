@@ -143,9 +143,6 @@ public final class ManageUsersGroupsAndRoles {
             Utils.print(group2);
 
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Service Principal: " + spName);

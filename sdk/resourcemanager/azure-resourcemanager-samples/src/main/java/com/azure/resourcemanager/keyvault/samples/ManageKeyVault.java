@@ -128,8 +128,6 @@ public final class ManageKeyVault {
             System.out.println("Deleted the key vaults");
 
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);

@@ -137,9 +137,6 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
                 ex.printStackTrace();
             }
             return true;
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
         } finally {
             if (azure != null) {
                 azure.resourceGroups().beginDeleteByName(rgName);

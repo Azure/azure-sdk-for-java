@@ -195,11 +195,6 @@ public final class ManageVirtualMachine {
 
             System.out.println("Deleted VM: " + windowsVM.id());
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
 
             try {

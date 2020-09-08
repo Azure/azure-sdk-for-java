@@ -148,8 +148,6 @@ public final class ManageIPAddress {
             azure.publicIpAddresses().deleteById(publicIPAddress.id());
             System.out.println("Deleted the public IP address");
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);

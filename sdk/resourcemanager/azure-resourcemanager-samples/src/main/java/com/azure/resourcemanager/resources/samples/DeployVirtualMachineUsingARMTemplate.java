@@ -77,11 +77,6 @@ public class DeployVirtualMachineUsingARMTemplate {
                 System.out.println("Current deployment status : " + deployment.provisioningState());
             }
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
 
             try {

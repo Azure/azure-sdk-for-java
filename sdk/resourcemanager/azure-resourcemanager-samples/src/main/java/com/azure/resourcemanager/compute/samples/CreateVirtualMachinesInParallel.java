@@ -194,11 +194,6 @@ public final class CreateVirtualMachinesInParallel {
 //            stopwatch.stop();
 //            System.out.println("Created a traffic manager profile (took " + (stopwatch.getTime() / 1000) + " seconds to create): " + trafficManagerProfile.id());
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
 
             try {

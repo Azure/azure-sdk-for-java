@@ -193,9 +193,6 @@ public final class ManageFunctionAppWithAuthentication {
             System.out.println("Square of 925 is " + Utils.post("http://" + app3Url + "/api/square?code=mysecretkey", "925"));
 
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);

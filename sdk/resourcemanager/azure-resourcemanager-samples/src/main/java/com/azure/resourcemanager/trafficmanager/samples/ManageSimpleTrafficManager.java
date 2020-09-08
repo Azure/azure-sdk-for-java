@@ -134,11 +134,6 @@ public final class ManageSimpleTrafficManager {
 
             System.out.println("Modified the traffic manager to use priority-based routing.");
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
 
             try {

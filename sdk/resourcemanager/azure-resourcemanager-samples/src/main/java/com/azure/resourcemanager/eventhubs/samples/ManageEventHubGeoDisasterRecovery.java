@@ -137,9 +137,6 @@ public class ManageEventHubGeoDisasterRecovery {
 
             System.out.println("Fail over initiated");
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
         } finally {
             try {
                 try {

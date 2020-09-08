@@ -330,11 +330,6 @@ public final class ManageManagedDisks {
             System.out.println("Migrated VM");
 
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
 
             try {

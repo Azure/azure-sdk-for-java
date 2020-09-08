@@ -295,9 +295,6 @@ public final class ManageNetworkWatcher {
             System.out.println("Deleted network watcher");
 
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);

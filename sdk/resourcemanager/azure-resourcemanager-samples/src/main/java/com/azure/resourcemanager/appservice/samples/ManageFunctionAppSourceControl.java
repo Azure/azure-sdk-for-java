@@ -243,9 +243,6 @@ public final class ManageFunctionAppSourceControl {
             System.out.println("Square of 926 is " + Utils.post("http://" + app6Url + "/api/square", "926"));
 
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);

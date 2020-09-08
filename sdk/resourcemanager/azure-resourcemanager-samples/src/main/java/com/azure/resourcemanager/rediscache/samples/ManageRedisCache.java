@@ -148,9 +148,6 @@ public final class ManageRedisCache {
 
             System.out.println("Deleted Redis Cache");
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
         } finally {
             if (azure.resourceGroups().getByName(rgName) != null) {
                 System.out.println("Deleting Resource Group: " + rgName);

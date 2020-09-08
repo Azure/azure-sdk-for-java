@@ -142,9 +142,6 @@ public final class ManageStorageAccountNetworkRules {
             Utils.print(storageAccount);
 
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
