@@ -9,6 +9,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.AppSetting;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
+import com.azure.resourcemanager.appservice.models.FunctionAppBasic;
 import com.azure.resourcemanager.appservice.models.FunctionEnvelope;
 import com.azure.resourcemanager.appservice.models.FunctionRuntimeStack;
 import com.azure.resourcemanager.appservice.models.PricingTier;
@@ -144,7 +145,7 @@ public class FunctionAppsTests extends AppServiceTest {
         Assertions.assertEquals(functionApp2.name(), functionApp.name());
 
         // List
-        PagedIterable<FunctionApp> functionApps = appServiceManager.functionApps().listByResourceGroup(rgName1);
+        PagedIterable<FunctionAppBasic> functionApps = appServiceManager.functionApps().listByResourceGroup(rgName1);
         Assertions.assertEquals(1, TestUtilities.getSize(functionApps));
         functionApps = appServiceManager.functionApps().listByResourceGroup(rgName2);
         Assertions.assertEquals(2, TestUtilities.getSize(functionApps));
@@ -229,7 +230,7 @@ public class FunctionAppsTests extends AppServiceTest {
                     .asList(functionApp1.inner().kind().split(","))
                     .containsAll(Arrays.asList("linux", "functionapp")));
 
-        PagedIterable<FunctionApp> functionApps = appServiceManager.functionApps().listByResourceGroup(rgName1);
+        PagedIterable<FunctionAppBasic> functionApps = appServiceManager.functionApps().listByResourceGroup(rgName1);
         Assertions.assertEquals(1, TestUtilities.getSize(functionApps));
 
         // function app with app service plan

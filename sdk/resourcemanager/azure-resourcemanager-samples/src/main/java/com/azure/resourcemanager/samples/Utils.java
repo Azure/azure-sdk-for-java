@@ -42,6 +42,7 @@ import com.azure.resourcemanager.appservice.models.PublishingProfile;
 import com.azure.resourcemanager.appservice.models.SslState;
 import com.azure.resourcemanager.appservice.models.WebAppBase;
 import com.azure.resourcemanager.appservice.models.WebAppBasic;
+import com.azure.resourcemanager.appservice.models.WebSiteBase;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplication;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroup;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryObject;
@@ -1081,11 +1082,11 @@ public final class Utils {
     }
 
     /**
-     * Print a web app.
+     * Print a web site.
      *
-     * @param resource a web app
+     * @param resource a web site
      */
-    public static void print(WebAppBasic resource) {
+    public static void print(WebSiteBase resource) {
         StringBuilder builder = new StringBuilder().append("Web app: ").append(resource.id())
             .append("\n\tName: ").append(resource.name())
             .append("\n\tState: ").append(resource.state())
