@@ -13,6 +13,7 @@ import com.azure.resourcemanager.authorization.fluent.inner.UserInner;
 import com.azure.resourcemanager.authorization.fluent.UsersClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Mono;
 
 /** The implementation of Users and its parent interfaces. */
@@ -114,5 +115,15 @@ public class ActiveDirectoryUsersImpl
     @Override
     public UsersClient inner() {
         return manager().inner().getUsers();
+    }
+
+    @Override
+    public PagedIterable<ActiveDirectoryUser> listByFilter(String filter) {
+        return new PagedIterable<>(listByFilterAsync(filter));
+    }
+
+    @Override
+    public PagedFlux<ActiveDirectoryUser> listByFilterAsync(String filter) {
+        return inner().listAsync(filter, null).mapPage(this::wrapModel);
     }
 }
