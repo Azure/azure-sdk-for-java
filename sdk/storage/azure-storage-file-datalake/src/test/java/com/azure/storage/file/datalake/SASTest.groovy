@@ -757,7 +757,8 @@ class SASTest extends APISpec {
             .setValue(keyValue)
 
         v.setCorrelationId(cid)
-            .setObjectId(suoid == null ? saoid : suoid, suoid != null)
+            .setPreAuthorizedAgentObjectId(saoid)
+            .setAgentObjectId(suoid)
 
         def util = new DataLakeSasImplUtil(v, "fileSystemName", "pathName", false)
         util.ensureState()
