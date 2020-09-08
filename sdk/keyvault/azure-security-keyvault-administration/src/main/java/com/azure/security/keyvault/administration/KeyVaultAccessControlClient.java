@@ -170,6 +170,7 @@ public final class KeyVaultAccessControlClient {
      *
      * @param roleScope The {@link KeyVaultRoleAssignmentScope roleScope} of the {@link KeyVaultRoleAssignment}.
      * @param name The name of the {@link KeyVaultRoleAssignment}.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return The {@link KeyVaultRoleAssignment}.
      * @throws NullPointerException if the {@link KeyVaultRoleAssignmentScope roleScope} or {@link UUID name} are
      * {@code null}.
@@ -198,6 +199,7 @@ public final class KeyVaultAccessControlClient {
      *
      * @param roleScope The {@link KeyVaultRoleAssignmentScope roleScope} of the {@link KeyVaultRoleAssignment}.
      * @param name The name of the {@link KeyVaultRoleAssignment}.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return The {@link KeyVaultRoleAssignment}.
      * @throws NullPointerException if the {@link KeyVaultRoleAssignmentScope roleScope} or {@link UUID name} are
      * {@code null}.
