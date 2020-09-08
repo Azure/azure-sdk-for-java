@@ -14,6 +14,7 @@ import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_SEQUENCE_NUMBER_A
 import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_REASON_ANNOTATION_NAME;
 
+import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpBodyType;
 import com.azure.core.amqp.models.AmqpDataBody;
@@ -64,7 +65,7 @@ public final class ServiceBusReceivedMessage {
      *
      * <p>
      * If the means for deserializing the raw data is not apparent to consumers, a common technique is to make use of
-     * {@link #getApplicationProperties()} ()} when creating the event, to associate serialization hints as an aid to
+     * {@link #getApplicationProperties()} when creating the event, to associate serialization hints as an aid to
      * consumers who wish to deserialize the binary data.
      * </p>
      *
@@ -471,7 +472,7 @@ public final class ServiceBusReceivedMessage {
      * before it was deadlettered.
      */
     void setDeadLetterSource(String deadLetterSource) {
-        amqpAnnotatedMessage.getMessageAnnotations().put(DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME.toString(),
+        amqpAnnotatedMessage.getMessageAnnotations().put(DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME.getValue(),
             deadLetterSource);
     }
 
@@ -495,11 +496,7 @@ public final class ServiceBusReceivedMessage {
      * @param enqueuedTime the datetime at which this message was enqueued in Azure Service Bus.
      */
     void setEnqueuedTime(OffsetDateTime enqueuedTime) {
-        if (enqueuedTime != null) {
-            long epochMilli = enqueuedTime.toInstant().toEpochMilli();
-            amqpAnnotatedMessage.getMessageAnnotations().put(ENQUEUED_TIME_UTC_ANNOTATION_NAME.toString(),
-                new Date(epochMilli));
-        }
+        setValue(amqpAnnotatedMessage.getMessageAnnotations(), ENQUEUED_TIME_UTC_ANNOTATION_NAME, enqueuedTime);
     }
 
     /**
@@ -526,11 +523,7 @@ public final class ServiceBusReceivedMessage {
      * @param lockedUntil the datetime at which the lock of this message expires.
      */
     void setLockedUntil(OffsetDateTime lockedUntil) {
-        if (lockedUntil != null) {
-            long epochMilli = lockedUntil.toInstant().toEpochMilli();
-            amqpAnnotatedMessage.getMessageAnnotations().put(LOCKED_UNTIL_KEY_ANNOTATION_NAME.toString(),
-                new Date(epochMilli));
-        }
+        setValue(amqpAnnotatedMessage.getMessageAnnotations(), LOCKED_UNTIL_KEY_ANNOTATION_NAME, lockedUntil);
     }
 
     /**
@@ -550,7 +543,7 @@ public final class ServiceBusReceivedMessage {
      * @see #getPartitionKey()
      */
     void setPartitionKey(String partitionKey) {
-        amqpAnnotatedMessage.getMessageAnnotations().put(PARTITION_KEY_ANNOTATION_NAME.toString(), partitionKey);
+        amqpAnnotatedMessage.getMessageAnnotations().put(PARTITION_KEY_ANNOTATION_NAME.getValue(), partitionKey);
     }
 
     /**
@@ -561,11 +554,7 @@ public final class ServiceBusReceivedMessage {
      * @see #getScheduledEnqueueTime()
      */
     void setScheduledEnqueueTime(OffsetDateTime scheduledEnqueueTime) {
-        if (scheduledEnqueueTime != null) {
-            long epochMilli = scheduledEnqueueTime.toInstant().toEpochMilli();
-            amqpAnnotatedMessage.getMessageAnnotations().put(SCHEDULED_ENQUEUE_UTC_TIME_NAME.toString(),
-                new Date(epochMilli));
-        }
+        setValue(amqpAnnotatedMessage.getMessageAnnotations(), SCHEDULED_ENQUEUE_UTC_TIME_NAME, scheduledEnqueueTime);
     }
 
     /**
@@ -574,7 +563,7 @@ public final class ServiceBusReceivedMessage {
      * @param sequenceNumber the unique number assigned to a message by Service Bus.
      */
     void setSequenceNumber(long sequenceNumber) {
-        amqpAnnotatedMessage.getMessageAnnotations().put(SEQUENCE_NUMBER_ANNOTATION_NAME.toString(), sequenceNumber);
+        amqpAnnotatedMessage.getMessageAnnotations().put(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), sequenceNumber);
     }
 
     /**
@@ -639,7 +628,7 @@ public final class ServiceBusReceivedMessage {
      * @see #getViaPartitionKey()
      */
     void setViaPartitionKey(String viaPartitionKey) {
-        amqpAnnotatedMessage.getMessageAnnotations().put(VIA_PARTITION_KEY_ANNOTATION_NAME.toString(), viaPartitionKey);
+        amqpAnnotatedMessage.getMessageAnnotations().put(VIA_PARTITION_KEY_ANNOTATION_NAME.getValue(), viaPartitionKey);
     }
 
     /*
@@ -661,5 +650,12 @@ public final class ServiceBusReceivedMessage {
      */
     private OffsetDateTime getOffsetDateTimeValue(Map<String, Object> dataMap, String key) {
         return dataMap.containsKey(key) ? ((Date) dataMap.get(key)).toInstant().atOffset(ZoneOffset.UTC) : null;
+    }
+
+    private void setValue(Map<String, Object> dataMap, AmqpMessageConstant key, OffsetDateTime value) {
+        if (value != null) {
+            amqpAnnotatedMessage.getMessageAnnotations().put(key.getValue(),
+                new Date(value.toInstant().toEpochMilli()));
+        }
     }
 }

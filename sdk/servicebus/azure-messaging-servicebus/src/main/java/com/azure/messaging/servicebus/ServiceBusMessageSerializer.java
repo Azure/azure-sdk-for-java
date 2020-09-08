@@ -444,29 +444,14 @@ class ServiceBusMessageSerializer implements MessageSerializer {
 
         // DeliveryAnnotations
         final DeliveryAnnotations deliveryAnnotations = amqpMessage.getDeliveryAnnotations();
-        if (deliveryAnnotations != null && deliveryAnnotations.getValue() != null) {
-            final Map<Symbol, Object> deliveryAnnotationMap = deliveryAnnotations.getValue();
-            if (deliveryAnnotationMap != null) {
-                for (Map.Entry<Symbol, Object> entry : deliveryAnnotationMap.entrySet()) {
-                    final String key = entry.getKey().toString();
-                    final Object value = entry.getValue();
-                    brokeredAmqpAnnotatedMessage.getDeliveryAnnotations().put(key, value);
-                }
-            }
+        if (deliveryAnnotations != null) {
+            setValues(deliveryAnnotations.getValue(), brokeredAmqpAnnotatedMessage.getDeliveryAnnotations());
         }
-
 
         // Message Annotations
         final MessageAnnotations messageAnnotations = amqpMessage.getMessageAnnotations();
         if (messageAnnotations != null) {
-            Map<Symbol, Object> messageAnnotationsMap = messageAnnotations.getValue();
-            if (messageAnnotationsMap != null) {
-                for (Map.Entry<Symbol, Object> entry : messageAnnotationsMap.entrySet()) {
-                    final String key = entry.getKey().toString();
-                    final Object value = entry.getValue();
-                    brokeredAmqpAnnotatedMessage.getMessageAnnotations().put(key, value);
-                }
-            }
+            setValues(messageAnnotations.getValue(), brokeredAmqpAnnotatedMessage.getMessageAnnotations());
         }
 
         if (amqpMessage instanceof MessageWithLockToken) {
@@ -492,6 +477,16 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             return sizeof(payloadBytes);
         } else {
             return 0;
+        }
+    }
+
+    private void setValues(Map<Symbol, Object> sourceMap, Map<String, Object> targetMap) {
+        if (sourceMap != null) {
+            for (Map.Entry<Symbol, Object> entry : sourceMap.entrySet()) {
+                final String key = entry.getKey().toString();
+                final Object value = entry.getValue();
+                targetMap.put(key, value);
+            }
         }
     }
 
