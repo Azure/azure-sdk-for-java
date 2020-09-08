@@ -396,7 +396,7 @@ public class EventHubClientBuilder {
      * These options are ignored when publishing to the Event Hubs gateway for automatic routing or when using a
      * partition key.
      *
-     * @param states The {@link PartitionPublishingOptions} for each partition. The keys of the map
+     * @param states A {@link Map} of {@link PartitionPublishingState} for each partition. The keys of the map
      * are the partition ids.
      * @return The updated {@link EventHubClientBuilder} object.
      */

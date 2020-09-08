@@ -48,7 +48,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 
-import static com.azure.core.amqp.implementation.AmqpConstants.VENDOR;
 import static com.azure.core.amqp.implementation.RetryUtil.getRetryPolicy;
 import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -123,7 +122,7 @@ public class EventHubProducerAsyncClient implements Closeable {
     private final boolean isSharedConnection;
     private final Runnable onClientClose;
     private final boolean enableIdempotentPartitions;
-    private Map<String, PartitionPublishingState> partitionPublishingStates;
+    private final Map<String, PartitionPublishingState> partitionPublishingStates;
 
     /**
      * Creates a new instance of this {@link EventHubProducerAsyncClient} that can send messages to a single partition
@@ -156,6 +155,8 @@ public class EventHubProducerAsyncClient implements Closeable {
             } else {
                 this.partitionPublishingStates = startingPartitionPublishingStates;
             }
+        } else {
+            this.partitionPublishingStates = null;
         }
     }
 
@@ -230,10 +231,18 @@ public class EventHubProducerAsyncClient implements Closeable {
         return this.enableIdempotentPartitions;
     }
 
+    /**
+     * Get the idempotent producer's publishing state of a partition.
+     * @param partitionId The partition id of the publishing state
+     * @return The partition publishing state. Returns a {@link PartitionPublishingState} instance with all properties
+     * {@code null} if the partition doesn't have any state yet.
+     * @throws IllegalStateException if this producer isn't an idempotent producer.
+     */
     public PartitionPublishingState getPartitionPublishingState(String partitionId) {
         if (!this.enableIdempotentPartitions) {
-            throw new IllegalStateException("getPartitionPublishingState() shouldn't be called if the producer" +
-                " is not an idempotent producer.");
+            throw logger.logExceptionAsWarning(
+                new IllegalStateException("getPartitionPublishingState() shouldn't be called if the producer"
+                    + " is not an idempotent producer."));
         }
         if (this.partitionPublishingStates.containsKey(partitionId)) {
             return this.partitionPublishingStates.get(partitionId);
@@ -271,7 +280,7 @@ public class EventHubProducerAsyncClient implements Closeable {
         }
 
         if (this.enableIdempotentPartitions) {
-            if(CoreUtils.isNullOrEmpty(options.getPartitionId())) {
+            if (CoreUtils.isNullOrEmpty(options.getPartitionId())) {
                 return monoError(logger, new IllegalArgumentException(
                     "An idempotent producer can not create an EventDataBatch without partition id"));
             }
@@ -515,7 +524,7 @@ public class EventHubProducerAsyncClient implements Closeable {
             // Start send span and store updated context
             parentContext.set(tracerProvider.startSpan(finalSharedContext, ProcessKind.SEND));
         }
-        if(this.enableIdempotentPartitions) {
+        if (this.enableIdempotentPartitions) {
             PartitionPublishingState publishingState = this.getPartitionPublishingState(batch.getPartitionId());
             try {
                 // Ensure only one EventDataBatch of a partition is being sent at a time.
@@ -528,7 +537,7 @@ public class EventHubProducerAsyncClient implements Closeable {
                 .map(link -> {
                     int seqNumber = publishingState.getSequenceNumber();
                     batch.setStartingPublishedSequenceNumber(seqNumber);
-                    for(EventData eventData : batch.getEvents()) {
+                    for (EventData eventData : batch.getEvents()) {
                         eventData.getSystemProperties().put(
                             AmqpMessageConstant.PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(),
                             seqNumber);
@@ -538,8 +547,8 @@ public class EventHubProducerAsyncClient implements Closeable {
                 })
                 .flatMap(link -> messages.size() == 1
                     ? link.send(messages.get(0))
-                    : link.send(messages))
-                , retryOptions.getTryTimeout(), retryPolicy
+                    : link.send(messages)),
+                retryOptions.getTryTimeout(), retryPolicy
             ).publishOn(scheduler)
                 .doOnEach(signal -> {
                     if (isTracingEnabled) {
@@ -624,7 +633,7 @@ public class EventHubProducerAsyncClient implements Closeable {
     private void setPartitionPublishingState(
         String partitionId, Long producerGroupId, Short ownerLevel, Integer sequenceNumber) {
         PartitionPublishingState publishingState = getPartitionPublishingState(partitionId);
-        if(publishingState != null) {
+        if (publishingState != null) {
             publishingState.setOwnerLevel(ownerLevel);
             publishingState.setProducerGroupId(producerGroupId);
             publishingState.setSequenceNumber(sequenceNumber);

@@ -3,9 +3,18 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
+import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
-import com.azure.core.amqp.implementation.*;
+import com.azure.core.amqp.implementation.AmqpConstants;
+import com.azure.core.amqp.implementation.AmqpReceiveLink;
+import com.azure.core.amqp.implementation.AmqpSendLink;
+import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.ReactorHandlerProvider;
+import com.azure.core.amqp.implementation.ReactorProvider;
+import com.azure.core.amqp.implementation.ReactorSession;
+import com.azure.core.amqp.implementation.TokenManager;
+import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.PartitionPublishingState;
@@ -37,9 +46,12 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
     private static final Symbol ENABLE_RECEIVER_RUNTIME_METRIC_NAME =
         Symbol.valueOf(VENDOR + ":enable-receiver-runtime-metric");
 
-    private static final Symbol PRODUCER_EPOCH = Symbol.valueOf(VENDOR+":producer-epoch");
-    private static final Symbol PRODUCER_ID = Symbol.valueOf(VENDOR+":producer-id");
-    private static final Symbol PRODUCER_SEQUENCE_NUMBER = Symbol.valueOf(VENDOR+":producer-sequence-number");
+    private static final Symbol PRODUCER_EPOCH = Symbol.valueOf(
+        AmqpMessageConstant.PRODUCER_EPOCH_ANNOTATION_NAME.getValue());
+    private static final Symbol PRODUCER_ID = Symbol.valueOf(
+        AmqpMessageConstant.PRODUCER_ID_ANNOTATION_NAME.getValue());
+    private static final Symbol PRODUCER_SEQUENCE_NUMBER = Symbol.valueOf(
+        AmqpMessageConstant.PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
     private static final Symbol ENABLE_IDEMPOTENT_PRODUCER =
         Symbol.valueOf(VENDOR + ":idempotent-producer");
 
@@ -72,7 +84,9 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
      * {@inheritDoc}
      */
     @Override
-    public Mono<AmqpSendLink> createProducer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry, boolean enableIdempotentPartitions, PartitionPublishingState publishingState) {
+    public Mono<AmqpSendLink> createProducer(
+        String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry, boolean enableIdempotentPartitions,
+        PartitionPublishingState publishingState) {
         Objects.requireNonNull(linkName, "'linkName' cannot be null.");
         Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         Objects.requireNonNull(timeout, "'timeout' cannot be null.");

@@ -101,13 +101,13 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
         String linkName, String entityPath, AmqpRetryOptions retryOptions,
         boolean enableIdempotentPartitions, PartitionPublishingState publishingState
     ) {
-        return createSession(entityPath).cast(EventHubSession.class).
-            flatMap(session -> {
-            logger.verbose("Get or create producer for path: '{}'", entityPath);
-            final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
-
-            return session.createProducer(linkName, entityPath, retryOptions.getTryTimeout(), retryPolicy, enableIdempotentPartitions, publishingState);
-        });
+        return createSession(entityPath).cast(EventHubSession.class)
+            .flatMap(session -> {
+                logger.verbose("Get or create producer for path: '{}'", entityPath);
+                final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
+                return session.createProducer(linkName, entityPath, retryOptions.getTryTimeout(), retryPolicy,
+                    enableIdempotentPartitions, publishingState);
+            });
     }
 
     @Override

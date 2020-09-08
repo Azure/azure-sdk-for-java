@@ -1,5 +1,11 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.eventhubs;
 
+/**
+ * A util class for idempotent producer partition publishing.
+ */
 public class PartitionPublishingUtils {
     /**
      * Increase an int value. If the increased value is over {@link Integer#MAX_VALUE}, restart from 0.
