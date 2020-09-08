@@ -12,7 +12,6 @@ import java.util.Objects;
  */
 public final class AmqpDataBody implements AmqpMessageBody {
     private final IterableStream<BinaryData> data;
-    private final BinaryData binaryData;
 
     /**
      * Creates instance of {@link AmqpDataBody} with given {@link Iterable} of {@link BinaryData}.
@@ -24,19 +23,6 @@ public final class AmqpDataBody implements AmqpMessageBody {
     public AmqpDataBody(Iterable<BinaryData> data) {
         Objects.requireNonNull(data, "'data' cannot be null.");
         this.data = new IterableStream<>(data);
-        this.binaryData = null;
-    }
-
-    /**
-     * Creates instance of {@link AmqpDataBody} with given instance of {@link BinaryData}.
-     *
-     * @param binaryData to be set on amqp body.
-     *
-     * @throws NullPointerException if {@code data} is null.
-     */
-    public AmqpDataBody(BinaryData binaryData) {
-        this.binaryData  = Objects.requireNonNull(binaryData, "'binaryData' cannot be null.");
-        this.data = null;
     }
 
     @Override
@@ -51,14 +37,5 @@ public final class AmqpDataBody implements AmqpMessageBody {
      */
     public IterableStream<BinaryData> getData() {
         return data;
-    }
-
-    /**
-     * Gets {@link BinaryData} set on this {@link AmqpDataBody}.
-     *
-     * @return data set on {@link AmqpDataBody}.
-     */
-    public BinaryData getBinaryData() {
-        return binaryData;
     }
 }

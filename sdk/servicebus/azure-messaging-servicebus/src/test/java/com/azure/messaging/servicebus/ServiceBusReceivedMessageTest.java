@@ -3,6 +3,19 @@
 
 package com.azure.messaging.servicebus;
 
+import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_REASON_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.LOCKED_UNTIL_KEY_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import com.azure.core.amqp.AmqpMessageConstant;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.message.Message;
@@ -10,11 +23,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import java.time.Instant;
+import java.util.Date;
+import java.util.Map;
 
 public class ServiceBusReceivedMessageTest {
 
@@ -86,22 +97,51 @@ public class ServiceBusReceivedMessageTest {
         originalMessage.setReplyToSessionId("rsessionid");
         originalMessage.setSubject("subject");
         originalMessage.setTo("to");
+        final Map<String, Object> originalMessageAnnotations =  originalMessage.getAmqpAnnotatedMessage().getMessageAnnotations();
+        originalMessageAnnotations.put(DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME.getValue(), "message annotations");
+        originalMessageAnnotations.put(ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), Long.valueOf(3));
+        originalMessageAnnotations.put(LOCKED_UNTIL_KEY_ANNOTATION_NAME.getValue(), new Date(Instant.now().toEpochMilli()));
+        originalMessageAnnotations.put(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), new Date(Instant.now().toEpochMilli()));
+
+        originalMessageAnnotations.put(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), Long.valueOf(3));
+
+        final Map<String, Object> originalApplicationProperties =  originalMessage.getAmqpAnnotatedMessage().getApplicationProperties();
+        originalApplicationProperties.put(DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME.getValue(), "description");
+        originalApplicationProperties.put(DEAD_LETTER_REASON_ANNOTATION_NAME.getValue(), "description");
+
+        originalMessage.getAmqpAnnotatedMessage().getHeader().setDeliveryCount(Long.valueOf(5));
 
         // Act
-        final ServiceBusMessage messageToSend = new ServiceBusMessage(originalMessage);
+        final ServiceBusMessage actual = new ServiceBusMessage(originalMessage);
 
         // Assert
-        Assertions.assertNotNull(messageToSend);
-        Assertions.assertNotNull(messageToSend.getBody());
-        Assertions.assertEquals(PAYLOAD, new String(messageToSend.getBody(), UTF_8));
-        Assertions.assertEquals(originalMessage.getMessageId(), messageToSend.getMessageId());
-        Assertions.assertEquals(originalMessage.getContentType(), messageToSend.getContentType());
-        Assertions.assertEquals(originalMessage.getCorrelationId(), messageToSend.getCorrelationId());
-        Assertions.assertEquals(originalMessage.getReplyTo(), messageToSend.getReplyTo());
-        Assertions.assertEquals(originalMessage.getViaPartitionKey(), messageToSend.getViaPartitionKey());
-        Assertions.assertEquals(originalMessage.getTimeToLive().toMillis(), messageToSend.getTimeToLive().toMillis());
-        Assertions.assertEquals(originalMessage.getLabel(), messageToSend.getSubject());
-        Assertions.assertEquals(originalMessage.getReplyToSessionId(), messageToSend.getReplyToSessionId());
-        Assertions.assertEquals(originalMessage.getTo(), messageToSend.getTo());
+        Assertions.assertNotNull(actual);
+        Assertions.assertNotNull(actual.getBody());
+        Assertions.assertEquals(PAYLOAD, new String(actual.getBody(), UTF_8));
+        Assertions.assertEquals(originalMessage.getMessageId(), actual.getMessageId());
+        Assertions.assertEquals(originalMessage.getContentType(), actual.getContentType());
+        Assertions.assertEquals(originalMessage.getCorrelationId(), actual.getCorrelationId());
+        Assertions.assertEquals(originalMessage.getReplyTo(), actual.getReplyTo());
+        Assertions.assertEquals(originalMessage.getViaPartitionKey(), actual.getViaPartitionKey());
+        Assertions.assertEquals(originalMessage.getTimeToLive().toMillis(), actual.getTimeToLive().toMillis());
+        Assertions.assertEquals(originalMessage.getLabel(), actual.getSubject());
+        Assertions.assertEquals(originalMessage.getReplyToSessionId(), actual.getReplyToSessionId());
+        Assertions.assertEquals(originalMessage.getTo(), actual.getTo());
+
+        // Following values should be cleaned up.
+        assertNullValues(actual.getAmqpAnnotatedMessage().getMessageAnnotations(), DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME,
+            ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME, LOCKED_UNTIL_KEY_ANNOTATION_NAME,
+            SEQUENCE_NUMBER_ANNOTATION_NAME, ENQUEUED_TIME_UTC_ANNOTATION_NAME);
+
+        assertNullValues(actual.getAmqpAnnotatedMessage().getApplicationProperties(), DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME,
+            DEAD_LETTER_REASON_ANNOTATION_NAME);
+
+        Assertions.assertNull(actual.getAmqpAnnotatedMessage().getHeader().getDeliveryCount());
+    }
+
+    public void assertNullValues(Map<String, Object> dataMap, AmqpMessageConstant... keys) {
+        for (AmqpMessageConstant key : keys) {
+            Assertions.assertNull(dataMap.get(key.getValue()));
+        }
     }
 }

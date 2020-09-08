@@ -109,7 +109,20 @@ public enum AmqpMessageConstant {
     /**
      * The identifier for deadletter source.
      */
-    DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME("x-opt-deadletter-source");
+    DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME("x-opt-deadletter-source"),
+    /**
+     * The name representing enqueue sequence number.
+     * This one appears to always be 0, but is always returned with each message.
+     */
+    ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME("x-opt-enqueue-sequence-number"),
+    /**
+     * The identifier for deadletter description.
+     */
+    DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME("DeadLetterErrorDescription"),
+    /**
+     * The identifier for deadletter reason.
+     */
+    DEAD_LETTER_REASON_ANNOTATION_NAME("DeadLetterReason");
 
     private static final Map<String, AmqpMessageConstant> RESERVED_CONSTANTS_MAP = new HashMap<>();
     private final String constant;

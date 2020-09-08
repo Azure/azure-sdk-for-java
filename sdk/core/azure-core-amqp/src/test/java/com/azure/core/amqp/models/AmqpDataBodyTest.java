@@ -13,8 +13,6 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Test for {@link AmqpDataBody}.
@@ -38,31 +36,9 @@ public class AmqpDataBodyTest {
         assertEquals(AmqpBodyType.DATA, actual.getBodyType());
 
         // Validate Message Body
-        final BinaryData actualBinaryData = actual.getBinaryData();
-        assertNull(actualBinaryData);
-
         final List<BinaryData> dataList = actual.getData().stream().collect(Collectors.toList());
         assertEquals(binaryDataList.size(), dataList.size());
         assertArrayEquals(CONTENTS_BYTES, dataList.get(0).getData());
-    }
-
-    /**
-     * Verifies we correctly set values via constructor for {@link AmqpAnnotatedMessage}.
-     */
-    @Test
-    public void constructorValidBinaryDataValue() {
-
-        // Act & Arrange
-        final AmqpDataBody actual = new AmqpDataBody(DATA_BYTES);
-
-        // Assert
-        assertEquals(AmqpBodyType.DATA, actual.getBodyType());
-
-        // Validate Message Body
-        final BinaryData actualBinaryData = actual.getBinaryData();
-        assertNotNull(actualBinaryData);
-
-        assertArrayEquals(CONTENTS_BYTES, actualBinaryData.getData());
     }
 
     /**

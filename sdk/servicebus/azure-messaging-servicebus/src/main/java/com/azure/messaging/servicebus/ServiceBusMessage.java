@@ -3,9 +3,18 @@
 
 package com.azure.messaging.servicebus;
 
+import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_REASON_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.LOCKED_UNTIL_KEY_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SCHEDULED_ENQUEUE_UTC_TIME_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.VIA_PARTITION_KEY_ANNOTATION_NAME;
+
+import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpBodyType;
 import com.azure.core.amqp.models.AmqpDataBody;
@@ -17,9 +26,13 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * The data structure encapsulating the message being sent-to Service Bus.
@@ -42,9 +55,12 @@ import java.util.Objects;
  * @see ServiceBusMessageBatch
  */
 public class ServiceBusMessage {
+    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
+
     private final AmqpAnnotatedMessage amqpAnnotatedMessage;
     private final ClientLogger logger = new ClientLogger(ServiceBusMessage.class);
 
+    private final byte[] binaryData;
     private Context context;
 
     /**
@@ -66,9 +82,10 @@ public class ServiceBusMessage {
      * @throws NullPointerException if {@code body} is {@code null}.
      */
     public ServiceBusMessage(byte[] body) {
-        Objects.requireNonNull(body, "'body' cannot be null.");
+        this.binaryData = Objects.requireNonNull(body, "'body' cannot be null.");
         this.context = Context.NONE;
-        amqpAnnotatedMessage = new AmqpAnnotatedMessage(new AmqpDataBody(new BinaryData(body)));
+        amqpAnnotatedMessage = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(
+            new BinaryData(binaryData))));
     }
 
     /**
@@ -81,23 +98,25 @@ public class ServiceBusMessage {
      */
     public ServiceBusMessage(ServiceBusReceivedMessage receivedMessage) {
         Objects.requireNonNull(receivedMessage, "'receivedMessage' cannot be null.");
-        this.amqpAnnotatedMessage = new AmqpAnnotatedMessage(receivedMessage.getAmqpAnnotatedMessage().getBody());
-        this.context = Context.NONE;
-        setMessageId(receivedMessage.getMessageId());
-        setScheduledEnqueueTime(receivedMessage.getScheduledEnqueueTime());
-        setContentType(receivedMessage.getContentType());
-        setCorrelationId(receivedMessage.getCorrelationId());
-        setSubject(receivedMessage.getLabel());
-        setPartitionKey(receivedMessage.getPartitionKey());
-        setReplyTo(receivedMessage.getReplyTo());
-        setReplyToSessionId(receivedMessage.getReplyToSessionId());
-        setTimeToLive(receivedMessage.getTimeToLive());
-        setTo(receivedMessage.getTo());
-        setSessionId(receivedMessage.getSessionId());
-        setViaPartitionKey(receivedMessage.getViaPartitionKey());
 
-        //TODO (Hemant): Cleanup the values from AmqpAnnotatedMessage which should never be set by user.
-        // Some values of MessageAnnotations , Header.deliveryCount etc
+        AmqpDataBody amqpDataBody = ((AmqpDataBody) receivedMessage.getAmqpAnnotatedMessage().getBody());
+        this.amqpAnnotatedMessage = new AmqpAnnotatedMessage(receivedMessage.getAmqpAnnotatedMessage());
+        this.context = Context.NONE;
+
+        List<BinaryData> dataList = amqpDataBody.getData().stream().collect(Collectors.toList());
+        if (dataList.size() > 0) {
+            binaryData = dataList.get(0).getData();
+        } else {
+            binaryData = EMPTY_BYTE_ARRAY;
+        }
+        amqpAnnotatedMessage.getHeader().setDeliveryCount(null);
+
+        removeValues(amqpAnnotatedMessage.getMessageAnnotations(), LOCKED_UNTIL_KEY_ANNOTATION_NAME,
+            SEQUENCE_NUMBER_ANNOTATION_NAME, DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME,
+            ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME, ENQUEUED_TIME_UTC_ANNOTATION_NAME);
+
+        removeValues(amqpAnnotatedMessage.getApplicationProperties(), DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME,
+            DEAD_LETTER_REASON_ANNOTATION_NAME);
 
     }
 
@@ -134,15 +153,10 @@ public class ServiceBusMessage {
      * @return A byte array representing the data.
      */
     public byte[] getBody() {
-        byte[] body = null;
         final AmqpBodyType type = amqpAnnotatedMessage.getBody().getBodyType();
         switch (type) {
             case DATA:
-                final BinaryData binaryData = ((AmqpDataBody) amqpAnnotatedMessage.getBody()).getBinaryData();
-                if (binaryData != null) {
-                    body = binaryData.getData();
-                }
-                break;
+                return Arrays.copyOf(binaryData, binaryData.length);
             case SEQUENCE:
             case VALUE:
                 throw logger.logExceptionAsError(new UnsupportedOperationException("Not supported AmqpBodyType: "
@@ -151,7 +165,6 @@ public class ServiceBusMessage {
                 throw logger.logExceptionAsError(new IllegalArgumentException("Unknown AmqpBodyType: "
                     + amqpAnnotatedMessage.getBody().getBodyType().toString()));
         }
-        return body;
     }
 
     /**
@@ -495,5 +508,14 @@ public class ServiceBusMessage {
         this.context = context.addData(key, value);
 
         return this;
+    }
+
+    /*
+     * Gets value from given map.
+     */
+    private void removeValues(Map<String, Object> dataMap, AmqpMessageConstant... keys) {
+        for (AmqpMessageConstant key : keys) {
+            dataMap.remove(key.getValue());
+        }
     }
 }
