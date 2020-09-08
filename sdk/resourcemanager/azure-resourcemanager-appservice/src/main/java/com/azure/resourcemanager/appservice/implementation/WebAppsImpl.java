@@ -38,8 +38,7 @@ public class WebAppsImpl
     public Mono<WebApp> getByResourceGroupAsync(final String groupName, final String name) {
         final WebAppsImpl self = this;
         return this
-            .inner()
-            .getByResourceGroupAsync(groupName, name)
+            .getInnerAsync(groupName, name)
             .flatMap(
                 siteInner ->
                     Mono
@@ -52,12 +51,12 @@ public class WebAppsImpl
 
     @Override
     protected Mono<SiteInner> getInnerAsync(String resourceGroupName, String name) {
-        return null;
+        return this.inner().getByResourceGroupAsync(resourceGroupName, name);
     }
 
     @Override
     protected Mono<Void> deleteInnerAsync(String resourceGroupName, String name) {
-        return null;
+        return inner().deleteAsync(resourceGroupName, name).then();
     }
 
     @Override
@@ -115,7 +114,7 @@ public class WebAppsImpl
         for (String id : ids) {
             final String resourceGroupName = ResourceUtils.groupFromResourceId(id);
             final String name = ResourceUtils.nameFromResourceId(id);
-            Mono<String> o = ReactorMapper.map(this.inner().deleteAsync(resourceGroupName, name), id);
+            Mono<String> o = ReactorMapper.map(this.deleteInnerAsync(resourceGroupName, name), id);
             observables.add(o);
         }
 
