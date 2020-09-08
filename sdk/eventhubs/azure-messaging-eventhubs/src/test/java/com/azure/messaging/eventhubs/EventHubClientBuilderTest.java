@@ -90,6 +90,23 @@ public class EventHubClientBuilderTest {
             assertNotNull(builder.buildAsyncClient());
         });
     }
+    @Test
+    public void testConnectionStringWithSas() {
+
+        String connectionStringWithNoEntityPath = "Endpoint=sb://eh-name.servicebus.windows.net/;"
+            + "SharedAccessSignature=SharedAccessSignature test-value";
+        String connectionStringWithEntityPath = "Endpoint=sb://eh-name.servicebus.windows.net/;"
+            + "SharedAccessSignature=SharedAccessSignature test-value;EntityPath=eh-name";
+
+        assertNotNull(new EventHubClientBuilder()
+            .connectionString(connectionStringWithNoEntityPath, "eh-name"));
+        assertNotNull(new EventHubClientBuilder()
+            .connectionString(connectionStringWithEntityPath));
+        assertThrows(NullPointerException.class, () -> new EventHubClientBuilder()
+            .connectionString(connectionStringWithNoEntityPath));
+        assertThrows(IllegalArgumentException.class, () -> new EventHubClientBuilder()
+            .connectionString(connectionStringWithEntityPath, "eh-name-mismatch"));
+    }
 
     @MethodSource("getProxyConfigurations")
     @ParameterizedTest
