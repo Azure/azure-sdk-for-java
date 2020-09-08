@@ -11,7 +11,6 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 /**
  * An immutable client-side representation of an Azure Web App or Function App.
@@ -162,13 +161,6 @@ public interface WebSiteBase extends Resource, HasResourceGroup, HasInner<SiteIn
      * @return the redundancyMode value.
      */
     RedundancyMode redundancyMode();
-
-    /**
-     * Get the inProgressOperationId property: Specifies an operation id if this site has a pending operation.
-     *
-     * @return the inProgressOperationId value.
-     */
-    UUID inProgressOperationId();
 
     /** @return the operating system the web app is running on */
     OperatingSystem operatingSystem();

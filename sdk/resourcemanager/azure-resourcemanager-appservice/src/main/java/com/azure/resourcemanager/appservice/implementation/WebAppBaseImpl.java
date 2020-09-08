@@ -81,7 +81,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
@@ -1688,11 +1687,6 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
     @Override
     public RedundancyMode redundancyMode() {
         return webSiteBase.redundancyMode();
-    }
-
-    @Override
-    public UUID inProgressOperationId() {
-        return webSiteBase.inProgressOperationId();
     }
 
     private static class PipedInputStreamWithCallback extends PipedInputStream {

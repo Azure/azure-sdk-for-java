@@ -247,11 +247,6 @@ class WebSiteBaseImpl implements WebSiteBase {
     }
 
     @Override
-    public UUID inProgressOperationId() {
-        return innerObject.inProgressOperationId();
-    }
-
-    @Override
     public OperatingSystem operatingSystem() {
         return reserved() ? OperatingSystem.LINUX : OperatingSystem.WINDOWS;
     }
