@@ -28,12 +28,12 @@ public class ConnectionStringProperties {
     private static final String SHARED_ACCESS_SIGNATURE = "SharedAccessSignature";
     private static final String SAS_VALUE_PREFIX = "sharedaccesssignature ";
     private static final String ENTITY_PATH = "EntityPath";
-    private static final String CS_WITH_ACCESS_KEY = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
+    private static final String CONNECTION_STRING_WITH_ACCESS_KEY = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
         + "SharedAccessKey={sharedAccessKey};EntityPath={entityPath}";
-    private static final String CS_WITH_SAS = "Endpoint={endpoint};SharedAccessSignature="
+    private static final String CONNECTION_STRING_WITH_SAS = "Endpoint={endpoint};SharedAccessSignature="
         + "SharedAccessSignature {sharedAccessSignature};EntityPath={entityPath}";
     private static final String ERROR_MESSAGE_FORMAT = "Could not parse 'connectionString'. Expected format: "
-        + CS_WITH_ACCESS_KEY + " or " + CS_WITH_SAS + ". Actual: %s";
+        + CONNECTION_STRING_WITH_ACCESS_KEY + " or " + CONNECTION_STRING_WITH_SAS + ". Actual: %s";
     private static final String ERROR_MESSAGE_ENDPOINT_FORMAT = "'Endpoint' must be provided in 'connectionString'."
         + " Actual: %s";
 
@@ -47,9 +47,9 @@ public class ConnectionStringProperties {
      * Creates a new instance by parsing the {@code connectionString} into its components.
      * @param connectionString The connection string to the Event Hub instance.
      *
-     * @throws NullPointerException     if {@code connectionString} is null.
+     * @throws NullPointerException if {@code connectionString} is null.
      * @throws IllegalArgumentException if {@code connectionString} is an empty string or the connection string has
-     *                                  an invalid format.
+     * an invalid format.
      */
     public ConnectionStringProperties(String connectionString) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
@@ -91,7 +91,7 @@ public class ConnectionStringProperties {
             } else if (key.equalsIgnoreCase(ENTITY_PATH)) {
                 entityPath = value;
             } else if (key.equalsIgnoreCase(SHARED_ACCESS_SIGNATURE)
-                && value.toLowerCase(Locale.getDefault()).startsWith(SAS_VALUE_PREFIX)) {
+                && value.toLowerCase(Locale.ROOT).startsWith(SAS_VALUE_PREFIX)) {
                 sharedAccessSignature = value;
             } else {
                 throw new IllegalArgumentException(

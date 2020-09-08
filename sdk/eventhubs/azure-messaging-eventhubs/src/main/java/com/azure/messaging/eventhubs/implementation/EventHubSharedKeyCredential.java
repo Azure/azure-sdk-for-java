@@ -18,11 +18,11 @@ import java.net.URLEncoder;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
+import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.Base64;
-import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -191,8 +191,10 @@ public class EventHubSharedKeyCredential implements TokenCredential {
             .map(expirationTimeStr -> {
                 try {
                     long epochSeconds = Long.parseLong(expirationTimeStr);
-                    return new Date(epochSeconds * 1000).toInstant().atOffset(ZoneOffset.UTC);
+                    return Instant.ofEpochSecond(epochSeconds).atOffset(ZoneOffset.UTC);
                 } catch (NumberFormatException exception) {
+                    logger.verbose("Invalid expiration time format in the SAS token: {}. Falling back to max " +
+                        "expiration time.", expirationTimeStr);
                     return OffsetDateTime.MAX;
                 }
             })
