@@ -27,7 +27,7 @@ tool when you depend on client libraries using it.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core</artifactId>
-  <version>1.8.0</version>
+  <version>1.8.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
