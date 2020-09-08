@@ -58,7 +58,7 @@ $ mvn -Dspring.application.name=foo -Dspring.profiles.active=dev spring-boot:run
 
 ### More details
 
-Please refer to this [README](../../../appconfiguration/azure-spring-cloud-starter-appconfiguration-config/) about more usage details. 
+Please refer to this [README](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config/README.md) about more usage details. 
 
 ## Examples
 ## Troubleshooting
