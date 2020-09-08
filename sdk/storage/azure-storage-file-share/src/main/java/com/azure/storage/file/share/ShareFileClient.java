@@ -1280,7 +1280,7 @@ public class ShareFileClient {
      *
      * <p>List all ranges within the file range from 1KB to 2KB.</p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareFileClient.listRangesDiff#ShareFileListRangesOptions-Duration-Context}
+     * {@codesnippet com.azure.storage.file.share.ShareFileClient.listRangesDiff#ShareFileListRangesDiffOptions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
