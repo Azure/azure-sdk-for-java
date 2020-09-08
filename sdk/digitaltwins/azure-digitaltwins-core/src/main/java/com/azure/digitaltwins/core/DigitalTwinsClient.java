@@ -636,4 +636,54 @@ public final class DigitalTwinsClient {
     public DigitalTwinsResponse<Void> updateComponentWithResponse(String digitalTwinId, String componentPath, List<Object> componentUpdateOperations, UpdateComponentRequestOptions options, Context context) {
         return digitalTwinsAsyncClient.updateComponentWithResponse(digitalTwinId, componentPath, componentUpdateOperations, options, context).block();
     }
+
+    /**
+     * Query digital twins.
+     *
+     * @param query The query string, in SQL-like syntax.
+     * @return A {@link PagedIterable} of application/json query result items.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<String> query(String query) {
+        return query(query, Context.NONE);
+    }
+
+    /**
+     * Query digital twins.
+     *
+     * @param query The query string, in SQL-like syntax.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link PagedIterable} of application/json query result items.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<String> query(String query, Context context) {
+        return new PagedIterable<>(digitalTwinsAsyncClient.query(query, context));
+    }
+
+    /**
+     * Query digital twins.
+     *
+     * @param query The query string, in SQL-like syntax.
+     * @param clazz The model class to convert the query response to.
+     * @param <T> The generic type to convert the query response to.
+     * @return A {@link PagedIterable} of application/json query result items.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public <T> PagedIterable<T> query(String query, Class<T> clazz) {
+        return query(query, clazz, Context.NONE);
+    }
+
+    /**
+     * Query digital twins.
+     *
+     * @param query The query string, in SQL-like syntax.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @param clazz The model class to convert the query response to.
+     * @param <T> The generic type to convert the query response to.
+     * @return A {@link PagedIterable} of application/json query result items.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public <T> PagedIterable<T> query(String query, Class<T> clazz, Context context) {
+        return new PagedIterable<>(digitalTwinsAsyncClient.query(query, clazz, context));
+    }
 }
