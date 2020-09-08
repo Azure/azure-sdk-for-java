@@ -119,11 +119,8 @@ public class DataLakeSasImplUtil {
         this.contentEncoding = sasValues.getContentEncoding();
         this.contentLanguage = sasValues.getContentLanguage();
         this.contentType = sasValues.getContentType();
-        if (sasValues.isPosixCheckPerformed()) {
-            this.unauthorizedAadObjectId = sasValues.getObjectId();
-        } else {
-            this.authorizedAadObjectId = sasValues.getObjectId();
-        }
+        this.authorizedAadObjectId = sasValues.getPreAuthorizedAgentObjectId();
+        this.unauthorizedAadObjectId = sasValues.getAgentObjectId();
         this.correlationId = sasValues.getCorrelationId();
         this.isDirectory = isDirectory;
     }

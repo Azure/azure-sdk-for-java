@@ -49,9 +49,9 @@ public final class DataLakeServiceSasSignatureValues {
 
     private String contentType;
 
-    private String objectId;
+    private String preAuthorizedAgentObjectId; /* saoid */
 
-    private boolean posixCheckPerformed;
+    private String agentObjectId; /* suoid */
 
     private String correlationId;
 
@@ -333,35 +333,53 @@ public final class DataLakeServiceSasSignatureValues {
     }
 
     /**
-     * Sets the authorized AAD object id value for the SAS.
+     * @return The AAD object ID of a user assumed to be authorized by the owner of the user delegation key to perform
+     * the action granted by the SAS token. The service will validate the SAS token and ensure that the owner of the
+     * user delegation key has the required permissions before granting access but no additional permission check for
+     * the agent object id will be performed.
+     */
+    public String getPreAuthorizedAgentObjectId() {
+        return preAuthorizedAgentObjectId;
+    }
+
+    /**
+     * Sets the AAD object ID of a user assumed to be authorized by the owner of the user delegation key to perform the
+     * action granted by the SAS token.
      *
-     * <p>Note: This parameter is only valid for user delegation SAS. </p>
-     *
-     * @param objectId The AAD object ID of a user authorized by the owner of the user delegation key
-     * to perform the action granted by the SAS token.
-     * @param posixCheckPerformed Whether or not the service will perform an additional POSIX ACL check to determine
-     * if the user is authorized.
+     * @param preAuthorizedAgentObjectId The AAD object ID of a user assumed to be authorized by the owner of the user
+     * delegation key to perform the action granted by the SAS token. The service will validate the SAS token and
+     * ensure that the owner of the user delegation key has the required permissions before granting access but no
+     * additional permission check for the agent object id will be performed.
      * @return the updated DataLakeServiceSasSignatureValues object
      */
-    public DataLakeServiceSasSignatureValues setObjectId(String objectId, boolean posixCheckPerformed) {
-        this.objectId = objectId;
-        this.posixCheckPerformed = posixCheckPerformed;
+    public DataLakeServiceSasSignatureValues setPreAuthorizedAgentObjectId(String preAuthorizedAgentObjectId) {
+        this.preAuthorizedAgentObjectId = preAuthorizedAgentObjectId;
         return this;
     }
 
     /**
-     * @return the AAD object id value for the SAS.
+     * @return The AAD object ID of a user assumed to be unauthorized by the owner of the user delegation key to
+     * perform the action granted by the SAS token. The service will validate the SAS token and ensure that the owner
+     * of the user delegation key has the required permissions before granting access and the service will perform an
+     * additional POSIX ACL check to determine if this user is authorized to perform the requested operation.
      */
-    public String getObjectId() {
-        return objectId;
+    public String getAgentObjectId() {
+        return agentObjectId;
     }
 
     /**
-     * @return Whether or not the service will perform an additional POSIX ACL check to determine
-     * if the user is authorized.
+     * Sets the AAD object ID of a user assumed to be unauthorized by the owner of the user delegation key to perform
+     * the action granted by the SAS token.
+     *
+     * @param agentObjectId The AAD object ID of a user assumed to be unauthorized by the owner of the user delegation
+     * key to perform the action granted by the SAS token. The service will validate the SAS token and ensure that the
+     * owner of the user delegation key has the required permissions before granting access and the service will
+     * perform an additional POSIX ACL check to determine if this user is authorized to perform the requested operation.
+     * @return the updated DataLakeServiceSasSignatureValues object
      */
-    public boolean isPosixCheckPerformed() {
-        return posixCheckPerformed;
+    public DataLakeServiceSasSignatureValues setAgentObjectId(String agentObjectId) {
+        this.agentObjectId = agentObjectId;
+        return this;
     }
 
     /**

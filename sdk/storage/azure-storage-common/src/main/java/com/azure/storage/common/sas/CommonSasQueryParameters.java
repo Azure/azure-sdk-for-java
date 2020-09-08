@@ -387,18 +387,23 @@ public class CommonSasQueryParameters {
     }
 
     /**
-     * @return the AAD object id value for the SAS.
+     * @return The AAD object ID of a user assumed to be authorized by the owner of the user delegation key to perform
+     * the action granted by the SAS token. The service will validate the SAS token and ensure that the owner of the
+     * user delegation key has the required permissions before granting access but no additional permission check for
+     * the agent object id will be performed.
      */
-    public String getObjectId() {
-        return unauthorizedObjectId != null ? unauthorizedObjectId : authorizedObjectId;
+    public String getPreAuthorizedAgentObjectId() {
+        return authorizedObjectId;
     }
 
     /**
-     * @return Whether or not the service will perform an additional POSIX ACL check to determine
-     * if the user is authorized.
+     * @return The AAD object ID of a user assumed to be unauthorized by the owner of the user delegation key to
+     * perform the action granted by the SAS token. The service will validate the SAS token and ensure that the owner
+     * of the user delegation key has the required permissions before granting access and the service will perform an
+     * additional POSIX ACL check to determine if this user is authorized to perform the requested operation.
      */
-    public boolean isPosixCheckPerformed() {
-        return unauthorizedObjectId != null;
+    public String getAgentObjectId() {
+        return unauthorizedObjectId;
     }
 
     /**

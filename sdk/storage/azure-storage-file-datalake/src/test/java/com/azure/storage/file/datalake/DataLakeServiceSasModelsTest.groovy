@@ -236,6 +236,22 @@ class DataLakeServiceSasModelsTest extends Specification {
         "container"  | "blob/"           | true        | new PathSasPermission().setReadPermission(true)                                  || "d"      | "r"              | 1
         "container"  | "blob/dir1"       | true        | new PathSasPermission().setReadPermission(true)                                  || "d"      | "r"              | 2
         "container"  | "blob/dir1/dir2"  | true        | new PathSasPermission().setReadPermission(true)                                  || "d"      | "r"              | 3
+    }
 
+    def "ensure state aad id illegal state"() {
+        setup:
+        def e = OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)
+        def p = new FileSystemSasPermission().setReadPermission(true).setListPermission(true)
+
+        when:
+        def v = new DataLakeServiceSasSignatureValues(e, p)
+            .setPreAuthorizedAgentObjectId("authorizedId")
+            .setAgentObjectId("unauthorizedId")
+        DataLakeSasImplUtil implUtil = new DataLakeSasImplUtil(v, "containerName", "blobName", true)
+
+        implUtil.ensureState()
+
+        then:
+        thrown(IllegalStateException)
     }
 }
