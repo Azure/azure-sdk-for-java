@@ -186,19 +186,19 @@ class ServiceBusMessageSerializer implements MessageSerializer {
 
         final Map<Symbol, Object> messageAnnotationsMap = new HashMap<>();
         if (brokeredMessage.getScheduledEnqueueTime() != null) {
-            messageAnnotationsMap.put(Symbol.valueOf(SCHEDULED_ENQUEUE_UTC_TIME_NAME.toString()),
+            messageAnnotationsMap.put(Symbol.valueOf(SCHEDULED_ENQUEUE_UTC_TIME_NAME.getValue()),
                 Date.from(brokeredMessage.getScheduledEnqueueTime().toInstant()));
         }
 
         final String partitionKey = brokeredMessage.getPartitionKey();
         if (partitionKey != null && !partitionKey.isEmpty()) {
-            messageAnnotationsMap.put(Symbol.valueOf(PARTITION_KEY_ANNOTATION_NAME.toString()),
+            messageAnnotationsMap.put(Symbol.valueOf(PARTITION_KEY_ANNOTATION_NAME.getValue()),
                 brokeredMessage.getPartitionKey());
         }
 
         final String viaPartitionKey = brokeredMessage.getViaPartitionKey();
         if (viaPartitionKey != null && !viaPartitionKey.isEmpty()) {
-            messageAnnotationsMap.put(Symbol.valueOf(VIA_PARTITION_KEY_ANNOTATION_NAME.toString()), viaPartitionKey);
+            messageAnnotationsMap.put(Symbol.valueOf(VIA_PARTITION_KEY_ANNOTATION_NAME.getValue()), viaPartitionKey);
         }
 
         amqpMessage.setMessageAnnotations(new MessageAnnotations(messageAnnotationsMap));

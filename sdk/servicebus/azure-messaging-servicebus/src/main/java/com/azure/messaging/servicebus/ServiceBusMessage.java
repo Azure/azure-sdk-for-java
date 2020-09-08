@@ -257,7 +257,7 @@ public class ServiceBusMessage {
      *     entities</a>
      */
     public String getPartitionKey() {
-        return (String) amqpAnnotatedMessage.getMessageAnnotations().get(PARTITION_KEY_ANNOTATION_NAME.toString());
+        return (String) amqpAnnotatedMessage.getMessageAnnotations().get(PARTITION_KEY_ANNOTATION_NAME.getValue());
     }
 
     /**
@@ -269,7 +269,7 @@ public class ServiceBusMessage {
      * @see #getPartitionKey()
      */
     public ServiceBusMessage setPartitionKey(String partitionKey) {
-        amqpAnnotatedMessage.getMessageAnnotations().put(PARTITION_KEY_ANNOTATION_NAME.toString(), partitionKey);
+        amqpAnnotatedMessage.getMessageAnnotations().put(PARTITION_KEY_ANNOTATION_NAME.getValue(), partitionKey);
         return this;
     }
 
@@ -372,8 +372,8 @@ public class ServiceBusMessage {
     public OffsetDateTime getScheduledEnqueueTime() {
         OffsetDateTime scheduledEnqueueTime = null;
         Map<String, Object> messageAnnotationMap = amqpAnnotatedMessage.getMessageAnnotations();
-        if (messageAnnotationMap.containsKey(SCHEDULED_ENQUEUE_UTC_TIME_NAME.toString())) {
-            scheduledEnqueueTime = ((Date) messageAnnotationMap.get(SCHEDULED_ENQUEUE_UTC_TIME_NAME.toString()))
+        if (messageAnnotationMap.containsKey(SCHEDULED_ENQUEUE_UTC_TIME_NAME.getValue())) {
+            scheduledEnqueueTime = ((Date) messageAnnotationMap.get(SCHEDULED_ENQUEUE_UTC_TIME_NAME.getValue()))
                 .toInstant().atOffset(ZoneOffset.UTC);
         }
         return scheduledEnqueueTime;
@@ -389,7 +389,7 @@ public class ServiceBusMessage {
      */
     public ServiceBusMessage setScheduledEnqueueTime(OffsetDateTime scheduledEnqueueTime) {
         if (scheduledEnqueueTime != null) {
-            amqpAnnotatedMessage.getMessageAnnotations().put(SCHEDULED_ENQUEUE_UTC_TIME_NAME.toString(),
+            amqpAnnotatedMessage.getMessageAnnotations().put(SCHEDULED_ENQUEUE_UTC_TIME_NAME.getValue(),
                 scheduledEnqueueTime);
         }
         return this;
@@ -433,7 +433,7 @@ public class ServiceBusMessage {
      *     and Send Via</a>
      */
     public String getViaPartitionKey() {
-        return (String) amqpAnnotatedMessage.getMessageAnnotations().get(VIA_PARTITION_KEY_ANNOTATION_NAME.toString());
+        return (String) amqpAnnotatedMessage.getMessageAnnotations().get(VIA_PARTITION_KEY_ANNOTATION_NAME.getValue());
     }
 
     /**
@@ -445,7 +445,7 @@ public class ServiceBusMessage {
      * @see #getViaPartitionKey()
      */
     public ServiceBusMessage setViaPartitionKey(String viaPartitionKey) {
-        amqpAnnotatedMessage.getMessageAnnotations().put(VIA_PARTITION_KEY_ANNOTATION_NAME.toString(), viaPartitionKey);
+        amqpAnnotatedMessage.getMessageAnnotations().put(VIA_PARTITION_KEY_ANNOTATION_NAME.getValue(), viaPartitionKey);
         return this;
     }
 

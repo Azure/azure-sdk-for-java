@@ -20,7 +20,6 @@ import com.azure.messaging.servicebus.models.ReceiveMode;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
@@ -157,8 +156,8 @@ public final class ServiceBusReceivedMessage {
      */
     public String getDeadLetterSource() {
         final Map<String, Object> properties = amqpAnnotatedMessage.getApplicationProperties();
-        if (properties.containsKey(DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME.toString())) {
-            return String.valueOf(properties.get(DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME.toString()));
+        if (properties.containsKey(DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME.getValue())) {
+            return String.valueOf(properties.get(DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME.getValue()));
         }
         return null;
     }
@@ -214,8 +213,8 @@ public final class ServiceBusReceivedMessage {
     public OffsetDateTime getEnqueuedTime() {
         OffsetDateTime enqueuedTime = null;
         final Map<String, Object> messageAnnotations = amqpAnnotatedMessage.getMessageAnnotations();
-        if (messageAnnotations.containsKey(ENQUEUED_TIME_UTC_ANNOTATION_NAME.toString())) {
-            Object value = messageAnnotations.get(ENQUEUED_TIME_UTC_ANNOTATION_NAME.toString());
+        if (messageAnnotations.containsKey(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue())) {
+            Object value = messageAnnotations.get(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
             enqueuedTime = ((Date) value).toInstant().atOffset(ZoneOffset.UTC);
         }
         return enqueuedTime;
@@ -288,8 +287,8 @@ public final class ServiceBusReceivedMessage {
     public OffsetDateTime getLockedUntil() {
         OffsetDateTime lockedUntil = null;
         final Map<String, Object> messageAnnotations = amqpAnnotatedMessage.getMessageAnnotations();
-        if (messageAnnotations.containsKey(LOCKED_UNTIL_KEY_ANNOTATION_NAME.toString())) {
-            Object value = messageAnnotations.get(LOCKED_UNTIL_KEY_ANNOTATION_NAME.toString());
+        if (messageAnnotations.containsKey(LOCKED_UNTIL_KEY_ANNOTATION_NAME.getValue())) {
+            Object value = messageAnnotations.get(LOCKED_UNTIL_KEY_ANNOTATION_NAME.getValue());
             lockedUntil = ((Date) value).toInstant().atOffset(ZoneOffset.UTC);
         }
         return lockedUntil;
@@ -319,8 +318,8 @@ public final class ServiceBusReceivedMessage {
     public String getPartitionKey() {
         String partitionKey = null;
         final Map<String, Object> messageAnnotations = amqpAnnotatedMessage.getMessageAnnotations();
-        if (messageAnnotations.containsKey(PARTITION_KEY_ANNOTATION_NAME.toString())) {
-            Object value = messageAnnotations.get(PARTITION_KEY_ANNOTATION_NAME.toString());
+        if (messageAnnotations.containsKey(PARTITION_KEY_ANNOTATION_NAME.getValue())) {
+            Object value = messageAnnotations.get(PARTITION_KEY_ANNOTATION_NAME.getValue());
             partitionKey = (String) value;
         }
         return partitionKey;
@@ -386,8 +385,8 @@ public final class ServiceBusReceivedMessage {
     public OffsetDateTime getScheduledEnqueueTime() {
         OffsetDateTime scheduledEnqueueTime = null;
         final Map<String, Object> messageAnnotations = amqpAnnotatedMessage.getMessageAnnotations();
-        if (messageAnnotations.containsKey(SCHEDULED_ENQUEUE_UTC_TIME_NAME.toString())) {
-            scheduledEnqueueTime = ((Date) messageAnnotations.get(SCHEDULED_ENQUEUE_UTC_TIME_NAME.toString()))
+        if (messageAnnotations.containsKey(SCHEDULED_ENQUEUE_UTC_TIME_NAME.getValue())) {
+            scheduledEnqueueTime = ((Date) messageAnnotations.get(SCHEDULED_ENQUEUE_UTC_TIME_NAME.getValue()))
                 .toInstant().atOffset(ZoneOffset.UTC);
         }
         return scheduledEnqueueTime;
@@ -409,8 +408,8 @@ public final class ServiceBusReceivedMessage {
     public long getSequenceNumber() {
         long sequenceNumber = 0;
         final Map<String, Object> messageAnnotations = amqpAnnotatedMessage.getMessageAnnotations();
-        if (messageAnnotations.containsKey(SEQUENCE_NUMBER_ANNOTATION_NAME.toString())) {
-            Object value = messageAnnotations.get(SEQUENCE_NUMBER_ANNOTATION_NAME.toString());
+        if (messageAnnotations.containsKey(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue())) {
+            Object value = messageAnnotations.get(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
             sequenceNumber = (long) value;
         }
         return sequenceNumber;
@@ -465,8 +464,8 @@ public final class ServiceBusReceivedMessage {
     public String getViaPartitionKey() {
         String viaPartitionKey = null;
         final Map<String, Object> messageAnnotations = amqpAnnotatedMessage.getMessageAnnotations();
-        if (messageAnnotations.containsKey(VIA_PARTITION_KEY_ANNOTATION_NAME.toString())) {
-            Object value = messageAnnotations.get(VIA_PARTITION_KEY_ANNOTATION_NAME.toString());
+        if (messageAnnotations.containsKey(VIA_PARTITION_KEY_ANNOTATION_NAME.getValue())) {
+            Object value = messageAnnotations.get(VIA_PARTITION_KEY_ANNOTATION_NAME.getValue());
             viaPartitionKey = (String) value;
         }
         return viaPartitionKey;
