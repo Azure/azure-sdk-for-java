@@ -643,12 +643,14 @@ public class EventHubProducerAsyncClient implements Closeable {
     private Mono<AmqpSendLink> getSendLink(String partitionId) {
         final String entityPath = getEntityPath(partitionId);
         final String linkName = getEntityPath(partitionId);
-        final PartitionPublishingState publishingState = getPartitionPublishingState(partitionId);
 
         return connectionProcessor
-            .flatMap(connection -> connection.createSendLink(
-                linkName, entityPath, retryOptions, enableIdempotentPartitions, publishingState)
-                .flatMap(amqpSendLink -> this.updatePublishingState(partitionId, amqpSendLink)));
+            .flatMap(connection -> enableIdempotentPartitions
+                ? connection.createSendLink(
+                    linkName, entityPath, retryOptions, true, getPartitionPublishingState(partitionId))
+                : connection.createSendLink(
+                    linkName, entityPath, retryOptions))
+            .flatMap(amqpSendLink -> this.updatePublishingState(partitionId, amqpSendLink));
     }
 
     /**
