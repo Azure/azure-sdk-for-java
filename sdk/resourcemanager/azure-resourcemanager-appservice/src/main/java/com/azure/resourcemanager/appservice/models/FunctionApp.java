@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure Function App. */
 @Fluent
-public interface FunctionApp extends WebAppBase, Refreshable<FunctionApp>, Updatable<FunctionApp.Update> {
+public interface FunctionApp extends FunctionAppBasic, WebAppBase, Updatable<FunctionApp.Update> {
 
     /** @return the entry point to deployment slot management API under the function app */
     FunctionDeploymentSlots deploymentSlots();
