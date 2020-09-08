@@ -1,7 +1,8 @@
 # Release History
 
-## 1.9.0-beta.1 (Unreleased)
+## 1.8.1 (2020-09-08)
 
+- Fixed bug where some `HttpRequests` would have their body consumed before being sent resulting in an exception being thrown.
 
 ## 1.8.0 (2020-09-03)
 
