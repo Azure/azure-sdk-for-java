@@ -12,7 +12,7 @@ public class AppPlatformLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testSpringCloud() {
+    public void testSpringCloud() throws Exception {
         if (skipInPlayback()) {
             return;
         }

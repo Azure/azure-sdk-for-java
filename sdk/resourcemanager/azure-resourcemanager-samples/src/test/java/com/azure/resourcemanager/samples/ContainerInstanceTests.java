@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 public class ContainerInstanceTests extends SamplesTestBase {
 
     @Test
-    public void testManageContainerInstanceWithAzureFileShareMount() {
+    public void testManageContainerInstanceWithAzureFileShareMount() throws Exception {
         // Skip test in "playback" mode due to HTTP calls made outside of the management plane which can not be recorded at this time
         if (!isPlaybackMode()) {
             Assertions.assertTrue(ManageContainerInstanceWithAzureFileShareMount.runSample(azure));
@@ -21,7 +21,7 @@ public class ContainerInstanceTests extends SamplesTestBase {
     }
 
     @Test
-    public void testManageContainerInstanceWithManualAzureFileShareMountCreation() {
+    public void testManageContainerInstanceWithManualAzureFileShareMountCreation() throws Exception {
         // Skip test in "playback" mode due to HTTP calls made outside of the management plane which can not be recorded at this time
         if (!isPlaybackMode()) {
             Assertions.assertTrue(ManageContainerInstanceWithManualAzureFileShareMountCreation.runSample(azure));
@@ -29,7 +29,7 @@ public class ContainerInstanceTests extends SamplesTestBase {
     }
 
     @Test
-    public void testManageContainerInstanceWithMultipleContainerImages() {
+    public void testManageContainerInstanceWithMultipleContainerImages() throws Exception {
         // Skip test in "playback" mode due to HTTP calls made outside of the management plane which can not be recorded at this time
         if (!isPlaybackMode()) {
             Assertions.assertTrue(ManageContainerInstanceWithMultipleContainerImages.runSample(azure));
@@ -37,7 +37,7 @@ public class ContainerInstanceTests extends SamplesTestBase {
     }
 
     @Test
-    public void testManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOrchestrator() {
+    public void testManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOrchestrator() throws Exception {
         // Skip test in "playback" mode due to HTTP calls made outside of the management plane which can not be recorded at this time
         if (!isPlaybackMode()) {
             Assertions.assertTrue(ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOrchestrator.runSample(azure, "", ""));

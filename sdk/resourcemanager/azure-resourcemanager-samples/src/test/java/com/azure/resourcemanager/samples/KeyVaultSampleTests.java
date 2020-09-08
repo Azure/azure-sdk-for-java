@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Disabled;
 public class KeyVaultSampleTests extends SamplesTestBase {
     @Test
     @Disabled("Some RBAC related issue with current credentials")
-    public void testManageKeyVault() {
+    public void testManageKeyVault() throws Exception {
         String clientId = "";
         if (!isPlaybackMode()) {
             final Configuration configuration = Configuration.getGlobalConfiguration();

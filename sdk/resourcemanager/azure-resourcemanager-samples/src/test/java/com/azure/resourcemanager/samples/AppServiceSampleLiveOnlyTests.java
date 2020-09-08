@@ -29,7 +29,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageWebAppSourceControl() {
+    public void testManageWebAppSourceControl() throws Exception {
         if (skipInPlayback()) {
             return;
         }
@@ -39,7 +39,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageWebAppStorageAccountConnection() {
+    public void testManageWebAppStorageAccountConnection() throws Exception {
         if (skipInPlayback()) {
             return;
         }
@@ -49,7 +49,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageLinuxWebAppSourceControl() {
+    public void testManageLinuxWebAppSourceControl() throws Exception {
         if (skipInPlayback()) {
             return;
         }
@@ -59,7 +59,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageLinuxWebAppStorageAccountConnection() {
+    public void testManageLinuxWebAppStorageAccountConnection() throws Exception {
         if (skipInPlayback()) {
             return;
         }
@@ -69,7 +69,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageLinuxWebAppWithContainerRegistry() {
+    public void testManageLinuxWebAppWithContainerRegistry() throws Exception {
         if (skipInPlayback()) {
             return;
         }
@@ -79,7 +79,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageFunctionAppWithAuthentication() {
+    public void testManageFunctionAppWithAuthentication() throws Exception {
         if (skipInPlayback()) {
             return;
         }
@@ -89,7 +89,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageFunctionAppSourceControl() {
+    public void testManageFunctionAppSourceControl() throws Exception {
         if (skipInPlayback()) {
             return;
         }
@@ -99,7 +99,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageLinuxWebAppCosmosDbByMsi() {
+    public void testManageLinuxWebAppCosmosDbByMsi() throws Exception {
         if (skipInPlayback()) {
             return;
         }
@@ -109,7 +109,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageWebAppCosmosDbByMsi() {
+    public void testManageWebAppCosmosDbByMsi() throws Exception {
         if (skipInPlayback()) {
             return;
         }
@@ -119,7 +119,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageWebAppCosmosDbThroughKeyVault() {
+    public void testManageWebAppCosmosDbThroughKeyVault() throws Exception {
         if (skipInPlayback()) {
             return;
         }
@@ -129,7 +129,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageFunctionAppLogs() {
+    public void testManageFunctionAppLogs() throws Exception {
         if (skipInPlayback()) {
             return;
         }
@@ -139,7 +139,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageWebAppLogs() {
+    public void testManageWebAppLogs() throws Exception {
         if (skipInPlayback()) {
             return;
         }
@@ -149,7 +149,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageLinuxFunctionAppSourceControl() {
+    public void testManageLinuxFunctionAppSourceControl() throws Exception {
         if (skipInPlayback()) {
             return;
         }
@@ -159,7 +159,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageWebAppWithDomainSsl() {
+    public void testManageWebAppWithDomainSsl() throws Exception {
         if (skipInPlayback()) {
             return;
         }
@@ -169,7 +169,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageWebAppWithTrafficManager() {
+    public void testManageWebAppWithTrafficManager() throws Exception {
         if (skipInPlayback()) {
             return;
         }
@@ -179,7 +179,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageLinuxWebAppWithDomainSsl() {
+    public void testManageLinuxWebAppWithDomainSsl() throws Exception {
         if (skipInPlayback()) {
             return;
         }
@@ -189,7 +189,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageLinuxWebAppWithTrafficManager() {
+    public void testManageLinuxWebAppWithTrafficManager() throws Exception {
         if (skipInPlayback()) {
             return;
         }
@@ -199,7 +199,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageFunctionAppWithDomainSsl() {
+    public void testManageFunctionAppWithDomainSsl() throws Exception {
         if (skipInPlayback()) {
             return;
         }

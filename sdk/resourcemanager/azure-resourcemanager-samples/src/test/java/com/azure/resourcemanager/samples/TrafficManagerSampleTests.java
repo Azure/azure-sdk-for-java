@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 public class TrafficManagerSampleTests extends SamplesTestBase {
     @Test
-    public void testManageSimpleTrafficManager() {
+    public void testManageSimpleTrafficManager() throws Exception {
         if (isPlaybackMode()) {
             return; // TODO: fix playback random fail
         }
@@ -20,7 +20,7 @@ public class TrafficManagerSampleTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageTrafficManager() {
+    public void testManageTrafficManager() throws Exception {
         if (this.skipInPlayback()) {
             // sample creates certificate
             return;

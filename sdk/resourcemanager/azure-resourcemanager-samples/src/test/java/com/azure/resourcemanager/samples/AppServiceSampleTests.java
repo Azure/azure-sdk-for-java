@@ -17,41 +17,41 @@ import org.junit.jupiter.api.Test;
 
 public class AppServiceSampleTests extends SamplesTestBase {
     @Test
-    public void testManageWebAppBasic() {
+    public void testManageWebAppBasic() throws Exception {
         Assertions.assertTrue(ManageWebAppBasic.runSample(azure));
     }
 
     @Test
     @Disabled("Fails randomly when creating one of the three slots")
-    public void testManageWebAppSlots() {
+    public void testManageWebAppSlots() throws Exception {
         Assertions.assertTrue(ManageWebAppSlots.runSample(azure));
     }
 
     @Test
     @Disabled("Failing in playback - dependent on git")
-    public void testManageWebAppSourceControlAsync() {
+    public void testManageWebAppSourceControlAsync() throws Exception {
         Assertions.assertTrue(ManageWebAppSourceControlAsync.runSample(azure));
     }
 
     @Test
     @Disabled("Stops in between for user input")
-    public void testManageWebAppSqlConnection() {
+    public void testManageWebAppSqlConnection() throws Exception {
         Assertions.assertTrue(ManageWebAppSqlConnection.runSample(azure));
     }
 
     @Test
-    public void testManageLinuxWebAppBasic() {
+    public void testManageLinuxWebAppBasic() throws Exception {
         Assertions.assertTrue(ManageLinuxWebAppBasic.runSample(azure));
     }
 
     @Test
     @Disabled("Stops in between for user input")
-    public void testManageLinuxWebAppSqlConnection() {
+    public void testManageLinuxWebAppSqlConnection() throws Exception {
         Assertions.assertTrue(ManageLinuxWebAppSqlConnection.runSample(azure));
     }
 
     @Test
-    public void testManageFunctionAppBasic() {
+    public void testManageFunctionAppBasic() throws Exception {
         Assertions.assertTrue(ManageFunctionAppBasic.runSample(azure));
     }
 }

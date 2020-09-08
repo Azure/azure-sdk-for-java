@@ -10,17 +10,17 @@ import org.junit.jupiter.api.Test;
 
 public class EventHubsSampleTests extends SamplesTestBase {
     @Test
-    public void testManageEventHub() {
+    public void testManageEventHub() throws Exception {
         Assertions.assertTrue(ManageEventHub.runSample(azure));
     }
 
     @Test
-    public void testManageEventHubEvents() {
+    public void testManageEventHubEvents() throws Exception {
         Assertions.assertTrue(ManageEventHubEvents.runSample(azure));
     }
 
     @Test
-    public void testManageEventHubGeoDisasterRecovery() {
+    public void testManageEventHubGeoDisasterRecovery() throws Exception {
         Assertions.assertTrue(ManageEventHubGeoDisasterRecovery.runSample(azure));
     }
 }

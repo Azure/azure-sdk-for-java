@@ -11,7 +11,7 @@ public class NetworkWatcherSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageNetworkWatcher() {
+    public void testManageNetworkWatcher() throws Exception {
         if (skipInPlayback()) {
             return;
         }

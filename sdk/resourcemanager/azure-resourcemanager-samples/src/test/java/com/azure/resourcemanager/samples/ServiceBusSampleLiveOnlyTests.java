@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 public class ServiceBusSampleLiveOnlyTests extends SamplesTestBase {
     @Test
     @DoNotRecord
-    public void testServiceBusQueueBasic() {
+    public void testServiceBusQueueBasic() throws Exception {
         if (skipInPlayback()) {
             return;
         }
@@ -24,7 +24,7 @@ public class ServiceBusSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testServiceBusPublishSubscribeBasic() {
+    public void testServiceBusPublishSubscribeBasic() throws Exception {
         if (skipInPlayback()) {
             return;
         }
@@ -33,7 +33,7 @@ public class ServiceBusSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testServiceBusWithClaimBasedAuthorization() {
+    public void testServiceBusWithClaimBasedAuthorization() throws Exception {
         if (skipInPlayback()) {
             return;
         }
@@ -42,7 +42,7 @@ public class ServiceBusSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testServiceBusQueueAdvanceFeatures() {
+    public void testServiceBusQueueAdvanceFeatures() throws Exception {
         if (skipInPlayback()) {
             return;
         }
@@ -51,7 +51,7 @@ public class ServiceBusSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testServiceBusPublishSubscribeAdvanceFeatures() {
+    public void testServiceBusPublishSubscribeAdvanceFeatures() throws Exception {
         if (skipInPlayback()) {
             return;
         }

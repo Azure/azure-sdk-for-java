@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 public class KubernetesClusterTests extends SamplesTestBase {
     @Test
     @Disabled("QuotaExceeded error: Public preview limit of 5 for managed cluster(AKS) has been reached for subscription sub-id in location ukwest. Same error even after deleting all clusters")
-    public void testManageKubernetesCluster() {
+    public void testManageKubernetesCluster() throws Exception {
         if (isPlaybackMode()) {
             // Disable mocked testing but keep it commented out in case we want to re-enable it later
             // Assertions.assertTrue(ManageKubernetesCluster.runSample(azure, "client id", "secret"));
@@ -25,7 +25,7 @@ public class KubernetesClusterTests extends SamplesTestBase {
 
     @Test
     @Disabled("QuotaExceeded error: Public preview limit of 5 for managed cluster(AKS) has been reached for subscription sub-id in location ukwest. Same error even after deleting all clusters")
-    public void testManageKubernetesClusterWithAdvancedNetworking() {
+    public void testManageKubernetesClusterWithAdvancedNetworking() throws Exception {
         if (isPlaybackMode()) {
             // Disable mocked testing but keep it commented out in case we want to re-enable it later
             // Assertions.assertTrue(ManageKubernetesCluster.runSample(azure, "client id", "secret"));
@@ -36,7 +36,7 @@ public class KubernetesClusterTests extends SamplesTestBase {
     }
 
     @Test
-    public void testDeployImageFromContainerRegistryToKubernetes() {
+    public void testDeployImageFromContainerRegistryToKubernetes() throws Exception {
         if (!isPlaybackMode()) {
             Assertions.assertTrue(DeployImageFromContainerRegistryToKubernetes.runSample(azure, "", ""));
         }
