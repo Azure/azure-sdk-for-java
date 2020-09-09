@@ -11,9 +11,9 @@
     <relativePath>../../parents/azure-client-sdk-parent</relativePath>
   </parent>
 
-    <groupId>com.azure</groupId>
-    <artifactId>azure-digitaltwins-core</artifactId>
-    <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-digitaltwins-core;current} -->
+  <groupId>com.azure</groupId>
+  <artifactId>azure-digitaltwins-core</artifactId>
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-digitaltwins-core;current} -->
 
   <properties>
     <!-- These are the code coverage settings that should eventually be removed to inherit them from the parent pom file. for the time being we have a very low code coverage so we are dropping it to a very low setting -->
@@ -84,11 +84,14 @@
   </dependencies>
 
   <build>
-    <resources>
-      <resource>
+    <testResources>
+      <testResource>
         <directory>src/samples/resources</directory>
-      </resource>
-    </resources>
+      </testResource>
+      <testResource>
+        <directory>src/test/resources</directory>
+      </testResource>
+    </testResources>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
