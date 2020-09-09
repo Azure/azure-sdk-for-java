@@ -1,20 +1,20 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.implementation.util;
+package com.azure.storage.file.datalake.implementation.util;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.models.UserDelegationKey;
-import com.azure.storage.blob.sas.BlobContainerSasPermission;
-import com.azure.storage.blob.sas.BlobSasPermission;
-import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
-import com.azure.storage.blob.sas.BlobSasServiceVersion;
+import com.azure.storage.file.datalake.DataLakeServiceVersion;
+import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.SasIpRange;
 import com.azure.storage.common.sas.SasProtocol;
+import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
+import com.azure.storage.file.datalake.sas.FileSystemSasPermission;
+import com.azure.storage.file.datalake.sas.PathSasPermission;
 
 import java.time.OffsetDateTime;
 import java.util.Objects;
@@ -23,34 +23,29 @@ import static com.azure.storage.common.implementation.SasImplUtils.formatQueryPa
 import static com.azure.storage.common.implementation.SasImplUtils.tryAppendQueryParameter;
 
 /**
- * This class provides helper methods for common blob service sas patterns.
+ * This class provides helper methods for common datalake service sas patterns.
  *
  * RESERVED FOR INTERNAL USE.
  */
-public class BlobSasImplUtil {
+public class DataLakeSasImplUtil {
     /**
-     * The SAS blob constant.
+     * The SAS blob (datalake file) constant.
      */
     private static final String SAS_BLOB_CONSTANT = "b";
 
     /**
-     * The SAS blob snapshot constant.
+     * The SAS directory (datalake directory) constant.
      */
-    private static final String SAS_BLOB_SNAPSHOT_CONSTANT = "bs";
+    private static final String SAS_DIRECTORY_CONSTANT = "d";
 
     /**
-     * The SAS blob version constant.
-     */
-    private static final String SAS_BLOB_VERSION_CONSTANT = "bv";
-
-    /**
-     * The SAS blob container constant.
+     * The SAS blob container (datalake file system) constant.
      */
     private static final String SAS_CONTAINER_CONSTANT = "c";
 
-    private final ClientLogger logger = new ClientLogger(BlobSasImplUtil.class);
+    private final ClientLogger logger = new ClientLogger(DataLakeSasImplUtil.class);
 
-    private String version;
+    private static String version = DataLakeServiceVersion.getLatest().getVersion();
 
     private SasProtocol protocol;
 
@@ -62,15 +57,11 @@ public class BlobSasImplUtil {
 
     private SasIpRange sasIpRange;
 
-    private String containerName;
+    private String fileSystemName;
 
-    private String blobName;
+    private String pathName;
 
     private String resource;
-
-    private String snapshotId;
-
-    private String versionId;
 
     private String identifier;
 
@@ -84,48 +75,54 @@ public class BlobSasImplUtil {
 
     private String contentType;
 
+    private Boolean isDirectory;
+
+    private Integer directoryDepth;
+
+    private String authorizedAadObjectId;
+
+    private String unauthorizedAadObjectId;
+
+    private String correlationId;
+
     /**
-     * Creates a new {@link BlobSasImplUtil} with the specified parameters
+     * Creates a new {@link DataLakeSasImplUtil} with the specified parameters
      *
-     * @param sasValues {@link BlobServiceSasSignatureValues}
-     * @param containerName The container name
+     * @param sasValues {@link DataLakeServiceSasSignatureValues}
+     * @param fileSystemName The file system name
      */
-    public BlobSasImplUtil(BlobServiceSasSignatureValues sasValues, String containerName) {
-        this(sasValues, containerName, null, null, null);
+    public DataLakeSasImplUtil(DataLakeServiceSasSignatureValues sasValues, String fileSystemName) {
+        this(sasValues, fileSystemName, null, false);
     }
 
     /**
-     * Creates a new {@link BlobSasImplUtil} with the specified parameters
+     * Creates a new {@link DataLakeSasImplUtil} with the specified parameters
      *
-     * @param sasValues {@link BlobServiceSasSignatureValues}
-     * @param containerName The container name
-     * @param blobName The blob name
-     * @param snapshotId The snapshot id
-     * @param versionId The version id
+     * @param sasValues {@link DataLakeServiceSasSignatureValues}
+     * @param fileSystemName The file system name
+     * @param pathName The path name
+     * @param isDirectory Whether or not the path points to a directory.
      */
-    public BlobSasImplUtil(BlobServiceSasSignatureValues sasValues, String containerName, String blobName,
-        String snapshotId, String versionId) {
+    public DataLakeSasImplUtil(DataLakeServiceSasSignatureValues sasValues, String fileSystemName, String pathName,
+        boolean isDirectory) {
         Objects.requireNonNull(sasValues);
-        if (snapshotId != null && versionId != null) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("'snapshot' and 'versionId' cannot be used at the same time."));
-        }
-        this.version = null; /* Setting this to null forces the latest service version - see ensureState. */
         this.protocol = sasValues.getProtocol();
         this.startTime = sasValues.getStartTime();
         this.expiryTime = sasValues.getExpiryTime();
         this.permissions = sasValues.getPermissions();
         this.sasIpRange = sasValues.getSasIpRange();
-        this.containerName = containerName;
-        this.blobName = blobName;
-        this.snapshotId = snapshotId;
-        this.versionId = versionId;
+        this.fileSystemName = fileSystemName;
+        this.pathName = pathName;
         this.identifier = sasValues.getIdentifier();
         this.cacheControl = sasValues.getCacheControl();
         this.contentDisposition = sasValues.getContentDisposition();
         this.contentEncoding = sasValues.getContentEncoding();
         this.contentLanguage = sasValues.getContentLanguage();
         this.contentType = sasValues.getContentType();
+        this.authorizedAadObjectId = sasValues.getPreauthorizedAgentObjectId();
+        this.unauthorizedAadObjectId = sasValues.getAgentObjectId();
+        this.correlationId = sasValues.getCorrelationId();
+        this.isDirectory = isDirectory;
     }
 
     /**
@@ -180,12 +177,13 @@ public class BlobSasImplUtil {
          */
         StringBuilder sb = new StringBuilder();
 
-        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SERVICE_VERSION, this.version);
+        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SERVICE_VERSION, version);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_PROTOCOL, this.protocol);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_START_TIME, formatQueryParameterDate(this.startTime));
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_EXPIRY_TIME, formatQueryParameterDate(this.expiryTime));
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_IP_RANGE, this.sasIpRange);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_IDENTIFIER, this.identifier);
+
         if (userDelegationKey != null) {
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_OBJECT_ID,
                 userDelegationKey.getSignedObjectId());
@@ -199,9 +197,20 @@ public class BlobSasImplUtil {
                 userDelegationKey.getSignedService());
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_VERSION,
                 userDelegationKey.getSignedVersion());
+
+            /* Only parameters relevant for user delegation SAS. */
+            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_PREAUTHORIZED_AGENT_OBJECT_ID, this.authorizedAadObjectId);
+            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_AGENT_OBJECT_ID, this.unauthorizedAadObjectId);
+            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CORRELATION_ID, this.correlationId);
         }
+
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_RESOURCE, this.resource);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_PERMISSIONS, this.permissions);
+
+        if (this.isDirectory) {
+            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_DIRECTORY_DEPTH, this.directoryDepth);
+        }
+
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNATURE, signature);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CACHE_CONTROL, this.cacheControl);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_DISPOSITION, this.contentDisposition);
@@ -216,24 +225,20 @@ public class BlobSasImplUtil {
     /**
      * Ensures that the builder's properties are in a consistent state.
 
-     * 1. If there is no version, use latest.
-     * 2. If there is no identifier set, ensure expiryTime and permissions are set.
-     * 3. Resource name is chosen by:
+     * 1. If there is no identifier set, ensure expiryTime and permissions are set.
+     * 2. Resource name is chosen by:
      *    a. If "BlobName" is _not_ set, it is a container resource.
      *    b. Otherwise, if "SnapshotId" is set, it is a blob snapshot resource.
      *    c. Otherwise, if "VersionId" is set, it is a blob version resource.
      *    d. Otherwise, it is a blob resource.
-     * 4. Reparse permissions depending on what the resource is. If it is an unrecognized resource, do nothing.
+     * 3. Reparse permissions depending on what the resource is. If it is an unrecognized resource, do nothing.
+     * 4. Ensure saoid is not set when suoid is set and vice versa.
      *
      * Taken from:
      * https://github.com/Azure/azure-storage-blob-go/blob/master/azblob/sas_service.go#L33
      * https://github.com/Azure/azure-sdk-for-net/blob/master/sdk/storage/Azure.Storage.Blobs/src/Sas/BlobSasBuilder.cs
      */
     private void ensureState() {
-        if (version == null) {
-            version = BlobSasServiceVersion.getLatest().getVersion();
-        }
-
         if (identifier == null) {
             if (expiryTime == null || permissions == null) {
                 throw logger.logExceptionAsError(new IllegalStateException("If identifier is not set, expiry time "
@@ -241,31 +246,36 @@ public class BlobSasImplUtil {
             }
         }
 
-        if (CoreUtils.isNullOrEmpty(blobName)) {
+        if (CoreUtils.isNullOrEmpty(pathName)) {
             resource = SAS_CONTAINER_CONSTANT;
-        } else if (snapshotId != null) {
-            resource = SAS_BLOB_SNAPSHOT_CONSTANT;
-        } else if (versionId != null) {
-            resource = SAS_BLOB_VERSION_CONSTANT;
         } else {
-            resource = SAS_BLOB_CONSTANT;
+            if (isDirectory) {
+                resource = SAS_DIRECTORY_CONSTANT;
+                this.directoryDepth = pathName.split("/").length;
+            } else {
+                resource = SAS_BLOB_CONSTANT;
+            }
         }
 
         if (permissions != null) {
             switch (resource) {
                 case SAS_BLOB_CONSTANT:
-                case SAS_BLOB_SNAPSHOT_CONSTANT:
-                case SAS_BLOB_VERSION_CONSTANT:
-                    permissions = BlobSasPermission.parse(permissions).toString();
+                case SAS_DIRECTORY_CONSTANT:
+                    permissions = PathSasPermission.parse(permissions).toString();
                     break;
                 case SAS_CONTAINER_CONSTANT:
-                    permissions = BlobContainerSasPermission.parse(permissions).toString();
+                    permissions = FileSystemSasPermission.parse(permissions).toString();
                     break;
                 default:
                     // We won't reparse the permissions if we don't know the type.
                     logger.info("Not re-parsing permissions. Resource type '{}' is unknown.", resource);
                     break;
             }
+        }
+
+        if (this.authorizedAadObjectId != null && this.unauthorizedAadObjectId != null) {
+            throw logger.logExceptionAsError(new IllegalStateException("agentObjectId and preauthorizedAgentObjectId "
+                + "can not both be set."));
         }
     }
 
@@ -275,13 +285,12 @@ public class BlobSasImplUtil {
     private String getCanonicalName(String account) {
         // Container: "/blob/account/containername"
         // Blob:      "/blob/account/containername/blobname"
-        return CoreUtils.isNullOrEmpty(blobName)
-            ? String.format("/blob/%s/%s", account, containerName)
-            : String.format("/blob/%s/%s/%s", account, containerName, blobName.replace("\\", "/"));
+        return CoreUtils.isNullOrEmpty(pathName)
+            ? String.format("/blob/%s/%s", account, fileSystemName)
+            : String.format("/blob/%s/%s/%s", account, fileSystemName, pathName.replace("\\", "/"));
     }
 
     private String stringToSign(String canonicalName) {
-        String versionSegment = this.snapshotId == null ? this.versionId : this.snapshotId;
         return String.join("\n",
             this.permissions == null ? "" : permissions,
             this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
@@ -292,7 +301,7 @@ public class BlobSasImplUtil {
             this.protocol == null ? "" : this.protocol.toString(),
             version,
             resource,
-            versionSegment == null ? "" : versionSegment,
+            "", /* Version segment. */
             this.cacheControl == null ? "" : this.cacheControl,
             this.contentDisposition == null ? "" : this.contentDisposition,
             this.contentEncoding == null ? "" : this.contentEncoding,
@@ -302,7 +311,6 @@ public class BlobSasImplUtil {
     }
 
     private String stringToSign(final UserDelegationKey key, String canonicalName) {
-        String versionSegment = this.snapshotId == null ? this.versionId : this.snapshotId;
         return String.join("\n",
             this.permissions == null ? "" : this.permissions,
             this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
@@ -314,14 +322,14 @@ public class BlobSasImplUtil {
             key.getSignedExpiry() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedExpiry()),
             key.getSignedService() == null ? "" : key.getSignedService(),
             key.getSignedVersion() == null ? "" : key.getSignedVersion(),
-            "", /* saoid - empty since this applies to HNS only accounts. */
-            "", /* suoid - empty since this applies to HNS only accounts. */
-            "", /* cid - empty since this applies to HNS only accounts. */
+            this.authorizedAadObjectId == null ? "" : this.authorizedAadObjectId,
+            this.unauthorizedAadObjectId == null ? "" : this.unauthorizedAadObjectId,
+            this.correlationId == null ? "" : this.correlationId,
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(),
             version,
             resource,
-            versionSegment == null ? "" : versionSegment,
+            "", /* Version segment. */
             this.cacheControl == null ? "" : this.cacheControl,
             this.contentDisposition == null ? "" : this.contentDisposition,
             this.contentEncoding == null ? "" : this.contentEncoding,
