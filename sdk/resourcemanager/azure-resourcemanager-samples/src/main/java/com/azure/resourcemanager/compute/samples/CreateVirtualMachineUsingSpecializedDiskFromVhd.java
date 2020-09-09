@@ -194,10 +194,6 @@ public class CreateVirtualMachineUsingSpecializedDiskFromVhd {
                 System.out.println(String.format("Data disk SAS Uri: %s", dataDiskSasUri));
             }
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -209,7 +205,6 @@ public class CreateVirtualMachineUsingSpecializedDiskFromVhd {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

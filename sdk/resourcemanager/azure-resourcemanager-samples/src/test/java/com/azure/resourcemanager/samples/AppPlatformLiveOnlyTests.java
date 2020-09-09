@@ -8,11 +8,16 @@ import com.azure.resourcemanager.appplatform.samples.ManageSpringCloud;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+
 public class AppPlatformLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testSpringCloud() {
+    public void testSpringCloud() throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
         if (skipInPlayback()) {
             return;
         }

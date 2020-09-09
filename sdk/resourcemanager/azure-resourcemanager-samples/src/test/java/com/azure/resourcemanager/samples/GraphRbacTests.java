@@ -19,6 +19,7 @@ import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class GraphRbacTests extends ResourceManagerTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageServicePrincipalCredentials() {
+    public void testManageServicePrincipalCredentials() throws IOException {
         if (skipInPlayback()) {
             return;
         }
