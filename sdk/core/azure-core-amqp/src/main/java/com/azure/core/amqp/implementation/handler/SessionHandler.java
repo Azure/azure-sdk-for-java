@@ -70,13 +70,16 @@ public class SessionHandler extends Handler {
     @Override
     public void onSessionRemoteOpen(Event e) {
         final Session session = e.getSession();
-
-        logger.info(
-            "onSessionRemoteOpen connectionId[{}], entityName[{}], sessionIncCapacity[{}], sessionOutgoingWindow[{}]",
-            getConnectionId(), entityName, session.getIncomingCapacity(), session.getOutgoingWindow());
-
         if (session.getLocalState() == EndpointState.UNINITIALIZED) {
+            logger.warning("onSessionRemoteOpen connectionId[{}], entityName[{}], sessionIncCapacity[{}],"
+                    + " sessionOutgoingWindow[{}] endpoint was uninitialised.",
+                getConnectionId(), entityName, session.getIncomingCapacity(), session.getOutgoingWindow());
+
             session.open();
+        } else {
+            logger.info("onSessionRemoteOpen connectionId[{}], entityName[{}], sessionIncCapacity[{}],"
+                    + " sessionOutgoingWindow[{}]",
+                getConnectionId(), entityName, session.getIncomingCapacity(), session.getOutgoingWindow());
         }
 
         onNext(EndpointState.ACTIVE);
@@ -124,14 +127,12 @@ public class SessionHandler extends Handler {
             final AmqpErrorContext context = getErrorContext();
             final Exception exception;
             if (condition.getCondition() == null) {
-                exception = new AmqpException(false,
-                    String.format(Locale.US,
+                exception = new AmqpException(false, String.format(Locale.US,
                         "onSessionRemoteClose connectionId[%s], entityName[%s], condition[%s]", id, entityName,
                         condition),
                     context);
             } else {
-                exception = ExceptionUtil.toException(condition.getCondition().toString(),
-                    String.format(Locale.US,
+                exception = ExceptionUtil.toException(condition.getCondition().toString(), String.format(Locale.US,
                         "onSessionRemoteClose connectionId[%s], entityName[%s]", id,
                         entityName),
                     context);

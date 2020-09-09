@@ -123,7 +123,8 @@ public class ReactorSession implements AmqpSession {
             return;
         }
 
-        logger.info("sessionId[{}]: Disposing of session.", sessionName);
+        logger.info("connectionId[{}], sessionId[{}]: Disposing of session.", sessionHandler.getConnectionId(),
+            sessionName);
 
         session.close();
 
@@ -334,8 +335,8 @@ public class ReactorSession implements AmqpSession {
      * @return A new instance of an {@link AmqpReceiveLink} with the correct properties set.
      */
     protected Mono<AmqpReceiveLink> createConsumer(String linkName, String entityPath, Duration timeout,
-        AmqpRetryPolicy retry, Map<Symbol, Object> sourceFilters,
-        Map<Symbol, Object> receiverProperties, Symbol[] receiverDesiredCapabilities, SenderSettleMode senderSettleMode,
+        AmqpRetryPolicy retry, Map<Symbol, Object> sourceFilters, Map<Symbol, Object> receiverProperties,
+        Symbol[] receiverDesiredCapabilities, SenderSettleMode senderSettleMode,
         ReceiverSettleMode receiverSettleMode) {
 
         if (isDisposed()) {
@@ -418,7 +419,7 @@ public class ReactorSession implements AmqpSession {
 
         return RetryUtil.withRetry(
             getEndpointStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE),
-            timeout, retry).then(tokenManager.authorize()).then(Mono.<AmqpLink>create(sink -> {
+            timeout, retry).then(tokenManager.authorize()).then(Mono.create(sink -> {
                 try {
                     // We have to invoke this in the same thread or else proton-j will not properly link up the created
                     // sender because the link names are not unique. Link name == entity path.
