@@ -18,6 +18,7 @@ import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.engine.Record;
 import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.engine.Session;
+import org.apache.qpid.proton.message.Message;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -141,6 +142,9 @@ public class ReactorSessionTest {
         assertTrue(reactorSession.isDisposed());
     }
 
+    /**
+     * Verifies that we can create the producer.
+     */
     @Test
     void createProducer() {
         // Arrange
@@ -172,6 +176,44 @@ public class ReactorSessionTest {
             .block(TIMEOUT);
 
         assertNotNull(sendLink);
+    }
+
+    /**
+     * Verifies that we can create the producer.
+     */
+    @Test
+    void createProducerAgainAfterException() {
+        // Arrange
+        final String linkName = "test-link-name";
+        final String entityPath = "test-entity-path";
+        final AmqpRetryPolicy amqpRetryPolicy = mock(AmqpRetryPolicy.class);
+        final Map<Symbol, Object> linkProperties = new HashMap<>();
+        final Duration timeout = Duration.ofSeconds(30);
+        final TokenManager tokenManager = mock(TokenManager.class);
+        final SendLinkHandler sendLinkHandler = new SendLinkHandler(ID, HOST, linkName, entityPath);
+        final Message message = mock(Message.class);
+
+        when(session.sender(linkName)).thenReturn(sender);
+        when(tokenManagerProvider.getTokenManager(cbsNodeSupplier, entityPath)).thenReturn(tokenManager);
+        when(tokenManager.authorize()).thenReturn(Mono.just(1000L));
+        when(tokenManager.getAuthorizationResults())
+            .thenReturn(Flux.create(sink -> sink.next(AmqpResponseCode.ACCEPTED)));
+        when(reactorHandlerProvider.createSendLinkHandler(ID, HOST, linkName, entityPath))
+            .thenReturn(sendLinkHandler);
+
+        handler.onSessionRemoteOpen(event);
+
+        final AmqpLink sendLink = reactorSession.createProducer(linkName, entityPath, timeout, amqpRetryPolicy,
+            linkProperties)
+            .block(TIMEOUT);
+
+        assertNotNull(sendLink);
+        assertTrue(sendLink instanceof AmqpSendLink);
+
+        final AmqpSendLink reactorSendLink = (AmqpSendLink) sendLink;
+
+        // Act & Assert
+        StepVerifier.create(reactorSendLink.send(message));
     }
 
     @Test
