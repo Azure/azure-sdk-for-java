@@ -65,9 +65,8 @@ public class VirtualMachineScaleSetVMInstanceViewInner {
 
     /**
      * Boot Diagnostics is a debugging feature which allows you to view Console
-     * Output and Screenshot to diagnose VM status. &lt;br&gt;&lt;br&gt; For
-     * Linux Virtual Machines, you can easily view the output of your console
-     * log. &lt;br&gt;&lt;br&gt; For both Windows and Linux virtual machines,
+     * Output and Screenshot to diagnose VM status. &lt;br&gt;&lt;br&gt; You
+     * can easily view the output of your console log. &lt;br&gt;&lt;br&gt;
      * Azure also enables you to see a screenshot of the VM from the
      * hypervisor.
      */
@@ -88,7 +87,7 @@ public class VirtualMachineScaleSetVMInstanceViewInner {
     private String placementGroupId;
 
     /**
-     * Get the platformUpdateDomain value.
+     * Get the Update Domain count.
      *
      * @return the platformUpdateDomain value
      */
@@ -97,7 +96,7 @@ public class VirtualMachineScaleSetVMInstanceViewInner {
     }
 
     /**
-     * Set the platformUpdateDomain value.
+     * Set the Update Domain count.
      *
      * @param platformUpdateDomain the platformUpdateDomain value to set
      * @return the VirtualMachineScaleSetVMInstanceViewInner object itself.
@@ -108,7 +107,7 @@ public class VirtualMachineScaleSetVMInstanceViewInner {
     }
 
     /**
-     * Get the platformFaultDomain value.
+     * Get the Fault Domain count.
      *
      * @return the platformFaultDomain value
      */
@@ -117,7 +116,7 @@ public class VirtualMachineScaleSetVMInstanceViewInner {
     }
 
     /**
-     * Set the platformFaultDomain value.
+     * Set the Fault Domain count.
      *
      * @param platformFaultDomain the platformFaultDomain value to set
      * @return the VirtualMachineScaleSetVMInstanceViewInner object itself.
@@ -128,7 +127,7 @@ public class VirtualMachineScaleSetVMInstanceViewInner {
     }
 
     /**
-     * Get the rdpThumbPrint value.
+     * Get the Remote desktop certificate thumbprint.
      *
      * @return the rdpThumbPrint value
      */
@@ -137,7 +136,7 @@ public class VirtualMachineScaleSetVMInstanceViewInner {
     }
 
     /**
-     * Set the rdpThumbPrint value.
+     * Set the Remote desktop certificate thumbprint.
      *
      * @param rdpThumbPrint the rdpThumbPrint value to set
      * @return the VirtualMachineScaleSetVMInstanceViewInner object itself.
@@ -148,7 +147,7 @@ public class VirtualMachineScaleSetVMInstanceViewInner {
     }
 
     /**
-     * Get the vmAgent value.
+     * Get the VM Agent running on the virtual machine.
      *
      * @return the vmAgent value
      */
@@ -157,7 +156,7 @@ public class VirtualMachineScaleSetVMInstanceViewInner {
     }
 
     /**
-     * Set the vmAgent value.
+     * Set the VM Agent running on the virtual machine.
      *
      * @param vmAgent the vmAgent value to set
      * @return the VirtualMachineScaleSetVMInstanceViewInner object itself.
@@ -168,7 +167,7 @@ public class VirtualMachineScaleSetVMInstanceViewInner {
     }
 
     /**
-     * Get the disks value.
+     * Get the disks information.
      *
      * @return the disks value
      */
@@ -177,7 +176,7 @@ public class VirtualMachineScaleSetVMInstanceViewInner {
     }
 
     /**
-     * Set the disks value.
+     * Set the disks information.
      *
      * @param disks the disks value to set
      * @return the VirtualMachineScaleSetVMInstanceViewInner object itself.
@@ -188,7 +187,7 @@ public class VirtualMachineScaleSetVMInstanceViewInner {
     }
 
     /**
-     * Get the extensions value.
+     * Get the extensions information.
      *
      * @return the extensions value
      */
@@ -197,7 +196,7 @@ public class VirtualMachineScaleSetVMInstanceViewInner {
     }
 
     /**
-     * Set the extensions value.
+     * Set the extensions information.
      *
      * @param extensions the extensions value to set
      * @return the VirtualMachineScaleSetVMInstanceViewInner object itself.
@@ -208,7 +207,7 @@ public class VirtualMachineScaleSetVMInstanceViewInner {
     }
 
     /**
-     * Get the vmHealth value.
+     * Get the health status for the VM.
      *
      * @return the vmHealth value
      */
@@ -217,7 +216,7 @@ public class VirtualMachineScaleSetVMInstanceViewInner {
     }
 
     /**
-     * Get the bootDiagnostics value.
+     * Get boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM status. &lt;br&gt;&lt;br&gt; You can easily view the output of your console log. &lt;br&gt;&lt;br&gt; Azure also enables you to see a screenshot of the VM from the hypervisor.
      *
      * @return the bootDiagnostics value
      */
@@ -226,7 +225,7 @@ public class VirtualMachineScaleSetVMInstanceViewInner {
     }
 
     /**
-     * Set the bootDiagnostics value.
+     * Set boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM status. &lt;br&gt;&lt;br&gt; You can easily view the output of your console log. &lt;br&gt;&lt;br&gt; Azure also enables you to see a screenshot of the VM from the hypervisor.
      *
      * @param bootDiagnostics the bootDiagnostics value to set
      * @return the VirtualMachineScaleSetVMInstanceViewInner object itself.
@@ -237,7 +236,7 @@ public class VirtualMachineScaleSetVMInstanceViewInner {
     }
 
     /**
-     * Get the statuses value.
+     * Get the resource status information.
      *
      * @return the statuses value
      */
@@ -246,7 +245,7 @@ public class VirtualMachineScaleSetVMInstanceViewInner {
     }
 
     /**
-     * Set the statuses value.
+     * Set the resource status information.
      *
      * @param statuses the statuses value to set
      * @return the VirtualMachineScaleSetVMInstanceViewInner object itself.
@@ -257,7 +256,7 @@ public class VirtualMachineScaleSetVMInstanceViewInner {
     }
 
     /**
-     * Get the placementGroupId value.
+     * Get the placement group in which the VM is running. If the VM is deallocated it will not have a placementGroupId.
      *
      * @return the placementGroupId value
      */
@@ -266,7 +265,7 @@ public class VirtualMachineScaleSetVMInstanceViewInner {
     }
 
     /**
-     * Set the placementGroupId value.
+     * Set the placement group in which the VM is running. If the VM is deallocated it will not have a placementGroupId.
      *
      * @param placementGroupId the placementGroupId value to set
      * @return the VirtualMachineScaleSetVMInstanceViewInner object itself.
