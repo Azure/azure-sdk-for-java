@@ -736,6 +736,7 @@ public final class DigitalTwinsClient {
     /**
      * Get an event route.
      * @param eventRouteId The Id of the event route to get.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} containing the retrieved event route.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -757,6 +758,7 @@ public final class DigitalTwinsClient {
      * List all the event routes that exist in your digital twins instance.
      * @param options The optional parameters to use when listing event routes. See {@link EventRoutesListOptions} for more details
      * on what optional parameters can be set.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link PagedIterable} containing all the event routes that exist in your digital twins instance.
      * This PagedIterable may take multiple service requests to iterate over all event routes.
      */
