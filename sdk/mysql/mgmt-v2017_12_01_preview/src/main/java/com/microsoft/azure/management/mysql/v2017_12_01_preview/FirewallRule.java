@@ -16,12 +16,12 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.mysql.v2017_12_01_preview.implementation.MySQLManager;
+import com.microsoft.azure.management.mysql.v2017_12_01_preview.implementation.DBForMySQLManager;
 
 /**
  * Type representing FirewallRule.
  */
-public interface FirewallRule extends HasInner<FirewallRuleInner>, Indexable, Refreshable<FirewallRule>, Updatable<FirewallRule.Update>, HasManager<MySQLManager> {
+public interface FirewallRule extends HasInner<FirewallRuleInner>, Indexable, Refreshable<FirewallRule>, Updatable<FirewallRule.Update>, HasManager<DBForMySQLManager> {
     /**
      * @return the endIpAddress value.
      */
