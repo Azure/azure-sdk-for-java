@@ -74,7 +74,12 @@ public class CosmosRepositoryFactory extends RepositoryFactorySupport {
 
             Assert.notNull(queryMethod, "queryMethod must not be null!");
             Assert.notNull(dbOperations, "dbOperations must not be null!");
-            return new PartTreeCosmosQuery(queryMethod, dbOperations);
+
+            if (queryMethod.hasAnnotatedQuery()) {
+                return new StringBasedCosmosQuery(queryMethod, dbOperations);
+            } else {
+                return new PartTreeCosmosQuery(queryMethod, dbOperations);
+            }
 
         }
     }

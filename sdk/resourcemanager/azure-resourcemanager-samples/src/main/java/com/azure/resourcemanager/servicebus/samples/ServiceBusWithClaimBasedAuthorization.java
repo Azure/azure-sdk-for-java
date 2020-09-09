@@ -125,9 +125,6 @@ public final class ServiceBusWithClaimBasedAuthorization {
             System.out.println("Deleted namespace " + namespaceName + "...");
 
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -139,7 +136,6 @@ public final class ServiceBusWithClaimBasedAuthorization {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

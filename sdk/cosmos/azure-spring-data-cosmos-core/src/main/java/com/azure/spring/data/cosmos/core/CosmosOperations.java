@@ -5,6 +5,7 @@ package com.azure.spring.data.cosmos.core;
 
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
@@ -274,4 +275,15 @@ public interface CosmosOperations {
      * @return MappingCosmosConverter
      */
     MappingCosmosConverter getConverter();
+
+    /**
+     * Run the query.
+     *
+     * @param <T> the type parameter
+     * @param querySpec the query spec
+     * @param domainType the domain type
+     * @param returnType the return type
+     * @return the Iterable
+     */
+    <T> Iterable<T> runQuery(SqlQuerySpec querySpec, Class<?> domainType, Class<T> returnType);
 }

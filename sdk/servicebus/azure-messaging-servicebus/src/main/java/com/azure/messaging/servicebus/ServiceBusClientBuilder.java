@@ -106,8 +106,7 @@ public final class ServiceBusClientBuilder {
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
         final TokenCredential tokenCredential;
         try {
-            tokenCredential = new ServiceBusSharedKeyCredential(properties.getSharedAccessKeyName(),
-                properties.getSharedAccessKey(), ServiceBusConstants.TOKEN_VALIDITY);
+            tokenCredential = getTokenCredential(properties);
         } catch (Exception e) {
             throw logger.logExceptionAsError(
                 new AzureException("Could not create the ServiceBusSharedKeyCredential.", e));
@@ -121,6 +120,17 @@ public final class ServiceBusClientBuilder {
         }
 
         return credential(properties.getEndpoint().getHost(), tokenCredential);
+    }
+
+    private TokenCredential getTokenCredential(ConnectionStringProperties properties) {
+        TokenCredential tokenCredential;
+        if (properties.getSharedAccessSignature() == null) {
+            tokenCredential = new ServiceBusSharedKeyCredential(properties.getSharedAccessKeyName(),
+                properties.getSharedAccessKey(), ServiceBusConstants.TOKEN_VALIDITY);
+        } else {
+            tokenCredential = new ServiceBusSharedKeyCredential(properties.getSharedAccessSignature());
+        }
+        return tokenCredential;
     }
 
     /**

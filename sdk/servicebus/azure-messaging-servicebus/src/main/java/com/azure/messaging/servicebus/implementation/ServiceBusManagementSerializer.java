@@ -9,6 +9,7 @@ import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.messaging.servicebus.implementation.models.CreateQueueBody;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -21,7 +22,10 @@ import java.util.regex.Pattern;
  */
 public class ServiceBusManagementSerializer implements SerializerAdapter {
     private static final String MINIMUM_DATETIME_FORMATTED = ">0001-01-01T00:00:00Z</";
-    private static final Pattern MINIMUM_DATETIME_PATTERN = Pattern.compile("\\>0001\\-01\\-01T00:00:00\\<\\/",
+    private static final Pattern MINIMUM_DATETIME_PATTERN = Pattern.compile(">0001-01-01T00:00:00</",
+        Pattern.MULTILINE);
+    private static final Pattern NAMESPACE_PATTERN = Pattern.compile(
+        "xmlns:(?<namespace>\\w+)=\"http://schemas\\.microsoft\\.com/netservices/2010/10/servicebus/connect\"",
         Pattern.MULTILINE);
 
     private final JacksonAdapter jacksonAdapter = new JacksonAdapter();
@@ -29,7 +33,23 @@ public class ServiceBusManagementSerializer implements SerializerAdapter {
 
     @Override
     public String serialize(Object object, SerializerEncoding encoding) throws IOException {
-        return jacksonAdapter.serialize(object, encoding);
+        final String contents = jacksonAdapter.serialize(object, encoding);
+
+        // This hack exists because the service requires a global namespace for the XML rather than allowing
+        // each XML element to be prefaced with an explicit namespace. For example:
+        // xmlns="foo" works because "foo" is assigned the global namespace.
+        // xmlns:ns0="foo", and then prefixing all elements with ns0:AuthorizationRule will break.
+        if (object instanceof CreateQueueBody) {
+            final Matcher matcher = NAMESPACE_PATTERN.matcher(contents);
+            if (matcher.find()) {
+                final String namespace = matcher.group("namespace");
+                return contents
+                    .replaceAll(namespace + ":", "")
+                    .replace("xmlns:" + namespace + "=", "xmlns=");
+            }
+        }
+
+        return contents;
     }
 
     @Override
