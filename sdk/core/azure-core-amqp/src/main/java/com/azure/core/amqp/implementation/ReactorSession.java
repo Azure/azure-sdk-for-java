@@ -63,7 +63,7 @@ public class ReactorSession implements AmqpSession {
     private final AtomicReference<LinkSubscription<AmqpSendLink>> coordinatorLink = new AtomicReference<>();
     private final AtomicReference<TransactionCoordinator> transactionCoordinator = new AtomicReference<>();
 
-    private AmqpRetryPolicy retryPolicy;
+    private final AmqpRetryPolicy retryPolicy;
 
     /**
      * Creates a new AMQP session using proton-j.
