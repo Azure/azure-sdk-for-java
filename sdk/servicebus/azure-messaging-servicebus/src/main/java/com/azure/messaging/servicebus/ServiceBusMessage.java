@@ -374,13 +374,10 @@ public class ServiceBusMessage {
      *     Timestamps</a>
      */
     public OffsetDateTime getScheduledEnqueueTime() {
-        OffsetDateTime scheduledEnqueueTime = null;
-        Map<String, Object> messageAnnotationMap = amqpAnnotatedMessage.getMessageAnnotations();
-        if (messageAnnotationMap.containsKey(SCHEDULED_ENQUEUE_UTC_TIME_NAME.getValue())) {
-            scheduledEnqueueTime = ((Date) messageAnnotationMap.get(SCHEDULED_ENQUEUE_UTC_TIME_NAME.getValue()))
-                .toInstant().atOffset(ZoneOffset.UTC);
-        }
-        return scheduledEnqueueTime;
+        Object value = amqpAnnotatedMessage.getMessageAnnotations().get(SCHEDULED_ENQUEUE_UTC_TIME_NAME.getValue());
+        return value != null
+            ? ((Date) value).toInstant().atOffset(ZoneOffset.UTC)
+            : null;
     }
 
     /**

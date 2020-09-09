@@ -49,7 +49,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -158,8 +157,8 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         amqpMessage.getProperties().setUserId(new Binary(brokeredProperties.getUserId()));
 
         if (brokeredProperties.getAbsoluteExpiryTime() != null) {
-            amqpMessage.getProperties().setAbsoluteExpiryTime(Date.from(brokeredProperties.getAbsoluteExpiryTime().
-                toInstant()));
+            amqpMessage.getProperties().setAbsoluteExpiryTime(Date.from(brokeredProperties.getAbsoluteExpiryTime()
+                .toInstant()));
         }
         if (brokeredProperties.getCreationTime() != null) {
             amqpMessage.getProperties().setCreationTime(Date.from(brokeredProperties.getCreationTime().toInstant()));
@@ -171,19 +170,19 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         //set header
         AmqpMessageHeader header = brokeredMessage.getAmqpAnnotatedMessage().getHeader();
         if (header.getDeliveryCount() != null) {
-            amqpMessage.setDeliveryCount(brokeredMessage.getAmqpAnnotatedMessage().getHeader().getDeliveryCount());
+            amqpMessage.setDeliveryCount(header.getDeliveryCount());
         }
         if (header.getPriority() != null) {
             amqpMessage.setPriority(header.getPriority());
         }
         if (header.isDurable() != null) {
-            amqpMessage.setDurable(brokeredMessage.getAmqpAnnotatedMessage().getHeader().isDurable());
+            amqpMessage.setDurable(header.isDurable());
         }
         if (header.isFirstAcquirer() != null) {
-            amqpMessage.setFirstAcquirer(brokeredMessage.getAmqpAnnotatedMessage().getHeader().isFirstAcquirer());
+            amqpMessage.setFirstAcquirer(header.isFirstAcquirer());
         }
         if (header.getTimeToLive() != null) {
-            amqpMessage.setTtl(brokeredMessage.getAmqpAnnotatedMessage().getHeader().getTimeToLive().toMillis());
+            amqpMessage.setTtl(header.getTimeToLive().toMillis());
         }
 
         final Map<Symbol, Object> messageAnnotationsMap = new HashMap<>();
@@ -210,9 +209,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
 
         final Map<String, Object> deliveryAnnotations = brokeredMessage.getAmqpAnnotatedMessage()
             .getDeliveryAnnotations();
-        Iterator<Map.Entry<String, Object>> deliveryEntries = deliveryAnnotations.entrySet().iterator();
-        while (deliveryEntries.hasNext()) {
-            Map.Entry<String, Object> deliveryEntry = deliveryEntries.next();
+        for (Map.Entry<String, Object> deliveryEntry : deliveryAnnotations.entrySet()) {
             deliveryAnnotationsMap.put(Symbol.valueOf(deliveryEntry.getKey()), deliveryEntry.getValue());
         }
 
@@ -364,7 +361,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
     }
 
     private ServiceBusReceivedMessage deserializeMessage(Message amqpMessage) {
-        byte[] bytes = null;
+        final byte[] bytes;
         final Section body = amqpMessage.getBody();
         if (body != null) {
             //TODO (conniey): Support other AMQP types like AmqpValue and AmqpSequence.
@@ -401,12 +398,8 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         final Footer footer = amqpMessage.getFooter();
         if (footer != null && footer.getValue() != null) {
             @SuppressWarnings("unchecked") final Map<Symbol, Object> footerValue = footer.getValue();
-            Iterator<Map.Entry<Symbol, Object>> footerEntries = footerValue.entrySet().iterator();
+            setValues(footerValue, brokeredAmqpAnnotatedMessage.getFooter());
 
-            while (footerEntries.hasNext()) {
-                Map.Entry<Symbol, Object> footerEntry = footerEntries.next();
-                brokeredAmqpAnnotatedMessage.getFooter().put(footerEntry.getKey().toString(), footerEntry.getValue());
-            }
         }
 
         // Properties
@@ -485,9 +478,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
     private void setValues(Map<Symbol, Object> sourceMap, Map<String, Object> targetMap) {
         if (sourceMap != null) {
             for (Map.Entry<Symbol, Object> entry : sourceMap.entrySet()) {
-                final String key = entry.getKey().toString();
-                final Object value = entry.getValue();
-                targetMap.put(key, value);
+                targetMap.put(entry.getKey().toString(), entry.getValue());
             }
         }
     }

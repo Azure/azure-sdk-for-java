@@ -635,7 +635,7 @@ public final class ServiceBusReceivedMessage {
      * Gets String value from given map and null if key does not exists.
      */
     private String getStringValue(Map<String, Object> dataMap, String key) {
-        return dataMap.containsKey(key) ? (String) dataMap.get(key) : null;
+        return (String) dataMap.get(key);
     }
 
     /*
