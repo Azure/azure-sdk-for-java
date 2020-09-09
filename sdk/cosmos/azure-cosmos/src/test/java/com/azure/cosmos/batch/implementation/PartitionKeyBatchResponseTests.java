@@ -23,7 +23,7 @@ public class PartitionKeyBatchResponseTests {
 
     private static final int TIMEOUT = 40000;
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void statusCodesAreSetThroughResponseAsync() {
         List<TransactionalBatchOperationResult<?>> results = new ArrayList<>();
         ItemBatchOperation<?>[] arrayOperations = new ItemBatchOperation<?>[1];

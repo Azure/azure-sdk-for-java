@@ -24,7 +24,7 @@ public class BatchAsyncOperationContextTests {
 
     private static final int TIMEOUT = 40000;
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void partitionKeyRangeIdIsSetOnInitialization() {
         String expectedPkRangeId = UUID.randomUUID().toString();
         ItemBatchOperation<?> operation = new ItemBatchOperation.Builder<Object>(OperationType.Create,0)
@@ -41,7 +41,7 @@ public class BatchAsyncOperationContextTests {
         assertFalse(batchAsyncOperationContext.getOperationResultFuture().isDone());
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void taskIsCreatedOnInitialization() {
         ItemBatchOperation<?> operation = new ItemBatchOperation.Builder<Object>(OperationType.Create,0)
             .partitionKey(PartitionKey.NONE)
@@ -55,7 +55,7 @@ public class BatchAsyncOperationContextTests {
         assertFalse(batchAsyncOperationContext.getOperationResultFuture().isDone());
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void taskResultIsSetOnCompleteAsync() throws Exception {
         ItemBatchOperation<?> operation = new ItemBatchOperation.Builder<Object>(OperationType.Create,0)
             .partitionKey(PartitionKey.NONE)
@@ -72,7 +72,7 @@ public class BatchAsyncOperationContextTests {
         assertTrue(batchAsyncOperationContext.getOperationResultFuture().isDone());
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void exceptionIsSetOnFailAsync() {
         Exception failure = new Exception("It failed");
         ItemBatchOperation<?> operation = new ItemBatchOperation.Builder<Object>(OperationType.Create,0)
@@ -95,7 +95,7 @@ public class BatchAsyncOperationContextTests {
         assertTrue(batchAsyncOperationContext.getOperationResultFuture().isCompletedExceptionally());
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void cannotAttachMoreThanOnce() {
         ItemBatchOperation<?> operation = new ItemBatchOperation.Builder<Object>(OperationType.Create,0)
             .partitionKey(PartitionKey.NONE)
@@ -111,7 +111,7 @@ public class BatchAsyncOperationContextTests {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void shouldRetry_NoPolicy() {
         TransactionalBatchOperationResult<?> result = new TransactionalBatchOperationResult<Object>(HttpResponseStatus.OK.code());
         ItemBatchOperation<?> operation = new ItemBatchOperation.Builder<Object>(OperationType.Create,0)
@@ -124,7 +124,7 @@ public class BatchAsyncOperationContextTests {
         assertFalse(shouldRetryResult.shouldRetry);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void shouldRetry_WithPolicy_OnSuccess() {
         BatchPartitionKeyRangeGoneRetryPolicy retryPolicy = new BatchPartitionKeyRangeGoneRetryPolicy(
             new ResourceThrottleRetryPolicy(1));
@@ -138,7 +138,7 @@ public class BatchAsyncOperationContextTests {
         assertFalse(shouldRetryResult.shouldRetry);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void shouldRetry_WithPolicy_On429() {
         BatchPartitionKeyRangeGoneRetryPolicy retryPolicy = new BatchPartitionKeyRangeGoneRetryPolicy(
             new ResourceThrottleRetryPolicy(1));
@@ -152,7 +152,7 @@ public class BatchAsyncOperationContextTests {
         assertTrue(shouldRetryResult.shouldRetry);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void shouldRetry_WithPolicy_OnSplit() {
         BatchPartitionKeyRangeGoneRetryPolicy retryPolicy = new BatchPartitionKeyRangeGoneRetryPolicy(
             new ResourceThrottleRetryPolicy(1));

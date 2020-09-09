@@ -27,7 +27,7 @@ public class PartitionKeyRangeServerBatchRequestTests {
         return operation;
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void fitsAllOperations() throws Exception {
         List<ItemBatchOperation<?>> operations = new ArrayList<ItemBatchOperation<?>>() {{
             createItemBatchOperation("");
@@ -46,7 +46,7 @@ public class PartitionKeyRangeServerBatchRequestTests {
         assertEquals(0, serverOperationBatchRequest.getBatchPendingOperations().size());
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void overflowsBasedOnCount()  throws Exception {
         List<ItemBatchOperation<?>> operations = new ArrayList<ItemBatchOperation<?>>() {{
             add(createItemBatchOperation("1"));
@@ -69,7 +69,7 @@ public class PartitionKeyRangeServerBatchRequestTests {
         assertEquals(operations.get(2).getId(), serverOperationBatchRequest.getBatchPendingOperations().get(1).getId());
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void overflowsBasedOnCountWithOffset() throws Exception {
         List<ItemBatchOperation<?>> operations = new ArrayList<ItemBatchOperation<?>>() {{
             add(createItemBatchOperation("1"));
@@ -92,7 +92,7 @@ public class PartitionKeyRangeServerBatchRequestTests {
         assertEquals(operations.get(2).getId(), serverOperationBatchRequest.getBatchPendingOperations().get(0).getId());
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void partitionKeyRangeServerBatchRequestSizeTests() throws Exception {
 
         int docSizeInBytes = 250;

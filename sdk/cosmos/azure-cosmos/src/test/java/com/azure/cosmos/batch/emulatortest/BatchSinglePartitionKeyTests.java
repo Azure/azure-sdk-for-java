@@ -31,22 +31,22 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
         super(clientBuilder);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void batchCrud() throws Exception {
          this.runCrudAsync(super.jsonContainer);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void batchGatewayCrud() throws Exception {
         this.runCrudAsync(super.gatewayJsonContainer);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void batchSharedThroughputCrud() throws Exception {
         this.runCrudAsync(super.sharedThroughputContainer);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void batchOrdered() {
         CosmosAsyncContainer container = super.jsonContainer;
         this.createJsonTestDocsAsync(container);
@@ -70,7 +70,7 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
         this.verifyByReadAsync(container, replaceDoc);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void batchItemETagAsync() {
         CosmosAsyncContainer container = super.jsonContainer;
         this.createJsonTestDocsAsync(container);
@@ -126,7 +126,7 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void batchItemSessionTokenAsync() {
         CosmosAsyncContainer container = this.jsonContainer;
         this.createJsonTestDocsAsync(container);
@@ -159,7 +159,7 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
         assertTrue(afterRequestSessionToken.getLSN() > beforeRequestSessionToken.getLSN(), "Response session token should be more than request session token");
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void batchLargerThanServerRequestAsync() {
         CosmosAsyncContainer container = this.jsonContainer;
 
@@ -179,7 +179,7 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
         assertEquals(HttpResponseStatus.REQUEST_ENTITY_TOO_LARGE.code(), batchResponse.getResponseStatus());
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void batchWithTooManyOperationsAsync() {
         CosmosAsyncContainer container = this.jsonContainer;
         int operationCount = MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST + 1;
@@ -195,7 +195,7 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
         assertEquals(HttpResponseStatus.BAD_REQUEST.code(), batchResponse.getResponseStatus());
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void batchServerResponseTooLargeAsync() {
 
         CosmosAsyncContainer container = this.jsonContainer;
@@ -220,7 +220,7 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
         assertEquals(HttpResponseStatus.REQUEST_ENTITY_TOO_LARGE.code(), batchResponse.get(operationCount - 1).getResponseStatus());
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void batchReadsOnlyAsync() throws Exception {
         CosmosAsyncContainer container = this.jsonContainer;
         this.createJsonTestDocsAsync(container);
@@ -284,22 +284,22 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
         return batchResponse;
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void batchWithCreateConflictAsync() {
         this.runBatchWithCreateConflictAsync(this.jsonContainer);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void batchWithCreateConflictGatewayAsync() {
         this.runBatchWithCreateConflictAsync(this.gatewayJsonContainer);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void batchWithCreateConflictSharedThroughputAsync() {
         this.runBatchWithCreateConflictAsync(this.sharedThroughputContainer);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void batchWithInvalidCreateAsync() {
         CosmosAsyncContainer container = this.jsonContainer;
 
@@ -310,7 +310,7 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
             HttpResponseStatus.BAD_REQUEST);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void batchWithReadOfNonExistentEntityAsync() {
         CosmosAsyncContainer container = this.jsonContainer;
         this.runWithErrorAsync(
@@ -319,7 +319,7 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
             HttpResponseStatus.NOT_FOUND);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void batchWithReplaceOfStaleEntityAsync() {
         CosmosAsyncContainer container = this.jsonContainer;
         this.createJsonTestDocsAsync(container);
@@ -339,7 +339,7 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
         this.verifyByReadAsync(container, this.TestDocPk1ExistingA);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void batchWithDeleteOfNonExistentEntityAsync() {
         CosmosAsyncContainer container = this.jsonContainer;
 

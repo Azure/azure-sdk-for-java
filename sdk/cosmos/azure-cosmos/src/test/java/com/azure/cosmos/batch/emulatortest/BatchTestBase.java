@@ -61,7 +61,7 @@ public class BatchTestBase extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
     public void before_BatchTestBase() {
         initializeDirectContainers();
         initializeBulkContainers();
@@ -69,7 +69,7 @@ public class BatchTestBase extends TestSuiteBase {
         initializeSharedThroughputContainer();
     }
 
-    @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"emulator"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         assertThat(this.client).isNotNull();
 

@@ -31,7 +31,7 @@ public class BatchOperationResultTests {
         return result;
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void propertiesAreSetThroughCopyCtor() {
         TransactionalBatchOperationResult<?> other = createTestResult();
         TransactionalBatchOperationResult<?> result = new TransactionalBatchOperationResult<Object>(other);
@@ -44,7 +44,7 @@ public class BatchOperationResultTests {
         assertSame(other.getResourceObject(), result.getResourceObject());
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void propertiesAreSetThroughGenericCtor() {
         TransactionalBatchOperationResult<?> other = createTestResult();
         Object testObject = new Object();
@@ -59,7 +59,7 @@ public class BatchOperationResultTests {
         assertSame(testObject, result.getResource());
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void toResponseMessageHasPropertiesMapped() {
         TransactionalBatchOperationResult<?> result = createTestResult();
         RxDocumentServiceResponse response = BatchExecUtils.toResponseMessage(result);
@@ -72,7 +72,7 @@ public class BatchOperationResultTests {
         assertEquals(result.getResourceObject().toString().getBytes(StandardCharsets.UTF_8), response.getResponseBodyAsByteArray());
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void isSuccessStatusCodeTrueFor200To299() {
         for (int x = 100; x < 999; ++x) {
             TransactionalBatchOperationResult<?> result = new TransactionalBatchOperationResult<Object>(x);

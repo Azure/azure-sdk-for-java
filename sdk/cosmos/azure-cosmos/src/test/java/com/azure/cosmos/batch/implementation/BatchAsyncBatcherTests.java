@@ -155,27 +155,27 @@ public class BatchAsyncBatcherTests {
         });
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT, expectedExceptions = IllegalArgumentException.class)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT, expectedExceptions = IllegalArgumentException.class)
     public void validatesSize() {
         BatchAsyncBatcher batchAsyncBatcher = new BatchAsyncBatcher(-1, 1, this::executeAsync, this::reBatchAsync);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT, expectedExceptions = IllegalArgumentException.class)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT, expectedExceptions = IllegalArgumentException.class)
     public void validatesByteSize() {
         BatchAsyncBatcher batchAsyncBatcher = new BatchAsyncBatcher(1, -1, this::executeAsync, this::reBatchAsync);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT, expectedExceptions = NullPointerException.class)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT, expectedExceptions = NullPointerException.class)
     public void validatesExecutor() {
         BatchAsyncBatcher batchAsyncBatcher = new BatchAsyncBatcher(1, 1, null, this::reBatchAsync);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT, expectedExceptions = NullPointerException.class)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT, expectedExceptions = NullPointerException.class)
     public void validatesRetrier() {
         BatchAsyncBatcher batchAsyncBatcher = new BatchAsyncBatcher(1, 1, this::executeAsync, null);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void hasFixedSize() {
         BatchAsyncBatcher batchAsyncBatcher = new BatchAsyncBatcher(2, 1000, this::executeAsync, this::reBatchAsync);
         assertTrue(batchAsyncBatcher.tryAdd(this.createItemBatchOperation(true)));
@@ -183,7 +183,7 @@ public class BatchAsyncBatcherTests {
         assertFalse(batchAsyncBatcher.tryAdd(this.createItemBatchOperation(true)));
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void hasFixedByteSize() {
         ItemBatchOperation<?> itemBatchOperation = this.createItemBatchOperation(true);
         itemBatchOperation.materializeResource();
@@ -194,7 +194,7 @@ public class BatchAsyncBatcherTests {
         assertFalse(batchAsyncBatcher.tryAdd(itemBatchOperation));
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void exceptionsFailOperationsAsync() {
         BatchAsyncBatcher batchAsyncBatcher = new BatchAsyncBatcher(2, 1000, this::executorWithFailure, this::reBatchAsync);
         ItemBatchOperation<?> operation1 = this.createItemBatchOperation(false);
@@ -230,7 +230,7 @@ public class BatchAsyncBatcherTests {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void dispatchProcessInOrderAsync() throws Exception {
         BatchAsyncBatcher batchAsyncBatcher = new BatchAsyncBatcher(10, 1000, this::executeAsync, this::reBatchAsync);
         List<ItemBatchOperation<?>> operations = new ArrayList<>(10);
@@ -257,7 +257,7 @@ public class BatchAsyncBatcherTests {
          }
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void dispatchWithLessResponses() throws Exception {
         BatchAsyncBatcher batchAsyncBatcher = new BatchAsyncBatcher(10, 1000, this::executorWithLessResponses, this::reBatchAsync);
         BatchAsyncBatcher secondAsyncBatcher = new BatchAsyncBatcher(10, 1000, this::executeAsync, this::reBatchAsync);
@@ -312,20 +312,20 @@ public class BatchAsyncBatcherTests {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void isEmptyWithNoOperations() {
         BatchAsyncBatcher batchAsyncBatcher = new BatchAsyncBatcher(10, 1000, this::executeAsync, this::reBatchAsync);
         assertTrue(batchAsyncBatcher.isEmpty());
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void isNotEmptyWithOperations() {
         BatchAsyncBatcher batchAsyncBatcher = new BatchAsyncBatcher(1, 1000, this::executeAsync, this::reBatchAsync);
         assertTrue(batchAsyncBatcher.tryAdd(this.createItemBatchOperation(true)));
         assertFalse(batchAsyncBatcher.isEmpty());
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void cannotAddToDispatchedBatch() {
         BatchAsyncBatcher batchAsyncBatcher = new BatchAsyncBatcher(1, 1000, this::executeAsync, this::reBatchAsync);
         ItemBatchOperation<?> operation = this.createItemBatchOperation(false);
@@ -343,7 +343,7 @@ public class BatchAsyncBatcherTests {
         assertFalse(batchAsyncBatcher.tryAdd(this.createItemBatchOperation(false)));
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void retrierGetsCalledOnSplit() {
         BatchPartitionKeyRangeGoneRetryPolicy retryPolicy1 = new BatchPartitionKeyRangeGoneRetryPolicy(
             new ResourceThrottleRetryPolicy(1));
@@ -376,7 +376,7 @@ public class BatchAsyncBatcherTests {
         verify(retryDelegate, times(2)).apply(any(ItemBatchOperation.class));
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void retrierGetsCalledOnOverFlow() {
         ItemBatchOperation<?> operation1 = this.createItemBatchOperation(false);
         ItemBatchOperation<?> operation2 = this.createItemBatchOperation(false);

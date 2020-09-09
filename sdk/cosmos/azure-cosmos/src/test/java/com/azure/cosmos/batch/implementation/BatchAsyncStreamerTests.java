@@ -80,7 +80,7 @@ public class BatchAsyncStreamerTests {
         });
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT, expectedExceptions = IllegalArgumentException.class)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT, expectedExceptions = IllegalArgumentException.class)
     public void validatesSize() {
         BatchAsyncStreamer batchAsyncStreamer = new BatchAsyncStreamer(
             -1,
@@ -92,7 +92,7 @@ public class BatchAsyncStreamerTests {
             this::reBatchAsync);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT, expectedExceptions = NullPointerException.class)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT, expectedExceptions = NullPointerException.class)
     public void validatesExecutor() {
         BatchAsyncStreamer batchAsyncStreamer = new BatchAsyncStreamer(
             1,
@@ -104,7 +104,7 @@ public class BatchAsyncStreamerTests {
             this::reBatchAsync);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT, expectedExceptions = NullPointerException.class)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT, expectedExceptions = NullPointerException.class)
     public void validatesRetrier() {
         BatchAsyncStreamer batchAsyncStreamer = new BatchAsyncStreamer(
             1,
@@ -116,7 +116,7 @@ public class BatchAsyncStreamerTests {
             null);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT, expectedExceptions = NullPointerException.class)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT, expectedExceptions = NullPointerException.class)
     public void validatesLimiter() {
         BatchAsyncStreamer batchAsyncStreamer = new BatchAsyncStreamer(
             1,
@@ -128,7 +128,7 @@ public class BatchAsyncStreamerTests {
             this::reBatchAsync);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void exceptionsOnBatchBubbleUpAsync() {
         BatchAsyncStreamer batchAsyncStreamer = new BatchAsyncStreamer(
             2,
@@ -155,7 +155,7 @@ public class BatchAsyncStreamerTests {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void timerDispatchesAsync() throws Exception {
         // Bigger batch size than the amount of operations, timer should dispatch
         BatchAsyncStreamer batchAsyncStreamer = new BatchAsyncStreamer(
@@ -179,7 +179,7 @@ public class BatchAsyncStreamerTests {
         assertEquals(itemBatchOperation.getId(), result.getETag());
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void validatesCongestionControlAsync() {
         Semaphore newLimiter = new Semaphore(1);
         BatchAsyncStreamer batchAsyncStreamer =  new BatchAsyncStreamer(
@@ -217,7 +217,7 @@ public class BatchAsyncStreamerTests {
         assertTrue(newLimiter.availablePermits() >= 2, "Count of threads that can enter into semaphore should increase atleast by 1");
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void dispatchesAsync() throws Exception {
         // Expect all operations to complete as their batches get dispached
         BatchAsyncStreamer batchAsyncStreamer = new BatchAsyncStreamer(

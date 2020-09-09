@@ -29,7 +29,7 @@ public class CosmosItemBulkTests extends BatchTestBase {
         super(clientBuilder);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT * 100)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT * 100)
     public void createItem_withBulk() {
         CosmosAsyncContainer container = this.bulkContainer;
 
@@ -49,7 +49,7 @@ public class CosmosItemBulkTests extends BatchTestBase {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void upsertItem_withbulk() {
         List<Mono<CosmosItemResponse<TestDoc>>> responseMonos = new ArrayList<>();
         CosmosAsyncContainer container = this.bulkContainer;
@@ -69,7 +69,7 @@ public class CosmosItemBulkTests extends BatchTestBase {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void deleteItem_withBulk() {
         List<Mono<CosmosItemResponse<TestDoc>>> insertMonos = new ArrayList<>();
         List<TestDoc> createdDocuments = new ArrayList<TestDoc>();
@@ -98,7 +98,7 @@ public class CosmosItemBulkTests extends BatchTestBase {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void readItem_withBulk() {
         List<Mono<CosmosItemResponse<TestDoc>>> insertMonos = new ArrayList<>();
         List<TestDoc> createdDocuments = new ArrayList<TestDoc>();
@@ -130,7 +130,7 @@ public class CosmosItemBulkTests extends BatchTestBase {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void replaceItem_withBulk() {
         List<Mono<CosmosItemResponse<TestDoc>>> insertMonos = new ArrayList<>();
         List<TestDoc> createdDocuments = new ArrayList<TestDoc>();

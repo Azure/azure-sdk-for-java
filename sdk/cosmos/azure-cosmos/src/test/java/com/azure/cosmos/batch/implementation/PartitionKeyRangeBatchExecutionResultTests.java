@@ -27,20 +27,20 @@ public class PartitionKeyRangeBatchExecutionResultTests {
 
     private static final int TIMEOUT = 40000;
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void containsSplitIsTrue() {
         assertTrue (this.containsSplitIsTrueInternal(HttpResponseStatus.GONE, HttpConstants.SubStatusCodes.COMPLETING_SPLIT));
         assertTrue(this.containsSplitIsTrueInternal(HttpResponseStatus.GONE, HttpConstants.SubStatusCodes.COMPLETING_PARTITION_MIGRATION));
         assertTrue(this.containsSplitIsTrueInternal(HttpResponseStatus.GONE, HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE));
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void containsSplitIsFalse() {
         assertFalse(this.containsSplitIsTrueInternal(HttpResponseStatus.OK, HttpConstants.SubStatusCodes.UNKNOWN));
         assertFalse(this.containsSplitIsTrueInternal(HttpResponseStatus.TOO_MANY_REQUESTS, HttpConstants.SubStatusCodes.UNKNOWN));
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void statusCodesAreSetThroughResponseAsync() {
         List<TransactionalBatchOperationResult<?>> results = new ArrayList<TransactionalBatchOperationResult<?>>();
         List<ItemBatchOperation<?>> arrayOperations = new ArrayList<>();
