@@ -33,6 +33,7 @@ java:
     namespace: com.azure.digitaltwins.core
     add-credentials: true
     sync-methods: none
+    client-side-validations: true
     generate-client-as-impl: true
     implementation-subpackage: implementation
     models-subpackage: implementation.models
