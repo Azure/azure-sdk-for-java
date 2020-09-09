@@ -34,6 +34,11 @@ public interface Run extends HasInner<RunInner>, Indexable, Refreshable<Run>, Up
     DateTime createTime();
 
     /**
+     * @return the customRegistries value.
+     */
+    List<String> customRegistries();
+
+    /**
      * @return the finishTime value.
      */
     DateTime finishTime();
@@ -79,6 +84,11 @@ public interface Run extends HasInner<RunInner>, Indexable, Refreshable<Run>, Up
     ProvisioningState provisioningState();
 
     /**
+     * @return the runErrorMessage value.
+     */
+    String runErrorMessage();
+
+    /**
      * @return the runId value.
      */
     String runId();
@@ -87,6 +97,11 @@ public interface Run extends HasInner<RunInner>, Indexable, Refreshable<Run>, Up
      * @return the runType value.
      */
     RunType runType();
+
+    /**
+     * @return the sourceRegistryAuth value.
+     */
+    String sourceRegistryAuth();
 
     /**
      * @return the sourceTrigger value.

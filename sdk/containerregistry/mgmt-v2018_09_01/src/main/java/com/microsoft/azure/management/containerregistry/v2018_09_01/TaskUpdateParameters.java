@@ -55,6 +55,13 @@ public class TaskUpdateParameters {
     private TriggerUpdateParameters trigger;
 
     /**
+     * The parameters that describes a set of credentials that will be used
+     * when this run is invoked.
+     */
+    @JsonProperty(value = "properties.credentials")
+    private Credentials credentials;
+
+    /**
      * The ARM resource tags.
      */
     @JsonProperty(value = "tags")
@@ -177,6 +184,26 @@ public class TaskUpdateParameters {
      */
     public TaskUpdateParameters withTrigger(TriggerUpdateParameters trigger) {
         this.trigger = trigger;
+        return this;
+    }
+
+    /**
+     * Get the parameters that describes a set of credentials that will be used when this run is invoked.
+     *
+     * @return the credentials value
+     */
+    public Credentials credentials() {
+        return this.credentials;
+    }
+
+    /**
+     * Set the parameters that describes a set of credentials that will be used when this run is invoked.
+     *
+     * @param credentials the credentials value to set
+     * @return the TaskUpdateParameters object itself.
+     */
+    public TaskUpdateParameters withCredentials(Credentials credentials) {
+        this.credentials = credentials;
         return this;
     }
 

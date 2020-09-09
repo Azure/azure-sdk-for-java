@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The request parameters for a scheduling run against a task file.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = FileTaskRunRequest.class)
 @JsonTypeName("FileTaskRunRequest")
 public class FileTaskRunRequest extends RunRequest {
     /**
@@ -58,12 +58,19 @@ public class FileTaskRunRequest extends RunRequest {
 
     /**
      * The URL(absolute or relative) of the source context. It can be an URL to
-     * a tar or git repoistory.
+     * a tar or git repository.
      * If it is relative URL, the relative path should be obtained from calling
      * listBuildSourceUploadUrl API.
      */
     @JsonProperty(value = "sourceLocation")
     private String sourceLocation;
+
+    /**
+     * The properties that describes a set of credentials that will be used
+     * when this run is invoked.
+     */
+    @JsonProperty(value = "credentials")
+    private Credentials credentials;
 
     /**
      * Get the template/definition file path relative to the source.
@@ -186,7 +193,7 @@ public class FileTaskRunRequest extends RunRequest {
     }
 
     /**
-     * Get the URL(absolute or relative) of the source context. It can be an URL to a tar or git repoistory.
+     * Get the URL(absolute or relative) of the source context. It can be an URL to a tar or git repository.
      If it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API.
      *
      * @return the sourceLocation value
@@ -196,7 +203,7 @@ public class FileTaskRunRequest extends RunRequest {
     }
 
     /**
-     * Set the URL(absolute or relative) of the source context. It can be an URL to a tar or git repoistory.
+     * Set the URL(absolute or relative) of the source context. It can be an URL to a tar or git repository.
      If it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API.
      *
      * @param sourceLocation the sourceLocation value to set
@@ -204,6 +211,26 @@ public class FileTaskRunRequest extends RunRequest {
      */
     public FileTaskRunRequest withSourceLocation(String sourceLocation) {
         this.sourceLocation = sourceLocation;
+        return this;
+    }
+
+    /**
+     * Get the properties that describes a set of credentials that will be used when this run is invoked.
+     *
+     * @return the credentials value
+     */
+    public Credentials credentials() {
+        return this.credentials;
+    }
+
+    /**
+     * Set the properties that describes a set of credentials that will be used when this run is invoked.
+     *
+     * @param credentials the credentials value to set
+     * @return the FileTaskRunRequest object itself.
+     */
+    public FileTaskRunRequest withCredentials(Credentials credentials) {
+        this.credentials = credentials;
         return this;
     }
 

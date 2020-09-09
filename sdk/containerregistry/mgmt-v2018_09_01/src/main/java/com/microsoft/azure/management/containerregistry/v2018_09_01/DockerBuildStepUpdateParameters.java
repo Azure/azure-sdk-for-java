@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The properties for updating a docker build step.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = DockerBuildStepUpdateParameters.class)
 @JsonTypeName("Docker")
 public class DockerBuildStepUpdateParameters extends TaskStepUpdateParameters {
     /**
@@ -51,6 +51,12 @@ public class DockerBuildStepUpdateParameters extends TaskStepUpdateParameters {
      */
     @JsonProperty(value = "arguments")
     private List<Argument> arguments;
+
+    /**
+     * The name of the target build stage for the docker build.
+     */
+    @JsonProperty(value = "target")
+    private String target;
 
     /**
      * Get the fully qualified image names including the repository and tag.
@@ -149,6 +155,26 @@ public class DockerBuildStepUpdateParameters extends TaskStepUpdateParameters {
      */
     public DockerBuildStepUpdateParameters withArguments(List<Argument> arguments) {
         this.arguments = arguments;
+        return this;
+    }
+
+    /**
+     * Get the name of the target build stage for the docker build.
+     *
+     * @return the target value
+     */
+    public String target() {
+        return this.target;
+    }
+
+    /**
+     * Set the name of the target build stage for the docker build.
+     *
+     * @param target the target value to set
+     * @return the DockerBuildStepUpdateParameters object itself.
+     */
+    public DockerBuildStepUpdateParameters withTarget(String target) {
+        this.target = target;
         return this;
     }
 

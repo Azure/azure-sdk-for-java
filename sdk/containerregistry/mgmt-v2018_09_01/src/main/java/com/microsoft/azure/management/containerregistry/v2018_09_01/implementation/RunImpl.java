@@ -13,8 +13,8 @@ import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 import com.microsoft.azure.management.containerregistry.v2018_09_01.AgentProperties;
 import org.joda.time.DateTime;
-import com.microsoft.azure.management.containerregistry.v2018_09_01.ImageUpdateTrigger;
 import java.util.List;
+import com.microsoft.azure.management.containerregistry.v2018_09_01.ImageUpdateTrigger;
 import com.microsoft.azure.management.containerregistry.v2018_09_01.ImageDescriptor;
 import com.microsoft.azure.management.containerregistry.v2018_09_01.PlatformProperties;
 import com.microsoft.azure.management.containerregistry.v2018_09_01.ProvisioningState;
@@ -90,6 +90,11 @@ class RunImpl extends CreatableUpdatableImpl<Run, RunInner, RunImpl> implements 
     }
 
     @Override
+    public List<String> customRegistries() {
+        return this.inner().customRegistries();
+    }
+
+    @Override
     public DateTime finishTime() {
         return this.inner().finishTime();
     }
@@ -135,6 +140,11 @@ class RunImpl extends CreatableUpdatableImpl<Run, RunInner, RunImpl> implements 
     }
 
     @Override
+    public String runErrorMessage() {
+        return this.inner().runErrorMessage();
+    }
+
+    @Override
     public String runId() {
         return this.inner().runId();
     }
@@ -142,6 +152,11 @@ class RunImpl extends CreatableUpdatableImpl<Run, RunInner, RunImpl> implements 
     @Override
     public RunType runType() {
         return this.inner().runType();
+    }
+
+    @Override
+    public String sourceRegistryAuth() {
+        return this.inner().sourceRegistryAuth();
     }
 
     @Override

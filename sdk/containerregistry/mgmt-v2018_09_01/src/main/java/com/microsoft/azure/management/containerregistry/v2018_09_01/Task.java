@@ -35,6 +35,11 @@ public interface Task extends HasInner<TaskInner>, Indexable, Refreshable<Task>,
     DateTime creationDate();
 
     /**
+     * @return the credentials value.
+     */
+    Credentials credentials();
+
+    /**
      * @return the id value.
      */
     String id();
@@ -167,6 +172,18 @@ public interface Task extends HasInner<TaskInner>, Indexable, Refreshable<Task>,
         }
 
         /**
+         * The stage of the task definition allowing to specify Credentials.
+         */
+        interface WithCredentials {
+            /**
+             * Specifies credentials.
+             * @param credentials The properties that describes a set of credentials that will be used when this run is invoked
+             * @return the next definition stage
+             */
+            WithCreate withCredentials(Credentials credentials);
+        }
+
+        /**
          * The stage of the task definition allowing to specify Status.
          */
         interface WithStatus {
@@ -219,13 +236,13 @@ public interface Task extends HasInner<TaskInner>, Indexable, Refreshable<Task>,
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<Task>, DefinitionStages.WithAgentConfiguration, DefinitionStages.WithStatus, DefinitionStages.WithTags, DefinitionStages.WithTimeout, DefinitionStages.WithTrigger {
+        interface WithCreate extends Creatable<Task>, DefinitionStages.WithAgentConfiguration, DefinitionStages.WithCredentials, DefinitionStages.WithStatus, DefinitionStages.WithTags, DefinitionStages.WithTimeout, DefinitionStages.WithTrigger {
         }
     }
     /**
      * The template for a Task update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Task>, UpdateStages.WithAgentConfiguration, UpdateStages.WithPlatform, UpdateStages.WithStatus, UpdateStages.WithStep, UpdateStages.WithTags, UpdateStages.WithTimeout, UpdateStages.WithTrigger {
+    interface Update extends Appliable<Task>, UpdateStages.WithAgentConfiguration, UpdateStages.WithCredentials, UpdateStages.WithPlatform, UpdateStages.WithStatus, UpdateStages.WithStep, UpdateStages.WithTags, UpdateStages.WithTimeout, UpdateStages.WithTrigger {
     }
 
     /**
@@ -242,6 +259,18 @@ public interface Task extends HasInner<TaskInner>, Indexable, Refreshable<Task>,
              * @return the next update stage
              */
             Update withAgentConfiguration(AgentProperties agentConfiguration);
+        }
+
+        /**
+         * The stage of the task update allowing to specify Credentials.
+         */
+        interface WithCredentials {
+            /**
+             * Specifies credentials.
+             * @param credentials The parameters that describes a set of credentials that will be used when this run is invoked
+             * @return the next update stage
+             */
+            Update withCredentials(Credentials credentials);
         }
 
         /**
