@@ -16,6 +16,13 @@ import java.util.function.BiFunction;
  */
 public class BatchDeletionImpl {
 
+    /**
+     * Batch delete by resource IDs.
+     *
+     * @param ids collection of resource IDs.
+     * @param deleteByGroupAndNameAsync Function to delete by resourceGroupName and name.
+     * @return Flux of IDs that successfully deleted.
+     */
     public static Flux<String> deleteByIdsAsync(Collection<String> ids,
                                                 BiFunction<String, String, Mono<Void>> deleteByGroupAndNameAsync) {
         if (ids == null || ids.isEmpty()) {
