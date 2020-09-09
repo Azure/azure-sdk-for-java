@@ -42,7 +42,7 @@ public final class ManageVirtualMachineWithUnmanagedDisks {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) throws Exception {
+    public static boolean runSample(Azure azure) {
         final Region region = Region.US_WEST_CENTRAL;
         final String windowsVMName = azure.sdkContext().randomResourceName("wVM", 15);
         final String linuxVMName = azure.sdkContext().randomResourceName("lVM", 15);

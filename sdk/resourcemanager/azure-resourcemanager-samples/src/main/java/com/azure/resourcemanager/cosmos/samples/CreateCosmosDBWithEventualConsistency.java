@@ -39,7 +39,7 @@ public final class CreateCosmosDBWithEventualConsistency {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) throws Exception {
+    public static boolean runSample(Azure azure) {
         final String docDBName = azure.sdkContext().randomResourceName("docDb", 10);
         final String rgName = azure.sdkContext().randomResourceName("rgNEMV", 24);
 

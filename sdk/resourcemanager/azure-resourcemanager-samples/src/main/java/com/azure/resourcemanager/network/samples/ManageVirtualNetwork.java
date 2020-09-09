@@ -37,7 +37,7 @@ public final class ManageVirtualNetwork {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) throws Exception {
+    public static boolean runSample(Azure azure) {
         final String vnetName1 = azure.sdkContext().randomResourceName("vnet1", 20);
         final String vnetName2 = azure.sdkContext().randomResourceName("vnet2", 20);
         final String vnet1FrontEndSubnetName = "frontend";

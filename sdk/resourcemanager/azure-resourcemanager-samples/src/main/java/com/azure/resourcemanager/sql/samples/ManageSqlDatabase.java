@@ -37,7 +37,7 @@ public final class ManageSqlDatabase {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) throws Exception {
+    public static boolean runSample(Azure azure) {
         final String sqlServerName = azure.sdkContext().randomResourceName("sqlserver", 20);
         final String rgName = azure.sdkContext().randomResourceName("rgRSDSI", 20);
         final String administratorLogin = "sqladmin3423";

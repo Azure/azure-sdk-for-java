@@ -38,7 +38,7 @@ public final class ManageWebAppCosmosDbThroughKeyVault {
      * @param clientId the client ID
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure, String clientId) throws Exception {
+    public static boolean runSample(Azure azure, String clientId) {
         // New resources
         final Region region         = Region.US_WEST;
         final String appName        = azure.sdkContext().randomResourceName("webapp1-", 20);

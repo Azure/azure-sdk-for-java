@@ -59,7 +59,7 @@ public final class CreateSimpleInternetFacingLoadBalancer {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) throws Exception {
+    public static boolean runSample(Azure azure) {
         final Region region = Region.US_EAST;
         final String resourceGroupName = azure.sdkContext().randomResourceName("rg", 15);
         final String vnetName = azure.sdkContext().randomResourceName("vnet", 24);

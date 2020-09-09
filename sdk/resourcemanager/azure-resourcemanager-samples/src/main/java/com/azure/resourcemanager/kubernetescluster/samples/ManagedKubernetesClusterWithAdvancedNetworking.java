@@ -38,7 +38,7 @@ public class ManagedKubernetesClusterWithAdvancedNetworking {
      * @param secret secondary service principal secret
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure, String clientId, String secret) throws Exception {
+    public static boolean runSample(Azure azure, String clientId, String secret) {
         final String rgName = azure.sdkContext().randomResourceName("rgaks", 15);
         final String vnetName = azure.sdkContext().randomResourceName("vnetaks", 20);
         final String aksName = azure.sdkContext().randomResourceName("akssample", 30);

@@ -32,7 +32,7 @@ public class ManageSqlFailoverGroups {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) throws Exception {
+    public static boolean runSample(Azure azure) {
         final String sqlPrimaryServerName = azure.sdkContext().randomResourceName("sqlpri", 20);
         final String sqlSecondaryServerName = azure.sdkContext().randomResourceName("sqlsec", 20);
         final String rgName = azure.sdkContext().randomResourceName("rgsql", 20);

@@ -33,7 +33,7 @@ public final class ManageExpressRoute {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) throws Exception {
+    public static boolean runSample(Azure azure) {
         final Region region = Region.US_NORTH_CENTRAL;
         final String rgName = azure.sdkContext().randomResourceName("rg", 20);
         final String ercName = azure.sdkContext().randomResourceName("erc", 20);

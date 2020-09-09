@@ -41,7 +41,7 @@ public final class ManageLinuxWebAppWithDomainSsl {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) throws Exception {
+    public static boolean runSample(Azure azure) {
         // New resources
         final String app1Name       = azure.sdkContext().randomResourceName("webapp1-", 20);
         final String app2Name       = azure.sdkContext().randomResourceName("webapp2-", 20);

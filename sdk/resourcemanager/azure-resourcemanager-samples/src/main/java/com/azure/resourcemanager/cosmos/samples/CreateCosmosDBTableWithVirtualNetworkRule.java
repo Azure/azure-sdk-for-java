@@ -35,7 +35,7 @@ public class CreateCosmosDBTableWithVirtualNetworkRule {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) throws Exception {
+    public static boolean runSample(Azure azure) {
         final String docDBName = azure.sdkContext().randomResourceName("cosmosdb", 15);
         final String rgName = azure.sdkContext().randomResourceName("rgcosmosdb", 24);
         final String vnetName = azure.sdkContext().randomResourceName("vnetcosmosdb", 20);

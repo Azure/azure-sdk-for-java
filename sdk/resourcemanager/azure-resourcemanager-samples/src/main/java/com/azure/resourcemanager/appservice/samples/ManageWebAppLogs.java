@@ -41,7 +41,7 @@ public final class ManageWebAppLogs {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) throws Exception {
+    public static boolean runSample(Azure azure) {
         // New resources
         final String suffix = ".azurewebsites.net";
         final String appName = azure.sdkContext().randomResourceName("webapp1-", 20);

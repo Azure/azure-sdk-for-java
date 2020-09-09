@@ -32,7 +32,7 @@ public final class ListComputeSkus {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) throws Exception {
+    public static boolean runSample(Azure azure) {
 
         //=================================================================
         // List all compute SKUs in the subscription

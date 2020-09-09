@@ -52,7 +52,7 @@ public final class ManageVpnGatewayVNet2VNetConnection {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) throws Exception {
+    public static boolean runSample(Azure azure) {
         final Region region = Region.US_WEST2;
         final String rgName = azure.sdkContext().randomResourceName("rg", 20);
         final String vnetName = azure.sdkContext().randomResourceName("vnet", 20);

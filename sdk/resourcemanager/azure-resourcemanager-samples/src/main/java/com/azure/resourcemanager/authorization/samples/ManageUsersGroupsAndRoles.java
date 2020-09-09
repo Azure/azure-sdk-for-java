@@ -37,7 +37,7 @@ public final class ManageUsersGroupsAndRoles {
      * @param profile the profile works with sample
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure.Authenticated authenticated, AzureProfile profile) throws Exception {
+    public static boolean runSample(Azure.Authenticated authenticated, AzureProfile profile) {
         final String userEmail = authenticated.sdkContext().randomResourceName("test", 15);
         final String userName = userEmail.replace("test", "Test ");
         final String spName = authenticated.sdkContext().randomResourceName("sp", 15);

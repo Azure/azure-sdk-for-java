@@ -33,7 +33,7 @@ public final class ManageVirtualMachineExtension {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) throws Exception {
+    public static boolean runSample(Azure azure) {
         final Region region = Region.US_WEST_CENTRAL;
         final String linuxVMName = azure.sdkContext().randomResourceName("lVM", 10);
         final String windowsVMName = azure.sdkContext().randomResourceName("wVM", 10);

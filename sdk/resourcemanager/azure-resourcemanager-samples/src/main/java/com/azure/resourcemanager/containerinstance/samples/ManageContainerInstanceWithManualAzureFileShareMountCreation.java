@@ -33,7 +33,7 @@ public class ManageContainerInstanceWithManualAzureFileShareMountCreation {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) throws Exception {
+    public static boolean runSample(Azure azure) {
         final String rgName = azure.sdkContext().randomResourceName("rgACI", 15);
         final String aciName = azure.sdkContext().randomResourceName("acisample", 20);
         final String saName = azure.sdkContext().randomResourceName("sa", 20);

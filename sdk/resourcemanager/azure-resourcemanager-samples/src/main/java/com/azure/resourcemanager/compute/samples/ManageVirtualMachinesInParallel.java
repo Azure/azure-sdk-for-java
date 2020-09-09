@@ -35,7 +35,7 @@ public final class ManageVirtualMachinesInParallel {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) throws Exception {
+    public static boolean runSample(Azure azure) {
         final int vmCount = 10;
         final Region region = Region.US_SOUTH_CENTRAL;
         final String rgName = azure.sdkContext().randomResourceName("rgCOPP", 24);

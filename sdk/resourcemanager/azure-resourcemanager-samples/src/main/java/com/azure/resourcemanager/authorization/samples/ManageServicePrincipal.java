@@ -69,7 +69,7 @@
 //     * @param defaultSubscriptionId default subscription id
 //     * @return true if sample runs successfully
 //     */
-//    public static boolean runSample(Azure.Authenticated authenticated, String defaultSubscriptionId) throws Exception {
+//    public static boolean runSample(Azure.Authenticated authenticated, String defaultSubscriptionId) {
 //        ActiveDirectoryApplication activeDirectoryApplication = null;
 //
 //        try {

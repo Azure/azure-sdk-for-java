@@ -44,7 +44,7 @@ public final class ManageRedisCache {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) throws Exception {
+    public static boolean runSample(Azure azure) {
         final String redisCacheName1 = azure.sdkContext().randomResourceName("rc1", 20);
         final String redisCacheName2 = azure.sdkContext().randomResourceName("rc2", 20);
         final String redisCacheName3 = azure.sdkContext().randomResourceName("rc3", 20);

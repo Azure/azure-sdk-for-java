@@ -35,7 +35,7 @@ public final class ManageStorageAccountNetworkRules {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) throws Exception {
+    public static boolean runSample(Azure azure) {
         final String rgName = azure.sdkContext().randomResourceName("rgSTMS", 8);
         final String networkName = azure.sdkContext().randomResourceName("nw", 8);
         final String subnetName = "subnetA";

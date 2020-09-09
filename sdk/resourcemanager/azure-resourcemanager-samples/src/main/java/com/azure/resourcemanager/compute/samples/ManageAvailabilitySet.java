@@ -38,7 +38,7 @@ public final class ManageAvailabilitySet {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) throws Exception {
+    public static boolean runSample(Azure azure) {
         final Region region = Region.US_WEST_CENTRAL;
         final String rgName = azure.sdkContext().randomResourceName("rgCOMA", 15);
         final String availSetName1 = azure.sdkContext().randomResourceName("av1", 15);

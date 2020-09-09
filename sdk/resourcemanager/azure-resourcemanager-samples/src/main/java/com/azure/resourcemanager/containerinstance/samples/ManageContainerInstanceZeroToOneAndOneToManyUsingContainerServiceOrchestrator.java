@@ -85,7 +85,7 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
      * @param secret secondary service principal secret
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure, String clientId, String secret) throws Exception {
+    public static boolean runSample(Azure azure, String clientId, String secret) {
         final String rgName = azure.sdkContext().randomResourceName("rgaci", 15);
         final Region region = Region.US_EAST2;
 

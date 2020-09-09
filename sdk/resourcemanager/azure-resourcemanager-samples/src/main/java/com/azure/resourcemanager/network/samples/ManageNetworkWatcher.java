@@ -68,7 +68,7 @@ public final class ManageNetworkWatcher {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) throws Exception {
+    public static boolean runSample(Azure azure) {
         final Region region = Region.US_NORTH_CENTRAL;
         final String nwName = azure.sdkContext().randomResourceName("nw", 8);
 

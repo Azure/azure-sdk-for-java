@@ -41,7 +41,7 @@ public final class ManageWebAppSourceControlAsync {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(final Azure azure) throws Exception {
+    public static boolean runSample(final Azure azure) {
         // New resources
         final String suffix         = ".azurewebsites.net";
         final String app1Name       = azure.sdkContext().randomResourceName("webapp1-", 20);

@@ -29,7 +29,7 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) throws Exception {
+    public static boolean runSample(Azure azure) {
         System.out.println("removed later");
         return true;
 //        // New resources

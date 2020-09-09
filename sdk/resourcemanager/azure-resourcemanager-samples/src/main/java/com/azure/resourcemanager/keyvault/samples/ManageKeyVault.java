@@ -35,7 +35,7 @@ public final class ManageKeyVault {
      * @param clientId client id
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure, String clientId) throws Exception {
+    public static boolean runSample(Azure azure, String clientId) {
         final String vaultName1 = azure.sdkContext().randomResourceName("vault1", 20);
         final String vaultName2 = azure.sdkContext().randomResourceName("vault2", 20);
         final String rgName = azure.sdkContext().randomResourceName("rgNEMV", 24);

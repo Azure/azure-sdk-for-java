@@ -38,7 +38,7 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) throws Exception {
+    public static boolean runSample(Azure azure) {
         final String linuxVMName1 = azure.sdkContext().randomResourceName("VM1", 15);
         final String linuxVMName2 = azure.sdkContext().randomResourceName("VM2", 15);
         final String managedOSSnapshotName = azure.sdkContext().randomResourceName("ss-os-", 15);

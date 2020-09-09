@@ -28,7 +28,7 @@ public final class ManageResourceGroup {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) throws Exception {
+    public static boolean runSample(Azure azure) {
         final String rgName = azure.sdkContext().randomResourceName("rgRSMA", 24);
         final String rgName2 = azure.sdkContext().randomResourceName("rgRSMA", 24);
         final String resourceTagName = azure.sdkContext().randomResourceName("rgRSTN", 24);

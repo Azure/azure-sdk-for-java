@@ -37,7 +37,7 @@ public class ManageSqlServerDnsAliases {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) throws Exception {
+    public static boolean runSample(Azure azure) {
         final String sqlServerForTestName = azure.sdkContext().randomResourceName("sqltest", 20);
         final String sqlServerForProdName = azure.sdkContext().randomResourceName("sqlprod", 20);
         final String sqlServerDnsAlias = azure.sdkContext().randomResourceName("sqlserver", 20);

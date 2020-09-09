@@ -58,7 +58,7 @@ public final class CreateVirtualMachinesAsyncTrackingRelatedResources {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) throws Exception {
+    public static boolean runSample(Azure azure) {
         final int desiredVMCount = 6;
         final Region region = Region.US_WEST;
         final String resourceGroupName = azure.sdkContext().randomResourceName("rg", 15);

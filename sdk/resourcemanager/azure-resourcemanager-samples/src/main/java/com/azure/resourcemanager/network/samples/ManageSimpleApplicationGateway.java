@@ -59,7 +59,7 @@ public final class ManageSimpleApplicationGateway {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) throws Exception {
+    public static boolean runSample(Azure azure) {
         final String rgName = azure.sdkContext().randomResourceName("rgNEAGS", 15);
         try {
             //=======================================================================

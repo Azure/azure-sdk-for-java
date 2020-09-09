@@ -34,7 +34,7 @@ public final class DeployUsingARMTemplateWithProgress {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) throws Exception {
+    public static boolean runSample(Azure azure) {
         final String rgName = azure.sdkContext().randomResourceName("rgRSAP", 24);
         final String deploymentName = azure.sdkContext().randomResourceName("dpRSAP", 24);
         try {

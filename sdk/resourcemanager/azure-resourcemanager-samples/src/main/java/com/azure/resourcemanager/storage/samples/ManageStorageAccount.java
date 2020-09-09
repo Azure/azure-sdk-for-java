@@ -39,7 +39,7 @@ public final class ManageStorageAccount {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) throws Exception {
+    public static boolean runSample(Azure azure) {
         final String storageAccountName = azure.sdkContext().randomResourceName("sa", 8);
         final String storageAccountName2 = azure.sdkContext().randomResourceName("sa2", 8);
         final String storageAccountName3 = azure.sdkContext().randomResourceName("sa3", 8);

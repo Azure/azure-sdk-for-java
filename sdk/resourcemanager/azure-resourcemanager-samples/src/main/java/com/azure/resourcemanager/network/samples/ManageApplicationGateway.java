@@ -81,7 +81,7 @@ public final class ManageApplicationGateway {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) throws Exception {
+    public static boolean runSample(Azure azure) {
         final String rgName = azure.sdkContext().randomResourceName("rgNEAG", 15);
         final String pipName = azure.sdkContext().randomResourceName("pip" + "-", 18);
 
