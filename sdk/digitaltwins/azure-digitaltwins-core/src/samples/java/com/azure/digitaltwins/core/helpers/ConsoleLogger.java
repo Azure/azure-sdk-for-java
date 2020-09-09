@@ -19,7 +19,7 @@ public class ConsoleLogger {
     }
 
     public static void printSuccess(String message){
-        System.out.println(ANSI_BLUE + message + ANSI_RESET);
+        System.out.println(ANSI_GREEN + message + ANSI_RESET);
     }
 
     public static void printWarning(String message) {

@@ -208,7 +208,8 @@ public class DigitalTwinsLifecycleAsyncSample {
      * Delete models created by FullLifecycleSample for the ADT service instance.
      */
     public static void deleteAllModels() {
-        ConsoleLogger.PrintHeader("Deleting models");
+
+        ConsoleLogger.printHeader("Deleting models");
 
         // This is to ensure models are deleted in an order such that no other models are referencing it.
         List<String> models = asList(RoomModelId, WifiModelId, BuildingModelId, FloorModelId, HvacModelId);
