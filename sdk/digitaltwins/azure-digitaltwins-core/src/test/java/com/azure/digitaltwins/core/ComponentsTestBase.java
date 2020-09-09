@@ -15,5 +15,5 @@ import java.util.function.Consumer;
  */
 public abstract class ComponentsTestBase extends DigitalTwinsTestBase {
     @Test
-    public abstract void componentLifcycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);
+    public abstract void componentLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);
 }

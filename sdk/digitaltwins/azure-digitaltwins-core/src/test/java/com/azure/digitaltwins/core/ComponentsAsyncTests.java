@@ -3,7 +3,6 @@ package com.azure.digitaltwins.core;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
-import com.azure.digitaltwins.core.models.ModelData;
 import com.azure.digitaltwins.core.serialization.BasicDigitalTwin;
 import com.azure.digitaltwins.core.util.UpdateComponentRequestOptions;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -25,32 +24,25 @@ public class ComponentsAsyncTests extends ComponentsTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
     @Override
-    public void componentLifcycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
+    public void componentLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
         DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
 
-        // Create models and components to test the lifecycle.
+        String wifiComponentName = "wifiAccessPoint";
+
         String roomWithWifiTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.ROOM_WITH_WIFI_TWIN_ID_PREFIX, asyncClient, randomIntegerStringGenerator);
         String roomWithWifiModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.ROOM_WITH_WIFI_MODEL_ID_PREFIX, asyncClient, randomIntegerStringGenerator);
         String wifiModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.WIFI_MODEL_ID_PREFIX, asyncClient, randomIntegerStringGenerator);
-        String wifiComponentName = "wifiAccessPoint";
 
         String modelWifi = TestAssetsHelper.getWifiModelPayload(wifiModelId);
         String modelRoomWithWifi = TestAssetsHelper.getRoomWithWifiModelPayload(roomWithWifiModelId, wifiModelId, wifiComponentName);
-
         String roomWithWifiTwin = TestAssetsHelper.getRoomWithWifiTwinPayload(roomWithWifiModelId, wifiComponentName);
-
         List<String> modelsList = new ArrayList<>(Arrays.asList(modelWifi, modelRoomWithWifi));
 
-        List<ModelData> createdModels = new ArrayList<>();
-
         try {
-
+            // Create models and components to test the lifecycle.
             StepVerifier
                 .create(asyncClient.createModels(modelsList))
-                .assertNext(createResponseList -> {
-                    createdModels.addAll(createResponseList);
-                    logger.info("Created {} models successfully", createResponseList.size());
-                })
+                .assertNext(createResponseList -> logger.info("Created {} models successfully", createResponseList.size()))
                 .verifyComplete();
 
             StepVerifier.create(asyncClient.createDigitalTwin(roomWithWifiTwinId, roomWithWifiTwin, BasicDigitalTwin.class))
@@ -93,7 +85,7 @@ public class ComponentsAsyncTests extends ComponentsTestBase {
             }
             catch (Exception ex)
             {
-                assertTrue(false,"Test clean up failed: " + ex.getMessage());
+                fail("Test clean up failed: " + ex.getMessage());
             }
         }
     }

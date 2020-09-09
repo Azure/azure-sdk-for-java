@@ -11,16 +11,13 @@ import com.azure.digitaltwins.core.util.DigitalTwinsResponse;
 import com.azure.digitaltwins.core.util.UpdateComponentRequestOptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-
-
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import static com.azure.digitaltwins.core.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ComponentsTests extends ComponentsTestBase {
 
@@ -29,23 +26,23 @@ public class ComponentsTests extends ComponentsTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
     @Override
-    public void componentLifcycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
+    public void componentLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
 
-        // Create models and components to test the lifecycle.
+        String wifiComponentName = "wifiAccessPoint";
+
         String roomWithWifiTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.ROOM_WITH_WIFI_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
         String roomWithWifiModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.ROOM_WITH_WIFI_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
         String wifiModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.WIFI_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
-        String wifiComponentName = "wifiAccessPoint";
 
         String modelWifi = TestAssetsHelper.getWifiModelPayload(wifiModelId);
         String modelRoomWithWifi = TestAssetsHelper.getRoomWithWifiModelPayload(roomWithWifiModelId, wifiModelId, wifiComponentName);
-
         String roomWithWifiTwin = TestAssetsHelper.getRoomWithWifiTwinPayload(roomWithWifiModelId, wifiComponentName);
 
         List<String> modelsList = new ArrayList<>(Arrays.asList(modelWifi, modelRoomWithWifi));
 
         try {
+            // Create models and components to test the lifecycle.
             List<ModelData> createdList = client.createModels(modelsList);
             logger.info("Created {} models successfully", createdList.size());
 
@@ -59,7 +56,7 @@ public class ComponentsTests extends ComponentsTestBase {
             assertEquals(getComponentResponse.getStatusCode(), HttpURLConnection.HTTP_OK);
 
             // Update component
-            DigitalTwinsResponse upDateComponentResponse = client.updateComponentWithResponse(
+            DigitalTwinsResponse<Void> upDateComponentResponse = client.updateComponentWithResponse(
                 roomWithWifiTwinId,
                 wifiComponentName,
                 TestAssetsHelper.getWifiComponentUpdatePayload(),
@@ -87,7 +84,7 @@ public class ComponentsTests extends ComponentsTestBase {
             }
             catch (Exception ex)
             {
-                assertTrue(false,"Test clean up failed: " + ex.getMessage());
+                fail("Test clean up failed: " + ex.getMessage());
             }
         }
     }
