@@ -47,20 +47,20 @@ public class CpuLoadMonitorTest {
         assertThat(ReflectionUtils.getCpuMonitorInstance()).isNull();
     }
 
-    @Test(groups = "unit")
-    public void multipleClose() throws Exception {
-        assertThat(ReflectionUtils.getCpuMonitorReferenceCounter().get()).isEqualTo(0);
-        assertThat(ReflectionUtils.getCpuMonitorInstance()).isNull();
-
-        CpuMonitor cpuMonitor = CpuMonitor.initializeAndGet();
-
-        cpuMonitor.close();
-        assertThat(ReflectionUtils.getCpuMonitorReferenceCounter().get()).isEqualTo(0);
-        assertThat(ReflectionUtils.getCpuMonitorInstance()).isNull();
-
-        cpuMonitor.close();
-
-        assertThat(ReflectionUtils.getCpuMonitorReferenceCounter().get()).isEqualTo(0);
-        assertThat(ReflectionUtils.getCpuMonitorInstance()).isNull();
-    }
+//    @Test(groups = "unit")
+//    public void multipleClose() throws Exception {
+//        assertThat(ReflectionUtils.getCpuMonitorReferenceCounter().get()).isEqualTo(0);
+//        assertThat(ReflectionUtils.getCpuMonitorInstance()).isNull();
+//
+//        CpuMonitor cpuMonitor = CpuMonitor.initializeAndGet();
+//
+//        cpuMonitor.close();
+//        assertThat(ReflectionUtils.getCpuMonitorReferenceCounter().get()).isEqualTo(0);
+//        assertThat(ReflectionUtils.getCpuMonitorInstance()).isNull();
+//
+//        cpuMonitor.close();
+//
+//        assertThat(ReflectionUtils.getCpuMonitorReferenceCounter().get()).isEqualTo(0);
+//        assertThat(ReflectionUtils.getCpuMonitorInstance()).isNull();
+//    }
 }

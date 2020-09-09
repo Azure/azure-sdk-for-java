@@ -41,7 +41,6 @@ public class CpuMonitor implements AutoCloseable {
     private final ReentrantReadWriteLock rwLock = new ReentrantReadWriteLock();
     private final ScheduledThreadPoolExecutor scheduledExecutorService;
     private final CpuReader cpuReader;
-    private final AtomicBoolean isClosed = new AtomicBoolean(false);
 
     private ScheduledFuture<?> future;
 
@@ -92,10 +91,6 @@ public class CpuMonitor implements AutoCloseable {
     @Override
     public void close() {
         synchronized (CpuMonitor.class) {
-            if (isClosed.getAndSet(true)) {
-                return;
-            }
-
             if (cnt.decrementAndGet() <= 0) {
                 closeInternal();
             }
