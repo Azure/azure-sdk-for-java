@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.trafficmanager.fluent.inner;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
@@ -17,6 +18,7 @@ import java.util.List;
 
 /** The Endpoint model. */
 @JsonFlatten
+@Fluent
 public class EndpointInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EndpointInner.class);
 

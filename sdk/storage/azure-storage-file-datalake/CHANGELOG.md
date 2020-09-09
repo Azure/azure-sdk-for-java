@@ -5,6 +5,7 @@
 - Added support for setting, modifying, and removing ACLs recursively.
 - Added support to schedule file expiration. 
 - Added support to specify Arrow Output Serialization when querying a file. 
+- Added support to generate directory SAS and added support to specify additional user ids and correlation ids for user delegation SAS.
 - Added support to upload data to a file from an InputStream.
 - Added support to specify permissions and umask when uploading a file. 
 - Fixed a bug where an empty string would be sent with the x-ms-properties header when metadata was null or empty.

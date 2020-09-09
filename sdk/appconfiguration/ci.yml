@@ -48,3 +48,6 @@ extends:
       - name: spring-cloud-azure-feature-management-web
         groupId: com.microsoft.azure
         safeName: springcloudazurefeaturemanagementweb
+      - name: spring-cloud-starter-azure-appconfiguration-config
+        groupId: com.microsoft.azure
+        safeName: springcloudstarterazureappconfigurationconfig

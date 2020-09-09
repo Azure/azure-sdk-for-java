@@ -28,8 +28,8 @@ import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
+import com.azure.digitaltwins.core.implementation.models.ModelData;
 import com.azure.digitaltwins.core.implementation.models.PagedModelDataCollection;
-import com.azure.digitaltwins.core.models.ModelData;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
@@ -61,7 +61,7 @@ public final class DigitalTwinModelsImpl {
     @ServiceInterface(name = "AzureDigitalTwinsAPI")
     private interface DigitalTwinModelsService {
         @Post("/models")
-        @ExpectedResponses({200})
+        @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<List<ModelData>>> add(
                 @HostParam("$host") String host,

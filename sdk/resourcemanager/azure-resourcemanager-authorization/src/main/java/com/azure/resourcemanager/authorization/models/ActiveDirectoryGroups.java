@@ -12,12 +12,14 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingByFilter;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 
 /** Entry point to AD group management API. */
 @Fluent
 public interface ActiveDirectoryGroups
     extends SupportsListing<ActiveDirectoryGroup>,
+        SupportsListingByFilter<ActiveDirectoryGroup>,
         SupportsGettingById<ActiveDirectoryGroup>,
         SupportsGettingByName<ActiveDirectoryGroup>,
         SupportsCreating<ActiveDirectoryGroup.DefinitionStages.Blank>,

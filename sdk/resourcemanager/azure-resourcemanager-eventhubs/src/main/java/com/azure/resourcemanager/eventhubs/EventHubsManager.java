@@ -5,6 +5,8 @@ package com.azure.resourcemanager.eventhubs;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.resourcemanager.eventhubs.fluent.EventHubManagementClient;
+import com.azure.resourcemanager.eventhubs.fluent.EventHubManagementClientBuilder;
 import com.azure.resourcemanager.eventhubs.implementation.DisasterRecoveryPairingAuthorizationRulesImpl;
 import com.azure.resourcemanager.eventhubs.implementation.EventHubAuthorizationRulesImpl;
 import com.azure.resourcemanager.eventhubs.implementation.EventHubConsumerGroupsImpl;
@@ -21,7 +23,7 @@ import com.azure.resourcemanager.eventhubs.models.EventHubNamespaces;
 import com.azure.resourcemanager.eventhubs.models.EventHubs;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.Manager;
+import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;

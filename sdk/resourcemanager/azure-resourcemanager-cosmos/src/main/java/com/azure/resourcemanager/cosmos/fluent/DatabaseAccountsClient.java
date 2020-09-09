@@ -34,7 +34,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.cosmos.CosmosDBManagementClient;
 import com.azure.resourcemanager.cosmos.fluent.inner.DatabaseAccountGetResultsInner;
 import com.azure.resourcemanager.cosmos.fluent.inner.DatabaseAccountListConnectionStringsResultInner;
 import com.azure.resourcemanager.cosmos.fluent.inner.DatabaseAccountListKeysResultInner;

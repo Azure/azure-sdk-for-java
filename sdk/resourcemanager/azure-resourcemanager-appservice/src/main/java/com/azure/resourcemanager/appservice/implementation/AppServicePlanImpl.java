@@ -13,8 +13,6 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import reactor.core.publisher.Mono;
 
-import java.util.Locale;
-
 /** The implementation for AppServicePlan. */
 class AppServicePlanImpl
     extends GroupableResourceImpl<AppServicePlan, AppServicePlanInner, AppServicePlanImpl, AppServiceManager>
@@ -68,11 +66,9 @@ class AppServicePlanImpl
 
     @Override
     public OperatingSystem operatingSystem() {
-        if (inner().kind().toLowerCase(Locale.ROOT).contains("linux")) {
-            return OperatingSystem.LINUX;
-        } else {
-            return OperatingSystem.WINDOWS;
-        }
+        return (inner().reserved() == null || !inner().reserved())
+            ? OperatingSystem.WINDOWS
+            : OperatingSystem.LINUX;
     }
 
     @Override

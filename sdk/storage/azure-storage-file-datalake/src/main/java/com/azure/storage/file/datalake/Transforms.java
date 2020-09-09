@@ -30,8 +30,6 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
-import com.azure.storage.blob.sas.BlobContainerSasPermission;
-import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.ProgressReceiver;
 import com.azure.storage.file.datalake.implementation.models.Path;
@@ -71,7 +69,6 @@ import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
-import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
@@ -188,21 +185,6 @@ class Transforms {
             .setSignedStart(blobUserDelegationKey.getSignedStart())
             .setSignedVersion(blobUserDelegationKey.getSignedVersion())
             .setValue(blobUserDelegationKey.getValue());
-    }
-
-    static com.azure.storage.blob.models.UserDelegationKey toBlobUserDelegationKey(UserDelegationKey
-        dataLakeUserDelegationKey) {
-        if (dataLakeUserDelegationKey == null) {
-            return null;
-        }
-        return new com.azure.storage.blob.models.UserDelegationKey()
-            .setSignedExpiry(dataLakeUserDelegationKey.getSignedExpiry())
-            .setSignedObjectId(dataLakeUserDelegationKey.getSignedObjectId())
-            .setSignedTenantId(dataLakeUserDelegationKey.getSignedTenantId())
-            .setSignedService(dataLakeUserDelegationKey.getSignedService())
-            .setSignedStart(dataLakeUserDelegationKey.getSignedStart())
-            .setSignedVersion(dataLakeUserDelegationKey.getSignedVersion())
-            .setValue(dataLakeUserDelegationKey.getValue());
     }
 
     static BlobHttpHeaders toBlobHttpHeaders(PathHttpHeaders pathHTTPHeaders) {
@@ -423,40 +405,6 @@ class Transforms {
             .setExpiresOn(accessPolicy.getExpiresOn())
             .setStartsOn(accessPolicy.getStartsOn())
             .setPermissions(accessPolicy.getPermissions());
-    }
-
-    static BlobServiceSasSignatureValues toBlobSasValues(DataLakeServiceSasSignatureValues
-        dataLakeServiceSasSignatureValues) {
-        if (dataLakeServiceSasSignatureValues == null) {
-            return null;
-        }
-        BlobServiceSasSignatureValues blobServiceSasSignatureValues;
-        if (dataLakeServiceSasSignatureValues.getIdentifier() != null) {
-            blobServiceSasSignatureValues =
-                new BlobServiceSasSignatureValues(dataLakeServiceSasSignatureValues.getIdentifier());
-        } else {
-            // It's ok to use blob container sas permission since its a super set of blob sas permission
-            blobServiceSasSignatureValues =
-                new BlobServiceSasSignatureValues(dataLakeServiceSasSignatureValues.getExpiryTime(),
-                    BlobContainerSasPermission.parse(dataLakeServiceSasSignatureValues.getPermissions()));
-        }
-        blobServiceSasSignatureValues.setVersion(dataLakeServiceSasSignatureValues.getVersion())
-            .setProtocol(dataLakeServiceSasSignatureValues.getProtocol())
-            .setStartTime(dataLakeServiceSasSignatureValues.getStartTime())
-            .setExpiryTime(dataLakeServiceSasSignatureValues.getExpiryTime())
-            .setSasIpRange(dataLakeServiceSasSignatureValues.getSasIpRange())
-            .setIdentifier(dataLakeServiceSasSignatureValues.getIdentifier())
-            .setCacheControl(dataLakeServiceSasSignatureValues.getCacheControl())
-            .setContentDisposition(dataLakeServiceSasSignatureValues.getContentDisposition())
-            .setContentEncoding(dataLakeServiceSasSignatureValues.getContentEncoding())
-            .setContentLanguage(dataLakeServiceSasSignatureValues.getContentLanguage())
-            .setContentType(dataLakeServiceSasSignatureValues.getContentType());
-        if (dataLakeServiceSasSignatureValues.getPermissions() != null) {
-            // It's ok to use blob container sas permission since its a super set of blob sas permission
-            blobServiceSasSignatureValues.setPermissions(BlobContainerSasPermission.parse(
-                dataLakeServiceSasSignatureValues.getPermissions()));
-        }
-        return blobServiceSasSignatureValues;
     }
 
     static com.azure.storage.blob.models.ParallelTransferOptions toBlobParallelTransferOptions(
