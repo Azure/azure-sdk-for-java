@@ -20,10 +20,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;
 import java.util.*;
+import java.util.function.Function;
 
 public class ComponentSyncSamples {
     private static DigitalTwinsClient client;
     private static final ObjectMapper mapper = new ObjectMapper();
+
+    public static Function<Integer, String> randomIntegerStringGenerator = (maxLength) -> {
+        int randInt = new Random().nextInt((int)Math.pow(10, 8) - 1) + 1;
+        return String.valueOf(randInt);
+    };
 
     public static void main(String[] args) throws IOException {
 
@@ -54,9 +60,9 @@ public class ComponentSyncSamples {
         // For the purpose of this example we will create temporary models using a random model Ids.
         // We have to make sure these model Ids are unique within the DT instance.
 
-        String componentModelId = UniqueIdHelper.getUniqueModelId(SamplesConstants.TEMPORARY_COMPONENT_MODEL_PREFIX, client);
-        String modelId = UniqueIdHelper.getUniqueModelId(SamplesConstants.TEMPORARY_MODEL_PREFIX, client);
-        String basicDigitalTwinId = UniqueIdHelper.getUniqueDigitalTwinId(SamplesConstants.TEMPORARY_TWIN_PREFIX, client);
+        String componentModelId = UniqueIdHelper.getUniqueModelId(SamplesConstants.TEMPORARY_COMPONENT_MODEL_PREFIX, client, randomIntegerStringGenerator);
+        String modelId = UniqueIdHelper.getUniqueModelId(SamplesConstants.TEMPORARY_MODEL_PREFIX, client, randomIntegerStringGenerator);
+        String basicDigitalTwinId = UniqueIdHelper.getUniqueDigitalTwinId(SamplesConstants.TEMPORARY_TWIN_PREFIX, client, randomIntegerStringGenerator);
 
         String newComponentModelPayload = SamplesConstants.TEMPORARY_COMPONENT_MODEL_PAYLOAD
             .replace(SamplesConstants.COMPONENT_ID, componentModelId);

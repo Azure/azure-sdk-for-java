@@ -54,8 +54,8 @@ public class ModelsLifecycleSyncSamples {
     public static void runModelLifecycleSample() {
         // For the purpose of this sample we will create temporary models using random model Ids and then decommission a model.
         // We have to make sure these model Ids are unique within the DigitalTwin instance.
-        String componentModelId = UniqueIdHelper.getUniqueModelId(SamplesConstants.TemporaryComponentModelPrefix, client, randomIntegerStringGenerator);
-        String sampleModelId = UniqueIdHelper.getUniqueModelId(SamplesConstants.TemporaryModelPrefix, client, randomIntegerStringGenerator);
+        String componentModelId = UniqueIdHelper.getUniqueModelId(SamplesConstants.TEMPORARY_COMPONENT_MODEL_PREFIX, client, randomIntegerStringGenerator);
+        String sampleModelId = UniqueIdHelper.getUniqueModelId(SamplesConstants.TEMPORARY_MODEL_PREFIX, client, randomIntegerStringGenerator);
 
         String newComponentModelPayload = SamplesConstants.TEMPORARY_COMPONENT_MODEL_PAYLOAD
             .replace(SamplesConstants.COMPONENT_ID, componentModelId);
