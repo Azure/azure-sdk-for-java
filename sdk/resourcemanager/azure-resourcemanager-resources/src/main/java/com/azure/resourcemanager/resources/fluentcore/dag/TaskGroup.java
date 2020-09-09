@@ -399,7 +399,15 @@ public class TaskGroup
             }
             readyTaskEntry = super.getNext();
         }
-        return Flux.mergeDelayError(32, observables.toArray(new Flux[0]));
+        return Flux.mergeOrdered(32,
+            (some, other) -> {
+                if (rootTaskEntry.key().endsWith(some.key())) { // rootTaskEntry will be proxy-<UUID>
+                    return 1;
+                } else {
+                    return -1;
+                }
+            },
+            (Flux<Indexable>[]) observables.toArray(new Flux[0]));
     }
 
     /**
