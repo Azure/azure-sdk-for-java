@@ -51,7 +51,7 @@ public class OperationsInner {
      */
     interface OperationsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.mysql.v2017_12_01.Operations list" })
-        @GET("providers/Microsoft.DBforMySQL/operations")
+        @GET("providers/Microsoft.DBForMySQL/operations")
         Observable<Response<ResponseBody>> list(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }

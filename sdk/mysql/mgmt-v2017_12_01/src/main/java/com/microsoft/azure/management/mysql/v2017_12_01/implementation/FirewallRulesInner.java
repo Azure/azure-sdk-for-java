@@ -57,27 +57,27 @@ public class FirewallRulesInner {
      */
     interface FirewallRulesService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.mysql.v2017_12_01.FirewallRules createOrUpdate" })
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers/{serverName}/firewallRules/{firewallRuleName}")
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForMySQL/servers/{serverName}/firewallRules/{firewallRuleName}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("firewallRuleName") String firewallRuleName, @Query("api-version") String apiVersion, @Body FirewallRuleInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.mysql.v2017_12_01.FirewallRules beginCreateOrUpdate" })
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers/{serverName}/firewallRules/{firewallRuleName}")
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForMySQL/servers/{serverName}/firewallRules/{firewallRuleName}")
         Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("firewallRuleName") String firewallRuleName, @Query("api-version") String apiVersion, @Body FirewallRuleInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.mysql.v2017_12_01.FirewallRules delete" })
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers/{serverName}/firewallRules/{firewallRuleName}", method = "DELETE", hasBody = true)
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForMySQL/servers/{serverName}/firewallRules/{firewallRuleName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("firewallRuleName") String firewallRuleName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.mysql.v2017_12_01.FirewallRules beginDelete" })
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers/{serverName}/firewallRules/{firewallRuleName}", method = "DELETE", hasBody = true)
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForMySQL/servers/{serverName}/firewallRules/{firewallRuleName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDelete(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("firewallRuleName") String firewallRuleName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.mysql.v2017_12_01.FirewallRules get" })
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers/{serverName}/firewallRules/{firewallRuleName}")
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForMySQL/servers/{serverName}/firewallRules/{firewallRuleName}")
         Observable<Response<ResponseBody>> get(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("firewallRuleName") String firewallRuleName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.mysql.v2017_12_01.FirewallRules listByServer" })
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers/{serverName}/firewallRules")
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForMySQL/servers/{serverName}/firewallRules")
         Observable<Response<ResponseBody>> listByServer(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
@@ -85,7 +85,7 @@ public class FirewallRulesInner {
     /**
      * Creates a new firewall rule or updates an existing firewall rule.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
      * @param parameters The required parameters for creating or updating a firewall rule.
@@ -101,7 +101,7 @@ public class FirewallRulesInner {
     /**
      * Creates a new firewall rule or updates an existing firewall rule.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
      * @param parameters The required parameters for creating or updating a firewall rule.
@@ -116,7 +116,7 @@ public class FirewallRulesInner {
     /**
      * Creates a new firewall rule or updates an existing firewall rule.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
      * @param parameters The required parameters for creating or updating a firewall rule.
@@ -135,7 +135,7 @@ public class FirewallRulesInner {
     /**
      * Creates a new firewall rule or updates an existing firewall rule.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
      * @param parameters The required parameters for creating or updating a firewall rule.
@@ -169,7 +169,7 @@ public class FirewallRulesInner {
     /**
      * Creates a new firewall rule or updates an existing firewall rule.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
      * @param parameters The required parameters for creating or updating a firewall rule.
@@ -185,7 +185,7 @@ public class FirewallRulesInner {
     /**
      * Creates a new firewall rule or updates an existing firewall rule.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
      * @param parameters The required parameters for creating or updating a firewall rule.
@@ -200,7 +200,7 @@ public class FirewallRulesInner {
     /**
      * Creates a new firewall rule or updates an existing firewall rule.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
      * @param parameters The required parameters for creating or updating a firewall rule.
@@ -219,7 +219,7 @@ public class FirewallRulesInner {
     /**
      * Creates a new firewall rule or updates an existing firewall rule.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
      * @param parameters The required parameters for creating or updating a firewall rule.
@@ -272,7 +272,7 @@ public class FirewallRulesInner {
     /**
      * Deletes a server firewall rule.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -286,7 +286,7 @@ public class FirewallRulesInner {
     /**
      * Deletes a server firewall rule.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -300,7 +300,7 @@ public class FirewallRulesInner {
     /**
      * Deletes a server firewall rule.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -318,7 +318,7 @@ public class FirewallRulesInner {
     /**
      * Deletes a server firewall rule.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -347,7 +347,7 @@ public class FirewallRulesInner {
     /**
      * Deletes a server firewall rule.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -361,7 +361,7 @@ public class FirewallRulesInner {
     /**
      * Deletes a server firewall rule.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -375,7 +375,7 @@ public class FirewallRulesInner {
     /**
      * Deletes a server firewall rule.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -393,7 +393,7 @@ public class FirewallRulesInner {
     /**
      * Deletes a server firewall rule.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -441,7 +441,7 @@ public class FirewallRulesInner {
     /**
      * Gets information about a server firewall rule.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -456,7 +456,7 @@ public class FirewallRulesInner {
     /**
      * Gets information about a server firewall rule.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -470,7 +470,7 @@ public class FirewallRulesInner {
     /**
      * Gets information about a server firewall rule.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -488,7 +488,7 @@ public class FirewallRulesInner {
     /**
      * Gets information about a server firewall rule.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -534,7 +534,7 @@ public class FirewallRulesInner {
     /**
      * List all the firewall rules in a given server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -548,7 +548,7 @@ public class FirewallRulesInner {
     /**
      * List all the firewall rules in a given server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -561,7 +561,7 @@ public class FirewallRulesInner {
     /**
      * List all the firewall rules in a given server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;FirewallRuleInner&gt; object
@@ -578,7 +578,7 @@ public class FirewallRulesInner {
     /**
      * List all the firewall rules in a given server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;FirewallRuleInner&gt; object
