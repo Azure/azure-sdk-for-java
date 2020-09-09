@@ -14,6 +14,7 @@ trigger:
       - eng/
     exclude:
       - eng/versioning
+      - eng/jacoco-test-coverage
 
 pr:
   branches:
@@ -30,6 +31,7 @@ pr:
       - eng/
     exclude:
       - eng/versioning
+      - eng/jacoco-test-coverage
 
 
 extends:
