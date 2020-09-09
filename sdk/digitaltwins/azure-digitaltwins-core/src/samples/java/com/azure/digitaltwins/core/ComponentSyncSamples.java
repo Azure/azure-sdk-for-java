@@ -8,6 +8,7 @@ import com.azure.digitaltwins.core.helpers.SamplesArguments;
 import com.azure.digitaltwins.core.helpers.SamplesConstants;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
+import com.azure.digitaltwins.core.models.ModelData;
 import com.azure.digitaltwins.core.serialization.BasicDigitalTwin;
 import com.azure.digitaltwins.core.serialization.DigitalTwinMetadata;
 import com.azure.digitaltwins.core.serialization.ModelProperties;
@@ -68,9 +69,11 @@ public class ComponentSyncSamples {
 
         ConsoleLogger.printHeader("Create Models");
         // We now create all the models (including components)
-        client.createModels(modelsList);
+        List<ModelData> modelList =  client.createModels(modelsList);
 
-        ConsoleLogger.print("Created models: " + componentModelId + " and " + modelId);
+        for (ModelData model : modelList) {
+            ConsoleLogger.print("Created model: " + model.getId());
+        }
 
         ConsoleLogger.printHeader("Create digital twin with components");
         // Create digital twin with component payload using the BasicDigitalTwin serialization helper.
