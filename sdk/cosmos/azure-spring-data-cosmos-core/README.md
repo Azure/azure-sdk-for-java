@@ -208,7 +208,7 @@ public interface UserRepository extends CosmosRepository<User, String> {
 
 #### Using annotated queries in repositories
 Azure spring data cosmos supports specifying annotated queries in the repositories using `@Query`.
-- Examples for Synchronous annotated queries:
+- Examples for annotated queries in synchronous CosmosRepository:
 <!-- embedme src/samples/java/com/azure/spring/data/cosmos/AnnotatedQueriesUserRepositoryCodeSnippet.java#L11-L17 -->
 
 ```java
@@ -221,7 +221,7 @@ public interface AnnotatedQueriesUserRepositoryCodeSnippet extends CosmosReposit
 }
 ```
 
-- Examples for Reactive annotated queries.
+- Examples for annotated queries in ReactiveCosmosRepository.
 <!-- embedme src/samples/java/com/azure/spring/data/cosmos/AnnotatedQueriesUserReactiveRepositoryCodeSnippet.java#L11-L20 -->
 
 ```java
