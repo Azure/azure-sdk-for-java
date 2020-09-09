@@ -92,7 +92,7 @@ public final class DigitalTwinsAsyncClient {
         return this.protocolLayer.getHttpPipeline();
     }
 
-    //region Digital Twin APIs
+    //region Digital twin APIs
 
     /**
      * Creates a digital twin.
@@ -329,7 +329,7 @@ public final class DigitalTwinsAsyncClient {
             .deleteWithResponseAsync(digitalTwinId, ifMatch, context);
     }
 
-    //endregion Digital Twin APIs
+    //endregion Digital twin APIs
 
     //region Relationship APIs
 
@@ -1295,7 +1295,7 @@ public final class DigitalTwinsAsyncClient {
     /**
      * List all the event routes that exist in your digital twins instance.
      * @return A {@link PagedFlux} that contains all the event routes that exist in your digital twins instance.
-     *         This PagedFlux may take multiple service requests to iterate over all event routes.
+     * This PagedFlux may take multiple service requests to iterate over all event routes.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<EventRoute> listEventRoutes()
@@ -1306,9 +1306,9 @@ public final class DigitalTwinsAsyncClient {
     /**
      * List all the event routes that exist in your digital twins instance.
      * @param options The optional parameters to use when listing event routes. See {@link EventRoutesListOptions} for more details
-     *                on what optional parameters can be set.
+     * on what optional parameters can be set.
      * @return A {@link PagedFlux} that contains all the event routes that exist in your digital twins instance.
-     *         This PagedFlux may take multiple service requests to iterate over all event routes.
+     * This PagedFlux may take multiple service requests to iterate over all event routes.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<EventRoute> listEventRoutes(EventRoutesListOptions options)

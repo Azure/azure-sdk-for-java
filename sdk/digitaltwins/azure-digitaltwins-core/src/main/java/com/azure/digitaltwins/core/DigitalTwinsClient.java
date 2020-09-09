@@ -61,7 +61,7 @@ public final class DigitalTwinsClient {
         return this.digitalTwinsAsyncClient.getServiceVersion();
     }
 
-    //region Digital Twin APIs
+    //region Digital twin APIs
 
     /**
      * Creates a digital twin.
@@ -226,7 +226,7 @@ public final class DigitalTwinsClient {
         return digitalTwinsAsyncClient.deleteDigitalTwinWithResponse(digitalTwinId, options, context).block();
     }
 
-    //endregion Digital Twin APIs
+    //endregion Digital twin APIs
 
     //region Relationship APIs
 
@@ -746,7 +746,7 @@ public final class DigitalTwinsClient {
     /**
      * List all the event routes that exist in your digital twins instance.
      * @return A {@link PagedIterable} containing all the event routes that exist in your digital twins instance.
-     *         This PagedIterable may take multiple service requests to iterate over all event routes.
+     * This PagedIterable may take multiple service requests to iterate over all event routes.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventRoute> listEventRoutes() {
@@ -756,9 +756,9 @@ public final class DigitalTwinsClient {
     /**
      * List all the event routes that exist in your digital twins instance.
      * @param options The optional parameters to use when listing event routes. See {@link EventRoutesListOptions} for more details
-     *                on what optional parameters can be set.
+     * on what optional parameters can be set.
      * @return A {@link PagedIterable} containing all the event routes that exist in your digital twins instance.
-     *         This PagedIterable may take multiple service requests to iterate over all event routes.
+     * This PagedIterable may take multiple service requests to iterate over all event routes.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventRoute> listEventRoutes(EventRoutesListOptions options, Context context) {
