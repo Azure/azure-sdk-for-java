@@ -18,10 +18,8 @@ import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_REASON_ANNOTATION_NAME;
@@ -55,8 +53,6 @@ import static com.azure.core.amqp.AmqpMessageConstant.VIA_PARTITION_KEY_ANNOTATI
  * @see ServiceBusMessageBatch
  */
 public class ServiceBusMessage {
-    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
-
     private final AmqpAnnotatedMessage amqpAnnotatedMessage;
     private final ClientLogger logger = new ClientLogger(ServiceBusMessage.class);
 
@@ -101,14 +97,7 @@ public class ServiceBusMessage {
 
         this.amqpAnnotatedMessage = new AmqpAnnotatedMessage(receivedMessage.getAmqpAnnotatedMessage());
         this.context = Context.NONE;
-
-        final AmqpDataBody amqpDataBody = ((AmqpDataBody) receivedMessage.getAmqpAnnotatedMessage().getBody());
-        final List<BinaryData> binaryDataList = amqpDataBody.getData().stream().collect(Collectors.toList());
-        if (binaryDataList.size() > 0) {
-            binaryData = binaryDataList.get(0).getData();
-        } else {
-            binaryData = EMPTY_BYTE_ARRAY;
-        }
+        this.binaryData = receivedMessage.getBody();
 
         // clean up data which user is not allowed to set.
         amqpAnnotatedMessage.getHeader().setDeliveryCount(null);
@@ -134,7 +123,7 @@ public class ServiceBusMessage {
     /**
      * Gets the set of free-form {@link ServiceBusMessage} properties which may be used for passing metadata associated
      * with the {@link ServiceBusMessage} during Service Bus operations. A common use-case for
-     * {@code applicationProperties()} is to associate serialization hints for the {@link #getBody()} as an aid to
+     * {@code getApplicationProperties()} is to associate serialization hints for the {@link #getBody()} as an aid to
      * consumers who wish to deserialize the binary data.
      *
      * @return Application properties associated with this {@link ServiceBusMessage}.
@@ -162,10 +151,10 @@ public class ServiceBusMessage {
             case SEQUENCE:
             case VALUE:
                 throw logger.logExceptionAsError(new UnsupportedOperationException("Not supported AmqpBodyType: "
-                    + amqpAnnotatedMessage.getBody().getBodyType().toString()));
+                    + type.toString()));
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException("Unknown AmqpBodyType: "
-                    + amqpAnnotatedMessage.getBody().getBodyType().toString()));
+                    + type.toString()));
         }
     }
 
