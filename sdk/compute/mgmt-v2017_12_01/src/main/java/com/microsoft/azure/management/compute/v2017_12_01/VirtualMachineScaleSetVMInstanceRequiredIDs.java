@@ -22,7 +22,7 @@ public class VirtualMachineScaleSetVMInstanceRequiredIDs {
     private List<String> instanceIds;
 
     /**
-     * Get the instanceIds value.
+     * Get the virtual machine scale set instance ids.
      *
      * @return the instanceIds value
      */
@@ -31,7 +31,7 @@ public class VirtualMachineScaleSetVMInstanceRequiredIDs {
     }
 
     /**
-     * Set the instanceIds value.
+     * Set the virtual machine scale set instance ids.
      *
      * @param instanceIds the instanceIds value to set
      * @return the VirtualMachineScaleSetVMInstanceRequiredIDs object itself.
