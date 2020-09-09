@@ -13,13 +13,13 @@ import static javax.net.ssl.HttpsURLConnection.HTTP_NOT_FOUND;
 public class SamplesUtil {
     public static final Consumer<Throwable> IgnoreNotFoundError = throwable -> {
         if (!(throwable instanceof ErrorResponseException) || ((ErrorResponseException) throwable).getResponse().getStatusCode() != HTTP_NOT_FOUND) {
-            ConsoleLogger.PrintFatal("Error received: " + throwable);
+            ConsoleLogger.printFatal("Error received: " + throwable);
         }
     };
 
     public static final Consumer<Throwable> IgnoreConflictError = throwable -> {
         if (!(throwable instanceof ErrorResponseException) || ((ErrorResponseException) throwable).getResponse().getStatusCode() != HTTP_CONFLICT) {
-            ConsoleLogger.PrintFatal("Error received: " + throwable);
+            ConsoleLogger.printFatal("Error received: " + throwable);
         }
     };
 }
