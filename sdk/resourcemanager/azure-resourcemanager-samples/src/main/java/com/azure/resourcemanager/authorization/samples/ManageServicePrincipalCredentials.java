@@ -18,6 +18,7 @@ import com.azure.resourcemanager.authorization.models.ServicePrincipal;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 
+import java.io.IOException;
 import java.time.Duration;
 
 /**
@@ -38,7 +39,7 @@ public final class ManageServicePrincipalCredentials {
      * @param profile the profile the sample is running in
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure.Authenticated authenticated, AzureProfile profile) {
+    public static boolean runSample(Azure.Authenticated authenticated, AzureProfile profile) throws IOException {
         final String spName         = authenticated.sdkContext().randomResourceName("sp", 20);
         final String appName        = authenticated.sdkContext().randomResourceName("app", 20);
         final String appUrl         = "https://" + appName;
@@ -205,9 +206,6 @@ public final class ManageServicePrincipalCredentials {
 
 
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting application: " + appName);
@@ -217,7 +215,6 @@ public final class ManageServicePrincipalCredentials {
                 System.out.println("Did not create applications in Azure. No clean up is necessary");
             }
         }
-        return false;
     }
 
     /**

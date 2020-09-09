@@ -187,11 +187,6 @@ public final class CreateSimpleInternetFacingLoadBalancer {
             System.out.println("Deleted load balancer" + loadBalancerName);
 
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + resourceGroupName);
@@ -203,7 +198,6 @@ public final class CreateSimpleInternetFacingLoadBalancer {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

@@ -223,9 +223,6 @@ public final class ManageVpnGatewayVNet2VNetConnection {
                     .execute();
             System.out.println("Connectivity status: " + connectivity.connectionStatus());
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -236,8 +233,6 @@ public final class ManageVpnGatewayVNet2VNetConnection {
                 g.printStackTrace();
             }
         }
-
-        return false;
     }
 
     /**
