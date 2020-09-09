@@ -123,7 +123,7 @@ public final class PathsImpl {
         @Patch("{filesystem}/{path}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
-        Mono<PathsSetAccessControlRecursiveResponse> setAccessControlRecursive(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @QueryParam("continuation") String continuation, @QueryParam("mode") PathSetAccessControlRecursiveMode mode, @QueryParam("forceFlag") Boolean forceFlag, @QueryParam("maxRecords") Integer maxRecords, @HeaderParam("x-ms-acl") String acl, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-version") String version, @QueryParam("action") String action, Context context);
+        Mono<PathsSetAccessControlRecursiveResponse> setAccessControlRecursive(@PathParam("filesystem") String fileSystem, @PathParam("path") String path1, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @QueryParam("continuation") String continuation, @QueryParam("mode") PathSetAccessControlRecursiveMode mode, @QueryParam("forceFlag") Boolean forceFlag, @QueryParam("maxRecords") Integer maxRecords, @HeaderParam("x-ms-acl") String acl, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-version") String version, @QueryParam("action") String action, Context context);
 
         @Patch("{filesystem}/{path}")
         @ExpectedResponses({200})
@@ -726,7 +726,7 @@ public final class PathsImpl {
         final String acl = null;
         final String requestId = null;
         final String action = "setAccessControlRecursive";
-        return service.setAccessControlRecursive(this.client.getUrl(), timeout, continuation, mode, forceFlag, maxRecords, acl, requestId, this.client.getVersion(), action, context);
+        return service.setAccessControlRecursive(this.client.getFileSystem(), this.client.getPath1(), this.client.getUrl(), timeout, continuation, mode, forceFlag, maxRecords, acl, requestId, this.client.getVersion(), action, context);
     }
 
     /**
@@ -746,7 +746,7 @@ public final class PathsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathsSetAccessControlRecursiveResponse> setAccessControlRecursiveWithRestResponseAsync(PathSetAccessControlRecursiveMode mode, Integer timeout, String continuation, Boolean forceFlag, Integer maxRecords, String acl, String requestId, Context context) {
         final String action = "setAccessControlRecursive";
-        return service.setAccessControlRecursive(this.client.getUrl(), timeout, continuation, mode, forceFlag, maxRecords, acl, requestId, this.client.getVersion(), action, context);
+        return service.setAccessControlRecursive(this.client.getFileSystem(), this.client.getPath1(), this.client.getUrl(), timeout, continuation, mode, forceFlag, maxRecords, acl, requestId, this.client.getVersion(), action, context);
     }
 
     /**

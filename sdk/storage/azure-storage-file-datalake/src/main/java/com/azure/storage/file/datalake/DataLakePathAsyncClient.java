@@ -5,6 +5,7 @@ package com.azure.storage.file.datalake;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
@@ -17,6 +18,7 @@ import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuilder;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
@@ -25,10 +27,16 @@ import com.azure.storage.file.datalake.implementation.models.ModifiedAccessCondi
 import com.azure.storage.file.datalake.implementation.models.PathGetPropertiesAction;
 import com.azure.storage.file.datalake.implementation.models.PathRenameMode;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
+import com.azure.storage.file.datalake.implementation.models.PathSetAccessControlRecursiveMode;
+import com.azure.storage.file.datalake.implementation.models.PathsSetAccessControlRecursiveResponse;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.DataLakeSasImplUtil;
 import com.azure.storage.file.datalake.implementation.util.TransformUtils;
+import com.azure.storage.file.datalake.models.AccessControlChangeCounters;
+import com.azure.storage.file.datalake.models.AccessControlChangeFailure;
+import com.azure.storage.file.datalake.models.AccessControlChangeResult;
+import com.azure.storage.file.datalake.models.AccessControlChanges;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathAccessControl;
 import com.azure.storage.file.datalake.models.PathAccessControlEntry;
@@ -37,7 +45,11 @@ import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathProperties;
+import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions;
+import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions;
+import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
@@ -47,6 +59,9 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -637,6 +652,265 @@ public class DataLakePathAsyncClient {
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
                 response.getDeserializedHeaders().getLastModified())));
+    }
+
+    /**
+     * Recursively sets the access control on a path and all subpaths.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setAccessControlRecursive#List}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
+     *
+     * @param accessControlList The POSIX access control list for the file or directory.
+     * @return A reactive response containing the result of the operation.
+     */
+    public Mono<AccessControlChangeResult> setAccessControlRecursive(List<PathAccessControlEntry> accessControlList) {
+        try {
+            return setAccessControlRecursiveWithResponse(new PathSetAccessControlRecursiveOptions(accessControlList))
+                .flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Recursively sets the access control on a path and all subpaths.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setAccessControlRecursiveWithResponse#PathSetAccessControlRecursiveOptions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
+     *
+     * @param options {@link PathSetAccessControlRecursiveOptions}
+     * @return A reactive response containing the result of the operation.
+     */
+    public Mono<Response<AccessControlChangeResult>> setAccessControlRecursiveWithResponse(
+        PathSetAccessControlRecursiveOptions options) {
+        StorageImplUtils.assertNotNull("options", options);
+        try {
+            return withContext(context -> setAccessControlRecursiveWithResponse(
+                PathAccessControlEntry.serializeList(options.getAccessControlList()), options.getProgressHandler(),
+                PathSetAccessControlRecursiveMode.SET, options.getBatchSize(), options.getMaxBatches(),
+                options.isContinuingOnFailure(), options.getContinuationToken(), context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Recursively updates the access control on a path and all subpaths.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.updateAccessControlRecursive#List}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
+     *
+     * @param accessControlList The POSIX access control list for the file or directory.
+     * @return A reactive response containing the result of the operation.
+     */
+    public Mono<AccessControlChangeResult> updateAccessControlRecursive(List<PathAccessControlEntry> accessControlList)
+    {
+        try {
+            return updateAccessControlRecursiveWithResponse(
+                new PathUpdateAccessControlRecursiveOptions(accessControlList))
+                .flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Recursively updates the access control on a path and all subpaths.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.updateAccessControlRecursiveWithResponse#PathUpdateAccessControlRecursiveOptions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
+     *
+     * @param options {@link PathUpdateAccessControlRecursiveOptions}
+     * @return A reactive response containing the result of the operation.
+     */
+    public Mono<Response<AccessControlChangeResult>> updateAccessControlRecursiveWithResponse(
+        PathUpdateAccessControlRecursiveOptions options) {
+        StorageImplUtils.assertNotNull("options", options);
+        try {
+            return withContext(context -> setAccessControlRecursiveWithResponse(
+                PathAccessControlEntry.serializeList(options.getAccessControlList()), options.getProgressHandler(),
+                PathSetAccessControlRecursiveMode.MODIFY, options.getBatchSize(), options.getMaxBatches(),
+                options.isContinuingOnFailure(), options.getContinuationToken(), context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Recursively removes the access control on a path and all subpaths.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.removeAccessControlRecursive#List}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
+     *
+     * @param accessControlList The POSIX access control list for the file or directory.
+     * @return A reactive response containing the result of the operation.
+     */
+    public Mono<AccessControlChangeResult> removeAccessControlRecursive(
+        List<PathRemoveAccessControlEntry> accessControlList) {
+        try {
+            return removeAccessControlRecursiveWithResponse(
+                new PathRemoveAccessControlRecursiveOptions(accessControlList))
+                .flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Recursively removes the access control on a path and all subpaths.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.removeAccessControlRecursiveWithResponse#PathRemoveAccessControlRecursiveOptions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
+     *
+     * @param options {@link PathRemoveAccessControlRecursiveOptions}
+     * @return A reactive response containing the result of the operation.
+     */
+    public Mono<Response<AccessControlChangeResult>> removeAccessControlRecursiveWithResponse(
+        PathRemoveAccessControlRecursiveOptions options) {
+        StorageImplUtils.assertNotNull("options", options);
+        try {
+            return withContext(context -> setAccessControlRecursiveWithResponse(
+                PathRemoveAccessControlEntry.serializeList(options.getAccessControlList()),
+                options.getProgressHandler(), PathSetAccessControlRecursiveMode.REMOVE, options.getBatchSize(),
+                options.getMaxBatches(), options.isContinuingOnFailure(), options.getContinuationToken(), context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<AccessControlChangeResult>> setAccessControlRecursiveWithResponse(
+        String accessControlList, Consumer<Response<AccessControlChanges>> progressHandler,
+        PathSetAccessControlRecursiveMode mode, Integer batchSize, Integer maxBatches, Boolean continueOnFailure,
+        String continuationToken, Context context) {
+        StorageImplUtils.assertNotNull("accessControlList", accessControlList);
+
+        context = context == null ? Context.NONE : context;
+        Context contextFinal = context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE);
+
+        AtomicInteger directoriesSuccessfulCount = new AtomicInteger(0);
+        AtomicInteger filesSuccessfulCount = new AtomicInteger(0);
+        AtomicInteger failureCount = new AtomicInteger(0);
+        AtomicInteger batchesCount = new AtomicInteger(0);
+
+        return this.dataLakeStorage.paths().setAccessControlRecursiveWithRestResponseAsync(mode, null,
+            continuationToken, continueOnFailure, batchSize, accessControlList, null, contextFinal)
+            .flatMap(response -> setAccessControlRecursiveWithResponseHelper(response, maxBatches,
+                directoriesSuccessfulCount, filesSuccessfulCount, failureCount, batchesCount, progressHandler,
+                accessControlList, mode, batchSize, continueOnFailure, continuationToken, contextFinal));
+    }
+
+    Mono<Response<AccessControlChangeResult>> setAccessControlRecursiveWithResponseHelper(
+        PathsSetAccessControlRecursiveResponse response, Integer maxBatches, AtomicInteger directoriesSuccessfulCount,
+        AtomicInteger filesSuccessfulCount, AtomicInteger failureCount, AtomicInteger batchesCount,
+        Consumer<Response<AccessControlChanges>> progressHandler, String accessControlStr,
+        PathSetAccessControlRecursiveMode mode, Integer batchSize, Boolean continueOnFailure, String lastToken,
+        Context context) {
+
+        // We only enter the helper after making a service call, so increment the counter immediately.
+        batchesCount.incrementAndGet();
+
+        // Update counters
+        directoriesSuccessfulCount.addAndGet(response.getValue().getDirectoriesSuccessful());
+        filesSuccessfulCount.addAndGet(response.getValue().getFilesSuccessful());
+        failureCount.addAndGet(response.getValue().getFailureCount());
+
+        /*
+        Determine which token we should report/return/use next.
+        If there was a token present on the response (still processing and either no errors or forceFlag set),
+        use that one.
+        If there were no failures or force flag set and still nothing present, we are at the end, so use that.
+        If there were failures and no force flag set, use the last token (no token is returned in this case).
+         */
+        String newToken = response.getDeserializedHeaders().getContinuation();
+        String effectiveNextToken;
+        if (newToken != null && !newToken.isEmpty()) {
+            effectiveNextToken = newToken;
+        } else {
+            if (failureCount.get() == 0 || (continueOnFailure == null || continueOnFailure)) {
+                effectiveNextToken = newToken;
+            } else {
+                effectiveNextToken = lastToken;
+            }
+        }
+
+        // Report progress
+        if (progressHandler != null) {
+            AccessControlChanges changes = new AccessControlChanges();
+
+            changes.setContinuationToken(effectiveNextToken);
+
+            changes.setBatchFailures(
+                response.getValue().getFailedEntries()
+                    .stream()
+                    .map(aclFailedEntry -> new AccessControlChangeFailure()
+                        .setDirectory(aclFailedEntry.getType().equals("DIRECTORY"))
+                        .setName(aclFailedEntry.getName())
+                        .setErrorMessage(aclFailedEntry.getErrorMessage())
+                    ).collect(Collectors.toList())
+            );
+
+            changes.setBatchCounters(new AccessControlChangeCounters()
+                .setChangedDirectoriesCount(response.getValue().getDirectoriesSuccessful())
+                .setChangedFilesCount(response.getValue().getFilesSuccessful())
+                .setFailedChangesCount(response.getValue().getFailureCount()));
+
+            changes.setAggregateCounters(new AccessControlChangeCounters()
+                .setChangedDirectoriesCount(directoriesSuccessfulCount.get())
+                .setChangedFilesCount(filesSuccessfulCount.get())
+                .setFailedChangesCount(failureCount.get()));
+
+            progressHandler.accept(
+                new ResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), changes,
+                    response.getDeserializedHeaders()));
+        }
+
+        /*
+        Determine if we are finished either because there is no new continuation (failure or finished) token or we have
+        hit maxBatches.
+         */
+        if ((newToken == null || newToken.isEmpty()) || (maxBatches != null && batchesCount.get() >= maxBatches)) {
+            AccessControlChangeResult result = new AccessControlChangeResult()
+                .setContinuationToken(effectiveNextToken)
+                .setCounters(new AccessControlChangeCounters()
+                    .setChangedDirectoriesCount(directoriesSuccessfulCount.get())
+                    .setChangedFilesCount(filesSuccessfulCount.get())
+                    .setFailedChangesCount(failureCount.get()));
+
+            return Mono.just(new ResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                result, response.getDeserializedHeaders()
+            ));
+        }
+
+        // If we're not finished, issue another request
+        return this.dataLakeStorage.paths().setAccessControlRecursiveWithRestResponseAsync(mode, null,
+            effectiveNextToken, continueOnFailure, batchSize, accessControlStr, null, context)
+            .flatMap(response2 -> setAccessControlRecursiveWithResponseHelper(response2, maxBatches,
+                directoriesSuccessfulCount, filesSuccessfulCount, failureCount, batchesCount, progressHandler,
+                accessControlStr, mode, batchSize, continueOnFailure, effectiveNextToken, context));
     }
 
     /**
