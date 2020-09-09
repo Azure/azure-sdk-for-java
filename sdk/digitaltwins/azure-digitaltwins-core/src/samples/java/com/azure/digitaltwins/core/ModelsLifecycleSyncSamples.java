@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
+import java.util.function.Function;
 
 /**
  * Creates a component with a random Id.
@@ -45,11 +47,16 @@ public class ModelsLifecycleSyncSamples {
         runModelLifecycleSample();
     }
 
+    public static Function<Integer, String> randomIntegerStringGenerator = (maxLength) -> {
+        int randInt = new Random().nextInt(maxLength);
+        return String.valueOf(randInt);
+    };
+
     public static void runModelLifecycleSample() {
         // For the purpose of this sample we will create temporary models using random model Ids and then decommission a model.
         // We have to make sure these model Ids are unique within the DigitalTwin instance.
-        String componentModelId = UniqueIdHelper.getUniqueModelId(SamplesConstants.TemporaryComponentModelPrefix, client);
-        String sampleModelId = UniqueIdHelper.getUniqueModelId(SamplesConstants.TemporaryModelPrefix, client);
+        String componentModelId = UniqueIdHelper.getUniqueModelId(SamplesConstants.TemporaryComponentModelPrefix, client, randomIntegerStringGenerator);
+        String sampleModelId = UniqueIdHelper.getUniqueModelId(SamplesConstants.TemporaryModelPrefix, client, randomIntegerStringGenerator);
 
         String newComponentModelPayload = SamplesConstants.TemporaryComponentModelPayload
             .replace(SamplesConstants.ComponentId, componentModelId);
