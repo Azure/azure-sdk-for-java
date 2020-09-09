@@ -26,9 +26,9 @@ Accepted<Deployment> acceptedDeployment = azure.deployments()
 Deployment provisioningDeployment = acceptedDeployment.getActivationResponse().getValue();
 
 LongRunningOperationStatus pollStatus = acceptedDeployment.getActivationResponse().getStatus();
-int delayInMills = acceptedDeployment.getActivationResponse().getRetryAfter() == null
-    ? 0
-    : (int) acceptedDeployment.getActivationResponse().getRetryAfter().toMillis();
+long delayInMills = acceptedDeployment.getActivationResponse().getRetryAfter() == null
+    ? DEFAULT_DELAY_IN_MILLIS
+    : acceptedDeployment.getActivationResponse().getRetryAfter().toMillis();
 while (!pollStatus.isComplete()) {
     Thread.sleep(delayInMills);
 
@@ -37,7 +37,7 @@ while (!pollStatus.isComplete()) {
     pollStatus = pollResponse.getStatus();
     delayInMills = pollResponse.getRetryAfter() == null
         ? DEFAULT_DELAY_IN_MILLIS
-        : (int) pollResponse.getRetryAfter().toMillis();
+        : pollResponse.getRetryAfter().toMillis();
 }
 // pollStatus == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, if successful
 

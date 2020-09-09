@@ -279,7 +279,7 @@ public final class RestProxy implements InvocationHandler {
                 serializer.serialize(bodyContentObject, SerializerEncoding.JSON, stream);
 
                 request.setHeader("Content-Length", String.valueOf(stream.size()));
-                request.setBody(Flux.just(ByteBuffer.wrap(stream.toByteArray(), 0, stream.size())));
+                request.setBody(Flux.defer(() -> Flux.just(ByteBuffer.wrap(stream.toByteArray(), 0, stream.size()))));
             } else if (FluxUtil.isFluxByteBuffer(methodParser.getBodyJavaType())) {
                 // Content-Length or Transfer-Encoding: chunked must be provided by a user-specified header when a
                 // Flowable<byte[]> is given for the body.
@@ -298,7 +298,7 @@ public final class RestProxy implements InvocationHandler {
                 serializer.serialize(bodyContentObject, SerializerEncoding.fromHeaders(request.getHeaders()), stream);
 
                 request.setHeader("Content-Length", String.valueOf(stream.size()));
-                request.setBody(Flux.just(ByteBuffer.wrap(stream.toByteArray(), 0, stream.size())));
+                request.setBody(Flux.defer(() -> Flux.just(ByteBuffer.wrap(stream.toByteArray(), 0, stream.size()))));
             }
         }
 

@@ -92,7 +92,7 @@ public class DockerUtils {
      * @throws Exception exception thrown
      */
     public static DockerClient createDockerClient(Azure azure, String rgName, Region region,
-                                                  String registryServerUrl, String username, String password) throws Exception {
+                                                  String registryServerUrl, String username, String password) throws IOException {
         final String envDockerHost = System.getenv("DOCKER_HOST");
         final String envDockerCertPath = System.getenv("DOCKER_CERT_PATH");
         String dockerHostUrl;
@@ -188,7 +188,7 @@ public class DockerUtils {
      * @throws Exception exception thrown
      */
     public static DockerClient fromNewDockerVM(Azure azure, String rgName, Region region,
-                                               String registryServerUrl, String username, String password) throws Exception {
+                                               String registryServerUrl, String username, String password) {
         final String dockerVMName = azure.sdkContext().randomResourceName("dockervm", 15);
         final String publicIPDnsLabel = azure.sdkContext().randomResourceName("pip", 10);
         final String vmUserName = "dockerUser";

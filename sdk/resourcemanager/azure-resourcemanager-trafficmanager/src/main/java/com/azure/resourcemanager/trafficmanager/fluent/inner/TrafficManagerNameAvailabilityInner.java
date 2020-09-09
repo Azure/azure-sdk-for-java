@@ -4,11 +4,13 @@
 
 package com.azure.resourcemanager.trafficmanager.fluent.inner;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The TrafficManagerNameAvailability model. */
+@Fluent
 public final class TrafficManagerNameAvailabilityInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TrafficManagerNameAvailabilityInner.class);
 

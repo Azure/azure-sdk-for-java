@@ -1499,7 +1499,7 @@ public final class Utils {
      * @return a service principal client ID
      * @throws Exception exception
      */
-    public static String getSecondaryServicePrincipalClientID(String envSecondaryServicePrincipal) throws Exception {
+    public static String getSecondaryServicePrincipalClientID(String envSecondaryServicePrincipal) throws IOException {
         String content = new String(Files.readAllBytes(new File(envSecondaryServicePrincipal).toPath()), StandardCharsets.UTF_8).trim();
         HashMap<String, String> auth = new HashMap<>();
 
@@ -1522,7 +1522,7 @@ public final class Utils {
      * @return a service principal secret
      * @throws Exception exception
      */
-    public static String getSecondaryServicePrincipalSecret(String envSecondaryServicePrincipal) throws Exception {
+    public static String getSecondaryServicePrincipalSecret(String envSecondaryServicePrincipal) throws IOException {
         String content = new String(Files.readAllBytes(new File(envSecondaryServicePrincipal).toPath()), StandardCharsets.UTF_8).trim();
         HashMap<String, String> auth = new HashMap<>();
 
@@ -1560,7 +1560,7 @@ public final class Utils {
      * @throws IOException IO Exception
      */
     public static void createCertificate(String certPath, String pfxPath,
-                                         String alias, String password, String cnName) throws Exception {
+                                         String alias, String password, String cnName) throws IOException {
         if (new File(pfxPath).exists()) {
             return;
         }
@@ -1621,7 +1621,7 @@ public final class Utils {
      * @throws Exception exceptions thrown from the execution
      */
     public static String cmdInvocation(String[] command,
-                                       boolean ignoreErrorStream) throws Exception {
+                                       boolean ignoreErrorStream) throws IOException {
         String result = "";
         String error = "";
 
@@ -1639,11 +1639,11 @@ public final class Utils {
                 // To do - Log error message
 
                 if (!ignoreErrorStream) {
-                    throw new Exception(error, null);
+                    throw new IOException(error, null);
                 }
             }
         } catch (Exception e) {
-            throw new Exception("Exception occurred while invoking command", e);
+            throw new RuntimeException("Exception occurred while invoking command", e);
         }
         return result;
     }
