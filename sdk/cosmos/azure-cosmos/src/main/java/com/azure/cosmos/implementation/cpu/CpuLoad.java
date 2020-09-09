@@ -29,8 +29,8 @@ public class CpuLoad {
         return cachedToString;
     }
 
-    public String toStringInternal() {
-        DecimalFormat decimalFormat = new DecimalFormat("%.3f");
-        return "(" + timestamp.toString() + decimalFormat.format(this.value) + ")";
+    private String toStringInternal() {
+        DecimalFormat decimalFormat = new DecimalFormat("0.0");
+        return "(" + timestamp.toString() + " " + decimalFormat.format(this.value) + "%)";
     }
 }

@@ -13,11 +13,13 @@ import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.UserAgentContainer;
+import com.azure.cosmos.implementation.cpu.CpuMonitor;
 import com.azure.cosmos.implementation.http.HttpClient;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  *
@@ -57,6 +59,14 @@ public class ReflectionUtils {
     private static <T> T get(Class<T> klass, Object object, String fieldName) {
         try {
             return (T) FieldUtils.readField(object, fieldName, true);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static <R> R getStaticField(Class klass, String fieldName) {
+        try {
+            return (R) FieldUtils.readStaticField(klass, fieldName, true);
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
@@ -140,5 +150,13 @@ public class ReflectionUtils {
 
     public static UserAgentContainer getUserAgentContainer(RxDocumentClientImpl rxDocumentClient) {
         return get(UserAgentContainer.class, rxDocumentClient, "userAgentContainer");
+    }
+
+    public static CpuMonitor getCpuMonitorInstance() {
+        return getStaticField(CpuMonitor.class, "instance");
+    }
+
+    public static AtomicInteger getCpuMonitorReferenceCounter() {
+        return getStaticField(CpuMonitor.class, "cnt");
     }
 }

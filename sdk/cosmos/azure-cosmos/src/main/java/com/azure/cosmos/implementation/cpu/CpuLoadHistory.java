@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation.cpu;
 
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
-import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -14,15 +13,15 @@ import java.util.stream.Collectors;
 
 public class CpuLoadHistory {
     private static final String EMPTY = "empty";
-    private List<CpuLoad> cpuLoad;
-    private Duration monitoringInterval;
-    private AtomicReference<Boolean> cpuOverload = new AtomicReference<>();
+    final List<CpuLoad> cpuLoad;
+    final Duration monitoringInterval;
+    final AtomicReference<Boolean> cpuOverload = new AtomicReference<>();
+    private String cachedToString;
 
-    // TODO: moderakh make this immutable list/
     public CpuLoadHistory(List<CpuLoad> cpuLoad, Duration monitoringInterval) {
         Preconditions.checkNotNull(cpuLoad, "cpuLoad");
         this.cpuLoad = cpuLoad;
-        Preconditions.checkArgument(monitoringInterval.isZero(), "monitoringInterval is zero");
+        Preconditions.checkArgument(!monitoringInterval.isZero(), "monitoringInterval is zero");
 
         this.monitoringInterval = monitoringInterval;
     }
@@ -35,19 +34,25 @@ public class CpuLoadHistory {
         return cpuOverload.get();
     }
 
-    Instant getLastTimestamp() {
-        return this.cpuLoad.get(this.cpuLoad.size() - 1).timestamp;
+    @Override
+    public String toString() {
+        if (cachedToString == null) {
+            cachedToString = toStringInternal();
+        }
 
+        return cachedToString;
     }
 
-    public String toString() {
-        //        ReadOnlyCollection<CpuLoad> cpuLoad = this.cpuLoad;
-        // ISSUE: explicit non-virtual call
+    private String toStringInternal() {
         if (cpuLoad == null || cpuLoad.isEmpty()) {
             return EMPTY;
         }
 
         return String.join(", ", cpuLoad.stream().map(c -> c.toString()).collect(Collectors.toList()));
+    }
+
+    Instant getLastTimestamp() {
+        return this.cpuLoad.get(this.cpuLoad.size() - 1).timestamp;
     }
 
     private boolean isCpuOverloadInternal() {

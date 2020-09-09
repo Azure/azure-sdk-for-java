@@ -3,107 +3,119 @@
 
 package com.azure.cosmos.implementation.cpu;
 
-import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+/**
+ * Monitors history of CPU consumption.
+ */
 public class CpuMonitor implements AutoCloseable {
+    private final static int DEFAULT_REFRESH_INTERVAL_IN_SECONDS = 10;
+    private final static int HISTORY_LENGTH = 6;
 
+    private static Duration refreshInterval = Duration.ofSeconds(DEFAULT_REFRESH_INTERVAL_IN_SECONDS);
+
+    /*
+     * there is a singleton instance of {@link CpuMonitor}.
+     * If there are multiple clients they will share the same instance.
+     */
+    private static final AtomicInteger cnt = new AtomicInteger(0);
+
+    private static CpuMonitor instance;
+
+    private final Logger logger = LoggerFactory.getLogger(CpuMonitor.class);
+    private final ReentrantReadWriteLock rwLock = new ReentrantReadWriteLock();
     private final ScheduledThreadPoolExecutor scheduledExecutorService;
-    private final static int DefaultRefreshIntervalInSeconds = 10;
-    private final static int HistoryLength = 6;
+    private final CpuReader cpuReader;
+    private final AtomicBoolean isClosed = new AtomicBoolean(false);
 
-    private static Duration refreshInterval =
-        Duration.ofSeconds(DefaultRefreshIntervalInSeconds);
-    private CpuReader cpuReader;
     private ScheduledFuture<?> future;
-
-    private boolean running = false;
-
-    final ReentrantReadWriteLock rwLock = new ReentrantReadWriteLock();
-
-
-//    private CancellationTokenSource cancellation;  // Guarded by rwLock.
 
     // CpuMonitor users get a copy of the internal buffer to avoid racing
     // against changes.
-    private CpuLoadHistory currentReading;  // Guarded by rwLock.
+    private CpuLoad[] buffer = new CpuLoad[CpuMonitor.HISTORY_LENGTH];
+    private int clockHand = 0;
 
-//    private Task periodicTask;  // Guarded by rwLock.G
+    private CpuLoadHistory currentReading; // Guarded by rwLock.
 
-    public CpuMonitor() {
-        scheduledExecutorService = new ScheduledThreadPoolExecutor(1);
-        scheduledExecutorService.setRemoveOnCancelPolicy(true);
+    /**
+     * Gets a singleton instance of CpuMonitor, if no instance available will initialize one. The caller needs to ensure
+     * that CPUMonitor#close() is invoked when this instance is not needed anymore.
+     *
+     * @return CpuMonitor an instance of CpuMonitor.
+     */
+    public static CpuMonitor initializeAndGet() {
+        synchronized (CpuMonitor.class) {
+            if (cnt.getAndIncrement() <= 0) {
+                instance = new CpuMonitor();
+                instance.start();
+            }
+
+            assert instance != null;
+            return instance;
+        }
     }
 
-    public void start() {
+    /**
+     * Gets a reference to the existing instance of CPUMonitor
+     *
+     * @return CpuMonitor reference.
+     */
+    public static CpuMonitor getInstanceReference() {
+        if (instance == null) {
+            throw new IllegalStateException("CPUMonitor not initialized");
+        }
 
-        this.throwIfDisposed();
-        this.rwLock.writeLock().lock();
-        this.future = scheduledExecutorService.schedule(() -> refresh(), refreshInterval.toSeconds(), TimeUnit.SECONDS);
+        return instance;
+    }
+
+    private CpuMonitor() {
         this.cpuReader = new CpuReader();
-        this.rwLock.writeLock().unlock();
-    }
-
-    private void throwIfDisposed() {
-    }
-
-
-    public void stop() {
-        future.cancel(false);
+        this.scheduledExecutorService = new ScheduledThreadPoolExecutor(1);
+        this.scheduledExecutorService.setRemoveOnCancelPolicy(true);
     }
 
     @Override
-    public void close() throws Exception {
-        scheduledExecutorService.shutdown();
+    public void close() {
+        synchronized (CpuMonitor.class) {
+            if (isClosed.getAndSet(true)) {
+                return;
+            }
+
+            if (cnt.decrementAndGet() <= 0) {
+                closeInternal();
+            }
+        }
     }
 
-
-    //    private final static int DefaultRefreshIntervalInSeconds = 10;
-//    private final static int HistoryLength = 6;
-//    private static TimeSpan refreshInterval =
-//        TimeSpan.FromSeconds(DefaultRefreshIntervalInSeconds);
-//
-//    private bool disposed = false;
-//
-//    private readonly ReaderWriterLockSlim rwLock =
-//        new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
-//    private CancellationTokenSource cancellation;  // Guarded by rwLock.
-//
-//    // CpuMonitor users get a copy of the internal buffer to avoid racing
-//    // against changes.
-//    private CpuLoadHistory currentReading;  // Guarded by rwLock.
-//
-//    private Task periodicTask;  // Guarded by rwLock.
-//
-//    // Allows tests to override the default refresh interval
-//     static void OverrideRefreshInterval(Duration newRefreshInterval)
-//    {
-//        CpuMonitor.refreshInterval = newRefreshInterval;
-//    }
-
-
-
-
+    private void closeInternal() {
+        this.rwLock.writeLock().lock();
+        try {
+            this.scheduledExecutorService.shutdown();
+            instance = null;
+        } finally {
+            this.rwLock.writeLock().unlock();
+        }
+    }
 
     // Returns a read-only collection of CPU load measurements, or null if
     // no results are available yet.
     public CpuLoadHistory getCpuLoad() {
-        this.throwIfDisposed();
         this.rwLock.readLock().lock();
         try {
-            // throw if not initialized
-//            if (this.periodicTask == null)
-//            {
-//                throw new InvalidOperationException("CpuMonitor was not started");
-//            }
             return this.currentReading;
         } finally {
             this.rwLock.readLock().unlock();
@@ -111,34 +123,51 @@ public class CpuMonitor implements AutoCloseable {
     }
 
     private void refresh() {
-        Instant now = Instant.now();
-        float currentUtilization = cpuReader.getSystemWideCpuUsage();
+        try {
+            Instant now = Instant.now();
+            float currentUtilization = (float) cpuReader.getSystemWideCpuUsage() * 100;
 
-        CpuLoad[] buffer = new CpuLoad[CpuMonitor.HistoryLength];
-        int clockHand = 0;
+            if (!Float.isNaN(currentUtilization) && currentUtilization >= 0) {
+                List<CpuLoad> cpuLoadHistory = new ArrayList<>(buffer.length);
+                CpuLoadHistory newReading = new CpuLoadHistory(
+                    cpuLoadHistory,
+                    CpuMonitor.refreshInterval);
 
-        if (!Float.isNaN(currentUtilization)) {
-            List<CpuLoad> cpuLoadHistory = new ArrayList<>(buffer.length);
-            CpuLoadHistory newReading = new CpuLoadHistory(
-                cpuLoadHistory,
-                CpuMonitor.refreshInterval);
+                buffer[clockHand] = new CpuLoad(now, currentUtilization);
+                clockHand = (clockHand + 1) % buffer.length;
 
-            buffer[clockHand] = new CpuLoad(now, currentUtilization);
-            clockHand = (clockHand + 1) % buffer.length;
+                for (int i = 0; i < buffer.length; i++) {
+                    int index = (clockHand + i) % buffer.length;
 
-            for (int i = 0; i < buffer.length; i++) {
-                int index = (clockHand + i) % buffer.length;
-                if (buffer[index].timestamp.equals(Instant.MIN)) {
-                    cpuLoadHistory.add(buffer[index]);
+                    if (buffer[index] != null && buffer[index].timestamp != null && !buffer[index].timestamp.equals(Instant.MIN)) {
+                        cpuLoadHistory.add(buffer[index]);
+                    }
+                }
+
+                this.rwLock.writeLock().lock();
+                try {
+                    this.currentReading = newReading;
+                } finally {
+                    this.rwLock.writeLock().unlock();
                 }
             }
+        } catch (Exception e) {
+            logger.error("Failed to refresh the cpu history", e);
+        }
+    }
 
-            this.rwLock.writeLock().lock();
-            try {
-                this.currentReading = newReading;
-            } finally {
-                this.rwLock.writeLock().unlock();
-            }
+    private void start() {
+        this.rwLock.writeLock().lock();
+        try {
+            // sets a dummy value for current reading.
+            this.currentReading = new CpuLoadHistory(Collections.emptyList(), refreshInterval);
+            this.future = scheduledExecutorService.scheduleAtFixedRate(
+                () -> refresh(),
+                0,
+                refreshInterval.toMillis() / 1000,
+                TimeUnit.SECONDS);
+        } finally {
+            this.rwLock.writeLock().unlock();
         }
     }
 }
