@@ -24,7 +24,7 @@ public class ComponentSyncSamples {
     private static DigitalTwinsClient client;
     private static final ObjectMapper mapper = new ObjectMapper();
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException {
 
         SamplesArguments parsedArguments = new SamplesArguments(args);
 
@@ -45,6 +45,7 @@ public class ComponentSyncSamples {
         runComponentSample();
     }
 
+    @SuppressWarnings("rawtypes")
     public static void runComponentSample() throws JsonProcessingException {
 
         ConsoleLogger.printHeader("COMPONENT SAMPLES");
@@ -112,7 +113,7 @@ public class ComponentSyncSamples {
 
             String component1RawText = mapper.writeValueAsString(basicDigitalTwin.getCustomProperties().get("Component1"));
 
-            Map<String, Object> component1 = mapper.readValue(component1RawText, HashMap.class);
+            HashMap component1 = mapper.readValue(component1RawText, HashMap.class);
 
             ConsoleLogger.print("Retrieved digital twin using generic API to use built in deserialization into a BasicDigitalTwin with Id: " + basicDigitalTwin.getId() + ":\n\t"
                 + "Etag: " + basicDigitalTwin.getTwinETag() + "\n\t"
