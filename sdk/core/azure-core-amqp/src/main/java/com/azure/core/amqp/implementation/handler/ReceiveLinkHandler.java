@@ -4,9 +4,6 @@
 package com.azure.core.amqp.implementation.handler;
 
 import com.azure.core.util.logging.ClientLogger;
-import java.util.Collections;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import org.apache.qpid.proton.amqp.messaging.Modified;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.EndpointState;
@@ -17,6 +14,9 @@ import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 
+import java.util.Collections;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ReceiveLinkHandler extends LinkHandler {
@@ -66,18 +66,20 @@ public class ReceiveLinkHandler extends LinkHandler {
     @Override
     public void onLinkRemoteOpen(Event event) {
         final Link link = event.getLink();
-        if (link instanceof Receiver) {
-            if (link.getRemoteSource() != null) {
-                logger.info("onLinkRemoteOpen connectionId[{}], linkName[{}], remoteSource[{}]",
-                    getConnectionId(), link.getName(), link.getRemoteSource());
+        if (!(link instanceof Receiver)) {
+            return;
+        }
 
-                if (isFirstResponse.getAndSet(false)) {
-                    onNext(EndpointState.ACTIVE);
-                }
-            } else {
-                logger.info("onLinkRemoteOpen connectionId[{}], linkName[{}], action[waitingForError]",
-                    getConnectionId(), link.getName());
+        if (link.getRemoteSource() != null) {
+            logger.info("onLinkRemoteOpen connectionId[{}], linkName[{}], remoteSource[{}]",
+                getConnectionId(), link.getName(), link.getRemoteSource());
+
+            if (isFirstResponse.getAndSet(false)) {
+                onNext(EndpointState.ACTIVE);
             }
+        } else {
+            logger.info("onLinkRemoteOpen connectionId[{}], linkName[{}], action[waitingForError]",
+                getConnectionId(), link.getName());
         }
     }
 
@@ -133,7 +135,7 @@ public class ReceiveLinkHandler extends LinkHandler {
 
     @Override
     public void onLinkRemoteClose(Event event) {
-        super.onLinkRemoteClose(event);
         deliverySink.complete();
+        super.onLinkRemoteClose(event);
     }
 }

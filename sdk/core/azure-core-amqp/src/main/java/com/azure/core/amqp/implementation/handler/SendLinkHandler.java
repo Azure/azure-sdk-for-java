@@ -61,19 +61,21 @@ public class SendLinkHandler extends LinkHandler {
     @Override
     public void onLinkRemoteOpen(Event event) {
         final Link link = event.getLink();
-        if (link instanceof Sender) {
-            if (link.getRemoteTarget() != null) {
-                logger.info("onLinkRemoteOpen connectionId[{}], linkName[{}], remoteTarget[{}]",
-                    getConnectionId(), link.getName(), link.getRemoteTarget());
+        if (!(link instanceof Sender)) {
+            return;
+        }
 
-                if (isFirstFlow.getAndSet(false)) {
-                    onNext(EndpointState.ACTIVE);
-                }
-            } else {
-                logger.info("onLinkRemoteOpen connectionId[{}], linkName[{}], remoteTarget[null], remoteSource[null], "
-                        + "action[waitingForError]",
-                    getConnectionId(), link.getName());
+        if (link.getRemoteTarget() != null) {
+            logger.info("onLinkRemoteOpen connectionId[{}], linkName[{}], remoteTarget[{}]",
+                getConnectionId(), link.getName(), link.getRemoteTarget());
+
+            if (isFirstFlow.getAndSet(false)) {
+                onNext(EndpointState.ACTIVE);
             }
+        } else {
+            logger.info("onLinkRemoteOpen connectionId[{}], linkName[{}], remoteTarget[null], remoteSource[null], "
+                    + "action[waitingForError]",
+                getConnectionId(), link.getName());
         }
     }
 

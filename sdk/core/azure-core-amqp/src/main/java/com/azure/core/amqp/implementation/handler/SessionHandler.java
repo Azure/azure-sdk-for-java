@@ -63,7 +63,7 @@ public class SessionHandler extends Handler {
                     getConnectionId(), this.entityName, ioException.getMessage());
             final Throwable exception = new AmqpException(false, message, ioException, getErrorContext());
 
-            onNext(exception);
+            onError(exception);
         }
     }
 
@@ -117,9 +117,9 @@ public class SessionHandler extends Handler {
             session.close();
         }
 
-        onNext(EndpointState.CLOSED);
-
-        if (condition != null) {
+        if (condition == null) {
+            onNext(EndpointState.CLOSED);
+        } else {
             final String id = getConnectionId();
             final AmqpErrorContext context = getErrorContext();
             final Exception exception;
@@ -131,12 +131,13 @@ public class SessionHandler extends Handler {
                     context);
             } else {
                 exception = ExceptionUtil.toException(condition.getCondition().toString(),
-                    String.format(Locale.US, "onSessionRemoteClose connectionId[%s], entityName[%s]", id,
+                    String.format(Locale.US,
+                        "onSessionRemoteClose connectionId[%s], entityName[%s]", id,
                         entityName),
                     context);
             }
 
-            onNext(exception);
+            onError(exception);
         }
     }
 

@@ -65,7 +65,11 @@ abstract class LinkHandler extends Handler {
 
     @Override
     public void onLinkFinal(Event event) {
-        logger.info("onLinkFinal connectionId[{}], linkName[{}]", getConnectionId(), event.getLink().getName());
+        final String linkName = event != null && event.getLink() != null
+            ? event.getLink().getName()
+            : NOT_APPLICABLE;
+        logger.info("onLinkFinal connectionId[{}], linkName[{}]", getConnectionId(), linkName);
+
         close();
     }
 
@@ -80,22 +84,6 @@ abstract class LinkHandler extends Handler {
         return new LinkErrorContext(getHostname(), entityPath, referenceId, link.getCredit());
     }
 
-    private void processOnClose(Link link, ErrorCondition condition) {
-        logger.info("processOnClose connectionId[{}], linkName[{}], errorCondition[{}], errorDescription[{}]",
-            getConnectionId(), link.getName(),
-            condition != null ? condition.getCondition() : NOT_APPLICABLE,
-            condition != null ? condition.getDescription() : NOT_APPLICABLE);
-
-        if (condition != null && condition.getCondition() != null) {
-            final Throwable exception = ExceptionUtil.toException(condition.getCondition().toString(),
-                condition.getDescription(), getErrorContext(link));
-
-            onNext(exception);
-        }
-
-        onNext(EndpointState.CLOSED);
-    }
-
     private void handleRemoteLinkClosed(final Event event) {
         final Link link = event.getLink();
         final ErrorCondition condition = link.getRemoteCondition();
@@ -105,6 +93,18 @@ abstract class LinkHandler extends Handler {
             link.close();
         }
 
-        processOnClose(link, condition);
+        logger.info("processOnClose connectionId[{}], linkName[{}], errorCondition[{}], errorDescription[{}]",
+            getConnectionId(), link.getName(),
+            condition != null ? condition.getCondition() : NOT_APPLICABLE,
+            condition != null ? condition.getDescription() : NOT_APPLICABLE);
+
+        if (condition != null && condition.getCondition() != null) {
+            final Throwable exception = ExceptionUtil.toException(condition.getCondition().toString(),
+                condition.getDescription(), getErrorContext(link));
+
+            onError(exception);
+        } else {
+            onNext(EndpointState.CLOSED);
+        }
     }
 }
