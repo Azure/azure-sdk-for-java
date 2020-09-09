@@ -14,6 +14,10 @@ public class UniqueIdHelper {
         return getUniqueId(baseName, (modelId -> client.getModel(modelId).getId()));
     }
 
+    public static String getUniqueDigitalTwinId(String baseName, DigitalTwinsClient client) {
+        return getUniqueId(baseName, (dtId -> client.getDigitalTwin(dtId)));
+    }
+
 
     private static String getUniqueId(String baseName, Function<String, String> getResource) {
         int maxAttempts = 10;

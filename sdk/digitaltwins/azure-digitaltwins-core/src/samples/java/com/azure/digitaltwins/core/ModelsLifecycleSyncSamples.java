@@ -58,57 +58,57 @@ public class ModelsLifecycleSyncSamples {
             .replace(SamplesConstants.ModelId, sampleModelId)
             .replace(SamplesConstants.ComponentId, componentModelId);
 
-        ConsoleLogger.PrintHeader("Create models");
+        ConsoleLogger.printHeader("Create models");
 
         try {
             client.createModels(new ArrayList<String>(Arrays.asList(newComponentModelPayload, newModelPayload)));
 
-            ConsoleLogger.PrintSuccess("Created models " + componentModelId + " and " + sampleModelId);
+            ConsoleLogger.print("Created models " + componentModelId + " and " + sampleModelId);
         }
         catch (ErrorResponseException ex) {
             if (ex.getResponse().getStatusCode() == HttpURLConnection.HTTP_CONFLICT) {
-                ConsoleLogger.PrintWarning("One or more models already existed");
+                ConsoleLogger.printWarning("One or more models already existed");
             }
         }
         catch (Exception ex) {
-            ConsoleLogger.PrintFatal("Failed to create models due to: \n" + ex);
+            ConsoleLogger.printFatal("Failed to create models due to: \n" + ex);
             System.exit(0);
         }
 
-        ConsoleLogger.PrintHeader("Get models");
+        ConsoleLogger.printHeader("Get models");
 
         try {
             ModelData sampleModelResponse = client.getModel(sampleModelId);
-            ConsoleLogger.PrintSuccess("Retrieved model " + sampleModelResponse.getId());
+            ConsoleLogger.print("Retrieved model " + sampleModelResponse.getId());
         }
         catch (Exception ex) {
-            ConsoleLogger.PrintFatal("Failed to get the model due to:\n" + ex);
+            ConsoleLogger.printFatal("Failed to get the model due to:\n" + ex);
             System.exit(0);
         }
 
-        ConsoleLogger.PrintHeader("Decommission models");
+        ConsoleLogger.printHeader("Decommission models");
 
         try {
             client.decommissionModel(sampleModelId);
             client.decommissionModel(componentModelId);
 
-            ConsoleLogger.PrintSuccess("Decommissioned "+ sampleModelId + " and " + componentModelId);
+            ConsoleLogger.print("Decommissioned "+ sampleModelId + " and " + componentModelId);
         }
         catch (Exception ex) {
-            ConsoleLogger.PrintFatal("Failed to decommission models due to:\n" + ex);
+            ConsoleLogger.printFatal("Failed to decommission models due to:\n" + ex);
             System.exit(0);
         }
 
-        ConsoleLogger.PrintHeader("Delete models");
+        ConsoleLogger.printHeader("Delete models");
 
         try {
             client.deleteModel(sampleModelId);
             client.deleteModel(componentModelId);
 
-            ConsoleLogger.PrintSuccess("Deleted "+ sampleModelId + " and " + componentModelId);
+            ConsoleLogger.print("Deleted "+ sampleModelId + " and " + componentModelId);
         }
         catch (Exception ex) {
-            ConsoleLogger.PrintFatal("Failed to deleteModel models due to:\n" + ex);
+            ConsoleLogger.printFatal("Failed to deleteModel models due to:\n" + ex);
             System.exit(0);
         }
     }

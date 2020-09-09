@@ -13,6 +13,8 @@ public class SamplesConstants {
     public static final String TemporaryComponentModelPrefix = "dtmi:samples:ComponentModel;";
     public static final String TemporaryModelPrefix = "dtmi:samples:TempModel;";
 
+    public static final String TemporaryTwinPrefix = "sampleTwin";
+
     public static final String ComponentId = "COMPONENT_ID";
     public static final String ModelId = "MODEL_ID";
 

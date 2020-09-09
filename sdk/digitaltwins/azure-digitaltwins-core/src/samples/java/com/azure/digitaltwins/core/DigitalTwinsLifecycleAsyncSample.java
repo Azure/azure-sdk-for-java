@@ -8,7 +8,7 @@ import com.azure.digitaltwins.core.helpers.ConsoleLogger;
 import com.azure.digitaltwins.core.helpers.FileHelper;
 import com.azure.digitaltwins.core.helpers.SamplesArguments;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
-import com.azure.digitaltwins.core.implementation.serialization.BasicRelationship;
+import com.azure.digitaltwins.core.serialization.BasicRelationship;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
