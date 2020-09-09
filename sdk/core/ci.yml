@@ -11,9 +11,9 @@ trigger:
       - sdk/core/
       - sdk/parents/azure-sdk-parent/
       - sdk/parents/azure-client-sdk-parent/
-      - eng/code-quality-reports/
-      - eng/pipelines/
-      - eng/scripts/
+      - eng/
+    exclude:
+      - eng/versioning
 
 pr:
   branches:
@@ -27,9 +27,9 @@ pr:
       - sdk/core/
       - sdk/parents/azure-sdk-parent/
       - sdk/parents/azure-client-sdk-parent/
-      - eng/code-quality-reports/
-      - eng/pipelines/
-      - eng/scripts/
+      - eng/
+    exclude:
+      - eng/versioning
 
 
 extends:
