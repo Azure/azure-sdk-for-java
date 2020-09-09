@@ -122,8 +122,8 @@ public class CommonSasQueryParameters {
             removeSasParametersFromMap);
         this.contentType = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CONTENT_TYPE,
             removeSasParametersFromMap);
-        this.authorizedObjectId = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_PREAUTHORIZED_AGENT_OBJECT_ID,
-            removeSasParametersFromMap);
+        this.authorizedObjectId = getQueryParameter(queryParamsMap,
+            Constants.UrlConstants.SAS_PREAUTHORIZED_AGENT_OBJECT_ID, removeSasParametersFromMap);
         this.unauthorizedObjectId = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_AGENT_OBJECT_ID,
             removeSasParametersFromMap);
         this.correlationId = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CORRELATION_ID,
