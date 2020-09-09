@@ -24,12 +24,12 @@ public class ModelsLifecycleSyncSamples {
 
     private static DigitalTwinsClient client;
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) {
 
         SamplesArguments parsedArguments = new SamplesArguments(args);
 
         client = new DigitalTwinsClientBuilder()
-            .tokenCredential(
+            .credential(
                 new ClientSecretCredentialBuilder()
                     .tenantId(parsedArguments.getTenantId())
                     .clientId(parsedArguments.getClientId())
