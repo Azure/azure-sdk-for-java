@@ -32,6 +32,7 @@ import com.azure.core.util.Base64Url;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 
@@ -40,16 +41,20 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.BitSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
  * The type to parse details of a specific Swagger REST API call from a provided Swagger interface method.
  */
 class SwaggerMethodParser implements HttpResponseDecodeData {
+    private static final Pattern PATTERN_COLON_SLASH_SLASH = Pattern.compile("://");
+
     private final SerializerAdapter serializer;
     private final String rawHost;
     private final String fullyQualifiedMethodName;
@@ -64,7 +69,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
     private final Integer bodyContentMethodParameterIndex;
     private final String bodyContentType;
     private final Type bodyJavaType;
-    private final int[] expectedStatusCodes;
+    private final BitSet expectedStatusCodes;
     private final Type returnType;
     private final Type returnValueWireType;
     private final UnexpectedResponseExceptionType[] unexpectedResponseExceptionTypes;
@@ -79,7 +84,11 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
      * request, it must be processed through the possible host substitutions.
      */
     SwaggerMethodParser(Method swaggerMethod, String rawHost) {
-        this.serializer = JacksonAdapter.createDefaultSerializerAdapter();
+        this(swaggerMethod, rawHost, JacksonAdapter.createDefaultSerializerAdapter());
+    }
+
+    SwaggerMethodParser(Method swaggerMethod, String rawHost, SerializerAdapter serializer) {
+        this.serializer = serializer;
         this.rawHost = rawHost;
 
         final Class<?> swaggerInterface = swaggerMethod.getDeclaringClass();
@@ -148,7 +157,14 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
         }
 
         final ExpectedResponses expectedResponses = swaggerMethod.getAnnotation(ExpectedResponses.class);
-        expectedStatusCodes = expectedResponses == null ? null : expectedResponses.value();
+        if (expectedResponses != null && expectedResponses.value().length > 0) {
+            expectedStatusCodes = new BitSet();
+            for (int code : expectedResponses.value()) {
+                expectedStatusCodes.set(code);
+            }
+        } else {
+            expectedStatusCodes = null;
+        }
 
         unexpectedResponseExceptionTypes = swaggerMethod.getAnnotationsByType(UnexpectedResponseExceptionType.class);
 
@@ -215,41 +231,24 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     /**
-     * Get the HTTP response status codes that are expected when a request is sent out for this Swagger method. If the
-     * returned int[] is null, then all status codes less than 400 are allowed.
+     * Sets the scheme and host to use for HTTP requests for this Swagger method.
      *
-     * @return the expected HTTP response status codes for this Swagger method or null if all status codes less than 400
-     * are allowed.
+     * @param swaggerMethodArguments The arguments to use for scheme and host substitutions.
+     * @param urlBuilder The {@link UrlBuilder} that will have its scheme and host set.
      */
-    @Override
-    public int[] getExpectedStatusCodes() {
-        return CoreUtils.clone(expectedStatusCodes);
-    }
+    public void setSchemeAndHost(Object[] swaggerMethodArguments, UrlBuilder urlBuilder) {
+        final String substitutedHost = applySubstitutions(rawHost, hostSubstitutions, swaggerMethodArguments);
+        final String[] substitutedHostParts = PATTERN_COLON_SLASH_SLASH.split(substitutedHost);
 
-    /**
-     * Get the scheme to use for HTTP requests for this Swagger method.
-     *
-     * @param swaggerMethodArguments the arguments to use for scheme/host substitutions.
-     * @return the final host to use for HTTP requests for this Swagger method.
-     */
-    public String setScheme(Object[] swaggerMethodArguments) {
-        final String substitutedHost =
-            applySubstitutions(rawHost, hostSubstitutions, swaggerMethodArguments);
-        final String[] substitutedHostParts = substitutedHost.split("://");
-        return substitutedHostParts.length == 0 ? null : substitutedHostParts[0];
-    }
-
-    /**
-     * Get the host to use for HTTP requests for this Swagger method.
-     *
-     * @param swaggerMethodArguments the arguments to use for host substitutions
-     * @return the final host to use for HTTP requests for this Swagger method
-     */
-    public String setHost(Object[] swaggerMethodArguments) {
-        final String substitutedHost =
-            applySubstitutions(rawHost, hostSubstitutions, swaggerMethodArguments);
-        final String[] substitutedHostParts = substitutedHost.split("://");
-        return substitutedHostParts.length < 2 ? substitutedHost : substitutedHost.split("://")[1];
+        if (substitutedHostParts.length >= 2) {
+            urlBuilder.setScheme(substitutedHostParts[0]);
+            urlBuilder.setHost(substitutedHostParts[1]);
+        } else if (substitutedHostParts.length == 1) {
+            urlBuilder.setScheme(substitutedHostParts[0]);
+            urlBuilder.setHost(substitutedHost);
+        } else {
+            urlBuilder.setHost(substitutedHost);
+        }
     }
 
     /**
@@ -263,15 +262,15 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     /**
-     * Get the encoded query parameters that have been added to this value based on the provided method arguments.
+     * Sets the encoded query parameters that have been added to this value based on the provided method arguments into
+     * the passed {@link UrlBuilder}.
      *
      * @param swaggerMethodArguments the arguments that will be used to create the query parameters' values
-     * @return an Iterable with the encoded query parameters
+     * @param urlBuilder The {@link UrlBuilder} where the encoded query parameters will be set.
      */
-    public Iterable<EncodedParameter> setEncodedQueryParameters(Object[] swaggerMethodArguments) {
-        final List<EncodedParameter> result = new ArrayList<>();
+    public void setEncodedQueryParameters(Object[] swaggerMethodArguments, UrlBuilder urlBuilder) {
         if (swaggerMethodArguments == null) {
-            return result;
+            return;
         }
 
         for (Substitution substitution : querySubstitutions) {
@@ -283,23 +282,26 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
                     if (substitution.shouldEncode()) {
                         parameterValue = UrlEscapers.QUERY_ESCAPER.escape(parameterValue);
                     }
-                    result.add(new EncodedParameter(substitution.getUrlParameterName(), parameterValue));
+                    urlBuilder.setQueryParameter(substitution.getUrlParameterName(), parameterValue);
                 }
             }
         }
-        return result;
     }
 
     /**
-     * Get the headers that have been added to this value based on the provided method arguments.
+     * Sets the headers that have been added to this value based on the provided method arguments into the passed
+     * {@link HttpHeaders}.
      *
      * @param swaggerMethodArguments The arguments that will be used to create the headers' values.
-     * @return An Iterable with the headers.
+     * @param httpHeaders The {@link HttpHeaders} where the header values will be set.
      */
-    public Iterable<HttpHeader> setHeaders(Object[] swaggerMethodArguments) {
-        final HttpHeaders result = new HttpHeaders(headers);
+    public void setHeaders(Object[] swaggerMethodArguments, HttpHeaders httpHeaders) {
+        for (HttpHeader header : headers) {
+            httpHeaders.put(header.getName(), header.getValue());
+        }
+
         if (swaggerMethodArguments == null) {
-            return result;
+            return;
         }
 
         for (Substitution headerSubstitution : headerSubstitutions) {
@@ -314,20 +316,18 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
                         final String headerName = headerCollectionPrefix + headerCollectionEntry.getKey();
                         final String headerValue = serialize(serializer, headerCollectionEntry.getValue());
                         if (headerValue != null) {
-                            result.put(headerName, headerValue);
+                            httpHeaders.put(headerName, headerValue);
                         }
                     }
                 } else {
                     final String headerName = headerSubstitution.getUrlParameterName();
                     final String headerValue = serialize(serializer, methodArgument);
                     if (headerValue != null) {
-                        result.put(headerName, headerValue);
+                        httpHeaders.put(headerName, headerValue);
                     }
                 }
             }
         }
-
-        return result;
     }
 
     /**
@@ -346,14 +346,18 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
      * Get whether or not the provided response status code is one of the expected status codes for this Swagger
      * method.
      *
-     * @param responseStatusCode the status code that was returned in the HTTP response
+     * 1. If the returned int[] is null, then all 2XX status codes are considered as success code.
+     * 2. If the returned int[] is not-null, only the codes in the array are considered as success code.
+     *
+     * @param statusCode the status code that was returned in the HTTP response
      * @return whether or not the provided response status code is one of the expected status codes for this Swagger
      * method
      */
-    public boolean isExpectedResponseStatusCode(int responseStatusCode) {
-        return (expectedStatusCodes == null)
-            ? (responseStatusCode < 400)
-            : Arrays.stream(expectedStatusCodes).anyMatch(x -> x == responseStatusCode);
+    @Override
+    public boolean isExpectedResponseStatusCode(final int statusCode) {
+        return expectedStatusCodes == null
+            ? statusCode < 400
+            : expectedStatusCodes.get(statusCode);
     }
 
     /**
@@ -443,15 +447,15 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     private static String serialize(SerializerAdapter serializer, Object value) {
-        String result = null;
-        if (value != null) {
-            if (value instanceof String) {
-                result = (String) value;
-            } else {
-                result = serializer.serializeRaw(value);
-            }
+        if (value == null) {
+            return null;
         }
-        return result;
+
+        if (value instanceof String) {
+            return (String) value;
+        } else {
+            return serializer.serializeRaw(value);
+        }
     }
 
     private static String serializeFormData(SerializerAdapter serializer, String key, Object value,

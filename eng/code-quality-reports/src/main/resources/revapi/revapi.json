@@ -7,6 +7,7 @@
           "regex": true,
           "exclude": [
             "com\\.azure\\..+\\.implementation(\\..+)?",
+            "com\\.azure\\..+\\.samples(\\..+)?",
             "com\\.fasterxml\\.jackson\\..+",
             "reactor\\.netty\\..+",
             "io\\.netty\\..+",
@@ -15,7 +16,10 @@
             "com\\.microsoft\\.spring\\..+",
             "javax\\.jms(\\..+)?",
             "javax\\.servlet(\\..+)?",
-            "io\\.micrometer(\\..+)?"
+            "io\\.micrometer(\\..+)?",
+            "com\\.azure\\.data\\.cosmos(\\..+)?",
+            "com\\.azure\\.spring\\.data\\.cosmos\\..+",
+            "org\\.springframework\\.data\\..+"
           ]
         }
       }
@@ -103,6 +107,18 @@
         "code": "java\\.class\\.externalClassExposedInAPI",
         "new": "(class|interface|enum) com\\.azure\\.storage\\..*",
         "justification": "azure-storage-common and storage blob classes are allowed to be exposed."
+      },
+      {
+        "regex": true,
+        "code": "java\\.class\\.externalClassExposedInAPI",
+        "new": "(class|interface|enum) com\\.azure\\.resourcemanager\\..*",
+        "justification": "resourcemanager classes are allowed to be exposed."
+      },
+      {
+        "regex": true,
+        "code": "java\\.class\\.externalClassExposedInAPI",
+        "new": "(class|interface|enum) com\\.azure\\.security\\.keyvault\\..*",
+        "justification": "keyvault classes are allowed to be exposed."
       },
       {
         "regex": true,

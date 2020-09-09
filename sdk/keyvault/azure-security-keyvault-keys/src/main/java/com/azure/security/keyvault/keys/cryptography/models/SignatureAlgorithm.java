@@ -15,52 +15,52 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 public final class SignatureAlgorithm extends ExpandableStringEnum<SignatureAlgorithm> {
 
     /**
-     * Static value RSA_OAEP for SignatureAlgorithm.
+     * Static value PS256 for SignatureAlgorithm.
      */
     public static final SignatureAlgorithm PS256 = fromString("PS256");
 
     /**
-     * Static value RSA_OAEP_256 for SignatureAlgorithm.
+     * Static value PS384 for SignatureAlgorithm.
      */
     public static final SignatureAlgorithm PS384 = fromString("PS384");
 
     /**
-     * Static value RSA1_5 for SignatureAlgorithm.
+     * Static value PS512 for SignatureAlgorithm.
      */
     public static final SignatureAlgorithm PS512 = fromString("PS512");
 
     /**
-     * Static value A256CBC_HS512 for SignatureAlgorithm.
+     * Static value RS256 for SignatureAlgorithm.
      */
     public static final SignatureAlgorithm RS256 = fromString("RS256");
 
     /**
-     * Static value A128CBC_HS256 for SignatureAlgorithm.
+     * Static value RS384 for SignatureAlgorithm.
      */
     public static final SignatureAlgorithm RS384 = fromString("RS384");
 
     /**
-     * Static value A192CBC_HS384 for SignatureAlgorithm.
+     * Static value RS512 for SignatureAlgorithm.
      */
     public static final SignatureAlgorithm RS512 = fromString("RS512");
 
     /**
-     * Static value A256CBC for SignatureAlgorithm.
+     * Static value ES256 for SignatureAlgorithm.
      */
     public static final SignatureAlgorithm ES256 = fromString("ES256");
 
     /**
-     * Static value A192CBC for SignatureAlgorithm.
+     * Static value ES384 for SignatureAlgorithm.
      */
     public static final SignatureAlgorithm ES384 = fromString("ES384");
 
     /**
-     * Static value A128CBC for SignatureAlgorithm.
+     * Static value ES512 for SignatureAlgorithm.
      */
     public static final SignatureAlgorithm ES512 = fromString("ES512");
 
     /**
-     * Static value A128CBC for SignatureAlgorithm.
+     * Static value ES256K for SignatureAlgorithm.
      */
     public static final SignatureAlgorithm ES256K = fromString("ES256K");
 

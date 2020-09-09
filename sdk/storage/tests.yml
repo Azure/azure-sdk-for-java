@@ -14,6 +14,9 @@ jobs:
         - name: azure-storage-blob-batch
           groupId: com.azure
           safeName: azurestorageblobbatch
+        - name: azure-storage-blob-changefeed
+          groupId: com.azure
+          safeName: azurestorageblobchangefeed
         - name: azure-storage-blob-cryptography
           groupId: com.azure
           safeName: azurestorageblobcryptography
@@ -26,12 +29,20 @@ jobs:
         - name: azure-storage-file-datalake
           groupId: com.azure
           safeName: azurestoragefiledatalake
+        - name: azure-storage-internal-avro
+          groupId: com.azure
+          safeName: azurestorageinternalavro
         - name: azure-storage-queue
           groupId: com.azure
           safeName: azurestoragequeue
-      TimeoutInMinutes: 120
+      TimeoutInMinutes: 240
+      Location: canadacentral
+      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
       EnvVars:
         AZURE_TEST_MODE: LIVE
         AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
         AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
         AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
+        VERSIONED_STORAGE_ACCOUNT_NAME: $(java-storage-versioned-account-name)
+        VERSIONED_STORAGE_ACCOUNT_KEY: $(java-storage-versioned-account-key)
+

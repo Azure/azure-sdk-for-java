@@ -45,7 +45,7 @@ public class ProxySelectorTest extends IntegrationTestBase {
     @Disabled("Fix when proxy error is propagated back up to receiver.")
     @Test
     public void proxySelectorConnectFailedInvokeTest() throws InterruptedException {
-        final String queueName = getQueueName();
+        final String queueName = getQueueName(9);
 
         Assertions.assertNotNull(queueName, "'queueName' is not set in environment variable.");
 
@@ -73,7 +73,7 @@ public class ProxySelectorTest extends IntegrationTestBase {
             .buildAsyncClient();
 
         try {
-            StepVerifier.create(sender.send(message))
+            StepVerifier.create(sender.sendMessage(message))
                 .expectErrorSatisfies(error -> {
                     // The message can vary because it is returned from proton-j, so we don't want to compare against that.
                     // This is a transient error from ExceptionUtil.java: line 67.

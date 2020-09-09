@@ -5,8 +5,9 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.util.Context;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,11 +44,22 @@ public class ServiceBusMessage {
     private String partitionKey;
     private String replyTo;
     private String replyToSessionId;
-    private Instant scheduledEnqueueTime;
+    private OffsetDateTime scheduledEnqueueTime;
     private String sessionId;
     private Duration timeToLive;
     private String to;
     private String viaPartitionKey;
+
+    /**
+     * Creates a {@link ServiceBusMessage} with a {@link java.nio.charset.StandardCharsets#UTF_8 UTF_8} encoded body.
+     *
+     * @param body The content of the Service bus message.
+     *
+     * @throws NullPointerException if {@code body} is null.
+     */
+    public ServiceBusMessage(String body) {
+        this(Objects.requireNonNull(body, "'body' cannot be null.").getBytes(StandardCharsets.UTF_8));
+    }
 
     /**
      * Creates a {@link ServiceBusMessage} containing the {@code body}.
@@ -62,8 +74,8 @@ public class ServiceBusMessage {
     }
 
     /**
-     * Creates a {@link ServiceBusMessage} using properties from {@code receivedMessage}.
-     * This is normally used when a {@link ServiceBusReceivedMessage} needs to be sent to another entity.
+     * Creates a {@link ServiceBusMessage} using properties from {@code receivedMessage}. This is normally used when a
+     * {@link ServiceBusReceivedMessage} needs to be sent to another entity.
      *
      * @param receivedMessage The received message to create new message from.
      *
@@ -142,7 +154,6 @@ public class ServiceBusMessage {
      * </p>
      *
      * @return correlation id of this message
-     *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads?#message-routing-and-correlation">Message
      *     Routing and Correlation</a>
      */
@@ -156,7 +167,6 @@ public class ServiceBusMessage {
      * @param correlationId correlation id of this message
      *
      * @return The updated {@link ServiceBusMessage}.
-     *
      * @see #getCorrelationId()
      */
     public ServiceBusMessage setCorrelationId(String correlationId) {
@@ -214,7 +224,6 @@ public class ServiceBusMessage {
      * this value.
      *
      * @return The partition key of this message
-     *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-partitioning">Partitioned
      *     entities</a>
      */
@@ -228,7 +237,6 @@ public class ServiceBusMessage {
      * @param partitionKey partition key of this message
      *
      * @return The updated {@link ServiceBusMessage}.
-     *
      * @see #getPartitionKey()
      */
     public ServiceBusMessage setPartitionKey(String partitionKey) {
@@ -244,7 +252,6 @@ public class ServiceBusMessage {
      * it expects the reply to be sent to.
      *
      * @return ReplyTo property value of this message
-     *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads?#message-routing-and-correlation">Message
      *     Routing and Correlation</a>
      */
@@ -258,7 +265,6 @@ public class ServiceBusMessage {
      * @param replyTo ReplyTo property value of this message
      *
      * @return The updated {@link ServiceBusMessage}.
-     *
      * @see #getReplyTo()
      */
     public ServiceBusMessage setReplyTo(String replyTo) {
@@ -302,7 +308,6 @@ public class ServiceBusMessage {
      * does.
      *
      * @return Time to live duration of this message
-     *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-expiration">Message Expiration</a>
      */
     public Duration getTimeToLive() {
@@ -315,7 +320,6 @@ public class ServiceBusMessage {
      * @param timeToLive Time to Live duration of this message
      *
      * @return The updated {@link ServiceBusMessage}.
-     *
      * @see #getTimeToLive()
      */
     public ServiceBusMessage setTimeToLive(Duration timeToLive) {
@@ -328,29 +332,27 @@ public class ServiceBusMessage {
      * <p>
      * This value is used for delayed message availability. The message is safely added to the queue, but is not
      * considered active and therefore not retrievable until the scheduled enqueue time. Mind that the message may not
-     * be activated (enqueued) at the exact given instant; the actual activation time depends on the queue's workload
+     * be activated (enqueued) at the exact given datetime; the actual activation time depends on the queue's workload
      * and its state.
      * </p>
      *
-     * @return the instant at which the message will be enqueued in Azure Service Bus
-     *
+     * @return the datetime at which the message will be enqueued in Azure Service Bus
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-sequencing">Message Sequencing and
      *     Timestamps</a>
      */
-    public Instant getScheduledEnqueueTime() {
+    public OffsetDateTime getScheduledEnqueueTime() {
         return scheduledEnqueueTime;
     }
 
     /**
      * Sets the scheduled enqueue time of this message.
      *
-     * @param scheduledEnqueueTime the instant at which this message should be enqueued in Azure Service Bus.
+     * @param scheduledEnqueueTime the datetime at which this message should be enqueued in Azure Service Bus.
      *
      * @return The updated {@link ServiceBusMessage}.
-     *
      * @see #getScheduledEnqueueTime()
      */
-    public ServiceBusMessage setScheduledEnqueueTime(Instant scheduledEnqueueTime) {
+    public ServiceBusMessage setScheduledEnqueueTime(OffsetDateTime scheduledEnqueueTime) {
         this.scheduledEnqueueTime = scheduledEnqueueTime;
         return this;
     }
@@ -362,7 +364,6 @@ public class ServiceBusMessage {
      * to the reply entity.
      *
      * @return ReplyToSessionId property value of this message
-     *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads?#message-routing-and-correlation">Message
      *     Routing and Correlation</a>
      */
@@ -385,12 +386,13 @@ public class ServiceBusMessage {
     /**
      * Gets the partition key for sending a message to a entity via another partitioned transfer entity.
      *
-     * If a message is sent via a transfer queue in the scope of a transaction, this value selects the
-     * transfer queue partition: This is functionally equivalent to {@link #getPartitionKey()} and ensures that
-     * messages are kept together and in order as they are transferred.
+     * If a message is sent via a transfer queue in the scope of a transaction, this value selects the transfer queue
+     * partition: This is functionally equivalent to {@link #getPartitionKey()} and ensures that messages are kept
+     * together and in order as they are transferred.
      *
      * @return partition key on the via queue.
-     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-transactions#transfers-and-send-via">Transfers and Send Via</a>
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-transactions#transfers-and-send-via">Transfers
+     *     and Send Via</a>
      */
     public String getViaPartitionKey() {
         return viaPartitionKey;
@@ -400,6 +402,7 @@ public class ServiceBusMessage {
      * Sets a via-partition key for sending a message to a destination entity via another partitioned entity
      *
      * @param viaPartitionKey via-partition key of this message
+     *
      * @return The updated {@link ServiceBusMessage}.
      * @see #getViaPartitionKey()
      */
@@ -446,7 +449,6 @@ public class ServiceBusMessage {
      * @param value The value for this context object.
      *
      * @return The updated {@link ServiceBusMessage}.
-     *
      * @throws NullPointerException if {@code key} or {@code value} is null.
      */
     public ServiceBusMessage addContext(String key, Object value) {

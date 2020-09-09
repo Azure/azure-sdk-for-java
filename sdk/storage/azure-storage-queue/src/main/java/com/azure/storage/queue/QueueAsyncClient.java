@@ -607,8 +607,7 @@ public final class QueueAsyncClient {
      */
     public Mono<QueueMessageItem> receiveMessage() {
         try {
-            return receiveMessagesWithOptionalTimeout(1, null, null, Context.NONE)
-                .single();
+            return receiveMessagesWithOptionalTimeout(1, null, null, Context.NONE).singleOrEmpty();
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -713,7 +712,7 @@ public final class QueueAsyncClient {
      */
     public Mono<PeekedMessageItem> peekMessage() {
         try {
-            return peekMessages(null).single();
+            return peekMessages(null).singleOrEmpty();
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -832,10 +831,10 @@ public final class QueueAsyncClient {
 
     Mono<Response<UpdateMessageResult>> updateMessageWithResponse(String messageId, String popReceipt,
         String messageText, Duration visibilityTimeout, Context context) {
-        QueueMessage message = new QueueMessage().setMessageText(messageText);
+        QueueMessage message = messageText == null ? null : new QueueMessage().setMessageText(messageText);
         context = context == null ? Context.NONE : context;
-        return client.messageIds().updateWithRestResponseAsync(queueName, messageId, message, popReceipt,
-                (int) visibilityTimeout.getSeconds(),
+        return client.messageIds().updateWithRestResponseAsync(queueName, messageId, popReceipt,
+                (int) visibilityTimeout.getSeconds(), message, null, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::getUpdatedMessageResponse);
     }

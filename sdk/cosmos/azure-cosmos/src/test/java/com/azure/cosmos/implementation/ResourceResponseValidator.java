@@ -13,7 +13,6 @@ import com.azure.cosmos.models.TriggerType;
 import org.assertj.core.api.Condition;
 
 import java.time.Instant;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -104,9 +103,9 @@ public interface ResourceResponseValidator<T extends Resource> {
                 public void validate(ResourceResponse<T> resourceResponse) {
                     assertThat(resourceResponse.getResource()).isNotNull();
                     assertThat(resourceResponse.getResource().getTimestamp()).isNotNull();
-                    OffsetDateTime d = resourceResponse.getResource().getTimestamp();
+                    Instant d = resourceResponse.getResource().getTimestamp();
                     System.out.println(d.toString());
-                    assertThat(d.toInstant()).isAfterOrEqualTo(time);
+                    assertThat(d).isAfterOrEqualTo(time);
                 }
             });
             return this;
@@ -119,8 +118,8 @@ public interface ResourceResponseValidator<T extends Resource> {
                 public void validate(ResourceResponse<T> resourceResponse) {
                     assertThat(resourceResponse.getResource()).isNotNull();
                     assertThat(resourceResponse.getResource().getTimestamp()).isNotNull();
-                    OffsetDateTime d = resourceResponse.getResource().getTimestamp();
-                    assertThat(d.toInstant()).isBeforeOrEqualTo(time);
+                    Instant d = resourceResponse.getResource().getTimestamp();
+                    assertThat(d).isBeforeOrEqualTo(time);
                 }
             });
             return this;

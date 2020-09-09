@@ -69,6 +69,18 @@ public class ConnectionStringPropertiesTest {
         Assertions.assertEquals(EVENT_HUB, properties.getEntityPath());
     }
 
+    @Test
+    public void noEndpointSchemeDefault() {
+        // Arrange
+        final String connectionString = getConnectionString(HOST, EVENT_HUB, SAS_KEY, SAS_VALUE);
+
+        // Act
+        ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
+
+        // Assert
+        Assertions.assertEquals("sb", properties.getEndpoint().getScheme());
+    }
+
     /**
      * Verifies we can create ConnectionStringProperties even if there is an extraneous component.
      */

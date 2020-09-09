@@ -10,6 +10,7 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
@@ -19,10 +20,15 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
+import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
+import java.nio.channels.WritableByteChannel;
 import java.util.Collections;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -39,6 +45,11 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private final Set<String> allowedHeaderNames;
     private final Set<String> allowedQueryParameterNames;
     private final boolean prettyPrintBody;
+
+    /**
+     * Key for {@link Context} to pass request retry count metadata for logging.
+     */
+    public static final String RETRY_COUNT_CONTEXT = "requestRetryCount";
 
     /**
      * Creates an HttpLoggingPolicy with the given log configurations.
@@ -75,7 +86,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         final ClientLogger logger = new ClientLogger((String) context.getData("caller-method").orElse(""));
         final long startNs = System.nanoTime();
 
-        return logRequest(logger, context.getHttpRequest())
+        return logRequest(logger, context.getHttpRequest(), context.getData(RETRY_COUNT_CONTEXT))
             .then(next.process())
             .flatMap(response -> logResponse(logger, response, startNs))
             .doOnError(throwable -> logger.warning("<-- HTTP FAILED: ", throwable));
@@ -88,7 +99,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * @param request HTTP request being sent to Azure.
      * @return A Mono which will emit the string to log.
      */
-    private Mono<Void> logRequest(final ClientLogger logger, final HttpRequest request) {
+    private Mono<Void> logRequest(final ClientLogger logger, final HttpRequest request,
+        final Optional<Object> optionalRetryCount) {
 
         if (!logger.canLogAtLevel(LogLevel.INFORMATIONAL)) {
             return Mono.empty();
@@ -101,6 +113,10 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 .append(" ")
                 .append(getRedactedUrl(request.getUrl()))
                 .append(System.lineSeparator());
+
+            optionalRetryCount.ifPresent(o -> requestLogMessage.append("Try count: ")
+                .append(o)
+                .append(System.lineSeparator()));
         }
 
         addHeadersToLogMessage(logger, request.getHeaders(), requestLogMessage);
@@ -124,21 +140,18 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
         if (shouldBodyBeLogged(contentType, contentLength)) {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream((int) contentLength);
+            WritableByteChannel bodyContentChannel = Channels.newChannel(outputStream);
 
             // Add non-mutating operators to the data stream.
             request.setBody(
                 request.getBody()
-                    .doOnNext(byteBuffer -> {
-                        for (int i = byteBuffer.position(); i < byteBuffer.limit(); i++) {
-                            outputStream.write(byteBuffer.get(i));
-                        }
-                    })
+                    .flatMap(byteBuffer -> writeBufferToBodyStream(bodyContentChannel, byteBuffer))
                     .doFinally(ignored -> {
                         requestLogMessage.append(contentLength)
                             .append("-byte body:")
                             .append(System.lineSeparator())
                             .append(prettyPrintIfNeeded(logger, contentType,
-                                new String(outputStream.toByteArray(), StandardCharsets.UTF_8)))
+                                convertStreamToString(outputStream, logger)))
                             .append(System.lineSeparator())
                             .append("--> END ")
                             .append(request.getHttpMethod())
@@ -207,17 +220,14 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         if (shouldBodyBeLogged(contentTypeHeader, contentLength)) {
             HttpResponse bufferedResponse = response.buffer();
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream((int) contentLength);
+            WritableByteChannel bodyContentChannel = Channels.newChannel(outputStream);
             return bufferedResponse.getBody()
-                .doOnNext(byteBuffer -> {
-                    for (int i = byteBuffer.position(); i < byteBuffer.limit(); i++) {
-                        outputStream.write(byteBuffer.get(i));
-                    }
-                })
+                .flatMap(byteBuffer -> writeBufferToBodyStream(bodyContentChannel, byteBuffer))
                 .doFinally(ignored -> {
                     responseLogMessage.append("Response body:")
                         .append(System.lineSeparator())
                         .append(prettyPrintIfNeeded(logger, contentTypeHeader,
-                            new String(outputStream.toByteArray(), StandardCharsets.UTF_8)))
+                            convertStreamToString(outputStream, logger)))
                         .append(System.lineSeparator())
                         .append("<-- END HTTP");
 
@@ -292,7 +302,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      */
     private void addHeadersToLogMessage(ClientLogger logger, HttpHeaders headers, StringBuilder sb) {
         // Either headers shouldn't be logged or the logging level isn't set to VERBOSE, don't add headers.
-        if (!httpLogDetailLevel.shouldLogHeaders() || logger.canLogAtLevel(LogLevel.VERBOSE)) {
+        if (!httpLogDetailLevel.shouldLogHeaders() || !logger.canLogAtLevel(LogLevel.VERBOSE)) {
             return;
         }
 
@@ -371,5 +381,28 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         return !ContentType.APPLICATION_OCTET_STREAM.equalsIgnoreCase(contentTypeHeader)
             && contentLength != 0
             && contentLength < MAX_BODY_LOG_SIZE;
+    }
+
+    /*
+     * Helper function which converts a ByteArrayOutputStream to a String without duplicating the internal buffer.
+     */
+    private static String convertStreamToString(ByteArrayOutputStream stream, ClientLogger logger) {
+        try {
+            return stream.toString("UTF-8");
+        } catch (UnsupportedEncodingException ex) {
+            throw logger.logExceptionAsError(new RuntimeException(ex));
+        }
+    }
+
+    /*
+     * Helper function which writes body ByteBuffers into the body message channel.
+     */
+    private static Mono<ByteBuffer> writeBufferToBodyStream(WritableByteChannel channel, ByteBuffer byteBuffer) {
+        try {
+            channel.write(byteBuffer.duplicate());
+            return Mono.just(byteBuffer);
+        } catch (IOException ex) {
+            return Mono.error(ex);
+        }
     }
 }

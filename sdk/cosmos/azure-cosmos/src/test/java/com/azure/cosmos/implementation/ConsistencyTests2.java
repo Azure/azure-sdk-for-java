@@ -4,12 +4,12 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
@@ -180,11 +180,11 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
 
             String token = childResource.getSessionToken().split(":")[0] + ":" + ConsistencyTestsBase.createSessionToken(SessionTokenHelper.parse(childResource.getSessionToken()), 100000000).convertToString();
 
-            FeedOptions feedOptions = new FeedOptions();
-            feedOptions.setPartitionKey(new PartitionKey(PartitionKeyInternal.Empty.toJson()));
-            feedOptions.setSessionToken(token);
+            CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
+            cosmosQueryRequestOptions.setPartitionKey(new PartitionKey(PartitionKeyInternal.Empty.toJson()));
+            cosmosQueryRequestOptions.setSessionToken(token);
             FailureValidator validator = new FailureValidator.Builder().statusCode(HttpConstants.StatusCodes.NOTFOUND).subStatusCode(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE).build();
-            Flux<FeedResponse<Document>> feedObservable = readSecondaryClient.readDocuments(parentResource.getSelfLink(), feedOptions);
+            Flux<FeedResponse<Document>> feedObservable = readSecondaryClient.readDocuments(parentResource.getSelfLink(), cosmosQueryRequestOptions);
             validateQueryFailure(feedObservable, validator);
         } finally {
             safeClose(writeClient);
@@ -203,7 +203,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
     // Note that we need multiple CONSISTENCY_TEST_TIMEOUT
     // SEE: https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028
 
-    @Test(groups = {"direct"}, timeOut = 4 * CONSISTENCY_TEST_TIMEOUT)
+    @Test(groups = {"direct"}, timeOut = 8 * CONSISTENCY_TEST_TIMEOUT)
     public void validateSessionTokenAsync() {
         // Validate that document query never fails
         // with NotFoundException
@@ -233,20 +233,19 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
 
             Mono<Void> task2 = ParallelAsync.forEachAsync(Range.between(0, 1000), 5, index -> {
                 try {
-                    FeedOptions feedOptions = new FeedOptions();
-                    feedOptions.setEmptyPagesAllowed(true);
+                    CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
+                    ModelBridgeInternal.setQueryRequestOptionsEmptyPagesAllowed(cosmosQueryRequestOptions, true);
                     FeedResponse<Document> queryResponse = client.queryDocuments(createdCollection.getSelfLink(),
                                                                                  "SELECT * FROM c WHERE c.Id = " +
-                                                                                         "'foo'", feedOptions)
+                                                                                         "'foo'", cosmosQueryRequestOptions)
                             .blockFirst();
                     String lsnHeaderValue = queryResponse.getResponseHeaders().get(WFConstants.BackendHeaders.LSN);
                     long lsn = Long.valueOf(lsnHeaderValue);
                     String sessionTokenHeaderValue = queryResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
                     ISessionToken sessionToken = SessionTokenHelper.parse(sessionTokenHeaderValue);
-                    logger.info("SESSION Token = {}, LSN = {}", sessionToken.convertToString(), lsn);
                     assertThat(lsn).isEqualTo(sessionToken.getLSN());
                 } catch (Exception ex) {
-                    CosmosClientException clientException = (CosmosClientException) ex.getCause();
+                    CosmosException clientException = (CosmosException) ex.getCause();
                     if (clientException.getStatusCode() != 0) {
                         if (clientException.getStatusCode() == HttpConstants.StatusCodes.REQUEST_TIMEOUT) {
                             // ignore
@@ -255,8 +254,6 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                             long lsn = Long.valueOf(lsnHeaderValue);
                             String sessionTokenHeaderValue = clientException.getResponseHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
                             ISessionToken sessionToken = SessionTokenHelper.parse(sessionTokenHeaderValue);
-
-                            logger.info("SESSION Token = {}, LSN = {}", sessionToken.convertToString(), lsn);
                             assertThat(lsn).isEqualTo(sessionToken.getLSN());
                         } else {
                             throw ex;

@@ -92,7 +92,7 @@ public interface FileShareItem extends HasInner<FileShareItemInner>, HasManager<
     /**
      * @return the shareUsageBytes value.
      */
-    Integer shareUsageBytes();
+    Long shareUsageBytes();
 
     /**
      * @return the type value.

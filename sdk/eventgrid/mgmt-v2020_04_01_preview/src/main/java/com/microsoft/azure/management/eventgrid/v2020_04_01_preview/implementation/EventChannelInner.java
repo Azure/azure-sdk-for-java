@@ -11,6 +11,8 @@ package com.microsoft.azure.management.eventgrid.v2020_04_01_preview.implementat
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.EventChannelSource;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.EventChannelDestination;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.EventChannelProvisioningState;
+import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.PartnerTopicReadinessState;
+import org.joda.time.DateTime;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.EventChannelFilter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -42,10 +44,36 @@ public class EventChannelInner extends ProxyResource {
     private EventChannelProvisioningState provisioningState;
 
     /**
+     * The readiness state of the corresponding partner topic. Possible values
+     * include: 'NotActivatedByUserYet', 'ActivatedByUser',
+     * 'DeactivatedByUser', 'DeletedByUser'.
+     */
+    @JsonProperty(value = "properties.partnerTopicReadinessState", access = JsonProperty.Access.WRITE_ONLY)
+    private PartnerTopicReadinessState partnerTopicReadinessState;
+
+    /**
+     * Expiration time of the event channel. If this timer expires while the
+     * corresponding partner topic is never activated,
+     * the event channel and corresponding partner topic are deleted.
+     */
+    @JsonProperty(value = "properties.expirationTimeIfNotActivatedUtc")
+    private DateTime expirationTimeIfNotActivatedUtc;
+
+    /**
      * Information about the filter for the event channel.
      */
     @JsonProperty(value = "properties.filter")
     private EventChannelFilter filter;
+
+    /**
+     * Friendly description about the topic. This can be set by the
+     * publisher/partner to show custom description for the customer partner
+     * topic.
+     * This will be helpful to remove any ambiguity of the origin of creation
+     * of the partner topic for the customer.
+     */
+    @JsonProperty(value = "properties.partnerTopicFriendlyDescription")
+    private String partnerTopicFriendlyDescription;
 
     /**
      * Get source of the event channel. This represents a unique resource in the partner's resource model.
@@ -97,6 +125,37 @@ public class EventChannelInner extends ProxyResource {
     }
 
     /**
+     * Get the readiness state of the corresponding partner topic. Possible values include: 'NotActivatedByUserYet', 'ActivatedByUser', 'DeactivatedByUser', 'DeletedByUser'.
+     *
+     * @return the partnerTopicReadinessState value
+     */
+    public PartnerTopicReadinessState partnerTopicReadinessState() {
+        return this.partnerTopicReadinessState;
+    }
+
+    /**
+     * Get expiration time of the event channel. If this timer expires while the corresponding partner topic is never activated,
+     the event channel and corresponding partner topic are deleted.
+     *
+     * @return the expirationTimeIfNotActivatedUtc value
+     */
+    public DateTime expirationTimeIfNotActivatedUtc() {
+        return this.expirationTimeIfNotActivatedUtc;
+    }
+
+    /**
+     * Set expiration time of the event channel. If this timer expires while the corresponding partner topic is never activated,
+     the event channel and corresponding partner topic are deleted.
+     *
+     * @param expirationTimeIfNotActivatedUtc the expirationTimeIfNotActivatedUtc value to set
+     * @return the EventChannelInner object itself.
+     */
+    public EventChannelInner withExpirationTimeIfNotActivatedUtc(DateTime expirationTimeIfNotActivatedUtc) {
+        this.expirationTimeIfNotActivatedUtc = expirationTimeIfNotActivatedUtc;
+        return this;
+    }
+
+    /**
      * Get information about the filter for the event channel.
      *
      * @return the filter value
@@ -113,6 +172,28 @@ public class EventChannelInner extends ProxyResource {
      */
     public EventChannelInner withFilter(EventChannelFilter filter) {
         this.filter = filter;
+        return this;
+    }
+
+    /**
+     * Get friendly description about the topic. This can be set by the publisher/partner to show custom description for the customer partner topic.
+     This will be helpful to remove any ambiguity of the origin of creation of the partner topic for the customer.
+     *
+     * @return the partnerTopicFriendlyDescription value
+     */
+    public String partnerTopicFriendlyDescription() {
+        return this.partnerTopicFriendlyDescription;
+    }
+
+    /**
+     * Set friendly description about the topic. This can be set by the publisher/partner to show custom description for the customer partner topic.
+     This will be helpful to remove any ambiguity of the origin of creation of the partner topic for the customer.
+     *
+     * @param partnerTopicFriendlyDescription the partnerTopicFriendlyDescription value to set
+     * @return the EventChannelInner object itself.
+     */
+    public EventChannelInner withPartnerTopicFriendlyDescription(String partnerTopicFriendlyDescription) {
+        this.partnerTopicFriendlyDescription = partnerTopicFriendlyDescription;
         return this;
     }
 

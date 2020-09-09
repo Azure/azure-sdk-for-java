@@ -47,6 +47,9 @@ public class TextAnalyticsResult {
      * Get the statistics of the text document.
      *
      * @return The {@link TextDocumentStatistics} statistics of the text document.
+     *
+     * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
+     * was accessed.
      */
     public TextDocumentStatistics getStatistics() {
         throwExceptionIfError();
@@ -80,7 +83,7 @@ public class TextAnalyticsResult {
                 String.format(Locale.ROOT,
                     "Error in accessing the property on document id: %s, when %s returned with an error: %s",
                     this.id, this.getClass().getSimpleName(), this.error.getMessage()),
-                this.error.getErrorCode().toString(), null));
+                this.error.getErrorCode(), null));
         }
     }
 }

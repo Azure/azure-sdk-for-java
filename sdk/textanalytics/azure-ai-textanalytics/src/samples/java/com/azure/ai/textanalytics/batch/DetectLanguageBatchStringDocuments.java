@@ -5,7 +5,11 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
+import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
+import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
+import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
+import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.Arrays;
@@ -34,10 +38,21 @@ public class DetectLanguageBatchStringDocuments {
             "Este es un documento  escrito en Español."
         );
 
-        // Detecting language for each document in a batch of documents
+        // Request options: show statistics and model version
+        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest");
+        DetectLanguageResultCollection detectedLanguageResultCollection = client.detectLanguageBatch(documents, "US", requestOptions);
+
+        // Model version
+        System.out.printf("Results of Azure Text Analytics \"Language Detection\" Model, version: %s%n", detectedLanguageResultCollection.getModelVersion());
+
+        // Batch statistics
+        TextDocumentBatchStatistics batchStatistics = detectedLanguageResultCollection.getStatistics();
+        System.out.printf("Documents statistics: document count = %s, erroneous document count = %s, transaction count = %s, valid document count = %s.%n",
+            batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(), batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
+
+        // Detected language for each document in a batch of documents
         AtomicInteger counter = new AtomicInteger();
-        client.detectLanguageBatch(documents, "US").forEach(detectLanguageResult -> {
-            // Detected language for each document
+        for (DetectLanguageResult detectLanguageResult : detectedLanguageResultCollection) {
             System.out.printf("%nText = %s%n", documents.get(counter.getAndIncrement()));
             if (detectLanguageResult.isError()) {
                 // Erroneous document
@@ -48,6 +63,6 @@ public class DetectLanguageBatchStringDocuments {
                 System.out.printf("Detected primary language: %s, ISO 6391 name: %s, confidence score: %f.%n",
                     language.getName(), language.getIso6391Name(), language.getConfidenceScore());
             }
-        });
+        }
     }
 }

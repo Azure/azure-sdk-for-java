@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-/**
- * The ModelInfo model.
- */
+/** The ModelInfo model. */
 @Fluent
 public final class ModelInfo {
     /*
@@ -40,7 +38,7 @@ public final class ModelInfo {
 
     /**
      * Get the modelId property: Model identifier.
-     * 
+     *
      * @return the modelId value.
      */
     public UUID getModelId() {
@@ -49,7 +47,7 @@ public final class ModelInfo {
 
     /**
      * Set the modelId property: Model identifier.
-     * 
+     *
      * @param modelId the modelId value to set.
      * @return the ModelInfo object itself.
      */
@@ -60,7 +58,7 @@ public final class ModelInfo {
 
     /**
      * Get the status property: Status of the model.
-     * 
+     *
      * @return the status value.
      */
     public ModelStatus getStatus() {
@@ -69,7 +67,7 @@ public final class ModelInfo {
 
     /**
      * Set the status property: Status of the model.
-     * 
+     *
      * @param status the status value to set.
      * @return the ModelInfo object itself.
      */
@@ -79,9 +77,8 @@ public final class ModelInfo {
     }
 
     /**
-     * Get the createdDateTime property: Date and time (UTC) when the model was
-     * created.
-     * 
+     * Get the createdDateTime property: Date and time (UTC) when the model was created.
+     *
      * @return the createdDateTime value.
      */
     public OffsetDateTime getCreatedDateTime() {
@@ -89,9 +86,8 @@ public final class ModelInfo {
     }
 
     /**
-     * Set the createdDateTime property: Date and time (UTC) when the model was
-     * created.
-     * 
+     * Set the createdDateTime property: Date and time (UTC) when the model was created.
+     *
      * @param createdDateTime the createdDateTime value to set.
      * @return the ModelInfo object itself.
      */
@@ -101,9 +97,8 @@ public final class ModelInfo {
     }
 
     /**
-     * Get the lastUpdatedDateTime property: Date and time (UTC) when the
-     * status was last updated.
-     * 
+     * Get the lastUpdatedDateTime property: Date and time (UTC) when the status was last updated.
+     *
      * @return the lastUpdatedDateTime value.
      */
     public OffsetDateTime getLastUpdatedDateTime() {
@@ -111,9 +106,8 @@ public final class ModelInfo {
     }
 
     /**
-     * Set the lastUpdatedDateTime property: Date and time (UTC) when the
-     * status was last updated.
-     * 
+     * Set the lastUpdatedDateTime property: Date and time (UTC) when the status was last updated.
+     *
      * @param lastUpdatedDateTime the lastUpdatedDateTime value to set.
      * @return the ModelInfo object itself.
      */

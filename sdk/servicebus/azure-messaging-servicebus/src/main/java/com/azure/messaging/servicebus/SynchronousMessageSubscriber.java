@@ -5,67 +5,204 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Subscription;
+import reactor.core.Disposable;
 import reactor.core.publisher.BaseSubscriber;
+import reactor.core.publisher.Mono;
+import reactor.core.publisher.Operators;
 
-import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.time.Duration;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
  * Subscriber that listens to events and publishes them downstream and publishes events to them in the order received.
  */
 class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMessageContext> {
     private final ClientLogger logger = new ClientLogger(SynchronousMessageSubscriber.class);
-    private final Timer timer = new Timer();
     private final AtomicBoolean isDisposed = new AtomicBoolean();
-    private final SynchronousReceiveWork work;
+    private final AtomicInteger wip = new AtomicInteger();
+    private final Queue<SynchronousReceiveWork> workQueue = new ConcurrentLinkedQueue<>();
+    private final Queue<ServiceBusReceivedMessageContext> bufferMessages = new ConcurrentLinkedQueue<>();
+    private final AtomicLong remaining = new AtomicLong();
+
+    private final long requested;
+    private final Object currentWorkLock = new Object();
+
+    private Disposable currentTimeoutOperation;
+    private SynchronousReceiveWork currentWork;
+    private boolean subscriberInitialized;
 
     private volatile Subscription subscription;
 
-    SynchronousMessageSubscriber(SynchronousReceiveWork work) {
-        this.work = Objects.requireNonNull(work, "'work' cannot be null.");
+    private static final AtomicReferenceFieldUpdater<SynchronousMessageSubscriber, Subscription> UPSTREAM =
+        AtomicReferenceFieldUpdater.newUpdater(SynchronousMessageSubscriber.class, Subscription.class,
+            "subscription");
+
+
+    SynchronousMessageSubscriber(long prefetch, SynchronousReceiveWork initialWork) {
+        this.workQueue.add(initialWork);
+        requested = initialWork.getNumberOfEvents() > prefetch ? initialWork.getNumberOfEvents() : prefetch;
     }
 
     /**
      * On an initial subscription, will take the first work item, and request that amount of work for it.
-     *
      * @param subscription Subscription for upstream.
      */
     @Override
     protected void hookOnSubscribe(Subscription subscription) {
-        if (this.subscription == null) {
+
+        if (Operators.setOnce(UPSTREAM, this, subscription)) {
             this.subscription = subscription;
+            remaining.addAndGet(requested);
+            subscription.request(requested);
+            subscriberInitialized = true;
+            drain();
+        } else {
+            logger.error("Already subscribed once.");
         }
-
-        logger.info("[{}] Pending: {}, Scheduling receive timeout task '{}'.", work.getId(), work.getNumberOfEvents(),
-            work.getTimeout());
-
-        subscription.request(work.getNumberOfEvents());
-
-        timer.schedule(new ReceiveTimeoutTask(work.getId(), this::dispose), work.getTimeout().toMillis());
     }
 
     /**
      * Publishes the event to the current {@link SynchronousReceiveWork}. If that work item is complete, will dispose of
      * the subscriber.
-     *
-     * @param value Event to publish.
+     * @param message Event to publish.
      */
     @Override
-    protected void hookOnNext(ServiceBusReceivedMessageContext value) {
-        work.next(value);
+    protected void hookOnNext(ServiceBusReceivedMessageContext message) {
+        bufferMessages.add(message);
+        drain();
+    }
 
-        if (work.isTerminal()) {
-            logger.info("[{}] Completed. Closing Flux and cancelling subscription.", work.getId());
-            dispose();
+    /**
+     * Queue the work to be picked up by drain loop.
+     * @param work to be queued.
+     */
+    void queueWork(SynchronousReceiveWork work) {
+
+        logger.info("[{}] Pending: {}, Scheduling receive timeout task '{}'.", work.getId(), work.getNumberOfEvents(),
+            work.getTimeout());
+        workQueue.add(work);
+
+        // Do not drain if another thread want to queue the work before we have subscriber
+        if (subscriberInitialized) {
+            drain();
         }
     }
 
-    @Override
-    protected void hookOnComplete() {
-        logger.info("[{}] Completed. No events to listen to.", work.getId());
-        dispose();
+    /**
+     * Drain the work, only one thread can be in this loop at a time.
+     */
+    private void drain() {
+        // If someone is already in this loop, then we are already clearing the queue.
+        if (!wip.compareAndSet(0, 1)) {
+            return;
+        }
+
+        try {
+            drainQueue();
+        } finally {
+            final int decremented = wip.decrementAndGet();
+            if (decremented != 0) {
+                logger.warning("There should be 0, but was: {}", decremented);
+            }
+        }
+    }
+
+    /***
+     * Drain the queue using a lock on current work in progress.
+     */
+    private void drainQueue() {
+        if (isTerminated()) {
+            return;
+        }
+
+        // Acquiring the lock
+        synchronized (currentWorkLock) {
+
+            // Making sure current work not become terminal since last drain queue cycle
+            if (currentWork != null && currentWork.isTerminal()) {
+                workQueue.remove(currentWork);
+                if (currentTimeoutOperation != null && !currentTimeoutOperation.isDisposed()) {
+                    currentTimeoutOperation.dispose();
+                }
+                currentTimeoutOperation = null;
+            }
+
+            // We should process a work when
+            // 1. it is first time getting picked up
+            // 2. or more messages have arrived while we were in drain loop.
+            // We might not have all the message in bufferMessages needed for workQueue, Thus we will only remove work
+            // from queue when we have delivered all the messages to currentWork.
+
+            while ((currentWork = workQueue.peek()) != null
+                && (!currentWork.isProcessingStarted() || bufferMessages.size() > 0)) {
+
+                // Additional check for safety, but normally this work should never be terminal
+                if (currentWork.isTerminal()) {
+                    // This work already finished by either timeout or no more messages to send, process next work.
+                    workQueue.remove(currentWork);
+                    if (currentTimeoutOperation != null && !currentTimeoutOperation.isDisposed()) {
+                        currentTimeoutOperation.dispose();
+                    }
+                    continue;
+                }
+
+                if (!currentWork.isProcessingStarted()) {
+                    // timer to complete the currentWork in case of timeout trigger
+                    currentTimeoutOperation = getTimeoutOperation(currentWork);
+                    currentWork.startedProcessing();
+                }
+
+                // Send messages to currentWork from buffer
+                while (bufferMessages.size() > 0 && !currentWork.isTerminal()) {
+                    currentWork.next(bufferMessages.poll());
+                    remaining.decrementAndGet();
+                }
+
+                // if  we have delivered all the messages to currentWork, we will complete it.
+                if (currentWork.isTerminal()) {
+                    if (currentWork.getError() == null) {
+                        currentWork.complete();
+                    }
+                    // Now remove from queue since it is complete
+                    workQueue.remove(currentWork);
+                    if (currentTimeoutOperation != null && !currentTimeoutOperation.isDisposed()) {
+                        currentTimeoutOperation.dispose();
+                    }
+                    logger.verbose("The work [{}] is complete.", currentWork.getId());
+                } else {
+                    // Since this work is not complete, find out how much we should request from upstream
+                    long creditToAdd = currentWork.getRemaining() - (remaining.get() + bufferMessages.size());
+                    if (creditToAdd > 0) {
+                        remaining.addAndGet(creditToAdd);
+                        subscription.request(creditToAdd);
+                        logger.verbose("Requesting [{}] from upstream for work [{}].", creditToAdd,
+                            currentWork.getId());
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * @param work on which timeout thread need to start.
+     *
+     * @return {@link Disposable} for the timeout operation.
+     */
+    private Disposable getTimeoutOperation(SynchronousReceiveWork work) {
+        Duration timeout = work.getTimeout();
+        return Mono.delay(timeout).thenReturn(work)
+            .subscribe(l -> {
+                synchronized (currentWorkLock) {
+                    if (currentWork == work) {
+                        work.timeout();
+                    }
+                }
+            });
     }
 
     /**
@@ -73,46 +210,45 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
      */
     @Override
     protected void hookOnError(Throwable throwable) {
-        logger.error("[{}] Errors occurred upstream", work.getId(), throwable);
-        work.error(throwable);
+        logger.error("[{}] Errors occurred upstream", currentWork.getId(), throwable);
+        synchronized (currentWorkLock) {
+            currentWork.error(throwable);
+        }
         dispose();
     }
 
     @Override
     protected void hookOnCancel() {
-        dispose();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void dispose() {
         if (isDisposed.getAndSet(true)) {
             return;
         }
 
-        work.complete();
+        synchronized (currentWorkLock) {
+            if (currentWork != null) {
+                currentWork.complete();
+            }
+            if (currentTimeoutOperation != null && !currentTimeoutOperation.isDisposed()) {
+                currentTimeoutOperation.dispose();
+            }
+            currentTimeoutOperation = null;
+        }
+
         subscription.cancel();
-        timer.cancel();
-        super.dispose();
     }
 
-    private static final class ReceiveTimeoutTask extends TimerTask {
-        private final ClientLogger logger = new ClientLogger(ReceiveTimeoutTask.class);
-        private final long workId;
-        private final Runnable onDispose;
+    private boolean isTerminated() {
+        return isDisposed.get();
+    }
 
-        ReceiveTimeoutTask(long workId, Runnable onDispose) {
-            this.workId = workId;
-            this.onDispose = onDispose;
-        }
+    int getWorkQueueSize() {
+        return this.workQueue.size();
+    }
 
-        @Override
-        public void run() {
-            logger.info("[{}] Timeout encountered, disposing of subscriber.", workId);
-            onDispose.run();
-        }
+    long getRequested() {
+        return this.requested;
+    }
+
+    boolean isSubscriberInitialized() {
+        return this.subscriberInitialized;
     }
 }
-

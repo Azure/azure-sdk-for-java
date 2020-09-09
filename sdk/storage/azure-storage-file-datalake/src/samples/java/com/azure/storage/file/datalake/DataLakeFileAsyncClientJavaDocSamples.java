@@ -7,6 +7,12 @@ import com.azure.core.util.Context;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
+import com.azure.storage.file.datalake.models.FileQueryDelimitedSerialization;
+import com.azure.storage.file.datalake.models.FileQueryError;
+import com.azure.storage.file.datalake.models.FileQueryJsonSerialization;
+import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
+import com.azure.storage.file.datalake.options.FileQueryOptions;
+import com.azure.storage.file.datalake.models.FileQueryProgress;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import reactor.core.publisher.Flux;
@@ -18,12 +24,13 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.OpenOption;
 import java.nio.file.StandardOpenOption;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * Code snippets for {@link DataLakeFileAsyncClient}
@@ -143,7 +150,7 @@ public class DataLakeFileAsyncClientJavaDocSamples {
 
     /**
      * Code snippets for {@link DataLakeFileAsyncClient#upload(Flux, ParallelTransferOptions)},
-     * {@link DataLakeFileAsyncClient#upload(Flux, ParallelTransferOptions, boolean)} and
+     * {@link DataLakeFileAsyncClient#upload(Flux, ParallelTransferOptions, boolean)}, and
      * {@link DataLakeFileAsyncClient#uploadWithResponse(Flux, ParallelTransferOptions, PathHttpHeaders, Map, DataLakeRequestConditions)}
      */
     public void uploadCodeSnippets() {
@@ -170,8 +177,8 @@ public class DataLakeFileAsyncClientJavaDocSamples {
         DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
-        Integer blockSize = 100 * 1024 * 1024; // 100 MB;
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(blockSize, null, null, null);
+        Long blockSize = 100L * 1024L * 1024L; // 100 MB;
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(blockSize);
 
         client.uploadWithResponse(data, parallelTransferOptions, headers, metadata, requestConditions)
             .subscribe(response -> System.out.println("Uploaded file %n"));
@@ -187,12 +194,59 @@ public class DataLakeFileAsyncClientJavaDocSamples {
         DataLakeRequestConditions conditions = new DataLakeRequestConditions()
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
-        ParallelTransferOptions pto = new ParallelTransferOptions(blockSize, null,
-            bytesTransferred -> System.out.printf("Upload progress: %s bytes sent", bytesTransferred), null);
+        ParallelTransferOptions pto = new ParallelTransferOptions()
+            .setBlockSizeLong(blockSize)
+            .setProgressReceiver(bytesTransferred -> System.out.printf("Upload progress: %s bytes sent", bytesTransferred));
 
         client.uploadWithResponse(data, pto, httpHeaders, metadataMap, conditions)
             .subscribe(response -> System.out.println("Uploaded file %n"));
         // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-PathHttpHeaders-Map-DataLakeRequestConditions.ProgressReporter
+    }
+
+    /**
+     * Code snippets for {@link DataLakeFileAsyncClient#uploadWithResponse(FileParallelUploadOptions)}
+     */
+    public void uploadCodeSnippets2() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadWithResponse#FileParallelUploadOptions
+        PathHttpHeaders headers = new PathHttpHeaders()
+            .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+        Long blockSize = 100L * 1024L * 1024L; // 100 MB;
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(blockSize);
+
+        client.uploadWithResponse(new FileParallelUploadOptions(data)
+            .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers)
+            .setMetadata(metadata).setRequestConditions(requestConditions)
+            .setPermissions("permissions").setUmask("umask"))
+            .subscribe(response -> System.out.println("Uploaded file %n"));
+        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadWithResponse#FileParallelUploadOptions
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadWithResponse#FileParallelUploadOptions.ProgressReporter
+        PathHttpHeaders httpHeaders = new PathHttpHeaders()
+            .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+
+        Map<String, String> metadataMap = Collections.singletonMap("metadata", "value");
+        DataLakeRequestConditions conditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+        ParallelTransferOptions pto = new ParallelTransferOptions()
+            .setBlockSizeLong(blockSize)
+            .setProgressReceiver(bytesTransferred -> System.out.printf("Upload progress: %s bytes sent", bytesTransferred));
+
+        client.uploadWithResponse(new FileParallelUploadOptions(data)
+            .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers)
+            .setMetadata(metadata).setRequestConditions(requestConditions)
+            .setPermissions("permissions").setUmask("umask"))
+            .subscribe(response -> System.out.println("Uploaded file %n"));
+        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadWithResponse#FileParallelUploadOptions.ProgressReporter
     }
 
     /**
@@ -224,8 +278,8 @@ public class DataLakeFileAsyncClientJavaDocSamples {
         DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
-        Integer blockSize = 100 * 1024 * 1024; // 100 MB;
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(blockSize, null, null, null);
+        Long blockSize = 100L * 1024L * 1024L; // 100 MB;
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(blockSize);
 
         client.uploadFromFile(filePath, parallelTransferOptions, headers, metadata, requestConditions)
             .doOnError(throwable -> System.err.printf("Failed to upload from file %s%n", throwable.getMessage()))
@@ -287,6 +341,64 @@ public class DataLakeFileAsyncClientJavaDocSamples {
             requestConditions).subscribe(response ->
             System.out.printf("Flush data completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.flushWithResponse#long-boolean-boolean-PathHttpHeaders-DataLakeRequestConditions
+    }
+
+    /**
+     * Code snippet for {@link DataLakeFileAsyncClient#query(String)}
+     * @throws UncheckedIOException for IOExceptions.
+     */
+    public void query() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.query#String
+        ByteArrayOutputStream queryData = new ByteArrayOutputStream();
+        String expression = "SELECT * from BlobStorage";
+        client.query(expression).subscribe(piece -> {
+            try {
+                queryData.write(piece.array());
+            } catch (IOException ex) {
+                throw new UncheckedIOException(ex);
+            }
+        });
+        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.query#String
+    }
+
+    /**
+     * Code snippet for {@link DataLakeFileAsyncClient#queryWithResponse(FileQueryOptions)}
+     * @throws UncheckedIOException for IOExceptions.
+     */
+    public void queryWithResponse() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.queryWithResponse#FileQueryOptions
+        String expression = "SELECT * from BlobStorage";
+        FileQueryJsonSerialization input = new FileQueryJsonSerialization()
+            .setRecordSeparator('\n');
+        FileQueryDelimitedSerialization output = new FileQueryDelimitedSerialization()
+            .setEscapeChar('\0')
+            .setColumnSeparator(',')
+            .setRecordSeparator('\n')
+            .setFieldQuote('\'')
+            .setHeadersPresent(true);
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().setLeaseId(leaseId);
+        Consumer<FileQueryError> errorConsumer = System.out::println;
+        Consumer<FileQueryProgress> progressConsumer = progress -> System.out.println("total file bytes read: "
+            + progress.getBytesScanned());
+        FileQueryOptions queryOptions = new FileQueryOptions(expression)
+            .setInputSerialization(input)
+            .setOutputSerialization(output)
+            .setRequestConditions(requestConditions)
+            .setErrorConsumer(errorConsumer)
+            .setProgressConsumer(progressConsumer);
+
+        client.queryWithResponse(queryOptions)
+            .subscribe(response -> {
+                ByteArrayOutputStream queryData = new ByteArrayOutputStream();
+                response.getValue().subscribe(piece -> {
+                    try {
+                        queryData.write(piece.array());
+                    } catch (IOException ex) {
+                        throw new UncheckedIOException(ex);
+                    }
+                });
+            });
+        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.queryWithResponse#FileQueryOptions
     }
 
 }

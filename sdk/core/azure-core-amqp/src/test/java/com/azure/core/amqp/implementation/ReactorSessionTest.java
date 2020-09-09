@@ -4,6 +4,8 @@
 package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import org.apache.qpid.proton.engine.EndpointState;
@@ -37,6 +39,7 @@ public class ReactorSessionTest {
 
     private SessionHandler handler;
     private ReactorSession reactorSession;
+    private AmqpRetryPolicy retryPolicy;
 
     @Mock
     private Session session;
@@ -68,8 +71,10 @@ public class ReactorSessionTest {
         MockReactorHandlerProvider handlerProvider = new MockReactorHandlerProvider(reactorProvider, null, handler, null, null);
         AzureTokenManagerProvider azureTokenManagerProvider = new AzureTokenManagerProvider(
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, HOST, "a-test-scope");
+        this.retryPolicy = RetryUtil.getRetryPolicy(new AmqpRetryOptions());
         this.reactorSession = new ReactorSession(session, handler, NAME, reactorProvider, handlerProvider,
-            Mono.just(cbsNode), azureTokenManagerProvider, serializer, TIMEOUT);
+            Mono.just(cbsNode), azureTokenManagerProvider, serializer, TIMEOUT, retryPolicy);
+
     }
 
     @AfterEach
@@ -107,7 +112,7 @@ public class ReactorSessionTest {
             .expectComplete()
             .verify(Duration.ofSeconds(10));
     }
-    
+
     @Test
     public void verifyDispose() {
         reactorSession.dispose();

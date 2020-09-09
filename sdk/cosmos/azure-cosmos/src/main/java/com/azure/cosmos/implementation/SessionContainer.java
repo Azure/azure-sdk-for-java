@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -242,7 +242,7 @@ public final class SessionContainer implements ISessionContainer {
                 }
 
                 return existingSessionTokens.merge(newSessionToken);
-            } catch (CosmosClientException e) {
+            } catch (CosmosException e) {
                 throw new IllegalStateException(e);
             }
         });

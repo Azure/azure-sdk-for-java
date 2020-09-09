@@ -73,7 +73,7 @@ public class ProxySendTest extends IntegrationTestBase {
     @Test
     public void sendEvents() {
         // Arrange
-        final String queueName = getQueueName();
+        final String queueName = getQueueName(9);
 
         Assertions.assertNotNull(queueName, "'queueName' is not set in environment variable.");
 
@@ -96,7 +96,7 @@ public class ProxySendTest extends IntegrationTestBase {
                         Assertions.assertTrue(batch.tryAdd(messages.get(i)), "Unable to add message: " + i);
                     }
 
-                    return sender.send(batch);
+                    return sender.sendMessages(batch);
                 }))
                 .verifyComplete();
         } finally {

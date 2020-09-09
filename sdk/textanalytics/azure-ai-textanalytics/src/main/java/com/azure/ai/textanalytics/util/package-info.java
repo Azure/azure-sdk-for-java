@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Package containing classes for creating a {@link com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux}
- * and {@link com.azure.ai.textanalytics.util.TextAnalyticsPagedIterable} to use them to perform operations on
- * Azure Text Analytics.
+ * Package containing Azure Text Analytics collection types that contain the results for batch operations.
  */
 package com.azure.ai.textanalytics.util;

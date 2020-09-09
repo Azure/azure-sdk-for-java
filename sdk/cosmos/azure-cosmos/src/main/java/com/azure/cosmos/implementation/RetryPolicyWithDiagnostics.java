@@ -4,25 +4,25 @@
 package com.azure.cosmos.implementation;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class RetryPolicyWithDiagnostics implements IRetryPolicy{
 
      private volatile int retriesCountForDiagnostics;
-     private volatile ZonedDateTime retryStartTime;
-     private volatile ZonedDateTime retryEndTime;
+     private volatile Instant retryStartTime;
+     private volatile Instant retryEndTime;
      private volatile List<int[]> statusAndSubStatusCodes;
 
     @Override
-    public ZonedDateTime getStartTime() {
+    public Instant getStartTime() {
         return retryStartTime;
     }
 
     @Override
-    public ZonedDateTime getEndTime() {
+    public Instant getEndTime() {
         return retryEndTime;
     }
 
@@ -65,13 +65,13 @@ public abstract class RetryPolicyWithDiagnostics implements IRetryPolicy{
 
     @Override
     public void updateEndTime(){
-        this.retryEndTime = ZonedDateTime.now(ZoneOffset.UTC);
+        this.retryEndTime = Instant.now();
     }
 
     @Override
     public void captureStartTimeIfNotSet(){
         if(this.retryStartTime == null) {
-            this.retryStartTime = ZonedDateTime.now(ZoneOffset.UTC);;
+            this.retryStartTime = Instant.now();;
         }
     }
 }

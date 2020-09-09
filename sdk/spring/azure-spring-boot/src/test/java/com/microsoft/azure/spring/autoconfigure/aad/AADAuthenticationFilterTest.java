@@ -3,30 +3,52 @@
 
 package com.microsoft.azure.spring.autoconfigure.aad;
 
+import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jose.proc.BadJOSEException;
 import org.junit.Assume;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class AADAuthenticationFilterTest {
+    private static final String TOKEN = "dummy-token";
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(AADAuthenticationFilterAutoConfiguration.class));
+    private final UserPrincipalManager userPrincipalManager;
+    private final HttpServletRequest request;
+    private final HttpServletResponse response;
+    private final AADAuthenticationFilter filter;
 
-    @Before
+    public AADAuthenticationFilterTest() {
+        userPrincipalManager = mock(UserPrincipalManager.class);
+        request = mock(HttpServletRequest.class);
+        response = mock(HttpServletResponse.class);
+        filter = new AADAuthenticationFilter(mock(AADAuthenticationProperties.class),
+            mock(ServiceEndpointsProperties.class),
+            userPrincipalManager);
+    }
+
     @Ignore
     public void beforeEveryMethod() {
         Assume.assumeTrue(!Constants.CLIENT_ID.contains("real_client_id"));
@@ -77,6 +99,40 @@ public class AADAuthenticationFilterTest {
             assertThat(claims.get("iss")).isEqualTo(principal.getIssuer());
             assertThat(claims.get("sub")).isEqualTo(principal.getSubject());
         });
+    }
+
+    @Test
+    public void testTokenNotIssuedByAAD() throws ServletException, IOException {
+        when(userPrincipalManager.isTokenIssuedByAAD(TOKEN)).thenReturn(false);
+
+        final FilterChain filterChain = (request, response) -> {
+            final SecurityContext context = SecurityContextHolder.getContext();
+            assertNotNull(context);
+            final Authentication authentication = context.getAuthentication();
+            assertNull(authentication);
+        };
+
+        filter.doFilterInternal(request, response, filterChain);
+    }
+
+    @Test
+    public void testAlreadyAuthenticated() throws ServletException, IOException, ParseException, JOSEException,
+        BadJOSEException {
+        final Authentication authentication = mock(Authentication.class);
+        when(authentication.isAuthenticated()).thenReturn(true);
+        when(userPrincipalManager.isTokenIssuedByAAD(TOKEN)).thenReturn(true);
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        final FilterChain filterChain = (request, response) -> {
+            final SecurityContext context = SecurityContextHolder.getContext();
+            assertNotNull(context);
+            assertNotNull(context.getAuthentication());
+            SecurityContextHolder.clearContext();
+        };
+
+        filter.doFilterInternal(request, response, filterChain);
+        verify(userPrincipalManager, times(0)).buildUserPrincipal(TOKEN);
     }
 
 }

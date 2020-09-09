@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.PartitionIsMigratingException;
@@ -94,8 +94,8 @@ public class StoreReader {
 
         String originalSessionToken = entity.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
 
-        if (entity.requestContext.cosmosResponseDiagnostics == null) {
-            entity.requestContext.cosmosResponseDiagnostics = BridgeInternal.createCosmosResponseDiagnostics();
+        if (entity.requestContext.cosmosDiagnostics == null) {
+            entity.requestContext.cosmosDiagnostics = BridgeInternal.createCosmosDiagnostics();
         }
 
         Mono<ReadReplicaResult> readQuorumResultObs = this.readMultipleReplicasInternalAsync(
@@ -150,7 +150,7 @@ public class StoreReader {
                                         readMode != ReadMode.Strong,
                                         storeRespAndURI.getRight());
 
-                                BridgeInternal.getContactedReplicas(request.requestContext.cosmosResponseDiagnostics).add(storeRespAndURI.getRight().getURI());
+                                BridgeInternal.getContactedReplicas(request.requestContext.cosmosDiagnostics).add(storeRespAndURI.getRight().getURI());
                                 return Flux.just(storeResult);
                             } catch (Exception e) {
                                 // RxJava1 doesn't allow throwing checked exception from Observable operators
@@ -173,7 +173,7 @@ public class StoreReader {
                                 readMode != ReadMode.Strong,
                                 null);
                         if (storeException instanceof TransportException) {
-                            BridgeInternal.getFailedReplicas(request.requestContext.cosmosResponseDiagnostics).add(storeRespAndURI.getRight().getURI());
+                            BridgeInternal.getFailedReplicas(request.requestContext.cosmosDiagnostics).add(storeRespAndURI.getRight().getURI());
                         }
                         return Flux.just(storeResult);
                     } catch (Exception e) {
@@ -248,7 +248,7 @@ public class StoreReader {
 
                 entity.requestContext.requestChargeTracker.addCharge(srr.requestCharge);
                 try {
-                    BridgeInternal.recordResponse(entity.requestContext.cosmosResponseDiagnostics, entity, srr);
+                    BridgeInternal.recordResponse(entity.requestContext.cosmosDiagnostics, entity, srr);
                 } catch (Exception e) {
                     logger.error("Unexpected failure while recording response", e);
                 }
@@ -291,7 +291,7 @@ public class StoreReader {
                                               int replicaCountToRead,
                                               int resolvedAddressCount,
                                               boolean hasGoneException,
-                                              RxDocumentServiceRequest entity) throws CosmosClientException {
+                                              RxDocumentServiceRequest entity) {
         if (responseResult.size() < replicaCountToRead) {
             if (logger.isDebugEnabled()) {
                 logger.debug("Could not get quorum number of responses. " +
@@ -446,8 +446,8 @@ public class StoreReader {
         }
 
         String originalSessionToken = entity.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
-        if (entity.requestContext.cosmosResponseDiagnostics == null) {
-            entity.requestContext.cosmosResponseDiagnostics = BridgeInternal.createCosmosResponseDiagnostics();
+        if (entity.requestContext.cosmosDiagnostics == null) {
+            entity.requestContext.cosmosDiagnostics = BridgeInternal.createCosmosDiagnostics();
         }
 
         return this.readPrimaryInternalAsync(
@@ -528,14 +528,14 @@ public class StoreReader {
                                                 true,
                                                 storeResponse != null ? storeResponseObsAndUri.getRight() : null);
                                         return Mono.just(storeResult);
-                                    } catch (CosmosClientException e) {
+                                    } catch (CosmosException e) {
                                         return Mono.error(e);
                                     }
                                 }
 
                         );
 
-                    } catch (CosmosClientException e) {
+                    } catch (CosmosException e) {
                         // RxJava1 doesn't allow throwing checked exception from Observable:map
                         return Mono.error(e);
                     }
@@ -543,7 +543,7 @@ public class StoreReader {
                 }
         ).onErrorResume(t -> {
             Throwable unwrappedException = Exceptions.unwrap(t);
-            logger.debug("Exception {} is thrown while doing READ Primary", unwrappedException);
+            logger.debug("Exception is thrown while doing READ Primary", unwrappedException);
 
             Exception storeTaskException = Utils.as(unwrappedException, Exception.class);
             if (storeTaskException == null) {
@@ -557,7 +557,7 @@ public class StoreReader {
                         true,
                         null);
                 return Mono.just(storeResult);
-            } catch (CosmosClientException e) {
+            } catch (CosmosException e) {
                 // RxJava1 doesn't allow throwing checked exception from Observable operators
                 return Mono.error(e);
             }
@@ -565,7 +565,7 @@ public class StoreReader {
 
         return storeResultObs.map(storeResult -> {
             try {
-                BridgeInternal.recordResponse(entity.requestContext.cosmosResponseDiagnostics, entity, storeResult);
+                BridgeInternal.recordResponse(entity.requestContext.cosmosDiagnostics, entity, storeResult);
             } catch (Exception e) {
                 logger.error("Unexpected failure while recording response", e);
             }
@@ -581,7 +581,7 @@ public class StoreReader {
 
     private Pair<Mono<StoreResponse>, Uri> readFromStoreAsync(
             Uri physicalAddress,
-            RxDocumentServiceRequest request) throws CosmosClientException {
+            RxDocumentServiceRequest request) {
 
         if (request.requestContext.timeoutHelper.isElapsed()) {
             throw new GoneException();
@@ -660,7 +660,7 @@ public class StoreReader {
                                   Exception responseException,
                                   boolean requiresValidLsn,
                                   boolean useLocalLSNBasedHeaders,
-                                  Uri storePhysicalAddress) throws CosmosClientException {
+                                  Uri storePhysicalAddress) {
 
         if (responseException == null) {
             String headerValue = null;
@@ -734,78 +734,78 @@ public class StoreReader {
                     /* getSessionToken: */ sessionToken);
         } else {
             Throwable unwrappedResponseExceptions = Exceptions.unwrap(responseException);
-            CosmosClientException cosmosClientException = Utils.as(unwrappedResponseExceptions, CosmosClientException.class);
-            if (cosmosClientException != null) {
-                StoreReader.verifyCanContinueOnException(cosmosClientException);
+            CosmosException cosmosException = Utils.as(unwrappedResponseExceptions, CosmosException.class);
+            if (cosmosException != null) {
+                StoreReader.verifyCanContinueOnException(cosmosException);
                 long quorumAckedLSN = -1;
                 int currentReplicaSetSize = -1;
                 int currentWriteQuorum = -1;
                 long globalCommittedLSN = -1;
                 int numberOfReadRegions = -1;
-                String headerValue = cosmosClientException.getResponseHeaders().get(useLocalLSNBasedHeaders ? WFConstants.BackendHeaders.QUORUM_ACKED_LOCAL_LSN : WFConstants.BackendHeaders.QUORUM_ACKED_LSN);
+                String headerValue = cosmosException.getResponseHeaders().get(useLocalLSNBasedHeaders ? WFConstants.BackendHeaders.QUORUM_ACKED_LOCAL_LSN : WFConstants.BackendHeaders.QUORUM_ACKED_LSN);
                 if (!Strings.isNullOrEmpty(headerValue)) {
                     quorumAckedLSN = Long.parseLong(headerValue);
                 }
 
-                headerValue = cosmosClientException.getResponseHeaders().get(WFConstants.BackendHeaders.CURRENT_REPLICA_SET_SIZE);
+                headerValue = cosmosException.getResponseHeaders().get(WFConstants.BackendHeaders.CURRENT_REPLICA_SET_SIZE);
                 if (!Strings.isNullOrEmpty(headerValue)) {
                     currentReplicaSetSize = Integer.parseInt(headerValue);
                 }
 
-                headerValue = cosmosClientException.getResponseHeaders().get(WFConstants.BackendHeaders.CURRENT_WRITE_QUORUM);
+                headerValue = cosmosException.getResponseHeaders().get(WFConstants.BackendHeaders.CURRENT_WRITE_QUORUM);
                 if (!Strings.isNullOrEmpty(headerValue)) {
                     currentReplicaSetSize = Integer.parseInt(headerValue);
                 }
 
                 double requestCharge = 0;
-                headerValue = cosmosClientException.getResponseHeaders().get(HttpConstants.HttpHeaders.REQUEST_CHARGE);
+                headerValue = cosmosException.getResponseHeaders().get(HttpConstants.HttpHeaders.REQUEST_CHARGE);
                 if (!Strings.isNullOrEmpty(headerValue)) {
                     requestCharge = Double.parseDouble(headerValue);
                 }
 
-                headerValue = cosmosClientException.getResponseHeaders().get(WFConstants.BackendHeaders.NUMBER_OF_READ_REGIONS);
+                headerValue = cosmosException.getResponseHeaders().get(WFConstants.BackendHeaders.NUMBER_OF_READ_REGIONS);
                 if (!Strings.isNullOrEmpty(headerValue)) {
                     numberOfReadRegions = Integer.parseInt(headerValue);
                 }
 
-                headerValue = cosmosClientException.getResponseHeaders().get(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN);
+                headerValue = cosmosException.getResponseHeaders().get(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN);
                 if (!Strings.isNullOrEmpty(headerValue)) {
                     globalCommittedLSN = Integer.parseInt(headerValue);
                 }
 
                 long lsn = -1;
                 if (useLocalLSNBasedHeaders) {
-                    headerValue = cosmosClientException.getResponseHeaders().get(WFConstants.BackendHeaders.LOCAL_LSN);
+                    headerValue = cosmosException.getResponseHeaders().get(WFConstants.BackendHeaders.LOCAL_LSN);
                     if (!Strings.isNullOrEmpty(headerValue)) {
                         lsn = Long.parseLong(headerValue);
                     }
                 } else {
-                    lsn = BridgeInternal.getLSN(cosmosClientException);
+                    lsn = BridgeInternal.getLSN(cosmosException);
                 }
 
                 ISessionToken sessionToken = null;
 
                 // SESSION token response header is introduced from getVersion HttpConstants.Versions.v2018_06_18 onwards.
                 // Previously it was only a request header
-                headerValue = cosmosClientException.getResponseHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
+                headerValue = cosmosException.getResponseHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
                 if (!Strings.isNullOrEmpty(headerValue)) {
                     sessionToken = SessionTokenHelper.parse(headerValue);
                 }
 
                 return new StoreResult(
                         /* storeResponse: */     (StoreResponse) null,
-                        /* exception: */ cosmosClientException,
-                        /* partitionKeyRangeId: */BridgeInternal.getPartitionKeyRangeId(cosmosClientException),
+                        /* exception: */ cosmosException,
+                        /* partitionKeyRangeId: */BridgeInternal.getPartitionKeyRangeId(cosmosException),
                         /* lsn: */ lsn,
                         /* quorumAckedLsn: */ quorumAckedLSN,
                         /* getRequestCharge: */ requestCharge,
                         /* currentReplicaSetSize: */ currentReplicaSetSize,
                         /* currentWriteQuorum: */ currentWriteQuorum,
                         /* isValid: */!requiresValidLsn
-                        || ((cosmosClientException.getStatusCode() != HttpConstants.StatusCodes.GONE || isSubStatusCode(cosmosClientException, HttpConstants.SubStatusCodes.NAME_CACHE_IS_STALE))
+                        || ((cosmosException.getStatusCode() != HttpConstants.StatusCodes.GONE || isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.NAME_CACHE_IS_STALE))
                         && lsn >= 0),
                         // TODO: verify where exception.RequestURI is supposed to be set in .Net
-                        /* storePhysicalAddress: */ storePhysicalAddress == null ? BridgeInternal.getRequestUri(cosmosClientException) : storePhysicalAddress,
+                        /* storePhysicalAddress: */ storePhysicalAddress == null ? BridgeInternal.getRequestUri(cosmosException) : storePhysicalAddress,
                         /* globalCommittedLSN: */ globalCommittedLSN,
                         /* numberOfReadRegions: */ numberOfReadRegions,
                         /* itemLSN: */ -1,
@@ -848,7 +848,7 @@ public class StoreReader {
         return ThreadLocalRandom.current().nextInt(maxValue);
     }
 
-    static void verifyCanContinueOnException(CosmosClientException ex) throws CosmosClientException {
+    static void verifyCanContinueOnException(CosmosException ex) {
         if (ex instanceof PartitionKeyRangeGoneException) {
             throw ex;
         }

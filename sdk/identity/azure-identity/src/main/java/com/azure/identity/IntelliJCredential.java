@@ -8,12 +8,14 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.IntelliJAuthMethodDetails;
 import com.azure.identity.implementation.IntelliJCacheAccessor;
 import com.azure.identity.implementation.MsalToken;
+import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -25,10 +27,11 @@ import java.util.concurrent.atomic.AtomicReference;
  * this credential can be used in the development code to reuse the cached plugin credentials.</p>
  */
 @Immutable
-class IntelliJCredential implements TokenCredential {
+public class IntelliJCredential implements TokenCredential {
     private static final String AZURE_TOOLS_FOR_INTELLIJ_CLIENT_ID = "61d65f5a-6e3b-468b-af73-a033f5098c5c";
     private final IdentityClient identityClient;
     private final AtomicReference<MsalToken> cachedToken;
+    private final ClientLogger logger = new ClientLogger(IntelliJCredential.class);
 
     /**
      * Creates an {@link IntelliJCredential} with default identity client options.
@@ -75,7 +78,7 @@ class IntelliJCredential implements TokenCredential {
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return Mono.defer(() -> {
             if (cachedToken.get() != null) {
-                return identityClient.authenticateWithMsalAccount(request, cachedToken.get().getAccount())
+                return identityClient.authenticateWithPublicClientCache(request, cachedToken.get().getAccount())
                            .onErrorResume(t -> Mono.empty());
             } else {
                 return Mono.empty();
@@ -84,7 +87,9 @@ class IntelliJCredential implements TokenCredential {
             Mono.defer(() -> identityClient.authenticateWithIntelliJ(request)))
                    .map(msalToken -> {
                        cachedToken.set(msalToken);
-                       return msalToken;
-                   });
+                       return (AccessToken) msalToken;
+                   })
+            .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
+            .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
     }
 }

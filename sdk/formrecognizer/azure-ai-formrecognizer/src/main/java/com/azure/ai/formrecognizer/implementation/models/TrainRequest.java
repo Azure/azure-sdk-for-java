@@ -7,9 +7,7 @@ package com.azure.ai.formrecognizer.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The TrainRequest model.
- */
+/** The TrainRequest model. */
 @Fluent
 public final class TrainRequest {
     /*
@@ -32,7 +30,7 @@ public final class TrainRequest {
 
     /**
      * Get the source property: Source path containing the training documents.
-     * 
+     *
      * @return the source value.
      */
     public String getSource() {
@@ -41,7 +39,7 @@ public final class TrainRequest {
 
     /**
      * Set the source property: Source path containing the training documents.
-     * 
+     *
      * @param source the source value to set.
      * @return the TrainRequest object itself.
      */
@@ -51,9 +49,8 @@ public final class TrainRequest {
     }
 
     /**
-     * Get the sourceFilter property: Filter to apply to the documents in the
-     * source path for training.
-     * 
+     * Get the sourceFilter property: Filter to apply to the documents in the source path for training.
+     *
      * @return the sourceFilter value.
      */
     public TrainSourceFilter getSourceFilter() {
@@ -61,9 +58,8 @@ public final class TrainRequest {
     }
 
     /**
-     * Set the sourceFilter property: Filter to apply to the documents in the
-     * source path for training.
-     * 
+     * Set the sourceFilter property: Filter to apply to the documents in the source path for training.
+     *
      * @param sourceFilter the sourceFilter value to set.
      * @return the TrainRequest object itself.
      */
@@ -74,7 +70,7 @@ public final class TrainRequest {
 
     /**
      * Get the useLabelFile property: Use label file for training a model.
-     * 
+     *
      * @return the useLabelFile value.
      */
     public Boolean isUseLabelFile() {
@@ -83,7 +79,7 @@ public final class TrainRequest {
 
     /**
      * Set the useLabelFile property: Use label file for training a model.
-     * 
+     *
      * @param useLabelFile the useLabelFile value to set.
      * @return the TrainRequest object itself.
      */

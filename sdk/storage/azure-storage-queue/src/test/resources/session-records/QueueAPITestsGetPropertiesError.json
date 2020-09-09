@@ -1,26 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://gapradev.queue.core.windows.net/queueapitestsgetpropertieserror372835e1a43817a1a?comp=metadata",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queueapitestsgetpropertieserror419637fdfec7ec819?comp=metadata",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "19dd8e87-f3ea-4587-8835-4d24b365572a"
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "9c8819bc-67c2-424d-9d70-9d0a08be8f00"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "x-ms-version" : "2019-12-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "QueueNotFound",
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "d25b81fb-f003-0012-6571-e0e9eb000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:d25b81fb-f003-0012-6571-e0e9eb000000\nTime:2020-02-11T00:24:32.6712723Z</Message></Error>",
-      "Date" : "Tue, 11 Feb 2020 00:24:31 GMT",
-      "x-ms-client-request-id" : "19dd8e87-f3ea-4587-8835-4d24b365572a",
+      "x-ms-request-id" : "37a39d21-3003-009b-7903-3a8ca5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:37a39d21-3003-009b-7903-3a8ca5000000\nTime:2020-06-04T00:04:55.1345227Z</Message></Error>",
+      "Date" : "Thu, 04 Jun 2020 00:04:54 GMT",
+      "x-ms-client-request-id" : "9c8819bc-67c2-424d-9d70-9d0a08be8f00",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueapitestsgetpropertieserror372835e1a43817a1a" ]
+  "variables" : [ "queueapitestsgetpropertieserror419637fdfec7ec819" ]
 }

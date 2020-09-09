@@ -115,6 +115,7 @@ interface KeyService {
 
     @Get("keys/{key-name}/versions")
     @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     @ReturnValueWireType(KeyPropertiesPage.class)
     Mono<PagedResponse<KeyProperties>> getKeyVersions(@HostParam("url") String url,

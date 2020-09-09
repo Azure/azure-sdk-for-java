@@ -15,6 +15,7 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.mediaservices.v2018_07_01.ApiErrorException;
+import com.microsoft.azure.management.mediaservices.v2018_07_01.ListEdgePoliciesInput;
 import com.microsoft.azure.management.mediaservices.v2018_07_01.SyncStorageKeysInput;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
@@ -89,6 +90,10 @@ public class MediaservicesInner implements InnerSupportsGet<MediaServiceInner>, 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.mediaservices.v2018_07_01.Mediaservices syncStorageKeys" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/syncStorageKeys")
         Observable<Response<ResponseBody>> syncStorageKeys(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body SyncStorageKeysInput parameters, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.mediaservices.v2018_07_01.Mediaservices listEdgePolicies" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/listEdgePolicies")
+        Observable<Response<ResponseBody>> listEdgePolicies(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ListEdgePoliciesInput parameters, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.mediaservices.v2018_07_01.Mediaservices list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Media/mediaservices")
@@ -780,6 +785,188 @@ public class MediaservicesInner implements InnerSupportsGet<MediaServiceInner>, 
     private ServiceResponse<Void> syncStorageKeysDelegate(Response<ResponseBody> response) throws ApiErrorException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, ApiErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
+                .registerError(ApiErrorException.class)
+                .build(response);
+    }
+
+    /**
+     * List the media edge policies associated with the Media Services account.
+     * List the media edge policies associated with the Media Services account.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ApiErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the EdgePoliciesInner object if successful.
+     */
+    public EdgePoliciesInner listEdgePolicies(String resourceGroupName, String accountName) {
+        return listEdgePoliciesWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().body();
+    }
+
+    /**
+     * List the media edge policies associated with the Media Services account.
+     * List the media edge policies associated with the Media Services account.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<EdgePoliciesInner> listEdgePoliciesAsync(String resourceGroupName, String accountName, final ServiceCallback<EdgePoliciesInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listEdgePoliciesWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
+    }
+
+    /**
+     * List the media edge policies associated with the Media Services account.
+     * List the media edge policies associated with the Media Services account.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the EdgePoliciesInner object
+     */
+    public Observable<EdgePoliciesInner> listEdgePoliciesAsync(String resourceGroupName, String accountName) {
+        return listEdgePoliciesWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<EdgePoliciesInner>, EdgePoliciesInner>() {
+            @Override
+            public EdgePoliciesInner call(ServiceResponse<EdgePoliciesInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * List the media edge policies associated with the Media Services account.
+     * List the media edge policies associated with the Media Services account.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the EdgePoliciesInner object
+     */
+    public Observable<ServiceResponse<EdgePoliciesInner>> listEdgePoliciesWithServiceResponseAsync(String resourceGroupName, String accountName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final String deviceId = null;
+        ListEdgePoliciesInput parameters = new ListEdgePoliciesInput();
+        parameters.withDeviceId(null);
+        return service.listEdgePolicies(this.client.subscriptionId(), resourceGroupName, accountName, this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<EdgePoliciesInner>>>() {
+                @Override
+                public Observable<ServiceResponse<EdgePoliciesInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<EdgePoliciesInner> clientResponse = listEdgePoliciesDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * List the media edge policies associated with the Media Services account.
+     * List the media edge policies associated with the Media Services account.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param deviceId Unique identifier of the edge device.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ApiErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the EdgePoliciesInner object if successful.
+     */
+    public EdgePoliciesInner listEdgePolicies(String resourceGroupName, String accountName, String deviceId) {
+        return listEdgePoliciesWithServiceResponseAsync(resourceGroupName, accountName, deviceId).toBlocking().single().body();
+    }
+
+    /**
+     * List the media edge policies associated with the Media Services account.
+     * List the media edge policies associated with the Media Services account.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param deviceId Unique identifier of the edge device.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<EdgePoliciesInner> listEdgePoliciesAsync(String resourceGroupName, String accountName, String deviceId, final ServiceCallback<EdgePoliciesInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listEdgePoliciesWithServiceResponseAsync(resourceGroupName, accountName, deviceId), serviceCallback);
+    }
+
+    /**
+     * List the media edge policies associated with the Media Services account.
+     * List the media edge policies associated with the Media Services account.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param deviceId Unique identifier of the edge device.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the EdgePoliciesInner object
+     */
+    public Observable<EdgePoliciesInner> listEdgePoliciesAsync(String resourceGroupName, String accountName, String deviceId) {
+        return listEdgePoliciesWithServiceResponseAsync(resourceGroupName, accountName, deviceId).map(new Func1<ServiceResponse<EdgePoliciesInner>, EdgePoliciesInner>() {
+            @Override
+            public EdgePoliciesInner call(ServiceResponse<EdgePoliciesInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * List the media edge policies associated with the Media Services account.
+     * List the media edge policies associated with the Media Services account.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param deviceId Unique identifier of the edge device.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the EdgePoliciesInner object
+     */
+    public Observable<ServiceResponse<EdgePoliciesInner>> listEdgePoliciesWithServiceResponseAsync(String resourceGroupName, String accountName, String deviceId) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        ListEdgePoliciesInput parameters = new ListEdgePoliciesInput();
+        parameters.withDeviceId(deviceId);
+        return service.listEdgePolicies(this.client.subscriptionId(), resourceGroupName, accountName, this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<EdgePoliciesInner>>>() {
+                @Override
+                public Observable<ServiceResponse<EdgePoliciesInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<EdgePoliciesInner> clientResponse = listEdgePoliciesDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<EdgePoliciesInner> listEdgePoliciesDelegate(Response<ResponseBody> response) throws ApiErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<EdgePoliciesInner, ApiErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<EdgePoliciesInner>() { }.getType())
                 .registerError(ApiErrorException.class)
                 .build(response);
     }

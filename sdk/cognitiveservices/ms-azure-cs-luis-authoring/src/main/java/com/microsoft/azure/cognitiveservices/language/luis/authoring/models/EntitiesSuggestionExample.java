@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class EntitiesSuggestionExample {
     /**
-     * The utterance. E.g.: what's the weather like in seattle?.
+     * The utterance. For example, "What's the weather like in seattle?".
      */
     @JsonProperty(value = "text")
     private String text;

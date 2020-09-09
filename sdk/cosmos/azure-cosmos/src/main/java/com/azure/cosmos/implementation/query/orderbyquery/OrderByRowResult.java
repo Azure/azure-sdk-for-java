@@ -3,9 +3,12 @@
 
 package com.azure.cosmos.implementation.query.orderbyquery;
 
+import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.query.QueryItem;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.List;
 
@@ -20,8 +23,8 @@ public final class OrderByRowResult<T> extends Document {
     private final String backendContinuationToken;
 
     public OrderByRowResult(
-            Class<T> klass, 
-            String jsonString, 
+            Class<T> klass,
+            String jsonString,
             PartitionKeyRange targetRange,
             String backendContinuationToken) {
         super(jsonString);
@@ -35,8 +38,20 @@ public final class OrderByRowResult<T> extends Document {
                 : (this.orderByItems = super.getList("orderByItems", QueryItem.class));
     }
 
+    @SuppressWarnings("unchecked")
     public T getPayload() {
-        return this.payload != null ? this.payload : (this.payload = super.getObject("payload", klass));
+        if (this.payload != null) {
+            return this.payload;
+        }
+        final Object object = super.get("payload");
+        if (klass == Document.class && !ObjectNode.class.isAssignableFrom(object.getClass())) {
+            Document document = new Document();
+            ModelBridgeInternal.setProperty(document, Constants.Properties.VALUE, object);
+            payload = (T) document;
+        } else {
+            this.payload = super.getObject("payload", klass);
+        }
+        return payload;
     }
 
     public PartitionKeyRange getSourcePartitionKeyRange() {

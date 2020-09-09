@@ -73,6 +73,11 @@ public final class SessionHandlerOptions {
 
     /**
      * Whether the auto complete is set to true.
+     * If this value is true, if the handler returns without any failure, then the message is completed and will
+     * not show up in the session; if any exception is thrown from the handler, the message is abandoned and the
+     * DeliveryCount of this message will increase by one. If this value is false, if the handler returns without any
+     * failure, then user has to write the logic to explicitly complete the message, otherwise the message is not
+     * considered 'completed' and will reappear in the session.
      *
      * @return true to complete the message processing automatically on successful execution of the operation; otherwise, false.
      */
@@ -83,6 +88,10 @@ public final class SessionHandlerOptions {
 
     /**
      * Gets the maximum number of concurrent sessions that the pump should initiate.
+     * Setting this value to be greater than the max number of active sessions in the service will not increase message throughput.
+     * <remarks>The session-pump (SDK) will accept MaxConcurrentSessions number of sessions in parallel and dispatch the messages.
+     * The messages within a session are delivered sequentially. If more than MaxConcurrentSessions number of sessions are present
+     * in the entity, they will be accepted one-by-one after closing the existing sessions.</remarks>
      *
      * @return The maximum number of concurrent sessions
      */
@@ -101,6 +110,7 @@ public final class SessionHandlerOptions {
 
     /**
      * Gets the maximum duration within which the lock will be renewed automatically. This value should be greater than the longest message lock duration; for example, the LockDuration Property.
+     * If a session lock is going to expire, this value is the max duration for the session lock to be automatically renewed.
      *
      * @return The maximum duration during which locks are automatically renewed.
      */
@@ -109,8 +119,14 @@ public final class SessionHandlerOptions {
     }
 
     /**
-     * Gets the time to wait for receiving a message. Defaults to 1 minute.
-     * @return The wait duration for receive calls.
+     * Gets the time to wait for receiving a message.
+     * This is the time the session-pump waits before closing down the current session and switching to a different session.
+     * <remarks>This value has an impact on the message throughput. If the value is very large, then every time the SDK waits
+     * for this duration before closing to make sure that all the messages have been received. If users are having a lot of
+     * sessions and fewer messages per session, try setting this to be a relative smaller value based on how frequent new
+     * messages arrive in the session. </remarks>
+     * 
+     * @return The wait duration for receive calls. Defaults to 1 minute.
      */
     public Duration getMessageWaitDuration() {
         return this.messageWaitDuration;

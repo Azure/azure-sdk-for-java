@@ -7,15 +7,14 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-
-import java.time.temporal.ChronoUnit;
-import java.util.Objects;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
-import static com.azure.core.util.CoreUtils.isNullOrEmpty;
-
 import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.util.Objects;
+
+import static com.azure.core.util.CoreUtils.isNullOrEmpty;
 
 /**
  * A pipeline policy that retries when a recoverable HTTP error occurs.
@@ -29,43 +28,41 @@ public class RetryPolicy implements HttpPipelinePolicy {
     private final ChronoUnit retryAfterTimeUnit;
 
     /**
-     * Creates {@link RetryPolicy} with default {@link ExponentialBackoff} as {@link RetryStrategy} and ignore the
-     * delay provided in response header.
+     * Creates {@link RetryPolicy} with default {@link ExponentialBackoff} as {@link RetryStrategy} and ignore the delay
+     * provided in response header.
      */
     public RetryPolicy() {
         this(new ExponentialBackoff(), null, null);
     }
 
     /**
-     * Creates {@link RetryPolicy} with default {@link ExponentialBackoff} as {@link RetryStrategy} and use
-     * provided {@code retryAfterHeader} in {@link HttpResponse} headers for calculating retry delay.
+     * Creates {@link RetryPolicy} with default {@link ExponentialBackoff} as {@link RetryStrategy} and use provided
+     * {@code retryAfterHeader} in {@link HttpResponse} headers for calculating retry delay.
      *
-     * @param retryAfterHeader The HTTP header, such as 'Retry-After' or 'x-ms-retry-after-ms', to lookup for the
-     * retry delay. If the value is {@code null}, {@link RetryPolicy} will use the retry strategy to compute the delay
-     * and ignore the delay provided in response header.
-     * @param  retryAfterTimeUnit The time unit to use when applying the retry delay. {@code null} is valid if, and only
-     * if, {@code retryAfterHeader} is {@code null}.
-     * @throws NullPointerException When {@code retryAfterTimeUnit} is {@code null} and {@code retryAfterHeader} is
-     * not {@code null}.
+     * @param retryAfterHeader The HTTP header, such as 'Retry-After' or 'x-ms-retry-after-ms', to lookup for the retry
+     * delay. If the value is null, {@link RetryPolicy} will use the retry strategy to compute the delay and ignore the
+     * delay provided in response header.
+     * @param retryAfterTimeUnit The time unit to use when applying the retry delay. null is valid if, and only if,
+     * {@code retryAfterHeader} is null.
+     * @throws NullPointerException When {@code retryAfterTimeUnit} is null and {@code retryAfterHeader} is not null.
      */
     public RetryPolicy(String retryAfterHeader, ChronoUnit retryAfterTimeUnit) {
         this(new ExponentialBackoff(), retryAfterHeader, retryAfterTimeUnit);
     }
 
     /**
-     * Creates {@link RetryPolicy} with the provided {@link RetryStrategy} and default {@link ExponentialBackoff}
-     * as {@link RetryStrategy}. It will use provided {@code retryAfterHeader} in {@link HttpResponse} headers for
+     * Creates {@link RetryPolicy} with the provided {@link RetryStrategy} and default {@link ExponentialBackoff} as
+     * {@link RetryStrategy}. It will use provided {@code retryAfterHeader} in {@link HttpResponse} headers for
      * calculating retry delay.
      *
      * @param retryStrategy The {@link RetryStrategy} used for retries.
-     * @param retryAfterHeader The HTTP header, such as 'Retry-After' or 'x-ms-retry-after-ms', to lookup for the
-     * retry delay. If the value is {@code null}, {@link RetryPolicy} will use the retry strategy to compute the delay
-     * and ignore the delay provided in response header.
-     * @param  retryAfterTimeUnit The time unit to use when applying the retry delay. {@code null} is valid if, and only
-     * if, {@code retryAfterHeader} is {@code null}.
-     *
-     * @throws NullPointerException When {@code retryStrategy} is {@code null}. Also when {@code retryAfterTimeUnit}
-     * is {@code null} and {@code retryAfterHeader} is not {@code null}.
+     * @param retryAfterHeader The HTTP header, such as 'Retry-After' or 'x-ms-retry-after-ms', to lookup for the retry
+     * delay. If the value is null, {@link RetryPolicy} will use the retry strategy to compute the delay and ignore the
+     * delay provided in response header.
+     * @param retryAfterTimeUnit The time unit to use when applying the retry delay. null is valid if, and only if,
+     * {@code retryAfterHeader} is null.
+     * @throws NullPointerException When {@code retryStrategy} is null. Also when {@code retryAfterTimeUnit} is null and
+     * {@code retryAfterHeader} is not null.
      */
     public RetryPolicy(RetryStrategy retryStrategy, String retryAfterHeader, ChronoUnit retryAfterTimeUnit) {
         this.retryStrategy = Objects.requireNonNull(retryStrategy, "'retryStrategy' cannot be null.");
@@ -77,12 +74,11 @@ public class RetryPolicy implements HttpPipelinePolicy {
     }
 
     /**
-     * Creates a {@link RetryPolicy} with the provided {@link RetryStrategy} and ignore the delay provided in
-     * response header.
+     * Creates a {@link RetryPolicy} with the provided {@link RetryStrategy} and ignore the delay provided in response
+     * header.
      *
      * @param retryStrategy The {@link RetryStrategy} used for retries.
-     *
-     * @throws NullPointerException When {@code retryStrategy} is {@code null}.
+     * @throws NullPointerException When {@code retryStrategy} is null.
      */
     public RetryPolicy(RetryStrategy retryStrategy) {
         this(retryStrategy, null, null);
@@ -94,8 +90,9 @@ public class RetryPolicy implements HttpPipelinePolicy {
     }
 
     private Mono<HttpResponse> attemptAsync(final HttpPipelineCallContext context, final HttpPipelineNextPolicy next,
-                                            final HttpRequest originalHttpRequest, final int tryCount) {
+        final HttpRequest originalHttpRequest, final int tryCount) {
         context.setHttpRequest(originalHttpRequest.copy());
+        context.setData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, tryCount + 1);
         return next.clone().process()
             .flatMap(httpResponse -> {
                 if (shouldRetry(httpResponse, tryCount)) {
@@ -129,9 +126,10 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
     /**
      * Determines the delay duration that should be waited before retrying.
+     *
      * @param response HTTP response
-     * @return If the HTTP response has a retry-after-ms header that will be returned,
-     * otherwise the duration used during the construction of the policy.
+     * @return If the HTTP response has a retry-after-ms header that will be returned, otherwise the duration used
+     * during the construction of the policy.
      */
     private Duration determineDelayDuration(HttpResponse response, int tryCount) {
         int code = response.getStatusCode();

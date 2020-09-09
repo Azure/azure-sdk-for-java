@@ -7,60 +7,32 @@ import com.azure.core.annotation.Immutable;
 
 /**
  * The FormField model.
- *
- * @param <T> The type of FormField.
  */
 @Immutable
-public final class FormField<T> {
+public final class FormField {
 
-    /*
-     * The confidence value of the field.
-     */
     private final float confidence;
-
-    /*
-     * The label text of the field.
-     */
-    private final FieldText labelText;
-
-    /*
-     * The name value of the field.
-     */
+    private final FieldData labelData;
     private final String name;
-
-    /*
-     * The value of the field.
-     */
-    private final T fieldValue;
-
-    /*
-     * The text value field..
-     */
-    private final FieldText valueText;
-
-    /*
-     * The 1 based page number.
-     */
-    private final Integer pageNumber;
+    private final FieldValue value;
+    private final FieldData valueData;
 
     /**
      * Constructs a FormField object.
      *
+     * @param name The name the field or label.
+     * @param labelData The text, bounding box, and field elements for the field label.
+     * @param valueData The text, bounding box, and field elements for the field value.
+     * @param value The value of the recognized field.
      * @param confidence The confidence of the recognized field.
-     * @param labelText The label text value for the field.
-     * @param name The name the field.
-     * @param fieldValue The value of the field.
-     * @param valueText The label value text for the field.
-     * @param pageNumber The label text value for the field.
      */
-    public FormField(final float confidence, final FieldText labelText, final String name, final T fieldValue,
-        final FieldText valueText, final Integer pageNumber) {
+    public FormField(final String name, final FieldData labelData, final FieldData valueData,
+        final FieldValue value, final float confidence) {
         this.confidence = confidence;
-        this.labelText = labelText;
+        this.labelData = labelData;
         this.name = name;
-        this.fieldValue = fieldValue;
-        this.valueText = valueText;
-        this.pageNumber = pageNumber;
+        this.value = value;
+        this.valueData = valueData;
     }
 
     /**
@@ -73,47 +45,38 @@ public final class FormField<T> {
     }
 
     /**
-     * Get the label text of the field.
+     * Get the text, bounding box, and field elements for the field label.
      *
-     * @return the text-label value.
+     * @return the text, bounding box, and field elements for the field value.
      */
-    public FieldText getLabelText() {
-        return this.labelText;
+    public FieldData getLabelData() {
+        return this.labelData;
     }
 
     /**
      * Get the name of the field in the provided document.
      *
-     * @return the name value.
+     * @return the name of field or label.
      */
     public String getName() {
         return this.name;
     }
 
     /**
-     * Get the value of the field.
+     * Get the value of the recognized field.
      *
-     * @return Value of the field.
+     * @return Value of the recognized field.
      */
-    public T getFieldValue() {
-        return this.fieldValue;
+    public FieldValue getValue() {
+        return this.value;
     }
 
     /**
-     * Get the value text of the field.
+     * Get the text, bounding box, and field elements for the field value.
      *
-     * @return the value text of the field.
+     * @return the text, bounding box, and field elements for the field value.
      */
-    public FieldText getValueText() {
-        return this.valueText;
-    }
-
-    /**
-     * Get the 1-based page number in the input document.
-     *
-     * @return the page number value.
-     */
-    public Integer getPageNumber() {
-        return this.pageNumber;
+    public FieldData getValueData() {
+        return this.valueData;
     }
 }

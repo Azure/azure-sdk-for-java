@@ -59,7 +59,7 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
                 continue;
             }
 
-            sender.send(batch);
+            sender.sendMessages(batch);
         }
         // END: com.azure.messaging.servicebus.servicebussenderclient.createBatch
 
@@ -102,7 +102,7 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
         // When the batch is full, send it then create another batch to add more mesages to.
         for (ServiceBusMessage message : telemetryMessages) {
             if (!currentBatch.tryAdd(message)) {
-                sender.send(currentBatch);
+                sender.sendMessages(currentBatch);
                 currentBatch = sender.createBatch(options);
 
                 // Add the message we couldn't before.

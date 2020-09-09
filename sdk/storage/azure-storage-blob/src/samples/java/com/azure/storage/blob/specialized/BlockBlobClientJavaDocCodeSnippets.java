@@ -8,6 +8,9 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
+import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
+import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
 
@@ -34,6 +37,7 @@ public class BlockBlobClientJavaDocCodeSnippets {
     private long length = 4L;
     private Duration timeout = Duration.ofSeconds(30);
     private String leaseId = "leaseId";
+    private String tags = "tags";
     private String base64BlockId = "base64BlockID";
     private String sourceUrl = "https://example.com";
     private long offset = 1024L;
@@ -100,6 +104,37 @@ public class BlockBlobClientJavaDocCodeSnippets {
                 .getValue()
                 .getContentMd5()));
         // END: com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHttpHeaders-Map-AccessTier-byte-BlobRequestConditions-Duration-Context
+    }
+
+    /**
+     * Code snippet for {@link BlockBlobClient#uploadWithResponse(BlockBlobSimpleUploadOptions, Duration, Context)}
+     *
+     * @throws NoSuchAlgorithmException If Md5 calculation fails
+     */
+    public void upload3() throws NoSuchAlgorithmException {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#BlockBlobSimpleUploadOptions-Duration-Context
+        BlobHttpHeaders headers = new BlobHttpHeaders()
+            .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        Map<String, String> tags = Collections.singletonMap("tag", "value");
+
+        byte[] md5 = MessageDigest.getInstance("MD5").digest("data".getBytes(StandardCharsets.UTF_8));
+
+        BlobRequestConditions requestConditions = new BlobRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+        Context context = new Context("key", "value");
+
+        System.out.printf("Uploaded BlockBlob MD5 is %s%n", Base64.getEncoder()
+            .encodeToString(client.uploadWithResponse(new BlockBlobSimpleUploadOptions(data, length)
+                .setHeaders(headers).setMetadata(metadata).setTags(tags).setTier(AccessTier.HOT).setContentMd5(md5)
+                .setRequestConditions(requestConditions), timeout, context)
+                .getValue()
+                .getContentMd5()));
+        // END: com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#BlockBlobSimpleUploadOptions-Duration-Context
     }
 
     /**
@@ -180,6 +215,24 @@ public class BlockBlobClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippet for {@link BlockBlobClient#listBlocksWithResponse(BlockBlobListBlocksOptions, Duration, Context)}
+     */
+    public void listBlocks3() {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.listBlocksWithResponse#BlockBlobListBlocksOptions-Duration-Context
+        Context context = new Context("key", "value");
+        BlockList block = client.listBlocksWithResponse(new BlockBlobListBlocksOptions(BlockListType.ALL)
+            .setLeaseId(leaseId)
+            .setIfTagsMatch(tags), timeout, context).getValue();
+
+        System.out.println("Committed Blocks:");
+        block.getCommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(), b.getSizeLong()));
+
+        System.out.println("Uncommitted Blocks:");
+        block.getUncommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(), b.getSizeLong()));
+        // END: com.azure.storage.blob.specialized.BlockBlobClient.listBlocksWithResponse#BlockBlobListBlocksOptions-Duration-Context
+    }
+
+    /**
      * Code snippet for {@link BlockBlobClient#commitBlockList(List)}
      */
     public void commitBlockList() {
@@ -220,5 +273,31 @@ public class BlockBlobClientJavaDocCodeSnippets {
             client.commitBlockListWithResponse(Collections.singletonList(base64BlockId), headers, metadata,
                 AccessTier.HOT, requestConditions, timeout, context).getStatusCode());
         // END: com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#List-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions-Duration-Context
+    }
+
+    /**
+     * Code snippet for {@link BlockBlobClient#commitBlockListWithResponse(BlockBlobCommitBlockListOptions, Duration, Context)}
+     */
+    public void commitBlockList3() {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#BlockBlobCommitBlockListOptions-Duration-Context
+        BlobHttpHeaders headers = new BlobHttpHeaders()
+            .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        Map<String, String> tags = Collections.singletonMap("tag", "value");
+        BlobRequestConditions requestConditions = new BlobRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+        Context context = new Context("key", "value");
+
+        System.out.printf("Committing block list completed with status %d%n",
+            client.commitBlockListWithResponse(
+                new BlockBlobCommitBlockListOptions(Collections.singletonList(base64BlockId)).setHeaders(headers)
+                    .setMetadata(metadata).setTags(tags).setTier(AccessTier.HOT)
+                    .setRequestConditions(requestConditions), timeout, context)
+                .getStatusCode());
+        // END: com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#BlockBlobCommitBlockListOptions-Duration-Context
     }
 }

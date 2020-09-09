@@ -52,7 +52,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         Callable<Mono<StoreResponse>> callbackMethod = Mockito.mock(Callable.class);
         serviceRequest = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
         retryPolicy = new TestRetryPolicy();
-        CosmosClientException exception = new CosmosClientException(410, exceptionText);
+        CosmosException exception = new CosmosException(410, exceptionText);
         Mockito.when(callbackMethod.call()).thenThrow(exception, exception, exception, exception, exception)
             .thenReturn(Mono.just(new StoreResponse(200, new ArrayList<>(), getUTF8BytesOrNull(responseText))));
         Mono<StoreResponse> monoResponse = BackoffRetryUtility.executeRetry(callbackMethod, retryPolicy);
@@ -69,7 +69,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         Callable<Mono<StoreResponse>> callbackMethod = Mockito.mock(Callable.class);
         serviceRequest = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
         retryPolicy = new TestRetryPolicy();
-        CosmosClientException exception = new CosmosClientException(410, exceptionText);
+        CosmosException exception = new CosmosException(410, exceptionText);
         Mockito.when(callbackMethod.call()).thenThrow(exception);
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
         executor.schedule(() -> {
@@ -89,8 +89,8 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> parameterizedCallbackMethod = Mockito.mock(Function.class);
         serviceRequest = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
         retryPolicy = new TestRetryPolicy();
-        CosmosClientException exception = new CosmosClientException(410, exceptionText);
-        Mono<CosmosClientException> exceptionMono = Mono.error(exception);
+        CosmosException exception = new CosmosException(410, exceptionText);
+        Mono<CosmosException> exceptionMono = Mono.error(exception);
         Mockito.when(parameterizedCallbackMethod.apply(Matchers.any(Quadruple.class))).thenReturn(exceptionMono, exceptionMono, exceptionMono, exceptionMono, exceptionMono)
             .thenReturn(Mono.just(new StoreResponse(200, new ArrayList<>(), getUTF8BytesOrNull(responseText))));
         Mono<StoreResponse> monoResponse = BackoffRetryUtility.executeAsync(parameterizedCallbackMethod, retryPolicy, inBackoffAlternateCallbackMethod, Duration.ofSeconds(5), serviceRequest);
@@ -109,8 +109,8 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> parameterizedCallbackMethod = Mockito.mock(Function.class);
         serviceRequest = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
         retryPolicy = new TestRetryPolicy();
-        CosmosClientException exception = new CosmosClientException(410, exceptionText);
-        Mono<CosmosClientException> exceptionMono = Mono.error(exception);
+        CosmosException exception = new CosmosException(410, exceptionText);
+        Mono<CosmosException> exceptionMono = Mono.error(exception);
         Mockito.when(parameterizedCallbackMethod.apply(Matchers.any(Quadruple.class))).thenReturn(exceptionMono);
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
         executor.schedule(() -> {

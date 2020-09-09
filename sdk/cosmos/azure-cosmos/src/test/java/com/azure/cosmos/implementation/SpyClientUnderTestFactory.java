@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosKeyCredential;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.http.HttpClient;
@@ -31,8 +31,8 @@ public class SpyClientUnderTestFactory {
 
     public static abstract class SpyBaseClass<T> extends RxDocumentClientImpl {
 
-        public SpyBaseClass(URI serviceEndpoint, String masterKeyOrResourceToken, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, Configs configs, CosmosKeyCredential cosmosKeyCredential, boolean contentResponseOnWriteEnabled) {
-            super(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, false, false, contentResponseOnWriteEnabled);
+        public SpyBaseClass(URI serviceEndpoint, String masterKeyOrResourceToken, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, Configs configs, AzureKeyCredential credential, boolean contentResponseOnWriteEnabled) {
+            super(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs, credential, false, false, contentResponseOnWriteEnabled);
         }
 
         public abstract List<T> getCapturedRequests();
@@ -54,8 +54,8 @@ public class SpyClientUnderTestFactory {
         private List<RxDocumentServiceRequest> requests;
 
 
-        ClientWithGatewaySpy(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, Configs configs, CosmosKeyCredential cosmosKeyCredential, boolean contentResponseOnWriteEnabled) {
-            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, contentResponseOnWriteEnabled);
+        ClientWithGatewaySpy(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, Configs configs, AzureKeyCredential credential, boolean contentResponseOnWriteEnabled) {
+            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, credential, contentResponseOnWriteEnabled);
             init();
         }
 
@@ -116,8 +116,8 @@ public class SpyClientUnderTestFactory {
         List<Pair<HttpRequest, Future<HttpHeaders>>> requestsResponsePairs =
                 Collections.synchronizedList(new ArrayList<>());
 
-        ClientUnderTest(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, Configs configs, CosmosKeyCredential cosmosKeyCredential, boolean contentResponseOnWriteEnabled) {
-            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, contentResponseOnWriteEnabled);
+        ClientUnderTest(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, Configs configs, AzureKeyCredential credential, boolean contentResponseOnWriteEnabled) {
+            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, credential, contentResponseOnWriteEnabled);
             init();
         }
 
@@ -168,8 +168,8 @@ public class SpyClientUnderTestFactory {
         List<Pair<HttpRequest, Future<HttpHeaders>>> requestsResponsePairs =
                 Collections.synchronizedList(new ArrayList<>());
 
-        DirectHttpsClientUnderTest(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, CosmosKeyCredential cosmosKeyCredential, boolean contentResponseOnWriteEnabled) {
-            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, createConfigsSpy(Protocol.HTTPS), cosmosKeyCredential, contentResponseOnWriteEnabled);
+        DirectHttpsClientUnderTest(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, AzureKeyCredential credential, boolean contentResponseOnWriteEnabled) {
+            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, createConfigsSpy(Protocol.HTTPS), credential, contentResponseOnWriteEnabled);
             assert connectionPolicy.getConnectionMode() == ConnectionMode.DIRECT;
             init();
 
@@ -229,9 +229,9 @@ public class SpyClientUnderTestFactory {
                                                                   ConnectionPolicy connectionPolicy,
                                                                   ConsistencyLevel consistencyLevel,
                                                                   Configs configs,
-                                                                  CosmosKeyCredential cosmosKeyCredential,
+                                                                  AzureKeyCredential credential,
                                                                   boolean contentResponseOnWriteEnabled) {
-        return new ClientWithGatewaySpy(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, contentResponseOnWriteEnabled);
+        return new ClientWithGatewaySpy(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, credential, contentResponseOnWriteEnabled);
     }
 
     public static ClientUnderTest createClientUnderTest(AsyncDocumentClient.Builder builder) {
@@ -247,9 +247,9 @@ public class SpyClientUnderTestFactory {
                                                         ConnectionPolicy connectionPolicy,
                                                         ConsistencyLevel consistencyLevel,
                                                         Configs configs,
-                                                        CosmosKeyCredential cosmosKeyCredential,
+                                                        AzureKeyCredential credential,
                                                         boolean contentResponseOnWriteEnabled) {
-        return new ClientUnderTest(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, contentResponseOnWriteEnabled) {
+        return new ClientUnderTest(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, credential, contentResponseOnWriteEnabled) {
 
             @Override
             RxGatewayStoreModel createRxGatewayProxy(ISessionContainer sessionContainer,
@@ -277,8 +277,8 @@ public class SpyClientUnderTestFactory {
         };
     }
 
-    public static DirectHttpsClientUnderTest createDirectHttpsClientUnderTest(URI serviceEndpoint, String masterKey,
-            ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, CosmosKeyCredential cosmosKeyCredential, boolean contentResponseOnWriteEnabled) {
-        return new DirectHttpsClientUnderTest(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, cosmosKeyCredential, contentResponseOnWriteEnabled);
+    public static DirectHttpsClientUnderTest createDirectHttpsClientUnderTest(
+        URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, AzureKeyCredential credential, boolean contentResponseOnWriteEnabled) {
+        return new DirectHttpsClientUnderTest(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, credential, contentResponseOnWriteEnabled);
     }
 }

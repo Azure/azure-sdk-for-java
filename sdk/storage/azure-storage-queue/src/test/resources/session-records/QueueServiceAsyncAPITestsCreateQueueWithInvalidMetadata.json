@@ -1,26 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.queue.core.windows.net/queueserviceasyncapitestscreatequeuewithinvalidmetadata29001",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queueserviceasyncapitestscreatequeuewithinvalidmetadata40539",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "7b29e28f-b303-43f7-b707-1b61849f4249"
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "5a20724c-2222-4356-9a1e-820d065a61da"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "x-ms-version" : "2019-12-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "InvalidMetadata",
       "retry-after" : "0",
       "Content-Length" : "260",
       "StatusCode" : "400",
-      "x-ms-request-id" : "d2a3628a-9003-0014-7871-e0da54000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:d2a3628a-9003-0014-7871-e0da54000000\nTime:2020-02-11T00:26:23.6910414Z</Message></Error>",
-      "Date" : "Tue, 11 Feb 2020 00:26:22 GMT",
-      "x-ms-client-request-id" : "7b29e28f-b303-43f7-b707-1b61849f4249",
+      "x-ms-request-id" : "45cef001-7003-0041-0704-3a1544000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:45cef001-7003-0041-0704-3a1544000000\nTime:2020-06-04T00:06:57.1209740Z</Message></Error>",
+      "Date" : "Thu, 04 Jun 2020 00:06:56 GMT",
+      "x-ms-client-request-id" : "5a20724c-2222-4356-9a1e-820d065a61da",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueserviceasyncapitestscreatequeuewithinvalidmetadata29001" ]
+  "variables" : [ "queueserviceasyncapitestscreatequeuewithinvalidmetadata40539" ]
 }

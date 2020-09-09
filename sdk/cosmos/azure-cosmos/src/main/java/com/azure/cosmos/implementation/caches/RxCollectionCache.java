@@ -51,7 +51,7 @@ public abstract class RxCollectionCache {
             }
 
             Mono<Utils.ValueHolder<DocumentCollection>> collectionInfoObs = this.resolveByPartitionKeyRangeIdentityAsync(
-                BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosResponseDiagnostics),request.getPartitionKeyRangeIdentity(), request.properties);
+                BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),request.getPartitionKeyRangeIdentity(), request.properties);
 
             if (init != null) {
                 collectionInfoObs = init.then(collectionInfoObs);

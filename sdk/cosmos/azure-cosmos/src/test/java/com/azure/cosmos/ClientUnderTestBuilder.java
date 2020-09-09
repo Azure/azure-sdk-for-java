@@ -17,7 +17,7 @@ public class ClientUnderTestBuilder extends CosmosClientBuilder {
         this.consistencyLevel(builder.getConsistencyLevel());
         this.key(builder.getKey());
         this.endpoint(builder.getEndpoint());
-        this.keyCredential(builder.getKeyCredential());
+        this.credential(builder.getCredential());
         this.contentResponseOnWriteEnabled(builder.isContentResponseOnWriteEnabled());
         this.userAgentSuffix(builder.getUserAgentSuffix());
         this.throttlingRetryOptions(builder.getThrottlingRetryOptions());
@@ -38,7 +38,7 @@ public class ClientUnderTestBuilder extends CosmosClientBuilder {
                 this.getConnectionPolicy(),
                 this.getConsistencyLevel(),
                 this.configs(),
-                this.getKeyCredential(),
+                this.getCredential(),
                 this.isContentResponseOnWriteEnabled());
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException(e.getMessage());

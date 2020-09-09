@@ -8,13 +8,14 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring;
 
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.GetPatternsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.GetIntentPatternsOptionalParameter;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ListPatternsOptionalParameter;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ListIntentPatternsOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.OperationStatus;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.PatternRuleCreateObject;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.PatternRuleInfo;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.PatternRuleUpdateObject;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import rx.Observable;
@@ -26,7 +27,7 @@ import rx.Observable;
 public interface Patterns {
 
     /**
-     * Adds one pattern to the specified application.
+     * Adds a pattern to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -39,7 +40,7 @@ public interface Patterns {
     PatternRuleInfo addPattern(UUID appId, String versionId, PatternRuleCreateObject pattern);
 
     /**
-     * Adds one pattern to the specified application.
+     * Adds a pattern to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -51,42 +52,40 @@ public interface Patterns {
 
 
     /**
-     * Returns an application version's patterns.
+     * Gets patterns in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param getPatternsOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listPatternsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;PatternRuleInfo&gt; object if successful.
      */
-    @Deprecated
-    List<PatternRuleInfo> getPatterns(UUID appId, String versionId, GetPatternsOptionalParameter getPatternsOptionalParameter);
+    List<PatternRuleInfo> listPatterns(UUID appId, String versionId, ListPatternsOptionalParameter listPatternsOptionalParameter);
 
     /**
-     * Returns an application version's patterns.
+     * Gets patterns in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param getPatternsOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listPatternsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;PatternRuleInfo&gt; object
      */
-    @Deprecated
-    Observable<List<PatternRuleInfo>> getPatternsAsync(UUID appId, String versionId, GetPatternsOptionalParameter getPatternsOptionalParameter);
+    Observable<List<PatternRuleInfo>> listPatternsAsync(UUID appId, String versionId, ListPatternsOptionalParameter listPatternsOptionalParameter);
 
     /**
-     * Returns an application version's patterns.
+     * Gets patterns in a version of the application.
      *
-     * @return the first stage of the getPatterns call
+     * @return the first stage of the listPatterns call
      */
-    PatternsGetPatternsDefinitionStages.WithAppId getPatterns();
+    PatternsListPatternsDefinitionStages.WithAppId listPatterns();
 
     /**
-     * Grouping of getPatterns definition stages.
+     * Grouping of listPatterns definition stages.
      */
-    interface PatternsGetPatternsDefinitionStages {
+    interface PatternsListPatternsDefinitionStages {
         /**
          * The stage of the definition to be specify appId.
          */
@@ -107,7 +106,7 @@ public interface Patterns {
              *
              * @return next definition stage
              */
-            PatternsGetPatternsDefinitionStages.WithExecute withVersionId(String versionId);
+            PatternsListPatternsDefinitionStages.WithExecute withVersionId(String versionId);
         }
 
         /**
@@ -119,21 +118,21 @@ public interface Patterns {
              *
              * @return next definition stage
              */
-            PatternsGetPatternsDefinitionStages.WithExecute withSkip(Integer skip);
+            PatternsListPatternsDefinitionStages.WithExecute withSkip(Integer skip);
 
             /**
              * The number of entries to return. Maximum page size is 500. Default is 100.
              *
              * @return next definition stage
              */
-            PatternsGetPatternsDefinitionStages.WithExecute withTake(Integer take);
+            PatternsListPatternsDefinitionStages.WithExecute withTake(Integer take);
 
         }
 
         /**
          * The last stage of the definition which will make the operation call.
         */
-        interface WithExecute extends PatternsGetPatternsDefinitionStages.WithAllOptions {
+        interface WithExecute extends PatternsListPatternsDefinitionStages.WithAllOptions {
             /**
              * Execute the request.
              *
@@ -151,17 +150,17 @@ public interface Patterns {
     }
 
     /**
-     * The entirety of getPatterns definition.
+     * The entirety of listPatterns definition.
      */
-    interface PatternsGetPatternsDefinition extends
-        PatternsGetPatternsDefinitionStages.WithAppId,
-        PatternsGetPatternsDefinitionStages.WithVersionId,
-        PatternsGetPatternsDefinitionStages.WithExecute {
+    interface PatternsListPatternsDefinition extends
+        PatternsListPatternsDefinitionStages.WithAppId,
+        PatternsListPatternsDefinitionStages.WithVersionId,
+        PatternsListPatternsDefinitionStages.WithExecute {
     }
 
 
     /**
-     * Updates patterns.
+     * Updates patterns in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -174,7 +173,7 @@ public interface Patterns {
     List<PatternRuleInfo> updatePatterns(UUID appId, String versionId, List<PatternRuleUpdateObject> patterns);
 
     /**
-     * Updates patterns.
+     * Updates patterns in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -187,7 +186,7 @@ public interface Patterns {
 
 
     /**
-     * Adds a batch of patterns to the specified application.
+     * Adds a batch of patterns in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -200,7 +199,7 @@ public interface Patterns {
     List<PatternRuleInfo> batchAddPatterns(UUID appId, String versionId, List<PatternRuleCreateObject> patterns);
 
     /**
-     * Adds a batch of patterns to the specified application.
+     * Adds a batch of patterns in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -213,7 +212,7 @@ public interface Patterns {
 
 
     /**
-     * Deletes the patterns with the specified IDs.
+     * Deletes a list of patterns in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -226,7 +225,7 @@ public interface Patterns {
     OperationStatus deletePatterns(UUID appId, String versionId, List<UUID> patternIds);
 
     /**
-     * Deletes the patterns with the specified IDs.
+     * Deletes a list of patterns in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -239,7 +238,7 @@ public interface Patterns {
 
 
     /**
-     * Updates a pattern.
+     * Updates a pattern in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -253,7 +252,7 @@ public interface Patterns {
     PatternRuleInfo updatePattern(UUID appId, String versionId, UUID patternId, PatternRuleUpdateObject pattern);
 
     /**
-     * Updates a pattern.
+     * Updates a pattern in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -267,7 +266,7 @@ public interface Patterns {
 
 
     /**
-     * Deletes the pattern with the specified ID.
+     * Deletes the pattern with the specified ID from a version of the application..
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -280,7 +279,7 @@ public interface Patterns {
     OperationStatus deletePattern(UUID appId, String versionId, UUID patternId);
 
     /**
-     * Deletes the pattern with the specified ID.
+     * Deletes the pattern with the specified ID from a version of the application..
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -292,44 +291,42 @@ public interface Patterns {
 
 
     /**
-     * Returns patterns to be retrieved for the specific intent.
+     * Returns patterns for the specific intent in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param intentId The intent classifier ID.
-     * @param getIntentPatternsOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listIntentPatternsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;PatternRuleInfo&gt; object if successful.
      */
-    @Deprecated
-    List<PatternRuleInfo> getIntentPatterns(UUID appId, String versionId, UUID intentId, GetIntentPatternsOptionalParameter getIntentPatternsOptionalParameter);
+    List<PatternRuleInfo> listIntentPatterns(UUID appId, String versionId, UUID intentId, ListIntentPatternsOptionalParameter listIntentPatternsOptionalParameter);
 
     /**
-     * Returns patterns to be retrieved for the specific intent.
+     * Returns patterns for the specific intent in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param intentId The intent classifier ID.
-     * @param getIntentPatternsOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listIntentPatternsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;PatternRuleInfo&gt; object
      */
-    @Deprecated
-    Observable<List<PatternRuleInfo>> getIntentPatternsAsync(UUID appId, String versionId, UUID intentId, GetIntentPatternsOptionalParameter getIntentPatternsOptionalParameter);
+    Observable<List<PatternRuleInfo>> listIntentPatternsAsync(UUID appId, String versionId, UUID intentId, ListIntentPatternsOptionalParameter listIntentPatternsOptionalParameter);
 
     /**
-     * Returns patterns to be retrieved for the specific intent.
+     * Returns patterns for the specific intent in a version of the application.
      *
-     * @return the first stage of the getIntentPatterns call
+     * @return the first stage of the listIntentPatterns call
      */
-    PatternsGetIntentPatternsDefinitionStages.WithAppId getIntentPatterns();
+    PatternsListIntentPatternsDefinitionStages.WithAppId listIntentPatterns();
 
     /**
-     * Grouping of getIntentPatterns definition stages.
+     * Grouping of listIntentPatterns definition stages.
      */
-    interface PatternsGetIntentPatternsDefinitionStages {
+    interface PatternsListIntentPatternsDefinitionStages {
         /**
          * The stage of the definition to be specify appId.
          */
@@ -361,7 +358,7 @@ public interface Patterns {
              *
              * @return next definition stage
              */
-            PatternsGetIntentPatternsDefinitionStages.WithExecute withIntentId(UUID intentId);
+            PatternsListIntentPatternsDefinitionStages.WithExecute withIntentId(UUID intentId);
         }
 
         /**
@@ -373,21 +370,21 @@ public interface Patterns {
              *
              * @return next definition stage
              */
-            PatternsGetIntentPatternsDefinitionStages.WithExecute withSkip(Integer skip);
+            PatternsListIntentPatternsDefinitionStages.WithExecute withSkip(Integer skip);
 
             /**
              * The number of entries to return. Maximum page size is 500. Default is 100.
              *
              * @return next definition stage
              */
-            PatternsGetIntentPatternsDefinitionStages.WithExecute withTake(Integer take);
+            PatternsListIntentPatternsDefinitionStages.WithExecute withTake(Integer take);
 
         }
 
         /**
          * The last stage of the definition which will make the operation call.
         */
-        interface WithExecute extends PatternsGetIntentPatternsDefinitionStages.WithAllOptions {
+        interface WithExecute extends PatternsListIntentPatternsDefinitionStages.WithAllOptions {
             /**
              * Execute the request.
              *
@@ -405,13 +402,13 @@ public interface Patterns {
     }
 
     /**
-     * The entirety of getIntentPatterns definition.
+     * The entirety of listIntentPatterns definition.
      */
-    interface PatternsGetIntentPatternsDefinition extends
-        PatternsGetIntentPatternsDefinitionStages.WithAppId,
-        PatternsGetIntentPatternsDefinitionStages.WithVersionId,
-        PatternsGetIntentPatternsDefinitionStages.WithIntentId,
-        PatternsGetIntentPatternsDefinitionStages.WithExecute {
+    interface PatternsListIntentPatternsDefinition extends
+        PatternsListIntentPatternsDefinitionStages.WithAppId,
+        PatternsListIntentPatternsDefinitionStages.WithVersionId,
+        PatternsListIntentPatternsDefinitionStages.WithIntentId,
+        PatternsListIntentPatternsDefinitionStages.WithExecute {
     }
 
 }

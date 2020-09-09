@@ -34,6 +34,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
     @JsonSubTypes.Type(name = "AzureBlobFSSink", value = AzureBlobFSSink.class),
     @JsonSubTypes.Type(name = "AzureDataLakeStoreSink", value = AzureDataLakeStoreSink.class),
     @JsonSubTypes.Type(name = "OracleSink", value = OracleSink.class),
+    @JsonSubTypes.Type(name = "SnowflakeSink", value = SnowflakeSink.class),
     @JsonSubTypes.Type(name = "SqlDWSink", value = SqlDWSink.class),
     @JsonSubTypes.Type(name = "SqlMISink", value = SqlMISink.class),
     @JsonSubTypes.Type(name = "AzureSqlSink", value = AzureSqlSink.class),
@@ -51,6 +52,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
     @JsonSubTypes.Type(name = "SapCloudForCustomerSink", value = SapCloudForCustomerSink.class),
     @JsonSubTypes.Type(name = "AzureMySqlSink", value = AzureMySqlSink.class),
     @JsonSubTypes.Type(name = "AzurePostgreSqlSink", value = AzurePostgreSqlSink.class),
+    @JsonSubTypes.Type(name = "RestSink", value = RestSink.class),
     @JsonSubTypes.Type(name = "OrcSink", value = OrcSink.class),
     @JsonSubTypes.Type(name = "JsonSink", value = JsonSink.class),
     @JsonSubTypes.Type(name = "DelimitedTextSink", value = DelimitedTextSink.class)

@@ -30,8 +30,7 @@ import static org.mockito.Mockito.when;
 @PowerMockIgnore({"com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*"})
 public class InteractiveBrowserCredentialTest {
 
-    private final String tenantId = "contoso.com";
-    private final String clientId = UUID.randomUUID().toString();
+    private static final String CLIENT_ID = UUID.randomUUID().toString();
 
     @Test
     public void testValidInteractive() throws Exception {
@@ -48,7 +47,7 @@ public class InteractiveBrowserCredentialTest {
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
         when(identityClient.authenticateWithBrowserInteraction(eq(request1), eq(port))).thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
-        when(identityClient.authenticateWithMsalAccount(any(), any()))
+        when(identityClient.authenticateWithPublicClientCache(any(), any()))
             .thenAnswer(invocation -> {
                 TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
                 if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request2.getScopes().get(0))) {
@@ -63,7 +62,7 @@ public class InteractiveBrowserCredentialTest {
 
         // test
         InteractiveBrowserCredential credential =
-            new InteractiveBrowserCredentialBuilder().port(port).clientId(clientId).build();
+            new InteractiveBrowserCredentialBuilder().port(port).clientId(CLIENT_ID).build();
         StepVerifier.create(credential.getToken(request1))
             .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
                 && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
@@ -72,5 +71,32 @@ public class InteractiveBrowserCredentialTest {
             .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
                 && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
             .verifyComplete();
+    }
+
+    @Test
+    public void testValidAuthenticate() throws Exception {
+        Random random = new Random();
+
+        // setup
+        String token1 = "token1";
+        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
+        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        int port = random.nextInt(10000) + 10000;
+
+        // mock
+        IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
+        when(identityClient.authenticateWithBrowserInteraction(eq(request1), eq(port)))
+                .thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
+        PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
+
+        // test
+        InteractiveBrowserCredential credential =
+                new InteractiveBrowserCredentialBuilder().port(port).clientId(CLIENT_ID).build();
+        StepVerifier.create(credential.authenticate(request1))
+                .expectNextMatches(authenticationRecord -> authenticationRecord.getAuthority()
+                                                               .equals("http://login.microsoftonline.com")
+                                                               && authenticationRecord.getUsername().equals("testuser")
+                                                               && authenticationRecord.getHomeAccountId() != null)
+                .verifyComplete();
     }
 }

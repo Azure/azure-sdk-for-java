@@ -2,23 +2,26 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.test.environment.models;
 
+import com.azure.search.documents.indexes.SimpleFieldProperty;
+
 public class Foo {
-    private int intValue;
+    @SimpleFieldProperty(isKey = true)
+    private String intValue;
     private String stringValue;
 
     public Foo() {
     }
 
-    public Foo(final int intValue, final String stringValue) {
+    public Foo(final String intValue, final String stringValue) {
         this.intValue = intValue;
         this.stringValue = stringValue;
     }
 
-    public int getIntValue() {
+    public String getIntValue() {
         return intValue;
     }
 
-    public void setIntValue(final int intValue) {
+    public void setIntValue(final String intValue) {
         this.intValue = intValue;
     }
 

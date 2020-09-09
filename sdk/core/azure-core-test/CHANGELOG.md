@@ -1,7 +1,27 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.4.2 (2020-09-08)
 
+- Updated `azure-core` version to pickup bug fix.
+
+## 1.4.1 (2020-09-03)
+
+- Updated `azure-core` dependency.
+
+## 1.4.0 (2020-08-07)
+
+- Added `AzureTestWatch` which implements JUnit's `Extension` SPI. It adds test watching extensibility such as logging test completion time.
+- Fixed a bug in test recording redaction which was accidentally redacting XML values when they shouldn't be redacted.
+- Enhanced recording of `application/octet-stream` and `avro/binary` data to be more space efficient and faster to write and read.
+
+## 1.3.1 (2020-07-02)
+
+- Updated Azure Core dependency.
+
+## 1.3.0 (2020-06-08)
+
+- Added new APIs used to redact sensitive information from playback recordings.
+- Updated Azure Core dependency.
 
 ## 1.2.1 (2020-05-04)
 

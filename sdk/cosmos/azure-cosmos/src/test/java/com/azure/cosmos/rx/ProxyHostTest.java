@@ -2,16 +2,17 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
-import com.azure.cosmos.GatewayConnectionConfig;
+import com.azure.core.http.ProxyOptions;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.GatewayConnectionConfig;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.rx.proxy.HttpProxyServer;
 import org.apache.logging.log4j.Level;
 import org.testng.annotations.AfterClass;
@@ -70,19 +71,19 @@ public class ProxyHostTest extends TestSuiteBase {
         CosmosAsyncClient clientWithRightProxy = null;
         try {
             GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
-            gatewayConnectionConfig.setProxy(new InetSocketAddress(PROXY_HOST, PROXY_PORT));
+            gatewayConnectionConfig.setProxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress(PROXY_HOST, PROXY_PORT)));
             clientWithRightProxy = new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
                                                             .key(TestConfigurations.MASTER_KEY)
                                                             .gatewayMode(gatewayConnectionConfig)
                                                             .consistencyLevel(ConsistencyLevel.SESSION)
                                                             .contentResponseOnWriteEnabled(true)
                                                             .buildAsyncClient();
-            CosmosItemProperties docDefinition = getDocumentDefinition();
-            Mono<CosmosAsyncItemResponse<CosmosItemProperties>> createObservable = clientWithRightProxy.getDatabase(createdDatabase.getId()).getContainer(createdCollection.getId())
-                    .createItem(docDefinition, new CosmosItemRequestOptions());
+            InternalObjectNode docDefinition = getDocumentDefinition();
+            Mono<CosmosItemResponse<InternalObjectNode>> createObservable = clientWithRightProxy.getDatabase(createdDatabase.getId()).getContainer(createdCollection.getId())
+                                                                                                .createItem(docDefinition, new CosmosItemRequestOptions());
 
             CosmosItemResponseValidator validator =
-                new CosmosItemResponseValidator.Builder<CosmosAsyncItemResponse<CosmosItemProperties>>()
+                new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
                     .withId(docDefinition.getId())
                     .build();
             this.validateItemSuccess(createObservable, validator);
@@ -106,18 +107,18 @@ public class ProxyHostTest extends TestSuiteBase {
                 "ProxyStringAppender", consoleWriter);
 
             GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
-            gatewayConnectionConfig.setProxy(new InetSocketAddress(PROXY_HOST, PROXY_PORT));
+            gatewayConnectionConfig.setProxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress(PROXY_HOST, PROXY_PORT)));
             clientWithRightProxy = new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
                                                             .key(TestConfigurations.MASTER_KEY)
                                                             .gatewayMode(gatewayConnectionConfig)
                                                             .consistencyLevel(ConsistencyLevel.SESSION)
                                                             .contentResponseOnWriteEnabled(true)
                                                             .buildAsyncClient();
-            CosmosItemProperties docDefinition = getDocumentDefinition();
-            Mono<CosmosAsyncItemResponse<CosmosItemProperties>> createObservable = clientWithRightProxy.getDatabase(createdDatabase.getId()).getContainer(createdCollection.getId())
-                    .createItem(docDefinition, new CosmosItemRequestOptions());
+            InternalObjectNode docDefinition = getDocumentDefinition();
+            Mono<CosmosItemResponse<InternalObjectNode>> createObservable = clientWithRightProxy.getDatabase(createdDatabase.getId()).getContainer(createdCollection.getId())
+                                                                                                .createItem(docDefinition, new CosmosItemRequestOptions());
             CosmosItemResponseValidator validator =
-                new CosmosItemResponseValidator.Builder<CosmosAsyncItemResponse<CosmosItemProperties>>()
+                new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
                     .withId(docDefinition.getId())
                     .build();
             this.validateItemSuccess(createObservable, validator);
@@ -145,14 +146,26 @@ public class ProxyHostTest extends TestSuiteBase {
         LogLevelTest.resetLoggingConfiguration();
     }
 
-    private CosmosItemProperties getDocumentDefinition() {
+    private InternalObjectNode getDocumentDefinition() {
         String uuid = UUID.randomUUID().toString();
-        CosmosItemProperties doc = new CosmosItemProperties(String.format("{ "
+        InternalObjectNode doc = new InternalObjectNode(String.format("{ "
                 + "\"id\": \"%s\", "
                 + "\"mypk\": \"%s\", "
                 + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671440]]"
                 + "}"
                 , uuid, uuid));
         return doc;
+    }
+
+    /**
+     * This test will try to create gateway connection policy via non http proxy.
+     *
+     */
+    @Test(groups = { "simple" }, timeOut = TIMEOUT,
+        expectedExceptions = IllegalArgumentException.class,
+        expectedExceptionsMessageRegExp = "Only http proxy type is supported.")
+    public void createWithNonHttpProxy() {
+        GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
+        gatewayConnectionConfig.setProxy(new ProxyOptions(ProxyOptions.Type.SOCKS4, new InetSocketAddress(PROXY_HOST, PROXY_PORT)));
     }
 }

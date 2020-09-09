@@ -311,7 +311,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     private <T> T getOrDefault(Context context, String key, T defaultValue, Class<T> clazz) {
         final Optional<Object> optional = context.getData(key);
         final Object result = optional.filter(value -> clazz.isAssignableFrom(value.getClass())).orElseGet(() -> {
-            logger.warning("Could not extract key '{}' of type '{}' from context.", key, clazz);
+            logger.verbose("Could not extract key '{}' of type '{}' from context.", key, clazz);
             return defaultValue;
         });
 

@@ -25,8 +25,8 @@ import reactor.core.publisher.Mono;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.time.Instant;
 import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -99,11 +99,11 @@ public class RxClientCollectionCache extends RxCollectionCache {
         if (retryPolicyInstance != null){
             retryPolicyInstance.onBeforeSendRequest(request);
         }
-        ZonedDateTime addressCallStartTime = ZonedDateTime.now(ZoneOffset.UTC);
+        Instant addressCallStartTime = Instant.now();
         Mono<RxDocumentServiceResponse> responseObs = this.storeModel.processMessage(request);
         return responseObs.map(response -> {
             if(metaDataDiagnosticsContext != null) {
-                ZonedDateTime addressCallEndTime = ZonedDateTime.now(ZoneOffset.UTC);
+                Instant addressCallEndTime = Instant.now();
                 MetadataDiagnosticsContext.MetadataDiagnostics metaDataDiagnostic  = new MetadataDiagnosticsContext.MetadataDiagnostics(addressCallStartTime,
                     addressCallEndTime,
                     MetadataDiagnosticsContext.MetadataType.CONTAINER_LOOK_UP);

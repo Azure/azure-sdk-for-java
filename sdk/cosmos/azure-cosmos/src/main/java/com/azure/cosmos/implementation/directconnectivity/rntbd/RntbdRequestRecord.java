@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.UUID;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
@@ -54,18 +54,18 @@ public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
     private volatile int responseLength;
     private volatile Stage stage;
 
-    private volatile OffsetDateTime timeCompleted;
-    private volatile OffsetDateTime timePipelined;
-    private volatile OffsetDateTime timeQueued;
-    private volatile OffsetDateTime timeSent;
-    private volatile OffsetDateTime timeReceived;
+    private volatile Instant timeCompleted;
+    private volatile Instant timePipelined;
+    private volatile Instant timeQueued;
+    private volatile Instant timeSent;
+    private volatile Instant timeReceived;
 
     public RntbdRequestRecord(final RntbdRequestArgs args, final RntbdRequestTimer timer) {
 
         checkNotNull(args, "expected non-null args");
         checkNotNull(timer, "expected non-null timer");
 
-        this.timeQueued = OffsetDateTime.now();
+        this.timeQueued = Instant.now();
         this.requestLength = -1;
         this.responseLength = -1;
         this.stage = Stage.QUEUED;
@@ -111,7 +111,7 @@ public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
 
     public RntbdRequestRecord stage(final Stage value) {
 
-        final OffsetDateTime time = OffsetDateTime.now();
+        final Instant time = Instant.now();
 
         STAGE.updateAndGet(this, current -> {
 
@@ -156,27 +156,27 @@ public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
         return this;
     }
 
-    public OffsetDateTime timeCompleted() {
+    public Instant timeCompleted() {
         return this.timeCompleted;
     }
 
-    public OffsetDateTime timeCreated() {
+    public Instant timeCreated() {
         return this.args.timeCreated();
     }
 
-    public OffsetDateTime timePipelined() {
+    public Instant timePipelined() {
         return this.timePipelined;
     }
 
-    public OffsetDateTime timeQueued() {
+    public Instant timeQueued() {
         return this.timeQueued;
     }
 
-    public OffsetDateTime timeReceived() {
+    public Instant timeReceived() {
         return this.timeReceived;
     }
 
-    public OffsetDateTime timeSent() {
+    public Instant timeSent() {
         return this.timeSent;
     }
 
@@ -200,15 +200,15 @@ public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
 
     public RequestTimeline takeTimelineSnapshot() {
 
-        OffsetDateTime now = OffsetDateTime.now();
+        Instant now = Instant.now();
 
-        OffsetDateTime timeCreated = this.timeCreated();
-        OffsetDateTime timeQueued = this.timeQueued();
-        OffsetDateTime timePipelined = this.timePipelined();
-        OffsetDateTime timeSent = this.timeSent();
-        OffsetDateTime timeReceived = this.timeReceived();
-        OffsetDateTime timeCompleted = this.timeCompleted();
-        OffsetDateTime timeCompletedOrNow = timeCompleted == null ? now : timeCompleted;
+        Instant timeCreated = this.timeCreated();
+        Instant timeQueued = this.timeQueued();
+        Instant timePipelined = this.timePipelined();
+        Instant timeSent = this.timeSent();
+        Instant timeReceived = this.timeReceived();
+        Instant timeCompleted = this.timeCompleted();
+        Instant timeCompletedOrNow = timeCompleted == null ? now : timeCompleted;
 
         return RequestTimeline.of(
             new RequestTimeline.Event("created",

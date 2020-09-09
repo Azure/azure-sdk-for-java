@@ -46,10 +46,45 @@ public class PartnerRegistrationInner extends Resource {
     private String partnerResourceTypeDisplayName;
 
     /**
-     * Description of the partner resource type.
+     * Short description of the partner resource type. The length of this
+     * description should not exceed 256 characters.
      */
     @JsonProperty(value = "properties.partnerResourceTypeDescription")
     private String partnerResourceTypeDescription;
+
+    /**
+     * Long description for the custom scenarios and integration to be
+     * displayed in the portal if needed.
+     * Length of this description should not exceed 2048 characters.
+     */
+    @JsonProperty(value = "properties.longDescription")
+    private String longDescription;
+
+    /**
+     * The customer service number of the publisher. The expected phone format
+     * should start with a '+' sign
+     * followed by the country code. The remaining digits are then followed.
+     * Only digits and spaces are allowed and its
+     * length cannot exceed 16 digits including country code. Examples of valid
+     * phone numbers are: +1 515 123 4567 and
+     * +966 7 5115 2471. Examples of invalid phone numbers are: +1 (515)
+     * 123-4567, 1 515 123 4567 and +966 121 5115 24 7 551 1234 43.
+     */
+    @JsonProperty(value = "properties.partnerCustomerServiceNumber")
+    private String partnerCustomerServiceNumber;
+
+    /**
+     * The extension of the customer service number of the publisher. Only
+     * digits are allowed and number of digits should not exceed 10.
+     */
+    @JsonProperty(value = "properties.partnerCustomerServiceExtension")
+    private String partnerCustomerServiceExtension;
+
+    /**
+     * The extension of the customer service URI of the publisher.
+     */
+    @JsonProperty(value = "properties.customerServiceUri")
+    private String customerServiceUri;
 
     /**
      * URI of the partner website that can be used by Azure customers to setup
@@ -154,7 +189,7 @@ public class PartnerRegistrationInner extends Resource {
     }
 
     /**
-     * Get description of the partner resource type.
+     * Get short description of the partner resource type. The length of this description should not exceed 256 characters.
      *
      * @return the partnerResourceTypeDescription value
      */
@@ -163,13 +198,101 @@ public class PartnerRegistrationInner extends Resource {
     }
 
     /**
-     * Set description of the partner resource type.
+     * Set short description of the partner resource type. The length of this description should not exceed 256 characters.
      *
      * @param partnerResourceTypeDescription the partnerResourceTypeDescription value to set
      * @return the PartnerRegistrationInner object itself.
      */
     public PartnerRegistrationInner withPartnerResourceTypeDescription(String partnerResourceTypeDescription) {
         this.partnerResourceTypeDescription = partnerResourceTypeDescription;
+        return this;
+    }
+
+    /**
+     * Get long description for the custom scenarios and integration to be displayed in the portal if needed.
+     Length of this description should not exceed 2048 characters.
+     *
+     * @return the longDescription value
+     */
+    public String longDescription() {
+        return this.longDescription;
+    }
+
+    /**
+     * Set long description for the custom scenarios and integration to be displayed in the portal if needed.
+     Length of this description should not exceed 2048 characters.
+     *
+     * @param longDescription the longDescription value to set
+     * @return the PartnerRegistrationInner object itself.
+     */
+    public PartnerRegistrationInner withLongDescription(String longDescription) {
+        this.longDescription = longDescription;
+        return this;
+    }
+
+    /**
+     * Get the customer service number of the publisher. The expected phone format should start with a '+' sign
+     followed by the country code. The remaining digits are then followed. Only digits and spaces are allowed and its
+     length cannot exceed 16 digits including country code. Examples of valid phone numbers are: +1 515 123 4567 and
+     +966 7 5115 2471. Examples of invalid phone numbers are: +1 (515) 123-4567, 1 515 123 4567 and +966 121 5115 24 7 551 1234 43.
+     *
+     * @return the partnerCustomerServiceNumber value
+     */
+    public String partnerCustomerServiceNumber() {
+        return this.partnerCustomerServiceNumber;
+    }
+
+    /**
+     * Set the customer service number of the publisher. The expected phone format should start with a '+' sign
+     followed by the country code. The remaining digits are then followed. Only digits and spaces are allowed and its
+     length cannot exceed 16 digits including country code. Examples of valid phone numbers are: +1 515 123 4567 and
+     +966 7 5115 2471. Examples of invalid phone numbers are: +1 (515) 123-4567, 1 515 123 4567 and +966 121 5115 24 7 551 1234 43.
+     *
+     * @param partnerCustomerServiceNumber the partnerCustomerServiceNumber value to set
+     * @return the PartnerRegistrationInner object itself.
+     */
+    public PartnerRegistrationInner withPartnerCustomerServiceNumber(String partnerCustomerServiceNumber) {
+        this.partnerCustomerServiceNumber = partnerCustomerServiceNumber;
+        return this;
+    }
+
+    /**
+     * Get the extension of the customer service number of the publisher. Only digits are allowed and number of digits should not exceed 10.
+     *
+     * @return the partnerCustomerServiceExtension value
+     */
+    public String partnerCustomerServiceExtension() {
+        return this.partnerCustomerServiceExtension;
+    }
+
+    /**
+     * Set the extension of the customer service number of the publisher. Only digits are allowed and number of digits should not exceed 10.
+     *
+     * @param partnerCustomerServiceExtension the partnerCustomerServiceExtension value to set
+     * @return the PartnerRegistrationInner object itself.
+     */
+    public PartnerRegistrationInner withPartnerCustomerServiceExtension(String partnerCustomerServiceExtension) {
+        this.partnerCustomerServiceExtension = partnerCustomerServiceExtension;
+        return this;
+    }
+
+    /**
+     * Get the extension of the customer service URI of the publisher.
+     *
+     * @return the customerServiceUri value
+     */
+    public String customerServiceUri() {
+        return this.customerServiceUri;
+    }
+
+    /**
+     * Set the extension of the customer service URI of the publisher.
+     *
+     * @param customerServiceUri the customerServiceUri value to set
+     * @return the PartnerRegistrationInner object itself.
+     */
+    public PartnerRegistrationInner withCustomerServiceUri(String customerServiceUri) {
+        this.customerServiceUri = customerServiceUri;
         return this;
     }
 

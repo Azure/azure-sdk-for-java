@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.Configs;
@@ -140,7 +140,7 @@ public class ReplicatedResourceClientPartitionSplitTest {
 
             addressSelectorWrapper.verifyNumberOfForceCacheRefreshGreaterThanOrEqualTo(1);
         } else {
-            FailureValidator validator = FailureValidator.builder().instanceOf(CosmosClientException.class)
+            FailureValidator validator = FailureValidator.builder().instanceOf(CosmosException.class)
                     .statusCode(503).build();
             validateFailure(storeResponseObs, validator, TIMEOUT);
         }

@@ -10,7 +10,10 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring;
 
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ListAppsOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ImportMethodAppsOptionalParameter;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.DeleteAppsOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UpdateSettingsOptionalParameter;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ImportV2AppAppsOptionalParameter;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ImportLuFormatAppsOptionalParameter;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ApplicationCreateObject;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ApplicationInfoResponse;
@@ -20,6 +23,7 @@ import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.Appl
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AvailableCulture;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.LuisApp;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.LuisAppV2;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.OperationStatus;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.PersonalAssistantsResponse;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.PrebuiltDomain;
@@ -28,6 +32,7 @@ import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.Prod
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.PublishSettings;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.PublishSettingUpdateObject;
 import java.io.InputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -42,9 +47,9 @@ public interface Apps {
     /**
      * Creates a new LUIS app.
      *
-     * @param applicationCreateObject A model containing Name, Description (optional), Culture, Usage Scenario (optional), Domain
+     * @param applicationCreateObject An application containing Name, Description (optional), Culture, Usage Scenario (optional), Domain
       *  (optional) and initial version ID (optional) of the application. Default value for the version ID
-      *  is 0.1. Note: the culture cannot be changed after the app is created.
+      *  is "0.1". Note: the culture cannot be changed after the app is created.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -55,9 +60,9 @@ public interface Apps {
     /**
      * Creates a new LUIS app.
      *
-     * @param applicationCreateObject A model containing Name, Description (optional), Culture, Usage Scenario (optional), Domain
+     * @param applicationCreateObject An application containing Name, Description (optional), Culture, Usage Scenario (optional), Domain
       *  (optional) and initial version ID (optional) of the application. Default value for the version ID
-      *  is 0.1. Note: the culture cannot be changed after the app is created.
+      *  is "0.1". Note: the culture cannot be changed after the app is created.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
@@ -65,7 +70,7 @@ public interface Apps {
 
 
     /**
-     * Lists all of the user applications.
+     * Lists all of the user's applications.
      *
      * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -73,21 +78,19 @@ public interface Apps {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;ApplicationInfoResponse&gt; object if successful.
      */
-    @Deprecated
     List<ApplicationInfoResponse> list(ListAppsOptionalParameter listOptionalParameter);
 
     /**
-     * Lists all of the user applications.
+     * Lists all of the user's applications.
      *
      * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;ApplicationInfoResponse&gt; object
      */
-    @Deprecated
     Observable<List<ApplicationInfoResponse>> listAsync(ListAppsOptionalParameter listOptionalParameter);
 
     /**
-     * Lists all of the user applications.
+     * Lists all of the user's applications.
      *
      * @return the first stage of the list call
      */
@@ -146,7 +149,7 @@ public interface Apps {
     }
 
     /**
-     * Imports an application to LUIS, the application's structure should be included in in the request body.
+     * Imports an application to LUIS, the application's structure is included in the request body.
      *
      * @param luisApp A LUIS application structure.
      * @param importMethodOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -155,22 +158,20 @@ public interface Apps {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
-    @Deprecated
     UUID importMethod(LuisApp luisApp, ImportMethodAppsOptionalParameter importMethodOptionalParameter);
 
     /**
-     * Imports an application to LUIS, the application's structure should be included in in the request body.
+     * Imports an application to LUIS, the application's structure is included in the request body.
      *
      * @param luisApp A LUIS application structure.
      * @param importMethodOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
-    @Deprecated
     Observable<UUID> importMethodAsync(LuisApp luisApp, ImportMethodAppsOptionalParameter importMethodOptionalParameter);
 
     /**
-     * Imports an application to LUIS, the application's structure should be included in in the request body.
+     * Imports an application to LUIS, the application's structure is included in the request body.
      *
      * @return the first stage of the importMethod call
      */
@@ -198,7 +199,7 @@ public interface Apps {
         interface WithAllOptions {
             /**
              * The application name to create. If not specified, the application name will be read from the imported
-             *   object.
+             *   object. If the application name already exists, an error is returned.
              *
              * @return next definition stage
              */
@@ -296,7 +297,8 @@ public interface Apps {
 
 
     /**
-     * Gets the supported application cultures.
+     * Gets a list of supported cultures. Cultures are equivalent to the written language and locale. For
+      *  example,"en-us" represents the U.S. variation of English.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -306,7 +308,8 @@ public interface Apps {
     List<AvailableCulture> listSupportedCultures();
 
     /**
-     * Gets the supported application cultures.
+     * Gets a list of supported cultures. Cultures are equivalent to the written language and locale. For
+      *  example,"en-us" represents the U.S. variation of English.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;AvailableCulture&gt; object
@@ -316,7 +319,7 @@ public interface Apps {
 
 
     /**
-     * Gets the query logs of the past month for the application.
+     * Gets the logs of the past month's endpoint queries for the application.
      *
      * @param appId The application ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -327,7 +330,7 @@ public interface Apps {
     InputStream downloadQueryLogs(UUID appId);
 
     /**
-     * Gets the query logs of the past month for the application.
+     * Gets the logs of the past month's endpoint queries for the application.
      *
      * @param appId The application ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -382,27 +385,91 @@ public interface Apps {
     Observable<OperationStatus> updateAsync(UUID appId, ApplicationUpdateObject applicationUpdateObject);
 
 
-
     /**
      * Deletes an application.
      *
      * @param appId The application ID.
+     * @param deleteOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    OperationStatus delete(UUID appId);
+    OperationStatus delete(UUID appId, DeleteAppsOptionalParameter deleteOptionalParameter);
 
     /**
      * Deletes an application.
      *
      * @param appId The application ID.
+     * @param deleteOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    Observable<OperationStatus> deleteAsync(UUID appId);
+    Observable<OperationStatus> deleteAsync(UUID appId, DeleteAppsOptionalParameter deleteOptionalParameter);
 
+    /**
+     * Deletes an application.
+     *
+     * @return the first stage of the delete call
+     */
+    AppsDeleteDefinitionStages.WithAppId delete();
+
+    /**
+     * Grouping of delete definition stages.
+     */
+    interface AppsDeleteDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            AppsDeleteDefinitionStages.WithExecute withAppId(UUID appId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * A flag to indicate whether to force an operation.
+             *
+             * @return next definition stage
+             */
+            AppsDeleteDefinitionStages.WithExecute withForce(Boolean force);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends AppsDeleteDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the OperationStatus object if successful.
+             */
+            OperationStatus execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the OperationStatus object
+             */
+            Observable<OperationStatus> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of delete definition.
+     */
+    interface AppsDeleteDefinition extends
+        AppsDeleteDefinitionStages.WithAppId,
+        AppsDeleteDefinitionStages.WithExecute {
+    }
 
 
     /**
@@ -432,7 +499,7 @@ public interface Apps {
 
 
     /**
-     * Get the application settings.
+     * Get the application settings including 'UseAllTrainingData'.
      *
      * @param appId The application ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -443,7 +510,7 @@ public interface Apps {
     ApplicationSettings getSettings(UUID appId);
 
     /**
-     * Get the application settings.
+     * Get the application settings including 'UseAllTrainingData'.
      *
      * @param appId The application ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -453,7 +520,7 @@ public interface Apps {
 
 
     /**
-     * Updates the application settings.
+     * Updates the application settings including 'UseAllTrainingData'.
      *
      * @param appId The application ID.
      * @param updateSettingsOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -462,22 +529,20 @@ public interface Apps {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
     OperationStatus updateSettings(UUID appId, UpdateSettingsOptionalParameter updateSettingsOptionalParameter);
 
     /**
-     * Updates the application settings.
+     * Updates the application settings including 'UseAllTrainingData'.
      *
      * @param appId The application ID.
      * @param updateSettingsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
     Observable<OperationStatus> updateSettingsAsync(UUID appId, UpdateSettingsOptionalParameter updateSettingsOptionalParameter);
 
     /**
-     * Updates the application settings.
+     * Updates the application settings including 'UseAllTrainingData'.
      *
      * @return the first stage of the updateSettings call
      */
@@ -509,7 +574,7 @@ public interface Apps {
              *
              * @return next definition stage
              */
-            AppsUpdateSettingsDefinitionStages.WithExecute withPublicParameter(boolean publicParameter);
+            AppsUpdateSettingsDefinitionStages.WithExecute withIsPublic(boolean isPublic);
 
         }
 
@@ -543,7 +608,7 @@ public interface Apps {
 
 
     /**
-     * Get the application publish settings.
+     * Get the application publish settings including 'UseAllTrainingData'.
      *
      * @param appId The application ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -554,7 +619,7 @@ public interface Apps {
     PublishSettings getPublishSettings(UUID appId);
 
     /**
-     * Get the application publish settings.
+     * Get the application publish settings including 'UseAllTrainingData'.
      *
      * @param appId The application ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -565,7 +630,7 @@ public interface Apps {
 
 
     /**
-     * Updates the application publish settings.
+     * Updates the application publish settings including 'UseAllTrainingData'.
      *
      * @param appId The application ID.
      * @param publishSettingUpdateObject An object containing the new publish application settings.
@@ -577,7 +642,7 @@ public interface Apps {
     OperationStatus updatePublishSettings(UUID appId, PublishSettingUpdateObject publishSettingUpdateObject);
 
     /**
-     * Updates the application publish settings.
+     * Updates the application publish settings including 'UseAllTrainingData'.
      *
      * @param appId The application ID.
      * @param publishSettingUpdateObject An object containing the new publish application settings.
@@ -631,7 +696,7 @@ public interface Apps {
 
 
     /**
-     * Adds a prebuilt domain along with its models as a new application.
+     * Adds a prebuilt domain along with its intent and entity models as a new application.
      *
      * @param prebuiltDomainCreateObject A prebuilt domain create object containing the name and culture of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -642,7 +707,7 @@ public interface Apps {
     UUID addCustomPrebuiltDomain(PrebuiltDomainCreateObject prebuiltDomainCreateObject);
 
     /**
-     * Adds a prebuilt domain along with its models as a new application.
+     * Adds a prebuilt domain along with its intent and entity models as a new application.
      *
      * @param prebuiltDomainCreateObject A prebuilt domain create object containing the name and culture of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -653,7 +718,7 @@ public interface Apps {
 
 
     /**
-     * Gets all the available custom prebuilt domains for a specific culture.
+     * Gets all the available prebuilt domains for a specific culture.
      *
      * @param culture Culture.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -664,7 +729,7 @@ public interface Apps {
     List<PrebuiltDomain> listAvailableCustomPrebuiltDomainsForCulture(String culture);
 
     /**
-     * Gets all the available custom prebuilt domains for a specific culture.
+     * Gets all the available prebuilt domains for a specific culture.
      *
      * @param culture Culture.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -672,5 +737,231 @@ public interface Apps {
      */
     Observable<List<PrebuiltDomain>> listAvailableCustomPrebuiltDomainsForCultureAsync(String culture);
 
+
+
+    /**
+     * package - Gets published LUIS application package in binary stream GZip format.
+     * Packages a published LUIS application as a GZip file to be used in the LUIS container.
+     *
+     * @param appId The application ID.
+     * @param slotName The publishing slot name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the InputStream object if successful.
+     */
+    InputStream packagePublishedApplicationAsGzip(UUID appId, String slotName);
+
+    /**
+     * package - Gets published LUIS application package in binary stream GZip format.
+     * Packages a published LUIS application as a GZip file to be used in the LUIS container.
+     *
+     * @param appId The application ID.
+     * @param slotName The publishing slot name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the InputStream object
+     */
+    Observable<InputStream> packagePublishedApplicationAsGzipAsync(UUID appId, String slotName);
+
+
+
+    /**
+     * package - Gets trained LUIS application package in binary stream GZip format.
+     * Packages trained LUIS application as GZip file to be used in the LUIS container.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the InputStream object if successful.
+     */
+    InputStream packageTrainedApplicationAsGzip(UUID appId, String versionId);
+
+    /**
+     * package - Gets trained LUIS application package in binary stream GZip format.
+     * Packages trained LUIS application as GZip file to be used in the LUIS container.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the InputStream object
+     */
+    Observable<InputStream> packageTrainedApplicationAsGzipAsync(UUID appId, String versionId);
+
+
+    /**
+     * Imports an application to LUIS, the application's structure is included in the request body.
+     *
+     * @param luisAppV2 A LUIS application structure.
+     * @param importV2AppOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the UUID object if successful.
+     */
+    UUID importV2App(LuisAppV2 luisAppV2, ImportV2AppAppsOptionalParameter importV2AppOptionalParameter);
+
+    /**
+     * Imports an application to LUIS, the application's structure is included in the request body.
+     *
+     * @param luisAppV2 A LUIS application structure.
+     * @param importV2AppOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the UUID object
+     */
+    Observable<UUID> importV2AppAsync(LuisAppV2 luisAppV2, ImportV2AppAppsOptionalParameter importV2AppOptionalParameter);
+
+    /**
+     * Imports an application to LUIS, the application's structure is included in the request body.
+     *
+     * @return the first stage of the importV2App call
+     */
+    AppsImportV2AppDefinitionStages.WithLuisAppV2 importV2App();
+
+    /**
+     * Grouping of importV2App definition stages.
+     */
+    interface AppsImportV2AppDefinitionStages {
+        /**
+         * The stage of the definition to be specify luisAppV2.
+         */
+        interface WithLuisAppV2 {
+            /**
+             * A LUIS application structure.
+             *
+             * @return next definition stage
+             */
+            AppsImportV2AppDefinitionStages.WithExecute withLuisAppV2(LuisAppV2 luisAppV2);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The application name to create. If not specified, the application name will be read from the imported
+             *   object. If the application name already exists, an error is returned.
+             *
+             * @return next definition stage
+             */
+            AppsImportV2AppDefinitionStages.WithExecute withAppName(String appName);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends AppsImportV2AppDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the UUID object if successful.
+             */
+            UUID execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the UUID object
+             */
+            Observable<UUID> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of importV2App definition.
+     */
+    interface AppsImportV2AppDefinition extends
+        AppsImportV2AppDefinitionStages.WithLuisAppV2,
+        AppsImportV2AppDefinitionStages.WithExecute {
+    }
+
+    /**
+     * Imports an application to LUIS, the application's structure is included in the request body.
+     *
+     * @param luisAppLu A LUIS application structure.
+     * @param importLuFormatOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the UUID object if successful.
+     */
+    UUID importLuFormat(String luisAppLu, ImportLuFormatAppsOptionalParameter importLuFormatOptionalParameter);
+
+    /**
+     * Imports an application to LUIS, the application's structure is included in the request body.
+     *
+     * @param luisAppLu A LUIS application structure.
+     * @param importLuFormatOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the UUID object
+     */
+    Observable<UUID> importLuFormatAsync(String luisAppLu, ImportLuFormatAppsOptionalParameter importLuFormatOptionalParameter);
+
+    /**
+     * Imports an application to LUIS, the application's structure is included in the request body.
+     *
+     * @return the first stage of the importLuFormat call
+     */
+    AppsImportLuFormatDefinitionStages.WithLuisAppLu importLuFormat();
+
+    /**
+     * Grouping of importLuFormat definition stages.
+     */
+    interface AppsImportLuFormatDefinitionStages {
+        /**
+         * The stage of the definition to be specify luisAppLu.
+         */
+        interface WithLuisAppLu {
+            /**
+             * A LUIS application structure.
+             *
+             * @return next definition stage
+             */
+            AppsImportLuFormatDefinitionStages.WithExecute withLuisAppLu(String luisAppLu);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The application name to create. If not specified, the application name will be read from the imported
+             *   object. If the application name already exists, an error is returned.
+             *
+             * @return next definition stage
+             */
+            AppsImportLuFormatDefinitionStages.WithExecute withAppName(String appName);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends AppsImportLuFormatDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the UUID object if successful.
+             */
+            UUID execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the UUID object
+             */
+            Observable<UUID> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of importLuFormat definition.
+     */
+    interface AppsImportLuFormatDefinition extends
+        AppsImportLuFormatDefinitionStages.WithLuisAppLu,
+        AppsImportLuFormatDefinitionStages.WithExecute {
+    }
 
 }

@@ -16,6 +16,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
+import com.azure.messaging.servicebus.ServiceBusTransactionContext;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
@@ -23,6 +24,8 @@ import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.UnsignedInteger;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
+import org.apache.qpid.proton.amqp.transaction.TransactionalState;
+import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.Exceptions;
@@ -33,6 +36,7 @@ import reactor.core.publisher.SynchronousSink;
 import java.nio.BufferOverflowException;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -93,7 +97,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
                 requestMessage.setBody(new AmqpValue(Collections.singletonMap(ManagementConstants.SEQUENCE_NUMBERS,
                     new Long[]{sequenceNumber})));
 
-                return sendWithVerify(channel, requestMessage);
+                return sendWithVerify(channel, requestMessage, null);
             })).then();
     }
 
@@ -116,7 +120,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
             message.setBody(new AmqpValue(body));
 
-            return sendWithVerify(channel, message);
+            return sendWithVerify(channel, message, null);
         })).flatMap(response -> {
             final Object value = ((AmqpValue) response.getBody()).getValue();
 
@@ -168,7 +172,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
             message.setBody(new AmqpValue(requestBody));
 
-            return sendWithVerify(channel, message);
+            return sendWithVerify(channel, message, null);
         }).flatMapMany(response -> {
             final List<ServiceBusReceivedMessage> messages =
                 messageSerializer.deserializeList(response, ServiceBusReceivedMessage.class);
@@ -206,7 +210,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
                 message.setBody(new AmqpValue(requestBodyMap));
 
-                return sendWithVerify(channel, message);
+                return sendWithVerify(channel, message, null);
             }).flatMapMany(amqpMessage -> {
                 final List<ServiceBusReceivedMessage> messageList =
                     messageSerializer.deserializeList(amqpMessage, ServiceBusReceivedMessage.class);
@@ -227,7 +231,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
             requestBody.put(ManagementConstants.LOCK_TOKENS_KEY, new UUID[]{UUID.fromString(lockToken)});
             requestMessage.setBody(new AmqpValue(requestBody));
 
-            return sendWithVerify(channel, requestMessage);
+            return sendWithVerify(channel, requestMessage, null);
         }).map(responseMessage -> {
             final List<Instant> renewTimeList = messageSerializer.deserializeList(responseMessage, Instant.class);
             if (CoreUtils.isNullOrEmpty(renewTimeList)) {
@@ -256,7 +260,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
             message.setBody(new AmqpValue(body));
 
-            return sendWithVerify(channel, message);
+            return sendWithVerify(channel, message, null);
         })).map(response -> {
             final Object value = ((AmqpValue) response.getBody()).getValue();
 
@@ -283,8 +287,8 @@ public class ManagementChannel implements ServiceBusManagementNode {
      * {@inheritDoc}
      */
     @Override
-    public Mono<Long> schedule(ServiceBusMessage message, Instant scheduledEnqueueTime, int maxLinkSize,
-        String associatedLinkName) {
+    public Mono<Long> schedule(ServiceBusMessage message, OffsetDateTime scheduledEnqueueTime, int maxLinkSize,
+        String associatedLinkName, ServiceBusTransactionContext transactionContext) {
         message.setScheduledEnqueueTime(scheduledEnqueueTime);
 
         return isAuthorized(OPERATION_SCHEDULE_MESSAGE).then(createChannel.flatMap(channel -> {
@@ -338,7 +342,13 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
             requestMessage.setBody(new AmqpValue(requestBodyMap));
 
-            return sendWithVerify(channel, requestMessage);
+            TransactionalState transactionalState = null;
+            if (transactionContext != null && transactionContext.getTransactionId() != null) {
+                transactionalState = new TransactionalState();
+                transactionalState.setTxnId(new Binary(transactionContext.getTransactionId().array()));
+            }
+
+            return sendWithVerify(channel, requestMessage, transactionalState);
         }).handle((response, sink) -> {
             final List<Long> sequenceNumbers = messageSerializer.deserializeList(response, Long.class);
 
@@ -369,14 +379,14 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
             message.setBody(new AmqpValue(body));
 
-            return sendWithVerify(channel, message).then();
+            return sendWithVerify(channel, message, null).then();
         }));
     }
 
     @Override
     public Mono<Void> updateDisposition(String lockToken, DispositionStatus dispositionStatus, String deadLetterReason,
         String deadLetterErrorDescription, Map<String, Object> propertiesToModify, String sessionId,
-        String associatedLinkName) {
+        String associatedLinkName, ServiceBusTransactionContext transactionContext) {
 
         final UUID[] lockTokens = new UUID[]{UUID.fromString(lockToken)};
         return isAuthorized(OPERATION_UPDATE_DISPOSITION).then(createChannel.flatMap(channel -> {
@@ -407,7 +417,13 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
             message.setBody(new AmqpValue(requestBody));
 
-            return sendWithVerify(channel, message);
+            TransactionalState transactionalState = null;
+            if (transactionContext != null && transactionContext.getTransactionId() != null) {
+                transactionalState = new TransactionalState();
+                transactionalState.setTxnId(new Binary(transactionContext.getTransactionId().array()));
+            }
+
+            return sendWithVerify(channel, message, transactionalState);
         })).then();
     }
 
@@ -424,8 +440,9 @@ public class ManagementChannel implements ServiceBusManagementNode {
         tokenManager.close();
     }
 
-    private Mono<Message> sendWithVerify(RequestResponseChannel channel, Message message) {
-        return channel.sendWithAck(message)
+    private Mono<Message> sendWithVerify(RequestResponseChannel channel, Message message,
+        DeliveryState deliveryState) {
+        return channel.sendWithAck(message, deliveryState)
             .handle((Message response, SynchronousSink<Message> sink) -> {
                 if (RequestResponseUtils.isSuccessful(response)) {
                     sink.next(response);

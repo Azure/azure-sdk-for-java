@@ -47,7 +47,7 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [SDK_README_KEY_CONCEPTS]: ../../README.md#key-concepts
 [BATCH_SDK_README]: ../../README.md
 [SDK_README_CONTRIBUTING]: ../../README.md#contributing
-[samples_basic]: java/com/azure/storage/blob/batch/ReadmeCodeSamples.java
+[samples_basic]: java/com/azure/storage/blob/batch/ReadmeSamples.java
 [storageblob_rest]: https://docs.microsoft.com/en-us/rest/api/storageservices/blob-service-rest-api
 [error_codes]: https://docs.microsoft.com/rest/api/storageservices/blob-service-error-codes
 

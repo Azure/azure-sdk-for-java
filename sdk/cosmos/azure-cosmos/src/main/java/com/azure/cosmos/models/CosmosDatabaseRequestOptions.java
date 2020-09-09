@@ -8,47 +8,47 @@ import com.azure.cosmos.implementation.RequestOptions;
  * Encapsulates options that can be specified for a request issued to cosmos database.
  */
 public final class CosmosDatabaseRequestOptions {
-    private Integer offerThroughput;
-    private AccessCondition accessCondition;
+    private String ifMatchETag;
+    private String ifNoneMatchETag;
     private ThroughputProperties throughputProperties;
 
     /**
-     * Gets the conditions associated with the request.
+     * Gets the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
-     * @return the access condition.
+     * @return the ifMatchETag associated with the request.
      */
-    public AccessCondition getAccessCondition() {
-        return accessCondition;
+    public String getIfMatchETag() {
+        return this.ifMatchETag;
     }
 
     /**
-     * Sets the conditions associated with the request.
+     * Sets the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
-     * @param accessCondition the access condition.
+     * @param ifMatchETag the ifMatchETag associated with the request.
      * @return the current request options
      */
-    public CosmosDatabaseRequestOptions setAccessCondition(AccessCondition accessCondition) {
-        this.accessCondition = accessCondition;
+    public CosmosDatabaseRequestOptions setIfMatchETag(String ifMatchETag) {
+        this.ifMatchETag = ifMatchETag;
         return this;
     }
 
     /**
-     * Gets the throughput in the form of Request Units per second when creating a cosmos database.
+     * Gets the If-None-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
-     * @return the throughput value.
+     * @return the ifNoneMatchETag associated with the request.
      */
-    Integer getOfferThroughput() {
-        return offerThroughput;
+    public String getIfNoneMatchETag() {
+        return this.ifNoneMatchETag;
     }
 
     /**
-     * Sets the throughput in the form of Request Units per second when creating a cosmos database.
+     * Sets the If-None-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
-     * @param offerThroughput the throughput value.
+     * @param ifNoneMatchETag the ifNoneMatchETag associated with the request.
      * @return the current request options
      */
-    CosmosDatabaseRequestOptions setOfferThroughput(Integer offerThroughput) {
-        this.offerThroughput = offerThroughput;
+    public CosmosDatabaseRequestOptions setIfNoneMatchETag(String ifNoneMatchETag) {
+        this.ifNoneMatchETag = ifNoneMatchETag;
         return this;
     }
 
@@ -59,8 +59,8 @@ public final class CosmosDatabaseRequestOptions {
 
     RequestOptions toRequestOptions() {
         RequestOptions options = new RequestOptions();
-        options.setAccessCondition(accessCondition);
-        options.setOfferThroughput(offerThroughput);
+        options.setIfMatchETag(getIfMatchETag());
+        options.setIfNoneMatchETag(getIfNoneMatchETag());
         options.setThroughputProperties(this.throughputProperties);
         return options;
     }

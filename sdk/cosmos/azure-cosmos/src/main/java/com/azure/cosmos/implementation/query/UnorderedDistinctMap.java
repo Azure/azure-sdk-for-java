@@ -2,31 +2,34 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.Resource;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.routing.UInt128;
 
-import java.security.NoSuchAlgorithmException;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class UnorderedDistinctMap extends DistinctMap {
     // This is intended to be used as a concurrent hash set only
-    private final Set<String> resultSet;
-
+    private final Set<UInt128> resultSet;
 
     public UnorderedDistinctMap() {
         resultSet = Collections.newSetFromMap(new ConcurrentHashMap<>());
     }
 
     @Override
-    public boolean add(Resource resource, Utils.ValueHolder<String> outHash) {
+    public boolean add(Object resource, Utils.ValueHolder<UInt128> outHash) {
         try {
-            outHash.v = getHash(resource);
+            if (resource instanceof Resource) {
+                // We do this to ensure the property order in document should not effect the hash
+                resource = getSortedJsonStringValueFromResource((Resource)resource);
+            }
+            outHash.v = DistinctHash.getHash(resource);
             return resultSet.add(outHash.v);
-        } catch (JsonProcessingException | NoSuchAlgorithmException e) {
-            throw new IllegalStateException(e);
+        } catch (IOException e) {
+            throw new IllegalStateException("Failed to add value to distinct map", e);
         }
     }
 }

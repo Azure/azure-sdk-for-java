@@ -1,25 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.search.windows.net/servicestats?api-version=2019-05-06-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/servicestats?api-version=2020-06-30",
     "Headers" : {
-      "x-ms-client-request-id" : "0f4db1e9-df72-4b8d-a489-8e773b26d0e4"
+      "User-Agent" : "azsdk-java-azure-search-documents/1.0.0-beta.5 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4ce40a8c-4740-4cea-90c9-ce5c535e77c7"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "0f4db1e9-df72-4b8d-a489-8e773b26d0e4",
+      "request-id" : "4ce40a8c-4740-4cea-90c9-ce5c535e77c7",
       "StatusCode" : "200",
-      "Date" : "Mon, 11 May 2020 18:07:20 GMT",
+      "Date" : "Thu, 25 Jun 2020 17:14:52 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "0f4db1e9-df72-4b8d-a489-8e773b26d0e4",
-      "elapsed-time" : "38",
+      "client-request-id" : "4ce40a8c-4740-4cea-90c9-ce5c535e77c7",
+      "elapsed-time" : "28",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "586",
-      "Body" : "{\"@odata.context\":\"https://alzimmer-search.search.windows.net/$metadata#Microsoft.Azure.Search.V2019_05_06_Preview.ServiceStatistics\",\"counters\":{\"documentCount\":{\"usage\":0,\"quota\":null},\"indexesCount\":{\"usage\":0,\"quota\":15},\"indexersCount\":{\"usage\":1,\"quota\":15},\"dataSourcesCount\":{\"usage\":0,\"quota\":15},\"storageSize\":{\"usage\":0,\"quota\":2147483648},\"synonymMaps\":{\"usage\":0,\"quota\":3},\"skillsetCount\":{\"usage\":0,\"quota\":15}},\"limits\":{\"maxFieldsPerIndex\":1000,\"maxFieldNestingDepthPerIndex\":10,\"maxComplexCollectionFieldsPerIndex\":40,\"maxComplexObjectsInCollectionsPerDocument\":3000}}",
+      "Content-Length" : "531",
+      "Body" : "{\"@odata.context\":\"https://sizhu-search.search.windows.net/$metadata#Microsoft.Azure.Search.V2020_06_30.ServiceStatistics\",\"counters\":{\"documentCount\":{\"usage\":0,\"quota\":null},\"indexesCount\":{\"usage\":1,\"quota\":3},\"indexersCount\":{\"usage\":0,\"quota\":3},\"dataSourcesCount\":{\"usage\":0,\"quota\":3},\"storageSize\":{\"usage\":0,\"quota\":52428800},\"synonymMaps\":{\"usage\":0,\"quota\":3}},\"limits\":{\"maxFieldsPerIndex\":1000,\"maxFieldNestingDepthPerIndex\":10,\"maxComplexCollectionFieldsPerIndex\":40,\"maxComplexObjectsInCollectionsPerDocument\":3000}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "x-ms-client-request-id" : "4ce40a8c-4740-4cea-90c9-ce5c535e77c7",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null

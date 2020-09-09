@@ -130,7 +130,7 @@ public class UserAgentTests {
         String sdkVersion = "sdkVersion";
         String baseUserAgent = String.format("%s-%s/%s", defaultUserAgent, sdkName, sdkVersion);
         String applicationId = "applicationId";
-        String platformInfo = String.format("%s; %s %s",
+        String platformInfo = String.format("%s; %s; %s",
             Configuration.getGlobalConfiguration().get("java.version"),
             Configuration.getGlobalConfiguration().get("os.name"),
             Configuration.getGlobalConfiguration().get("os.version"));

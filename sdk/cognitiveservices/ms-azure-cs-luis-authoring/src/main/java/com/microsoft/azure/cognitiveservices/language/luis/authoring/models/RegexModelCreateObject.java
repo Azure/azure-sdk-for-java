@@ -11,11 +11,11 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Model object for creating a regex entity model.
+ * Model object for creating a regular expression entity model.
  */
 public class RegexModelCreateObject {
     /**
-     * The regex entity pattern.
+     * The regular expression entity pattern.
      */
     @JsonProperty(value = "regexPattern")
     private String regexPattern;

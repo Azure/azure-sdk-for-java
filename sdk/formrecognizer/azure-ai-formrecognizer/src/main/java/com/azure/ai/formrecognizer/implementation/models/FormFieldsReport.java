@@ -7,9 +7,7 @@ package com.azure.ai.formrecognizer.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The FormFieldsReport model.
- */
+/** The FormFieldsReport model. */
 @Fluent
 public final class FormFieldsReport {
     /*
@@ -26,7 +24,7 @@ public final class FormFieldsReport {
 
     /**
      * Get the fieldName property: Training field name.
-     * 
+     *
      * @return the fieldName value.
      */
     public String getFieldName() {
@@ -35,7 +33,7 @@ public final class FormFieldsReport {
 
     /**
      * Set the fieldName property: Training field name.
-     * 
+     *
      * @param fieldName the fieldName value to set.
      * @return the FormFieldsReport object itself.
      */
@@ -46,7 +44,7 @@ public final class FormFieldsReport {
 
     /**
      * Get the accuracy property: Estimated extraction accuracy for this field.
-     * 
+     *
      * @return the accuracy value.
      */
     public float getAccuracy() {
@@ -55,7 +53,7 @@ public final class FormFieldsReport {
 
     /**
      * Set the accuracy property: Estimated extraction accuracy for this field.
-     * 
+     *
      * @param accuracy the accuracy value to set.
      * @return the FormFieldsReport object itself.
      */

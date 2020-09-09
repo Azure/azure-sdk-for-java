@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
@@ -122,8 +122,8 @@ public class ConsistencyWriter {
             request.requestContext.requestChargeTracker = new RequestChargeTracker();
         }
 
-        if (request.requestContext.cosmosResponseDiagnostics == null) {
-            request.requestContext.cosmosResponseDiagnostics = BridgeInternal.createCosmosResponseDiagnostics();
+        if (request.requestContext.cosmosDiagnostics == null) {
+            request.requestContext.cosmosDiagnostics = BridgeInternal.createCosmosDiagnostics();
         }
 
         request.requestContext.forceRefreshAddressCache = forceRefresh;
@@ -137,7 +137,7 @@ public class ConsistencyWriter {
                 try {
                     List<URI> contactedReplicas = new ArrayList<>();
                     replicaAddresses.forEach(replicaAddress -> contactedReplicas.add(replicaAddress.getPhysicalUri().getURI()));
-                    BridgeInternal.setContactedReplicas(request.requestContext.cosmosResponseDiagnostics, contactedReplicas);
+                    BridgeInternal.setContactedReplicas(request.requestContext.cosmosDiagnostics, contactedReplicas);
                     return Mono.just(AddressSelector.getPrimaryUri(request, replicaAddresses));
                 } catch (GoneException e) {
                     // RxJava1 doesn't allow throwing checked exception from Observable operators
@@ -166,9 +166,9 @@ public class ConsistencyWriter {
                                                t -> {
                                                    try {
                                                        Throwable unwrappedException = Exceptions.unwrap(t);
-                                                       CosmosClientException ex = Utils.as(unwrappedException, CosmosClientException.class);
+                                                       CosmosException ex = Utils.as(unwrappedException, CosmosException.class);
                                                        try {
-                                                           BridgeInternal.recordResponse(request.requestContext.cosmosResponseDiagnostics, request,
+                                                           BridgeInternal.recordResponse(request.requestContext.cosmosDiagnostics, request,
                                                                storeReader.createStoreResult(null, ex, false, false, primaryUri));
                                                        } catch (Exception e) {
                                                            logger.error("Error occurred while recording response", e);
@@ -189,7 +189,7 @@ public class ConsistencyWriter {
 
             }).flatMap(response -> {
                 try {
-                    BridgeInternal.recordResponse(request.requestContext.cosmosResponseDiagnostics, request,
+                    BridgeInternal.recordResponse(request.requestContext.cosmosDiagnostics, request,
                         storeReader.createStoreResult(response, null, false, false, primaryURI.get()));
                 } catch (Exception e) {
                     logger.error("Error occurred while recording response", e);
@@ -279,7 +279,7 @@ public class ConsistencyWriter {
                 return Mono.just(response);
             }
 
-        } catch (CosmosClientException e) {
+        } catch (CosmosException e) {
             // RxJava1 doesn't allow throwing checked exception from Observable operators
             return Mono.error(e);
         }

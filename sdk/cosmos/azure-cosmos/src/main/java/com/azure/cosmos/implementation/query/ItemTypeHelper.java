@@ -4,6 +4,8 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.implementation.Undefined;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public final class ItemTypeHelper {
     public static ItemType getOrderByItemType(Object obj) {
@@ -25,6 +27,14 @@ public final class ItemTypeHelper {
 
         if (obj instanceof String) {
             return ItemType.String;
+        }
+
+        if (obj instanceof ArrayNode) {
+            return ItemType.ArrayNode;
+        }
+
+        if (obj instanceof ObjectNode) {
+            return ItemType.ObjectNode;
         }
 
         throw new IllegalArgumentException(String.format("Unexpected type: %s", obj.getClass().toString()));

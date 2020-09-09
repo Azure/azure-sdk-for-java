@@ -35,11 +35,11 @@ public class CompositeEntityExtractor {
     private Integer typeId;
 
     /**
-     * Possible values include: 'Entity Extractor', 'Hierarchical Entity
-     * Extractor', 'Hierarchical Child Entity Extractor', 'Composite Entity
-     * Extractor', 'Closed List Entity Extractor', 'Prebuilt Entity Extractor',
-     * 'Intent Classifier', 'Pattern.Any Entity Extractor', 'Regex Entity
-     * Extractor'.
+     * Possible values include: 'Entity Extractor', 'Child Entity Extractor',
+     * 'Hierarchical Entity Extractor', 'Hierarchical Child Entity Extractor',
+     * 'Composite Entity Extractor', 'List Entity Extractor', 'Prebuilt Entity
+     * Extractor', 'Intent Classifier', 'Pattern.Any Entity Extractor', 'Closed
+     * List Entity Extractor', 'Regex Entity Extractor'.
      */
     @JsonProperty(value = "readableType", required = true)
     private String readableType;

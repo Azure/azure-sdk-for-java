@@ -19,6 +19,7 @@ import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.Rejected;
 import org.apache.qpid.proton.amqp.messaging.Released;
+import org.apache.qpid.proton.amqp.transaction.Declared;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.EndpointState;
@@ -125,9 +126,11 @@ class ReactorSender implements AmqpSendLink {
             this.handler.getErrors().subscribe(error -> {
                 logger.error("[{}] Error occurred in sender error handler.", entityPath, error);
                 endpointStateSink.error(error);
-            }),
+            })
+        );
 
-            this.tokenManager.getAuthorizationResults().subscribe(
+        if (tokenManager != null) {
+            this.subscriptions.add(this.tokenManager.getAuthorizationResults().subscribe(
                 response -> {
                     logger.verbose("Token refreshed: {}", response);
                     hasAuthorized.set(true);
@@ -136,8 +139,8 @@ class ReactorSender implements AmqpSendLink {
                     logger.info("clientId[{}], path[{}], linkName[{}] - tokenRenewalFailure[{}]",
                         handler.getConnectionId(), this.entityPath, getLinkName(), error.getMessage());
                     hasAuthorized.set(false);
-                }, () -> hasAuthorized.set(false))
-        );
+                }, () -> hasAuthorized.set(false)));
+        }
     }
 
     @Override
@@ -147,6 +150,11 @@ class ReactorSender implements AmqpSendLink {
 
     @Override
     public Mono<Void> send(Message message) {
+        return send(message, null);
+    }
+
+    @Override
+    public Mono<Void> send(Message message, DeliveryState deliveryState) {
         return getLinkSize()
             .flatMap(maxMessageSize -> {
                 final int payloadSize = messageSerializer.getSize(message);
@@ -166,14 +174,19 @@ class ReactorSender implements AmqpSendLink {
                         errorMessage, exception, handler.getErrorContext(sender));
                     return Mono.error(error);
                 }
-                return send(bytes, encodedSize, DeliveryImpl.DEFAULT_MESSAGE_FORMAT);
-            });
+                return send(bytes, encodedSize, DeliveryImpl.DEFAULT_MESSAGE_FORMAT, deliveryState);
+            }).then();
     }
 
     @Override
     public Mono<Void> send(List<Message> messageBatch) {
+        return send(messageBatch, null);
+    }
+
+    @Override
+    public Mono<Void> send(List<Message> messageBatch, DeliveryState deliveryState) {
         if (messageBatch.size() == 1) {
-            return send(messageBatch.get(0));
+            return send(messageBatch.get(0), deliveryState);
         }
 
         return getLinkSize()
@@ -221,8 +234,8 @@ class ReactorSender implements AmqpSendLink {
                     byteArrayOffset = byteArrayOffset + encodedSize;
                 }
 
-                return send(bytes, byteArrayOffset, AmqpConstants.AMQP_BATCH_MESSAGE_FORMAT);
-            });
+                return send(bytes, byteArrayOffset, AmqpConstants.AMQP_BATCH_MESSAGE_FORMAT, deliveryState);
+            }).then();
 
     }
 
@@ -289,19 +302,32 @@ class ReactorSender implements AmqpSendLink {
         tokenManager.close();
     }
 
-    Mono<Void> send(byte[] bytes, int arrayOffset, int messageFormat) {
-        if (hasConnected.get()) {
-            return Mono.create(sink -> send(new RetriableWorkItem(bytes, arrayOffset, messageFormat, sink, timeout)));
-        } else {
-            return RetryUtil.withRetry(
-                handler.getEndpointStates().takeUntil(state -> state == EndpointState.ACTIVE),
-                timeout, retry)
-                .then(Mono.create(sink ->
-                    send(new RetriableWorkItem(bytes, arrayOffset, messageFormat, sink, timeout))));
-        }
+    @Override
+    public Mono<DeliveryState> send(byte[] bytes, int arrayOffset, int messageFormat, DeliveryState deliveryState) {
+        return validateEndpoint()
+            .then(Mono.create(sink -> sendWork(new RetriableWorkItem(bytes,
+                arrayOffset, messageFormat, sink, timeout, deliveryState)))
+            );
     }
 
-    private void send(RetriableWorkItem workItem) {
+    private Mono<Void> validateEndpoint() {
+        return Mono.defer(() -> {
+            if (hasConnected.get()) {
+                return Mono.empty();
+            } else {
+                return RetryUtil.withRetry(
+                    handler.getEndpointStates().takeUntil(state -> state == EndpointState.ACTIVE), timeout, retry)
+                    .then();
+            }
+        });
+    }
+
+    /**
+     * Add the work item in pending send to be processed on {@link ReactorDispatcher} thread.
+     *
+     * @param workItem to be processed.
+     */
+    private void sendWork(RetriableWorkItem workItem) {
         final String deliveryTag = UUID.randomUUID().toString().replace("-", "");
 
         synchronized (pendingSendLock) {
@@ -356,6 +382,9 @@ class ReactorSender implements AmqpSendLink {
                 delivery = sender.delivery(deliveryTag.getBytes(UTF_8));
                 delivery.setMessageFormat(workItem.getMessageFormat());
 
+                if (workItem.isDeliveryStateProvided()) {
+                    delivery.disposition(workItem.getDeliveryState());
+                }
                 sentMsgSize = sender.send(workItem.getMessage(), 0, workItem.getEncodedMessageSize());
                 assert sentMsgSize == workItem.getEncodedMessageSize()
                     : "Contract of the ProtonJ library for Sender. Send API changed";
@@ -391,7 +420,7 @@ class ReactorSender implements AmqpSendLink {
                         "Entity(%s): send operation failed while advancing delivery(tag: %s).",
                         entityPath, deliveryTag), context);
 
-                workItem.getSink().error(exception);
+                workItem.error(exception);
             }
         }
     }
@@ -409,6 +438,9 @@ class ReactorSender implements AmqpSendLink {
             logger.verbose("clientId[{}]. path[{}], linkName[{}], delivery[{}] - mismatch (or send timed out)",
                 handler.getConnectionId(), entityPath, getLinkName(), deliveryTag);
             return;
+        } else if (workItem.isDeliveryStateProvided()) {
+            workItem.success(outcome);
+            return;
         }
 
         if (outcome instanceof Accepted) {
@@ -418,7 +450,7 @@ class ReactorSender implements AmqpSendLink {
                 retryAttempts.set(0);
             }
 
-            workItem.getSink().success();
+            workItem.success(outcome);
         } else if (outcome instanceof Rejected) {
             final Rejected rejected = (Rejected) outcome;
             final org.apache.qpid.proton.amqp.transport.ErrorCondition error = rejected.getError();
@@ -446,7 +478,7 @@ class ReactorSender implements AmqpSendLink {
             } else {
                 workItem.setLastKnownException(exception);
                 try {
-                    reactorProvider.getReactorDispatcher().invoke(() -> send(workItem), retryInterval);
+                    reactorProvider.getReactorDispatcher().invoke(() -> sendWork(workItem), retryInterval);
                 } catch (IOException | RejectedExecutionException schedulerException) {
                     exception.initCause(schedulerException);
                     cleanupFailedSend(
@@ -460,6 +492,9 @@ class ReactorSender implements AmqpSendLink {
         } else if (outcome instanceof Released) {
             cleanupFailedSend(workItem, new OperationCancelledException(outcome.toString(),
                 handler.getErrorContext(sender)));
+        } else if (outcome instanceof Declared) {
+            final Declared declared = (Declared) outcome;
+            workItem.success(declared);
         } else {
             cleanupFailedSend(workItem, new AmqpException(false, outcome.toString(),
                 handler.getErrorContext(sender)));
@@ -476,7 +511,7 @@ class ReactorSender implements AmqpSendLink {
 
     private void cleanupFailedSend(final RetriableWorkItem workItem, final Exception exception) {
         //TODO (conniey): is there some timeout task I should handle?
-        workItem.getSink().error(exception);
+        workItem.error(exception);
     }
 
     private static boolean isGeneralSendError(Symbol amqpError) {
@@ -562,7 +597,7 @@ class ReactorSender implements AmqpSendLink {
                     handler.getErrorContext(sender));
             }
 
-            workItem.getSink().error(exception);
+            workItem.error(exception);
         }
     }
 }

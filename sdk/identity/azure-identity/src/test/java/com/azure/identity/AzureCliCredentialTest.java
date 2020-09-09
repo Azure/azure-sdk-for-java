@@ -59,7 +59,7 @@ public class AzureCliCredentialTest {
         // test
         AzureCliCredential credential = new AzureCliCredentialBuilder().build();
         StepVerifier.create(credential.getToken(request))
-            .expectErrorMatches(e -> e instanceof Exception && "Azure CLI not installed".equals(e.getMessage()))
+            .expectErrorMatches(e -> e instanceof Exception && e.getMessage().contains("Azure CLI not installed"))
             .verify();
     }
 
@@ -71,13 +71,13 @@ public class AzureCliCredentialTest {
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
         when(identityClient.authenticateWithAzureCli(request))
-                .thenReturn(Mono.error(new Exception("Azure  not Login")));
+                .thenReturn(Mono.error(new Exception("Azure not Login")));
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
         AzureCliCredential credential = new AzureCliCredentialBuilder().build();
         StepVerifier.create(credential.getToken(request))
-            .expectErrorMatches(e -> e instanceof Exception && "Azure  not Login".equals(e.getMessage()))
+            .expectErrorMatches(e -> e instanceof Exception && e.getMessage().contains("Azure not Login"))
             .verify();
     }
     
@@ -95,7 +95,7 @@ public class AzureCliCredentialTest {
         // test
         AzureCliCredential credential = new AzureCliCredentialBuilder().build();
         StepVerifier.create(credential.getToken(request))
-            .expectErrorMatches(e -> e instanceof Exception && "other error".equals(e.getMessage()))
+            .expectErrorMatches(e -> e instanceof Exception && e.getMessage().contains("other error"))
             .verify();
     }
 

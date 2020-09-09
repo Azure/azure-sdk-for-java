@@ -94,4 +94,40 @@ public class PathsHelperTest {
         path = PathsHelper.generatePath(ResourceType.Database, rxDocumentServiceRequest, rxDocumentServiceRequest.isFeed);
         assertThat(path).isEqualTo(Paths.DATABASES_PATH_SEGMENT + "/");
     }
+
+    @Test(groups = {"unit"})
+    public void testEscapeCharacters() {
+        String input = null;
+        String output = PathsHelper.unescapeJavaAndTrim(input);
+        assertThat(input).isEqualTo(output);
+
+        input = "/";
+        output = PathsHelper.unescapeJavaAndTrim(input);
+        assertThat("").isEqualTo(output);
+
+        input = "dbs/db1";
+        output = PathsHelper.unescapeJavaAndTrim(input);
+        assertThat(input).isEqualTo(output);
+
+        input = "///dbs/db1///";
+        output = PathsHelper.unescapeJavaAndTrim(input);
+        assertThat("dbs/db1").isEqualTo(output);
+
+        input = "///dbs/db1";
+        output = PathsHelper.unescapeJavaAndTrim(input);
+        assertThat("dbs/db1").isEqualTo(output);
+
+        input = "dbs/db1///";
+        output = PathsHelper.unescapeJavaAndTrim(input);
+        assertThat("dbs/db1").isEqualTo(output);
+
+        input = "/dbs/db1/";
+        output = PathsHelper.unescapeJavaAndTrim(input);
+        assertThat("dbs/db1").isEqualTo(output);
+
+        input = "/dbs/db\\u0009/";
+        output = PathsHelper.unescapeJavaAndTrim(input);
+        assertThat(input).isNotEqualTo(output);
+        assertThat("dbs/db\t").isEqualTo(output);
+    }
 }

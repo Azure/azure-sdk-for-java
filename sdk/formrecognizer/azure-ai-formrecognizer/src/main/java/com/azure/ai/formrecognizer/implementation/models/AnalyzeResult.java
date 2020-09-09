@@ -4,14 +4,11 @@
 
 package com.azure.ai.formrecognizer.implementation.models;
 
-import com.azure.ai.formrecognizer.models.ErrorInformation;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The AnalyzeResult model.
- */
+/** The AnalyzeResult model. */
 @Fluent
 public final class AnalyzeResult {
     /*
@@ -46,7 +43,7 @@ public final class AnalyzeResult {
 
     /**
      * Get the version property: Version of schema used for this result.
-     * 
+     *
      * @return the version value.
      */
     public String getVersion() {
@@ -55,7 +52,7 @@ public final class AnalyzeResult {
 
     /**
      * Set the version property: Version of schema used for this result.
-     * 
+     *
      * @param version the version value to set.
      * @return the AnalyzeResult object itself.
      */
@@ -66,7 +63,7 @@ public final class AnalyzeResult {
 
     /**
      * Get the readResults property: Text extracted from the input.
-     * 
+     *
      * @return the readResults value.
      */
     public List<ReadResult> getReadResults() {
@@ -75,7 +72,7 @@ public final class AnalyzeResult {
 
     /**
      * Set the readResults property: Text extracted from the input.
-     * 
+     *
      * @param readResults the readResults value to set.
      * @return the AnalyzeResult object itself.
      */
@@ -85,9 +82,8 @@ public final class AnalyzeResult {
     }
 
     /**
-     * Get the pageResults property: Page-level information extracted from the
-     * input.
-     * 
+     * Get the pageResults property: Page-level information extracted from the input.
+     *
      * @return the pageResults value.
      */
     public List<PageResult> getPageResults() {
@@ -95,9 +91,8 @@ public final class AnalyzeResult {
     }
 
     /**
-     * Set the pageResults property: Page-level information extracted from the
-     * input.
-     * 
+     * Set the pageResults property: Page-level information extracted from the input.
+     *
      * @param pageResults the pageResults value to set.
      * @return the AnalyzeResult object itself.
      */
@@ -107,9 +102,8 @@ public final class AnalyzeResult {
     }
 
     /**
-     * Get the documentResults property: Document-level information extracted
-     * from the input.
-     * 
+     * Get the documentResults property: Document-level information extracted from the input.
+     *
      * @return the documentResults value.
      */
     public List<DocumentResult> getDocumentResults() {
@@ -117,9 +111,8 @@ public final class AnalyzeResult {
     }
 
     /**
-     * Set the documentResults property: Document-level information extracted
-     * from the input.
-     * 
+     * Set the documentResults property: Document-level information extracted from the input.
+     *
      * @param documentResults the documentResults value to set.
      * @return the AnalyzeResult object itself.
      */
@@ -129,9 +122,8 @@ public final class AnalyzeResult {
     }
 
     /**
-     * Get the errors property: List of errors reported during the analyze
-     * operation.
-     * 
+     * Get the errors property: List of errors reported during the analyze operation.
+     *
      * @return the errors value.
      */
     public List<ErrorInformation> getErrors() {
@@ -139,9 +131,8 @@ public final class AnalyzeResult {
     }
 
     /**
-     * Set the errors property: List of errors reported during the analyze
-     * operation.
-     * 
+     * Set the errors property: List of errors reported during the analyze operation.
+     *
      * @param errors the errors value to set.
      * @return the AnalyzeResult object itself.
      */

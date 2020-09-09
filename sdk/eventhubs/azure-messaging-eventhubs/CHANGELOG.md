@@ -1,7 +1,24 @@
 # Release History
 
-## 5.2.0-beta.1 (Unreleased)
+## 5.2.0-beta.3 (Unreleased)
+- Default scheme to 'sb://' if no scheme is set in 'Endpoint'. 
 
+## 5.2.0-beta.2 (2020-08-14)
+- Support for object serializer to send and receive strongly-typed objects.
+
+## 5.2.0-beta.1 (2020-07-08)
+- Add option to control the load balancing cycle interval.
+- Add option to control the partition ownership expiration duration.
+- Add option to configure the load balancing strategy to either use balanced or greedy approach.
+
+## 5.1.2 (2020-07-08)
+- Updated dependency version of `azure-core-amqp` which has a bug fix for updating User Agent string format.
+- Fix bug where batch receive handler runs on non-blocking thread and fails on blocking calls. 
+
+## 5.1.1 (2020-06-12)
+- Fix bug where receiver link fails to add credits to new links created after an existing link is closed.
+- Add a check to load balancer task to not run if the previous load balancer task is still in progress.
+- Updated dependency version of `azure-core-amqp` to `1.2.0`
 
 ## 5.1.0 (2020-05-07)
 - Add support for sending a collection of events as a single batch from `EventHubProducerClient` and `EventHubProducerAsyncClient`.

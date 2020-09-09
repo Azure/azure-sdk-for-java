@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 
 /**
  * Implementation for the {@link LeaseRenewer}.
@@ -40,11 +40,11 @@ class LeaseRenewerImpl implements LeaseRenewer {
                     return Mono.empty();
                 }
 
-                ZonedDateTime stopTimer = ZonedDateTime.now().plus(this.leaseRenewInterval);
+                Instant stopTimer = Instant.now().plus(this.leaseRenewInterval);
                 return Mono.just(value)
                     .delayElement(Duration.ofMillis(100))
                     .repeat( () -> {
-                        ZonedDateTime currentTime = ZonedDateTime.now();
+                        Instant currentTime = Instant.now();
                         return !cancellationToken.isCancellationRequested() && currentTime.isBefore(stopTimer);
                     }).last();
             })

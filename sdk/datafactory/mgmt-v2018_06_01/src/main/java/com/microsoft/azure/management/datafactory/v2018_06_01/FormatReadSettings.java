@@ -20,6 +20,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = FormatReadSettings.class)
 @JsonTypeName("FormatReadSettings")
 @JsonSubTypes({
+    @JsonSubTypes.Type(name = "BinaryReadSettings", value = BinaryReadSettings.class),
+    @JsonSubTypes.Type(name = "XmlReadSettings", value = XmlReadSettings.class),
+    @JsonSubTypes.Type(name = "JsonReadSettings", value = JsonReadSettings.class),
     @JsonSubTypes.Type(name = "DelimitedTextReadSettings", value = DelimitedTextReadSettings.class)
 })
 public class FormatReadSettings {

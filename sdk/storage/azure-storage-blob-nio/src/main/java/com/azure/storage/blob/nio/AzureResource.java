@@ -4,8 +4,8 @@
 package com.azure.storage.blob.nio;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobItem;
@@ -69,7 +69,7 @@ final class AzureResource {
          */
         Path parent = this.path.getParent();
         return (parent == null || parent.equals(path.getRoot()))
-            || new AzureResource((AzurePath) this.path.getParent()).checkDirectoryExists();
+            || new AzureResource(this.path.getParent()).checkDirectoryExists();
     }
 
     /**

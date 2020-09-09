@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 import java.util.ArrayList;
@@ -32,7 +31,7 @@ public class SessionTokenHelper {
         }
     }
 
-    public static void setPartitionLocalSessionToken(RxDocumentServiceRequest request, ISessionContainer sessionContainer) throws CosmosClientException {
+    public static void setPartitionLocalSessionToken(RxDocumentServiceRequest request, ISessionContainer sessionContainer) {
         String originalSessionToken = request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
         String partitionKeyRangeId = request.requestContext.resolvedPartitionKeyRange.getId();
 
@@ -64,9 +63,9 @@ public class SessionTokenHelper {
     private static ISessionToken getLocalSessionToken(
             RxDocumentServiceRequest request,
             String globalSessionToken,
-            String partitionKeyRangeId) throws CosmosClientException {
+            String partitionKeyRangeId) {
 
-        if (partitionKeyRangeId == null || partitionKeyRangeId.isEmpty()) {
+        if (partitionKeyRangeId == null) {
             // AddressCache/address resolution didn't produce partition key range id.
             // In this case it is a bug.
             throw new IllegalStateException("Partition key range Id is absent in the context.");
@@ -152,7 +151,7 @@ public class SessionTokenHelper {
         }
     }
 
-    public static void validateAndRemoveSessionToken(RxDocumentServiceRequest request) throws CosmosClientException {
+    public static void validateAndRemoveSessionToken(RxDocumentServiceRequest request) {
         String sessionToken = request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
         if (!Strings.isNullOrEmpty(sessionToken)) {
             getLocalSessionToken(request, sessionToken, StringUtils.EMPTY);

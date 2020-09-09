@@ -72,7 +72,7 @@ public class UserPrincipalAzureADGraphTest {
 
     @Before
     public void setup() {
-        accessToken = Constants.BEARER_TOKEN;
+        accessToken = Constants.ACCESS_TOKEN;
         aadAuthProps = new AADAuthenticationProperties();
         endpointsProps = new ServiceEndpointsProperties();
         final ServiceEndpoints serviceEndpoints = new ServiceEndpoints();
@@ -94,11 +94,11 @@ public class UserPrincipalAzureADGraphTest {
                 .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
                 .withBody(userGroupsJson)));
 
-        assertThat(graphClientMock.getGrantedAuthorities(Constants.BEARER_TOKEN)).isNotEmpty()
+        assertThat(graphClientMock.getGrantedAuthorities(Constants.ACCESS_TOKEN)).isNotEmpty()
                 .extracting(GrantedAuthority::getAuthority).containsExactly("ROLE_group1");
 
         verify(getRequestedFor(urlMatching("/memberOf"))
-            .withHeader(HttpHeaders.AUTHORIZATION, equalTo(String.format("%s", accessToken)))
+            .withHeader(HttpHeaders.AUTHORIZATION, equalTo(String.format("Bearer %s", accessToken)))
             .withHeader(ACCEPT, equalTo("application/json;odata=minimalmetadata"))
             .withHeader("api-version", equalTo("1.6")));
     }
@@ -116,13 +116,13 @@ public class UserPrincipalAzureADGraphTest {
                 .withBody(userGroupsJson)));
 
         final Collection<? extends GrantedAuthority> authorities = graphClientMock
-            .getGrantedAuthorities(Constants.BEARER_TOKEN);
+            .getGrantedAuthorities(Constants.ACCESS_TOKEN);
 
         assertThat(authorities).isNotEmpty().extracting(GrantedAuthority::getAuthority)
             .containsExactly("ROLE_group1", "ROLE_group2", "ROLE_group3");
 
         verify(getRequestedFor(urlMatching("/memberOf"))
-            .withHeader(HttpHeaders.AUTHORIZATION, equalTo(String.format("%s", accessToken)))
+            .withHeader(HttpHeaders.AUTHORIZATION, equalTo(String.format("Bearer %s", accessToken)))
             .withHeader(ACCEPT, equalTo("application/json;odata=minimalmetadata"))
             .withHeader("api-version", equalTo("1.6")));
     }

@@ -15,7 +15,7 @@ autorest --use=@microsoft.azure/autorest.java@3.0.4 --use=jianghaolu/autorest.mo
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.FileStorage/preview/2019-07-07/file.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.FileStorage/preview/2019-12-12/file.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.file.share
@@ -166,6 +166,19 @@ directive:
     if (!param["$ref"].endsWith("ShareName")) {
         const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareName");
         $.get.parameters.splice(0, 0, { "$ref": path });
+    }
+```
+
+### /{shareName}?restype=share&comp=undelete
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{shareName}?restype=share&comp=undelete"]
+  transform: >
+    let param = $.put.parameters[0];
+    if (!param["$ref"].endsWith("ShareName")) {
+        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareName");
+        $.put.parameters.splice(0, 0, { "$ref": path });
     }
 ```
 

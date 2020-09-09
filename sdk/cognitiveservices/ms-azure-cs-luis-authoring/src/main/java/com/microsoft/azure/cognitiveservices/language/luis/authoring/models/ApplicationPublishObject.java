@@ -28,12 +28,6 @@ public class ApplicationPublishObject {
     private Boolean isStaging;
 
     /**
-     * The target region that the application is published to.
-     */
-    @JsonProperty(value = "region")
-    private String region;
-
-    /**
      * Get the versionId value.
      *
      * @return the versionId value
@@ -70,26 +64,6 @@ public class ApplicationPublishObject {
      */
     public ApplicationPublishObject withIsStaging(Boolean isStaging) {
         this.isStaging = isStaging;
-        return this;
-    }
-
-    /**
-     * Get the region value.
-     *
-     * @return the region value
-     */
-    public String region() {
-        return this.region;
-    }
-
-    /**
-     * Set the region value.
-     *
-     * @param region the region value to set
-     * @return the ApplicationPublishObject object itself.
-     */
-    public ApplicationPublishObject withRegion(String region) {
-        this.region = region;
         return this;
     }
 

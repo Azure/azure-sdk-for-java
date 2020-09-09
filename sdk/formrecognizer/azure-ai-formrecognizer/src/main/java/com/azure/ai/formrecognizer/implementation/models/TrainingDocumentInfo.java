@@ -4,14 +4,11 @@
 
 package com.azure.ai.formrecognizer.implementation.models;
 
-import com.azure.ai.formrecognizer.models.ErrorInformation;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The TrainingDocumentInfo model.
- */
+/** The TrainingDocumentInfo model. */
 @Fluent
 public final class TrainingDocumentInfo {
     /*
@@ -40,7 +37,7 @@ public final class TrainingDocumentInfo {
 
     /**
      * Get the documentName property: Training document name.
-     * 
+     *
      * @return the documentName value.
      */
     public String getDocumentName() {
@@ -49,7 +46,7 @@ public final class TrainingDocumentInfo {
 
     /**
      * Set the documentName property: Training document name.
-     * 
+     *
      * @param documentName the documentName value to set.
      * @return the TrainingDocumentInfo object itself.
      */
@@ -60,7 +57,7 @@ public final class TrainingDocumentInfo {
 
     /**
      * Get the pages property: Total number of pages trained.
-     * 
+     *
      * @return the pages value.
      */
     public int getPages() {
@@ -69,7 +66,7 @@ public final class TrainingDocumentInfo {
 
     /**
      * Set the pages property: Total number of pages trained.
-     * 
+     *
      * @param pages the pages value to set.
      * @return the TrainingDocumentInfo object itself.
      */
@@ -80,7 +77,7 @@ public final class TrainingDocumentInfo {
 
     /**
      * Get the errors property: List of errors.
-     * 
+     *
      * @return the errors value.
      */
     public List<ErrorInformation> getErrors() {
@@ -89,7 +86,7 @@ public final class TrainingDocumentInfo {
 
     /**
      * Set the errors property: List of errors.
-     * 
+     *
      * @param errors the errors value to set.
      * @return the TrainingDocumentInfo object itself.
      */
@@ -100,7 +97,7 @@ public final class TrainingDocumentInfo {
 
     /**
      * Get the status property: Status of the training operation.
-     * 
+     *
      * @return the status value.
      */
     public TrainStatus getStatus() {
@@ -109,7 +106,7 @@ public final class TrainingDocumentInfo {
 
     /**
      * Set the status property: Status of the training operation.
-     * 
+     *
      * @param status the status value to set.
      * @return the TrainingDocumentInfo object itself.
      */

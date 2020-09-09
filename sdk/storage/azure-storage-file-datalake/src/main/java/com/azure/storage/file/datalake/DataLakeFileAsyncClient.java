@@ -14,7 +14,10 @@ import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.ProgressReporter;
+import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.BufferAggregator;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadBufferPool;
 import com.azure.storage.common.implementation.UploadUtils;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
@@ -24,6 +27,9 @@ import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.ModelHelper;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
+import com.azure.storage.file.datalake.models.FileQueryAsyncResponse;
+import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
+import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.FileReadAsyncResponse;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
@@ -44,7 +50,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
@@ -80,7 +85,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     /**
      * Indicates the maximum number of bytes that can be sent in a call to upload.
      */
-    static final int MAX_APPEND_FILE_BYTES = 100 * Constants.MB;
+    static final long MAX_APPEND_FILE_BYTES = 4000L * Constants.MB;
 
     private final ClientLogger logger = new ClientLogger(DataLakeFileAsyncClient.class);
 
@@ -259,29 +264,62 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         ParallelTransferOptions parallelTransferOptions, PathHttpHeaders headers, Map<String, String> metadata,
         DataLakeRequestConditions requestConditions) {
         try {
-            Objects.requireNonNull(data, "'data' must not be null");
-            DataLakeRequestConditions validatedRequestConditions = requestConditions == null
-                ? new DataLakeRequestConditions() : requestConditions;
+            return uploadWithResponse(new FileParallelUploadOptions(data)
+                .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
+                .setRequestConditions(requestConditions));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Creates a new file.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link DataLakeRequestConditions#setIfNoneMatch(String)}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadWithResponse#FileParallelUploadOptions}
+     *
+     * <p><strong>Using Progress Reporting</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadWithResponse#FileParallelUploadOptions.ProgressReporter}
+     *
+     * @param options {@link FileParallelUploadOptions}
+     * @return A reactive response containing the information of the uploaded file.
+     */
+    public Mono<Response<PathInfo>> uploadWithResponse(FileParallelUploadOptions options) {
+        try {
+            StorageImplUtils.assertNotNull("options", options);
+            DataLakeRequestConditions validatedRequestConditions = options.getRequestConditions() == null
+                ? new DataLakeRequestConditions() : options.getRequestConditions();
             /* Since we are creating a file with the request conditions, everything but lease id becomes invalid
              after creation, so remove them for the append/flush calls. */
             DataLakeRequestConditions validatedUploadRequestConditions = new DataLakeRequestConditions()
                 .setLeaseId(validatedRequestConditions.getLeaseId());
             final ParallelTransferOptions validatedParallelTransferOptions =
-                ModelHelper.populateAndApplyDefaults(parallelTransferOptions);
+                ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
             long fileOffset = 0;
 
             Function<Flux<ByteBuffer>, Mono<Response<PathInfo>>> uploadInChunksFunction = (stream) ->
-                uploadInChunks(stream, fileOffset, validatedParallelTransferOptions, headers,
+                uploadInChunks(stream, fileOffset, validatedParallelTransferOptions, options.getHeaders(),
                     validatedUploadRequestConditions);
 
             BiFunction<Flux<ByteBuffer>, Long, Mono<Response<PathInfo>>> uploadFullMethod =
                 (stream, length) -> uploadWithResponse(ProgressReporter
                         .addProgressReporting(stream, validatedParallelTransferOptions.getProgressReceiver()),
-                    fileOffset, length, headers, validatedUploadRequestConditions);
+                    fileOffset, length, options.getHeaders(), validatedUploadRequestConditions);
 
-            return createWithResponse(null, null, headers, metadata, validatedRequestConditions)
+            Flux<ByteBuffer> data = options.getDataFlux() == null ? Utility.convertStreamToByteBuffer(
+                options.getDataStream(), options.getLength(),
+                // We can only buffer up to max int due to restrictions in ByteBuffer.
+                (int) Math.min(Integer.MAX_VALUE, validatedParallelTransferOptions.getBlockSizeLong()))
+                : options.getDataFlux();
+
+            return createWithResponse(options.getPermissions(), options.getUmask(), options.getHeaders(),
+                options.getMetadata(), validatedRequestConditions)
                 .then(UploadUtils.uploadFullOrChunked(data, validatedParallelTransferOptions,
-                uploadInChunksFunction, uploadFullMethod));
+                    uploadInChunksFunction, uploadFullMethod));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -295,8 +333,12 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         Lock progressLock = new ReentrantLock();
 
         // Validation done in the constructor.
-        UploadBufferPool pool = new UploadBufferPool(parallelTransferOptions.getNumBuffers(),
-            parallelTransferOptions.getBlockSize(), MAX_APPEND_FILE_BYTES);
+        /*
+        We use maxConcurrency + 1 for the number of buffers because one buffer will typically be being filled while the
+        others are being sent.
+         */
+        UploadBufferPool pool = new UploadBufferPool(parallelTransferOptions.getMaxConcurrency() + 1,
+            parallelTransferOptions.getBlockSizeLong(), MAX_APPEND_FILE_BYTES);
 
         Flux<ByteBuffer> chunkedSource = UploadUtils.chunkSource(data, parallelTransferOptions);
 
@@ -306,7 +348,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         return chunkedSource.concatMap(pool::write)
             .concatWith(Flux.defer(pool::flush))
             /* Map the data to a tuple 3, of buffer, buffer length, buffer offset */
-            .map(buffer -> Tuples.of(buffer, (long) buffer.remaining(), (long) 0))
+            .map(bufferAggregator -> Tuples.of(bufferAggregator, bufferAggregator.length(), 0L))
             /* Scan reduces a flux with an accumulator while emitting the intermediate results. */
             /* As an example, data consists of ByteBuffers of length 10-10-5.
                In the map above we transform the initial ByteBuffer to a tuple3 of buff, 10, 0.
@@ -315,26 +357,27 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                (from previous emission). Scan emits that, and on the last iteration, the last ByteBuffer gets
                transformed to buff, 5, 10+10 (from previous emission). */
             .scan((result, source) -> {
-                ByteBuffer buffer = source.getT1();
-                long currentBufferLength = buffer.remaining();
+                BufferAggregator bufferAggregator = source.getT1();
+                long currentBufferLength = bufferAggregator.length();
                 long lastBytesWritten = result.getT2();
                 long lastOffset = result.getT3();
 
-                return Tuples.of(buffer, currentBufferLength, lastBytesWritten + lastOffset);
+                return Tuples.of(bufferAggregator, currentBufferLength, lastBytesWritten + lastOffset);
             })
             .flatMapSequential(tuple3 -> {
-                ByteBuffer buffer = tuple3.getT1();
-                long currentBufferLength = buffer.remaining();
+                BufferAggregator bufferAggregator = tuple3.getT1();
+                long currentBufferLength = bufferAggregator.length();
                 long currentOffset = tuple3.getT3() + fileOffset;
                 // Report progress as necessary.
                 Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(
-                    Flux.just(buffer), parallelTransferOptions.getProgressReceiver(), progressLock, totalProgress);
+                    bufferAggregator.asFlux(), parallelTransferOptions.getProgressReceiver(),
+                    progressLock, totalProgress);
                 return appendWithResponse(progressData, currentOffset, currentBufferLength, null,
                     requestConditions.getLeaseId())
-                    .doFinally(x -> pool.returnBuffer(buffer))
+                    .doFinally(x -> pool.returnBuffer(bufferAggregator))
                     .map(resp -> currentBufferLength + currentOffset) /* End of file after append to pass to flush. */
                     .flux();
-            })
+            }, parallelTransferOptions.getMaxConcurrency())
             .last()
             .flatMap(length -> flushWithResponse(length, false, false, httpHeaders, requestConditions));
     }
@@ -385,7 +428,8 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
 
             // Note that if the file will be uploaded using a putBlob, we also can skip the exists check.
             if (!overwrite) {
-                if (UploadUtils.shouldUploadInChunks(filePath, DataLakeFileAsyncClient.MAX_APPEND_FILE_BYTES, logger)) {
+                if (UploadUtils.shouldUploadInChunks(filePath,
+                    DataLakeFileAsyncClient.MAX_APPEND_FILE_BYTES, logger)) {
                     overwriteCheck = exists().flatMap(exists -> exists
                         ? monoError(logger, new IllegalArgumentException(Constants.FILE_ALREADY_EXISTS))
                         : Mono.empty());
@@ -421,9 +465,9 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      */
     public Mono<Void> uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions requestConditions) {
-        Integer originalBlockSize = (parallelTransferOptions == null)
+        Long originalBlockSize = (parallelTransferOptions == null)
             ? null
-            : parallelTransferOptions.getBlockSize();
+            : parallelTransferOptions.getBlockSizeLong();
 
         DataLakeRequestConditions validatedRequestConditions = requestConditions == null
             ? new DataLakeRequestConditions() : requestConditions;
@@ -448,7 +492,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                                 + "greater than 0."));
                         }
                         if (UploadUtils.shouldUploadInChunks(filePath,
-                            finalParallelTransferOptions.getMaxSingleUploadSize(), logger)) {
+                            finalParallelTransferOptions.getMaxSingleUploadSizeLong(), logger)) {
                             return createWithResponse(null, null, headers, metadata, validatedRequestConditions)
                                 .then(uploadFileChunks(fileOffset, fileSize, finalParallelTransferOptions,
                                     originalBlockSize, headers, validatedUploadRequestConditions, channel));
@@ -471,7 +515,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     }
 
     private Mono<Void> uploadFileChunks(long fileOffset, long fileSize, ParallelTransferOptions parallelTransferOptions,
-        Integer originalBlockSize, PathHttpHeaders headers, DataLakeRequestConditions requestConditions,
+        Long originalBlockSize, PathHttpHeaders headers, DataLakeRequestConditions requestConditions,
         AsynchronousFileChannel channel) {
         // parallelTransferOptions are finalized in the calling method.
 
@@ -479,7 +523,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         AtomicLong totalProgress = new AtomicLong();
         Lock progressLock = new ReentrantLock();
 
-        return Flux.fromIterable(sliceFile(fileSize, originalBlockSize, parallelTransferOptions.getBlockSize()))
+        return Flux.fromIterable(sliceFile(fileSize, originalBlockSize, parallelTransferOptions.getBlockSizeLong()))
             .flatMap(chunk -> {
                 Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(
                     FluxUtil.readFile(channel, chunk.getOffset(), chunk.getCount()),
@@ -487,13 +531,13 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
 
                 return appendWithResponse(progressData, fileOffset + chunk.getOffset(), chunk.getCount(), null,
                     requestConditions.getLeaseId());
-            })
+            }, parallelTransferOptions.getMaxConcurrency())
             .then(Mono.defer(() ->
                 flushWithResponse(fileSize, false, false, headers, requestConditions)))
             .then();
     }
 
-    private List<FileRange> sliceFile(long fileSize, Integer originalBlockSize, int blockSize) {
+    private List<FileRange> sliceFile(long fileSize, Long originalBlockSize, long blockSize) {
         List<FileRange> ranges = new ArrayList<>();
         if (fileSize > 100 * Constants.MB && originalBlockSize == null) {
             blockSize = BlobAsyncClient.BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE;
@@ -876,5 +920,41 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         }
     }
 
+    /**
+     * Queries the entire file.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.query#String}
+     *
+     * @param expression The query expression.
+     * @return A reactive response containing the queried data.
+     */
+    public Flux<ByteBuffer> query(String expression) {
+        return queryWithResponse(new FileQueryOptions(expression))
+            .flatMapMany(FileQueryAsyncResponse::getValue);
+    }
+
+    /**
+     * Queries the entire file.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.queryWithResponse#FileQueryOptions}
+     *
+     * @param queryOptions {@link FileQueryOptions The query options}
+     * @return A reactive response containing the queried data.
+     */
+    public Mono<FileQueryAsyncResponse> queryWithResponse(FileQueryOptions queryOptions) {
+        return blockBlobAsyncClient.queryWithResponse(Transforms.toBlobQueryOptions(queryOptions))
+            .map(Transforms::toFileQueryAsyncResponse)
+            .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
+    }
 
 }

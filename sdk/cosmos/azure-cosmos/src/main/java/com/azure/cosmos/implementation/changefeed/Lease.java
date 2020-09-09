@@ -4,7 +4,7 @@ package com.azure.cosmos.implementation.changefeed;
 
 import com.azure.cosmos.ChangeFeedProcessor;
 
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.Map;
 
 /**
@@ -94,7 +94,7 @@ public interface Lease {
      *
      * @param timestamp the timestamp of the lease.
      */
-    void setTimestamp(ZonedDateTime timestamp);
+    void setTimestamp(Instant timestamp);
 
     /**
      * Sets the lease ID.

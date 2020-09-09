@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.implementation.BadRequestException;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.InvalidPartitionException;
 import com.azure.cosmos.implementation.PartitionIsMigratingException;
@@ -100,7 +100,7 @@ public class GoneAndRetryWithRetryPolicyTest {
         // It will retry max till 3 attempts
         shouldRetryResult = goneAndRetryWithRetryPolicy.shouldRetry(new InvalidPartitionException()).block();
         assertThat(shouldRetryResult.shouldRetry).isFalse();
-        CosmosClientException clientException = (CosmosClientException) shouldRetryResult.exception;
+        CosmosException clientException = (CosmosException) shouldRetryResult.exception;
         assertThat(clientException.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
 
     }

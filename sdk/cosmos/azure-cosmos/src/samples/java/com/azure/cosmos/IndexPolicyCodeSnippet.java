@@ -3,12 +3,13 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.models.DataType;
-import com.azure.cosmos.models.HashIndex;
-import com.azure.cosmos.models.Index;
+import com.azure.cosmos.implementation.DataType;
+import com.azure.cosmos.implementation.HashIndex;
+import com.azure.cosmos.implementation.Index;
 import com.azure.cosmos.models.IndexingPolicy;
-import com.azure.cosmos.models.RangeIndex;
-import com.azure.cosmos.models.SpatialIndex;
+import com.azure.cosmos.implementation.RangeIndex;
+import com.azure.cosmos.implementation.SpatialIndex;
+import com.azure.cosmos.models.ModelBridgeInternal;
 
 /**
  * Code snippets for {@link IndexingPolicy}
@@ -21,7 +22,7 @@ public class IndexPolicyCodeSnippet {
         RangeIndex rangeIndexOverride = Index.range(DataType.NUMBER, 2);
         SpatialIndex spatialIndexOverride = Index.spatial(DataType.POINT);
 
-        IndexingPolicy indexingPolicy = new IndexingPolicy(new Index[]{hashIndexOverride,
+        IndexingPolicy indexingPolicy = ModelBridgeInternal.createIndexingPolicy(new Index[]{hashIndexOverride,
             rangeIndexOverride, spatialIndexOverride});
         // END: com.azure.cosmos.indexingPolicy.defaultOverride
     }

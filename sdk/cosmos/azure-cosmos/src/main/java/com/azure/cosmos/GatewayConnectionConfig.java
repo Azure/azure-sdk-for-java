@@ -3,7 +3,8 @@
 
 package com.azure.cosmos;
 
-import java.net.InetSocketAddress;
+import com.azure.core.http.ProxyOptions;
+
 import java.time.Duration;
 
 /**
@@ -11,21 +12,21 @@ import java.time.Duration;
  */
 public final class GatewayConnectionConfig {
     //  Constants
-    private static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(60);
+    private static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(5);
     private static final Duration DEFAULT_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
-    private static final int DEFAULT_MAX_POOL_SIZE = 1000;
+    private static final int DEFAULT_MAX_CONNECTION_POOL_SIZE = 1000;
 
     private Duration requestTimeout;
     private int maxConnectionPoolSize;
     private Duration idleConnectionTimeout;
-    private InetSocketAddress inetSocketProxyAddress;
+    private ProxyOptions proxy;
 
     /**
      * Constructor.
      */
     public GatewayConnectionConfig() {
         this.idleConnectionTimeout = DEFAULT_IDLE_CONNECTION_TIMEOUT;
-        this.maxConnectionPoolSize = DEFAULT_MAX_POOL_SIZE;
+        this.maxConnectionPoolSize = DEFAULT_MAX_CONNECTION_POOL_SIZE;
         this.requestTimeout = DEFAULT_REQUEST_TIMEOUT;
     }
 
@@ -43,18 +44,18 @@ public final class GatewayConnectionConfig {
      *
      * @return the request timeout duration.
      */
-    public Duration getRequestTimeout() {
+    Duration getRequestTimeout() {
         return this.requestTimeout;
     }
 
     /**
      * Sets the request timeout (time to wait for response from network peer).
-     * The default is 60 seconds.
+     * The default is 5 seconds.
      *
      * @param requestTimeout the request timeout duration.
      * @return the {@link GatewayConnectionConfig}.
      */
-    public GatewayConnectionConfig setRequestTimeout(Duration requestTimeout) {
+    GatewayConnectionConfig setRequestTimeout(Duration requestTimeout) {
         this.requestTimeout = requestTimeout;
         return this;
     }
@@ -103,34 +104,42 @@ public final class GatewayConnectionConfig {
     }
 
     /**
-     * Gets the InetSocketAddress of proxy server.
+     * Gets the proxy options which contain the InetSocketAddress of proxy server.
      *
-     * @return the value of proxyHost.
+     * @return the proxy options.
      */
-    public InetSocketAddress getProxy() {
-        return this.inetSocketProxyAddress;
+    public ProxyOptions getProxy() {
+        return this.proxy;
     }
 
     /**
-     * This will create the InetSocketAddress for proxy server,
-     * all the requests to cosmoDB will route from this address.
+     * Sets the proxy options.
      *
-     * @param proxy The proxy server.
+     * Currently only support Http proxy type with just the routing address. Username and password will be ignored.
+     *
+     * @param proxy The proxy options.
      * @return the {@link GatewayConnectionConfig}.
      */
 
-    public GatewayConnectionConfig setProxy(InetSocketAddress proxy) {
-        this.inetSocketProxyAddress = proxy;
+    public GatewayConnectionConfig setProxy(ProxyOptions proxy) {
+        if (proxy.getType() != ProxyOptions.Type.HTTP) {
+            throw new IllegalArgumentException("Only http proxy type is supported.");
+        }
+
+        this.proxy = proxy;
         return this;
     }
 
     @Override
     public String toString() {
+        String proxyType = proxy != null ? proxy.getType().toString() : null;
+        String proxyAddress = proxy != null ? proxy.getAddress().toString() : null;
+
         return "GatewayConnectionConfig{" +
-            "requestTimeout=" + requestTimeout +
             ", maxConnectionPoolSize=" + maxConnectionPoolSize +
             ", idleConnectionTimeout=" + idleConnectionTimeout +
-            ", inetSocketProxyAddress=" + inetSocketProxyAddress +
+            ", proxyType=" + proxyType +
+            ", inetSocketProxyAddress=" + proxyAddress +
             '}';
     }
 }

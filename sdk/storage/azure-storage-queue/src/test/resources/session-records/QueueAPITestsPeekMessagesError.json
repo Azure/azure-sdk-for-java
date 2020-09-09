@@ -1,26 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://gapradev.queue.core.windows.net/queueapitestspeekmessageserror56919dd356ce454af/messages?peekonly=true",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queueapitestspeekmessageserror00948b4640202c767/messages?peekonly=true",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "50407cc0-c51a-40b4-9fe5-b55c4b9d03b7"
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "38d0bd2e-9e9d-492f-bf25-4087d6ce7504"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "x-ms-version" : "2019-12-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "QueueNotFound",
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "d25b8262-f003-0012-2a71-e0e9eb000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:d25b8262-f003-0012-2a71-e0e9eb000000\nTime:2020-02-11T00:24:42.0363423Z</Message></Error>",
-      "Date" : "Tue, 11 Feb 2020 00:24:41 GMT",
-      "x-ms-client-request-id" : "50407cc0-c51a-40b4-9fe5-b55c4b9d03b7",
+      "x-ms-request-id" : "37a39ef6-3003-009b-5603-3a8ca5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:37a39ef6-3003-009b-5603-3a8ca5000000\nTime:2020-06-04T00:05:05.8192658Z</Message></Error>",
+      "Date" : "Thu, 04 Jun 2020 00:05:05 GMT",
+      "x-ms-client-request-id" : "38d0bd2e-9e9d-492f-bf25-4087d6ce7504",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueapitestspeekmessageserror56919dd356ce454af" ]
+  "variables" : [ "queueapitestspeekmessageserror00948b4640202c767" ]
 }

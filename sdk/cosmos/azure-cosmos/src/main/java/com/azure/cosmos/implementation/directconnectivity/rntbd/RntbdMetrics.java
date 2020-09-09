@@ -4,11 +4,11 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
+import com.azure.cosmos.implementation.guava25.net.PercentEscaper;
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.MetricRegistry;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.azure.cosmos.implementation.guava25.net.PercentEscaper;
 import io.micrometer.core.instrument.Clock;
 import io.micrometer.core.instrument.DistributionSummary;
 import io.micrometer.core.instrument.Gauge;
@@ -25,7 +25,6 @@ import io.micrometer.core.instrument.util.HierarchicalNameMapper;
 import io.micrometer.core.lang.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.util.annotation.NonNull;
 
 import java.util.concurrent.TimeUnit;
 
@@ -282,7 +281,6 @@ public final class RntbdMetrics {
         final MeterRegistry consoleLoggingRegistry = new DropwizardMeterRegistry(
             dropwizardConfig, dropwizardRegistry, HierarchicalNameMapper.DEFAULT, Clock.SYSTEM) {
             @Override
-            @NonNull
             protected Double nullGaugeValue() {
                 return Double.NaN;
             }

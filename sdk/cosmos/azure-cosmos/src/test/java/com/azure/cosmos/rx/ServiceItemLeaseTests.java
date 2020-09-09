@@ -8,7 +8,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.testng.annotations.Test;
 
-import java.time.ZonedDateTime;
+import java.time.Instant;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -17,7 +17,7 @@ public class ServiceItemLeaseTests {
 
     @Test(groups = { "unit" }, timeOut = TIMEOUT)
     public void serviceItemLeaseSerialization() throws JsonProcessingException {
-        ZonedDateTime timeNow = ZonedDateTime.now();
+        Instant timeNow = Instant.now();
         String timeNowValue = timeNow.toString();
 
         Lease lease1 = new ServiceItemLease()

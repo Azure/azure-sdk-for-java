@@ -20,9 +20,10 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
      * Sets the client certificate for authenticating to AAD.
      *
      * @param certificatePath the PEM file containing the certificate
-     * @return the ClientCertificateCredentialBuilder itself
+     * @return An updated instance of this builder.
      */
     public ClientCertificateCredentialBuilder pemCertificate(String certificatePath) {
+        ValidationUtil.validateFilePath(getClass().getSimpleName(), certificatePath, "Pem Certificate Path");
         this.clientCertificate = certificatePath;
         return this;
     }
@@ -32,11 +33,35 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
      *
      * @param certificatePath the password protected PFX file containing the certificate
      * @param clientCertificatePassword the password protecting the PFX file
-     * @return the ClientCertificateCredentialBuilder itself
+     * @return An updated instance of this builder.
      */
     public ClientCertificateCredentialBuilder pfxCertificate(String certificatePath, String clientCertificatePassword) {
+        ValidationUtil.validateFilePath(getClass().getSimpleName(), certificatePath, "Pfx Certificate Path");
         this.clientCertificate = certificatePath;
         this.clientCertificatePassword = clientCertificatePassword;
+        return this;
+    }
+
+    /**
+     * Allows to use an unprotected file specified by <code>cacheFileLocation()</code> instead of
+     * Gnome keyring on Linux. This is restricted by default.
+     *
+     * @return An updated instance of this builder.
+     */
+    ClientCertificateCredentialBuilder allowUnencryptedCache() {
+        this.identityClientOptions.allowUnencryptedCache();
+        return this;
+    }
+
+    /**
+     * Enables the shared token cache which is disabled by default. If enabled, the credential will store tokens
+     * in a cache persisted to the machine, protected to the current user, which can be shared by other credentials
+     * and processes.
+     *
+     * @return An updated instance of this builder.
+     */
+    ClientCertificateCredentialBuilder enablePersistentCache() {
+        this.identityClientOptions.enablePersistentCache();
         return this;
     }
 

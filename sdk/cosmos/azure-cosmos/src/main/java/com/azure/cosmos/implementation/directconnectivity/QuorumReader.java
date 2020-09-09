@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.Configs;
@@ -141,7 +141,7 @@ public class QuorumReader {
                             case QuorumMet:
                                 try {
                                             return Flux.just(secondaryQuorumReadResult.getResponse());
-                                } catch (CosmosClientException e) {
+                                } catch (CosmosException e) {
                                     return Flux.error(e);
                                 }
 
@@ -209,7 +209,7 @@ public class QuorumReader {
                                             logger.debug("QuorumNotSelected: ReadPrimary successful");
                                             try {
                                                             return Flux.just(response.getResponse());
-                                            } catch (CosmosClientException e) {
+                                            } catch (CosmosException e) {
                                                 return Flux.error(e);
                                             }
                                         } else if (response.shouldRetryOnSecondary) {
@@ -720,7 +720,7 @@ public class QuorumReader {
             this.response = response;
         }
 
-        public StoreResponse getResponse() throws CosmosClientException {
+        public StoreResponse getResponse() {
             if (!this.isValidResult()) {
                 logger.error("getResponse called for invalid result");
                 throw new InternalServerErrorException(RMResources.InternalServerError);

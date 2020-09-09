@@ -22,6 +22,18 @@ public final class BlobContainerItem {
     private String name;
 
     /*
+     * The deleted property.
+     */
+    @JsonProperty(value = "Deleted")
+    private Boolean deleted;
+
+    /*
+     * The version property.
+     */
+    @JsonProperty(value = "Version")
+    private String version;
+
+    /*
      * The properties property.
      */
     @JsonProperty(value = "Properties", required = true)
@@ -50,6 +62,46 @@ public final class BlobContainerItem {
      */
     public BlobContainerItem setName(String name) {
         this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the deleted property: The deleted property.
+     *
+     * @return the deleted value.
+     */
+    public Boolean isDeleted() {
+        return this.deleted;
+    }
+
+    /**
+     * Set the deleted property: The deleted property.
+     *
+     * @param deleted the deleted value to set.
+     * @return the BlobContainerItem object itself.
+     */
+    public BlobContainerItem setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+        return this;
+    }
+
+    /**
+     * Get the version property: The version property.
+     *
+     * @return the version value.
+     */
+    public String getVersion() {
+        return this.version;
+    }
+
+    /**
+     * Set the version property: The version property.
+     *
+     * @param version the version value to set.
+     * @return the BlobContainerItem object itself.
+     */
+    public BlobContainerItem setVersion(String version) {
+        this.version = version;
         return this;
     }
 

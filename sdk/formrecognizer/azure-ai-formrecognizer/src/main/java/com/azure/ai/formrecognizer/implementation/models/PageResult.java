@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The PageResult model.
- */
+/** The PageResult model. */
 @Fluent
 public final class PageResult {
     /*
@@ -39,7 +37,7 @@ public final class PageResult {
 
     /**
      * Get the page property: Page number.
-     * 
+     *
      * @return the page value.
      */
     public int getPage() {
@@ -48,7 +46,7 @@ public final class PageResult {
 
     /**
      * Set the page property: Page number.
-     * 
+     *
      * @param page the page value to set.
      * @return the PageResult object itself.
      */
@@ -59,7 +57,7 @@ public final class PageResult {
 
     /**
      * Get the clusterId property: Cluster identifier.
-     * 
+     *
      * @return the clusterId value.
      */
     public Integer getClusterId() {
@@ -68,7 +66,7 @@ public final class PageResult {
 
     /**
      * Set the clusterId property: Cluster identifier.
-     * 
+     *
      * @param clusterId the clusterId value to set.
      * @return the PageResult object itself.
      */
@@ -78,9 +76,8 @@ public final class PageResult {
     }
 
     /**
-     * Get the keyValuePairs property: List of key-value pairs extracted from
-     * the page.
-     * 
+     * Get the keyValuePairs property: List of key-value pairs extracted from the page.
+     *
      * @return the keyValuePairs value.
      */
     public List<KeyValuePair> getKeyValuePairs() {
@@ -88,9 +85,8 @@ public final class PageResult {
     }
 
     /**
-     * Set the keyValuePairs property: List of key-value pairs extracted from
-     * the page.
-     * 
+     * Set the keyValuePairs property: List of key-value pairs extracted from the page.
+     *
      * @param keyValuePairs the keyValuePairs value to set.
      * @return the PageResult object itself.
      */
@@ -101,7 +97,7 @@ public final class PageResult {
 
     /**
      * Get the tables property: List of data tables extracted from the page.
-     * 
+     *
      * @return the tables value.
      */
     public List<DataTable> getTables() {
@@ -110,7 +106,7 @@ public final class PageResult {
 
     /**
      * Set the tables property: List of data tables extracted from the page.
-     * 
+     *
      * @param tables the tables value to set.
      * @return the PageResult object itself.
      */

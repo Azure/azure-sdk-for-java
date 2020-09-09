@@ -12,23 +12,23 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A labeled example.
+ * A labeled example utterance.
  */
 public class ExampleLabelObject {
     /**
-     * The sample's utterance.
+     * The example utterance.
      */
     @JsonProperty(value = "text")
     private String text;
 
     /**
-     * The idenfied entities within the utterance.
+     * The identified entities within the example utterance.
      */
     @JsonProperty(value = "entityLabels")
     private List<EntityLabelObject> entityLabels;
 
     /**
-     * The idenfitied intent representing the utterance.
+     * The identified intent representing the example utterance.
      */
     @JsonProperty(value = "intentName")
     private String intentName;

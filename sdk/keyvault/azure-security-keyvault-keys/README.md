@@ -14,7 +14,7 @@ Maven dependency for the Azure Key Vault Key client library. Add it to your proj
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-keys</artifactId>
-    <version>4.2.0-beta.1</version>
+    <version>4.2.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -87,8 +87,8 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.KeyClient;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
 
-KeyClient client = new KeyClientBuilder()
-    .vaultUrl(<your-key-vault-url>)
+KeyClient keyClient = new KeyClientBuilder()
+    .vaultUrl("<your-key-vault-url>")
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
 ```
@@ -114,7 +114,7 @@ CryptographyClient cryptoClient = new CryptographyClientBuilder()
 
 ## Key concepts
 ### Key
-  Azure Key Vault supports multiple key types (`RSA` & `EC`) and algorithms, and enables the use of Hardware Security Modules (HSM) for high value keys. In addition to the key material, the following attributes may be specified:
+Azure Key Vault supports multiple key types (`RSA` & `EC`) and algorithms, and enables the use of Hardware Security Modules (HSM) for high value keys. In addition to the key material, the following attributes may be specified:
 * enabled: Specifies whether the key is enabled and usable for cryptographic operations.
 * not_before: Identifies the time before which the key must not be used for cryptographic operations.
 * expires: Identifies the expiration time on or after which the key MUST NOT be used for cryptographic operations.
@@ -125,7 +125,7 @@ CryptographyClient cryptoClient = new CryptographyClientBuilder()
 The key client performs the interactions with the Azure Key Vault service for getting, setting, updating, deleting, and listing keys and its versions. Asynchronous (KeyAsyncClient) and synchronous (KeyClient) clients exist in the SDK allowing for the selection of a client based on an application's use case. Once you've initialized a key, you can interact with the primary resource types in Key Vault.
 
 ### Cryptography client:
-The Cryptography client performs the cryptographic operations locally or calls the Azure Key Vault service depending on how much key information is available locally. It supports encrypting, decrypting, signing, verifying, key wrapping, key unwrapping, and retrieving the configured key. Asynchronous (CryptographyAsyncClient) and synchronous (CryptographyClient) clients exist in the SDK allowing for the selection of a client based on an application's use case.
+The cryptography client performs the cryptographic operations locally or calls the Azure Key Vault service depending on how much key information is available locally. It supports encrypting, decrypting, signing, verifying, key wrapping, key unwrapping, and retrieving the configured key. Asynchronous (CryptographyAsyncClient) and synchronous (CryptographyClient) clients exist in the SDK allowing for the selection of a client based on an application's use case.
 
 ## Examples
 ### Sync API
@@ -152,19 +152,19 @@ import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
 
 KeyClient keyClient = new KeyClientBuilder()
-    .vaultUrl(<your-key-vault-url>)
+    .vaultUrl("<your-key-vault-url>")
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
 
 KeyVaultKey rsaKey = keyClient.createRsaKey(new CreateRsaKeyOptions("CloudRsaKey")
     .setExpiresOn(OffsetDateTime.now().plusYears(1))
     .setKeySize(2048));
-System.out.printf("Key created with name \"%s\" and id %s\n", rsaKey.getName(), rsaKey.getId());
+System.out.printf("Key created with name \"%s\" and id %s%n", rsaKey.getName(), rsaKey.getId());
 
 KeyVaultKey ecKey = keyClient.createEcKey(new CreateEcKeyOptions("CloudEcKey")
     .setCurveName(KeyCurveName.P_256)
     .setExpiresOn(OffsetDateTime.now().plusYears(1)));
-System.out.printf("Key created with name \"%s\" and id %s\n", ecKey.getName(), ecKey.getId());
+System.out.printf("Key created with name \"%s\" and id %s%n", ecKey.getName(), ecKey.getId());
 ```
 
 ### Retrieve a key
@@ -172,7 +172,7 @@ Retrieve a previously stored key by calling `getKey`.
 
 ```Java
 KeyVaultKey key = keyClient.getKey("<key-name>");
-System.out.printf("A key was returned with name \"%s\" and id %s\n", key.getName(), key.getId());
+System.out.printf("A key was returned with name \"%s\" and id %s%n", key.getName(), key.getId());
 ```
 
 ### Update an existing key
@@ -184,7 +184,7 @@ KeyVaultKey key = keyClient.getKey("<key-name>");
 // Update the expiry time of the key.
 key.getProperties().setExpiresOn(OffsetDateTime.now().plusDays(30));
 KeyVaultKey updatedKey = keyClient.updateKeyProperties(key.getProperties());
-System.out.printf("Key's updated expiry time: %s\n", updatedKey.getProperties().getExpiresOn().toString());
+System.out.printf("Key's updated expiry time: %s%n", updatedKey.getProperties().getExpiresOn());
 ```
 
 ### Delete a key
@@ -197,8 +197,8 @@ PollResponse<DeletedKey> deletedKeyPollResponse = deletedKeyPoller.poll();
 
 // Deleted key is accessible as soon as polling begins.
 DeletedKey deletedKey = deletedKeyPollResponse.getValue();
-// Deletion date only works for SoftDelete Enabled Key Vault.
-System.out.printf("Deletion date: %s\n", deletedKey.getDeletedOn().toString());
+// Deletion date only works for a SoftDelete-enabled Key Vault.
+System.out.printf("Deletion date: %s%n", deletedKey.getDeletedOn());
 
 // Key is being deleted on server.
 deletedKeyPoller.waitForCompletion();
@@ -212,7 +212,7 @@ List the keys in the key vault by calling `listPropertiesOfKeys`.
 // get the key with its key material information.
 for (KeyProperties keyProperties : keyClient.listPropertiesOfKeys()) {
     KeyVaultKey keyWithMaterial = keyClient.getKey(keyProperties.getName(), keyProperties.getVersion());
-    System.out.printf("Received key with name \"%s\" and type \"%s\"\n", keyWithMaterial.getName(),
+    System.out.printf("Received key with name \"%s\" and type \"%s\"%n", keyWithMaterial.getName(),
         keyWithMaterial.getKey().getKeyType());
 }
 ```
@@ -231,8 +231,8 @@ new Random(0x1234567L).nextBytes(plainText);
 
 // Let's encrypt a simple plain text of size 100 bytes.
 EncryptResult encryptionResult = cryptoClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plainText);
-System.out.printf("Returned cipherText size is %d bytes with algorithm \"%s\"\n",
-    encryptionResult.getCipherText().length, encryptionResult.getAlgorithm().toString());
+System.out.printf("Returned cipherText size is %d bytes with algorithm \"%s\"%n",
+    encryptionResult.getCipherText().length, encryptionResult.getAlgorithm());
 ```
 
 ### Decrypt
@@ -245,7 +245,7 @@ EncryptResult encryptionResult = cryptoClient.encrypt(EncryptionAlgorithm.RSA_OA
 
 //Let's decrypt the encrypted result.
 DecryptResult decryptionResult = cryptoClient.decrypt(EncryptionAlgorithm.RSA_OAEP, encryptionResult.getCipherText());
-System.out.printf("Returned plainText size is %d bytes\n", decryptionResult.getPlainText().length);
+System.out.printf("Returned plainText size is %d bytes%n", decryptionResult.getPlainText().length);
 ```
 
 ### Async API
@@ -255,7 +255,7 @@ The following sections provide several code snippets covering some of the most c
 - [Update an existing key asynchronously](#update-an-existing-key-asynchronously)
 - [Delete a key asynchronously](#delete-a-key-asynchronously)
 - [List keys asynchronously](#list-keys-asynchronously)
-- [Encrypt asynchronously](#encryp-asynchronously)
+- [Encrypt asynchronously](#encrypt-asynchronously)
 - [Decrypt asynchronously](#decrypt-asynchronously)
 
 > Note : You should add `System.in.read()` or `Thread.sleep()` after the function calls in the main class/thread to allow async functions/operations to execute and finish before the main application/thread exits.
@@ -272,7 +272,7 @@ import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 
 KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
-    .vaultUrl(<your-key-vault-url>)
+    .vaultUrl("<your-key-vault-url>")
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildAsyncClient();
 
@@ -280,12 +280,12 @@ keyAsyncClient.createRsaKey(new CreateRsaKeyOptions("CloudRsaKey")
     .setExpiresOn(OffsetDateTime.now().plusYears(1))
     .setKeySize(2048))
     .subscribe(key ->
-        System.out.printf("Key created with name \"%s\" and id %s\n", key.getName(), key.getId()));
+        System.out.printf("Key created with name \"%s\" and id %s%n", key.getName(), key.getId()));
 
 keyAsyncClient.createEcKey(new CreateEcKeyOptions("CloudEcKey")
     .setExpiresOn(OffsetDateTime.now().plusYears(1)))
     .subscribe(key ->
-        System.out.printf("Key created with name \"%s\" and id %s\n", key.getName(), key.getId()));
+        System.out.printf("Key created with name \"%s\" and id %s%n", key.getName(), key.getId()));
 ```
 
 ### Retrieve a key asynchronously
@@ -294,7 +294,7 @@ Retrieve a previously stored key by calling `getKey`.
 ```Java
 keyAsyncClient.getKey("<key-name>")
     .subscribe(key ->
-        System.out.printf("Key was returned with name \"%s\" and id %s\n", key.getName(), key.getId()));
+        System.out.printf("Key was returned with name \"%s\" and id %s%n", key.getName(), key.getId()));
 ```
 
 ### Update an existing key asynchronously
@@ -308,8 +308,7 @@ keyAsyncClient.getKey("<key-name>")
         key.getProperties().setExpiresOn(OffsetDateTime.now().plusDays(50));
         keyAsyncClient.updateKeyProperties(key.getProperties())
             .subscribe(updatedKey ->
-                System.out.printf("Key's updated expiry time: %s\n",
-                    updatedKey.getProperties().getExpiresOn().toString()));
+                System.out.printf("Key's updated expiry time: %s%n", updatedKey.getProperties().getExpiresOn()));
    });
 ```
 
@@ -319,9 +318,9 @@ Delete an existing key by calling `beginDeleteKey`.
 ```java
 keyAsyncClient.beginDeleteKey("<key-name>")
     .subscribe(pollResponse -> {
-        System.out.printf("Deletetion status: %s\n", pollResponse.getStatus().toString());
-        System.out.printf("Deleted key name: %s\n", pollResponse.getValue().getName());
-        System.out.printf("Key deletion date: %s\n", pollResponse.getValue().getDeletedOn().toString());
+        System.out.printf("Deletetion status: %s%n", pollResponse.getStatus());
+        System.out.printf("Deleted key name: %s%n", pollResponse.getValue().getName());
+        System.out.printf("Key deletion date: %s%n", pollResponse.getValue().getDeletedOn());
     });
 ```
 
@@ -353,8 +352,8 @@ new Random(0x1234567L).nextBytes(plainText);
 // Let's encrypt a simple plain text of size 100 bytes.
 cryptoAsyncClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plainText)
     .subscribe(encryptionResult -> {
-        System.out.printf("Returned cipherText size is %d bytes with algorithm \"%s\"\n"
-            encryptionResult.getCipherText().length, encryptionResult.getAlgorithm().toString());
+        System.out.printf("Returned cipherText size is %d bytes with algorithm \"%s\"%n",
+            encryptionResult.getCipherText().length, encryptionResult.getAlgorithm());
     });
 ```
 
@@ -368,12 +367,12 @@ new Random(0x1234567L).nextBytes(plainText);
 // Let's encrypt a simple plain text of size 100 bytes.
 cryptoAsyncClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plainText)
     .subscribe(encryptionResult -> {
-        System.out.printf("Returned cipherText size is %d bytes with algorithm %s\n",
-            encryptionResult.getCipherText().length, encryptionResult.getAlgorithm().toString());
+        System.out.printf("Returned cipherText size is %d bytes with algorithm \"%s\"%n",
+            encryptionResult.getCipherText().length, encryptionResult.getAlgorithm());
         //Let's decrypt the encrypted response.
         cryptoAsyncClient.decrypt(EncryptionAlgorithm.RSA_OAEP, encryptionResult.getCipherText())
             .subscribe(decryptionResult ->
-                System.out.printf("Returned plainText size is %d bytes\n", decryptionResult.getPlainText().length));
+                System.out.printf("Returned plainText size is %d bytes%n", decryptionResult.getPlainText().length));
     });
 ```
 
@@ -398,10 +397,10 @@ All client libraries, by default, use the Tomcat-native Boring SSL library to en
 ## Next steps
 Several Key Vault Java SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Azure Key Vault.
 
-## Next steps Samples
+## Next steps samples
 Samples are explained in detail [here][samples_readme].
 
-###  Additional Documentation
+###  Additional documentation
 For more extensive documentation on Azure Key Vault, see the [API reference documentation][azkeyvault_rest].
 
 ## Contributing

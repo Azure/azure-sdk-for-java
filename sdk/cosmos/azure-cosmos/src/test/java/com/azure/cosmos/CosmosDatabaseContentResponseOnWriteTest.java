@@ -50,7 +50,7 @@ public class CosmosDatabaseContentResponseOnWriteTest extends TestSuiteBase {
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
-    public void createDatabase_withContentResponseOnWriteDisabled() throws CosmosClientException {
+    public void createDatabase_withContentResponseOnWriteDisabled() {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         databases.add(databaseDefinition.getId());
 

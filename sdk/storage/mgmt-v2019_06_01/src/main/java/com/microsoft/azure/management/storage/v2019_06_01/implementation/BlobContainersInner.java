@@ -19,6 +19,7 @@ import com.microsoft.azure.management.storage.v2019_06_01.BlobContainersExtendIm
 import com.microsoft.azure.management.storage.v2019_06_01.BlobContainersGetImmutabilityPolicyHeaders;
 import com.microsoft.azure.management.storage.v2019_06_01.BlobContainersLockImmutabilityPolicyHeaders;
 import com.microsoft.azure.management.storage.v2019_06_01.LeaseContainerRequest;
+import com.microsoft.azure.management.storage.v2019_06_01.ListContainersInclude;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
@@ -72,7 +73,7 @@ public class BlobContainersInner {
     interface BlobContainersService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2019_06_01.BlobContainers list" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers")
-        Observable<Response<ResponseBody>> list(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Query("$maxpagesize") String maxpagesize, @Query("$filter") String filter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Query("$maxpagesize") String maxpagesize, @Query("$filter") String filter, @Query("$include") ListContainersInclude include, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2019_06_01.BlobContainers create" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}")
@@ -232,7 +233,8 @@ public class BlobContainersInner {
         }
         final String maxpagesize = null;
         final String filter = null;
-        return service.list(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), maxpagesize, filter, this.client.acceptLanguage(), this.client.userAgent())
+        final ListContainersInclude include = null;
+        return service.list(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), maxpagesize, filter, include, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ListContainerItemInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ListContainerItemInner>>> call(Response<ResponseBody> response) {
@@ -253,13 +255,14 @@ public class BlobContainersInner {
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param maxpagesize Optional. Specified maximum number of containers that can be included in the list.
      * @param filter Optional. When specified, only container names starting with the filter will be listed.
+     * @param include Optional, used to include the properties for soft deleted blob containers. Possible values include: 'deleted'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ListContainerItemInner&gt; object if successful.
      */
-    public PagedList<ListContainerItemInner> list(final String resourceGroupName, final String accountName, final String maxpagesize, final String filter) {
-        ServiceResponse<Page<ListContainerItemInner>> response = listSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter).toBlocking().single();
+    public PagedList<ListContainerItemInner> list(final String resourceGroupName, final String accountName, final String maxpagesize, final String filter, final ListContainersInclude include) {
+        ServiceResponse<Page<ListContainerItemInner>> response = listSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter, include).toBlocking().single();
         return new PagedList<ListContainerItemInner>(response.body()) {
             @Override
             public Page<ListContainerItemInner> nextPage(String nextPageLink) {
@@ -275,13 +278,14 @@ public class BlobContainersInner {
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param maxpagesize Optional. Specified maximum number of containers that can be included in the list.
      * @param filter Optional. When specified, only container names starting with the filter will be listed.
+     * @param include Optional, used to include the properties for soft deleted blob containers. Possible values include: 'deleted'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<ListContainerItemInner>> listAsync(final String resourceGroupName, final String accountName, final String maxpagesize, final String filter, final ListOperationCallback<ListContainerItemInner> serviceCallback) {
+    public ServiceFuture<List<ListContainerItemInner>> listAsync(final String resourceGroupName, final String accountName, final String maxpagesize, final String filter, final ListContainersInclude include, final ListOperationCallback<ListContainerItemInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter),
+            listSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter, include),
             new Func1<String, Observable<ServiceResponse<Page<ListContainerItemInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ListContainerItemInner>>> call(String nextPageLink) {
@@ -298,11 +302,12 @@ public class BlobContainersInner {
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param maxpagesize Optional. Specified maximum number of containers that can be included in the list.
      * @param filter Optional. When specified, only container names starting with the filter will be listed.
+     * @param include Optional, used to include the properties for soft deleted blob containers. Possible values include: 'deleted'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ListContainerItemInner&gt; object
      */
-    public Observable<Page<ListContainerItemInner>> listAsync(final String resourceGroupName, final String accountName, final String maxpagesize, final String filter) {
-        return listWithServiceResponseAsync(resourceGroupName, accountName, maxpagesize, filter)
+    public Observable<Page<ListContainerItemInner>> listAsync(final String resourceGroupName, final String accountName, final String maxpagesize, final String filter, final ListContainersInclude include) {
+        return listWithServiceResponseAsync(resourceGroupName, accountName, maxpagesize, filter, include)
             .map(new Func1<ServiceResponse<Page<ListContainerItemInner>>, Page<ListContainerItemInner>>() {
                 @Override
                 public Page<ListContainerItemInner> call(ServiceResponse<Page<ListContainerItemInner>> response) {
@@ -318,11 +323,12 @@ public class BlobContainersInner {
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param maxpagesize Optional. Specified maximum number of containers that can be included in the list.
      * @param filter Optional. When specified, only container names starting with the filter will be listed.
+     * @param include Optional, used to include the properties for soft deleted blob containers. Possible values include: 'deleted'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ListContainerItemInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ListContainerItemInner>>> listWithServiceResponseAsync(final String resourceGroupName, final String accountName, final String maxpagesize, final String filter) {
-        return listSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter)
+    public Observable<ServiceResponse<Page<ListContainerItemInner>>> listWithServiceResponseAsync(final String resourceGroupName, final String accountName, final String maxpagesize, final String filter, final ListContainersInclude include) {
+        return listSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter, include)
             .concatMap(new Func1<ServiceResponse<Page<ListContainerItemInner>>, Observable<ServiceResponse<Page<ListContainerItemInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ListContainerItemInner>>> call(ServiceResponse<Page<ListContainerItemInner>> page) {
@@ -342,10 +348,11 @@ public class BlobContainersInner {
     ServiceResponse<PageImpl1<ListContainerItemInner>> * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
     ServiceResponse<PageImpl1<ListContainerItemInner>> * @param maxpagesize Optional. Specified maximum number of containers that can be included in the list.
     ServiceResponse<PageImpl1<ListContainerItemInner>> * @param filter Optional. When specified, only container names starting with the filter will be listed.
+    ServiceResponse<PageImpl1<ListContainerItemInner>> * @param include Optional, used to include the properties for soft deleted blob containers. Possible values include: 'deleted'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ListContainerItemInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<ListContainerItemInner>>> listSinglePageAsync(final String resourceGroupName, final String accountName, final String maxpagesize, final String filter) {
+    public Observable<ServiceResponse<Page<ListContainerItemInner>>> listSinglePageAsync(final String resourceGroupName, final String accountName, final String maxpagesize, final String filter, final ListContainersInclude include) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -358,7 +365,7 @@ public class BlobContainersInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.list(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), maxpagesize, filter, this.client.acceptLanguage(), this.client.userAgent())
+        return service.list(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), maxpagesize, filter, include, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ListContainerItemInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ListContainerItemInner>>> call(Response<ResponseBody> response) {
@@ -1366,7 +1373,7 @@ public class BlobContainersInner {
     }
 
     /**
-     * Aborts an unlocked immutability policy. The response of delete has immutabilityPeriodSinceCreationInDays set to 0. ETag in If-Match is required for this operation. Deleting a locked immutability policy is not allowed, only way is to delete the container after deleting all blobs inside the container.
+     * Aborts an unlocked immutability policy. The response of delete has immutabilityPeriodSinceCreationInDays set to 0. ETag in If-Match is required for this operation. Deleting a locked immutability policy is not allowed, the only way is to delete the container after deleting all expired blobs inside the policy locked container.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -1382,7 +1389,7 @@ public class BlobContainersInner {
     }
 
     /**
-     * Aborts an unlocked immutability policy. The response of delete has immutabilityPeriodSinceCreationInDays set to 0. ETag in If-Match is required for this operation. Deleting a locked immutability policy is not allowed, only way is to delete the container after deleting all blobs inside the container.
+     * Aborts an unlocked immutability policy. The response of delete has immutabilityPeriodSinceCreationInDays set to 0. ETag in If-Match is required for this operation. Deleting a locked immutability policy is not allowed, the only way is to delete the container after deleting all expired blobs inside the policy locked container.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -1397,7 +1404,7 @@ public class BlobContainersInner {
     }
 
     /**
-     * Aborts an unlocked immutability policy. The response of delete has immutabilityPeriodSinceCreationInDays set to 0. ETag in If-Match is required for this operation. Deleting a locked immutability policy is not allowed, only way is to delete the container after deleting all blobs inside the container.
+     * Aborts an unlocked immutability policy. The response of delete has immutabilityPeriodSinceCreationInDays set to 0. ETag in If-Match is required for this operation. Deleting a locked immutability policy is not allowed, the only way is to delete the container after deleting all expired blobs inside the policy locked container.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -1416,7 +1423,7 @@ public class BlobContainersInner {
     }
 
     /**
-     * Aborts an unlocked immutability policy. The response of delete has immutabilityPeriodSinceCreationInDays set to 0. ETag in If-Match is required for this operation. Deleting a locked immutability policy is not allowed, only way is to delete the container after deleting all blobs inside the container.
+     * Aborts an unlocked immutability policy. The response of delete has immutabilityPeriodSinceCreationInDays set to 0. ETag in If-Match is required for this operation. Deleting a locked immutability policy is not allowed, the only way is to delete the container after deleting all expired blobs inside the policy locked container.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.

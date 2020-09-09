@@ -29,6 +29,16 @@ public interface BlobContainer extends HasInner<BlobContainerInner>, Indexable, 
     String defaultEncryptionScope();
 
     /**
+     * @return the deleted value.
+     */
+    Boolean deleted();
+
+    /**
+     * @return the deletedTime value.
+     */
+    DateTime deletedTime();
+
+    /**
      * @return the denyEncryptionScopeOverride value.
      */
     Boolean denyEncryptionScopeOverride();
@@ -99,9 +109,19 @@ public interface BlobContainer extends HasInner<BlobContainerInner>, Indexable, 
     PublicAccess publicAccess();
 
     /**
+     * @return the remainingRetentionDays value.
+     */
+    Integer remainingRetentionDays();
+
+    /**
      * @return the type value.
      */
     String type();
+
+    /**
+     * @return the version value.
+     */
+    String version();
 
     /**
      * The entirety of the BlobContainer definition.

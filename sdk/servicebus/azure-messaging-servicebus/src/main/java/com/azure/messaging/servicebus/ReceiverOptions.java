@@ -25,8 +25,8 @@ class ReceiverOptions {
         this.isSessionReceiver = false;
     }
 
-    ReceiverOptions(ReceiveMode receiveMode, int prefetchCount, String sessionId,
-        boolean isRollingSessionReceiver, Integer maxConcurrentSessions) {
+    ReceiverOptions(ReceiveMode receiveMode, int prefetchCount,
+        String sessionId, boolean isRollingSessionReceiver, Integer maxConcurrentSessions) {
         this.receiveMode = receiveMode;
         this.prefetchCount = prefetchCount;
         this.sessionId = sessionId;
@@ -62,6 +62,11 @@ class ReceiverOptions {
         return prefetchCount;
     }
 
+    /**
+     * Gets whether or not the receiver is a session-aware receiver.
+     *
+     * @return true if it is a session-aware receiver; false otherwise.
+     */
     boolean isSessionReceiver() {
         return isSessionReceiver;
     }

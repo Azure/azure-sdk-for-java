@@ -1,9 +1,4 @@
-resources:
-  repositories:
-    - repository: azure-sdk-build-tools
-      type: git
-      name: internal/azure-sdk-build-tools
-
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
 trigger:
   branches:
     include:

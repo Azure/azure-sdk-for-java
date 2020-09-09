@@ -53,11 +53,15 @@ public final class LocalKeyEncryptionKeyClientBuilder {
      *
      * @return A {@link LocalKeyEncryptionKeyAsyncClient} with the options set from the builder.
      * @throws IllegalStateException If {@code key} is not set.
+     * @throws IllegalArgumentException If {@code key} has no id.
      */
     public Mono<? extends AsyncKeyEncryptionKey> buildAsyncKeyEncryptionKey(JsonWebKey key) {
         if (key == null) {
             throw logger.logExceptionAsError(new IllegalStateException(
                 "Json Web key value cannot be null and is required to create local key encryption key async client."));
+        } else if (key.getId() == null) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Json Web Key's id property is not configured."));
         }
 
         return Mono.defer(() -> Mono.just(new LocalKeyEncryptionKeyAsyncClient(key)));

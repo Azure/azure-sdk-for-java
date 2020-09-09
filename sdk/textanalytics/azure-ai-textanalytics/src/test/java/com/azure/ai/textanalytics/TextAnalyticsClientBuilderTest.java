@@ -24,6 +24,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.azure.ai.textanalytics.TestUtils.AZURE_TEXT_ANALYTICS_API_KEY;
 import static com.azure.ai.textanalytics.TestUtils.DETECTED_LANGUAGE_ENGLISH;
 import static com.azure.ai.textanalytics.TestUtils.DETECT_ENGLISH_LANGUAGE_RESULTS;
 import static com.azure.ai.textanalytics.TestUtils.DETECT_LANGUAGE_INPUTS;
@@ -41,7 +42,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * Tests for Text Analytics client builder
  */
 public class TextAnalyticsClientBuilderTest extends TestBase {
-    private static final String AZURE_TEXT_ANALYTICS_API_KEY = "AZURE_TEXT_ANALYTICS_API_KEY";
     private static final String INVALID_KEY = "invalid key";
 
     /**
@@ -139,7 +139,7 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
         clientBuilderWithDefaultCountryHintForBatchOperationRunner(httpClient, serviceVersion,
             clientBuilder -> (input, output) -> {
                 final List<DetectLanguageResult> result =
-                    clientBuilder.buildClient().detectLanguageBatch(input).stream().collect(Collectors.toList());
+                    clientBuilder.buildClient().detectLanguageBatch(input, "MX", null).stream().collect(Collectors.toList());
                 for (int i = 0; i < result.size(); i++) {
                     validatePrimaryLanguage(output.get(i), result.get(i).getPrimaryLanguage());
                 }
@@ -156,7 +156,7 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
         clientBuilderWithNewCountryHintForBatchOperationRunner(httpClient, serviceVersion,
             clientBuilder -> (input, output) -> {
                 final List<DetectLanguageResult> result =
-                    clientBuilder.buildClient().detectLanguageBatch(input, "US").stream().collect(Collectors.toList());
+                    clientBuilder.buildClient().detectLanguageBatch(input, "US", null).stream().collect(Collectors.toList());
                 for (int i = 0; i < result.size(); i++) {
                     validatePrimaryLanguage(output.get(i), result.get(i).getPrimaryLanguage());
                 }
@@ -193,7 +193,7 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
         clientBuilderWithDefaultLanguageForBatchOperationRunner(httpClient, serviceVersion,
             clientBuilder -> (input, output) -> {
                 final List<ExtractKeyPhraseResult> result =
-                    clientBuilder.buildClient().extractKeyPhrasesBatch(input).stream().collect(Collectors.toList());
+                    clientBuilder.buildClient().extractKeyPhrasesBatch(input, "FR", null).stream().collect(Collectors.toList());
                 for (int i = 0; i < result.size(); i++) {
                     validateKeyPhrases(output.get(i), result.get(i).getKeyPhrases().stream().collect(Collectors.toList()));
                 }
@@ -210,7 +210,7 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
         clientBuilderWithNewLanguageForBatchOperationRunner(httpClient, serviceVersion, clientBuilder -> (input,
             output) -> {
             final List<ExtractKeyPhraseResult> result =
-                clientBuilder.buildClient().extractKeyPhrasesBatch(input, "EN").stream()
+                clientBuilder.buildClient().extractKeyPhrasesBatch(input, "EN", null).stream()
                     .collect(Collectors.toList());
             for (int i = 0; i < result.size(); i++) {
                 validateKeyPhrases(output.get(i), result.get(i).getKeyPhrases().stream().collect(Collectors.toList()));

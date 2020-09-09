@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/**
- * The DocumentResult model.
- */
+/** The DocumentResult model. */
 @Fluent
 public final class DocumentResult {
     /*
@@ -34,7 +32,7 @@ public final class DocumentResult {
 
     /**
      * Get the docType property: Document type.
-     * 
+     *
      * @return the docType value.
      */
     public String getDocType() {
@@ -43,7 +41,7 @@ public final class DocumentResult {
 
     /**
      * Set the docType property: Document type.
-     * 
+     *
      * @param docType the docType value to set.
      * @return the DocumentResult object itself.
      */
@@ -53,9 +51,8 @@ public final class DocumentResult {
     }
 
     /**
-     * Get the pageRange property: First and last page number where the
-     * document is found.
-     * 
+     * Get the pageRange property: First and last page number where the document is found.
+     *
      * @return the pageRange value.
      */
     public List<Integer> getPageRange() {
@@ -63,9 +60,8 @@ public final class DocumentResult {
     }
 
     /**
-     * Set the pageRange property: First and last page number where the
-     * document is found.
-     * 
+     * Set the pageRange property: First and last page number where the document is found.
+     *
      * @param pageRange the pageRange value to set.
      * @return the DocumentResult object itself.
      */
@@ -76,7 +72,7 @@ public final class DocumentResult {
 
     /**
      * Get the fields property: Dictionary of named field values.
-     * 
+     *
      * @return the fields value.
      */
     public Map<String, FieldValue> getFields() {
@@ -85,7 +81,7 @@ public final class DocumentResult {
 
     /**
      * Set the fields property: Dictionary of named field values.
-     * 
+     *
      * @param fields the fields value to set.
      * @return the DocumentResult object itself.
      */

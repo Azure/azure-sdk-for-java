@@ -9,8 +9,6 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 import java.nio.ByteBuffer;
 import java.time.Instant;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 
 /**
  * Represents the base resource in the Azure Cosmos DB database service.
@@ -167,12 +165,12 @@ public class Resource extends JsonSerializable {
      *
      * @return the timestamp.
      */
-    public OffsetDateTime getTimestamp() {
+    public Instant getTimestamp() {
         Long seconds = super.getLong(Constants.Properties.LAST_MODIFIED);
         if (seconds == null) {
             return null;
         }
-        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(seconds.longValue()), ZoneOffset.UTC);
+        return Instant.ofEpochSecond(seconds.longValue());
     }
 
     /**
@@ -180,8 +178,8 @@ public class Resource extends JsonSerializable {
      *
      * @param timestamp the timestamp.
      */
-    public Resource setTimestamp(OffsetDateTime timestamp) {
-        long seconds = timestamp.toEpochSecond();
+    public Resource setTimestamp(Instant timestamp) {
+        long seconds = timestamp.getEpochSecond();
         super.set(Constants.Properties.LAST_MODIFIED, seconds);
         return this;
     }

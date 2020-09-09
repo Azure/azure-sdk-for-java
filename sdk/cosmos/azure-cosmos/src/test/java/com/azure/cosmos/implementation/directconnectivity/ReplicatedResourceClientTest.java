@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.FailureValidator;
@@ -48,7 +48,7 @@ public class ReplicatedResourceClientTest {
         Configs configs = new Configs();
         ReplicatedResourceClient resourceClient = new ReplicatedResourceClient(configs, new AddressSelector(addressResolver, Protocol.HTTPS), null,
                 transportClient, serviceConfigReader, authorizationTokenProvider, enableReadRequestsFallback, false);
-        FailureValidator validator = FailureValidator.builder().instanceOf(CosmosClientException.class).build();
+        FailureValidator validator = FailureValidator.builder().instanceOf(CosmosException.class).build();
         RxDocumentServiceRequest request = Mockito.spy(RxDocumentServiceRequest.create(OperationType.Create, ResourceType.Document));
 
         Mockito.when(addressResolver.resolveAsync(Matchers.any(), Matchers.anyBoolean()))

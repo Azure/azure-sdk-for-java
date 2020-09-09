@@ -1,3 +1,4 @@
+Import-Module "${PSScriptRoot}/modules/ChangeLog-Operations.psm1"
 . (Join-Path $PSScriptRoot SemVer.ps1)
 
 $SDIST_PACKAGE_REGEX = "^(?<package>.*)\-(?<versionstring>$([AzureEngSemanticVersion]::SEMVER_REGEX))"
@@ -8,8 +9,8 @@ function CreateReleases($pkgList, $releaseApiUrl, $releaseSha) {
     Write-Host "Creating release $($pkgInfo.Tag)"
 
     $releaseNotes = ""
-    if ($pkgInfo.ReleaseNotes[$pkgInfo.PackageVersion].ReleaseContent -ne $null) {
-      $releaseNotes = $pkgInfo.ReleaseNotes[$pkgInfo.PackageVersion].ReleaseContent
+    if ($pkgInfo.ReleaseNotes -ne $null) {
+      $releaseNotes = $pkgInfo.ReleaseNotes
     }
 
     $isPrerelease = $False
@@ -35,47 +36,7 @@ function CreateReleases($pkgList, $releaseApiUrl, $releaseSha) {
       "Authorization" = "token $($env:GH_TOKEN)"
     }
 
-    Invoke-WebRequest-WithHandling -url $url -body $body -headers $headers -method "Post"
-  }
-}
-
-function Invoke-WebRequest-WithHandling($url, $method, $body = $null, $headers = $null) {
-  $attempts = 1
-
-  while ($attempts -le 3) {
-    try {
-      return Invoke-RestMethod -Method $method -Uri $url -Body $body -Headers $headers
-    }
-    catch {
-      $response = $_.Exception.Response
-
-      $statusCode = $response.StatusCode.value__
-      $statusDescription = $response.StatusDescription
-
-      if ($statusCode) {
-        Write-Host "API request attempt number $attempts to $url failed with statuscode $statusCode"
-        Write-Host $statusDescription
-
-        Write-Host "Rate Limit Details:"
-        Write-Host "Total: $($response.Headers.GetValues("X-RateLimit-Limit"))"
-        Write-Host "Remaining: $($response.Headers.GetValues("X-RateLimit-Remaining"))"
-        Write-Host "Reset Epoch: $($response.Headers.GetValues("X-RateLimit-Reset"))"
-      }
-      else {
-        Write-Host "API request attempt number $attempts to $url failed with no statuscode present, exception follows:"
-        Write-Host $_.Exception.Response
-        Write-Host $_.Exception
-      }
-
-      if ($attempts -ge 3) {
-        Write-Host "Abandoning Request $url after 3 attempts."
-        exit(1)
-      }
-
-      Start-Sleep -s 10
-    }
-
-    $attempts += 1
+    Invoke-RestMethod -Uri $url -Body $body -Headers $headers -Method "Post" -MaximumRetryCount 3 -RetryIntervalSec 10
   }
 }
 
@@ -86,22 +47,29 @@ function ParseMavenPackage($pkg, $workingDirectory) {
   $pkgId = $contentXML.project.artifactId
   $pkgVersion = $contentXML.project.version
   $groupId = if ($contentXML.project.groupId -eq $null) { $contentXML.project.parent.groupId } else { $contentXML.project.groupId }
+  $releaseNotes = ""
+  $readmeContent = ""
 
   # if it's a snapshot. return $null (as we don't want to create tags for this, but we also don't want to fail)
   if ($pkgVersion.Contains("SNAPSHOT")) {
     return $null
   }
 
-  $releaseNotes = &"${PSScriptRoot}/../Extract-ReleaseNotes.ps1" -ChangeLogLocation @(Get-ChildItem -Path $pkg.DirectoryName -Recurse -Include "$($pkg.Basename)-changelog.md")[0]
+  $changeLogLoc = @(Get-ChildItem -Path $pkg.DirectoryName -Recurse -Include "$($pkg.Basename)-changelog.md")[0]
+  if ($changeLogLoc) {
+    $releaseNotes = Get-ChangeLogEntryAsString -ChangeLogLocation $changeLogLoc -VersionString $pkgVersion
+  }
 
   $readmeContentLoc = @(Get-ChildItem -Path $pkg.DirectoryName -Recurse -Include "$($pkg.Basename)-readme.md")[0]
-  if (Test-Path -Path $readmeContentLoc) {
+  if ($readmeContentLoc) {
     $readmeContent = Get-Content -Raw $readmeContentLoc
   }
 
   return New-Object PSObject -Property @{
     PackageId      = $pkgId
+    GroupId        = $groupId
     PackageVersion = $pkgVersion
+    ReleaseTag     = "$($pkgId)_$($pkgVersion)"
     Deployable     = $forceCreate -or !(IsMavenPackageVersionPublished -pkgId $pkgId -pkgVersion $pkgVersion -groupId $groupId.Replace(".", "/"))
     ReleaseNotes   = $releaseNotes
     ReadmeContent  = $readmeContent
@@ -113,7 +81,7 @@ function IsMavenPackageVersionPublished($pkgId, $pkgVersion, $groupId) {
   try {
 
     $uri = "https://oss.sonatype.org/content/repositories/releases/$groupId/$pkgId/$pkgVersion/$pkgId-$pkgVersion.pom"
-    $pomContent = Invoke-RestMethod -MaximumRetryCount 3 -Method "GET" -uri $uri
+    $pomContent = Invoke-RestMethod -MaximumRetryCount 3 -RetryIntervalSec 10 -Method "GET" -uri $uri
 
     if ($pomContent -ne $null -or $pomContent.Length -eq 0) {
       return $true
@@ -155,27 +123,35 @@ function ResolvePkgJson($workFolder) {
 function ParseNPMPackage($pkg, $workingDirectory) {
   $workFolder = "$workingDirectory$($pkg.Basename)"
   $origFolder = Get-Location
+  $releaseNotes = ""
+  $readmeContent = ""
+
   New-Item -ItemType Directory -Force -Path $workFolder
   cd $workFolder
 
   tar -xzf $pkg
 
   $packageJSON = ResolvePkgJson -workFolder $workFolder | Get-Content | ConvertFrom-Json
-  $releaseNotes = &"${PSScriptRoot}/../Extract-ReleaseNotes.ps1" -ChangeLogLocation @(Get-ChildItem -Path $workFolder -Recurse -Include "CHANGELOG.md")[0]
-  $readmeContentLoc = @(Get-ChildItem -Path $workFolder -Recurse -Include "README.md")[0]
-  if (Test-Path -Path $readmeContentLoc) {
+  $pkgId = $packageJSON.name
+  $pkgVersion = $packageJSON.version
+
+  $changeLogLoc = @(Get-ChildItem -Path $workFolder -Recurse -Include "CHANGELOG.md")[0]
+  if ($changeLogLoc) {
+    $releaseNotes = Get-ChangeLogEntryAsString -ChangeLogLocation $changeLogLoc -VersionString $pkgVersion
+  }
+
+  $readmeContentLoc = @(Get-ChildItem -Path $workFolder -Recurse -Include "README.md") | Select-Object -Last 1
+  if ($readmeContentLoc) {
     $readmeContent = Get-Content -Raw $readmeContentLoc
   }
 
   cd $origFolder
   Remove-Item $workFolder -Force  -Recurse -ErrorAction SilentlyContinue
 
-  $pkgId = $packageJSON.name
-  $pkgVersion = $packageJSON.version
-
   $resultObj = New-Object PSObject -Property @{
     PackageId      = $pkgId
     PackageVersion = $pkgVersion
+    ReleaseTag     = "$($pkgId)_$($pkgVersion)"
     Deployable     = $forceCreate -or !(IsNPMPackageVersionPublished -pkgId $pkgId -pkgVersion $pkgVersion)
     ReleaseNotes   = $releaseNotes
     ReadmeContent  = $readmeContent
@@ -208,25 +184,33 @@ function ParseNugetPackage($pkg, $workingDirectory) {
   $workFolder = "$workingDirectory$($pkg.Basename)"
   $origFolder = Get-Location
   $zipFileLocation = "$workFolder/$($pkg.Basename).zip"
+  $releaseNotes = ""
+  $readmeContent = ""
+
   New-Item -ItemType Directory -Force -Path $workFolder
 
   Copy-Item -Path $pkg -Destination $zipFileLocation
   Expand-Archive -Path $zipFileLocation -DestinationPath $workFolder
   [xml] $packageXML = Get-ChildItem -Path "$workFolder/*.nuspec" | Get-Content
-  $releaseNotes = &"${PSScriptRoot}/../Extract-ReleaseNotes.ps1" -ChangeLogLocation @(Get-ChildItem -Path $workFolder -Recurse -Include "CHANGELOG.md")[0]
+  $pkgId = $packageXML.package.metadata.id
+  $pkgVersion = $packageXML.package.metadata.version
+
+  $changeLogLoc = @(Get-ChildItem -Path $workFolder -Recurse -Include "CHANGELOG.md")[0]
+  if ($changeLogLoc) {
+    $releaseNotes = Get-ChangeLogEntryAsString -ChangeLogLocation $changeLogLoc -VersionString $pkgVersion
+  }
 
   $readmeContentLoc = @(Get-ChildItem -Path $workFolder -Recurse -Include "README.md")[0]
-  if (Test-Path -Path $readmeContentLoc) {
+  if ($readmeContentLoc) {
     $readmeContent = Get-Content -Raw $readmeContentLoc
   }
 
   Remove-Item $workFolder -Force  -Recurse -ErrorAction SilentlyContinue
-  $pkgId = $packageXML.package.metadata.id
-  $pkgVersion = $packageXML.package.metadata.version
 
   return New-Object PSObject -Property @{
     PackageId      = $pkgId
     PackageVersion = $pkgVersion
+    ReleaseTag     = "$($pkgId)_$($pkgVersion)"
     Deployable     = $forceCreate -or !(IsNugetPackageVersionPublished -pkgId $pkgId -pkgVersion $pkgVersion)
     ReleaseNotes   = $releaseNotes
     ReadmeContent  = $readmeContent
@@ -239,7 +223,7 @@ function IsNugetPackageVersionPublished($pkgId, $pkgVersion) {
   $nugetUri = "https://api.nuget.org/v3-flatcontainer/$($pkgId.ToLowerInvariant())/index.json"
 
   try {
-    $nugetVersions = Invoke-RestMethod -MaximumRetryCount 3 -uri $nugetUri -Method "GET"
+    $nugetVersions = Invoke-RestMethod -MaximumRetryCount 3 -RetryIntervalSec 10 -uri $nugetUri -Method "GET"
 
     return $nugetVersions.versions.Contains($pkgVersion)
   }
@@ -269,19 +253,29 @@ function ParsePyPIPackage($pkg, $workingDirectory) {
 
   $workFolder = "$workingDirectory$($pkg.Basename)"
   $origFolder = Get-Location
-  New-Item -ItemType Directory -Force -Path $workFolder
+  $releaseNotes = ""
+  $readmeContent = ""
 
+  New-Item -ItemType Directory -Force -Path $workFolder
   Expand-Archive -Path $pkg -DestinationPath $workFolder
-  $releaseNotes = &"${PSScriptRoot}/../Extract-ReleaseNotes.ps1" -ChangeLogLocation @(Get-ChildItem -Path $workFolder -Recurse -Include "CHANGELOG.md")[0]
-  $readmeContentLoc = @(Get-ChildItem -Path $workFolder -Recurse -Include "README.md")[0]
-  if (Test-Path -Path $readmeContentLoc) {
+
+  $changeLogLoc = @(Get-ChildItem -Path $workFolder -Recurse -Include "CHANGELOG.md")[0]
+  if ($changeLogLoc) {
+    $releaseNotes = Get-ChangeLogEntryAsString -ChangeLogLocation $changeLogLoc -VersionString $pkgVersion
+  }
+
+  $readmeContentLoc = @(Get-ChildItem -Path $workFolder -Recurse -Include "README.md") | Select-Object -Last 1
+
+  if ($readmeContentLoc) {
     $readmeContent = Get-Content -Raw $readmeContentLoc
   }
+
   Remove-Item $workFolder -Force  -Recurse -ErrorAction SilentlyContinue
 
   return New-Object PSObject -Property @{
     PackageId      = $pkgId
     PackageVersion = $pkgVersion
+    ReleaseTag     = "$($pkgId)_$($pkgVersion)"
     Deployable     = $forceCreate -or !(IsPythonPackageVersionPublished -pkgId $pkgId -pkgVersion $pkgVersion)
     ReleaseNotes   = $releaseNotes
     ReadmeContent  = $readmeContent
@@ -291,30 +285,71 @@ function ParsePyPIPackage($pkg, $workingDirectory) {
 function ParseCArtifact($pkg, $workingDirectory) {
   $packageInfo = Get-Content -Raw -Path $pkg | ConvertFrom-JSON
   $packageArtifactLocation = (Get-ItemProperty $pkg).Directory.FullName
+  $releaseNotes = ""
+  $readmeContent = ""
 
-  $releaseNotes = ExtractReleaseNotes -changeLogLocation @(Get-ChildItem -Path $packageArtifactLocation -Recurse -Include "CHANGELOG.md")[0]
+  $pkgVersion = $packageInfo.version
 
+  $changeLogLoc = @(Get-ChildItem -Path $packageArtifactLocation -Recurse -Include "CHANGELOG.md")[0]
+  if ($changeLogLoc)
+  {
+    $releaseNotes = Get-ChangeLogEntryAsString -ChangeLogLocation $changeLogLoc -VersionString $pkgVersion
+  }
+  
   $readmeContentLoc = @(Get-ChildItem -Path $packageArtifactLocation -Recurse -Include "README.md")[0]
-  if (Test-Path -Path $readmeContentLoc) {
+  if ($readmeContentLoc) {
     $readmeContent = Get-Content -Raw $readmeContentLoc
   }
 
   return New-Object PSObject -Property @{
-    PackageId      = $packageInfo.name
-    PackageVersion = $packageInfo.version
+    PackageId      = ''
+    PackageVersion = $pkgVersion
+    ReleaseTag     = $pkgVersion
     # Artifact info is always considered deployable for C becasue it is not
     # deployed anywhere. Dealing with duplicate tags happens downstream in
     # CheckArtifactShaAgainstTagsList
     Deployable     = $true
     ReleaseNotes   = $releaseNotes
-    ReadmeContent  = $readmeContent
   }
 }
+
+function ParseCppArtifact($pkg, $workingDirectory) {
+  $packageInfo = Get-Content -Raw -Path $pkg | ConvertFrom-JSON
+  $packageArtifactLocation = (Get-ItemProperty $pkg).Directory.FullName
+  $releaseNotes = ""
+  $readmeContent = ""
+
+  $pkgVersion = $packageInfo.version
+  $pkgName = $packageInfo.name
+
+  $changeLogLoc = @(Get-ChildItem -Path $packageArtifactLocation -Recurse -Include "CHANGELOG.md")[0]
+  if ($changeLogLoc)
+  {
+    $releaseNotes = Get-ChangeLogEntryAsString -ChangeLogLocation $changeLogLoc -VersionString $pkgVersion
+  }
+
+  $readmeContentLoc = @(Get-ChildItem -Path $packageArtifactLocation -Recurse -Include "README.md")[0]
+  if ($readmeContentLoc) {
+    $readmeContent = Get-Content -Raw $readmeContentLoc
+  }
+
+  return New-Object PSObject -Property @{
+    PackageId      = $pkgName
+    PackageVersion = $pkgVersion
+    ReleaseTag     = "$($pkgId)_$($pkgVersion)"
+    # Artifact info is always considered deployable for now becasue it is not
+    # deployed anywhere. Dealing with duplicate tags happens downstream in
+    # CheckArtifactShaAgainstTagsList
+    Deployable     = $true
+    ReleaseNotes   = $releaseNotes
+  }
+}
+
 
 # Returns the pypi publish status of a package id and version.
 function IsPythonPackageVersionPublished($pkgId, $pkgVersion) {
   try {
-    $existingVersion = (Invoke-RestMethod -MaximumRetryCount 3 -Method "Get" -uri "https://pypi.org/pypi/$pkgId/$pkgVersion/json").info.version
+    $existingVersion = (Invoke-RestMethod -MaximumRetryCount 3 -RetryIntervalSec 10 -Method "Get" -uri "https://pypi.org/pypi/$pkgId/$pkgVersion/json").info.version
 
     # if existingVersion exists, then it's already been published
     return $True
@@ -338,9 +373,10 @@ function IsPythonPackageVersionPublished($pkgId, $pkgVersion) {
 # Retrieves the list of all tags that exist on the target repository
 function GetExistingTags($apiUrl) {
   try {
-    return (Invoke-WebRequest-WithHandling -Method "GET" -url "$apiUrl/git/refs/tags"  ) | % { $_.ref.Replace("refs/tags/", "") }
+    return (Invoke-RestMethod -Method "GET" -Uri "$apiUrl/git/refs/tags" -MaximumRetryCount 3 -RetryIntervalSec 10) | % { $_.ref.Replace("refs/tags/", "") }
   }
   catch {
+    Write-Host $_
     $statusCode = $_.Exception.Response.StatusCode.value__
     $statusDescription = $_.Exception.Response.StatusDescription
 
@@ -350,42 +386,72 @@ function GetExistingTags($apiUrl) {
 
     # Return an empty list if there are no tags in the repo
     if ($statusCode -eq 404) {
-      return @()
+      return ,@()
     }
 
     exit(1)
   }
 }
 
-# Walk across all build artifacts, check them against the appropriate repository, return a list of tags/releases
-function VerifyPackages($pkgRepository, $artifactLocation, $workingDirectory, $apiUrl, $releaseSha, $exitOnError = $True) {
-  $pkgList = [array]@()
-  $ParsePkgInfoFn = ""
+# Retrieve release tag for artiface package. If multiple packages, then output the first one.
+function RetrieveReleaseTag($pkgRepository, $artifactLocation, $continueOnError = $true) {
+  if (!$artifactLocation) {
+    return ""
+  }
+  try {
+    $pkgs, $parsePkgInfoFn = RetrievePackages -pkgRepository $pkgRepository -artifactLocation $artifactLocation
+    if (!$pkgs -or !$pkgs[0]) {
+      Write-Host "No packages retrieved from artifact location."
+      return ""
+    }
+    if ($pkgs.Count -gt 1) {
+      Write-Host "There are more than 1 packages retieved from artifact location."
+      foreach ($pkg in $pkgs) {
+        Write-Host "The package name is $($pkg.BaseName)"
+      }
+      return ""
+    }
+    $parsedPackage = &$parsePkgInfoFn -pkg $pkgs[0] -workingDirectory $artifactLocation
+    return $parsedPackage.ReleaseTag
+  }
+  catch {
+    if ($continueOnError) {
+      return ""
+    }
+    Write-Error "No release tag retrieved from $artifactLocation"
+  }
+}
+function RetrievePackages($pkgRepository, $artifactLocation) {
+  $parsePkgInfoFn = ""
   $packagePattern = ""
-
+  $pkgRepository = $pkgRepository.Trim()
   switch ($pkgRepository) {
     "Maven" {
-      $ParsePkgInfoFn = "ParseMavenPackage"
+      $parsePkgInfoFn = "ParseMavenPackage"
       $packagePattern = "*.pom"
       break
     }
     "Nuget" {
-      $ParsePkgInfoFn = "ParseNugetPackage"
+      $parsePkgInfoFn = "ParseNugetPackage"
       $packagePattern = "*.nupkg"
       break
     }
     "NPM" {
-      $ParsePkgInfoFn = "ParseNPMPackage"
+      $parsePkgInfoFn = "ParseNPMPackage"
       $packagePattern = "*.tgz"
       break
     }
     "PyPI" {
-      $ParsePkgInfoFn = "ParsePyPIPackage"
+      $parsePkgInfoFn = "ParsePyPIPackage"
       $packagePattern = "*.zip"
       break
     }
     "C" {
-      $ParsePkgInfoFn = "ParseCArtifact"
+      $parsePkgInfoFn = "ParseCArtifact"
+      $packagePattern = "*.json"
+    }
+    "CPP" {
+      $parsePkgInfoFn = "ParseCppArtifact"
       $packagePattern = "*.json"
     }
     default {
@@ -393,18 +459,24 @@ function VerifyPackages($pkgRepository, $artifactLocation, $workingDirectory, $a
       exit(1)
     }
   }
+  $pkgs = Get-ChildItem -Path $artifactLocation -Include $packagePattern -Recurse -File
+  return $pkgs, $parsePkgInfoFn
+}
 
-  $pkgs = (Get-ChildItem -Path $artifactLocation -Include $packagePattern -Recurse -File)
+# Walk across all build artifacts, check them against the appropriate repository, return a list of tags/releases
+function VerifyPackages($pkgRepository, $artifactLocation, $workingDirectory, $apiUrl, $releaseSha,  $continueOnError = $false) {
+  $pkgList = [array]@()
+  $pkgs, $parsePkgInfoFn = RetrievePackages -pkgRepository $pkgRepository -artifactLocation $artifactLocation
 
   foreach ($pkg in $pkgs) {
     try {
-      $parsedPackage = &$ParsePkgInfoFn -pkg $pkg -workingDirectory $workingDirectory
+      $parsedPackage = &$parsePkgInfoFn -pkg $pkg -workingDirectory $workingDirectory
 
       if ($parsedPackage -eq $null) {
         continue
       }
 
-      if ($parsedPackage.Deployable -ne $True -and $exitOnError) {
+      if ($parsedPackage.Deployable -ne $True -and !$continueOnError) {
         Write-Host "Package $($parsedPackage.PackageId) is marked with version $($parsedPackage.PackageVersion), the version $($parsedPackage.PackageVersion) has already been deployed to the target repository."
         Write-Host "Maybe a pkg version wasn't updated properly?"
         exit(1)
@@ -413,9 +485,11 @@ function VerifyPackages($pkgRepository, $artifactLocation, $workingDirectory, $a
       $pkgList += New-Object PSObject -Property @{
         PackageId      = $parsedPackage.PackageId
         PackageVersion = $parsedPackage.PackageVersion
-        Tag            = ($parsedPackage.PackageId + "_" + $parsedPackage.PackageVersion)
+        GroupId        = $parsedPackage.GroupId
+        Tag            = $parsedPackage.ReleaseTag
         ReleaseNotes   = $parsedPackage.ReleaseNotes
         ReadmeContent  = $parsedPackage.ReadmeContent
+        IsPrerelease   = [AzureEngSemanticVersion]::ParseVersionString($parsedPackage.PackageVersion).IsPrerelease
       }
     }
     catch {
@@ -430,8 +504,8 @@ function VerifyPackages($pkgRepository, $artifactLocation, $workingDirectory, $a
   
   $intersect = $results | % { $_.Tag } | ? { $existingTags -contains $_ }
 
-  if ($intersect.Length -gt 0 -and $exitOnError) {
-    CheckArtifactShaAgainstTagsList -priorExistingTagList $intersect -releaseSha $releaseSha -apiUrl $apiUrl -exitOnError $exitOnError
+  if ($intersect.Length -gt 0 -and !$continueOnError) {
+    CheckArtifactShaAgainstTagsList -priorExistingTagList $intersect -releaseSha $releaseSha -apiUrl $apiUrl -continueOnError $continueOnError
 
     # all the tags are clean. remove them from the list of releases we will publish.
     $results = $results | ? { -not ($intersect -contains $_.Tag ) }
@@ -443,7 +517,7 @@ function VerifyPackages($pkgRepository, $artifactLocation, $workingDirectory, $a
 # given a set of tags that we want to release, we need to ensure that if they already DO exist.
 # if they DO exist, quietly exit if the commit sha of the artifact matches that of the tag
 # if the commit sha does not match, exit with error and report both problem shas
-function CheckArtifactShaAgainstTagsList($priorExistingTagList, $releaseSha, $apiUrl, $exitOnError) {
+function CheckArtifactShaAgainstTagsList($priorExistingTagList, $releaseSha, $apiUrl, $continueOnError) {
   $headers = @{
     "Content-Type"  = "application/json"
     "Authorization" = "token $($env:GH_TOKEN)"
@@ -452,7 +526,7 @@ function CheckArtifactShaAgainstTagsList($priorExistingTagList, $releaseSha, $ap
   $unmatchedTags = @()
 
   foreach ($tag in $priorExistingTagList) {
-    $tagSha = (Invoke-WebRequest-WithHandling -Method "Get" -Url "$apiUrl/git/refs/tags/$tag" -Headers $headers)."object".sha
+    $tagSha = (Invoke-RestMethod -Method "Get" -Uri "$apiUrl/git/refs/tags/$tag" -Headers $headers -MaximumRetryCount 3 -RetryIntervalSec 10)."object".sha
 
     if ($tagSha -eq $releaseSha) {
       Write-Host "This package has already been released. The existing tag commit SHA $releaseSha matches the artifact SHA being processed. Skipping release step for this tag."
@@ -465,7 +539,7 @@ function CheckArtifactShaAgainstTagsList($priorExistingTagList, $releaseSha, $ap
     }
   }
 
-  if ($unmatchedTags.Length -gt 0 -and $exitOnError) {
+  if ($unmatchedTags.Length -gt 0 -and !$continueOnError) {
     Write-Host "Tags already existing with different SHA versions. Exiting."
     exit(1)
   }

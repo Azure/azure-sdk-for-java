@@ -32,7 +32,7 @@ public class SapHanaLinkedService extends LinkedServiceInner {
      * Host name of the SAP HANA server. Type: string (or Expression with
      * resultType string).
      */
-    @JsonProperty(value = "typeProperties.server", required = true)
+    @JsonProperty(value = "typeProperties.server")
     private Object server;
 
     /**

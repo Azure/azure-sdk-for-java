@@ -14,8 +14,8 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
  */
 public class DeleteIntentOptionalParameter {
     /**
-     * Also delete the intent's utterances (true). Or move the utterances to
-     * the None intent (false - the default value).
+     * If true, deletes the intent's example utterances. If false, moves the
+     * example utterances to the None intent. The default value is false.
      */
     private Boolean deleteUtterances;
 

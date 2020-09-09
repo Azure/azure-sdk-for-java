@@ -3,15 +3,13 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.CosmosResponseDiagnostics;
+import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -25,7 +23,7 @@ public class StoreResponse {
     final private String[] responseHeaderValues;
     final private byte[] content;
 
-    private CosmosResponseDiagnostics cosmosResponseDiagnostics;
+    private CosmosDiagnostics cosmosDiagnostics;
     private RequestTimeline requestTimeline;
 
     public StoreResponse(
@@ -96,12 +94,12 @@ public class StoreResponse {
         return null;
     }
 
-    public CosmosResponseDiagnostics getCosmosResponseDiagnostics() {
-        return cosmosResponseDiagnostics;
+    public CosmosDiagnostics getCosmosDiagnostics() {
+        return cosmosDiagnostics;
     }
 
-    StoreResponse setCosmosResponseDiagnostics(CosmosResponseDiagnostics cosmosResponseDiagnostics) {
-        this.cosmosResponseDiagnostics = cosmosResponseDiagnostics;
+    StoreResponse setCosmosDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
+        this.cosmosDiagnostics = cosmosDiagnostics;
         return this;
     }
 

@@ -3,6 +3,7 @@
 
 package com.azure.core.management.serializer;
 
+import com.azure.core.management.implementation.serializer.ManagementErrorDeserializer;
 import com.azure.core.util.serializer.JacksonAdapter;
 
 /**
@@ -15,6 +16,6 @@ public final class AzureJacksonAdapter extends JacksonAdapter {
      */
     public AzureJacksonAdapter() {
         super();
-        serializer().registerModule(CloudErrorDeserializer.getModule(simpleMapper()));
+        serializer().registerModule(ManagementErrorDeserializer.getModule(simpleMapper()));
     }
 }

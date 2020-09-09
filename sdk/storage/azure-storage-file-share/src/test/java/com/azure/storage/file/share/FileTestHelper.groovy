@@ -85,7 +85,14 @@ class FileTestHelper {
         }
     }
 
-    static boolean assertSharesAreEqual(ShareItem expected, ShareItem actual, boolean includeMetadata, boolean includeSnapshot) {
+    static boolean assertSharesAreEqual(ShareItem expected, ShareItem actual,
+                                        boolean includeMetadata, boolean includeSnapshot) {
+        return assertSharesAreEqual(expected, actual, includeMetadata, includeSnapshot, false)
+    }
+
+    static boolean assertSharesAreEqual(ShareItem expected, ShareItem actual,
+                                        boolean includeMetadata, boolean includeSnapshot,
+                                        boolean includeDeleted) {
         if (expected == null) {
             return actual == null
         } else {
@@ -103,6 +110,10 @@ class FileTestHelper {
             if (expected.getProperties() == null) {
                 return actual.getProperties() == null
             } else {
+                if (includeDeleted &&
+                    (expected.getProperties().getDeletedTime() == null ^ actual.getProperties().getDeletedTime() == null)) {
+                    return false;
+                }
                 return Objects.equals(expected.getProperties().getQuota(), actual.getProperties().getQuota())
             }
         }
@@ -177,23 +188,28 @@ class FileTestHelper {
 
     static compareFiles(File file1, File file2, long offset, long count) {
         def pos = 0L
-        def readBuffer = 8 * Constants.KB
+        def defaultBufferSize = 128 * Constants.KB
         def stream1 = new FileInputStream(file1)
         stream1.skip(offset)
         def stream2 = new FileInputStream(file2)
 
         try {
+            // If the amount we are going to read is smaller than the default buffer size use that instead.
+            def bufferSize = (int) Math.min(defaultBufferSize, count)
+
             while (pos < count) {
-                def bufferSize = (int) Math.min(readBuffer, count - pos)
-                def buffer1 = new byte[bufferSize]
-                def buffer2 = new byte[bufferSize]
+                // Number of bytes we expect to read.
+                def expectedReadCount = (int) Math.min(bufferSize, count - pos)
+                def buffer1 = new byte[expectedReadCount]
+                def buffer2 = new byte[expectedReadCount]
 
                 def readCount1 = stream1.read(buffer1)
                 def readCount2 = stream2.read(buffer2)
 
-                assert readCount1 == readCount2 && buffer1 == buffer2
+                // Use Arrays.equals as it is more optimized than Groovy/Spock's '==' for arrays.
+                assert readCount1 == readCount2 && Arrays.equals(buffer1, buffer2)
 
-                pos += bufferSize
+                pos += expectedReadCount
             }
 
             def verificationRead = stream2.read()

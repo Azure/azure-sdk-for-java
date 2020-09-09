@@ -27,6 +27,7 @@ import spock.lang.Specification
 
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
+import java.time.Duration
 import java.time.OffsetDateTime
 
 class APISpec extends Specification {
@@ -63,9 +64,6 @@ class APISpec extends Specification {
 
     static TestMode testMode = getTestMode()
     String connectionString
-
-    // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.
-    static boolean enableDebugging = false
 
     /*
     Note that this value is only used to check if we are depending on the received etag. This value will not actually
@@ -445,5 +443,9 @@ class APISpec extends Specification {
         }
 
         sleep(milliseconds)
+    }
+
+    def getPollingDuration(long liveTestDurationInMillis) {
+        return (testMode == TestMode.PLAYBACK) ? Duration.ofMillis(10) : Duration.ofMillis(liveTestDurationInMillis)
     }
 }

@@ -5,8 +5,7 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.models.DeadLetterOptions;
-import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
+import com.azure.messaging.servicebus.administration.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,27 +15,32 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.publisher.TestPublisher;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyMap;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -47,27 +51,30 @@ class ServiceBusReceiverClientTest {
     private static final String NAMESPACE = "test-namespace";
     private static final String ENTITY_PATH = "test-entity-path";
     private static final String LOCK_TOKEN = UUID.randomUUID().toString();
+
     private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(5);
 
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverClientTest.class);
+
     private ServiceBusReceiverClient client;
 
     @Mock
     private ServiceBusReceiverAsyncClient asyncClient;
     @Mock
-    private MessageLockToken messageLockToken;
-    @Mock
     private Map<String, Object> propertiesToModify;
+    @Mock
+    private ServiceBusTransactionContext transactionContext;
+    @Mock
+    private ServiceBusReceivedMessage message;
+    @Mock
+    private Consumer<Throwable> onErrorConsumer;
 
     @BeforeEach
     void setup() {
         MockitoAnnotations.initMocks(this);
-
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
         when(asyncClient.getReceiverOptions()).thenReturn(new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1));
-
-        when(messageLockToken.getLockToken()).thenReturn(LOCK_TOKEN);
 
         client = new ServiceBusReceiverClient(asyncClient, OPERATION_TIMEOUT);
     }
@@ -90,77 +97,261 @@ class ServiceBusReceiverClientTest {
     }
 
     @Test
-    void abandonMessage() {
+    void abandonMessageWithTransaction() {
         // Arrange
-        when(asyncClient.abandon(any(MessageLockToken.class))).thenReturn(Mono.empty());
+        when(asyncClient.abandon(eq(message), isNull(), eq(transactionContext))).thenReturn(Mono.empty());
 
         // Act
-        client.abandon(messageLockToken);
+        client.abandon(message, null, transactionContext);
 
         // Assert
-        verify(asyncClient).abandon(argThat(ServiceBusReceiverClientTest::lockTokenEquals));
+        verify(asyncClient).abandon(eq(message), isNull(), eq(transactionContext));
+    }
+
+    @Test
+    void abandonMessage() {
+        // Arrange
+        when(asyncClient.abandon(eq(message))).thenReturn(Mono.empty());
+
+        // Act
+        client.abandon(message);
+
+        // Assert
+        verify(asyncClient).abandon(eq(message));
     }
 
     @Test
     void abandonMessageWithProperties() {
         // Arrange
-        when(asyncClient.abandon(any(MessageLockToken.class), anyMap())).thenReturn(Mono.empty());
-        when(asyncClient.abandon(any(MessageLockToken.class), any(), anyString())).thenReturn(Mono.empty());
+        when(asyncClient.abandon(eq(message), eq(propertiesToModify))).thenReturn(Mono.empty());
 
         // Act
-        client.abandon(messageLockToken, propertiesToModify);
+        client.abandon(message, propertiesToModify);
 
         // Assert
-        verify(asyncClient).abandon(argThat(ServiceBusReceiverClientTest::lockTokenEquals), eq(propertiesToModify));
+        verify(asyncClient).abandon(eq(message), eq(propertiesToModify));
+    }
+
+    /**
+     * Verifies that we can auto-renew a message lock.
+     */
+    @Test
+    void autoRenewMessageLock() {
+        // Arrange
+        final Duration maxDuration = Duration.ofSeconds(8);
+        final TestPublisher<Void> publisher = TestPublisher.create();
+
+        doAnswer(answer -> {
+            fail("On error should not have been invoked.");
+            return null;
+        }).when(onErrorConsumer).accept(any());
+        when(asyncClient.getAutoRenewMessageLock(LOCK_TOKEN, maxDuration)).thenReturn(publisher.mono());
+
+        // Act
+        client.getAutoRenewMessageLock(LOCK_TOKEN, maxDuration, onErrorConsumer);
+
+        // Assert
+        verify(asyncClient).getAutoRenewMessageLock(LOCK_TOKEN, maxDuration);
+    }
+
+    /**
+     * Verifies that we can auto-renew a message lock and it calls the error consumer.
+     */
+    @Test
+    void autoRenewMessageLockFails() {
+        // Arrange
+        final Duration maxDuration = Duration.ofSeconds(8);
+        final TestPublisher<Void> publisher = TestPublisher.create();
+        final Throwable testError = new IllegalAccessException("Some exception");
+
+        when(asyncClient.getAutoRenewMessageLock(LOCK_TOKEN, maxDuration)).thenReturn(publisher.mono());
+
+        client.getAutoRenewMessageLock(LOCK_TOKEN, maxDuration, onErrorConsumer);
+
+        // Act
+        publisher.error(testError);
+
+        // Assert
+        verify(asyncClient).getAutoRenewMessageLock(LOCK_TOKEN, maxDuration);
+        verify(onErrorConsumer).accept(testError);
+    }
+
+    /**
+     * Verifies that we can auto-renew a message lock and it will not fail with an NPE when we have a null onError.
+     */
+    @Test
+    void autoRenewMessageLockFailsNull() {
+        // Arrange
+        final Duration maxDuration = Duration.ofSeconds(8);
+        final TestPublisher<Void> publisher = TestPublisher.create();
+        final Throwable testError = new IllegalAccessException("Some exception");
+
+        when(asyncClient.getAutoRenewMessageLock(LOCK_TOKEN, maxDuration)).thenReturn(publisher.mono());
+
+        client.getAutoRenewMessageLock(LOCK_TOKEN, maxDuration, null);
+
+        // Act
+        publisher.error(testError);
+
+        // Assert
+        verify(asyncClient).getAutoRenewMessageLock(LOCK_TOKEN, maxDuration);
+        verify(onErrorConsumer, never()).accept(testError);
+    }
+
+    /**
+     * Verifies that we can auto-renew a session lock.
+     */
+    @Test
+    void autoRenewSessionLock() {
+        // Arrange
+        final Duration maxDuration = Duration.ofSeconds(8);
+        final TestPublisher<Void> publisher = TestPublisher.create();
+
+        doAnswer(answer -> {
+            fail("On error should not have been invoked.");
+            return null;
+        }).when(onErrorConsumer).accept(any());
+        when(asyncClient.getAutoRenewSessionLock(LOCK_TOKEN, maxDuration)).thenReturn(publisher.mono());
+
+        // Act
+        client.getAutoRenewSessionLock(LOCK_TOKEN, maxDuration, onErrorConsumer);
+
+        // Assert
+        verify(asyncClient).getAutoRenewSessionLock(LOCK_TOKEN, maxDuration);
+    }
+
+    /**
+     * Verifies that we can auto-renew a session lock and it calls the error consumer.
+     */
+    @Test
+    void autoRenewSessionLockFails() {
+        // Arrange
+        final Duration maxDuration = Duration.ofSeconds(8);
+        final TestPublisher<Void> publisher = TestPublisher.create();
+        final Throwable testError = new IllegalAccessException("Some exception");
+
+        when(asyncClient.getAutoRenewSessionLock(LOCK_TOKEN, maxDuration)).thenReturn(publisher.mono());
+
+        client.getAutoRenewSessionLock(LOCK_TOKEN, maxDuration, onErrorConsumer);
+
+        // Act
+        publisher.error(testError);
+
+        // Assert
+        verify(asyncClient).getAutoRenewSessionLock(LOCK_TOKEN, maxDuration);
+        verify(onErrorConsumer).accept(testError);
+    }
+
+    /**
+     * Verifies that we can auto-renew a message lock and it will not fail with an NPE when we have a null onError.
+     */
+    @Test
+    void autoRenewSessionLockFailsNull() {
+        // Arrange
+        final Duration maxDuration = Duration.ofSeconds(8);
+        final TestPublisher<Void> publisher = TestPublisher.create();
+        final Throwable testError = new IllegalAccessException("Some exception");
+
+        when(asyncClient.getAutoRenewSessionLock(LOCK_TOKEN, maxDuration)).thenReturn(publisher.mono());
+
+        client.getAutoRenewSessionLock(LOCK_TOKEN, maxDuration, null);
+
+        // Act
+        publisher.error(testError);
+
+        // Assert
+        verify(asyncClient).getAutoRenewSessionLock(LOCK_TOKEN, maxDuration);
+        verify(onErrorConsumer, never()).accept(testError);
+    }
+
+    @Test
+    void completeMessageWithTransaction() {
+        // Arrange
+        when(asyncClient.complete(eq(message), eq(transactionContext))).thenReturn(Mono.empty());
+
+        // Act
+        client.complete(message, transactionContext);
+
+        // Assert
+        verify(asyncClient).complete(eq(message), eq(transactionContext));
     }
 
     @Test
     void completeMessage() {
         // Arrange
-        when(asyncClient.complete(any(MessageLockToken.class))).thenReturn(Mono.empty());
+        when(asyncClient.complete(eq(message))).thenReturn(Mono.empty());
 
         // Act
-        client.complete(messageLockToken);
+        client.complete(message);
 
         // Assert
-        verify(asyncClient).complete(argThat(ServiceBusReceiverClientTest::lockTokenEquals));
+        verify(asyncClient).complete(eq(message));
     }
 
     @Test
     void deferMessage() {
         // Arrange
-        when(asyncClient.defer(any(MessageLockToken.class))).thenReturn(Mono.empty());
+        when(asyncClient.defer(eq(message))).thenReturn(Mono.empty());
 
         // Act
-        client.defer(messageLockToken);
+        client.defer(message);
 
         // Assert
-        verify(asyncClient).defer(argThat(ServiceBusReceiverClientTest::lockTokenEquals));
+        verify(asyncClient).defer(eq(message));
+    }
+
+    @Test
+    void deferMessageWithPropertiesWithTransaction() {
+        // Arrange
+        when(asyncClient.defer(eq(message), eq(propertiesToModify), eq(transactionContext))).thenReturn(Mono.empty());
+
+        // Act
+        client.defer(message, propertiesToModify, transactionContext);
+
+        // Assert
+        verify(asyncClient).defer(eq(message), eq(propertiesToModify), eq(transactionContext));
     }
 
     @Test
     void deferMessageWithProperties() {
         // Arrange
-        when(asyncClient.defer(any(MessageLockToken.class), anyMap())).thenReturn(Mono.empty());
-        when(asyncClient.defer(any(MessageLockToken.class), any(), anyString())).thenReturn(Mono.empty());
+        when(asyncClient.defer(eq(message), eq(propertiesToModify))).thenReturn(Mono.empty());
 
         // Act
-        client.defer(messageLockToken, propertiesToModify);
+        client.defer(message, propertiesToModify);
 
         // Assert
-        verify(asyncClient).defer(argThat(ServiceBusReceiverClientTest::lockTokenEquals), eq(propertiesToModify));
+        verify(asyncClient).defer(eq(message), eq(propertiesToModify));
     }
 
     @Test
     void deadLetterMessage() {
         // Arrange
-        when(asyncClient.deadLetter(any(MessageLockToken.class))).thenReturn(Mono.empty());
+        when(asyncClient.deadLetter(eq(message))).thenReturn(Mono.empty());
 
         // Act
-        client.deadLetter(messageLockToken);
+        client.deadLetter(message);
 
         // Assert
-        verify(asyncClient).deadLetter(argThat(ServiceBusReceiverClientTest::lockTokenEquals));
+        verify(asyncClient).deadLetter(eq(message));
+    }
+
+    @Test
+    void deadLetterMessageWithOptionsWithTransaction() {
+        // Arrange
+        final DeadLetterOptions options = new DeadLetterOptions()
+            .setDeadLetterErrorDescription("foo")
+            .setDeadLetterReason("bar")
+            .setPropertiesToModify(propertiesToModify);
+
+        when(asyncClient.deadLetter(eq(message), any(DeadLetterOptions.class), any(ServiceBusTransactionContext.class)))
+            .thenReturn(Mono.empty());
+
+        // Act
+        client.deadLetter(message, options, transactionContext);
+
+        // Assert
+        verify(asyncClient).deadLetter(eq(message), eq(options), eq(transactionContext));
     }
 
     @Test
@@ -171,14 +362,14 @@ class ServiceBusReceiverClientTest {
             .setDeadLetterReason("bar")
             .setPropertiesToModify(propertiesToModify);
 
-        when(asyncClient.deadLetter(any(MessageLockToken.class), any(DeadLetterOptions.class)))
+        when(asyncClient.deadLetter(eq(message), any(DeadLetterOptions.class)))
             .thenReturn(Mono.empty());
 
         // Act
-        client.deadLetter(messageLockToken, options);
+        client.deadLetter(message, options);
 
         // Assert
-        verify(asyncClient).deadLetter(argThat(ServiceBusReceiverClientTest::lockTokenEquals), eq(options));
+        verify(asyncClient).deadLetter(eq(message), eq(options));
     }
 
     @Test
@@ -212,10 +403,10 @@ class ServiceBusReceiverClientTest {
     void peekMessage() {
         // Arrange
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        when(asyncClient.peek()).thenReturn(Mono.just(message));
+        when(asyncClient.peekMessage()).thenReturn(Mono.just(message));
 
         // Act
-        final ServiceBusReceivedMessage actual = client.peek();
+        final ServiceBusReceivedMessage actual = client.peekMessage();
 
         // Assert
         assertEquals(message, actual);
@@ -226,10 +417,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         final long sequenceNumber = 154;
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        when(asyncClient.peekAt(sequenceNumber)).thenReturn(Mono.just(message));
+        when(asyncClient.peekMessageAt(sequenceNumber)).thenReturn(Mono.just(message));
 
         // Act
-        final ServiceBusReceivedMessage actual = client.peekAt(sequenceNumber);
+        final ServiceBusReceivedMessage actual = client.peekMessageAt(sequenceNumber);
 
         // Assert
         assertEquals(message, actual);
@@ -265,10 +456,11 @@ class ServiceBusReceiverClientTest {
                 }
             });
         });
-        when(asyncClient.peekBatch(maxMessages)).thenReturn(messages);
+
+        when(asyncClient.peekMessages(maxMessages)).thenReturn(messages);
 
         // Act
-        final IterableStream<ServiceBusReceivedMessage> actual = client.peekBatch(maxMessages);
+        final IterableStream<ServiceBusReceivedMessage> actual = client.peekMessages(maxMessages);
 
         // Assert
         assertNotNull(actual);
@@ -309,10 +501,10 @@ class ServiceBusReceiverClientTest {
             });
         });
 
-        when(asyncClient.peekBatch(maxMessages)).thenReturn(messages);
+        when(asyncClient.peekMessages(maxMessages)).thenReturn(messages);
 
         // Act
-        final IterableStream<ServiceBusReceivedMessage> actual = client.peekBatch(maxMessages);
+        final IterableStream<ServiceBusReceivedMessage> actual = client.peekMessages(maxMessages);
 
         // Assert
         assertNotNull(actual);
@@ -329,19 +521,17 @@ class ServiceBusReceiverClientTest {
         // Arrange
         final int maxMessages = 10;
         final long sequenceNumber = 100;
-        final Flux<ServiceBusReceivedMessage> messages = Flux.create(sink -> {
-            sink.onRequest(number -> {
-                for (int i = 0; i < maxMessages; i++) {
-                    sink.next(mock(ServiceBusReceivedMessage.class));
-                }
+        final Flux<ServiceBusReceivedMessage> messages = Flux.create(sink -> sink.onRequest(number -> {
+            for (int i = 0; i < maxMessages; i++) {
+                sink.next(mock(ServiceBusReceivedMessage.class));
+            }
 
-                sink.complete();
-            });
-        });
-        when(asyncClient.peekBatchAt(maxMessages, sequenceNumber)).thenReturn(messages);
+            sink.complete();
+        }));
+        when(asyncClient.peekMessagesAt(maxMessages, sequenceNumber)).thenReturn(messages);
 
         // Act
-        final IterableStream<ServiceBusReceivedMessage> actual = client.peekBatchAt(maxMessages, sequenceNumber);
+        final IterableStream<ServiceBusReceivedMessage> actual = client.peekMessagesAt(maxMessages, sequenceNumber);
 
         // Assert
         assertNotNull(actual);
@@ -359,7 +549,7 @@ class ServiceBusReceiverClientTest {
         final int maxMessages = 10;
 
         // Act & Assert
-        assertThrows(NullPointerException.class, () -> client.receive(maxMessages, (Duration) null));
+        assertThrows(NullPointerException.class, () -> client.receiveMessages(maxMessages, null));
     }
 
     /**
@@ -372,7 +562,7 @@ class ServiceBusReceiverClientTest {
         Duration negativeReceiveWaitTime = Duration.ofSeconds(-10);
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> client.receive(maxMessages, negativeReceiveWaitTime));
+        assertThrows(IllegalArgumentException.class, () -> client.receiveMessages(maxMessages, negativeReceiveWaitTime));
     }
 
     /**
@@ -411,10 +601,10 @@ class ServiceBusReceiverClientTest {
                 sink.complete();
             });
         });
-        when(asyncClient.receive(any(ReceiveAsyncOptions.class))).thenReturn(messageSink);
+        when(asyncClient.receiveMessages()).thenReturn(messageSink);
 
         // Act
-        final IterableStream<ServiceBusReceivedMessageContext> actual = client.receive(maxMessages, receiveTimeout);
+        final IterableStream<ServiceBusReceivedMessageContext> actual = client.receiveMessages(maxMessages, receiveTimeout);
 
         // Assert
         assertNotNull(actual);
@@ -457,10 +647,10 @@ class ServiceBusReceiverClientTest {
             });
         });
 
-        when(asyncClient.receive(any(ReceiveAsyncOptions.class))).thenReturn(messageSink);
+        when(asyncClient.receiveMessages()).thenReturn(messageSink);
 
         // Act
-        final IterableStream<ServiceBusReceivedMessageContext> actual = client.receive(maxMessages);
+        final IterableStream<ServiceBusReceivedMessageContext> actual = client.receiveMessages(maxMessages);
 
         // Assert
         assertNotNull(actual);
@@ -503,10 +693,10 @@ class ServiceBusReceiverClientTest {
                 sink.complete();
             });
         });
-        when(asyncClient.receive(any(ReceiveAsyncOptions.class))).thenReturn(messageSink);
+        when(asyncClient.receiveMessages()).thenReturn(messageSink);
 
         // Act
-        final IterableStream<ServiceBusReceivedMessageContext> actual = client.receive(maxMessages);
+        final IterableStream<ServiceBusReceivedMessageContext> actual = client.receiveMessages(maxMessages);
 
         // Assert
         assertNotNull(actual);
@@ -538,7 +728,7 @@ class ServiceBusReceiverClientTest {
         final long sequenceNumber2 = 13124;
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
         final ServiceBusReceivedMessage message2 = mock(ServiceBusReceivedMessage.class);
-        when(asyncClient.receiveDeferredMessageBatch(any())).thenReturn(Flux.just(message, message2));
+        when(asyncClient.receiveDeferredMessages(any())).thenReturn(Flux.just(message, message2));
         List<Long> collection = Arrays.asList(sequenceNumber, sequenceNumber2);
 
         // Act
@@ -556,11 +746,11 @@ class ServiceBusReceiverClientTest {
     @Test
     void renewMessageLock() {
         // Arrange
-        final Instant response = Instant.ofEpochSecond(1585259339);
-        when(asyncClient.renewMessageLock(messageLockToken)).thenReturn(Mono.just(response));
+        final OffsetDateTime response = Instant.ofEpochSecond(1585259339).atOffset(ZoneOffset.UTC);
+        when(asyncClient.renewMessageLock(LOCK_TOKEN)).thenReturn(Mono.just(response));
 
         // Act
-        final Instant actual = client.renewMessageLock(messageLockToken);
+        final OffsetDateTime actual = client.renewMessageLock(LOCK_TOKEN);
 
         // Assert
         assertEquals(response, actual);
@@ -570,11 +760,11 @@ class ServiceBusReceiverClientTest {
     void renewSessionLock() {
         // Arrange
         final String sessionId = "a-session-id";
-        final Instant response = Instant.ofEpochSecond(1585259339);
+        final OffsetDateTime response = Instant.ofEpochSecond(1585259339).atOffset(ZoneOffset.UTC);
         when(asyncClient.renewSessionLock(sessionId)).thenReturn(Mono.just(response));
 
         // Act
-        final Instant actual = client.renewSessionLock(sessionId);
+        final OffsetDateTime actual = client.renewSessionLock(sessionId);
 
         // Assert
         assertEquals(response, actual);
@@ -592,9 +782,5 @@ class ServiceBusReceiverClientTest {
 
         // Assert
         verify(asyncClient).setSessionState(sessionId, contents);
-    }
-
-    private static boolean lockTokenEquals(MessageLockToken compared) {
-        return compared != null && LOCK_TOKEN.equals(compared.getLockToken());
     }
 }

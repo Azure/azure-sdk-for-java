@@ -101,7 +101,7 @@ public class RetryThrottleTest extends TestSuiteBase {
                 }
                 int currentAttempt = count.getAndIncrement();
                 if (currentAttempt == 0) {
-                    return Mono.error(BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.TOO_MANY_REQUESTS));
+                    return Mono.error(BridgeInternal.createCosmosException(HttpConstants.StatusCodes.TOO_MANY_REQUESTS));
                 } else {
                     return client.getOrigGatewayStoreModel().processMessage(req);
                 }

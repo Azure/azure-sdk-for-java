@@ -9,7 +9,7 @@ import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.CosmosResponseValidator;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
+import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import org.testng.annotations.AfterClass;
@@ -38,10 +38,10 @@ public class DatabaseCrudTest extends TestSuiteBase {
         databases.add(databaseDefinition.getId());
 
         // create the database
-        Mono<CosmosAsyncDatabaseResponse> createObservable = client.createDatabase(databaseDefinition, new CosmosDatabaseRequestOptions());
+        Mono<CosmosDatabaseResponse> createObservable = client.createDatabase(databaseDefinition, new CosmosDatabaseRequestOptions());
 
         // validate
-        CosmosResponseValidator<CosmosAsyncDatabaseResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncDatabaseResponse>()
+        CosmosResponseValidator<CosmosDatabaseResponse> validator = new CosmosResponseValidator.Builder<CosmosDatabaseResponse>()
                 .withId(databaseDefinition.getId()).build();
         validateSuccess(createObservable, validator);
     }
@@ -54,7 +54,7 @@ public class DatabaseCrudTest extends TestSuiteBase {
         client.createDatabase(databaseDefinition, new CosmosDatabaseRequestOptions()).block();
 
         // attempt to create the database
-        Mono<CosmosAsyncDatabaseResponse> createObservable = client.createDatabase(databaseDefinition, new CosmosDatabaseRequestOptions());
+        Mono<CosmosDatabaseResponse> createObservable = client.createDatabase(databaseDefinition, new CosmosDatabaseRequestOptions());
 
         // validate
         FailureValidator validator = new FailureValidator.Builder()
@@ -67,10 +67,10 @@ public class DatabaseCrudTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void readDatabase() throws Exception {
         // read database
-        Mono<CosmosAsyncDatabaseResponse> readObservable = client.getDatabase(preExistingDatabaseId).read();
+        Mono<CosmosDatabaseResponse> readObservable = client.getDatabase(preExistingDatabaseId).read();
 
         // validate
-        CosmosResponseValidator<CosmosAsyncDatabaseResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncDatabaseResponse>()
+        CosmosResponseValidator<CosmosDatabaseResponse> validator = new CosmosResponseValidator.Builder<CosmosDatabaseResponse>()
                 .withId(preExistingDatabaseId).build();
         validateSuccess(readObservable, validator);
     }
@@ -78,7 +78,7 @@ public class DatabaseCrudTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void readDatabase_DoesntExist() throws Exception {
         // read database
-        Mono<CosmosAsyncDatabaseResponse> readObservable = client.getDatabase("I don't exist").read();
+        Mono<CosmosDatabaseResponse> readObservable = client.getDatabase("I don't exist").read();
 
         // validate
         FailureValidator validator = new FailureValidator.Builder()
@@ -94,13 +94,15 @@ public class DatabaseCrudTest extends TestSuiteBase {
         // create the database
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         databases.add(databaseDefinition.getId());
-        CosmosAsyncDatabase database = client.createDatabase(databaseDefinition, new CosmosDatabaseRequestOptions()).block().getDatabase();
+
+        client.createDatabase(databaseDefinition, new CosmosDatabaseRequestOptions()).block();
+        CosmosAsyncDatabase database = client.getDatabase(databaseDefinition.getId());
 
         // delete the database
-        Mono<CosmosAsyncDatabaseResponse> deleteObservable = database.delete();
+        Mono<CosmosDatabaseResponse> deleteObservable = database.delete();
 
         // validate
-        CosmosResponseValidator<CosmosAsyncDatabaseResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncDatabaseResponse>()
+        CosmosResponseValidator<CosmosDatabaseResponse> validator = new CosmosResponseValidator.Builder<CosmosDatabaseResponse>()
                 .nullResource().build();
         validateSuccess(deleteObservable, validator);
     }
@@ -108,7 +110,7 @@ public class DatabaseCrudTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void deleteDatabase_DoesntExist() throws Exception {
         // delete the database
-        Mono<CosmosAsyncDatabaseResponse> deleteObservable = client.getDatabase("I don't exist").delete();
+        Mono<CosmosDatabaseResponse> deleteObservable = client.getDatabase("I don't exist").delete();
 
         // validate
         FailureValidator validator = new FailureValidator.Builder()

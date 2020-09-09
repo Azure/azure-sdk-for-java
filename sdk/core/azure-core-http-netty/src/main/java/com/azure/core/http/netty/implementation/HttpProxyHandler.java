@@ -103,7 +103,6 @@ public final class HttpProxyHandler extends ProxyHandler {
 
         this.challengeHandler = challengeHandler;
         this.proxyChallengeHolderReference = proxyChallengeHolderReference;
-
         this.codec = new HttpClientCodec();
     }
 
@@ -139,7 +138,7 @@ public final class HttpProxyHandler extends ProxyHandler {
         String hostString = HttpUtil.formatHostnameForHttp(destinationAddress);
         int port = destinationAddress.getPort();
         String url = hostString + ":" + port;
-        String hostHeader = (port != 80 && port != 443) ? url : hostString;
+        String hostHeader = (port == 80 || port == 443) ? url : hostString;
         FullHttpRequest request = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.CONNECT, url,
             Unpooled.EMPTY_BUFFER, false);
 

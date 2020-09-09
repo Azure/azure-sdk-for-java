@@ -13,7 +13,7 @@ public final class TextAnalyticsWarning {
     /*
      * Warning error code.
      */
-    private final WarningCode code;
+    private final WarningCode warningCode;
 
     /*
      * Warning message.
@@ -23,11 +23,11 @@ public final class TextAnalyticsWarning {
     /**
      * Creates a {@link TextAnalyticsWarning} model that describes text analytics warning.
      *
-     * @param code The warning code value
+     * @param warningCode The warning code value
      * @param message The warning message.
      */
-    public TextAnalyticsWarning(WarningCode code, String message) {
-        this.code = code;
+    public TextAnalyticsWarning(WarningCode warningCode, String message) {
+        this.warningCode = warningCode;
         this.message = message;
     }
 
@@ -37,7 +37,7 @@ public final class TextAnalyticsWarning {
      * @return the warning code value.
      */
     public WarningCode getWarningCode() {
-        return this.code;
+        return this.warningCode;
     }
 
     /**

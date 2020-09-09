@@ -35,11 +35,11 @@ public class ModelInfoResponse {
     private Integer typeId;
 
     /**
-     * Possible values include: 'Entity Extractor', 'Hierarchical Entity
-     * Extractor', 'Hierarchical Child Entity Extractor', 'Composite Entity
-     * Extractor', 'Closed List Entity Extractor', 'Prebuilt Entity Extractor',
-     * 'Intent Classifier', 'Pattern.Any Entity Extractor', 'Regex Entity
-     * Extractor'.
+     * Possible values include: 'Entity Extractor', 'Child Entity Extractor',
+     * 'Hierarchical Entity Extractor', 'Hierarchical Child Entity Extractor',
+     * 'Composite Entity Extractor', 'List Entity Extractor', 'Prebuilt Entity
+     * Extractor', 'Intent Classifier', 'Pattern.Any Entity Extractor', 'Closed
+     * List Entity Extractor', 'Regex Entity Extractor'.
      */
     @JsonProperty(value = "readableType", required = true)
     private String readableType;
@@ -57,7 +57,7 @@ public class ModelInfoResponse {
     private List<ChildEntity> children;
 
     /**
-     * List of sub-lists.
+     * List of sublists.
      */
     @JsonProperty(value = "subLists")
     private List<SubClosedListResponse> subLists;
@@ -75,7 +75,7 @@ public class ModelInfoResponse {
     private String customPrebuiltModelName;
 
     /**
-     * The Regex entity pattern.
+     * The Regular Expression entity pattern.
      */
     @JsonProperty(value = "regexPattern")
     private String regexPattern;

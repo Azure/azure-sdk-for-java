@@ -1,0 +1,20 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.servicebus.windows.net/$namespaceinfo?api-version=2017-04",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-messaging-servicebus/7.0.0-beta.4 (11.0.5; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "<entry xmlns=\"http://www.w3.org/2005/Atom\"><id>https://shivangiservicebus.servicebus.windows.net/$namespaceinfo?api-version=2017-04</id><title type=\"text\">ShivangiServiceBus</title><updated>2020-07-02T09:53:19Z</updated><author><name>ShivangiServiceBus</name></author><link rel=\"self\" href=\"https://shivangiservicebus.servicebus.windows.net/$namespaceinfo?api-version=2017-04\"></link><content type=\"application/xml\"><NamespaceInfo xmlns=\"http://schemas.microsoft.com/netservices/2010/10/servicebus/connect\" xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\"><Alias>ServiceBusFallback</Alias><CreatedTime>2020-04-09T08:38:55.807Z</CreatedTime><MessagingSKU>Premium</MessagingSKU><MessagingUnits>1</MessagingUnits><ModifiedTime>2020-06-12T06:34:38.383Z</ModifiedTime><Name>ShivangiServiceBus</Name><NamespaceType>Messaging</NamespaceType></NamespaceInfo></content></entry>",
+      "Date" : "Thu, 02 Jul 2020 09:53:19 GMT",
+      "Content-Type" : "application/atom+xml;type=entry;charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

@@ -26,7 +26,7 @@ import java.util.Set;
  *
  * {@inheritDoc}
  */
-public class AzureDirectoryStream implements DirectoryStream<Path> {
+public final class AzureDirectoryStream implements DirectoryStream<Path> {
     private final ClientLogger logger = new ClientLogger(AzureDirectoryStream.class);
 
     private final AzurePath path;
@@ -100,6 +100,11 @@ public class AzureDirectoryStream implements DirectoryStream<Path> {
 
         @Override
         public boolean hasNext() {
+            try {
+                AzurePath.ensureFileSystemOpen(path);
+            } catch (IOException e) {
+                throw LoggingUtility.logError(logger, new DirectoryIteratorException(e));
+            }
             // Closing the parent stream halts iteration.
             if (parentStream.closed) {
                 return false;

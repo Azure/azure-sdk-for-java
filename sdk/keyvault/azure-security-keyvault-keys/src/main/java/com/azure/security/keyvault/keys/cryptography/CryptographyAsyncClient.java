@@ -82,7 +82,6 @@ public class CryptographyAsyncClient {
         if (jsonWebKey.getKeyOps() == null) {
             throw new IllegalArgumentException("Json Web Key's key operations property is not configured");
         }
-
         if (jsonWebKey.getKeyType() == null) {
             throw new IllegalArgumentException("Json Web Key's key type property is not configured");
         }

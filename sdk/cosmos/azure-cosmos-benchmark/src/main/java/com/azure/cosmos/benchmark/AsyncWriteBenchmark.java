@@ -3,8 +3,8 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.codahale.metrics.Timer;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -15,7 +15,7 @@ import reactor.core.scheduler.Schedulers;
 
 import java.util.UUID;
 
-class AsyncWriteBenchmark extends AsyncBenchmark<CosmosAsyncItemResponse> {
+class AsyncWriteBenchmark extends AsyncBenchmark<CosmosItemResponse> {
 
     private final String uuid;
     private final String dataFieldValue;
@@ -23,9 +23,9 @@ class AsyncWriteBenchmark extends AsyncBenchmark<CosmosAsyncItemResponse> {
     class LatencySubscriber<T> extends BaseSubscriber<T> {
 
         Timer.Context context;
-        BaseSubscriber<CosmosAsyncItemResponse> baseSubscriber;
+        BaseSubscriber<CosmosItemResponse> baseSubscriber;
 
-        LatencySubscriber(BaseSubscriber<CosmosAsyncItemResponse> baseSubscriber) {
+        LatencySubscriber(BaseSubscriber<CosmosItemResponse> baseSubscriber) {
             this.baseSubscriber = baseSubscriber;
         }
 
@@ -59,17 +59,23 @@ class AsyncWriteBenchmark extends AsyncBenchmark<CosmosAsyncItemResponse> {
     }
 
     @Override
-    protected void performWorkload(BaseSubscriber<CosmosAsyncItemResponse> baseSubscriber, long i) throws InterruptedException {
-        String partitionKey = uuid + i;
-        Mono<CosmosAsyncItemResponse<PojoizedJson>> obs;
+    protected void performWorkload(BaseSubscriber<CosmosItemResponse> baseSubscriber, long i) throws InterruptedException {
+        String id = uuid + i;
+        Mono<CosmosItemResponse<PojoizedJson>> obs;
         if (configuration.isDisablePassingPartitionKeyAsOptionOnWrite()) {
             // require parsing partition key from the doc
-            obs = cosmosAsyncContainer.createItem(generateDocument(partitionKey, dataFieldValue));
+            obs = cosmosAsyncContainer.createItem(BenchmarkHelper.generateDocument(id,
+                dataFieldValue,
+                partitionKey,
+                configuration.getDocumentDataFieldCount()));
         } else {
-            // more optimized for write as partition ke is already passed as config
-            obs = cosmosAsyncContainer.createItem(generateDocument(partitionKey, dataFieldValue),
-                                                  new PartitionKey(partitionKey),
-                                                  new CosmosItemRequestOptions());
+            // more optimized for write as partition key is already passed as config
+            obs = cosmosAsyncContainer.createItem(BenchmarkHelper.generateDocument(id,
+                dataFieldValue,
+                partitionKey,
+                configuration.getDocumentDataFieldCount()),
+                new PartitionKey(id),
+                null);
         }
 
         concurrencyControlSemaphore.acquire();
@@ -77,7 +83,7 @@ class AsyncWriteBenchmark extends AsyncBenchmark<CosmosAsyncItemResponse> {
         if (configuration.getOperationType() == Configuration.Operation.WriteThroughput) {
             obs.subscribeOn(Schedulers.parallel()).subscribe(baseSubscriber);
         } else {
-            LatencySubscriber<CosmosAsyncItemResponse> latencySubscriber = new LatencySubscriber<>(baseSubscriber);
+            LatencySubscriber<CosmosItemResponse> latencySubscriber = new LatencySubscriber<>(baseSubscriber);
             latencySubscriber.context = latency.time();
             obs.subscribeOn(Schedulers.parallel()).subscribe(latencySubscriber);
         }

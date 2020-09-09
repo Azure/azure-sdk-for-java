@@ -5,20 +5,33 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.Trigger;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * The type Cosmos trigger properties.
  */
-public final class CosmosTriggerProperties extends ResourceWrapper{
+public final class CosmosTriggerProperties {
 
     private Trigger trigger;
     /**
      * Constructor
      */
-    public CosmosTriggerProperties() {
+    CosmosTriggerProperties() {
         this.trigger = new Trigger();
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param id the id of the Cosmos trigger.
+     * @param body the body of the Cosmos trigger.
+     */
+    public CosmosTriggerProperties(String id, String body) {
+        this.trigger = new Trigger();
+        trigger.setId(id);
+        trigger.setBody(body);
     }
 
     /**
@@ -37,9 +50,7 @@ public final class CosmosTriggerProperties extends ResourceWrapper{
      * @return the current cosmos trigger properties instance
      */
     public CosmosTriggerProperties setId(String id) {
-        this.trigger = new Trigger();
         trigger.setId(id);
-
         return this;
     }
 
@@ -103,13 +114,50 @@ public final class CosmosTriggerProperties extends ResourceWrapper{
         return this;
     }
 
+    Resource getResource() {
+        return this.trigger;
+    }
+
+    /**
+     * Gets the name of the resource.
+     *
+     * @return the name of the resource.
+     */
+    public String getId() {
+        return this.trigger.getId();
+    }
+
+    /**
+     * Gets the ID associated with the resource.
+     *
+     * @return the ID associated with the resource.
+     */
+    String getResourceId() {
+        return this.trigger.getResourceId();
+    }
+
+    /**
+     * Get the last modified timestamp associated with the resource.
+     * This is only relevant when getting response from the server.
+     *
+     * @return the timestamp.
+     */
+    public Instant getTimestamp() {
+        return this.trigger.getTimestamp();
+    }
+
+    /**
+     * Get the entity tag associated with the resource.
+     * This is only relevant when getting response from the server.
+     *
+     * @return the e tag.
+     */
+    public String getETag() {
+        return this.trigger.getETag();
+    }
+
     static List<CosmosTriggerProperties> getFromV2Results(List<Trigger> results) {
         return results.stream().map(trigger -> new CosmosTriggerProperties(trigger.toJson()))
                    .collect(Collectors.toList());
-    }
-
-    @Override
-    Resource getResource() {
-        return this.trigger;
     }
 }

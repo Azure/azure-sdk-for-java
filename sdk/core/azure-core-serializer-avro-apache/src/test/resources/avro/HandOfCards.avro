@@ -1,0 +1,30 @@
+
+{
+  "namespace": "com.azure.core.serializer.avro.apache.generatedtestsources",
+  "type": "record",
+  "name": "HandOfCards",
+  "fields": [
+    {
+      "name": "cards",
+      "type": {
+        "type": "array",
+        "items": {
+          "namespace": "com.azure.core.serializer.avro.apache.generatedtestsources",
+          "type": "record",
+          "name": "PlayingCard",
+          "fields": [
+            {"name": "isFaceCard", "type": "boolean"},
+            {"name": "cardValue", "type": "int"},
+            {"name": "playingCardSuit", "type": {
+              "namespace": "com.azure.core.serializer.avro.apache.generatedtestsources",
+              "type": "enum",
+              "name": "PlayingCardSuit",
+              "symbols": ["SPADES", "HEARTS", "DIAMONDS", "CLUBS"]
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

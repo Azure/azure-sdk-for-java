@@ -25,7 +25,7 @@ public final class Block {
      * The block size in bytes.
      */
     @JsonProperty(value = "Size", required = true)
-    private int size;
+    private long sizeLong;
 
     /**
      * Get the name property: The base64 encoded block ID.
@@ -48,22 +48,44 @@ public final class Block {
     }
 
     /**
-     * Get the size property: The block size in bytes.
+     * Get the sizeLong property: The block size in bytes.
      *
-     * @return the size value.
+     * @return the sizeLong value.
      */
-    public int getSize() {
-        return this.size;
+    public long getSizeLong() {
+        return this.sizeLong;
     }
 
     /**
-     * Set the size property: The block size in bytes.
+     * Set the sizeLong property: The block size in bytes.
      *
-     * @param size the size value to set.
+     * @param sizeLong the sizeLong value to set.
      * @return the Block object itself.
      */
-    public Block setSize(int size) {
-        this.size = size;
+    public Block setSizeLong(long sizeLong) {
+        this.sizeLong = sizeLong;
+        return this;
+    }
+
+    /**
+     * Get the size property: The size property.
+     *
+     * @return the size value.
+     * @deprecated Use {@link #getSizeLong()}
+     */
+    @Deprecated  public int getSize() {
+        return (int) this.sizeLong;
+    }
+
+    /**
+     * Set the size property: The size property.
+     *
+     * @param size the size value to set.
+     * @deprecated Use {@link #setSizeLong(long)}
+     * @return the Block object itself.
+     */
+    @Deprecated public Block setSize(int size) {
+        this.sizeLong = size;
         return this;
     }
 }

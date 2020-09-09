@@ -8,6 +8,9 @@ import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
+import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
+import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
+import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.Arrays;
@@ -37,9 +40,23 @@ public class AnalyzeSentimentBatchStringDocuments {
             "The hotel was dark and unclean. The restaurant had amazing gnocchi!"
         );
 
+        // Request options: show statistics and model version
+        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest");
+
+        // Analyzing sentiment for each document in a batch of documents
+        AnalyzeSentimentResultCollection sentimentBatchResultCollection = client.analyzeSentimentBatch(documents, "en", requestOptions);
+
+        // Model version
+        System.out.printf("Results of Azure Text Analytics \"Sentiment Analysis\" Model, version: %s%n", sentimentBatchResultCollection.getModelVersion());
+
+        // Batch statistics
+        TextDocumentBatchStatistics batchStatistics = sentimentBatchResultCollection.getStatistics();
+        System.out.printf("Documents statistics: document count = %s, erroneous document count = %s, transaction count = %s, valid document count = %s.%n",
+            batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(), batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
+
         // Analyzed sentiment for each document in a batch of documents
         AtomicInteger counter = new AtomicInteger();
-        for (AnalyzeSentimentResult analyzeSentimentResult : client.analyzeSentimentBatch(documents, "en")) {
+        for (AnalyzeSentimentResult analyzeSentimentResult : sentimentBatchResultCollection) {
             System.out.printf("%nText = %s%n", documents.get(counter.getAndIncrement()));
             if (analyzeSentimentResult.isError()) {
                 // Erroneous document

@@ -1,0 +1,109 @@
+= Spring Cloud Azure Stream Binder for Multiple Event Hub Namespace Code Sample shared library for Java
+
+== Key concepts
+== Getting started
+
+This code sample demonstrates how to use the Spring Cloud Stream Binder for multiple Azure Event Hub namespaces.
+In this sample you will bind to two Event Hub namespaces separately through two binders.
+The sample app exposes REST APIs to receive string message.
+Then message is sent through Azure Event Hub to a `sink` which simply logs the message.
+
+Running this sample will be charged by Azure.
+You can check the usage and bill at https://azure.microsoft.com/en-us/account/[this link].
+
+=== Connection string based usage
+
+1. Create two Event Hubs in different Event Hub namespace.
+Please refer to https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-create[Azure Event Hubs].
+Please note `Basic` tier is unsupported.
+
+2. Create https://docs.microsoft.com/en-us/azure/storage/[Azure Storage] for checkpoint use.
+
+3. Update link:src/main/resources/application.properties[application.properties]
+
++
+
+[source%nowrap,properties]
+....
+
+# Configuration for default binder. Currently, the limitation is default binder must be provided
+# Fill the first event hub namespace connection string copied from portal
+spring.cloud.azure.eventhub.connection-string=[eventhub-namespace-1-connection-string]
+# Fill checkpoint storage account name, access key and container
+spring.cloud.azure.eventhub.checkpoint-storage-account=[checkpoint-storage-account]
+spring.cloud.azure.eventhub.checkpoint-access-key=[checkpoint-accesskey]
+spring.cloud.azure.eventhub.checkpoint-container=[checkpoint-container]
+
+
+# Configuration for another binder
+spring.cloud.stream.binders.eventhub2.type=eventhub
+# Set defaultCandidate to false
+spring.cloud.stream.binders.eventhub2.defaultCandidate=false
+spring.cloud.stream.binders.eventhub2.environment.spring.cloud.azure.eventhub.connection-string=[eventhub-namespace-2-connection-string]
+spring.cloud.stream.binders.eventhub2.environment.spring.cloud.azure.eventhub.checkpoint-storage-account=[checkpoint-storage-account]
+spring.cloud.stream.binders.eventhub2.environment.spring.cloud.azure.eventhub.checkpoint-access-key=[checkpoint-accesskey]
+spring.cloud.stream.binders.eventhub2.environment.spring.cloud.azure.eventhub.checkpoint-container=[checkpoint-container]
+
+....
+
+[NOTE]
+====
+The *defaultCandidate* configuration item:
+
+Whether the binder configuration is a candidate for being considered a default binder, or can be used only when explicitly referenced.
+This allows adding binder configurations without interfering with the default processing.
+====
+
+=== How to run
+
+1. Update stream binding related properties in link:src/main/resources/application.properties[application.properties]
+
++
+[source%nowrap,properties]
+....
+spring.cloud.stream.bindings.input.destination=[eventhub-1-name]
+spring.cloud.stream.bindings.input.group=[consumer-group]
+spring.cloud.stream.bindings.output.destination=[eventhub-1-name]
+
+
+spring.cloud.stream.bindings.input1.destination=[eventhub-2-name]
+spring.cloud.stream.bindings.input1.group=[consumer-group]
+spring.cloud.stream.bindings.output1.destination=[eventhub-2-name]
+....
+
+2. Run the `mvn clean spring-boot:run` in the root of the code sample to get the app running.
+
+3. Send a POST request to test the default binder
++
+....
+$ curl -X POST http://localhost:8080/messages?message=hello
+....
++
+
+4. Verify in your app's logs that a similar message was posted:
++
+....
+[1] New message received: 'hello'
+[1] Message 'hello' successfully checkpointed
+....
+
+5. Send another POST request to test the other binder
++
+....
+$ curl -X POST http://localhost:8080/messages1?message=hello
+....
++
+
+6. Verify in your app's logs that a similar message was posted:
++
+....
+[2] New message received: 'hello'
+[2] Message 'hello' successfully checkpointed
+....
+
+5. Delete the resources on http://ms.portal.azure.com/[Azure Portal] to avoid unexpected charges.
+
+== Examples
+== Troubleshooting
+== Next steps
+== Contributing
