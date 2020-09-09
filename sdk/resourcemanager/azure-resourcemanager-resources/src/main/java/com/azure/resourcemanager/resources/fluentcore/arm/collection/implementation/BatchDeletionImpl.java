@@ -32,7 +32,7 @@ public class BatchDeletionImpl {
                 .flatMapDelayError(id -> {
                     final String resourceGroupName = ResourceUtils.groupFromResourceId(id);
                     final String name = ResourceUtils.nameFromResourceId(id);
-                    return ReactorMapper.map(deleteByGroupAndNameAsync.apply(resourceGroupName, name), id);
+                    return deleteByGroupAndNameAsync.apply(resourceGroupName, name).then(Mono.just(id));
                 }, 32, 32);
         }
     }
