@@ -15,7 +15,7 @@ import com.azure.resourcemanager.privatedns.models.ARecordSet;
 import com.azure.resourcemanager.privatedns.models.AaaaRecordSet;
 import com.azure.resourcemanager.privatedns.models.CnameRecordSet;
 import com.azure.resourcemanager.privatedns.models.PrivateDnsZone;
-import com.azure.resourcemanager.resources.core.TestUtilities;
+import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;

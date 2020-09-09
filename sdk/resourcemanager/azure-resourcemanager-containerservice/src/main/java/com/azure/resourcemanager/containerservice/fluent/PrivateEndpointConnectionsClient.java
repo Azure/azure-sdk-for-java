@@ -27,7 +27,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.containerservice.ContainerServiceManagementClient;
 import com.azure.resourcemanager.containerservice.fluent.inner.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.containerservice.fluent.inner.PrivateEndpointConnectionListResultInner;
 import java.nio.ByteBuffer;

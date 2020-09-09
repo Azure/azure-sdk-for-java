@@ -36,7 +36,6 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import com.azure.resourcemanager.storage.StorageManagementClient;
 import com.azure.resourcemanager.storage.fluent.inner.BlobRestoreStatusInner;
 import com.azure.resourcemanager.storage.fluent.inner.CheckNameAvailabilityResultInner;
 import com.azure.resourcemanager.storage.fluent.inner.ListAccountSasResponseInner;

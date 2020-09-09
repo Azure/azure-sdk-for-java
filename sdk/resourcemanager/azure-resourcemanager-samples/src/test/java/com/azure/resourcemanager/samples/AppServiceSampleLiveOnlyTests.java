@@ -14,20 +14,25 @@ import com.azure.resourcemanager.appservice.samples.ManageLinuxWebAppSourceContr
 import com.azure.resourcemanager.appservice.samples.ManageLinuxWebAppStorageAccountConnection;
 import com.azure.resourcemanager.appservice.samples.ManageLinuxWebAppWithContainerRegistry;
 import com.azure.resourcemanager.appservice.samples.ManageLinuxWebAppWithDomainSsl;
+import com.azure.resourcemanager.appservice.samples.ManageLinuxWebAppWithTrafficManager;
 import com.azure.resourcemanager.appservice.samples.ManageWebAppCosmosDbByMsi;
 import com.azure.resourcemanager.appservice.samples.ManageWebAppCosmosDbThroughKeyVault;
 import com.azure.resourcemanager.appservice.samples.ManageWebAppLogs;
 import com.azure.resourcemanager.appservice.samples.ManageWebAppSourceControl;
 import com.azure.resourcemanager.appservice.samples.ManageWebAppStorageAccountConnection;
 import com.azure.resourcemanager.appservice.samples.ManageWebAppWithDomainSsl;
+import com.azure.resourcemanager.appservice.samples.ManageWebAppWithTrafficManager;
+import org.eclipse.jgit.api.errors.GitAPIException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
 
 public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageWebAppSourceControl() {
+    public void testManageWebAppSourceControl() throws GitAPIException {
         if (skipInPlayback()) {
             return;
         }
@@ -47,7 +52,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageLinuxWebAppSourceControl() {
+    public void testManageLinuxWebAppSourceControl() throws GitAPIException {
         if (skipInPlayback()) {
             return;
         }
@@ -67,7 +72,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageLinuxWebAppWithContainerRegistry() {
+    public void testManageLinuxWebAppWithContainerRegistry() throws IOException, InterruptedException {
         if (skipInPlayback()) {
             return;
         }
@@ -77,7 +82,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageFunctionAppWithAuthentication() {
+    public void testManageFunctionAppWithAuthentication() throws GitAPIException {
         if (skipInPlayback()) {
             return;
         }
@@ -87,7 +92,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageFunctionAppSourceControl() {
+    public void testManageFunctionAppSourceControl() throws GitAPIException {
         if (skipInPlayback()) {
             return;
         }
@@ -127,7 +132,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageFunctionAppLogs() {
+    public void testManageFunctionAppLogs() throws IOException {
         if (skipInPlayback()) {
             return;
         }
@@ -137,7 +142,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageWebAppLogs() {
+    public void testManageWebAppLogs() throws IOException {
         if (skipInPlayback()) {
             return;
         }
@@ -157,7 +162,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageWebAppWithDomainSsl() {
+    public void testManageWebAppWithDomainSsl() throws IOException {
         if (skipInPlayback()) {
             return;
         }
@@ -165,14 +170,19 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
         Assertions.assertTrue(ManageWebAppWithDomainSsl.runSample(azure));
     }
 
-//    @Test
-//    public void testManageWebAppWithTrafficManager() {
-//        Assertions.assertTrue(ManageWebAppWithTrafficManager.runSample(azure));
-//    }
+    @Test
+    @DoNotRecord
+    public void testManageWebAppWithTrafficManager() throws IOException {
+        if (skipInPlayback()) {
+            return;
+        }
+
+        Assertions.assertTrue(ManageWebAppWithTrafficManager.runSample(azure));
+    }
 
     @Test
     @DoNotRecord
-    public void testManageLinuxWebAppWithDomainSsl() {
+    public void testManageLinuxWebAppWithDomainSsl() throws IOException {
         if (skipInPlayback()) {
             return;
         }
@@ -180,14 +190,19 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
         Assertions.assertTrue(ManageLinuxWebAppWithDomainSsl.runSample(azure));
     }
 
-//    @Test
-//    public void testManageLinuxWebAppWithTrafficManager() {
-//        Assertions.assertTrue(ManageLinuxWebAppWithTrafficManager.runSample(azure));
-//    }
+    @Test
+    @DoNotRecord
+    public void testManageLinuxWebAppWithTrafficManager() throws IOException {
+        if (skipInPlayback()) {
+            return;
+        }
+
+        Assertions.assertTrue(ManageLinuxWebAppWithTrafficManager.runSample(azure));
+    }
 
     @Test
     @DoNotRecord
-    public void testManageFunctionAppWithDomainSsl() {
+    public void testManageFunctionAppWithDomainSsl() throws IOException {
         if (skipInPlayback()) {
             return;
         }

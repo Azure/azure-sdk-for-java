@@ -6,7 +6,7 @@ package com.azure.messaging.servicebus;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 
 import java.time.Duration;
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,8 +21,8 @@ public final class ServiceBusReceivedMessage {
     private long sequenceNumber;
     private long enqueuedSequenceNumber;
     private long deliveryCount;
-    private Instant enqueuedTime;
-    private Instant lockedUntil;
+    private OffsetDateTime enqueuedTime;
+    private OffsetDateTime lockedUntil;
     private String deadLetterSource;
 
     private final Map<String, Object> properties;
@@ -34,7 +34,7 @@ public final class ServiceBusReceivedMessage {
     private String partitionKey;
     private String replyTo;
     private String replyToSessionId;
-    private Instant scheduledEnqueueTime;
+    private OffsetDateTime scheduledEnqueueTime;
     private String sessionId;
     private Duration timeToLive;
     private String to;
@@ -153,34 +153,34 @@ public final class ServiceBusReceivedMessage {
     }
 
     /**
-     * Gets the instant at which this message was enqueued in Azure Service Bus.
+     * Gets the datetime at which this message was enqueued in Azure Service Bus.
      * <p>
-     * The UTC instant at which the message has been accepted and stored in the entity. For scheduled messages, this
+     * The UTC datetime at which the message has been accepted and stored in the entity. For scheduled messages, this
      * reflects the time when the message was activated. This value can be used as an authoritative and neutral arrival
      * time indicator when the receiver does not want to trust the sender's clock. This property is read-only.
      *
-     * @return the instant at which the message was enqueued in Azure Service Bus
+     * @return the datetime at which the message was enqueued in Azure Service Bus
      *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-sequencing">Message Sequencing and
      *     Timestamps</a>
      */
-    public Instant getEnqueuedTime() {
+    public OffsetDateTime getEnqueuedTime() {
         return enqueuedTime;
     }
 
     /**
-     * Gets the instant at which this message will expire.
+     * Gets the datetime at which this message will expire.
      * <p>
-     * The value is the UTC instant for when the message is scheduled for removal and will no longer available for
+     * The value is the UTC datetime for when the message is scheduled for removal and will no longer available for
      * retrieval from the entity due to expiration. Expiry is controlled by the {@link #getTimeToLive() TimeToLive}
      * property. This property is computed from {@link #getEnqueuedTime() EnqueuedTime} plus {@link #getTimeToLive()
      * TimeToLive}.
      *
-     * @return {@link Instant} at which this message expires
+     * @return {@link OffsetDateTime} at which this message expires
      *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-expiration">Message Expiration</a>
      */
-    public Instant getExpiresAt() {
+    public OffsetDateTime getExpiresAt() {
         final Duration timeToLive = getTimeToLive();
         return enqueuedTime != null && timeToLive != null
             ? enqueuedTime.plus(timeToLive)
@@ -218,20 +218,20 @@ public final class ServiceBusReceivedMessage {
     }
 
     /**
-     * Gets the instant at which the lock of this message expires.
+     * Gets the datetime at which the lock of this message expires.
      * <p>
      * For messages retrieved under a lock (peek-lock receive mode, not pre-settled) this property reflects the UTC
-     * instant until which the message is held locked in the queue/subscription. When the lock expires, the {@link
+     * datetime until which the message is held locked in the queue/subscription. When the lock expires, the {@link
      * #getDeliveryCount() DeliveryCount} is incremented and the message is again available for retrieval. This property
      * is read-only.
      *
-     * @return the instant at which the lock of this message expires if the message is received using {@link
+     * @return the datetime at which the lock of this message expires if the message is received using {@link
      *     ReceiveMode#PEEK_LOCK} mode. Otherwise it returns null.
      *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement">Message
      *     transfers, locks, and settlement</a>
      */
-    public Instant getLockedUntil() {
+    public OffsetDateTime getLockedUntil() {
         return lockedUntil;
     }
 
@@ -308,16 +308,16 @@ public final class ServiceBusReceivedMessage {
      * <p>
      * This value is used for delayed message availability. The message is safely added to the queue, but is not
      * considered active and therefore not retrievable until the scheduled enqueue time. Mind that the message may not
-     * be activated (enqueued) at the exact given instant; the actual activation time depends on the queue's workload
+     * be activated (enqueued) at the exact given datetime; the actual activation time depends on the queue's workload
      * and its state.
      * </p>
      *
-     * @return the instant at which the message will be enqueued in Azure Service Bus
+     * @return the datetime at which the message will be enqueued in Azure Service Bus
      *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-sequencing">Message Sequencing and
      *     Timestamps</a>
      */
-    public Instant getScheduledEnqueueTime() {
+    public OffsetDateTime getScheduledEnqueueTime() {
         return scheduledEnqueueTime;
     }
 
@@ -350,7 +350,7 @@ public final class ServiceBusReceivedMessage {
     /**
      * Gets the duration before this message expires.
      * <p>
-     * This value is the relative duration after which the message expires, starting from the instant the message has
+     * This value is the relative duration after which the message expires, starting from the datetime the message has
      * been accepted and stored by the broker, as captured in {@link #getScheduledEnqueueTime()}. When not set
      * explicitly, the assumed value is the DefaultTimeToLive set for the respective queue or topic. A message-level
      * TimeToLive value cannot be longer than the entity's DefaultTimeToLive setting and it is silently adjusted if it
@@ -451,11 +451,11 @@ public final class ServiceBusReceivedMessage {
     }
 
     /**
-     * Sets the instant at which this message was enqueued in Azure Service Bus.
+     * Sets the datetime at which this message was enqueued in Azure Service Bus.
      *
-     * @param enqueuedTime the instant at which this message was enqueued in Azure Service Bus.
+     * @param enqueuedTime the datetime at which this message was enqueued in Azure Service Bus.
      */
-    void setEnqueuedTime(Instant enqueuedTime) {
+    void setEnqueuedTime(OffsetDateTime enqueuedTime) {
         this.enqueuedTime = enqueuedTime;
     }
 
@@ -478,11 +478,11 @@ public final class ServiceBusReceivedMessage {
     }
 
     /**
-     * Sets the instant at which the lock of this message expires.
+     * Sets the datetime at which the lock of this message expires.
      *
-     * @param lockedUntil the instant at which the lock of this message expires.
+     * @param lockedUntil the datetime at which the lock of this message expires.
      */
-    void setLockedUntil(Instant lockedUntil) {
+    void setLockedUntil(OffsetDateTime lockedUntil) {
         this.lockedUntil = lockedUntil;
     }
 
@@ -509,11 +509,11 @@ public final class ServiceBusReceivedMessage {
     /**
      * Sets the scheduled enqueue time of this message.
      *
-     * @param scheduledEnqueueTime the instant at which this message should be enqueued in Azure Service Bus.
+     * @param scheduledEnqueueTime the datetime at which this message should be enqueued in Azure Service Bus.
      *
      * @see #getScheduledEnqueueTime()
      */
-    void setScheduledEnqueueTime(Instant scheduledEnqueueTime) {
+    void setScheduledEnqueueTime(OffsetDateTime scheduledEnqueueTime) {
         this.scheduledEnqueueTime = scheduledEnqueueTime;
     }
 

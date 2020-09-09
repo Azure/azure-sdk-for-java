@@ -11,6 +11,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
@@ -93,13 +94,13 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      * the message.
      *
      * @param message The message to be sent to the entity.
-     * @param scheduledEnqueueTime The {@link Instant} at which the message should be enqueued in the entity.
+     * @param scheduledEnqueueTime The {@link OffsetDateTime} at which the message should be enqueued in the entity.
      * @param transactionContext to be set on message before sending to Service Bus.
      *
      * @return The sequence number representing the pending send, which returns the sequence number of the scheduled
      *     message. This sequence number can be used to cancel the scheduling of the message.
      */
-    Mono<Long> schedule(ServiceBusMessage message, Instant scheduledEnqueueTime, int maxSendLinkSize,
+    Mono<Long> schedule(ServiceBusMessage message, OffsetDateTime scheduledEnqueueTime, int maxSendLinkSize,
         String associatedLinkName, ServiceBusTransactionContext transactionContext);
 
     /**

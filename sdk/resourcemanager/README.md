@@ -23,12 +23,12 @@ If you are an existing user of the older version of Azure management library for
 
 ### Include the package
 
-[//]: # ({x-version-update-start;com.azure:azure-resourcemanager;current})
+[//]: # ({x-version-update-start;com.azure.resourcemanager:azure-resourcemanager;current})
 ```xml
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager</artifactId>
-  <version>2.0.0-beta.3</version>
+  <version>2.0.0-beta.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -118,6 +118,10 @@ The key concepts of Azure Management Libraries includes:
 - Web app and Function app
 - Key Vault
 - Cosmos
+- Monitor
+- Spring Cloud
+- Event Hubs
+- Redis Cache
 
 ## Examples
 
@@ -263,12 +267,12 @@ Instead of include the complete Azure Management Libraries, you can choose to in
 
 For example, here is sample maven dependency for Compute package.
 
-[//]: # ({x-version-update-start;com.azure:azure-resourcemanager-compute;current})
+[//]: # ({x-version-update-start;com.azure.resourcemanager:azure-resourcemanager-compute;current})
 ```xml
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-compute</artifactId>
-  <version>2.0.0-beta.3</version>
+  <version>2.0.0-beta.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -318,7 +322,7 @@ If you would like to become an active contributor to this project please follow 
 5. Create new Pull Request
 
 <!-- LINKS -->
-[docs]: http://azure.github.io/azure-sdk-for-java/
+[docs]: http://azure.github.io/azure-sdk-for-java/resourcemanager.html
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: ../identity/azure-identity

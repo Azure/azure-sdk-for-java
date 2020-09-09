@@ -48,6 +48,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
     private static final String ZERO_TENANT = "00000000-0000-0000-0000-000000000000";
     private static final String PLAYBACK_URI_BASE = "http://localhost:";
     private static final String AZURE_AUTH_LOCATION = "AZURE_AUTH_LOCATION";
+    private static final String AZURE_TEST_LOG_LEVEL = "AZURE_TEST_LOG_LEVEL";
     private static final String HTTPS_PROXY_HOST = "https.proxyHost";
     private static final String HTTPS_PROXY_PORT = "https.proxyPort";
     private static final String HTTP_PROXY_HOST = "http.proxyHost";
@@ -94,7 +95,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
     public static String password() {
         // do not record
         String password = new ResourceNamer("").randomName("Pa5$", 12);
-        new ClientLogger(ResourceManagerTestBase.class).info("Password: %s%n", password);
+        new ClientLogger(ResourceManagerTestBase.class).info("Password: {}", password);
         return password;
     }
 
@@ -126,7 +127,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
         TokenCredential credential;
         HttpPipeline httpPipeline;
         Map<String, String> textReplacementRules = new HashMap<>();
-        String logLevel = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_LOG_LEVEL);
+        String logLevel = Configuration.getGlobalConfiguration().get(AZURE_TEST_LOG_LEVEL);
         HttpLogDetailLevel httpLogDetailLevel;
 
         try {
@@ -134,13 +135,12 @@ public abstract class ResourceManagerTestBase extends TestBase {
         } catch (Exception e) {
             if (isPlaybackMode()) {
                 httpLogDetailLevel = HttpLogDetailLevel.NONE;
-                logger.error("Environment variable '{}' has not been set yet. Using 'NONE' for PLAYBACK.", new Object[]{"AZURE_LOG_LEVEL"});
+                logger.error("Environment variable '{}' has not been set yet. Using 'NONE' for PLAYBACK.", new Object[]{AZURE_TEST_LOG_LEVEL});
             } else {
                 httpLogDetailLevel = HttpLogDetailLevel.BODY_AND_HEADERS;
-                logger.error("Environment variable '{}' has not been set yet. Using 'BODY_AND_HEADERS' for RECORD/LIVE.", new Object[]{"AZURE_LOG_LEVEL"});
+                logger.error("Environment variable '{}' has not been set yet. Using 'BODY_AND_HEADERS' for RECORD/LIVE.", new Object[]{AZURE_TEST_LOG_LEVEL});
             }
         }
-
 
         if (httpLogDetailLevel == HttpLogDetailLevel.NONE) {
             try {

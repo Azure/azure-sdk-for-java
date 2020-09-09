@@ -100,9 +100,6 @@ public final class ManageVpnGatewaySite2SiteConnection {
             vngw.reset();
 
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -113,7 +110,6 @@ public final class ManageVpnGatewaySite2SiteConnection {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

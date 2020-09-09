@@ -1,7 +1,18 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.4.0-beta.1 (Unreleased)
 
+
+## 1.3.1 (2020-09-08)
+
+- Updated `azure-core` version to pickup bug fix.
+
+## 1.3.0 (2020-09-03)
+
+- Updated `okhttp` dependency from `4.2.2` to `4.8.1`.
+- Fixed bug where `Configuration` proxy would lead to a `NullPointerException` when set.
+- Added request timeout configuration.
+- Changed default connect timeout from 60 seconds to 10 and default read timeout from 120 seconds to 60 seconds.
 
 ## 1.2.5 (2020-08-07)
 

@@ -13,6 +13,7 @@ import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
+import com.azure.ai.textanalytics.models.RecognizePiiEntityOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
@@ -233,7 +234,6 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CategorizedEntityCollection recognizeEntities(String document, String language) {
-        Objects.requireNonNull(document, "'document' cannot be null.");
         return client.recognizeEntities(document, language).block();
     }
 
@@ -344,8 +344,38 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PiiEntityCollection recognizePiiEntities(String document, String language) {
-        Objects.requireNonNull(document, "'document' cannot be null.");
         return client.recognizePiiEntities(document, language).block();
+    }
+
+    /**
+     * Returns a list of Personally Identifiable Information(PII) entities in the provided document
+     * with provided language code.
+     *
+     * For a list of supported entity types, check: <a href="https://aka.ms/tanerpii">this</a>
+     * For a list of enabled languages, check: <a href="https://aka.ms/talangs">this</a>
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Recognizes the PII entities details in a document with a provided language code and
+     * RecognizePiiEntityOptions.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String-String-RecognizePiiEntityOptions}
+     *
+     * @param document The document to recognize PII entities details for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
+     * @param options The additional configurable {@link RecognizePiiEntityOptions options} that may be passed when
+     * recognizing PII entities.
+     *
+     * @return The {@link PiiEntityCollection recognized PII entities collection}.
+     *
+     * @throws NullPointerException if {@code document} is null.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PiiEntityCollection recognizePiiEntities(String document, String language,
+        RecognizePiiEntityOptions options) {
+        return client.recognizePiiEntities(document, language, options).block();
     }
 
     /**
@@ -356,14 +386,14 @@ public final class TextAnalyticsClient {
      * <p>Recognizes the PII entities details in a list of documents with a provided language code
      * and request options.</p>
      *
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable-String-RecognizePiiEntityOptions}
      *
      * @param documents A list of documents to recognize PII entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
-     * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
-     * and show statistics.
+     * @param options The additional configurable {@link RecognizePiiEntityOptions options} that may be passed when
+     * recognizing PII entities.
      *
      * @return A {@link RecognizePiiEntitiesResultCollection}.
      *
@@ -372,7 +402,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecognizePiiEntitiesResultCollection recognizePiiEntitiesBatch(
-        Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
+        Iterable<String> documents, String language, RecognizePiiEntityOptions options) {
         return client.recognizePiiEntitiesBatch(documents, language, options).block();
     }
 
@@ -384,13 +414,13 @@ public final class TextAnalyticsClient {
      * <p>Recognizes the PII entities details with http response in a list of {@link TextDocumentInput document}
      * with provided request options.</p>
      *
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable-TextAnalyticsRequestOptions-Context}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable-RecognizePiiEntityOptions-Context}
      *
      * @param documents A list of {@link TextDocumentInput documents} to recognize PII entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
-     * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
-     * and show statistics.
+     * @param options The additional configurable {@link RecognizePiiEntityOptions options} that may be passed when
+     * recognizing PII entities.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link Response} that contains a {@link RecognizePiiEntitiesResultCollection}.
@@ -400,7 +430,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecognizePiiEntitiesResultCollection> recognizePiiEntitiesBatchWithResponse(
-        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        Iterable<TextDocumentInput> documents, RecognizePiiEntityOptions options, Context context) {
         return client.recognizePiiEntityAsyncClient.recognizePiiEntitiesBatchWithContext(documents, options,
             context).block();
     }

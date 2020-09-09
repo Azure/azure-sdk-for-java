@@ -104,11 +104,6 @@ public final class ManageResource {
 
             System.out.println("Deleted storage account: " + resourceName2);
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
 
             try {
@@ -121,7 +116,6 @@ public final class ManageResource {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

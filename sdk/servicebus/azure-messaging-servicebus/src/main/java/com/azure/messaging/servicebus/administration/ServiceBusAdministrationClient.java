@@ -20,12 +20,12 @@ import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOp
 import com.azure.messaging.servicebus.administration.models.CreateTopicOptions;
 import com.azure.messaging.servicebus.administration.models.NamespaceProperties;
 import com.azure.messaging.servicebus.administration.models.QueueProperties;
-import com.azure.messaging.servicebus.administration.models.QueueRuntimeInfo;
+import com.azure.messaging.servicebus.administration.models.QueueRuntimeProperties;
 import com.azure.messaging.servicebus.administration.models.RuleProperties;
 import com.azure.messaging.servicebus.administration.models.SubscriptionProperties;
-import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeInfo;
+import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeProperties;
 import com.azure.messaging.servicebus.administration.models.TopicProperties;
-import com.azure.messaging.servicebus.administration.models.TopicRuntimeInfo;
+import com.azure.messaging.servicebus.administration.models.TopicRuntimeProperties;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -554,11 +554,11 @@ public final class ServiceBusAdministrationClient {
     }
 
     /**
-     * Gets runtime information about the queue.
+     * Gets runtime properties about the queue.
      *
      * @param queueName Name of queue to get information about.
      *
-     * @return Runtime information about the queue.
+     * @return Runtime properties about the queue.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
@@ -568,17 +568,17 @@ public final class ServiceBusAdministrationClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public QueueRuntimeInfo getQueueRuntimeInfo(String queueName) {
-        return asyncClient.getQueueRuntimeInfo(queueName).block();
+    public QueueRuntimeProperties getQueueRuntimeProperties(String queueName) {
+        return asyncClient.getQueueRuntimeProperties(queueName).block();
     }
 
     /**
-     * Gets runtime information about the queue along with its HTTP response.
+     * Gets runtime properties about the queue along with its HTTP response.
      *
      * @param queueName Name of queue to get information about.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
-     * @return Runtime information about the queue and the associated HTTP response.
+     * @return Runtime properties about the queue and the associated HTTP response.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
@@ -588,9 +588,9 @@ public final class ServiceBusAdministrationClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<QueueRuntimeInfo> getQueueRuntimeInfoWithResponse(String queueName, Context context) {
+    public Response<QueueRuntimeProperties> getQueueRuntimePropertiesWithResponse(String queueName, Context context) {
         return asyncClient.getQueueWithResponse(queueName, context != null ? context : Context.NONE,
-            QueueRuntimeInfo::new).block();
+            QueueRuntimeProperties::new).block();
     }
 
     /**
@@ -743,12 +743,12 @@ public final class ServiceBusAdministrationClient {
     }
 
     /**
-     * Gets runtime information about the subscription.
+     * Gets runtime properties about the subscription.
      *
      * @param topicName Name of topic associated with subscription.
      * @param subscriptionName Name of subscription to get information about.
      *
-     * @return Runtime information about the subscription.
+     * @return Runtime properties about the subscription.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
@@ -758,18 +758,18 @@ public final class ServiceBusAdministrationClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SubscriptionRuntimeInfo getSubscriptionRuntimeInfo(String topicName, String subscriptionName) {
-        return asyncClient.getSubscriptionRuntimeInfo(topicName, subscriptionName).block();
+    public SubscriptionRuntimeProperties getSubscriptionRuntimeProperties(String topicName, String subscriptionName) {
+        return asyncClient.getSubscriptionRuntimeProperties(topicName, subscriptionName).block();
     }
 
     /**
-     * Gets runtime information about the subscription.
+     * Gets runtime properties about the subscription.
      *
      * @param topicName Name of topic associated with subscription.
      * @param subscriptionName Name of subscription to get information about.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
-     * @return Runtime information about the subscription.
+     * @return Runtime properties about the subscription.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
@@ -779,10 +779,10 @@ public final class ServiceBusAdministrationClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SubscriptionRuntimeInfo> getSubscriptionRuntimeInfoWithResponse(String topicName,
-        String subscriptionName, Context context) {
+    public Response<SubscriptionRuntimeProperties> getSubscriptionRuntimePropertiesWithResponse(
+        String topicName, String subscriptionName, Context context) {
         return asyncClient.getSubscriptionWithResponse(topicName, subscriptionName,
-            context != null ? context : Context.NONE, SubscriptionRuntimeInfo::new).block();
+            context != null ? context : Context.NONE, SubscriptionRuntimeProperties::new).block();
     }
 
     /**
@@ -864,11 +864,11 @@ public final class ServiceBusAdministrationClient {
     }
 
     /**
-     * Gets runtime information about the topic.
+     * Gets runtime properties about the topic.
      *
      * @param topicName Name of topic to get information about.
      *
-     * @return Runtime information about the topic.
+     * @return Runtime properties about the topic.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
@@ -878,17 +878,17 @@ public final class ServiceBusAdministrationClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TopicRuntimeInfo getTopicRuntimeInfo(String topicName) {
-        return asyncClient.getTopicRuntimeInfo(topicName).block();
+    public TopicRuntimeProperties getTopicRuntimeProperties(String topicName) {
+        return asyncClient.getTopicRuntimeProperties(topicName).block();
     }
 
     /**
-     * Gets runtime information about the topic with its HTTP response.
+     * Gets runtime properties about the topic with its HTTP response.
      *
      * @param topicName Name of topic to get information about.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
-     * @return Runtime information about the topic and the associated HTTP response.
+     * @return Runtime properties about the topic and the associated HTTP response.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
@@ -898,9 +898,9 @@ public final class ServiceBusAdministrationClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TopicRuntimeInfo> getTopicRuntimeInfoWithResponse(String topicName, Context context) {
+    public Response<TopicRuntimeProperties> getTopicRuntimePropertiesWithResponse(String topicName, Context context) {
         return asyncClient.getTopicWithResponse(topicName, context != null ? context : Context.NONE,
-            TopicRuntimeInfo::new).block();
+            TopicRuntimeProperties::new).block();
     }
 
     /**
