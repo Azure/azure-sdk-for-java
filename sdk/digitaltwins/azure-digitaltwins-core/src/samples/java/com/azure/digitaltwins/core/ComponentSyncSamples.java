@@ -53,16 +53,16 @@ public class ComponentSyncSamples {
         // For the purpose of this example we will create temporary models using a random model Ids.
         // We have to make sure these model Ids are unique within the DT instance.
 
-        String componentModelId = UniqueIdHelper.getUniqueModelId(SamplesConstants.TemporaryComponentModelPrefix, client);
-        String modelId = UniqueIdHelper.getUniqueModelId(SamplesConstants.TemporaryModelPrefix, client);
-        String basicDigitalTwinId = UniqueIdHelper.getUniqueDigitalTwinId(SamplesConstants.TemporaryTwinPrefix, client);
+        String componentModelId = UniqueIdHelper.getUniqueModelId(SamplesConstants.TEMPORARY_COMPONENT_MODEL_PREFIX, client);
+        String modelId = UniqueIdHelper.getUniqueModelId(SamplesConstants.TEMPORARY_MODEL_PREFIX, client);
+        String basicDigitalTwinId = UniqueIdHelper.getUniqueDigitalTwinId(SamplesConstants.TEMPORARY_TWIN_PREFIX, client);
 
-        String newComponentModelPayload = SamplesConstants.TemporaryComponentModelPayload
-            .replace(SamplesConstants.ComponentId, componentModelId);
+        String newComponentModelPayload = SamplesConstants.TEMPORARY_COMPONENT_MODEL_PAYLOAD
+            .replace(SamplesConstants.COMPONENT_ID, componentModelId);
 
-        String newModelPayload = SamplesConstants.TemporaryModelWithComponentPayload
-            .replace(SamplesConstants.ModelId, modelId)
-            .replace(SamplesConstants.ComponentId, componentModelId);
+        String newModelPayload = SamplesConstants.TEMPORARY_MODEL_WITH_COMPONENT_PAYLOAD
+            .replace(SamplesConstants.MODEL_ID, modelId)
+            .replace(SamplesConstants.COMPONENT_ID, componentModelId);
 
         List<String> modelsList = new ArrayList<>(Arrays.asList(newComponentModelPayload, newModelPayload));
 

@@ -9,7 +9,6 @@ import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
 import com.azure.digitaltwins.core.models.ModelData;
 import com.azure.identity.ClientSecretCredentialBuilder;
 
-import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,12 +57,12 @@ public class ModelsLifecycleSyncSamples {
         String componentModelId = UniqueIdHelper.getUniqueModelId(SamplesConstants.TemporaryComponentModelPrefix, client, randomIntegerStringGenerator);
         String sampleModelId = UniqueIdHelper.getUniqueModelId(SamplesConstants.TemporaryModelPrefix, client, randomIntegerStringGenerator);
 
-        String newComponentModelPayload = SamplesConstants.TemporaryComponentModelPayload
-            .replace(SamplesConstants.ComponentId, componentModelId);
+        String newComponentModelPayload = SamplesConstants.TEMPORARY_COMPONENT_MODEL_PAYLOAD
+            .replace(SamplesConstants.COMPONENT_ID, componentModelId);
 
-        String newModelPayload = SamplesConstants.TemporaryModelWithComponentPayload
-            .replace(SamplesConstants.ModelId, sampleModelId)
-            .replace(SamplesConstants.ComponentId, componentModelId);
+        String newModelPayload = SamplesConstants.TEMPORARY_MODEL_WITH_COMPONENT_PAYLOAD
+            .replace(SamplesConstants.MODEL_ID, sampleModelId)
+            .replace(SamplesConstants.COMPONENT_ID, componentModelId);
 
         ConsoleLogger.printHeader("Create models");
 
