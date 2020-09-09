@@ -9,11 +9,11 @@ import java.util.List;
  * A class that defines a role definition's properties.
  */
 public final class KeyVaultRoleDefinitionProperties {
-    private String roleName;
-    private String description;
-    private String roleType;
-    private List<KeyVaultPermission> permissions;
-    private List<String> assignableScopes;
+    private final String roleName;
+    private final String description;
+    private final String roleType;
+    private final List<KeyVaultPermission> permissions;
+    private final List<String> assignableScopes;
 
     /**
      * Creates a new {@link KeyVaultRoleDefinitionProperties role definition properties} object with the specified

@@ -314,11 +314,6 @@ public final class ManageVirtualMachineScaleSetWithUnmanagedDisks {
             System.out.println("re-started virtual machine scale set");
 
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -330,7 +325,6 @@ public final class ManageVirtualMachineScaleSetWithUnmanagedDisks {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

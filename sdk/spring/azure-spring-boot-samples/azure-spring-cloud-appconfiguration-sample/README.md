@@ -1,6 +1,6 @@
 # Spring Cloud Azure Config Sample client library for Java
 
-This sample describes how to use [spring-cloud-starter-azure-appconfiguration-config](../../azure-spring-cloud-starter-appconfiguration-config/) to load configuration properties from Azure Configuration Service to Spring Environment.
+This sample describes how to use [spring-cloud-starter-azure-appconfiguration-config](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config) to load configuration properties from Azure Configuration Service to Spring Environment.
 
 ## Key concepts
 ## Getting started
@@ -51,7 +51,7 @@ mvn -Dspring.application.name=foo -Dspring.profiles.active=dev spring-boot:run
 
 ### More details
 
-Please refer to this [README](../../azure-spring-cloud-starter-appconfiguration-config/) about more usage details. 
+Please refer to this [README](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config/README.md) about more usage details. 
 
 ## Examples
 ## Troubleshooting

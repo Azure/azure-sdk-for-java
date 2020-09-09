@@ -15,13 +15,12 @@ import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImpl;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImplBuilder;
 import com.azure.digitaltwins.core.implementation.converters.ModelDataConverter;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions;
+import com.azure.digitaltwins.core.implementation.models.QuerySpecification;
 import com.azure.digitaltwins.core.implementation.serializer.DigitalTwinsStringSerializer;
 import com.azure.digitaltwins.core.models.IncomingRelationship;
 import com.azure.digitaltwins.core.models.ModelData;
-import com.azure.digitaltwins.core.util.DigitalTwinsResponse;
-import com.azure.digitaltwins.core.util.DigitalTwinsResponseHeaders;
-import com.azure.digitaltwins.core.util.ListModelOptions;
-import com.azure.digitaltwins.core.util.UpdateOperationUtility;
+import com.azure.digitaltwins.core.serialization.BasicRelationship;
+import com.azure.digitaltwins.core.util.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -649,7 +648,7 @@ public final class DigitalTwinsAsyncClient {
      * Gets all the relationships on a digital twin by iterating through a collection.
      *
      * @param digitalTwinId The Id of the source digital twin.
-     * @param clazz The model class to convert the relationship to. Since a digital twin might have relationships conforming to different models, it is advisable to convert them to a generic model like {@link com.azure.digitaltwins.core.implementation.serialization.BasicRelationship}.
+     * @param clazz The model class to convert the relationship to. Since a digital twin might have relationships conforming to different models, it is advisable to convert them to a generic model like {@link BasicRelationship}.
      * @param <T> The generic type to convert the relationship to.
      * @return A {@link PagedFlux} of relationships belonging to the specified digital twin and the http response.
      */
@@ -1066,5 +1065,129 @@ public final class DigitalTwinsAsyncClient {
                 DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
                 return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null, twinHeaders));
             });
+    }
+
+    /**
+     * Query digital twins.
+     * @param query The query string, in SQL-like syntax.
+     * @return A {@link PagedFlux} of application/json query result items.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<String> query(String query) {
+        return new PagedFlux<>(
+            () -> withContext(context -> queryFirstPage(query, context)),
+            nextLink -> withContext(context -> queryNextPage(nextLink, context)));
+    }
+
+    PagedFlux<String> query(String query, Context context) {
+        return new PagedFlux<>(
+            () -> queryFirstPage(query, context),
+            nextLink -> queryNextPage(nextLink, context));
+    }
+
+    /**
+     * Query digital twins.
+     * @param query The query string, in SQL-like syntax.
+     * @param clazz The model class to convert the query response to.
+     * @param <T> The generic type to convert the query response to.
+     * @return A {@link PagedFlux} of application/json of the specified type.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public <T> PagedFlux<T> query(String query, Class<T> clazz) {
+        return new PagedFlux<T>(
+            () -> withContext(context -> queryFirstPage(query, clazz, context)),
+            nextLink -> withContext(context -> queryNextPage(nextLink, clazz, context)));
+    }
+
+    <T> PagedFlux<T> query(String query, Class<T> clazz, Context context) {
+        return new PagedFlux<>(
+            () -> queryFirstPage(query, clazz, context),
+            nextLink -> queryNextPage(nextLink, clazz, context));
+    }
+
+    Mono<PagedResponse<String>> queryFirstPage(String query, Context context) {
+        QuerySpecification querySpecification = new QuerySpecification().setQuery(query);
+
+        return protocolLayer
+            .getQueries()
+            .queryTwinsWithResponseAsync(querySpecification, context)
+            .map(objectPagedResponse -> new PagedResponseBase<>(
+                objectPagedResponse.getRequest(),
+                objectPagedResponse.getStatusCode(),
+                objectPagedResponse.getHeaders(),
+                objectPagedResponse.getValue().getItems().stream()
+                    .map(object -> {
+                        try {
+                            return mapper.writeValueAsString(object);
+                        } catch (JsonProcessingException e) {
+                            logger.error("JsonProcessingException occurred while retrieving query result items: ", e);
+                            throw new RuntimeException("JsonProcessingException occurred while retrieving query result items", e);
+                        }
+                    })
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList()),
+                objectPagedResponse.getValue().getContinuationToken(),
+                objectPagedResponse.getDeserializedHeaders()));
+    }
+
+    <T> Mono<PagedResponse<T>> queryFirstPage(String query, Class<T> clazz, Context context) {
+        QuerySpecification querySpecification = new QuerySpecification().setQuery(query);
+
+        return protocolLayer
+            .getQueries()
+            .queryTwinsWithResponseAsync(querySpecification, context)
+            .map(objectPagedResponse -> new PagedResponseBase<>(
+                objectPagedResponse.getRequest(),
+                objectPagedResponse.getStatusCode(),
+                objectPagedResponse.getHeaders(),
+                objectPagedResponse.getValue().getItems().stream()
+                    .map(object -> mapper.convertValue(object, clazz))
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList()),
+                objectPagedResponse.getValue().getContinuationToken(),
+                objectPagedResponse.getDeserializedHeaders()));
+    }
+
+    Mono<PagedResponse<String>> queryNextPage(String nextLink, Context context) {
+        QuerySpecification querySpecification = new QuerySpecification().setContinuationToken(nextLink);
+
+        return protocolLayer
+            .getQueries()
+            .queryTwinsWithResponseAsync(querySpecification, context)
+            .map(objectPagedResponse -> new PagedResponseBase<>(
+                objectPagedResponse.getRequest(),
+                objectPagedResponse.getStatusCode(),
+                objectPagedResponse.getHeaders(),
+                objectPagedResponse.getValue().getItems().stream()
+                    .map(object -> {
+                        try {
+                            return mapper.writeValueAsString(object);
+                        } catch (JsonProcessingException e) {
+                            logger.error("JsonProcessingException occurred while retrieving query result items: ", e);
+                            throw new RuntimeException("JsonProcessingException occurred while retrieving query result items", e);
+                        }
+                    })
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList()),
+                objectPagedResponse.getValue().getContinuationToken(),
+                objectPagedResponse.getDeserializedHeaders()));
+    }
+
+    <T> Mono<PagedResponse<T>> queryNextPage(String nextLink, Class<T> clazz, Context context) {
+        QuerySpecification querySpecification = new QuerySpecification().setContinuationToken(nextLink);
+
+        return protocolLayer
+            .getQueries()
+            .queryTwinsWithResponseAsync(querySpecification, context)
+            .map(objectPagedResponse -> new PagedResponseBase<>(
+                objectPagedResponse.getRequest(),
+                objectPagedResponse.getStatusCode(),
+                objectPagedResponse.getHeaders(),
+                objectPagedResponse.getValue().getItems().stream()
+                    .map(object -> mapper.convertValue(object, clazz))
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList()),
+                objectPagedResponse.getValue().getContinuationToken(),
+                objectPagedResponse.getDeserializedHeaders()));
     }
 }

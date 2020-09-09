@@ -35,7 +35,6 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.resourcemanager.appplatform.AppPlatformManagementClient;
 import com.azure.resourcemanager.appplatform.fluent.inner.DeploymentResourceCollectionInner;
 import com.azure.resourcemanager.appplatform.fluent.inner.DeploymentResourceInner;
 import com.azure.resourcemanager.appplatform.fluent.inner.LogFileUrlResponseInner;
