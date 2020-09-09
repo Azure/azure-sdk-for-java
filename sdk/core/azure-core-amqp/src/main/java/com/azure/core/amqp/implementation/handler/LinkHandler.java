@@ -69,7 +69,6 @@ abstract class LinkHandler extends Handler {
             ? event.getLink().getName()
             : NOT_APPLICABLE;
         logger.info("onLinkFinal connectionId[{}], linkName[{}]", getConnectionId(), linkName);
-
         close();
     }
 
@@ -104,7 +103,7 @@ abstract class LinkHandler extends Handler {
 
             onError(exception);
         } else {
-            onNext(EndpointState.CLOSED);
+            close();
         }
     }
 }
