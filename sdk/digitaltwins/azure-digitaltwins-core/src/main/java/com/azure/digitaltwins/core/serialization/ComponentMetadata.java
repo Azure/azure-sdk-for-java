@@ -1,7 +1,9 @@
 package com.azure.digitaltwins.core.serialization;
 
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,6 +11,8 @@ import java.util.Map;
 /**
  * An optional helper class for deserializing a digital twin
  */
+@Fluent
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ComponentMetadata {
 
     /**
