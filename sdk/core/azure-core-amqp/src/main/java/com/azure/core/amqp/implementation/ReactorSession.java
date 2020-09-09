@@ -17,9 +17,11 @@ import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.amqp.messaging.Target;
 import org.apache.qpid.proton.amqp.transaction.Coordinator;
+import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.BaseHandler;
+import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.engine.Session;
@@ -35,6 +37,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+
+import static com.azure.core.amqp.implementation.ClientConstants.NOT_APPLICABLE;
 
 /**
  * Represents an AMQP session using proton-j reactor.
@@ -123,17 +127,27 @@ public class ReactorSession implements AmqpSession {
      */
     @Override
     public void dispose() {
+        dispose(null);
+    }
+
+    public void dispose(ErrorCondition errorCondition) {
         if (isDisposed.getAndSet(true)) {
             return;
         }
 
-        logger.info("connectionId[{}], sessionId[{}]: Disposing of session.", sessionHandler.getConnectionId(),
-            sessionName);
+        logger.info("connectionId[{}], sessionId[{}], errorCondition[{}]: Disposing of session.",
+            sessionHandler.getConnectionId(), sessionName, errorCondition != null ? errorCondition : NOT_APPLICABLE);
 
-        session.close();
+        if (session.getLocalState() != EndpointState.CLOSED) {
+            session.close();
 
-        openReceiveLinks.forEach((key, link) -> link.dispose());
-        openSendLinks.forEach((key, link) -> link.dispose());
+            if (session.getCondition() == null) {
+                session.setCondition(errorCondition);
+            }
+        }
+
+        openReceiveLinks.forEach((key, link) -> link.dispose(errorCondition));
+        openSendLinks.forEach((key, link) -> link.dispose(errorCondition));
     }
 
     /**
@@ -151,7 +165,6 @@ public class ReactorSession implements AmqpSession {
     public Duration getOperationTimeout() {
         return openTimeout;
     }
-
 
     /**
      * {@inheritDoc}
@@ -261,7 +274,7 @@ public class ReactorSession implements AmqpSession {
                         } else {
                             logger.info("linkName[{}]: Another coordinator send link exists. Disposing of new one.",
                                 TRANSACTION_LINK_NAME);
-                            linkSubscription.dispose();
+                            linkSubscription.dispose(null);
                         }
 
                         sink.success(coordinatorLink.get().getLink());
@@ -311,7 +324,7 @@ public class ReactorSession implements AmqpSession {
 
         final LinkSubscription<T> removed = openLinks.remove(key);
         if (removed != null) {
-            removed.dispose();
+            removed.dispose(null);
         }
 
         return removed != null;
@@ -550,7 +563,7 @@ public class ReactorSession implements AmqpSession {
         return new LinkSubscription<>(reactorReceiver, subscription);
     }
 
-    private static final class LinkSubscription<T extends AmqpLink> implements Disposable {
+    private static final class LinkSubscription<T extends AmqpLink> {
         private final AtomicBoolean isDisposed = new AtomicBoolean();
         private final T link;
         private final Disposable subscription;
@@ -560,22 +573,26 @@ public class ReactorSession implements AmqpSession {
             this.subscription = subscription;
         }
 
-        public Disposable getSubscription() {
-            return subscription;
-        }
-
         public T getLink() {
             return link;
         }
 
-        @Override
-        public void dispose() {
+        public void dispose(ErrorCondition errorCondition) {
             if (isDisposed.getAndSet(true)) {
                 return;
             }
 
+            if (link instanceof ReactorReceiver) {
+                final ReactorReceiver reactorReceiver = (ReactorReceiver) link;
+                reactorReceiver.dispose(errorCondition);
+            } else if (link instanceof ReactorSender) {
+                final ReactorSender reactorSender = (ReactorSender) link;
+                reactorSender.dispose(errorCondition);
+            } else {
+                link.dispose();
+            }
+
             subscription.dispose();
-            link.dispose();
         }
     }
 }

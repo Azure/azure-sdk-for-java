@@ -12,6 +12,8 @@ import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.util.logging.ClientLogger;
+import org.apache.qpid.proton.amqp.Symbol;
+import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.BaseHandler;
@@ -22,6 +24,7 @@ import org.apache.qpid.proton.reactor.Reactor;
 import reactor.core.Disposable;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.ReplayProcessor;
 import reactor.core.scheduler.Schedulers;
@@ -32,6 +35,8 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import static com.azure.core.amqp.implementation.ClientConstants.NOT_APPLICABLE;
 
 public class ReactorConnection implements AmqpConnection {
     private static final String CBS_SESSION_NAME = "cbs-session";
@@ -44,6 +49,7 @@ public class ReactorConnection implements AmqpConnection {
     private final AtomicBoolean hasConnection = new AtomicBoolean();
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final DirectProcessor<AmqpShutdownSignal> shutdownSignals = DirectProcessor.create();
+    private final FluxSink<AmqpShutdownSignal> shutdownSignalsSink = shutdownSignals.sink();
     private final ReplayProcessor<AmqpEndpointState> endpointStates;
 
     private final String connectionId;
@@ -101,7 +107,9 @@ public class ReactorConnection implements AmqpConnection {
         this.connectionMono = Mono.fromCallable(this::getOrCreateConnection)
             .doOnSubscribe(c -> hasConnection.set(true));
 
-        this.endpointStates = this.handler.getEndpointStates().map(state -> {
+        this.endpointStates = this.handler.getEndpointStates()
+            .takeUntilOther(shutdownSignals)
+            .map(state -> {
                 logger.verbose("connectionId[{}]: State {}", connectionId, state);
                 return AmqpEndpointStateUtil.getConnectionState(state);
             }).subscribeWith(ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED));
@@ -231,17 +239,7 @@ public class ReactorConnection implements AmqpConnection {
      */
     @Override
     public boolean removeSession(String sessionName) {
-        if (sessionName == null) {
-            return false;
-        }
-
-        final SessionSubscription removed = sessionMap.remove(sessionName);
-
-        if (removed != null) {
-            removed.dispose();
-        }
-
-        return removed != null;
+        return removeSession(sessionName, null);
     }
 
     @Override
@@ -254,16 +252,23 @@ public class ReactorConnection implements AmqpConnection {
      */
     @Override
     public void dispose() {
+        dispose(null);
+        shutdownSignalsSink.next(new AmqpShutdownSignal(false, true,
+            "Disposed by client."));
+    }
+
+    public void dispose(ErrorCondition errorCondition) {
         if (isDisposed.getAndSet(true)) {
             return;
         }
 
-        logger.info("connectionId[{}]: Disposing of ReactorConnection.", connectionId);
+        logger.info("connectionId[{}], errorCondition[{}]: Disposing of ReactorConnection.", connectionId,
+            errorCondition != null ? errorCondition : NOT_APPLICABLE);
 
         final String[] keys = sessionMap.keySet().toArray(new String[0]);
         for (String key : keys) {
             logger.info("connectionId[{}]: Removing session '{}'", connectionId, key);
-            removeSession(key);
+            removeSession(key, errorCondition);
         }
 
         if (connection != null) {
@@ -309,6 +314,20 @@ public class ReactorConnection implements AmqpConnection {
         return createChannel.subscribeWith(new AmqpChannelProcessor<>(connectionId, entityPath,
             channel -> channel.getEndpointStates(), retryPolicy,
             new ClientLogger(String.format("%s<%s>", RequestResponseChannel.class, sessionName))));
+    }
+
+    private boolean removeSession(String sessionName, ErrorCondition errorCondition) {
+        if (sessionName == null) {
+            return false;
+        }
+
+        final SessionSubscription removed = sessionMap.remove(sessionName);
+
+        if (removed != null) {
+            removed.dispose(errorCondition);
+        }
+
+        return removed != null;
     }
 
     private synchronized ClaimsBasedSecurityNode getOrCreateCBSNode() {
@@ -360,6 +379,7 @@ public class ReactorConnection implements AmqpConnection {
                 getId(), getFullyQualifiedNamespace(), exception.getMessage());
 
             endpointStates.onError(exception);
+            ReactorConnection.this.dispose();
         }
 
         @Override
@@ -373,11 +393,12 @@ public class ReactorConnection implements AmqpConnection {
                 "onReactorError connectionId[{}], hostName[{}], message[Shutting down], shutdown signal[{}]",
                 getId(), getFullyQualifiedNamespace(), shutdownSignal.isInitiatedByClient(), shutdownSignal);
 
-            dispose();
+            dispose(new ErrorCondition(Symbol.getSymbol("onReactorError"), shutdownSignal.toString()));
+            shutdownSignalsSink.next(shutdownSignal);
         }
     }
 
-    private static final class SessionSubscription implements Disposable {
+    private static final class SessionSubscription {
         private final AtomicBoolean isDisposed = new AtomicBoolean();
         private final AmqpSession session;
         private final Disposable subscription;
@@ -387,22 +408,23 @@ public class ReactorConnection implements AmqpConnection {
             this.subscription = subscription;
         }
 
-        public Disposable getSubscription() {
-            return subscription;
-        }
-
         public AmqpSession getSession() {
             return session;
         }
 
-        @Override
-        public void dispose() {
+        public void dispose(ErrorCondition errorCondition) {
             if (isDisposed.getAndSet(true)) {
                 return;
             }
 
+            if (session instanceof ReactorSession) {
+                final ReactorSession reactorSession = (ReactorSession) session;
+                reactorSession.dispose(errorCondition);
+            } else {
+                session.dispose();
+            }
+
             subscription.dispose();
-            session.dispose();
         }
     }
 }

@@ -7,7 +7,9 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
+import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Delivery;
+import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.Disposable;
@@ -156,6 +158,41 @@ public class ReactorReceiver implements AmqpReceiveLink {
             logger.warning("Could not schedule disposing of receiver on ReactorDispatcher.", e);
             handler.close();
         }
+    }
+
+    /**
+     * Disposes of the sender when an exception is encountered.
+     *
+     * @param condition Error condition associated with close operation.
+     */
+    public void dispose(ErrorCondition condition) {
+        if (isDisposed.getAndSet(true)) {
+            return;
+        }
+
+        logger.verbose("connectionId[{}], path[{}], linkName[{}]: setting error condition {}",
+            handler.getConnectionId(), entityPath, getLinkName(), condition);
+
+        if (receiver.getLocalState() != EndpointState.CLOSED) {
+            receiver.close();
+
+            if (receiver.getCondition() == null) {
+                receiver.setCondition(condition);
+            }
+        }
+
+        try {
+            dispatcher.invoke(() -> {
+                receiver.free();
+                handler.close();
+            });
+        } catch (IOException e) {
+            logger.warning("Could not schedule disposing of receiver on ReactorDispatcher.", e);
+            handler.close();
+        }
+
+        messagesProcessor.onComplete();
+        tokenManager.close();
     }
 
     protected Message decodeDelivery(Delivery delivery) {

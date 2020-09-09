@@ -248,9 +248,7 @@ class ReactorConnectionTest {
         // Assert
         StepVerifier.create(connection.getEndpointStates())
             .expectNext(AmqpEndpointState.UNINITIALIZED)
-            .then(() -> {
-                connection.dispose();
-            })
+            .then(() -> connection.dispose())
             .verifyComplete();
     }
 
@@ -364,7 +362,7 @@ class ReactorConnectionTest {
     }
 
     @Test
-    void cannotCreateSessionWhenDisposed() {
+    void closesDownstreamLinks() {
 
     }
 }

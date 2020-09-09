@@ -21,6 +21,7 @@ import org.apache.qpid.proton.amqp.messaging.Rejected;
 import org.apache.qpid.proton.amqp.messaging.Released;
 import org.apache.qpid.proton.amqp.transaction.Declared;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
+import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Sender;
@@ -50,6 +51,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.core.amqp.implementation.ClientConstants.MAX_AMQP_HEADER_SIZE_BYTES;
+import static com.azure.core.amqp.implementation.ClientConstants.NOT_APPLICABLE;
 import static com.azure.core.amqp.implementation.ClientConstants.SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -281,12 +283,35 @@ class ReactorSender implements AmqpSendLink {
 
     @Override
     public void dispose() {
+        dispose(null);
+    }
+
+    /**
+     * Disposes of the sender when an exception is encountered.
+     *
+     * @param errorCondition Error condition associated with close operation.
+     */
+    public void dispose(ErrorCondition errorCondition) {
         if (isDisposed.getAndSet(true)) {
             return;
         }
 
         subscriptions.dispose();
         tokenManager.close();
+
+        if (sender.getLocalState() == EndpointState.CLOSED) {
+            return;
+        }
+
+        logger.verbose("connectionId[{}], path[{}], linkName[{}]: setting error condition {}",
+            handler.getConnectionId(), entityPath, getLinkName(),
+            errorCondition != null ? errorCondition : NOT_APPLICABLE);
+
+        if (errorCondition != null && sender.getCondition() == null) {
+            sender.setCondition(errorCondition);
+        }
+
+        sender.close();
     }
 
     @Override

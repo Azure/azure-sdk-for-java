@@ -8,17 +8,18 @@ import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import org.apache.qpid.proton.amqp.Symbol;
+import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.engine.Record;
 import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.engine.Session;
-import org.apache.qpid.proton.message.Message;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -191,7 +192,13 @@ public class ReactorSessionTest {
         final Duration timeout = Duration.ofSeconds(30);
         final TokenManager tokenManager = mock(TokenManager.class);
         final SendLinkHandler sendLinkHandler = new SendLinkHandler(ID, HOST, linkName, entityPath);
-        final Message message = mock(Message.class);
+
+        final Event closeSendEvent = mock(Event.class);
+        when(closeSendEvent.getLink()).thenReturn(sender);
+
+        final ErrorCondition errorCondition = new ErrorCondition(
+            Symbol.valueOf(AmqpErrorCondition.SERVER_BUSY_ERROR.getErrorCondition()), "test-busy");
+        when(sender.getRemoteCondition()).thenReturn(errorCondition);
 
         when(session.sender(linkName)).thenReturn(sender);
         when(tokenManagerProvider.getTokenManager(cbsNodeSupplier, entityPath)).thenReturn(tokenManager);
@@ -210,10 +217,8 @@ public class ReactorSessionTest {
         assertNotNull(sendLink);
         assertTrue(sendLink instanceof AmqpSendLink);
 
-        final AmqpSendLink reactorSendLink = (AmqpSendLink) sendLink;
-
-        // Act & Assert
-        StepVerifier.create(reactorSendLink.send(message));
+        // Act
+        sendLinkHandler.onLinkRemoteClose(closeSendEvent);
     }
 
     @Test
