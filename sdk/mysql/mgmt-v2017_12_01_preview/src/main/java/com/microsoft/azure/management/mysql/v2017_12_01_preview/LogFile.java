@@ -11,13 +11,13 @@ package com.microsoft.azure.management.mysql.v2017_12_01_preview;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.mysql.v2017_12_01_preview.implementation.LogFileInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.mysql.v2017_12_01_preview.implementation.MySQLManager;
+import com.microsoft.azure.management.mysql.v2017_12_01_preview.implementation.DBForMySQLManager;
 import org.joda.time.DateTime;
 
 /**
  * Type representing LogFile.
  */
-public interface LogFile extends HasInner<LogFileInner>, HasManager<MySQLManager> {
+public interface LogFile extends HasInner<LogFileInner>, HasManager<DBForMySQLManager> {
     /**
      * @return the createdTime value.
      */
