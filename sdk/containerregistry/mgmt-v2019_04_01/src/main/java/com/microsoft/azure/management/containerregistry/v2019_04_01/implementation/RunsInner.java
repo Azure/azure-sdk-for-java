@@ -194,12 +194,10 @@ public class RunsInner {
         if (registryName == null) {
             throw new IllegalArgumentException("Parameter registryName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
+        final String apiVersion = "2019-04-01";
         final String filter = null;
         final Integer top = null;
-        return service.list(this.client.subscriptionId(), resourceGroupName, registryName, this.client.apiVersion(), filter, top, this.client.acceptLanguage(), this.client.userAgent())
+        return service.list(this.client.subscriptionId(), resourceGroupName, registryName, apiVersion, filter, top, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RunInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RunInner>>> call(Response<ResponseBody> response) {
@@ -322,10 +320,8 @@ public class RunsInner {
         if (registryName == null) {
             throw new IllegalArgumentException("Parameter registryName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.list(this.client.subscriptionId(), resourceGroupName, registryName, this.client.apiVersion(), filter, top, this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2019-04-01";
+        return service.list(this.client.subscriptionId(), resourceGroupName, registryName, apiVersion, filter, top, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RunInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RunInner>>> call(Response<ResponseBody> response) {
@@ -415,10 +411,8 @@ public class RunsInner {
         if (runId == null) {
             throw new IllegalArgumentException("Parameter runId is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.get(this.client.subscriptionId(), resourceGroupName, registryName, runId, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2019-04-01";
+        return service.get(this.client.subscriptionId(), resourceGroupName, registryName, runId, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RunInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RunInner>> call(Response<ResponseBody> response) {
@@ -508,13 +502,11 @@ public class RunsInner {
         if (runId == null) {
             throw new IllegalArgumentException("Parameter runId is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
+        final String apiVersion = "2019-04-01";
         final Boolean isArchiveEnabled = null;
         RunUpdateParameters runUpdateParameters = new RunUpdateParameters();
         runUpdateParameters.withIsArchiveEnabled(null);
-        Observable<Response<ResponseBody>> observable = service.update(this.client.subscriptionId(), resourceGroupName, registryName, runId, this.client.apiVersion(), this.client.acceptLanguage(), runUpdateParameters, this.client.userAgent());
+        Observable<Response<ResponseBody>> observable = service.update(this.client.subscriptionId(), resourceGroupName, registryName, runId, apiVersion, this.client.acceptLanguage(), runUpdateParameters, this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<RunInner>() { }.getType());
     }
     /**
@@ -590,12 +582,10 @@ public class RunsInner {
         if (runId == null) {
             throw new IllegalArgumentException("Parameter runId is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
+        final String apiVersion = "2019-04-01";
         RunUpdateParameters runUpdateParameters = new RunUpdateParameters();
         runUpdateParameters.withIsArchiveEnabled(isArchiveEnabled);
-        Observable<Response<ResponseBody>> observable = service.update(this.client.subscriptionId(), resourceGroupName, registryName, runId, this.client.apiVersion(), this.client.acceptLanguage(), runUpdateParameters, this.client.userAgent());
+        Observable<Response<ResponseBody>> observable = service.update(this.client.subscriptionId(), resourceGroupName, registryName, runId, apiVersion, this.client.acceptLanguage(), runUpdateParameters, this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<RunInner>() { }.getType());
     }
 
@@ -668,13 +658,11 @@ public class RunsInner {
         if (runId == null) {
             throw new IllegalArgumentException("Parameter runId is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
+        final String apiVersion = "2019-04-01";
         final Boolean isArchiveEnabled = null;
         RunUpdateParameters runUpdateParameters = new RunUpdateParameters();
         runUpdateParameters.withIsArchiveEnabled(null);
-        return service.beginUpdate(this.client.subscriptionId(), resourceGroupName, registryName, runId, this.client.apiVersion(), this.client.acceptLanguage(), runUpdateParameters, this.client.userAgent())
+        return service.beginUpdate(this.client.subscriptionId(), resourceGroupName, registryName, runId, apiVersion, this.client.acceptLanguage(), runUpdateParameters, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RunInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RunInner>> call(Response<ResponseBody> response) {
@@ -761,12 +749,10 @@ public class RunsInner {
         if (runId == null) {
             throw new IllegalArgumentException("Parameter runId is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
+        final String apiVersion = "2019-04-01";
         RunUpdateParameters runUpdateParameters = new RunUpdateParameters();
         runUpdateParameters.withIsArchiveEnabled(isArchiveEnabled);
-        return service.beginUpdate(this.client.subscriptionId(), resourceGroupName, registryName, runId, this.client.apiVersion(), this.client.acceptLanguage(), runUpdateParameters, this.client.userAgent())
+        return service.beginUpdate(this.client.subscriptionId(), resourceGroupName, registryName, runId, apiVersion, this.client.acceptLanguage(), runUpdateParameters, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RunInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RunInner>> call(Response<ResponseBody> response) {
@@ -857,10 +843,8 @@ public class RunsInner {
         if (runId == null) {
             throw new IllegalArgumentException("Parameter runId is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.getLogSasUrl(this.client.subscriptionId(), resourceGroupName, registryName, runId, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2019-04-01";
+        return service.getLogSasUrl(this.client.subscriptionId(), resourceGroupName, registryName, runId, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RunGetLogResultInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RunGetLogResultInner>> call(Response<ResponseBody> response) {
@@ -949,10 +933,8 @@ public class RunsInner {
         if (runId == null) {
             throw new IllegalArgumentException("Parameter runId is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Observable<Response<ResponseBody>> observable = service.cancel(this.client.subscriptionId(), resourceGroupName, registryName, runId, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2019-04-01";
+        Observable<Response<ResponseBody>> observable = service.cancel(this.client.subscriptionId(), resourceGroupName, registryName, runId, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
 
@@ -1024,10 +1006,8 @@ public class RunsInner {
         if (runId == null) {
             throw new IllegalArgumentException("Parameter runId is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.beginCancel(this.client.subscriptionId(), resourceGroupName, registryName, runId, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2019-04-01";
+        return service.beginCancel(this.client.subscriptionId(), resourceGroupName, registryName, runId, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
