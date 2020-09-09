@@ -4,19 +4,21 @@
 package com.azure.digitaltwins.core.helpers;
 
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
-import org.apache.http.HttpStatus;
 
 import java.util.function.Consumer;
 
+import static javax.net.ssl.HttpsURLConnection.HTTP_CONFLICT;
+import static javax.net.ssl.HttpsURLConnection.HTTP_NOT_FOUND;
+
 public class SamplesUtil {
     public static final Consumer<Throwable> IgnoreNotFoundError = throwable -> {
-        if (!(throwable instanceof ErrorResponseException) || ((ErrorResponseException) throwable).getResponse().getStatusCode() != HttpStatus.SC_NOT_FOUND) {
+        if (!(throwable instanceof ErrorResponseException) || ((ErrorResponseException) throwable).getResponse().getStatusCode() != HTTP_NOT_FOUND) {
             System.err.println("Error received: " + throwable);
         }
     };
 
     public static final Consumer<Throwable> IgnoreConflictError = throwable -> {
-        if (!(throwable instanceof ErrorResponseException) || ((ErrorResponseException) throwable).getResponse().getStatusCode() != HttpStatus.SC_CONFLICT) {
+        if (!(throwable instanceof ErrorResponseException) || ((ErrorResponseException) throwable).getResponse().getStatusCode() != HTTP_CONFLICT) {
             System.err.println("Error received: " + throwable);
         }
     };
