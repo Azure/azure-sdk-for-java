@@ -49,7 +49,7 @@ public final class DataLakeServiceSasSignatureValues {
 
     private String contentType;
 
-    private String preAuthorizedAgentObjectId; /* saoid */
+    private String preauthorizedAgentObjectId; /* saoid */
 
     private String agentObjectId; /* suoid */
 
@@ -338,22 +338,22 @@ public final class DataLakeServiceSasSignatureValues {
      * user delegation key has the required permissions before granting access but no additional permission check for
      * the agent object id will be performed.
      */
-    public String getPreAuthorizedAgentObjectId() {
-        return preAuthorizedAgentObjectId;
+    public String getPreauthorizedAgentObjectId() {
+        return preauthorizedAgentObjectId;
     }
 
     /**
      * Sets the AAD object ID of a user assumed to be authorized by the owner of the user delegation key to perform the
      * action granted by the SAS token.
      *
-     * @param preAuthorizedAgentObjectId The AAD object ID of a user assumed to be authorized by the owner of the user
+     * @param preauthorizedAgentObjectId The AAD object ID of a user assumed to be authorized by the owner of the user
      * delegation key to perform the action granted by the SAS token. The service will validate the SAS token and
      * ensure that the owner of the user delegation key has the required permissions before granting access but no
      * additional permission check for the agent object id will be performed.
      * @return the updated DataLakeServiceSasSignatureValues object
      */
-    public DataLakeServiceSasSignatureValues setPreAuthorizedAgentObjectId(String preAuthorizedAgentObjectId) {
-        this.preAuthorizedAgentObjectId = preAuthorizedAgentObjectId;
+    public DataLakeServiceSasSignatureValues setPreauthorizedAgentObjectId(String preauthorizedAgentObjectId) {
+        this.preauthorizedAgentObjectId = preauthorizedAgentObjectId;
         return this;
     }
 

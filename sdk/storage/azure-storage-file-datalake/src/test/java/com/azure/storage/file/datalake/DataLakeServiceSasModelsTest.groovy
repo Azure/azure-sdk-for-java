@@ -36,7 +36,7 @@ class DataLakeServiceSasModelsTest extends Specification {
             .setMovePermission(move)
             .setExecutePermission(execute)
             .setManageOwnershipPermission(owner)
-            .setManagePermissionPermission(permission)
+            .setManageAccessControlPermission(permission)
 
         expect:
         perms.toString() == expectedString
@@ -71,7 +71,7 @@ class DataLakeServiceSasModelsTest extends Specification {
         perms.hasMovePermission() == move
         perms.hasExecutePermission() == execute
         perms.hasManageOwnershipPermission() == owner
-        perms.hasManagePermissionPermission() == permission
+        perms.hasManageAccessControlPermission() == permission
 
         where:
         permString   || read  | write | delete | create | add   | list  | move  | execute | owner | permission
@@ -118,7 +118,7 @@ class DataLakeServiceSasModelsTest extends Specification {
             .setMovePermission(move)
             .setExecutePermission(execute)
             .setManageOwnershipPermission(owner)
-            .setManagePermissionPermission(permission)
+            .setManageAccessControlPermission(permission)
 
         expect:
         perms.toString() == expectedString
@@ -153,7 +153,7 @@ class DataLakeServiceSasModelsTest extends Specification {
         perms.hasMovePermission() == move
         perms.hasExecutePermission() == execute
         perms.hasManageOwnershipPermission() == owner
-        perms.hasManagePermissionPermission() == permission
+        perms.hasManageAccessControlPermission() == permission
 
         where:
         permString   || read  | write | delete | create | add   | list  | move  | execute | owner | permission
@@ -245,7 +245,7 @@ class DataLakeServiceSasModelsTest extends Specification {
 
         when:
         def v = new DataLakeServiceSasSignatureValues(e, p)
-            .setPreAuthorizedAgentObjectId("authorizedId")
+            .setPreauthorizedAgentObjectId("authorizedId")
             .setAgentObjectId("unauthorizedId")
         DataLakeSasImplUtil implUtil = new DataLakeSasImplUtil(v, "containerName", "blobName", true)
 

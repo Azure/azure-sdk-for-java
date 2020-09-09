@@ -87,7 +87,7 @@ class SASTest extends APISpec {
             .setMovePermission(true)
             .setExecutePermission(true)
             .setManageOwnershipPermission(true)
-            .setManagePermissionPermission(true)
+            .setManageAccessControlPermission(true)
 
         def sasValues = generateValues(permissions)
 
@@ -121,7 +121,7 @@ class SASTest extends APISpec {
             .setMovePermission(true)
             .setExecutePermission(true)
             .setManageOwnershipPermission(true)
-            .setManagePermissionPermission(true)
+            .setManageAccessControlPermission(true)
 
         def sasValues = generateValues(permissions)
 
@@ -185,7 +185,7 @@ class SASTest extends APISpec {
             .setMovePermission(true)
             .setExecutePermission(true)
             .setManageOwnershipPermission(true)
-            .setManagePermissionPermission(true)
+            .setManageAccessControlPermission(true)
 
         def expiryTime = getUTCNow().plusDays(1)
 
@@ -222,7 +222,7 @@ class SASTest extends APISpec {
             .setMovePermission(true)
             .setExecutePermission(true)
             .setManageOwnershipPermission(true)
-            .setManagePermissionPermission(true)
+            .setManageAccessControlPermission(true)
 
         def sasValues = generateValues(permissions)
 
@@ -256,7 +256,7 @@ class SASTest extends APISpec {
             .setMovePermission(true)
             .setExecutePermission(true)
             .setManageOwnershipPermission(true)
-            .setManagePermissionPermission(true)
+            .setManageAccessControlPermission(true)
 
         def sasValues = generateValues(permissions)
 
@@ -299,7 +299,7 @@ class SASTest extends APISpec {
             .setMovePermission(true)
             .setExecutePermission(true)
             .setManageOwnershipPermission(true)
-            .setManagePermissionPermission(true)
+            .setManageAccessControlPermission(true)
 
         def expiryTime = getUTCNow().plusDays(1)
 
@@ -337,7 +337,7 @@ class SASTest extends APISpec {
             .setMovePermission(true)
             .setExecutePermission(true)
             .setManageOwnershipPermission(true)
-            .setManagePermissionPermission(true)
+            .setManageAccessControlPermission(true)
         def expiryTime = getUTCNow().plusDays(1)
 
         def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
@@ -358,7 +358,7 @@ class SASTest extends APISpec {
         rootClient.setAccessControlList(acl, null, null)
 
         def sasValues = new DataLakeServiceSasSignatureValues(expiryTime, permissions)
-            .setPreAuthorizedAgentObjectId(saoid)
+            .setPreauthorizedAgentObjectId(saoid)
         def sasWithPermissions = rootClient.generateUserDelegationSas(sasValues, key)
 
         def client = getFileClient(sasWithPermissions, fsc.getFileSystemUrl(), pathName)
@@ -395,7 +395,7 @@ class SASTest extends APISpec {
             .setMovePermission(true)
             .setExecutePermission(true)
             .setManageOwnershipPermission(true)
-            .setManagePermissionPermission(true)
+            .setManageAccessControlPermission(true)
         def expiryTime = getUTCNow().plusDays(1)
 
         def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
@@ -757,7 +757,7 @@ class SASTest extends APISpec {
             .setValue(keyValue)
 
         v.setCorrelationId(cid)
-            .setPreAuthorizedAgentObjectId(saoid)
+            .setPreauthorizedAgentObjectId(saoid)
             .setAgentObjectId(suoid)
 
         def util = new DataLakeSasImplUtil(v, "fileSystemName", "pathName", false)

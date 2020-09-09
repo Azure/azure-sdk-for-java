@@ -119,7 +119,7 @@ public class DataLakeSasImplUtil {
         this.contentEncoding = sasValues.getContentEncoding();
         this.contentLanguage = sasValues.getContentLanguage();
         this.contentType = sasValues.getContentType();
-        this.authorizedAadObjectId = sasValues.getPreAuthorizedAgentObjectId();
+        this.authorizedAadObjectId = sasValues.getPreauthorizedAgentObjectId();
         this.unauthorizedAadObjectId = sasValues.getAgentObjectId();
         this.correlationId = sasValues.getCorrelationId();
         this.isDirectory = isDirectory;

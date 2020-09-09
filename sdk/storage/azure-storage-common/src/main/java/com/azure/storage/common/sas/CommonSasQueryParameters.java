@@ -392,7 +392,7 @@ public class CommonSasQueryParameters {
      * user delegation key has the required permissions before granting access but no additional permission check for
      * the agent object id will be performed.
      */
-    public String getPreAuthorizedAgentObjectId() {
+    public String getPreauthorizedAgentObjectId() {
         return authorizedObjectId;
     }
 

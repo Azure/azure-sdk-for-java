@@ -33,7 +33,7 @@ public final class PathSasPermission {
 
     private boolean manageOwnershipPermission;
 
-    private boolean managePermissionPermission;
+    private boolean manageAccessControlPermission;
 
 
     /**
@@ -85,7 +85,7 @@ public final class PathSasPermission {
                     permissions.manageOwnershipPermission = true;
                     break;
                 case 'p':
-                    permissions.managePermissionPermission = true;
+                    permissions.manageAccessControlPermission = true;
                     break;
                 default:
                     throw new IllegalArgumentException(
@@ -259,20 +259,20 @@ public final class PathSasPermission {
     }
 
     /**
-     * @return the manage permission permission status.
+     * @return the manage access control permission status.
      */
-    public boolean hasManagePermissionPermission() {
-        return managePermissionPermission;
+    public boolean hasManageAccessControlPermission() {
+        return manageAccessControlPermission;
     }
 
     /**
-     * Sets the manage permission permission status.
+     * Sets the manage access control permission status.
      *
-     * @param hasManagePermissionPermission Permission status to set
+     * @param hasManageAccessControlPermission Permission status to set
      * @return the updated PathSasPermission object.
      */
-    public PathSasPermission setManagePermissionPermission(boolean hasManagePermissionPermission) {
-        this.managePermissionPermission = hasManagePermissionPermission;
+    public PathSasPermission setManageAccessControlPermission(boolean hasManageAccessControlPermission) {
+        this.manageAccessControlPermission = hasManageAccessControlPermission;
         return this;
     }
 
@@ -325,7 +325,7 @@ public final class PathSasPermission {
             builder.append('o');
         }
 
-        if (this.managePermissionPermission) {
+        if (this.manageAccessControlPermission) {
             builder.append('p');
         }
 
