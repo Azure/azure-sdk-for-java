@@ -212,7 +212,7 @@ public class DigitalTwinsLifecycleAsyncSample {
         ConsoleLogger.printHeader("Deleting models");
 
         // This is to ensure models are deleted in an order such that no other models are referencing it.
-        List<String> models = asList(RoomModelId, WifiModelId, BuildingModelId, FloorModelId, HvacModelId);
+        List<String> models = asList(ROOM_MODEL_ID, WIFI_MODEL_ID, BUILDING_MODEL_ID, FLOOR_MODEL_ID, HVAC_MODEL_ID);
 
         // Call APIs to delete the models.
         // Note that we are blocking the async API call. This is to ensure models are deleted in an order such that no other models are referencing it.
