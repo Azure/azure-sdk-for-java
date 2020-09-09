@@ -13,6 +13,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.digitaltwins.core.models.IncomingRelationship;
 import com.azure.digitaltwins.core.models.ModelData;
+import com.azure.digitaltwins.core.serialization.BasicRelationship;
 import com.azure.digitaltwins.core.util.*;
 
 import java.util.List;
@@ -57,6 +58,8 @@ public final class DigitalTwinsClient {
     public DigitalTwinsServiceVersion getServiceVersion() {
         return this.digitalTwinsAsyncClient.getServiceVersion();
     }
+
+    //region DigitalTwin APIs
 
     /**
      * Creates a digital twin.
@@ -220,6 +223,10 @@ public final class DigitalTwinsClient {
     {
         return digitalTwinsAsyncClient.deleteDigitalTwinWithResponse(digitalTwinId, options, context).block();
     }
+
+    //endregion
+
+    //region Relationship APIs
 
     /**
      * Creates a relationship on a digital twin.
@@ -413,7 +420,7 @@ public final class DigitalTwinsClient {
      * Gets all the relationships on a digital twin by iterating through a collection.
      *
      * @param digitalTwinId The Id of the source digital twin.
-     * @param clazz The model class to convert the relationship to. Since a digital twin might have relationships conforming to different models, it is advisable to convert them to a generic model like {@link com.azure.digitaltwins.core.implementation.serialization.BasicRelationship}.
+     * @param clazz The model class to convert the relationship to. Since a digital twin might have relationships conforming to different models, it is advisable to convert them to a generic model like {@link BasicRelationship}.
      * @param <T> The generic type to convert the relationship to.
      * @return A {@link PagedIterable} of relationships belonging to the specified digital twin and the http response.
      */
@@ -449,9 +456,9 @@ public final class DigitalTwinsClient {
         return new PagedIterable<>(digitalTwinsAsyncClient.listIncomingRelationships(digitalTwinId, context));
     }
 
-    //==================================================================================================================================================
-    // Models APIs
-    //==================================================================================================================================================
+    //endregion
+
+    //region Models APIs
 
     /**
      * Creates one or many models.
@@ -555,9 +562,9 @@ public final class DigitalTwinsClient {
         return digitalTwinsAsyncClient.decommissionModelWithResponse(modelId, context).block();
     }
 
-    //==================================================================================================================================================
-    // Component APIs
-    //==================================================================================================================================================
+    //endregion
+
+    //region Component APIs
 
     /**
      * Get a component of a digital twin.
@@ -636,6 +643,10 @@ public final class DigitalTwinsClient {
         return digitalTwinsAsyncClient.updateComponentWithResponse(digitalTwinId, componentPath, componentUpdateOperations, options, context).block();
     }
 
+    //endregion
+
+    //region Query APIs
+
     /**
      * Query digital twins.
      *
@@ -685,4 +696,6 @@ public final class DigitalTwinsClient {
     public <T> PagedIterable<T> query(String query, Class<T> clazz, Context context) {
         return new PagedIterable<>(digitalTwinsAsyncClient.query(query, clazz, context));
     }
+
+    //endregion
 }
