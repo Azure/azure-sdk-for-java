@@ -24,9 +24,7 @@ import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.engine.Session;
 import reactor.core.Disposable;
-import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.ReplayProcessor;
 
@@ -49,9 +47,7 @@ public class ReactorSession implements AmqpSession {
 
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final ClientLogger logger = new ClientLogger(ReactorSession.class);
-    private final ReplayProcessor<AmqpEndpointState> endpointStates =
-        ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED);
-    private FluxSink<AmqpEndpointState> endpointStateSink = endpointStates.sink(FluxSink.OverflowStrategy.BUFFER);
+    private final ReplayProcessor<AmqpEndpointState> endpointStates;
 
     private final Session session;
     private final SessionHandler sessionHandler;
@@ -61,7 +57,6 @@ public class ReactorSession implements AmqpSession {
     private final MessageSerializer messageSerializer;
     private final Duration openTimeout;
 
-    private final Disposable.Composite subscriptions;
     private final ReactorHandlerProvider handlerProvider;
     private final Mono<ClaimsBasedSecurityNode> cbsNodeSupplier;
 
@@ -98,22 +93,9 @@ public class ReactorSession implements AmqpSession {
         this.messageSerializer = messageSerializer;
         this.openTimeout = openTimeout;
         this.retryPolicy = retryPolicy;
-
-        this.subscriptions = Disposables.composite(
-            this.sessionHandler.getEndpointStates().subscribe(
-                state -> {
-                    logger.verbose("Connection state: {}", state);
-                    endpointStateSink.next(AmqpEndpointStateUtil.getConnectionState(state));
-                }, error -> {
-                    logger.error("[{}] Error occurred in session endpoint handler.", sessionName, error);
-                    endpointStateSink.error(error);
-                    dispose();
-                }, () -> {
-                    endpointStateSink.next(AmqpEndpointState.CLOSED);
-                    endpointStateSink.complete();
-                    dispose();
-                })
-        );
+        this.endpointStates = sessionHandler.getEndpointStates()
+            .map(AmqpEndpointStateUtil::getConnectionState)
+            .subscribeWith(ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED));
 
         session.open();
     }
@@ -144,13 +126,9 @@ public class ReactorSession implements AmqpSession {
         logger.info("sessionId[{}]: Disposing of session.", sessionName);
 
         session.close();
-        subscriptions.dispose();
 
         openReceiveLinks.forEach((key, link) -> link.dispose());
-        openReceiveLinks.clear();
-
         openSendLinks.forEach((key, link) -> link.dispose());
-        openSendLinks.clear();
     }
 
     /**

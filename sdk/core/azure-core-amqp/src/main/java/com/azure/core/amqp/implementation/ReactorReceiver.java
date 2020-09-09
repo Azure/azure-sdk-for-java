@@ -11,10 +11,8 @@ import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.Disposable;
-import reactor.core.Disposables;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.ReplayProcessor;
 
 import java.io.IOException;
@@ -36,13 +34,11 @@ public class ReactorReceiver implements AmqpReceiveLink {
     private final ReceiveLinkHandler handler;
     private final TokenManager tokenManager;
     private final ReactorDispatcher dispatcher;
-    private final Disposable.Composite subscriptions;
+    private final Disposable subscriptions;
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final EmitterProcessor<Message> messagesProcessor;
     private final ClientLogger logger = new ClientLogger(ReactorReceiver.class);
-    private final ReplayProcessor<AmqpEndpointState> endpointStates =
-        ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED);
-    private FluxSink<AmqpEndpointState> endpointStateSink = endpointStates.sink(FluxSink.OverflowStrategy.BUFFER);
+    private final ReplayProcessor<AmqpEndpointState> endpointStates;
 
     private final AtomicReference<Supplier<Integer>> creditSupplier = new AtomicReference<>();
 
@@ -69,33 +65,14 @@ public class ReactorReceiver implements AmqpReceiveLink {
                 }
             })
             .subscribeWith(EmitterProcessor.create());
-
-        this.handler.getEndpointStates()
+        this.endpointStates = this.handler.getEndpointStates()
             .map(state -> {
                 logger.verbose("Connection state: {}", state);
                 return AmqpEndpointStateUtil.getConnectionState(state);
             })
-            .subscribeWith(endpointStates)
-            .doFinally(signal -> {
-                dispose();
-            });
+            .subscribeWith(ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED));
 
-        this.subscriptions = Disposables.composite(
-            this.handler.getEndpointStates().subscribe(
-                state -> {
-                    logger.verbose("Connection state: {}", state);
-                    endpointStateSink.next(AmqpEndpointStateUtil.getConnectionState(state));
-                }, error -> {
-                    logger.error("connectionId[{}] linkName[{}] entityPath[{}] Error occurred in connection.",
-                        handler.getConnectionId(), receiver.getName(), entityPath, error);
-                    endpointStateSink.error(error);
-                    dispose();
-                }, () -> {
-                    endpointStateSink.next(AmqpEndpointState.CLOSED);
-                    dispose();
-                }),
-
-            this.tokenManager.getAuthorizationResults().subscribe(
+        this.subscriptions = this.tokenManager.getAuthorizationResults().subscribe(
                 response -> {
                     logger.verbose("Token refreshed: {}", response);
                     hasAuthorized.set(true);
@@ -103,7 +80,7 @@ public class ReactorReceiver implements AmqpReceiveLink {
                     logger.info("connectionId[{}], path[{}], linkName[{}] - tokenRenewalFailure[{}]",
                         handler.getConnectionId(), this.entityPath, getLinkName(), error.getMessage());
                     hasAuthorized.set(false);
-                }, () -> hasAuthorized.set(false)));
+                }, () -> hasAuthorized.set(false));
     }
 
     @Override
@@ -165,7 +142,6 @@ public class ReactorReceiver implements AmqpReceiveLink {
         }
 
         subscriptions.dispose();
-        endpointStateSink.complete();
         messagesProcessor.onComplete();
         tokenManager.close();
         receiver.close();

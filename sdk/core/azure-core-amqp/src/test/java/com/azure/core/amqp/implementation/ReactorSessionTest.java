@@ -39,7 +39,6 @@ public class ReactorSessionTest {
 
     private SessionHandler handler;
     private ReactorSession reactorSession;
-    private AmqpRetryPolicy retryPolicy;
 
     @Mock
     private Session session;
@@ -71,7 +70,7 @@ public class ReactorSessionTest {
         MockReactorHandlerProvider handlerProvider = new MockReactorHandlerProvider(reactorProvider, null, handler, null, null);
         AzureTokenManagerProvider azureTokenManagerProvider = new AzureTokenManagerProvider(
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, HOST, "a-test-scope");
-        this.retryPolicy = RetryUtil.getRetryPolicy(new AmqpRetryOptions());
+        AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(new AmqpRetryOptions());
         this.reactorSession = new ReactorSession(session, handler, NAME, reactorProvider, handlerProvider,
             Mono.just(cbsNode), azureTokenManagerProvider, serializer, TIMEOUT, retryPolicy);
 

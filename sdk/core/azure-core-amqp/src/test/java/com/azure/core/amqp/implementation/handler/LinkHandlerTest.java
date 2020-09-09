@@ -52,7 +52,6 @@ class LinkHandlerTest {
     private final String description = "test-description";
     private final LinkHandler handler = new MockLinkHandler(CONNECTION_ID, HOSTNAME, ENTITY_PATH, logger);
 
-
     @BeforeAll
     static void beforeAll() {
         StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));

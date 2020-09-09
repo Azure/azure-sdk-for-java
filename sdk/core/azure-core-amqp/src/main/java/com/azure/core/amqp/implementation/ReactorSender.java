@@ -29,7 +29,6 @@ import org.apache.qpid.proton.message.Message;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.ReplayProcessor;
 
@@ -74,9 +73,7 @@ class ReactorSender implements AmqpSendLink {
     private final PriorityQueue<WeightedDeliveryTag> pendingSendsQueue =
         new PriorityQueue<>(1000, new DeliveryTagComparator());
     private final ClientLogger logger = new ClientLogger(ReactorSender.class);
-    private final ReplayProcessor<AmqpEndpointState> endpointStates =
-        ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED);
-    private FluxSink<AmqpEndpointState> endpointStateSink = endpointStates.sink(FluxSink.OverflowStrategy.BUFFER);
+    private final ReplayProcessor<AmqpEndpointState> endpointStates;
 
     private final TokenManager tokenManager;
     private final MessageSerializer messageSerializer;
@@ -101,38 +98,33 @@ class ReactorSender implements AmqpSendLink {
         this.retry = retry;
         this.timeout = timeout;
 
+        this.endpointStates = this.handler.getEndpointStates()
+            .map(state -> {
+                logger.verbose("[{}] Connection state: {}", entityPath, state);
+                this.hasConnected.set(state == EndpointState.ACTIVE);
+                return AmqpEndpointStateUtil.getConnectionState(state);
+            }).subscribeWith(ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED));
+
         this.subscriptions = Disposables.composite(
             this.handler.getDeliveredMessages().subscribe(this::processDeliveredMessage),
 
             this.handler.getLinkCredits().subscribe(credit -> {
-                logger.verbose("Credits on link: {}", credit);
+                logger.verbose("connectionId[{}], entityPath[{}], linkName[{}]: Credits on link: {}",
+                    handler.getConnectionId(), entityPath, getLinkName(), credit);
                 this.scheduleWorkOnDispatcher();
-            }),
-
-            this.handler.getEndpointStates().subscribe(
-                state -> {
-                    logger.verbose("[{}] Connection state: {}", entityPath, state);
-                    this.hasConnected.set(state == EndpointState.ACTIVE);
-                    endpointStateSink.next(AmqpEndpointStateUtil.getConnectionState(state));
-                }, error -> {
-                    logger.error("[{}] Error occurred in sender endpoint handler.", entityPath, error);
-                    endpointStateSink.error(error);
-                }, () -> {
-                    endpointStateSink.next(AmqpEndpointState.CLOSED);
-                    endpointStateSink.complete();
-                    hasConnected.set(false);
-                })
+            })
         );
 
         if (tokenManager != null) {
             this.subscriptions.add(this.tokenManager.getAuthorizationResults().subscribe(
                 response -> {
-                    logger.verbose("Token refreshed: {}", response);
+                    logger.verbose("connectionId[{}], entityPath[{}], linkName[{}]: Token refreshed: {}",
+                        handler.getConnectionId(), entityPath, getLinkName(), response);
                     hasAuthorized.set(true);
                 },
                 error -> {
-                    logger.info("clientId[{}], path[{}], linkName[{}] - tokenRenewalFailure[{}]",
-                        handler.getConnectionId(), this.entityPath, getLinkName(), error.getMessage());
+                    logger.info("connectionId[{}], entityPath[{}], linkName[{}]: tokenRenewalFailure[{}]",
+                        handler.getConnectionId(), entityPath, getLinkName(), error.getMessage());
                     hasAuthorized.set(false);
                 }, () -> hasAuthorized.set(false)));
         }
@@ -140,7 +132,7 @@ class ReactorSender implements AmqpSendLink {
 
     @Override
     public Flux<AmqpEndpointState> getEndpointStates() {
-        return endpointStates.distinct();
+        return endpointStates;
     }
 
     @Override
@@ -293,7 +285,6 @@ class ReactorSender implements AmqpSendLink {
         }
 
         subscriptions.dispose();
-        endpointStateSink.complete();
         tokenManager.close();
     }
 
