@@ -67,7 +67,8 @@ public class ReactorReceiver implements AmqpReceiveLink {
             .subscribeWith(EmitterProcessor.create());
         this.endpointStates = this.handler.getEndpointStates()
             .map(state -> {
-                logger.verbose("Connection state: {}", state);
+                logger.verbose("connectionId[{}], path[{}], linkName[{}]: State {}", handler.getConnectionId(),
+                    entityPath, getLinkName(), state);
                 return AmqpEndpointStateUtil.getConnectionState(state);
             })
             .subscribeWith(ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED));

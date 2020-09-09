@@ -20,10 +20,8 @@ import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.message.Message;
 import org.apache.qpid.proton.reactor.Reactor;
 import reactor.core.Disposable;
-import reactor.core.Disposables;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.ReplayProcessor;
 import reactor.core.scheduler.Schedulers;
@@ -46,10 +44,7 @@ public class ReactorConnection implements AmqpConnection {
     private final AtomicBoolean hasConnection = new AtomicBoolean();
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final DirectProcessor<AmqpShutdownSignal> shutdownSignals = DirectProcessor.create();
-    private final ReplayProcessor<AmqpEndpointState> endpointStates =
-        ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED);
-    private final FluxSink<AmqpEndpointState> endpointStatesSink =
-        endpointStates.sink(FluxSink.OverflowStrategy.BUFFER);
+    private final ReplayProcessor<AmqpEndpointState> endpointStates;
 
     private final String connectionId;
     private final Mono<Connection> connectionMono;
@@ -59,7 +54,6 @@ public class ReactorConnection implements AmqpConnection {
     private final MessageSerializer messageSerializer;
     private final ConnectionOptions connectionOptions;
     private final ReactorProvider reactorProvider;
-    private final Disposable.Composite subscriptions;
     private final AmqpRetryPolicy retryPolicy;
     private final SenderSettleMode senderSettleMode;
     private final ReceiverSettleMode receiverSettleMode;
@@ -87,8 +81,8 @@ public class ReactorConnection implements AmqpConnection {
      */
     public ReactorConnection(String connectionId, ConnectionOptions connectionOptions, ReactorProvider reactorProvider,
         ReactorHandlerProvider handlerProvider, TokenManagerProvider tokenManagerProvider,
-        MessageSerializer messageSerializer, String product, String clientVersion,
-        SenderSettleMode senderSettleMode, ReceiverSettleMode receiverSettleMode) {
+        MessageSerializer messageSerializer, String product, String clientVersion, SenderSettleMode senderSettleMode,
+        ReceiverSettleMode receiverSettleMode) {
 
         this.connectionOptions = connectionOptions;
         this.reactorProvider = reactorProvider;
@@ -107,18 +101,10 @@ public class ReactorConnection implements AmqpConnection {
         this.connectionMono = Mono.fromCallable(this::getOrCreateConnection)
             .doOnSubscribe(c -> hasConnection.set(true));
 
-        this.subscriptions = Disposables.composite(
-            this.handler.getEndpointStates().subscribe(
-                state -> {
-                    logger.verbose("connectionId[{}]: Connection state: {}", connectionId, state);
-                    endpointStatesSink.next(AmqpEndpointStateUtil.getConnectionState(state));
-                }, error -> {
-                    logger.error("connectionId[{}] Error occurred in connection endpoint.", connectionId, error);
-                    endpointStatesSink.error(error);
-                }, () -> {
-                    endpointStatesSink.next(AmqpEndpointState.CLOSED);
-                    endpointStatesSink.complete();
-                }));
+        this.endpointStates = this.handler.getEndpointStates().map(state -> {
+                logger.verbose("connectionId[{}]: State {}", connectionId, state);
+                return AmqpEndpointStateUtil.getConnectionState(state);
+            }).subscribeWith(ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED));
     }
 
     /**
@@ -273,8 +259,6 @@ public class ReactorConnection implements AmqpConnection {
         }
 
         logger.info("connectionId[{}]: Disposing of ReactorConnection.", connectionId);
-        subscriptions.dispose();
-        endpointStatesSink.complete();
 
         final String[] keys = sessionMap.keySet().toArray(new String[0]);
         for (String key : keys) {
@@ -388,11 +372,6 @@ public class ReactorConnection implements AmqpConnection {
             logger.warning(
                 "onReactorError connectionId[{}], hostName[{}], message[Shutting down], shutdown signal[{}]",
                 getId(), getFullyQualifiedNamespace(), shutdownSignal.isInitiatedByClient(), shutdownSignal);
-
-            if (!endpointStatesSink.isCancelled()) {
-                endpointStatesSink.next(AmqpEndpointState.CLOSED);
-                endpointStatesSink.complete();
-            }
 
             dispose();
         }

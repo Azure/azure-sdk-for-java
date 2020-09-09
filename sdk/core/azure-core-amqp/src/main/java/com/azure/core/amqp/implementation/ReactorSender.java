@@ -100,7 +100,8 @@ class ReactorSender implements AmqpSendLink {
 
         this.endpointStates = this.handler.getEndpointStates()
             .map(state -> {
-                logger.verbose("[{}] Connection state: {}", entityPath, state);
+                logger.verbose("connectionId[{}], path[{}], linkName[{}]: State {}", handler.getConnectionId(),
+                    entityPath, getLinkName(), state);
                 this.hasConnected.set(state == EndpointState.ACTIVE);
                 return AmqpEndpointStateUtil.getConnectionState(state);
             }).subscribeWith(ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED));

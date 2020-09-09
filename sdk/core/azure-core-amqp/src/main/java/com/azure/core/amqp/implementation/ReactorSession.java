@@ -94,7 +94,11 @@ public class ReactorSession implements AmqpSession {
         this.openTimeout = openTimeout;
         this.retryPolicy = retryPolicy;
         this.endpointStates = sessionHandler.getEndpointStates()
-            .map(AmqpEndpointStateUtil::getConnectionState)
+            .map(state -> {
+                logger.verbose("connectionId[{}], sessionName[{}]: State ", sessionHandler.getConnectionId(),
+                    sessionName, state);
+                return AmqpEndpointStateUtil.getConnectionState(state);
+            })
             .subscribeWith(ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED));
 
         session.open();
