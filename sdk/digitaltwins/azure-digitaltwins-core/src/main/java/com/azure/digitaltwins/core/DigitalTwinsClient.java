@@ -749,8 +749,8 @@ public final class DigitalTwinsClient {
      *         This PagedIterable may take multiple service requests to iterate over all event routes.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EventRoute> listEventRoute() {
-        return listEventRouteWithResponse(new EventRoutesListOptions(), Context.NONE);
+    public PagedIterable<EventRoute> listEventRoutes() {
+        return listEventRoutes(new EventRoutesListOptions(), Context.NONE);
     }
 
     /**
@@ -761,7 +761,7 @@ public final class DigitalTwinsClient {
      *         This PagedIterable may take multiple service requests to iterate over all event routes.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EventRoute> listEventRouteWithResponse(EventRoutesListOptions options, Context context) {
+    public PagedIterable<EventRoute> listEventRoutes(EventRoutesListOptions options, Context context) {
         return new PagedIterable<>(this.digitalTwinsAsyncClient.listEventRoutes(options, context));
     }
 
