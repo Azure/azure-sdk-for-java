@@ -14,8 +14,9 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * <p>
  * Use {@link com.azure.cosmos.CosmosAsyncContainer#createTransactionalBatch(PartitionKey)} to create an instance of
  * TransactionalBatch
- * <h3>Example</h3>
- * This example atomically modifies a set of documents as a batch.<pre>{@code
+ * <b>Example</b>
+ * This example atomically modifies a set of documents as a batch.
+ * <pre>{@code
  * public class ToDoActivity {
  *     public final String type;
  *     public final String id;
@@ -51,8 +52,11 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  *     ToDoActivity readActivity = result.getResource();
  * }
  * }</pre>
- * <h3>Example</h3>
- * <p>This example atomically reads a set of documents as a batch.<pre>{@code
+ *
+ * <b>Example</b>
+ * <p>This example atomically reads a set of documents as a batch.
+ *
+ * <pre>{@code
  * String activityType = "personal";
  *
  * try (TransactionalBatchResponse response = container.createTransactionalBatch(new Cosmos.PartitionKey(activityType))
