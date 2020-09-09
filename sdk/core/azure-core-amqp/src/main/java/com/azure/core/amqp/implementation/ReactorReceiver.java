@@ -76,14 +76,14 @@ public class ReactorReceiver implements AmqpReceiveLink {
             .subscribeWith(ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED));
 
         this.subscriptions = this.tokenManager.getAuthorizationResults().subscribe(
-                response -> {
-                    logger.verbose("Token refreshed: {}", response);
-                    hasAuthorized.set(true);
-                }, error -> {
-                    logger.info("connectionId[{}], path[{}], linkName[{}] - tokenRenewalFailure[{}]",
-                        handler.getConnectionId(), this.entityPath, getLinkName(), error.getMessage());
-                    hasAuthorized.set(false);
-                }, () -> hasAuthorized.set(false));
+            response -> {
+                logger.verbose("Token refreshed: {}", response);
+                hasAuthorized.set(true);
+            }, error -> {
+                logger.info("connectionId[{}], path[{}], linkName[{}] - tokenRenewalFailure[{}]",
+                    handler.getConnectionId(), this.entityPath, getLinkName(), error.getMessage());
+                hasAuthorized.set(false);
+            }, () -> hasAuthorized.set(false));
     }
 
     @Override
