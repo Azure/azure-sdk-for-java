@@ -29,7 +29,7 @@ public class ComponentSyncSamples {
         SamplesArguments parsedArguments = new SamplesArguments(args);
 
         client = new DigitalTwinsClientBuilder()
-            .tokenCredential(
+            .credential(
                 new ClientSecretCredentialBuilder()
                     .tenantId(parsedArguments.getTenantId())
                     .clientId(parsedArguments.getClientId())
