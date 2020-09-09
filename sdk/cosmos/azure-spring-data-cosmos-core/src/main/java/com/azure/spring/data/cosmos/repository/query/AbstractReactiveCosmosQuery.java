@@ -15,7 +15,7 @@ import reactor.core.publisher.Mono;
 public abstract class AbstractReactiveCosmosQuery implements RepositoryQuery {
 
     private final ReactiveCosmosQueryMethod method;
-    private final ReactiveCosmosOperations operations;
+    protected final ReactiveCosmosOperations operations;
 
     /**
      * Initialization
@@ -35,6 +35,7 @@ public abstract class AbstractReactiveCosmosQuery implements RepositoryQuery {
      * @param parameters must not be {@literal null}.
      * @return execution result. Can be {@literal null}.
      */
+    @Override
     public Object execute(Object[] parameters) {
         final ReactiveCosmosParameterAccessor accessor =
             new ReactiveCosmosParameterParameterAccessor(method, parameters);

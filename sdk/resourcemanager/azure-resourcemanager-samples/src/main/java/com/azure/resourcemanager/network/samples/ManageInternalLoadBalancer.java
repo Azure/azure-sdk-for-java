@@ -411,11 +411,6 @@ public final class ManageInternalLoadBalancer {
             System.out.println("Deleted load balancer" + loadBalancerName4);
 
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -426,7 +421,6 @@ public final class ManageInternalLoadBalancer {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

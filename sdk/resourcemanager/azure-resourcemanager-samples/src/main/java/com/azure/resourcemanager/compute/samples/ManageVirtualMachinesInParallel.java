@@ -94,11 +94,6 @@ public final class ManageVirtualMachinesInParallel {
 
             System.out.println("Virtual Machines create: (took " + (stopwatch.getTime() / 1000) + " seconds) ");
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
 
             try {
@@ -110,8 +105,6 @@ public final class ManageVirtualMachinesInParallel {
                 g.printStackTrace();
             }
         }
-
-        return false;
     }
     /**
      * Main entry point.

@@ -99,8 +99,6 @@ public final class ManageHACosmosDB {
             System.out.println("Deleted the CosmosDB");
 
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
         } finally {
             try {
                 System.out.println("Deleting resource group: " + rgName);
@@ -112,8 +110,6 @@ public final class ManageHACosmosDB {
                 g.printStackTrace();
             }
         }
-
-        return false;
     }
 
     private static void createDBAndAddCollection(String masterKey, String endPoint) {
