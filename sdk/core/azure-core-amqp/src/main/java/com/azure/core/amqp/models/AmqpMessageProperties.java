@@ -44,6 +44,7 @@ public class AmqpMessageProperties {
         Objects.requireNonNull(properties, "'properties' cannot be null.");
         absoluteExpiryTime = properties.getAbsoluteExpiryTime();
         contentEncoding = properties.getContentEncoding();
+        contentType = properties.getContentType();
         correlationId = properties.getCorrelationId();
         creationTime = properties.getCreationTime();
         groupId = properties.getGroupId();

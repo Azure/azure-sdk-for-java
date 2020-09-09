@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -52,6 +53,21 @@ public class AmqpAnnotatedMessageTest {
 
         final Map<String, Object> expectedFooter = expected.getFooter();
         expectedFooter.put("foo-1", "foo-value1");
+
+        final AmqpMessageProperties expectedMessageProperties = expected.getProperties();
+        expectedMessageProperties.setGroupSequence(2L);
+        expectedMessageProperties.setContentEncoding("content-enc");
+        expectedMessageProperties.setReplyToGroupId("a");
+        expectedMessageProperties.setReplyTo("b");
+        expectedMessageProperties.setCorrelationId("c");
+        expectedMessageProperties.setSubject("d");
+        expectedMessageProperties.setMessageId("id");
+
+        final AmqpMessageHeader expectedMessageHeader = expected.getHeader();
+        expectedMessageHeader.setDeliveryCount(5L);
+        expectedMessageHeader.setTimeToLive(Duration.ofSeconds(20));
+        expectedMessageHeader.setPriority(Short.valueOf("4"));
+
         final AmqpAnnotatedMessage actual = new AmqpAnnotatedMessage(expected);
 
         // Act
@@ -76,6 +92,17 @@ public class AmqpAnnotatedMessageTest {
         assertEquals(1, actual.getDeliveryAnnotations().size());
         assertEquals(1, actual.getApplicationProperties().size());
         assertEquals(1, actual.getFooter().size());
+
+        assertEquals(expectedMessageProperties.getGroupSequence(), actual.getProperties().getGroupSequence());
+        assertEquals(expectedMessageProperties.getContentEncoding(), actual.getProperties().getContentEncoding());
+        assertEquals(expectedMessageProperties.getReplyToGroupId(), actual.getProperties().getReplyToGroupId());
+        assertEquals(expectedMessageProperties.getReplyTo(), actual.getProperties().getReplyTo());
+        assertEquals(expectedMessageProperties.getCorrelationId(), actual.getProperties().getCorrelationId());
+        assertEquals(expectedMessageProperties.getSubject(), actual.getProperties().getSubject());
+        assertEquals(expectedMessageProperties.getMessageId(), actual.getProperties().getMessageId());
+
+        assertEquals(expectedMessageHeader.getTimeToLive(), actual.getHeader().getTimeToLive());
+        assertEquals(expectedMessageHeader.getPriority(), actual.getHeader().getPriority());
 
         assertMessageBody(expectedBinaryDataSize, CONTENTS_BYTES, actual);
     }

@@ -36,7 +36,7 @@ public class AmqpMessageHeader {
         durable = header.isDurable();
         firstAcquirer = header.isFirstAcquirer();
         timeToLive = header.getTimeToLive();
-
+        priority = header.getPriority();
     }
 
     /**
