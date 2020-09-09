@@ -86,6 +86,11 @@ class RunImpl extends CreatableUpdatableImpl<Run, RunInner, RunImpl> implements 
     }
 
     @Override
+    public String agentPoolName() {
+        return this.inner().agentPoolName();
+    }
+
+    @Override
     public DateTime createTime() {
         return this.inner().createTime();
     }
@@ -118,6 +123,11 @@ class RunImpl extends CreatableUpdatableImpl<Run, RunInner, RunImpl> implements 
     @Override
     public DateTime lastUpdatedTime() {
         return this.inner().lastUpdatedTime();
+    }
+
+    @Override
+    public ImageDescriptor logArtifact() {
+        return this.inner().logArtifact();
     }
 
     @Override

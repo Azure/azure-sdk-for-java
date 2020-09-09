@@ -56,6 +56,12 @@ public class RunInner extends ProxyResource {
     private RunType runType;
 
     /**
+     * The dedicated agent pool for the run.
+     */
+    @JsonProperty(value = "properties.agentPoolName")
+    private String agentPoolName;
+
+    /**
      * The time the run was scheduled.
      */
     @JsonProperty(value = "properties.createTime")
@@ -142,6 +148,12 @@ public class RunInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.updateTriggerToken")
     private String updateTriggerToken;
+
+    /**
+     * The image description for the log artifact.
+     */
+    @JsonProperty(value = "properties.logArtifact", access = JsonProperty.Access.WRITE_ONLY)
+    private ImageDescriptor logArtifact;
 
     /**
      * The provisioning state of a run. Possible values include: 'Creating',
@@ -233,6 +245,26 @@ public class RunInner extends ProxyResource {
      */
     public RunInner withRunType(RunType runType) {
         this.runType = runType;
+        return this;
+    }
+
+    /**
+     * Get the dedicated agent pool for the run.
+     *
+     * @return the agentPoolName value
+     */
+    public String agentPoolName() {
+        return this.agentPoolName;
+    }
+
+    /**
+     * Set the dedicated agent pool for the run.
+     *
+     * @param agentPoolName the agentPoolName value to set
+     * @return the RunInner object itself.
+     */
+    public RunInner withAgentPoolName(String agentPoolName) {
+        this.agentPoolName = agentPoolName;
         return this;
     }
 
@@ -503,6 +535,15 @@ public class RunInner extends ProxyResource {
     public RunInner withUpdateTriggerToken(String updateTriggerToken) {
         this.updateTriggerToken = updateTriggerToken;
         return this;
+    }
+
+    /**
+     * Get the image description for the log artifact.
+     *
+     * @return the logArtifact value
+     */
+    public ImageDescriptor logArtifact() {
+        return this.logArtifact;
     }
 
     /**

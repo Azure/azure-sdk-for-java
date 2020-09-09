@@ -56,7 +56,7 @@ public class TaskInner extends Resource {
     /**
      * The platform properties against which the run has to happen.
      */
-    @JsonProperty(value = "properties.platform", required = true)
+    @JsonProperty(value = "properties.platform")
     private PlatformProperties platform;
 
     /**
@@ -64,6 +64,12 @@ public class TaskInner extends Resource {
      */
     @JsonProperty(value = "properties.agentConfiguration")
     private AgentProperties agentConfiguration;
+
+    /**
+     * The dedicated agent pool for the task.
+     */
+    @JsonProperty(value = "properties.agentPoolName")
+    private String agentPoolName;
 
     /**
      * Run timeout in seconds.
@@ -74,7 +80,7 @@ public class TaskInner extends Resource {
     /**
      * The properties of a task step.
      */
-    @JsonProperty(value = "properties.step", required = true)
+    @JsonProperty(value = "properties.step")
     private TaskStepProperties step;
 
     /**
@@ -89,6 +95,20 @@ public class TaskInner extends Resource {
      */
     @JsonProperty(value = "properties.credentials")
     private Credentials credentials;
+
+    /**
+     * The template that describes the repository and tag information for run
+     * log artifact.
+     */
+    @JsonProperty(value = "properties.logTemplate")
+    private String logTemplate;
+
+    /**
+     * The value of this property indicates whether the task resource is system
+     * task or not.
+     */
+    @JsonProperty(value = "properties.isSystemTask")
+    private Boolean isSystemTask;
 
     /**
      * Get identity for the resource.
@@ -189,6 +209,26 @@ public class TaskInner extends Resource {
     }
 
     /**
+     * Get the dedicated agent pool for the task.
+     *
+     * @return the agentPoolName value
+     */
+    public String agentPoolName() {
+        return this.agentPoolName;
+    }
+
+    /**
+     * Set the dedicated agent pool for the task.
+     *
+     * @param agentPoolName the agentPoolName value to set
+     * @return the TaskInner object itself.
+     */
+    public TaskInner withAgentPoolName(String agentPoolName) {
+        this.agentPoolName = agentPoolName;
+        return this;
+    }
+
+    /**
      * Get run timeout in seconds.
      *
      * @return the timeout value
@@ -265,6 +305,46 @@ public class TaskInner extends Resource {
      */
     public TaskInner withCredentials(Credentials credentials) {
         this.credentials = credentials;
+        return this;
+    }
+
+    /**
+     * Get the template that describes the repository and tag information for run log artifact.
+     *
+     * @return the logTemplate value
+     */
+    public String logTemplate() {
+        return this.logTemplate;
+    }
+
+    /**
+     * Set the template that describes the repository and tag information for run log artifact.
+     *
+     * @param logTemplate the logTemplate value to set
+     * @return the TaskInner object itself.
+     */
+    public TaskInner withLogTemplate(String logTemplate) {
+        this.logTemplate = logTemplate;
+        return this;
+    }
+
+    /**
+     * Get the value of this property indicates whether the task resource is system task or not.
+     *
+     * @return the isSystemTask value
+     */
+    public Boolean isSystemTask() {
+        return this.isSystemTask;
+    }
+
+    /**
+     * Set the value of this property indicates whether the task resource is system task or not.
+     *
+     * @param isSystemTask the isSystemTask value to set
+     * @return the TaskInner object itself.
+     */
+    public TaskInner withIsSystemTask(Boolean isSystemTask) {
+        this.isSystemTask = isSystemTask;
         return this;
     }
 

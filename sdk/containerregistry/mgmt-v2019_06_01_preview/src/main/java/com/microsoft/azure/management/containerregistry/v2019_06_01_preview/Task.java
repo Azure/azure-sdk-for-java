@@ -30,6 +30,11 @@ public interface Task extends HasInner<TaskInner>, Indexable, Refreshable<Task>,
     AgentProperties agentConfiguration();
 
     /**
+     * @return the agentPoolName value.
+     */
+    String agentPoolName();
+
+    /**
      * @return the creationDate value.
      */
     DateTime creationDate();
@@ -50,9 +55,19 @@ public interface Task extends HasInner<TaskInner>, Indexable, Refreshable<Task>,
     IdentityProperties identity();
 
     /**
+     * @return the isSystemTask value.
+     */
+    Boolean isSystemTask();
+
+    /**
      * @return the location value.
      */
     String location();
+
+    /**
+     * @return the logTemplate value.
+     */
+    String logTemplate();
 
     /**
      * @return the name value.
@@ -102,7 +117,7 @@ public interface Task extends HasInner<TaskInner>, Indexable, Refreshable<Task>,
     /**
      * The entirety of the Task definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithRegistry, DefinitionStages.WithLocation, DefinitionStages.WithPlatform, DefinitionStages.WithStep, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithRegistry, DefinitionStages.WithLocation, DefinitionStages.WithCreate {
     }
 
     /**
@@ -137,31 +152,7 @@ public interface Task extends HasInner<TaskInner>, Indexable, Refreshable<Task>,
             * @param location The location of the resource. This cannot be changed after the resource is created
             * @return the next definition stage
             */
-            WithPlatform withLocation(String location);
-        }
-
-        /**
-         * The stage of the task definition allowing to specify Platform.
-         */
-        interface WithPlatform {
-           /**
-            * Specifies platform.
-            * @param platform The platform properties against which the run has to happen
-            * @return the next definition stage
-            */
-            WithStep withPlatform(PlatformProperties platform);
-        }
-
-        /**
-         * The stage of the task definition allowing to specify Step.
-         */
-        interface WithStep {
-           /**
-            * Specifies step.
-            * @param step The properties of a task step
-            * @return the next definition stage
-            */
-            WithCreate withStep(TaskStepProperties step);
+            WithCreate withLocation(String location);
         }
 
         /**
@@ -174,6 +165,18 @@ public interface Task extends HasInner<TaskInner>, Indexable, Refreshable<Task>,
              * @return the next definition stage
              */
             WithCreate withAgentConfiguration(AgentProperties agentConfiguration);
+        }
+
+        /**
+         * The stage of the task definition allowing to specify AgentPoolName.
+         */
+        interface WithAgentPoolName {
+            /**
+             * Specifies agentPoolName.
+             * @param agentPoolName The dedicated agent pool for the task
+             * @return the next definition stage
+             */
+            WithCreate withAgentPoolName(String agentPoolName);
         }
 
         /**
@@ -201,6 +204,42 @@ public interface Task extends HasInner<TaskInner>, Indexable, Refreshable<Task>,
         }
 
         /**
+         * The stage of the task definition allowing to specify IsSystemTask.
+         */
+        interface WithIsSystemTask {
+            /**
+             * Specifies isSystemTask.
+             * @param isSystemTask The value of this property indicates whether the task resource is system task or not
+             * @return the next definition stage
+             */
+            WithCreate withIsSystemTask(Boolean isSystemTask);
+        }
+
+        /**
+         * The stage of the task definition allowing to specify LogTemplate.
+         */
+        interface WithLogTemplate {
+            /**
+             * Specifies logTemplate.
+             * @param logTemplate The template that describes the repository and tag information for run log artifact
+             * @return the next definition stage
+             */
+            WithCreate withLogTemplate(String logTemplate);
+        }
+
+        /**
+         * The stage of the task definition allowing to specify Platform.
+         */
+        interface WithPlatform {
+            /**
+             * Specifies platform.
+             * @param platform The platform properties against which the run has to happen
+             * @return the next definition stage
+             */
+            WithCreate withPlatform(PlatformProperties platform);
+        }
+
+        /**
          * The stage of the task definition allowing to specify Status.
          */
         interface WithStatus {
@@ -210,6 +249,18 @@ public interface Task extends HasInner<TaskInner>, Indexable, Refreshable<Task>,
              * @return the next definition stage
              */
             WithCreate withStatus(TaskStatus status);
+        }
+
+        /**
+         * The stage of the task definition allowing to specify Step.
+         */
+        interface WithStep {
+            /**
+             * Specifies step.
+             * @param step The properties of a task step
+             * @return the next definition stage
+             */
+            WithCreate withStep(TaskStepProperties step);
         }
 
         /**
@@ -253,13 +304,13 @@ public interface Task extends HasInner<TaskInner>, Indexable, Refreshable<Task>,
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<Task>, DefinitionStages.WithAgentConfiguration, DefinitionStages.WithCredentials, DefinitionStages.WithIdentity, DefinitionStages.WithStatus, DefinitionStages.WithTags, DefinitionStages.WithTimeout, DefinitionStages.WithTrigger {
+        interface WithCreate extends Creatable<Task>, DefinitionStages.WithAgentConfiguration, DefinitionStages.WithAgentPoolName, DefinitionStages.WithCredentials, DefinitionStages.WithIdentity, DefinitionStages.WithIsSystemTask, DefinitionStages.WithLogTemplate, DefinitionStages.WithPlatform, DefinitionStages.WithStatus, DefinitionStages.WithStep, DefinitionStages.WithTags, DefinitionStages.WithTimeout, DefinitionStages.WithTrigger {
         }
     }
     /**
      * The template for a Task update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Task>, UpdateStages.WithAgentConfiguration, UpdateStages.WithCredentials, UpdateStages.WithIdentity, UpdateStages.WithPlatform, UpdateStages.WithStatus, UpdateStages.WithStep, UpdateStages.WithTags, UpdateStages.WithTimeout, UpdateStages.WithTrigger {
+    interface Update extends Appliable<Task>, UpdateStages.WithAgentConfiguration, UpdateStages.WithAgentPoolName, UpdateStages.WithCredentials, UpdateStages.WithIdentity, UpdateStages.WithLogTemplate, UpdateStages.WithPlatform, UpdateStages.WithStatus, UpdateStages.WithStep, UpdateStages.WithTags, UpdateStages.WithTimeout, UpdateStages.WithTrigger {
     }
 
     /**
@@ -276,6 +327,18 @@ public interface Task extends HasInner<TaskInner>, Indexable, Refreshable<Task>,
              * @return the next update stage
              */
             Update withAgentConfiguration(AgentProperties agentConfiguration);
+        }
+
+        /**
+         * The stage of the task update allowing to specify AgentPoolName.
+         */
+        interface WithAgentPoolName {
+            /**
+             * Specifies agentPoolName.
+             * @param agentPoolName The dedicated agent pool for the task
+             * @return the next update stage
+             */
+            Update withAgentPoolName(String agentPoolName);
         }
 
         /**
@@ -300,6 +363,18 @@ public interface Task extends HasInner<TaskInner>, Indexable, Refreshable<Task>,
              * @return the next update stage
              */
             Update withIdentity(IdentityProperties identity);
+        }
+
+        /**
+         * The stage of the task update allowing to specify LogTemplate.
+         */
+        interface WithLogTemplate {
+            /**
+             * Specifies logTemplate.
+             * @param logTemplate The template that describes the repository and tag information for run log artifact
+             * @return the next update stage
+             */
+            Update withLogTemplate(String logTemplate);
         }
 
         /**

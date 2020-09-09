@@ -43,6 +43,12 @@ public class TaskUpdateParameters {
     private AgentProperties agentConfiguration;
 
     /**
+     * The dedicated agent pool for the task.
+     */
+    @JsonProperty(value = "properties.agentPoolName")
+    private String agentPoolName;
+
+    /**
      * Run timeout in seconds.
      */
     @JsonProperty(value = "properties.timeout")
@@ -66,6 +72,13 @@ public class TaskUpdateParameters {
      */
     @JsonProperty(value = "properties.credentials")
     private Credentials credentials;
+
+    /**
+     * The template that describes the repository and tag information for run
+     * log artifact.
+     */
+    @JsonProperty(value = "properties.logTemplate")
+    private String logTemplate;
 
     /**
      * The ARM resource tags.
@@ -154,6 +167,26 @@ public class TaskUpdateParameters {
     }
 
     /**
+     * Get the dedicated agent pool for the task.
+     *
+     * @return the agentPoolName value
+     */
+    public String agentPoolName() {
+        return this.agentPoolName;
+    }
+
+    /**
+     * Set the dedicated agent pool for the task.
+     *
+     * @param agentPoolName the agentPoolName value to set
+     * @return the TaskUpdateParameters object itself.
+     */
+    public TaskUpdateParameters withAgentPoolName(String agentPoolName) {
+        this.agentPoolName = agentPoolName;
+        return this;
+    }
+
+    /**
      * Get run timeout in seconds.
      *
      * @return the timeout value
@@ -230,6 +263,26 @@ public class TaskUpdateParameters {
      */
     public TaskUpdateParameters withCredentials(Credentials credentials) {
         this.credentials = credentials;
+        return this;
+    }
+
+    /**
+     * Get the template that describes the repository and tag information for run log artifact.
+     *
+     * @return the logTemplate value
+     */
+    public String logTemplate() {
+        return this.logTemplate;
+    }
+
+    /**
+     * Set the template that describes the repository and tag information for run log artifact.
+     *
+     * @param logTemplate the logTemplate value to set
+     * @return the TaskUpdateParameters object itself.
+     */
+    public TaskUpdateParameters withLogTemplate(String logTemplate) {
+        this.logTemplate = logTemplate;
         return this;
     }
 

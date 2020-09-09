@@ -69,6 +69,12 @@ public class RunFilter {
     private String taskName;
 
     /**
+     * The name of the agent pool that the run corresponds to.
+     */
+    @JsonProperty(value = "agentPoolName")
+    private String agentPoolName;
+
+    /**
      * Get the unique identifier for the run.
      *
      * @return the runId value
@@ -227,6 +233,26 @@ public class RunFilter {
      */
     public RunFilter withTaskName(String taskName) {
         this.taskName = taskName;
+        return this;
+    }
+
+    /**
+     * Get the name of the agent pool that the run corresponds to.
+     *
+     * @return the agentPoolName value
+     */
+    public String agentPoolName() {
+        return this.agentPoolName;
+    }
+
+    /**
+     * Set the name of the agent pool that the run corresponds to.
+     *
+     * @param agentPoolName the agentPoolName value to set
+     * @return the RunFilter object itself.
+     */
+    public RunFilter withAgentPoolName(String agentPoolName) {
+        this.agentPoolName = agentPoolName;
         return this;
     }
 

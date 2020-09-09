@@ -11,20 +11,15 @@ package com.microsoft.azure.management.containerregistry.v2019_06_01_preview;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.containerregistry.v2019_06_01_preview.implementation.ContainerRegistryManager;
-import com.microsoft.azure.management.containerregistry.v2019_06_01_preview.implementation.RunGetLogResultInner;
+import com.microsoft.azure.management.containerregistry.v2019_06_01_preview.implementation.AgentPoolQueueStatusInner;
 
 /**
- * Type representing RunGetLogResult.
+ * Type representing AgentPoolQueueStatus.
  */
-public interface RunGetLogResult extends HasInner<RunGetLogResultInner>, HasManager<ContainerRegistryManager> {
+public interface AgentPoolQueueStatus extends HasInner<AgentPoolQueueStatusInner>, HasManager<ContainerRegistryManager> {
     /**
-     * @return the logArtifactLink value.
+     * @return the count value.
      */
-    String logArtifactLink();
-
-    /**
-     * @return the logLink value.
-     */
-    String logLink();
+    Integer count();
 
 }

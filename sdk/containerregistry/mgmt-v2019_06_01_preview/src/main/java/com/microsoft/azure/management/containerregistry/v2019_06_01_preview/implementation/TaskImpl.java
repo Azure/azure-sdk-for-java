@@ -110,6 +110,11 @@ class TaskImpl extends CreatableUpdatableImpl<Task, TaskInner, TaskImpl> impleme
     }
 
     @Override
+    public String agentPoolName() {
+        return this.inner().agentPoolName();
+    }
+
+    @Override
     public DateTime creationDate() {
         return this.inner().creationDate();
     }
@@ -130,8 +135,18 @@ class TaskImpl extends CreatableUpdatableImpl<Task, TaskInner, TaskImpl> impleme
     }
 
     @Override
+    public Boolean isSystemTask() {
+        return this.inner().isSystemTask();
+    }
+
+    @Override
     public String location() {
         return this.inner().location();
+    }
+
+    @Override
+    public String logTemplate() {
+        return this.inner().logTemplate();
     }
 
     @Override
@@ -193,6 +208,12 @@ class TaskImpl extends CreatableUpdatableImpl<Task, TaskInner, TaskImpl> impleme
     }
 
     @Override
+    public TaskImpl withIsSystemTask(Boolean isSystemTask) {
+        this.inner().withIsSystemTask(isSystemTask);
+        return this;
+    }
+
+    @Override
     public TaskImpl withPlatform(PlatformProperties platform) {
         this.inner().withPlatform(platform);
         return this;
@@ -239,6 +260,16 @@ class TaskImpl extends CreatableUpdatableImpl<Task, TaskInner, TaskImpl> impleme
     }
 
     @Override
+    public TaskImpl withAgentPoolName(String agentPoolName) {
+        if (isInCreateMode()) {
+            this.inner().withAgentPoolName(agentPoolName);
+        } else {
+            this.updateParameter.withAgentPoolName(agentPoolName);
+        }
+        return this;
+    }
+
+    @Override
     public TaskImpl withCredentials(Credentials credentials) {
         if (isInCreateMode()) {
             this.inner().withCredentials(credentials);
@@ -254,6 +285,16 @@ class TaskImpl extends CreatableUpdatableImpl<Task, TaskInner, TaskImpl> impleme
             this.inner().withIdentity(identity);
         } else {
             this.updateParameter.withIdentity(identity);
+        }
+        return this;
+    }
+
+    @Override
+    public TaskImpl withLogTemplate(String logTemplate) {
+        if (isInCreateMode()) {
+            this.inner().withLogTemplate(logTemplate);
+        } else {
+            this.updateParameter.withLogTemplate(logTemplate);
         }
         return this;
     }
