@@ -36,17 +36,18 @@ import static com.microsoft.azure.telemetry.TelemetryData.getClassPackageSimpleN
 @ConditionalOnResource(resources = "classpath:aad.enable.config")
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnProperty(prefix = "azure.activedirectory", value = "tenant-id")
-@PropertySource("classpath:/aad-oauth2-common.properties")
-@PropertySource(value = "classpath:serviceEndpoints.properties")
-@EnableConfigurationProperties({AADAuthenticationProperties.class, ServiceEndpointsProperties.class})
+@PropertySource(value = "classpath:aad-oauth2-common.properties")
+@PropertySource(value = "classpath:service-endpoints.properties")
+@EnableConfigurationProperties({ AADAuthenticationProperties.class, ServiceEndpointsProperties.class })
 public class AADOAuth2AutoConfiguration {
 
     private final AADAuthenticationProperties aadAuthProps;
-
     private final ServiceEndpointsProperties serviceEndpointsProps;
 
-    public AADOAuth2AutoConfiguration(AADAuthenticationProperties aadAuthProperties,
-                                      ServiceEndpointsProperties serviceEndpointsProps) {
+    public AADOAuth2AutoConfiguration(
+        AADAuthenticationProperties aadAuthProperties,
+        ServiceEndpointsProperties serviceEndpointsProps
+    ) {
         this.aadAuthProps = aadAuthProperties;
         this.serviceEndpointsProps = serviceEndpointsProps;
     }
@@ -62,9 +63,7 @@ public class AADOAuth2AutoConfiguration {
         if (aadAuthProps.isAllowTelemetry()) {
             final Map<String, String> events = new HashMap<>();
             final TelemetrySender sender = new TelemetrySender();
-
             events.put(SERVICE_NAME, getClassPackageSimpleName(AADOAuth2AutoConfiguration.class));
-
             sender.send(ClassUtils.getUserClass(getClass()).getSimpleName(), events);
         }
     }
