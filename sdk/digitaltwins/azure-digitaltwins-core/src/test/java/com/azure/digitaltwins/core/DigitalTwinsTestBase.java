@@ -30,7 +30,7 @@ public class DigitalTwinsTestBase extends TestBase
         if (interceptorManager.isPlaybackMode()){
             builder.httpClient(interceptorManager.getPlaybackClient());
             // Use fake credentials for playback mode.
-            builder.tokenCredential(new FakeCredentials());
+            builder.credential(new FakeCredentials());
             return builder;
         }
 
@@ -43,7 +43,7 @@ public class DigitalTwinsTestBase extends TestBase
         }
 
         // Only get valid live token when running live tests.
-        builder.tokenCredential(new ClientSecretCredentialBuilder()
+        builder.credential(new ClientSecretCredentialBuilder()
             .tenantId(TENANT_ID)
             .clientId(CLIENT_ID)
             .clientSecret(CLIENT_SECRET)
@@ -59,7 +59,7 @@ public class DigitalTwinsTestBase extends TestBase
         if (interceptorManager.isPlaybackMode()){
             builder.httpClient(interceptorManager.getPlaybackClient());
             // Use fake credentials for playback mode.
-            builder.tokenCredential(new FakeCredentials());
+            builder.credential(new FakeCredentials());
             addPolicies(builder, policies);
             return builder;
         }
@@ -75,7 +75,7 @@ public class DigitalTwinsTestBase extends TestBase
         }
 
         // Only get valid live token when running live tests.
-        builder.tokenCredential(new ClientSecretCredentialBuilder()
+        builder.credential(new ClientSecretCredentialBuilder()
             .tenantId(TENANT_ID)
             .clientId(CLIENT_ID)
             .clientSecret(CLIENT_SECRET)
