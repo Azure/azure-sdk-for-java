@@ -1,5 +1,8 @@
 # Release History
 
+## 1.2.0-beta.1 (Unreleased)
+
+
 ## 1.1.2 (2020-09-09)
 - Upgraded core dependency to 1.8.1
 
