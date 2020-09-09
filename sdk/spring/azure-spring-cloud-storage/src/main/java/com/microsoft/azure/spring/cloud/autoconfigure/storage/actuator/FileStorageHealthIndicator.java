@@ -5,9 +5,7 @@ package com.microsoft.azure.spring.cloud.autoconfigure.storage.actuator;
 
 import static com.microsoft.azure.spring.cloud.autoconfigure.storage.actuator.AzureStorageActuatorConstants.POLL_TIMEOUT;
 import static com.microsoft.azure.spring.cloud.autoconfigure.storage.actuator.AzureStorageActuatorConstants.URL_FIELD;
-import static com.microsoft.azure.spring.cloud.autoconfigure.storage.actuator.AzureStorageActuatorConstants.NOT_CONFIGURED_STATUS;
 
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.context.ApplicationContext;
@@ -42,8 +40,8 @@ public class FileStorageHealthIndicator implements HealthIndicator {
             } catch (Exception e) {
                 healthBuilder.down(e);
             }
-        } catch (NoSuchBeanDefinitionException nsbe) {
-            healthBuilder.status(NOT_CONFIGURED_STATUS);
+        } catch (Exception e) {
+            healthBuilder.status("Could not complete health check.").down(e);
         }
 
         return healthBuilder.build();

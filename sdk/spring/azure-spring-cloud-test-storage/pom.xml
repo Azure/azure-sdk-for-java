@@ -12,7 +12,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-spring-cloud-test-storage</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-spring-cloud-test-storage;current} -->
 
   <properties>
     <skipSpringITs>true</skipSpringITs>
@@ -22,7 +22,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>spring-cloud-azure-storage</artifactId>
-      <version>1.2.8-beta.1</version><!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-storage;current} -->
+      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-storage;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -70,7 +70,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:spring-cloud-azure-storage:[1.2.8-beta.1]</include> <!-- {x-include-update;spring-cloud-azure-storage;current} -->
+                <include>com.microsoft.azure:spring-cloud-azure-storage:[1.2.8-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-storage;current} -->
                 <include>org.springframework.boot:spring-boot-starter-web:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter-actuator:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
                 <include>com.google.code.gson:gson:[2.8.6]</include> <!-- {x-include-update;com.google.code.gson:gson;external_dependency} -->

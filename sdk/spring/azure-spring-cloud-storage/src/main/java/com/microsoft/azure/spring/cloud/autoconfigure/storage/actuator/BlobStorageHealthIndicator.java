@@ -7,7 +7,6 @@ import static com.microsoft.azure.spring.cloud.autoconfigure.storage.actuator.Az
 import static com.microsoft.azure.spring.cloud.autoconfigure.storage.actuator.AzureStorageActuatorConstants.URL_FIELD;
 import static com.microsoft.azure.spring.cloud.autoconfigure.storage.actuator.AzureStorageActuatorConstants.NOT_CONFIGURED_STATUS;
 
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.context.ApplicationContext;
@@ -23,7 +22,6 @@ public class BlobStorageHealthIndicator implements HealthIndicator {
     public BlobStorageHealthIndicator(ApplicationContext applicationContext) {
         BlobServiceClientBuilder blobStorageClientBuilder = applicationContext.getBean(BlobServiceClientBuilder.class);
         internalClient = blobStorageClientBuilder.buildAsyncClient();
-
     }
 
     @Override
@@ -47,8 +45,6 @@ public class BlobStorageHealthIndicator implements HealthIndicator {
 
             }
 
-        } catch (NoSuchBeanDefinitionException nsbe) {
-            healthBuilder.status(NOT_CONFIGURED_STATUS);
         } catch (Exception e) {
             healthBuilder.status("Could not complete health check.").down(e);
         }
