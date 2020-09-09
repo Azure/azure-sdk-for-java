@@ -50,18 +50,17 @@ public final class AmqpAnnotatedMessage {
     public AmqpAnnotatedMessage(AmqpAnnotatedMessage message) {
         Objects.requireNonNull(message, "'message' cannot be null.");
         amqpMessageBody = Objects.requireNonNull(message.getBody(), "'message.body' cannot be null.");
-
-        applicationProperties = message.getApplicationProperties();
-        deliveryAnnotations = message.getDeliveryAnnotations();
-        messageAnnotations = message.getMessageAnnotations();
-        header = message.getHeader();
-        properties = message.getProperties();
-        footer = message.getFooter();
+        applicationProperties = new HashMap<>(message.getApplicationProperties());
+        deliveryAnnotations = new HashMap<>(message.getDeliveryAnnotations());
+        messageAnnotations = new HashMap<>(message.getMessageAnnotations());
+        footer = new HashMap<>(message.getFooter());
+        header = new AmqpMessageHeader(message.getHeader());
+        properties = new AmqpMessageProperties(message.getProperties());
     }
 
     /**
      * Gets the {@link Map} of application properties.
-     * 
+     *
      * @return The application properties.
      */
     public Map<String, Object> getApplicationProperties() {

@@ -18,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 public class AmqpDataBodyTest {
 
-
     /**
      * Verifies we correctly set values via constructor for {@link AmqpAnnotatedMessage}.
      */

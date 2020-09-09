@@ -8,13 +8,16 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 
 /**
  * Test class for  {@link AmqpAnnotatedMessage}
@@ -26,19 +29,71 @@ public class AmqpAnnotatedMessageTest {
     private final ClientLogger logger = new ClientLogger(AmqpAnnotatedMessageTest.class);
 
     /**
+     * Verifies we correctly set values via copy constructor for {@link AmqpAnnotatedMessage} and create new
+     * instances of the properties.
+     */
+    @Test
+    public void copyConstructorTest() {
+        // Arrange
+        final int expectedBinaryDataSize = 1;
+        List<BinaryData> expectedBinaryData = new ArrayList<>();
+        expectedBinaryData.add(DATA_BYTES);
+
+        final AmqpDataBody amqpDataBody = new AmqpDataBody(expectedBinaryData);
+        final AmqpAnnotatedMessage expected = new AmqpAnnotatedMessage(amqpDataBody);
+        final Map<String, Object> expectedMessageAnnotations = expected.getMessageAnnotations();
+        expectedMessageAnnotations.put("ma-1", "ma-value1");
+
+        final Map<String, Object> expectedDeliveryAnnotations = expected.getDeliveryAnnotations();
+        expectedDeliveryAnnotations.put("da-1", "da-value1");
+
+        final Map<String, Object> expectedApplicationProperties = expected.getApplicationProperties();
+        expectedApplicationProperties.put("ap-1", "ap-value1");
+
+        final Map<String, Object> expectedFooter = expected.getFooter();
+        expectedFooter.put("foo-1", "foo-value1");
+        final AmqpAnnotatedMessage actual = new AmqpAnnotatedMessage(expected);
+
+        // Act
+        // Now update the values after we have created AmqpAnnotatedMessage using copy constructor.
+        expectedDeliveryAnnotations.remove("da-1");
+        expectedApplicationProperties.put("ap-2", "ap-value2");
+        expectedFooter.remove("foo-1");
+        expected.getHeader().setDeliveryCount(Long.valueOf(100));
+        expectedBinaryData = new ArrayList<>();
+
+        // Assert
+        // Ensure the memory references are not same.
+        assertNotSame(expected.getProperties(), actual.getProperties());
+        assertNotSame(expected.getApplicationProperties(), actual.getApplicationProperties());
+        assertNotSame(expected.getDeliveryAnnotations(), actual.getDeliveryAnnotations());
+        assertNotSame(expected.getFooter(), actual.getFooter());
+        assertNotSame(expected.getHeader(), actual.getHeader());
+        assertNotSame(expected.getMessageAnnotations(), actual.getMessageAnnotations());
+        assertNotSame(expected.getProperties().getUserId(), actual.getProperties().getUserId());
+        assertNotSame(expected.getHeader().getDeliveryCount(), actual.getHeader().getDeliveryCount());
+
+        assertEquals(1, actual.getDeliveryAnnotations().size());
+        assertEquals(1, actual.getApplicationProperties().size());
+        assertEquals(1, actual.getFooter().size());
+
+        assertMessageBody(expectedBinaryDataSize, CONTENTS_BYTES, actual);
+    }
+
+    /**
      * Verifies we correctly set values via constructor for {@link AmqpAnnotatedMessage}.
      */
     @Test
     public void constructorValidValues() {
         // Arrange
-        final List<BinaryData> binaryDataList = Collections.singletonList(DATA_BYTES);
-        final AmqpDataBody amqpDataBody = new AmqpDataBody(binaryDataList);
+        final List<BinaryData> expectedBinaryData = Collections.singletonList(DATA_BYTES);
+        final AmqpDataBody amqpDataBody = new AmqpDataBody(expectedBinaryData);
 
         // Act
         final AmqpAnnotatedMessage actual = new AmqpAnnotatedMessage(amqpDataBody);
 
         // Assert
-        assertMessageCreation(actual, AmqpBodyType.DATA, binaryDataList.size());
+        assertMessageCreation(AmqpBodyType.DATA, expectedBinaryData.size(), actual);
     }
 
     /**
@@ -47,15 +102,15 @@ public class AmqpAnnotatedMessageTest {
     @Test
     public void constructorAmqpValidValues() {
         // Arrange
-        final List<BinaryData> listBinaryData = Collections.singletonList(DATA_BYTES);
-        final AmqpDataBody amqpDataBody = new AmqpDataBody(listBinaryData);
+        final List<BinaryData> expectedBinaryData = Collections.singletonList(DATA_BYTES);
+        final AmqpDataBody amqpDataBody = new AmqpDataBody(expectedBinaryData);
         final AmqpAnnotatedMessage expected = new AmqpAnnotatedMessage(amqpDataBody);
 
         // Act
         final AmqpAnnotatedMessage actual = new AmqpAnnotatedMessage(expected);
 
         // Assert
-        assertMessageCreation(actual, AmqpBodyType.DATA, listBinaryData.size());
+        assertMessageCreation(AmqpBodyType.DATA, expectedBinaryData.size(), actual);
     }
 
     /**
@@ -70,8 +125,7 @@ public class AmqpAnnotatedMessageTest {
         Assertions.assertThrows(NullPointerException.class, () -> new AmqpAnnotatedMessage(body));
     }
 
-    private void assertMessageCreation(AmqpAnnotatedMessage actual, AmqpBodyType expectedType,
-        int messageSizeExpected) {
+    private void assertMessageCreation(AmqpBodyType expectedType, int expectedMessageSize, AmqpAnnotatedMessage actual) {
         assertEquals(expectedType, actual.getBody().getBodyType());
         assertNotNull(actual.getProperties());
         assertNotNull(actual.getHeader());
@@ -83,19 +137,22 @@ public class AmqpAnnotatedMessageTest {
 
         // Validate Message Body
         assertNotNull(actual.getBody());
-        switch (expectedType) {
+        assertMessageBody(expectedMessageSize, CONTENTS_BYTES, actual);
+    }
+
+    private void assertMessageBody(int expectedMessageSize, byte[] expectedbody, AmqpAnnotatedMessage actual) {
+        final AmqpBodyType actualType = actual.getBody().getBodyType();
+        switch (actualType) {
             case DATA:
-                List<BinaryData> dataList = ((AmqpDataBody) actual.getBody()).getData().stream().collect(Collectors.toList());
-                assertEquals(messageSizeExpected, dataList.size());
-                assertArrayEquals(CONTENTS_BYTES, dataList.get(0).getData());
+                List<BinaryData> actualData = ((AmqpDataBody) actual.getBody()).getData().stream().collect(Collectors.toList());
+                assertEquals(expectedMessageSize, actualData.size());
+                assertArrayEquals(expectedbody, actualData.get(0).getData());
                 break;
             case VALUE:
             case SEQUENCE:
-                throw  logger.logExceptionAsError(new UnsupportedOperationException("type not supported yet :" + expectedType));
+                throw logger.logExceptionAsError(new UnsupportedOperationException("type not supported yet :" + actualType));
             default:
-                throw  logger.logExceptionAsError(new IllegalStateException("Invalid type :" + expectedType));
+                throw logger.logExceptionAsError(new IllegalStateException("Invalid type :" + actualType));
         }
-
-
     }
 }
