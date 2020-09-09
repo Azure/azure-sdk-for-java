@@ -10,7 +10,7 @@ This package helps developers to finish the auto-configuration of Azure Context.
 - [Maven][maven] 3.0 and above
 
 ### Include the package
-[//]: # "{x-version-update-start;com.microsoft.azure:spring-cloud-azure-context;current}"
+[//]: # ({x-version-update-start;com.microsoft.azure:spring-cloud-azure-context;current})
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>
@@ -18,10 +18,10 @@ This package helps developers to finish the auto-configuration of Azure Context.
     <version>1.2.8-beta.1</version>
 </dependency>
 ```
-[//]: # "{x-version-update-end}"
+[//]: # ({x-version-update-end})
 
 ## Key concepts
-Azure contexts are PowerShell objects representing your active subscription to run commands against, and the authentication information needed to connect to an Azure cloud. With Azure contexts, Azure PowerShell doesn't need to reauthenticate your account each time you switch subscriptions.
+Azure contexts represent your active subscription to run commands against, and the authentication information needed to connect to an Azure cloud. With Azure contexts, Azure Spring Cloud services doesn't need to reauthenticate your account each time you switch subscriptions.
 ## Examples
 
 ## Troubleshooting

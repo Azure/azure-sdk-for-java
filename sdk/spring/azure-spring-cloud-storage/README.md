@@ -10,7 +10,7 @@ This package helps developers to finish the auto-configuration of Azure Storage.
 - [Maven][maven] 3.0 and above
 
 ### Include the package
-[//]: # "{x-version-update-start;com.microsoft.azure:spring-cloud-azure-storage;current}"
+[//]: # ({x-version-update-start;com.microsoft.azure:spring-cloud-azure-storage;current})
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>
@@ -18,7 +18,7 @@ This package helps developers to finish the auto-configuration of Azure Storage.
     <version>1.2.8-beta.1</version>
 </dependency>
 ```
-[//]: # "{x-version-update-end}"
+[//]: # ({x-version-update-end})
 
 ## Key concepts
 The Azure Storage platform is Microsoft's cloud storage solution for modern data storage scenarios. Core storage services offer a massively scalable object store for data objects, disk storage for Azure virtual machines (VMs), a file system service for the cloud, a messaging store for reliable messaging, and a NoSQL store.

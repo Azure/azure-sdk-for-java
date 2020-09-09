@@ -10,7 +10,7 @@ This starter provides auto-configuration of Azure Cache for Redis. Azure Cache f
 - [Maven][maven] 3.0 and above
 
 ### Include the package
-[//]: # "{x-version-update-start;com.microsoft.azure:spring-starter-azure-cache;current}"
+[//]: # ({x-version-update-start;com.microsoft.azure:spring-starter-azure-cache;current})
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>
@@ -18,7 +18,7 @@ This starter provides auto-configuration of Azure Cache for Redis. Azure Cache f
     <version>1.2.8-beta.1</version>
 </dependency>
 ```
-[//]: # "{x-version-update-end}"
+[//]: # ({x-version-update-end})
 
 ## Key concepts
 Redis improves the performance and scalability of an application that uses on backend data stores heavily. It is able to process large volumes of application request by keeping frequently accessed data in the server memory that can be written to and read from quickly.

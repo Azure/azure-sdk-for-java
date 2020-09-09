@@ -10,7 +10,7 @@ The *Spring Integration for Storage Queue* extension project provides inbound an
 - [Maven][maven] 3.0 and above
 
 ### Include the package
-[//]: # "{x-version-update-start;com.microsoft.azure:spring-integration-storage-queue;current}"
+[//]: # ({x-version-update-start;com.microsoft.azure:spring-integration-storage-queue;current})
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>
@@ -18,7 +18,7 @@ The *Spring Integration for Storage Queue* extension project provides inbound an
     <version>1.2.8-beta.1</version>
 </dependency>
 ```
-[//]: # "{x-version-update-end}"
+[//]: # ({x-version-update-end})
 
 ## Key concepts
 Azure Queue Storage is a service for storing large numbers of messages. You access messages from anywhere in the world via authenticated calls using HTTP or HTTPS. A queue message can be up to 64 KB in size. A queue may contain millions of messages, up to the total capacity limit of a storage account. Queues are commonly used to create a backlog of work to process asynchronously.
@@ -64,4 +64,3 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [logging_doc]: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging
 [contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/CONTRIBUTING.md
 [maven]: http://maven.apache.org/
-[source_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-integration-eventhubs

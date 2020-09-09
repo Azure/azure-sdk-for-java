@@ -13,7 +13,7 @@ This package helps Spring Application to load properties from Azure Configuratio
 ### Include the package
 There are two libraries that can be used spring-cloud-azure-appconfiguration-config and spring-cloud-azure-appconfiguration-config-web. There are two differences between them the first being the web version takes on spring-web as a dependency, and the web version will attempt a refresh when the application is active when the cache expires. For more information on refresh see the [Configuration Refresh](#Configuration-Refresh) section.
 
-[//]: # "{x-version-update-start;com.microsoft.azure:spring-cloud-azure-appconfiguration-config;current}"
+[//]: # ({x-version-update-start;com.microsoft.azure:spring-cloud-azure-appconfiguration-config;current})
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>
@@ -21,11 +21,11 @@ There are two libraries that can be used spring-cloud-azure-appconfiguration-con
     <version>1.2.8-beta.1</version>
 </dependency>
 ```
-[//]: # "{x-version-update-end}"
+[//]: # ({x-version-update-end})
 
 or
 
-[//]: # "{x-version-update-start;com.microsoft.azure:spring-cloud-azure-appconfiguration-config-web;current}"
+[//]: # ({x-version-update-start;com.microsoft.azure:spring-cloud-azure-appconfiguration-config-web;current})
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>
@@ -33,7 +33,7 @@ or
     <version>1.2.8-beta.1</version>
 </dependency>
 ```
-[//]: # "{x-version-update-end}"
+[//]: # ({x-version-update-end})
 
 ## Key concepts
 Azure App Configuration provides a service to centrally manage application settings and feature flags. Modern programs, especially programs running in a cloud, generally have many components that are distributed in nature. Spreading configuration settings across these components can lead to hard-to-troubleshoot errors during an application deployment. Use App Configuration to store all the settings for your application and secure their accesses in one place. 
