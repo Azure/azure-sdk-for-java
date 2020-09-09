@@ -15,6 +15,8 @@ import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImpl;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImplBuilder;
 import com.azure.digitaltwins.core.implementation.converters.ModelDataConverter;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions;
+import com.azure.digitaltwins.core.implementation.models.EventRoute;
+import com.azure.digitaltwins.core.implementation.models.EventRoutesListOptions;
 import com.azure.digitaltwins.core.implementation.models.QuerySpecification;
 import com.azure.digitaltwins.core.implementation.serializer.DigitalTwinsStringSerializer;
 import com.azure.digitaltwins.core.models.IncomingRelationship;
@@ -89,6 +91,8 @@ public final class DigitalTwinsAsyncClient {
     public HttpPipeline getHttpPipeline() {
         return this.protocolLayer.getHttpPipeline();
     }
+
+    //region Digital Twin APIs
 
     /**
      * Creates a digital twin.
@@ -324,6 +328,10 @@ public final class DigitalTwinsAsyncClient {
             .getDigitalTwins()
             .deleteWithResponseAsync(digitalTwinId, ifMatch, context);
     }
+
+    //endregion Digital Twin APIs
+
+    //region Relationship APIs
 
     /**
      * Creates a relationship on a digital twin.
@@ -738,10 +746,9 @@ public final class DigitalTwinsAsyncClient {
             nextLink -> protocolLayer.getDigitalTwins().listIncomingRelationshipsNextSinglePageAsync(nextLink, context));
     }
 
+    //endregion Relationship APIs
 
-    //==================================================================================================================================================
-    // Models APIs
-    //==================================================================================================================================================
+    //region Model APIs
 
     /**
      * Creates one or many models.
@@ -952,9 +959,9 @@ public final class DigitalTwinsAsyncClient {
         return protocolLayer.getDigitalTwinModels().updateWithResponseAsync(modelId, updateOperation, context);
     }
 
-    //==================================================================================================================================================
-    // Component APIs
-    //==================================================================================================================================================
+    //endregion Model APIs
+
+    //region Component APIs
 
     /**
      * Get a component of a digital twin.
@@ -1066,6 +1073,10 @@ public final class DigitalTwinsAsyncClient {
                 return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null, twinHeaders));
             });
     }
+
+    //endregion Component APIs
+
+    //region Query APIs
 
     /**
      * Query digital twins.
@@ -1190,4 +1201,141 @@ public final class DigitalTwinsAsyncClient {
                 objectPagedResponse.getValue().getContinuationToken(),
                 objectPagedResponse.getDeserializedHeaders()));
     }
+
+    //endregion Query APIs
+
+    //region Event Route APIs
+
+    /**
+     * Create an event route.
+     * @param eventRouteId The Id of the event route to create.
+     * @param eventRoute The event route to create.
+     * @return An empty mono.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> createEventRoute(String eventRouteId, EventRoute eventRoute)
+    {
+        return createEventRouteWithResponse(eventRouteId, eventRoute)
+            .flatMap(voidResponse -> Mono.empty());
+    }
+
+    /**
+     * Create an event route.
+     * @param eventRouteId The Id of the event route to create.
+     * @param eventRoute The event route to create.
+     * @return A {@link Response} containing an empty mono.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> createEventRouteWithResponse(String eventRouteId, EventRoute eventRoute)
+    {
+        return withContext(context -> createEventRouteWithResponse(eventRouteId, eventRoute, context));
+    }
+
+    Mono<Response<Void>> createEventRouteWithResponse(String eventRouteId, EventRoute eventRoute, Context context)
+    {
+        return this.protocolLayer.getEventRoutes().addWithResponseAsync(eventRouteId, eventRoute, context);
+    }
+
+    /**
+     * Get an event route.
+     * @param eventRouteId The Id of the event route to get.
+     * @return The retrieved event route.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<EventRoute> getEventRoute(String eventRouteId)
+    {
+        return getEventRouteWithResponse(eventRouteId)
+            .map(Response::getValue);
+    }
+
+    /**
+     * Get an event route.
+     * @param eventRouteId The Id of the event route to get.
+     * @return A {@link Response} containing the retrieved event route.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<EventRoute>> getEventRouteWithResponse(String eventRouteId)
+    {
+        return withContext(context -> getEventRouteWithResponse(eventRouteId, context));
+    }
+
+    Mono<Response<EventRoute>> getEventRouteWithResponse(String eventRouteId, Context context)
+    {
+        return this.protocolLayer.getEventRoutes().getByIdWithResponseAsync(eventRouteId, context);
+    }
+
+    /**
+     * Delete an event route.
+     * @param eventRouteId The Id of the event route to delete.
+     * @return An empty mono.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteEventRoute(String eventRouteId)
+    {
+        return deleteEventRouteWithResponse(eventRouteId)
+            .flatMap(voidResponse -> Mono.empty());
+    }
+
+    /**
+     * Delete an event route.
+     * @param eventRouteId The Id of the event route to delete.
+     * @return A {@link Response} containing an empty mono.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteEventRouteWithResponse(String eventRouteId)
+    {
+        return withContext(context -> deleteEventRouteWithResponse(eventRouteId, context));
+    }
+
+    Mono<Response<Void>> deleteEventRouteWithResponse(String eventRouteId, Context context)
+    {
+        return this.protocolLayer.getEventRoutes().deleteWithResponseAsync(eventRouteId, context);
+    }
+
+    /**
+     * List all the event routes that exist in your digital twins instance.
+     * @return A {@link PagedFlux} that contains all the event routes that exist in your digital twins instance.
+     *         This PagedFlux may take multiple service requests to iterate over all event routes.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<EventRoute> listEventRoutes()
+    {
+        return listEventRoutes(new EventRoutesListOptions());
+    }
+
+    /**
+     * List all the event routes that exist in your digital twins instance.
+     * @param options The optional parameters to use when listing event routes. See {@link EventRoutesListOptions} for more details
+     *                on what optional parameters can be set.
+     * @return A {@link PagedFlux} that contains all the event routes that exist in your digital twins instance.
+     *         This PagedFlux may take multiple service requests to iterate over all event routes.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<EventRoute> listEventRoutes(EventRoutesListOptions options)
+    {
+        return new PagedFlux<>(
+            () -> withContext(context -> listEventRoutesFirstPage(options, context)),
+            nextLink -> withContext(context -> listEventRoutesNextPage(nextLink, context)));
+    }
+
+    PagedFlux<EventRoute> listEventRoutes(EventRoutesListOptions options, Context context)
+    {
+        return new PagedFlux<>(
+            () -> listEventRoutesFirstPage(options, context),
+            nextLink -> listEventRoutesNextPage(nextLink, context));
+    }
+
+    Mono<PagedResponse<EventRoute>> listEventRoutesFirstPage(EventRoutesListOptions options, Context context) {
+        return protocolLayer
+            .getEventRoutes()
+            .listSinglePageAsync(options, context);
+    }
+
+    Mono<PagedResponse<EventRoute>> listEventRoutesNextPage(String nextLink, Context context) {
+        return protocolLayer
+            .getEventRoutes()
+            .listNextSinglePageAsync(nextLink, context);
+    }
+
+    //endregion Event Route APIs
 }
