@@ -121,12 +121,7 @@ class ReactorSender implements AmqpSendLink {
                     endpointStateSink.next(AmqpEndpointState.CLOSED);
                     endpointStateSink.complete();
                     hasConnected.set(false);
-                }),
-
-            this.handler.getErrors().subscribe(error -> {
-                logger.error("[{}] Error occurred in sender error handler.", entityPath, error);
-                endpointStateSink.error(error);
-            })
+                })
         );
 
         if (tokenManager != null) {
@@ -145,7 +140,7 @@ class ReactorSender implements AmqpSendLink {
 
     @Override
     public Flux<AmqpEndpointState> getEndpointStates() {
-        return endpointStates;
+        return endpointStates.distinct();
     }
 
     @Override

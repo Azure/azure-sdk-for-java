@@ -70,6 +70,16 @@ public class ReactorReceiver implements AmqpReceiveLink {
             })
             .subscribeWith(EmitterProcessor.create());
 
+        this.handler.getEndpointStates()
+            .map(state -> {
+                logger.verbose("Connection state: {}", state);
+                return AmqpEndpointStateUtil.getConnectionState(state);
+            })
+            .subscribeWith(endpointStates)
+            .doFinally(signal -> {
+                dispose();
+            });
+
         this.subscriptions = Disposables.composite(
             this.handler.getEndpointStates().subscribe(
                 state -> {
@@ -85,13 +95,6 @@ public class ReactorReceiver implements AmqpReceiveLink {
                     dispose();
                 }),
 
-            this.handler.getErrors().subscribe(error -> {
-                logger.error("connectionId[{}] linkName[{}] entityPath[{}] Error occurred in link.",
-                    handler.getConnectionId(), receiver.getName(), entityPath, error);
-                endpointStateSink.error(error);
-                dispose();
-            }),
-
             this.tokenManager.getAuthorizationResults().subscribe(
                 response -> {
                     logger.verbose("Token refreshed: {}", response);
@@ -105,7 +108,7 @@ public class ReactorReceiver implements AmqpReceiveLink {
 
     @Override
     public Flux<AmqpEndpointState> getEndpointStates() {
-        return endpointStates;
+        return endpointStates.distinct();
     }
 
     @Override

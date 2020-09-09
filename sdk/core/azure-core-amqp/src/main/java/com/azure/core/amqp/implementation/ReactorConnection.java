@@ -12,8 +12,8 @@ import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.util.logging.ClientLogger;
-import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
+import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.Session;
@@ -48,7 +48,8 @@ public class ReactorConnection implements AmqpConnection {
     private final DirectProcessor<AmqpShutdownSignal> shutdownSignals = DirectProcessor.create();
     private final ReplayProcessor<AmqpEndpointState> endpointStates =
         ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED);
-    private FluxSink<AmqpEndpointState> endpointStatesSink = endpointStates.sink(FluxSink.OverflowStrategy.BUFFER);
+    private final FluxSink<AmqpEndpointState> endpointStatesSink =
+        endpointStates.sink(FluxSink.OverflowStrategy.BUFFER);
 
     private final String connectionId;
     private final Mono<Connection> connectionMono;
@@ -117,12 +118,7 @@ public class ReactorConnection implements AmqpConnection {
                 }, () -> {
                     endpointStatesSink.next(AmqpEndpointState.CLOSED);
                     endpointStatesSink.complete();
-                }),
-
-            this.handler.getErrors().subscribe(error -> {
-                logger.error("connectionId[{}] Error occurred in connection handler.", connectionId, error);
-                endpointStatesSink.error(error);
-            }));
+                }));
     }
 
     /**

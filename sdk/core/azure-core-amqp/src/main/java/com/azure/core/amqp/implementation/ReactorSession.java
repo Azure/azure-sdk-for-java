@@ -112,13 +112,8 @@ public class ReactorSession implements AmqpSession {
                     endpointStateSink.next(AmqpEndpointState.CLOSED);
                     endpointStateSink.complete();
                     dispose();
-                }),
-
-            this.sessionHandler.getErrors().subscribe(error -> {
-                logger.error("[{}] Error occurred in session error handler.", sessionName, error);
-                endpointStateSink.error(error);
-                dispose();
-            }));
+                })
+        );
 
         session.open();
     }
