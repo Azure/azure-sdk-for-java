@@ -348,14 +348,14 @@ public final class Constants {
         public static final String SAS_SIGNED_KEY_VERSION = "skv";
 
         /**
-         * The SAS authorized object id parameter for user delegation SAS.
+         * The SAS preauthorized agent object id parameter for user delegation SAS.
          */
-        public static final String SAS_AUTHORIZED_OBJECT_ID = "saoid";
+        public static final String SAS_PREAUTHORIZED_AGENT_OBJECT_ID = "saoid";
 
         /**
-         * The SAS unauthorized object id parameter for user delegation SAS.
+         * The SAS agent object id parameter for user delegation SAS.
          */
-        public static final String SAS_UNAUTHORIZED_OBJECT_ID = "suoid";
+        public static final String SAS_AGENT_OBJECT_ID = "suoid";
 
         /**
          * The SAS correlation id parameter for user delegation SAS.

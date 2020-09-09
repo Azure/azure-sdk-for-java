@@ -122,9 +122,9 @@ public class CommonSasQueryParameters {
             removeSasParametersFromMap);
         this.contentType = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CONTENT_TYPE,
             removeSasParametersFromMap);
-        this.authorizedObjectId = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_AUTHORIZED_OBJECT_ID,
+        this.authorizedObjectId = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_PREAUTHORIZED_AGENT_OBJECT_ID,
             removeSasParametersFromMap);
-        this.unauthorizedObjectId = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_UNAUTHORIZED_OBJECT_ID,
+        this.unauthorizedObjectId = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_AGENT_OBJECT_ID,
             removeSasParametersFromMap);
         this.correlationId = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CORRELATION_ID,
             removeSasParametersFromMap);
@@ -212,9 +212,9 @@ public class CommonSasQueryParameters {
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_ENCODING, this.contentEncoding);
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_LANGUAGE, this.contentLanguage);
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_TYPE, this.contentType);
-        SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_AUTHORIZED_OBJECT_ID,
+        SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_PREAUTHORIZED_AGENT_OBJECT_ID,
             this.authorizedObjectId);
-        SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_UNAUTHORIZED_OBJECT_ID,
+        SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_AGENT_OBJECT_ID,
             this.unauthorizedObjectId);
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CORRELATION_ID, this.correlationId);
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_DIRECTORY_DEPTH, this.directoryDepth);

@@ -199,8 +199,8 @@ public class DataLakeSasImplUtil {
                 userDelegationKey.getSignedVersion());
 
             /* Only parameters relevant for user delegation SAS. */
-            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_AUTHORIZED_OBJECT_ID, this.authorizedAadObjectId);
-            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_UNAUTHORIZED_OBJECT_ID, this.unauthorizedAadObjectId);
+            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_PREAUTHORIZED_AGENT_OBJECT_ID, this.authorizedAadObjectId);
+            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_AGENT_OBJECT_ID, this.unauthorizedAadObjectId);
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CORRELATION_ID, this.correlationId);
         }
 
@@ -274,7 +274,8 @@ public class DataLakeSasImplUtil {
         }
 
         if (this.authorizedAadObjectId != null && this.unauthorizedAadObjectId != null) {
-            throw logger.logExceptionAsError(new IllegalStateException("saoid and suoid can not both be set."));
+            throw logger.logExceptionAsError(new IllegalStateException("agentObjectId and preauthorizedAgentObjectId "
+                + "can not both be set."));
         }
     }
 
