@@ -16,7 +16,7 @@
 ####
 # Service teams
 ####
-# PRLabel: %AzConfig
+# PRLabel: %App Configuration
 /sdk/appconfiguration/                              @mssfang @alzimmermsft
 /sdk/appconfiguration/spring-cloud-azure-*/         @mrm9084 @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai
 
