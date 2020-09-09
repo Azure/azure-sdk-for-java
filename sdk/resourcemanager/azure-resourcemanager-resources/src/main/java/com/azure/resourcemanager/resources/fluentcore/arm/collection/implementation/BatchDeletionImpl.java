@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.fluentcore.utils.ReactorMapper;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
