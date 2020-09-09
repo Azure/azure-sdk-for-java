@@ -31,12 +31,12 @@ parameters:
       OSVmImage: 'windows-2019'
       JavaTestVersion: '1.11'
       RunTitle: 'Windows on Java 1.11'
-    Linux From Source - Java 11:
-      OSVmImage: 'ubuntu-18.04'
-      JavaTestVersion: '1.11'
-      RunTitle: 'From Source: Linux on Java 1.11'
-      AdditionalOptions: '-amd'
-      TestFromSource: true
+    # Linux From Source - Java 11:
+    #   OSVmImage: 'ubuntu-18.04'
+    #   JavaTestVersion: '1.11'
+    #   RunTitle: 'From Source: Linux on Java 1.11'
+    #   AdditionalOptions: '-amd'
+    #   TestFromSource: true
 
 jobs:
   - job: 'Build'
@@ -89,13 +89,6 @@ jobs:
         displayName: 'pip install markdown2 and BeautifulSoup4'
 
       - template: ../steps/cache-maven-repository.yml
-
-      - template: /eng/common/pipelines/templates/steps/replace-relative-links.yml
-        parameters:
-          TargetFolder: $(Build.SourcesDirectory)
-          RootFolder: $(Build.SourcesDirectory)
-          BuildSHA: $(Build.SourceVersion)
-          RepoId: 'Azure/azure-sdk-for-java'
 
       - template: ../steps/generate-project-list.yml
         parameters:
