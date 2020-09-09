@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -84,7 +85,7 @@ public class CpuMonitor implements AutoCloseable {
 
     private CpuMonitor() {
         this.cpuReader = new CpuReader();
-        this.scheduledExecutorService = new ScheduledThreadPoolExecutor(1);
+        this.scheduledExecutorService = new ScheduledThreadPoolExecutor(1, new DaemonThreadFactory());
         this.scheduledExecutorService.setRemoveOnCancelPolicy(true);
     }
 
@@ -168,6 +169,16 @@ public class CpuMonitor implements AutoCloseable {
                 TimeUnit.SECONDS);
         } finally {
             this.rwLock.writeLock().unlock();
+        }
+    }
+
+    public class DaemonThreadFactory implements ThreadFactory {
+
+        @Override
+        public Thread newThread(Runnable r) {
+            Thread t = new Thread(r);
+            t.setDaemon(true);
+            return t;
         }
     }
 }
