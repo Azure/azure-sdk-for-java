@@ -159,7 +159,7 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
         assertTrue(afterRequestSessionToken.getLSN() > beforeRequestSessionToken.getLSN(), "Response session token should be more than request session token");
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT * 10)
     public void batchLargerThanServerRequestAsync() {
         CosmosAsyncContainer container = this.jsonContainer;
 
@@ -195,7 +195,7 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
         assertEquals(HttpResponseStatus.BAD_REQUEST.code(), batchResponse.getResponseStatus());
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT * 10)
     public void batchServerResponseTooLargeAsync() {
 
         CosmosAsyncContainer container = this.jsonContainer;
