@@ -13,6 +13,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.digitaltwins.core.models.IncomingRelationship;
 import com.azure.digitaltwins.core.models.ModelData;
+import com.azure.digitaltwins.core.serialization.BasicRelationship;
 import com.azure.digitaltwins.core.util.*;
 
 import java.util.List;
@@ -57,6 +58,10 @@ public final class DigitalTwinsClient {
     public DigitalTwinsServiceVersion getServiceVersion() {
         return this.digitalTwinsAsyncClient.getServiceVersion();
     }
+
+    //==================================================================================================================================================
+    // DigitalTwin APIs
+    //==================================================================================================================================================
 
     /**
      * Creates a digital twin.
@@ -220,6 +225,10 @@ public final class DigitalTwinsClient {
     {
         return digitalTwinsAsyncClient.deleteDigitalTwinWithResponse(digitalTwinId, options, context).block();
     }
+
+    //==================================================================================================================================================
+    // Relationship APIs
+    //==================================================================================================================================================
 
     /**
      * Creates a relationship on a digital twin.
@@ -413,7 +422,7 @@ public final class DigitalTwinsClient {
      * Gets all the relationships on a digital twin by iterating through a collection.
      *
      * @param digitalTwinId The Id of the source digital twin.
-     * @param clazz The model class to convert the relationship to. Since a digital twin might have relationships conforming to different models, it is advisable to convert them to a generic model like {@link com.azure.digitaltwins.core.implementation.serialization.BasicRelationship}.
+     * @param clazz The model class to convert the relationship to. Since a digital twin might have relationships conforming to different models, it is advisable to convert them to a generic model like {@link BasicRelationship}.
      * @param <T> The generic type to convert the relationship to.
      * @return A {@link PagedIterable} of relationships belonging to the specified digital twin and the http response.
      */
@@ -635,6 +644,10 @@ public final class DigitalTwinsClient {
     public DigitalTwinsResponse<Void> updateComponentWithResponse(String digitalTwinId, String componentPath, List<Object> componentUpdateOperations, UpdateComponentRequestOptions options, Context context) {
         return digitalTwinsAsyncClient.updateComponentWithResponse(digitalTwinId, componentPath, componentUpdateOperations, options, context).block();
     }
+
+    //==================================================================================================================================================
+    // Query APIs
+    //==================================================================================================================================================
 
     /**
      * Query digital twins.
