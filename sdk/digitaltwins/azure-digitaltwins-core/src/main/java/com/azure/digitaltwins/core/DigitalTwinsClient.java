@@ -59,9 +59,7 @@ public final class DigitalTwinsClient {
         return this.digitalTwinsAsyncClient.getServiceVersion();
     }
 
-    //==================================================================================================================================================
-    // DigitalTwin APIs
-    //==================================================================================================================================================
+    //region DigitalTwin APIs
 
     /**
      * Creates a digital twin.
@@ -226,9 +224,9 @@ public final class DigitalTwinsClient {
         return digitalTwinsAsyncClient.deleteDigitalTwinWithResponse(digitalTwinId, options, context).block();
     }
 
-    //==================================================================================================================================================
-    // Relationship APIs
-    //==================================================================================================================================================
+    //endregion
+
+    //region Relationship APIs
 
     /**
      * Creates a relationship on a digital twin.
@@ -458,9 +456,9 @@ public final class DigitalTwinsClient {
         return new PagedIterable<>(digitalTwinsAsyncClient.listIncomingRelationships(digitalTwinId, context));
     }
 
-    //==================================================================================================================================================
-    // Models APIs
-    //==================================================================================================================================================
+    //endregion
+
+    //region Models APIs
 
     /**
      * Creates one or many models.
@@ -564,9 +562,9 @@ public final class DigitalTwinsClient {
         return digitalTwinsAsyncClient.decommissionModelWithResponse(modelId, context).block();
     }
 
-    //==================================================================================================================================================
-    // Component APIs
-    //==================================================================================================================================================
+    //endregion
+
+    //region Component APIs
 
     /**
      * Get a component of a digital twin.
@@ -645,9 +643,9 @@ public final class DigitalTwinsClient {
         return digitalTwinsAsyncClient.updateComponentWithResponse(digitalTwinId, componentPath, componentUpdateOperations, options, context).block();
     }
 
-    //==================================================================================================================================================
-    // Query APIs
-    //==================================================================================================================================================
+    //endregion
+
+    //region Query APIs
 
     /**
      * Query digital twins.
@@ -698,4 +696,6 @@ public final class DigitalTwinsClient {
     public <T> PagedIterable<T> query(String query, Class<T> clazz, Context context) {
         return new PagedIterable<>(digitalTwinsAsyncClient.query(query, clazz, context));
     }
+
+    //endregion
 }
