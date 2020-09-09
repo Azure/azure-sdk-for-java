@@ -129,9 +129,4 @@ public class ModelsAsyncTest extends ModelsTestBase {
 
         createModelsRunner(buildingModelId, floorModelId, hvacModelId, wardModelId, createModelsTestRunner);
     }
-
-    private DigitalTwinsAsyncClient getAsyncClient(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
-        return getDigitalTwinsClientBuilder(httpClient, serviceVersion)
-            .buildAsyncClient();
-    }
 }
