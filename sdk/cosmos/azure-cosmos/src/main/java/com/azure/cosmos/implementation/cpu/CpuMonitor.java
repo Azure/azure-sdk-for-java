@@ -21,13 +21,15 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
- * Monitors history of CPU consumption.
+ * Monitors history of CPU consumption. This is a singleton class and can support multiple cosmos clients.
+ *
+ * is used for tracking multiple cosmos clients registers to this CPU monitor.
+ * in the absence of a listener the CpuMonitor will shutdown.
  */
 public class CpuMonitor {
     private final static int DEFAULT_REFRESH_INTERVAL_IN_SECONDS = 10;
     private final static int HISTORY_LENGTH = 6;
     private static Duration refreshInterval = Duration.ofSeconds(DEFAULT_REFRESH_INTERVAL_IN_SECONDS);
-
 
     private static final Logger logger = LoggerFactory.getLogger(CpuMonitor.class);
     private static final CpuReader cpuReader = new CpuReader();
@@ -38,15 +40,12 @@ public class CpuMonitor {
     }
 
     private static final ReentrantReadWriteLock rwLock = new ReentrantReadWriteLock();
+
+    // used for tracking the cosmos clients.
     private static final List<WeakReference<CpuListener>> cpuListeners = new ArrayList<>();
     private static final Object lifeCycleLock = new Object();
 
     private static CpuLoadHistory currentReading = new CpuLoadHistory(Collections.emptyList(), refreshInterval); // Guarded by rwLock.
-
-    /*
-     * there is a singleton instance of {@link CpuMonitor}.
-     * If there are multiple clients they will share the same instance.
-     */
     private static final CpuLoad[] buffer = new CpuLoad[CpuMonitor.HISTORY_LENGTH];
 
     private static ScheduledFuture<?> future;
@@ -172,7 +171,7 @@ public class CpuMonitor {
             return t;
         }
     }
-
+    
     public static interface CpuListener {
     }
 }
