@@ -25,6 +25,7 @@ import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.apache.commons.lang.time.StopWatch;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,7 +82,7 @@ public final class ManageApplicationGateway {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws IOException {
         final String rgName = azure.sdkContext().randomResourceName("rgNEAG", 15);
         final String pipName = azure.sdkContext().randomResourceName("pip" + "-", 18);
 
@@ -297,11 +298,6 @@ public final class ManageApplicationGateway {
             System.out.println("Application gateway updated: (took " + (stopwatch.getTime() / 1000) + " seconds)");
             Utils.print(applicationGateway);
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -313,7 +309,6 @@ public final class ManageApplicationGateway {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

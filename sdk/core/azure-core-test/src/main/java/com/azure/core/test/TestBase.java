@@ -15,12 +15,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.ServiceLoader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -35,6 +38,8 @@ public abstract class TestBase implements BeforeEachCallback {
     public static final String AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY = "NettyAsyncHttpClient";
     public static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL = "ALL";
 
+    private static final Pattern TEST_ITERATION_PATTERN = Pattern.compile("test-template-invocation:#(\\d+)");
+
     private static TestMode testMode;
 
     private final ClientLogger logger = new ClientLogger(TestBase.class);
@@ -44,6 +49,9 @@ public abstract class TestBase implements BeforeEachCallback {
     protected TestContextManager testContextManager;
 
     private ExtensionContext extensionContext;
+
+    @RegisterExtension
+    final TestIterationContext testIterationContext = new TestIterationContext();
 
     /**
      * Before tests are executed, determines the test mode by reading the {@link TestBase#AZURE_TEST_MODE} environment
@@ -68,6 +76,9 @@ public abstract class TestBase implements BeforeEachCallback {
     @BeforeEach
     public void setupTest(TestInfo testInfo) {
         this.testContextManager = new TestContextManager(testInfo.getTestMethod().get(), testMode);
+        if (testIterationContext != null) {
+            testContextManager.setTestIteration(testIterationContext.testIteration);
+        }
         logger.info("Test Mode: {}, Name: {}", testMode, testContextManager.getTestName());
 
         try {
@@ -83,6 +94,7 @@ public abstract class TestBase implements BeforeEachCallback {
 
     /**
      * Disposes of {@link InterceptorManager} and its inheriting class' resources.
+     *
      * @param testInfo the injected testInfo
      */
     @AfterEach
@@ -105,11 +117,11 @@ public abstract class TestBase implements BeforeEachCallback {
     /**
      * Gets the name of the current test being run.
      *
+     * @return The name of the current test.
      * @deprecated This method is deprecated as JUnit 5 provides a simpler mechanism to get the test method name through
      * {@link TestInfo}. Keeping this for backward compatability of other client libraries that still override this
      * method. This method can be deleted when all client libraries remove this method. See {@link
      * #setupTest(TestInfo)}.
-     * @return The name of the current test.
      */
     @Deprecated
     protected String getTestName() {
@@ -213,6 +225,18 @@ public abstract class TestBase implements BeforeEachCallback {
             Thread.sleep(millis);
         } catch (InterruptedException ex) {
             throw logger.logExceptionAsWarning(new IllegalStateException(ex));
+        }
+    }
+
+    private static final class TestIterationContext implements BeforeEachCallback {
+        Integer testIteration;
+
+        @Override
+        public void beforeEach(ExtensionContext extensionContext) {
+            Matcher matcher = TEST_ITERATION_PATTERN.matcher(extensionContext.getUniqueId());
+            if (matcher.find()) {
+                testIteration = Integer.valueOf(matcher.group(1));
+            }
         }
     }
 }

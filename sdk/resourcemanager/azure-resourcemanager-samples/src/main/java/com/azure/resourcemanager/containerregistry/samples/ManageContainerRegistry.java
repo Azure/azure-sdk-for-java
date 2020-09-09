@@ -24,6 +24,7 @@ import com.github.dockerjava.api.model.Image;
 import com.github.dockerjava.core.command.PullImageResultCallback;
 import com.github.dockerjava.core.command.PushImageResultCallback;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class ManageContainerRegistry {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws IOException {
         final String rgName = azure.sdkContext().randomResourceName("rgACR", 15);
         final String acrName = azure.sdkContext().randomResourceName("acrsample", 20);
         final Region region = Region.US_EAST;
@@ -158,9 +159,6 @@ public class ManageContainerRegistry {
             }
 
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -172,7 +170,6 @@ public class ManageContainerRegistry {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

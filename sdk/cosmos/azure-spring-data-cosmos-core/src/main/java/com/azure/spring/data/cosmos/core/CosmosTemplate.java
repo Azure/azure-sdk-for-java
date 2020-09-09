@@ -720,6 +720,13 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         return this.mappingCosmosConverter;
     }
 
+    @Override
+    public <T> Iterable<T> runQuery(SqlQuerySpec querySpec, Class<?> domainType, Class<T> returnType) {
+        return getJsonNodeFluxFromQuerySpec(domainType.getSimpleName(), querySpec, returnType)
+                   .collectList()
+                   .block();
+    }
+
     private JsonNode prepareToPersistAndConvertToItemProperties(Object object) {
         if (cosmosAuditingHandler != null) {
             cosmosAuditingHandler.markAudited(object);
@@ -766,11 +773,33 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .publishOn(Schedulers.parallel())
             .flatMap(cosmosItemFeedResponse -> {
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
-                    cosmosItemFeedResponse.getCosmosDiagnostics(), cosmosItemFeedResponse);
+                                                              cosmosItemFeedResponse.getCosmosDiagnostics(),
+                                                              cosmosItemFeedResponse);
                 return Flux.fromIterable(cosmosItemFeedResponse.getResults());
             })
             .onErrorResume(throwable ->
                 CosmosExceptionUtils.exceptionHandler("Failed to find items", throwable));
+    }
+
+    private <T> Flux<T> getJsonNodeFluxFromQuerySpec(
+        @NonNull String containerName, SqlQuerySpec sqlQuerySpec, Class<T> classType) {
+        final CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
+        cosmosQueryRequestOptions.setQueryMetricsEnabled(this.queryMetricsEnabled);
+
+        return cosmosAsyncClient
+                   .getDatabase(this.databaseName)
+                   .getContainer(containerName)
+                   .queryItems(sqlQuerySpec, cosmosQueryRequestOptions, classType)
+                   .byPage()
+                   .publishOn(Schedulers.parallel())
+                   .flatMap(cosmosItemFeedResponse -> {
+                       CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
+                                                                     cosmosItemFeedResponse.getCosmosDiagnostics(),
+                                                                     cosmosItemFeedResponse);
+                       return Flux.fromIterable(cosmosItemFeedResponse.getResults());
+                   })
+                   .onErrorResume(throwable ->
+                                      CosmosExceptionUtils.exceptionHandler("Failed to find items", throwable));
     }
 
     private List<JsonNode> findItems(@NonNull CosmosQuery query,

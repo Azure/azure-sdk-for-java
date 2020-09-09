@@ -142,9 +142,6 @@ public final class ManageLinuxWebAppBasic {
                 Utils.print(webApp);
             }
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rg1Name);
@@ -159,7 +156,6 @@ public final class ManageLinuxWebAppBasic {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

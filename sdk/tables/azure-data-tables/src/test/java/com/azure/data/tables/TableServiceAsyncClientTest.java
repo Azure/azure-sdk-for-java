@@ -4,6 +4,7 @@
 package com.azure.data.tables;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
@@ -15,7 +16,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * Tests methods for {@link TableServiceAsyncClient}.
  */
 public class TableServiceAsyncClientTest extends TestBase {
-    private static final Duration TIMEOUT = Duration.ofSeconds(30);
+    private static final Duration TIMEOUT = Duration.ofSeconds(100);
     private TableServiceAsyncClient serviceClient;
 
     @BeforeAll
@@ -49,9 +49,12 @@ public class TableServiceAsyncClientTest extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());
         } else {
-            builder.httpClient(HttpClient.createDefault())
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .addPolicy(new RetryPolicy());
+            builder.httpClient(HttpClient.createDefault());
+            if (!interceptorManager.isLiveMode()) {
+                builder.addPolicy(interceptorManager.getRecordPolicy());
+            }
+            builder.addPolicy(new RetryPolicy(new ExponentialBackoff(6, Duration.ofMillis(1500),
+                Duration.ofSeconds(100))));
         }
 
         serviceClient = builder.buildAsyncClient();
@@ -184,10 +187,8 @@ public class TableServiceAsyncClientTest extends TestBase {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
         final String tableName2 = testResourceNamer.randomName("test", 20);
-        Mono.when(
-            serviceClient.createTable(tableName),
-            serviceClient.createTable(tableName2)
-        ).block(TIMEOUT);
+        serviceClient.createTable(tableName).block(TIMEOUT);
+        serviceClient.createTable(tableName2).block(TIMEOUT);
 
         // Act & Assert
         StepVerifier.create(serviceClient.listTables())
@@ -204,10 +205,8 @@ public class TableServiceAsyncClientTest extends TestBase {
         final String tableName = testResourceNamer.randomName("test", 20);
         final String tableName2 = testResourceNamer.randomName("test", 20);
         ListTablesOptions options = new ListTablesOptions().setFilter("TableName eq '" + tableName + "'");
-        Mono.when(
-            serviceClient.createTable(tableName),
-            serviceClient.createTable(tableName2)
-        ).block(TIMEOUT);
+        serviceClient.createTable(tableName).block(TIMEOUT);
+        serviceClient.createTable(tableName2).block(TIMEOUT);
 
         // Act & Assert
         StepVerifier.create(serviceClient.listTables(options))
@@ -228,12 +227,10 @@ public class TableServiceAsyncClientTest extends TestBase {
         final String tableName2 = testResourceNamer.randomName("test", 20);
         final String tableName3 = testResourceNamer.randomName("test", 20);
         ListTablesOptions options = new ListTablesOptions().setTop(2);
-        Mono.when(
-            serviceClient.createTable(tableName),
-            serviceClient.createTable(tableName2),
-            serviceClient.createTable(tableName3)
-        ).block(TIMEOUT);
-        
+        serviceClient.createTable(tableName).block(TIMEOUT);
+        serviceClient.createTable(tableName2).block(TIMEOUT);
+        serviceClient.createTable(tableName3).block(TIMEOUT);
+
         // Act & Assert
         StepVerifier.create(serviceClient.listTables(options))
             .expectNextCount(2)

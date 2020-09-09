@@ -121,9 +121,6 @@ public class ManageLinuxFunctionAppSourceControl {
             // response would be "Hello, ..."
 
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -135,7 +132,6 @@ public class ManageLinuxFunctionAppSourceControl {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

@@ -77,8 +77,11 @@ public class ReactiveCosmosRepositoryFactory extends ReactiveRepositoryFactorySu
 
             Assert.notNull(queryMethod, "queryMethod must not be null!");
             Assert.notNull(cosmosOperations, "dbOperations must not be null!");
-            return new PartTreeReactiveCosmosQuery(queryMethod, cosmosOperations);
-
+            if (queryMethod.hasAnnotatedQuery()) {
+                return new StringBasedReactiveCosmosQuery(queryMethod, cosmosOperations);
+            } else {
+                return new PartTreeReactiveCosmosQuery(queryMethod, cosmosOperations);
+            }
         }
     }
 

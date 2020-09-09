@@ -14,7 +14,7 @@ import org.springframework.data.repository.query.ReturnedType;
 public abstract class AbstractCosmosQuery implements RepositoryQuery {
 
     private final CosmosQueryMethod method;
-    private final CosmosOperations operations;
+    protected final CosmosOperations operations;
 
     /**
      * Initialization
@@ -33,6 +33,7 @@ public abstract class AbstractCosmosQuery implements RepositoryQuery {
      * @param parameters must not be {@literal null}.
      * @return execution result. Can be {@literal null}.
      */
+    @Override
     public Object execute(Object[] parameters) {
         final CosmosParameterAccessor accessor = new CosmosParameterParameterAccessor(method, parameters);
         final CosmosQuery query = createQuery(accessor);

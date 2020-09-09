@@ -197,9 +197,6 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
                 azure.sqlServers().deleteById(sqlServer.id());
             }
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -209,7 +206,6 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             }
         }
-        return false;
     }
 
     /**
