@@ -9,12 +9,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Objects;
 
+import static com.azure.cosmos.implementation.encryption.ImplementationBridgeHelpers.EncryptionKeyWrapMetadataHelper;
+
 
 /**
  * Metadata that a key wrapping provider can use to wrap/unwrap data encryption keys.
  * {@link EncryptionKeyWrapProvider}
  */
 public class EncryptionKeyWrapMetadata {
+
     /**
      * For JSON deserialize
      */
@@ -55,11 +58,11 @@ public class EncryptionKeyWrapMetadata {
 
     @JsonProperty("type")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String type;
+    String type;
 
     @JsonProperty("algorithm")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String algorithm;
+    String algorithm;
 
     /**
      * Serialized form of metadata.
@@ -83,5 +86,35 @@ public class EncryptionKeyWrapMetadata {
     @Override
     public int hashCode() {
         return Objects.hash(type, algorithm, value);
+    }
+
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    static {
+        EncryptionKeyWrapMetadataHelper.setEncryptionKeyWrapMetadataAccessor(
+            new EncryptionKeyWrapMetadataHelper.EncryptionKeyWrapMetadataAccessor() {
+                @Override
+                public EncryptionKeyWrapMetadata create(String type, String value, String algorithm) {
+                    return new EncryptionKeyWrapMetadata(type, value, algorithm);
+                }
+
+                @Override
+                public EncryptionKeyWrapMetadata create(String type, String value) {
+                    return new EncryptionKeyWrapMetadata(type, value);
+                }
+
+                @Override
+                public String getType(EncryptionKeyWrapMetadata metadata) {
+                    return metadata.type;
+                }
+
+                @Override
+                public String getAlgorithm(EncryptionKeyWrapMetadata metadata) {
+                    return metadata.algorithm;
+                }
+            });
     }
 }

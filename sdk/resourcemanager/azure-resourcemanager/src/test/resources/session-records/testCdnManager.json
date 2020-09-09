@@ -1,0 +1,1569 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cdn/profiles?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:49:51 GMT",
+      "content-length" : "12",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11933",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "99874195-5059-4d0d-a995-46d75ddb1b57",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T224952Z:99874195-5059-4d0d-a995-46d75ddb1b57",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "99874195-5059-4d0d-a995-46d75ddb1b57",
+      "Body" : "{\"value\":[]}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999?api-version=2020-06-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (ResourceManagementClient, 2019-08-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:49:56 GMT",
+      "content-length" : "297",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1180",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "b1eac578-242b-4483-bf3b-39ae4d348b4d",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T224956Z:b1eac578-242b-4483-bf3b-39ae4d348b4d",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "b1eac578-242b-4483-bf3b-39ae4d348b4d",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg555999\",\"name\":\"rg555999\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"eastus\",\"tags\":{\"date\":\"2019-10-13T22:49:53.037Z\",\"product\":\"javasdk\",\"cause\":\"automation\"},\"properties\":{\"provisioningState\":\"Succeeded\"}}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:50:10 GMT",
+      "content-length" : "364",
+      "server" : "Microsoft-IIS/8.5",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1180",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "c35fe3fb-dfde-4878-bee2-d1cef2f07c04",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225010Z:c35fe3fb-dfde-4878-bee2-d1cef2f07c04",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "d4fe713b-1d6d-4c3b-95e3-b7f2bcc4f577",
+      "Body" : "{\r\n  \"name\":\"cdnProfile555999\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999\",\"type\":\"Microsoft.Cdn/profiles\",\"tags\":{\r\n    \r\n  },\"location\":\"EastUs\",\"sku\":{\r\n    \"name\":\"Standard_Akamai\"\r\n  },\"properties\":{\r\n    \"provisioningState\":\"Creating\",\"resourceState\":\"Creating\"\r\n  }\r\n}",
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/operationresults/a467183c-fe78-4707-a57f-77235520364c?api-version=2017-10-12",
+      "x-ms-client-request-id" : "d2c09c7e-691a-4894-859d-a4ee97937c6d",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/operationresults/a467183c-fe78-4707-a57f-77235520364c?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:50:12 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "78",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11933",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "cb6ab02e-d66c-456c-b6c2-2685ee69e6cb",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225012Z:cb6ab02e-d66c-456c-b6c2-2685ee69e6cb",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal; odata.streaming=true",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "b0d4578d-1747-41e5-94bf-4615be67b802",
+      "Body" : "{\r\n  \"status\":\"InProgress\",\"error\":{\r\n    \"code\":\"None\",\"message\":null\r\n  }\r\n}",
+      "x-ms-client-request-id" : "6a146477-ef2a-4095-9fd6-361d51e5fe3c",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/operationresults/a467183c-fe78-4707-a57f-77235520364c?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:50:42 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "77",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11932",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "56efb220-da28-4aa2-9269-244f8ead28e3",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225042Z:56efb220-da28-4aa2-9269-244f8ead28e3",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal; odata.streaming=true",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "2fd6308d-65bc-48b0-b004-915e5d17c37e",
+      "Body" : "{\r\n  \"status\":\"Succeeded\",\"error\":{\r\n    \"code\":\"None\",\"message\":null\r\n  }\r\n}",
+      "x-ms-client-request-id" : "b73f97fe-a396-4cdc-a0a1-2b27d82d4657",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:50:43 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "363",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11931",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "5e9ae90d-34ad-47a3-8fbf-f57140273dbc",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225044Z:5e9ae90d-34ad-47a3-8fbf-f57140273dbc",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal; odata.streaming=true",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "d911418e-5860-4d0b-8d93-709f74b55504",
+      "Body" : "{\r\n  \"name\":\"cdnProfile555999\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999\",\"type\":\"Microsoft.Cdn/profiles\",\"tags\":{\r\n    \r\n  },\"location\":\"EastUs\",\"sku\":{\r\n    \"name\":\"Standard_Akamai\"\r\n  },\"properties\":{\r\n    \"provisioningState\":\"Succeeded\",\"resourceState\":\"Active\"\r\n  }\r\n}",
+      "x-ms-client-request-id" : "770549bb-90bb-4f86-bf40-14b512adc9cd",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999/endpoints/cdnEndpoint555999?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:50:56 GMT",
+      "content-length" : "1136",
+      "server" : "Microsoft-IIS/8.5",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1179",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "3d122af4-2d75-4b91-90c5-7797a016cd8b",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225056Z:3d122af4-2d75-4b91-90c5-7797a016cd8b",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "19c485c1-ecf1-4fef-8724-38b67153e566",
+      "Body" : "{\r\n  \"name\":\"cdnEndpoint555999\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999/endpoints/cdnEndpoint555999\",\"type\":\"Microsoft.Cdn/profiles/endpoints\",\"tags\":{\r\n    \r\n  },\"location\":\"EastUs\",\"properties\":{\r\n    \"hostName\":\"cdnEndpoint555999.azureedge.net\",\"originHostHeader\":null,\"provisioningState\":\"Creating\",\"resourceState\":\"Creating\",\"isHttpAllowed\":false,\"isHttpsAllowed\":true,\"queryStringCachingBehavior\":\"BypassCaching\",\"originPath\":null,\"origins\":[\r\n      {\r\n        \"name\":\"origin\",\"properties\":{\r\n          \"hostName\":\"mylinuxapp.azurewebsites.net\",\"httpPort\":85,\"httpsPort\":444\r\n        }\r\n      }\r\n    ],\"customDomains\":[\r\n      \r\n    ],\"contentTypesToCompress\":[\r\n      \"text/plain\"\r\n    ],\"isCompressionEnabled\":true,\"optimizationType\":null,\"probePath\":null,\"geoFilters\":[\r\n      {\r\n        \"relativePath\":\"/path/videos\",\"action\":\"Block\",\"countryCodes\":[\r\n          \"AR\"\r\n        ]\r\n      },{\r\n        \"relativePath\":\"/path/images\",\"action\":\"Block\",\"countryCodes\":[\r\n          \"BE\"\r\n        ]\r\n      }\r\n    ],\"deliveryPolicy\":null\r\n  }\r\n}",
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/operationresults/37db9c19-67ed-47aa-bb9a-3e9cd4d0f485?api-version=2017-10-12",
+      "x-ms-client-request-id" : "c9ae4fd4-c338-4a66-b008-e11e4b9ea0eb",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/operationresults/37db9c19-67ed-47aa-bb9a-3e9cd4d0f485?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:50:56 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "78",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11930",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "ab556ba3-c5a9-49d5-9a8c-366a485d3edf",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225057Z:ab556ba3-c5a9-49d5-9a8c-366a485d3edf",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal; odata.streaming=true",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "0d931e46-867b-46f7-905a-f0c11d0acb0b",
+      "Body" : "{\r\n  \"status\":\"InProgress\",\"error\":{\r\n    \"code\":\"None\",\"message\":null\r\n  }\r\n}",
+      "x-ms-client-request-id" : "dd307e26-93f3-453f-bff4-e84dc2b2986e",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/operationresults/37db9c19-67ed-47aa-bb9a-3e9cd4d0f485?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:51:27 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "78",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11929",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "abffb6a2-d56d-41ff-a3b8-fe993289ed51",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225127Z:abffb6a2-d56d-41ff-a3b8-fe993289ed51",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal; odata.streaming=true",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "7211ef92-241c-4525-8405-cfd0c1054106",
+      "Body" : "{\r\n  \"status\":\"InProgress\",\"error\":{\r\n    \"code\":\"None\",\"message\":null\r\n  }\r\n}",
+      "x-ms-client-request-id" : "eef8b853-a963-4c9b-ab25-72bc7624cb95",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/operationresults/37db9c19-67ed-47aa-bb9a-3e9cd4d0f485?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:51:59 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "77",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11928",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "254de39d-f721-4220-a2f1-d6bbe661da48",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225200Z:254de39d-f721-4220-a2f1-d6bbe661da48",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal; odata.streaming=true",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "9f547489-3335-4257-b59b-43e4ee2f4c4e",
+      "Body" : "{\r\n  \"status\":\"Succeeded\",\"error\":{\r\n    \"code\":\"None\",\"message\":null\r\n  }\r\n}",
+      "x-ms-client-request-id" : "965f9997-ab9e-4ad4-ba94-9196210d4b7a",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999/endpoints/cdnEndpoint555999?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:52:01 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "1136",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11927",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "17834d7f-4cca-4d24-82b2-ea094a2d63be",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225201Z:17834d7f-4cca-4d24-82b2-ea094a2d63be",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal; odata.streaming=true",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "14d08017-3403-4c0d-8f52-a65daecb6bdb",
+      "Body" : "{\r\n  \"name\":\"cdnEndpoint555999\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999/endpoints/cdnEndpoint555999\",\"type\":\"Microsoft.Cdn/profiles/endpoints\",\"tags\":{\r\n    \r\n  },\"location\":\"EastUs\",\"properties\":{\r\n    \"hostName\":\"cdnEndpoint555999.azureedge.net\",\"originHostHeader\":null,\"provisioningState\":\"Succeeded\",\"resourceState\":\"Running\",\"isHttpAllowed\":false,\"isHttpsAllowed\":true,\"queryStringCachingBehavior\":\"BypassCaching\",\"originPath\":null,\"origins\":[\r\n      {\r\n        \"name\":\"origin\",\"properties\":{\r\n          \"hostName\":\"mylinuxapp.azurewebsites.net\",\"httpPort\":85,\"httpsPort\":444\r\n        }\r\n      }\r\n    ],\"customDomains\":[\r\n      \r\n    ],\"contentTypesToCompress\":[\r\n      \"text/plain\"\r\n    ],\"isCompressionEnabled\":true,\"optimizationType\":null,\"probePath\":null,\"geoFilters\":[\r\n      {\r\n        \"relativePath\":\"/path/videos\",\"action\":\"Block\",\"countryCodes\":[\r\n          \"AR\"\r\n        ]\r\n      },{\r\n        \"relativePath\":\"/path/images\",\"action\":\"Block\",\"countryCodes\":[\r\n          \"BE\"\r\n        ]\r\n      }\r\n    ],\"deliveryPolicy\":null\r\n  }\r\n}",
+      "x-ms-client-request-id" : "bbe138dc-612b-4108-baf3-e0d53866a1e0",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999/endpoints/cdnEndpoint555999/customDomains?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:52:02 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "28",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11926",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "b71df6f5-0e6a-4800-aa3d-7366336c51b8",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225203Z:b71df6f5-0e6a-4800-aa3d-7366336c51b8",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal; odata.streaming=true",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "7432d78c-6868-4215-b274-9972eb286570",
+      "Body" : "{\r\n  \"value\":[\r\n    \r\n  ]\r\n}",
+      "x-ms-client-request-id" : "54256ca4-9264-4d31-a73f-3e814d59316c",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:52:03 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "363",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11925",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "d4eed28c-8924-4549-9814-38abead96008",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225204Z:d4eed28c-8924-4549-9814-38abead96008",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal; odata.streaming=true",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "a924aed6-0bfe-49a0-8165-19734ccb61c6",
+      "Body" : "{\r\n  \"name\":\"cdnProfile555999\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999\",\"type\":\"Microsoft.Cdn/profiles\",\"tags\":{\r\n    \r\n  },\"location\":\"EastUs\",\"sku\":{\r\n    \"name\":\"Standard_Akamai\"\r\n  },\"properties\":{\r\n    \"provisioningState\":\"Succeeded\",\"resourceState\":\"Active\"\r\n  }\r\n}",
+      "x-ms-client-request-id" : "321035e9-2f8c-4e11-bac0-bfd1f857c155",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999/endpoints?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:52:05 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "1268",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11924",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "5e15eccf-7bca-4bca-a57e-673bb4fb8e9c",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225206Z:5e15eccf-7bca-4bca-a57e-673bb4fb8e9c",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal; odata.streaming=true",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "2360c419-8c5a-43bd-afdc-578562f4d355",
+      "Body" : "{\r\n  \"value\":[\r\n    {\r\n      \"name\":\"cdnEndpoint555999\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999/endpoints/cdnEndpoint555999\",\"type\":\"Microsoft.Cdn/profiles/endpoints\",\"tags\":{\r\n        \r\n      },\"location\":\"EastUs\",\"properties\":{\r\n        \"hostName\":\"cdnEndpoint555999.azureedge.net\",\"originHostHeader\":null,\"provisioningState\":\"Succeeded\",\"resourceState\":\"Running\",\"isHttpAllowed\":false,\"isHttpsAllowed\":true,\"queryStringCachingBehavior\":\"BypassCaching\",\"originPath\":null,\"origins\":[\r\n          {\r\n            \"name\":\"origin\",\"properties\":{\r\n              \"hostName\":\"mylinuxapp.azurewebsites.net\",\"httpPort\":85,\"httpsPort\":444\r\n            }\r\n          }\r\n        ],\"customDomains\":[\r\n          \r\n        ],\"contentTypesToCompress\":[\r\n          \"text/plain\"\r\n        ],\"isCompressionEnabled\":true,\"optimizationType\":null,\"probePath\":null,\"geoFilters\":[\r\n          {\r\n            \"relativePath\":\"/path/videos\",\"action\":\"Block\",\"countryCodes\":[\r\n              \"AR\"\r\n            ]\r\n          },{\r\n            \"relativePath\":\"/path/images\",\"action\":\"Block\",\"countryCodes\":[\r\n              \"BE\"\r\n            ]\r\n          }\r\n        ],\"deliveryPolicy\":null\r\n      }\r\n    }\r\n  ]\r\n}",
+      "x-ms-client-request-id" : "fe5ade0e-9e91-452d-a10d-4f92027f16b9",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999/endpoints/cdnEndpoint555999/customDomains?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:52:06 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "28",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11923",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "fb83dda3-bf5a-4038-9b93-3fde777f79d0",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225207Z:fb83dda3-bf5a-4038-9b93-3fde777f79d0",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal; odata.streaming=true",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "87f668c5-28a7-42eb-a4a6-c3dcedfbb25d",
+      "Body" : "{\r\n  \"value\":[\r\n    \r\n  ]\r\n}",
+      "x-ms-client-request-id" : "8a054edf-f96c-4be2-8642-a7095799f2b5",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cdn/checkResourceUsage?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:52:08 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "111",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1199",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "1917501f-4ef6-42a9-a03f-3ae7d727c218",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225209Z:1917501f-4ef6-42a9-a03f-3ae7d727c218",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "09bc4767-e547-42be-abd6-b91f3082c863",
+      "Body" : "{\r\n  \"value\":[\r\n    {\r\n      \"resourceType\":\"profile\",\"unit\":\"count\",\"currentValue\":1,\"limit\":25\r\n    }\r\n  ]\r\n}",
+      "x-ms-client-request-id" : "ecacd61d-9f43-4e8d-beba-1715644370e9",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/providers/Microsoft.Cdn/edgenodes?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:52:08 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "15231",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "7559f72d-fddb-46ae-bc2b-c2b7022db542",
+      "x-ms-ratelimit-remaining-tenant-reads" : "11999",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225209Z:7559f72d-fddb-46ae-bc2b-c2b7022db542",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal; odata.streaming=true",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "43761c8a-ba3f-4047-a275-59bebef30a28",
+      "Body" : "{\r\n  \"value\":[\r\n    {\r\n      \"name\":\"Standard_Verizon\",\"id\":\"/providers/Microsoft.Cdn/edgenodes/Standard_Verizon\",\"type\":\"Microsoft.Cdn/edgenodes\",\"properties\":{\r\n        \"ipAddressGroups\":[\r\n          {\r\n            \"deliveryRegion\":\"All\",\"ipv4Addresses\":[\r\n              {\r\n                \"baseIpAddress\":\"5.104.64.0\",\"prefixLength\":21\r\n              },{\r\n                \"baseIpAddress\":\"46.22.64.0\",\"prefixLength\":20\r\n              },{\r\n                \"baseIpAddress\":\"61.49.62.128\",\"prefixLength\":25\r\n              },{\r\n                \"baseIpAddress\":\"61.221.181.64\",\"prefixLength\":26\r\n              },{\r\n                \"baseIpAddress\":\"68.232.32.0\",\"prefixLength\":20\r\n              },{\r\n                \"baseIpAddress\":\"72.21.80.0\",\"prefixLength\":20\r\n              },{\r\n                \"baseIpAddress\":\"88.194.45.128\",\"prefixLength\":26\r\n              },{\r\n                \"baseIpAddress\":\"93.184.208.0\",\"prefixLength\":20\r\n              },{\r\n                \"baseIpAddress\":\"101.226.203.0\",\"prefixLength\":24\r\n              },{\r\n                \"baseIpAddress\":\"108.161.240.0\",\"prefixLength\":20\r\n              },{\r\n                \"baseIpAddress\":\"110.232.176.0\",\"prefixLength\":22\r\n              },{\r\n                \"baseIpAddress\":\"117.18.232.0\",\"prefixLength\":21\r\n              },{\r\n                \"baseIpAddress\":\"117.103.183.0\",\"prefixLength\":24\r\n              },{\r\n                \"baseIpAddress\":\"120.132.137.0\",\"prefixLength\":25\r\n              },{\r\n                \"baseIpAddress\":\"121.156.59.224\",\"prefixLength\":27\r\n              },{\r\n                \"baseIpAddress\":\"121.189.46.0\",\"prefixLength\":23\r\n              },{\r\n                \"baseIpAddress\":\"152.195.0.0\",\"prefixLength\":16\r\n              },{\r\n                \"baseIpAddress\":\"180.240.184.0\",\"prefixLength\":24\r\n              },{\r\n                \"baseIpAddress\":\"192.16.0.0\",\"prefixLength\":18\r\n              },{\r\n                \"baseIpAddress\":\"192.30.0.0\",\"prefixLength\":19\r\n              },{\r\n                \"baseIpAddress\":\"192.229.128.0\",\"prefixLength\":17\r\n              },{\r\n                \"baseIpAddress\":\"194.255.210.64\",\"prefixLength\":26\r\n              },{\r\n                \"baseIpAddress\":\"198.7.16.0\",\"prefixLength\":20\r\n              },{\r\n                \"baseIpAddress\":\"203.74.4.64\",\"prefixLength\":26\r\n              },{\r\n                \"baseIpAddress\":\"213.64.234.0\",\"prefixLength\":26\r\n              },{\r\n                \"baseIpAddress\":\"213.65.58.0\",\"prefixLength\":24\r\n              },{\r\n                \"baseIpAddress\":\"68.140.206.0\",\"prefixLength\":23\r\n              },{\r\n                \"baseIpAddress\":\"68.130.0.0\",\"prefixLength\":17\r\n              },{\r\n                \"baseIpAddress\":\"152.190.247.0\",\"prefixLength\":24\r\n              },{\r\n                \"baseIpAddress\":\"65.222.137.0\",\"prefixLength\":26\r\n              },{\r\n                \"baseIpAddress\":\"65.222.145.128\",\"prefixLength\":26\r\n              },{\r\n                \"baseIpAddress\":\"65.198.79.64\",\"prefixLength\":26\r\n              },{\r\n                \"baseIpAddress\":\"65.199.146.192\",\"prefixLength\":26\r\n              },{\r\n                \"baseIpAddress\":\"65.200.151.160\",\"prefixLength\":27\r\n              },{\r\n                \"baseIpAddress\":\"65.200.157.192\",\"prefixLength\":27\r\n              },{\r\n                \"baseIpAddress\":\"68.130.128.0\",\"prefixLength\":24\r\n              },{\r\n                \"baseIpAddress\":\"68.130.136.0\",\"prefixLength\":21\r\n              },{\r\n                \"baseIpAddress\":\"65.200.46.128\",\"prefixLength\":26\r\n              },{\r\n                \"baseIpAddress\":\"213.175.80.0\",\"prefixLength\":24\r\n              },{\r\n                \"baseIpAddress\":\"152.199.0.0\",\"prefixLength\":16\r\n              },{\r\n                \"baseIpAddress\":\"36.67.255.152\",\"prefixLength\":29\r\n              },{\r\n                \"baseIpAddress\":\"194.255.242.160\",\"prefixLength\":27\r\n              },{\r\n                \"baseIpAddress\":\"195.67.219.64\",\"prefixLength\":27\r\n              },{\r\n                \"baseIpAddress\":\"88.194.47.224\",\"prefixLength\":27\r\n              },{\r\n                \"baseIpAddress\":\"203.66.205.0\",\"prefixLength\":24\r\n              }\r\n            ],\"ipv6Addresses\":[\r\n              {\r\n                \"baseIpAddress\":\"2001:2011:c002::\",\"prefixLength\":48\r\n              },{\r\n                \"baseIpAddress\":\"2001:2040:c006::\",\"prefixLength\":48\r\n              },{\r\n                \"baseIpAddress\":\"2001:2060:bffb::\",\"prefixLength\":48\r\n              },{\r\n                \"baseIpAddress\":\"2001:b032:c101::\",\"prefixLength\":48\r\n              },{\r\n                \"baseIpAddress\":\"2405:8f00:edca::\",\"prefixLength\":48\r\n              },{\r\n                \"baseIpAddress\":\"2405:8f00:edcb::\",\"prefixLength\":48\r\n              },{\r\n                \"baseIpAddress\":\"2606:2800::\",\"prefixLength\":32\r\n              },{\r\n                \"baseIpAddress\":\"2600:40ff:fffb::\",\"prefixLength\":56\r\n              },{\r\n                \"baseIpAddress\":\"2a02:16d8:103::\",\"prefixLength\":48\r\n              },{\r\n                \"baseIpAddress\":\"2600:40fc::\",\"prefixLength\":32\r\n              }\r\n            ]\r\n          }\r\n        ]\r\n      }\r\n    },{\r\n      \"name\":\"Premium_Verizon\",\"id\":\"/providers/Microsoft.Cdn/edgenodes/Premium_Verizon\",\"type\":\"Microsoft.Cdn/edgenodes\",\"properties\":{\r\n        \"ipAddressGroups\":[\r\n          {\r\n            \"deliveryRegion\":\"All\",\"ipv4Addresses\":[\r\n              {\r\n                \"baseIpAddress\":\"5.104.64.0\",\"prefixLength\":21\r\n              },{\r\n                \"baseIpAddress\":\"46.22.64.0\",\"prefixLength\":20\r\n              },{\r\n                \"baseIpAddress\":\"61.49.62.128\",\"prefixLength\":25\r\n              },{\r\n                \"baseIpAddress\":\"61.221.181.64\",\"prefixLength\":26\r\n              },{\r\n                \"baseIpAddress\":\"68.232.32.0\",\"prefixLength\":20\r\n              },{\r\n                \"baseIpAddress\":\"72.21.80.0\",\"prefixLength\":20\r\n              },{\r\n                \"baseIpAddress\":\"88.194.45.128\",\"prefixLength\":26\r\n              },{\r\n                \"baseIpAddress\":\"93.184.208.0\",\"prefixLength\":20\r\n              },{\r\n                \"baseIpAddress\":\"101.226.203.0\",\"prefixLength\":24\r\n              },{\r\n                \"baseIpAddress\":\"108.161.240.0\",\"prefixLength\":20\r\n              },{\r\n                \"baseIpAddress\":\"110.232.176.0\",\"prefixLength\":22\r\n              },{\r\n                \"baseIpAddress\":\"117.18.232.0\",\"prefixLength\":21\r\n              },{\r\n                \"baseIpAddress\":\"117.103.183.0\",\"prefixLength\":24\r\n              },{\r\n                \"baseIpAddress\":\"120.132.137.0\",\"prefixLength\":25\r\n              },{\r\n                \"baseIpAddress\":\"121.156.59.224\",\"prefixLength\":27\r\n              },{\r\n                \"baseIpAddress\":\"121.189.46.0\",\"prefixLength\":23\r\n              },{\r\n                \"baseIpAddress\":\"152.195.0.0\",\"prefixLength\":16\r\n              },{\r\n                \"baseIpAddress\":\"180.240.184.0\",\"prefixLength\":24\r\n              },{\r\n                \"baseIpAddress\":\"192.16.0.0\",\"prefixLength\":18\r\n              },{\r\n                \"baseIpAddress\":\"192.30.0.0\",\"prefixLength\":19\r\n              },{\r\n                \"baseIpAddress\":\"192.229.128.0\",\"prefixLength\":17\r\n              },{\r\n                \"baseIpAddress\":\"194.255.210.64\",\"prefixLength\":26\r\n              },{\r\n                \"baseIpAddress\":\"198.7.16.0\",\"prefixLength\":20\r\n              },{\r\n                \"baseIpAddress\":\"203.74.4.64\",\"prefixLength\":26\r\n              },{\r\n                \"baseIpAddress\":\"213.64.234.0\",\"prefixLength\":26\r\n              },{\r\n                \"baseIpAddress\":\"213.65.58.0\",\"prefixLength\":24\r\n              },{\r\n                \"baseIpAddress\":\"68.140.206.0\",\"prefixLength\":23\r\n              },{\r\n                \"baseIpAddress\":\"68.130.0.0\",\"prefixLength\":17\r\n              },{\r\n                \"baseIpAddress\":\"152.190.247.0\",\"prefixLength\":24\r\n              },{\r\n                \"baseIpAddress\":\"65.222.137.0\",\"prefixLength\":26\r\n              },{\r\n                \"baseIpAddress\":\"65.222.145.128\",\"prefixLength\":26\r\n              },{\r\n                \"baseIpAddress\":\"65.198.79.64\",\"prefixLength\":26\r\n              },{\r\n                \"baseIpAddress\":\"65.199.146.192\",\"prefixLength\":26\r\n              },{\r\n                \"baseIpAddress\":\"65.200.151.160\",\"prefixLength\":27\r\n              },{\r\n                \"baseIpAddress\":\"65.200.157.192\",\"prefixLength\":27\r\n              },{\r\n                \"baseIpAddress\":\"68.130.128.0\",\"prefixLength\":24\r\n              },{\r\n                \"baseIpAddress\":\"68.130.136.0\",\"prefixLength\":21\r\n              },{\r\n                \"baseIpAddress\":\"65.200.46.128\",\"prefixLength\":26\r\n              },{\r\n                \"baseIpAddress\":\"213.175.80.0\",\"prefixLength\":24\r\n              },{\r\n                \"baseIpAddress\":\"152.199.0.0\",\"prefixLength\":16\r\n              },{\r\n                \"baseIpAddress\":\"36.67.255.152\",\"prefixLength\":29\r\n              },{\r\n                \"baseIpAddress\":\"194.255.242.160\",\"prefixLength\":27\r\n              },{\r\n                \"baseIpAddress\":\"195.67.219.64\",\"prefixLength\":27\r\n              },{\r\n                \"baseIpAddress\":\"88.194.47.224\",\"prefixLength\":27\r\n              },{\r\n                \"baseIpAddress\":\"203.66.205.0\",\"prefixLength\":24\r\n              }\r\n            ],\"ipv6Addresses\":[\r\n              {\r\n                \"baseIpAddress\":\"2001:2011:c002::\",\"prefixLength\":48\r\n              },{\r\n                \"baseIpAddress\":\"2001:2040:c006::\",\"prefixLength\":48\r\n              },{\r\n                \"baseIpAddress\":\"2001:2060:bffb::\",\"prefixLength\":48\r\n              },{\r\n                \"baseIpAddress\":\"2001:b032:c101::\",\"prefixLength\":48\r\n              },{\r\n                \"baseIpAddress\":\"2405:8f00:edca::\",\"prefixLength\":48\r\n              },{\r\n                \"baseIpAddress\":\"2405:8f00:edcb::\",\"prefixLength\":48\r\n              },{\r\n                \"baseIpAddress\":\"2606:2800::\",\"prefixLength\":32\r\n              },{\r\n                \"baseIpAddress\":\"2600:40ff:fffb::\",\"prefixLength\":56\r\n              },{\r\n                \"baseIpAddress\":\"2a02:16d8:103::\",\"prefixLength\":48\r\n              },{\r\n                \"baseIpAddress\":\"2600:40fc::\",\"prefixLength\":32\r\n              }\r\n            ]\r\n          }\r\n        ]\r\n      }\r\n    },{\r\n      \"name\":\"Custom_Verizon\",\"id\":\"/providers/Microsoft.Cdn/edgenodes/Custom_Verizon\",\"type\":\"Microsoft.Cdn/edgenodes\",\"properties\":{\r\n        \"ipAddressGroups\":[\r\n          {\r\n            \"deliveryRegion\":\"All\",\"ipv4Addresses\":[\r\n              {\r\n                \"baseIpAddress\":\"5.104.64.0\",\"prefixLength\":21\r\n              },{\r\n                \"baseIpAddress\":\"46.22.64.0\",\"prefixLength\":20\r\n              },{\r\n                \"baseIpAddress\":\"61.49.62.128\",\"prefixLength\":25\r\n              },{\r\n                \"baseIpAddress\":\"61.221.181.64\",\"prefixLength\":26\r\n              },{\r\n                \"baseIpAddress\":\"68.232.32.0\",\"prefixLength\":20\r\n              },{\r\n                \"baseIpAddress\":\"72.21.80.0\",\"prefixLength\":20\r\n              },{\r\n                \"baseIpAddress\":\"88.194.45.128\",\"prefixLength\":26\r\n              },{\r\n                \"baseIpAddress\":\"93.184.208.0\",\"prefixLength\":20\r\n              },{\r\n                \"baseIpAddress\":\"101.226.203.0\",\"prefixLength\":24\r\n              },{\r\n                \"baseIpAddress\":\"108.161.240.0\",\"prefixLength\":20\r\n              },{\r\n                \"baseIpAddress\":\"110.232.176.0\",\"prefixLength\":22\r\n              },{\r\n                \"baseIpAddress\":\"117.18.232.0\",\"prefixLength\":21\r\n              },{\r\n                \"baseIpAddress\":\"117.103.183.0\",\"prefixLength\":24\r\n              },{\r\n                \"baseIpAddress\":\"120.132.137.0\",\"prefixLength\":25\r\n              },{\r\n                \"baseIpAddress\":\"121.156.59.224\",\"prefixLength\":27\r\n              },{\r\n                \"baseIpAddress\":\"121.189.46.0\",\"prefixLength\":23\r\n              },{\r\n                \"baseIpAddress\":\"152.195.0.0\",\"prefixLength\":16\r\n              },{\r\n                \"baseIpAddress\":\"180.240.184.0\",\"prefixLength\":24\r\n              },{\r\n                \"baseIpAddress\":\"192.16.0.0\",\"prefixLength\":18\r\n              },{\r\n                \"baseIpAddress\":\"192.30.0.0\",\"prefixLength\":19\r\n              },{\r\n                \"baseIpAddress\":\"192.229.128.0\",\"prefixLength\":17\r\n              },{\r\n                \"baseIpAddress\":\"194.255.210.64\",\"prefixLength\":26\r\n              },{\r\n                \"baseIpAddress\":\"198.7.16.0\",\"prefixLength\":20\r\n              },{\r\n                \"baseIpAddress\":\"203.74.4.64\",\"prefixLength\":26\r\n              },{\r\n                \"baseIpAddress\":\"213.64.234.0\",\"prefixLength\":26\r\n              },{\r\n                \"baseIpAddress\":\"213.65.58.0\",\"prefixLength\":24\r\n              },{\r\n                \"baseIpAddress\":\"68.140.206.0\",\"prefixLength\":23\r\n              },{\r\n                \"baseIpAddress\":\"68.130.0.0\",\"prefixLength\":17\r\n              },{\r\n                \"baseIpAddress\":\"152.190.247.0\",\"prefixLength\":24\r\n              },{\r\n                \"baseIpAddress\":\"65.222.137.0\",\"prefixLength\":26\r\n              },{\r\n                \"baseIpAddress\":\"65.222.145.128\",\"prefixLength\":26\r\n              },{\r\n                \"baseIpAddress\":\"65.198.79.64\",\"prefixLength\":26\r\n              },{\r\n                \"baseIpAddress\":\"65.199.146.192\",\"prefixLength\":26\r\n              },{\r\n                \"baseIpAddress\":\"65.200.151.160\",\"prefixLength\":27\r\n              },{\r\n                \"baseIpAddress\":\"65.200.157.192\",\"prefixLength\":27\r\n              },{\r\n                \"baseIpAddress\":\"68.130.128.0\",\"prefixLength\":24\r\n              },{\r\n                \"baseIpAddress\":\"68.130.136.0\",\"prefixLength\":21\r\n              },{\r\n                \"baseIpAddress\":\"65.200.46.128\",\"prefixLength\":26\r\n              },{\r\n                \"baseIpAddress\":\"213.175.80.0\",\"prefixLength\":24\r\n              },{\r\n                \"baseIpAddress\":\"152.199.0.0\",\"prefixLength\":16\r\n              },{\r\n                \"baseIpAddress\":\"36.67.255.152\",\"prefixLength\":29\r\n              },{\r\n                \"baseIpAddress\":\"194.255.242.160\",\"prefixLength\":27\r\n              },{\r\n                \"baseIpAddress\":\"195.67.219.64\",\"prefixLength\":27\r\n              },{\r\n                \"baseIpAddress\":\"88.194.47.224\",\"prefixLength\":27\r\n              },{\r\n                \"baseIpAddress\":\"203.66.205.0\",\"prefixLength\":24\r\n              }\r\n            ],\"ipv6Addresses\":[\r\n              {\r\n                \"baseIpAddress\":\"2001:2011:c002::\",\"prefixLength\":48\r\n              },{\r\n                \"baseIpAddress\":\"2001:2040:c006::\",\"prefixLength\":48\r\n              },{\r\n                \"baseIpAddress\":\"2001:2060:bffb::\",\"prefixLength\":48\r\n              },{\r\n                \"baseIpAddress\":\"2001:b032:c101::\",\"prefixLength\":48\r\n              },{\r\n                \"baseIpAddress\":\"2405:8f00:edca::\",\"prefixLength\":48\r\n              },{\r\n                \"baseIpAddress\":\"2405:8f00:edcb::\",\"prefixLength\":48\r\n              },{\r\n                \"baseIpAddress\":\"2606:2800::\",\"prefixLength\":32\r\n              },{\r\n                \"baseIpAddress\":\"2600:40ff:fffb::\",\"prefixLength\":56\r\n              },{\r\n                \"baseIpAddress\":\"2a02:16d8:103::\",\"prefixLength\":48\r\n              },{\r\n                \"baseIpAddress\":\"2600:40fc::\",\"prefixLength\":32\r\n              }\r\n            ]\r\n          }\r\n        ]\r\n      }\r\n    }\r\n  ]\r\n}",
+      "x-ms-client-request-id" : "8de398f4-d88a-4302-9fde-bca44a946f4f",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999/checkResourceUsage?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:52:11 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "112",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1198",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "b817fb2e-fe2d-4239-9f72-cdf915b25fd6",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225212Z:b817fb2e-fe2d-4239-9f72-cdf915b25fd6",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "09196b31-482c-4ce8-a27f-8f2ac3a8df7a",
+      "Body" : "{\r\n  \"value\":[\r\n    {\r\n      \"resourceType\":\"endpoint\",\"unit\":\"count\",\"currentValue\":1,\"limit\":25\r\n    }\r\n  ]\r\n}",
+      "x-ms-client-request-id" : "abb538c0-6a7b-4c94-b26e-5216a2423e7c",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999/endpoints/cdnEndpoint555999/checkResourceUsage?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:52:14 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "202",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1197",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "7de69ff8-8101-4605-98aa-b7e80a66993d",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225215Z:7de69ff8-8101-4605-98aa-b7e80a66993d",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "c4a58512-ed00-48b2-8f83-4c139947f73f",
+      "Body" : "{\r\n  \"value\":[\r\n    {\r\n      \"resourceType\":\"customdomain\",\"unit\":\"count\",\"currentValue\":0,\"limit\":25\r\n    },{\r\n      \"resourceType\":\"geofilter\",\"unit\":\"count\",\"currentValue\":2,\"limit\":25\r\n    }\r\n  ]\r\n}",
+      "x-ms-client-request-id" : "c8680c38-3b68-46c9-92f3-53146847c415",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cdn/profiles?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:52:17 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "423",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11922",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "2ee5267f-0e0c-48f2-9b34-6ffe8b32ba77",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225217Z:2ee5267f-0e0c-48f2-9b34-6ffe8b32ba77",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal; odata.streaming=true",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "aa7346d6-a144-468c-96f1-ddd29c8dcf06",
+      "Body" : "{\r\n  \"value\":[\r\n    {\r\n      \"name\":\"cdnProfile555999\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999\",\"type\":\"Microsoft.Cdn/profiles\",\"tags\":{\r\n        \r\n      },\"location\":\"EastUs\",\"sku\":{\r\n        \"name\":\"Standard_Akamai\"\r\n      },\"properties\":{\r\n        \"provisioningState\":\"Succeeded\",\"resourceState\":\"Active\"\r\n      }\r\n    }\r\n  ]\r\n}",
+      "x-ms-client-request-id" : "4a8ae894-7fdc-43cc-a392-ddbd36b3cdb3",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999/endpoints?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:52:18 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "1268",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11921",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "e65b430d-f15c-4108-a5c5-2be377e48c72",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225218Z:e65b430d-f15c-4108-a5c5-2be377e48c72",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal; odata.streaming=true",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "7de2ed72-6280-493e-bcac-17a7898c9507",
+      "Body" : "{\r\n  \"value\":[\r\n    {\r\n      \"name\":\"cdnEndpoint555999\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999/endpoints/cdnEndpoint555999\",\"type\":\"Microsoft.Cdn/profiles/endpoints\",\"tags\":{\r\n        \r\n      },\"location\":\"EastUs\",\"properties\":{\r\n        \"hostName\":\"cdnEndpoint555999.azureedge.net\",\"originHostHeader\":null,\"provisioningState\":\"Succeeded\",\"resourceState\":\"Running\",\"isHttpAllowed\":false,\"isHttpsAllowed\":true,\"queryStringCachingBehavior\":\"BypassCaching\",\"originPath\":null,\"origins\":[\r\n          {\r\n            \"name\":\"origin\",\"properties\":{\r\n              \"hostName\":\"mylinuxapp.azurewebsites.net\",\"httpPort\":85,\"httpsPort\":444\r\n            }\r\n          }\r\n        ],\"customDomains\":[\r\n          \r\n        ],\"contentTypesToCompress\":[\r\n          \"text/plain\"\r\n        ],\"isCompressionEnabled\":true,\"optimizationType\":null,\"probePath\":null,\"geoFilters\":[\r\n          {\r\n            \"relativePath\":\"/path/videos\",\"action\":\"Block\",\"countryCodes\":[\r\n              \"AR\"\r\n            ]\r\n          },{\r\n            \"relativePath\":\"/path/images\",\"action\":\"Block\",\"countryCodes\":[\r\n              \"BE\"\r\n            ]\r\n          }\r\n        ],\"deliveryPolicy\":null\r\n      }\r\n    }\r\n  ]\r\n}",
+      "x-ms-client-request-id" : "7ce6698f-d69b-48c9-a46b-8e47ff4e791d",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999/endpoints/cdnEndpoint555999/customDomains?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:52:20 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "28",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11920",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "c0e300bf-6ac6-430d-a685-a4f3eee42ea0",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225220Z:c0e300bf-6ac6-430d-a685-a4f3eee42ea0",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal; odata.streaming=true",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "bbf6e5c9-780f-41f4-b200-cbceda82b401",
+      "Body" : "{\r\n  \"value\":[\r\n    \r\n  ]\r\n}",
+      "x-ms-client-request-id" : "0d6c449d-33c7-484e-829f-879c336036eb",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:52:21 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "363",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11919",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "fd90861d-fffc-4c41-b16f-0bd11d367663",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225221Z:fd90861d-fffc-4c41-b16f-0bd11d367663",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal; odata.streaming=true",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "1be9a6e9-cc21-44d3-8fcd-28a50020b01d",
+      "Body" : "{\r\n  \"name\":\"cdnProfile555999\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999\",\"type\":\"Microsoft.Cdn/profiles\",\"tags\":{\r\n    \r\n  },\"location\":\"EastUs\",\"sku\":{\r\n    \"name\":\"Standard_Akamai\"\r\n  },\"properties\":{\r\n    \"provisioningState\":\"Succeeded\",\"resourceState\":\"Active\"\r\n  }\r\n}",
+      "x-ms-client-request-id" : "4e635612-e823-4671-a857-573e6abf4ba6",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999/endpoints?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:52:23 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "1268",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11918",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "85f50162-943b-496e-b74a-02f836cbfad0",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225223Z:85f50162-943b-496e-b74a-02f836cbfad0",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal; odata.streaming=true",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "debd4497-0fea-4094-8ab1-2e27eb3040ff",
+      "Body" : "{\r\n  \"value\":[\r\n    {\r\n      \"name\":\"cdnEndpoint555999\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999/endpoints/cdnEndpoint555999\",\"type\":\"Microsoft.Cdn/profiles/endpoints\",\"tags\":{\r\n        \r\n      },\"location\":\"EastUs\",\"properties\":{\r\n        \"hostName\":\"cdnEndpoint555999.azureedge.net\",\"originHostHeader\":null,\"provisioningState\":\"Succeeded\",\"resourceState\":\"Running\",\"isHttpAllowed\":false,\"isHttpsAllowed\":true,\"queryStringCachingBehavior\":\"BypassCaching\",\"originPath\":null,\"origins\":[\r\n          {\r\n            \"name\":\"origin\",\"properties\":{\r\n              \"hostName\":\"mylinuxapp.azurewebsites.net\",\"httpPort\":85,\"httpsPort\":444\r\n            }\r\n          }\r\n        ],\"customDomains\":[\r\n          \r\n        ],\"contentTypesToCompress\":[\r\n          \"text/plain\"\r\n        ],\"isCompressionEnabled\":true,\"optimizationType\":null,\"probePath\":null,\"geoFilters\":[\r\n          {\r\n            \"relativePath\":\"/path/videos\",\"action\":\"Block\",\"countryCodes\":[\r\n              \"AR\"\r\n            ]\r\n          },{\r\n            \"relativePath\":\"/path/images\",\"action\":\"Block\",\"countryCodes\":[\r\n              \"BE\"\r\n            ]\r\n          }\r\n        ],\"deliveryPolicy\":null\r\n      }\r\n    }\r\n  ]\r\n}",
+      "x-ms-client-request-id" : "c7065184-c642-4048-a983-e415e5cf100c",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999/endpoints/cdnEndpoint555999/customDomains?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:52:24 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "28",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11917",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "a2521a6d-7ab4-4898-97a3-211b729c2e45",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225224Z:a2521a6d-7ab4-4898-97a3-211b729c2e45",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal; odata.streaming=true",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "c84e8721-2e13-418d-8c04-09045a003679",
+      "Body" : "{\r\n  \"value\":[\r\n    \r\n  ]\r\n}",
+      "x-ms-client-request-id" : "37951b2a-c380-476c-9c67-a2798a1c8407",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:52:25 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "363",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11916",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "37502f0c-f808-436b-9ce1-6795bb2af250",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225226Z:37502f0c-f808-436b-9ce1-6795bb2af250",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal; odata.streaming=true",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "01038482-8ad3-4787-85b8-a8c06461abd4",
+      "Body" : "{\r\n  \"name\":\"cdnProfile555999\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999\",\"type\":\"Microsoft.Cdn/profiles\",\"tags\":{\r\n    \r\n  },\"location\":\"EastUs\",\"sku\":{\r\n    \"name\":\"Standard_Akamai\"\r\n  },\"properties\":{\r\n    \"provisioningState\":\"Succeeded\",\"resourceState\":\"Active\"\r\n  }\r\n}",
+      "x-ms-client-request-id" : "9e5398ce-9971-40cc-be40-28a7e8a0fe6c",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999/endpoints?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:52:27 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "1268",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11915",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "ddc584e6-e002-4a74-bb5f-5efb15f32af9",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225227Z:ddc584e6-e002-4a74-bb5f-5efb15f32af9",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal; odata.streaming=true",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "d5921e94-6d14-450a-85c9-aef2941ccad2",
+      "Body" : "{\r\n  \"value\":[\r\n    {\r\n      \"name\":\"cdnEndpoint555999\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999/endpoints/cdnEndpoint555999\",\"type\":\"Microsoft.Cdn/profiles/endpoints\",\"tags\":{\r\n        \r\n      },\"location\":\"EastUs\",\"properties\":{\r\n        \"hostName\":\"cdnEndpoint555999.azureedge.net\",\"originHostHeader\":null,\"provisioningState\":\"Succeeded\",\"resourceState\":\"Running\",\"isHttpAllowed\":false,\"isHttpsAllowed\":true,\"queryStringCachingBehavior\":\"BypassCaching\",\"originPath\":null,\"origins\":[\r\n          {\r\n            \"name\":\"origin\",\"properties\":{\r\n              \"hostName\":\"mylinuxapp.azurewebsites.net\",\"httpPort\":85,\"httpsPort\":444\r\n            }\r\n          }\r\n        ],\"customDomains\":[\r\n          \r\n        ],\"contentTypesToCompress\":[\r\n          \"text/plain\"\r\n        ],\"isCompressionEnabled\":true,\"optimizationType\":null,\"probePath\":null,\"geoFilters\":[\r\n          {\r\n            \"relativePath\":\"/path/videos\",\"action\":\"Block\",\"countryCodes\":[\r\n              \"AR\"\r\n            ]\r\n          },{\r\n            \"relativePath\":\"/path/images\",\"action\":\"Block\",\"countryCodes\":[\r\n              \"BE\"\r\n            ]\r\n          }\r\n        ],\"deliveryPolicy\":null\r\n      }\r\n    }\r\n  ]\r\n}",
+      "x-ms-client-request-id" : "de6b7b98-1cc6-4db1-8b91-d2beb9dd6fa6",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999/endpoints/cdnEndpoint555999/customDomains?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:52:28 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "28",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11914",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "05dee77b-8df6-480d-9f74-0c09812c5070",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225228Z:05dee77b-8df6-480d-9f74-0c09812c5070",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal; odata.streaming=true",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "aa5cef86-7b78-46bb-b32e-eb2491d9e3dc",
+      "Body" : "{\r\n  \"value\":[\r\n    \r\n  ]\r\n}",
+      "x-ms-client-request-id" : "e56f2f41-14aa-43db-9a71-021f189fe74b",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:1234/providers/Microsoft.Cdn/checkNameAvailability?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:52:30 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "57",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "c956082e-e4dc-47b5-b760-b7d940b4877f",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225230Z:c956082e-e4dc-47b5-b760-b7d940b4877f",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal",
+      "x-ms-ratelimit-remaining-tenant-writes" : "1199",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "df62c977-1a4d-4144-a49a-ce605ce6ddd6",
+      "Body" : "{\r\n  \"nameAvailable\":true,\"reason\":null,\"message\":null\r\n}",
+      "x-ms-client-request-id" : "4e74534c-c248-476e-982d-32629ccec7cb",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999/endpoints/endpointcb76511415cbe3a2d1c94d978?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:53:13 GMT",
+      "content-length" : "942",
+      "server" : "Microsoft-IIS/8.5",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1178",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "205a219a-7e9a-415d-be53-c4e15f41924c",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225313Z:205a219a-7e9a-415d-be53-c4e15f41924c",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "cd68e994-cc40-4be0-b4c6-8f986a1dd5f0",
+      "Body" : "{\r\n  \"name\":\"endpointcb76511415cbe3a2d1c94d978\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999/endpoints/endpointcb76511415cbe3a2d1c94d978\",\"type\":\"Microsoft.Cdn/profiles/endpoints\",\"tags\":{\r\n    \r\n  },\"location\":\"EastUs\",\"properties\":{\r\n    \"hostName\":\"endpointcb76511415cbe3a2d1c94d978.azureedge.net\",\"originHostHeader\":null,\"provisioningState\":\"Creating\",\"resourceState\":\"Creating\",\"isHttpAllowed\":true,\"isHttpsAllowed\":true,\"queryStringCachingBehavior\":\"IgnoreQueryString\",\"originPath\":null,\"origins\":[\r\n      {\r\n        \"name\":\"origin\",\"properties\":{\r\n          \"hostName\":\"www.bing.com\",\"httpPort\":null,\"httpsPort\":null\r\n        }\r\n      }\r\n    ],\"customDomains\":[\r\n      \r\n    ],\"contentTypesToCompress\":[\r\n      \r\n    ],\"isCompressionEnabled\":false,\"optimizationType\":null,\"probePath\":null,\"geoFilters\":[\r\n      \r\n    ],\"deliveryPolicy\":null\r\n  }\r\n}",
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/operationresults/35ab49ac-bba2-497f-b914-1201838eed41?api-version=2017-10-12",
+      "x-ms-client-request-id" : "68d19331-8005-4e4a-b04d-4f862abbdc2d",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/operationresults/35ab49ac-bba2-497f-b914-1201838eed41?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:53:14 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "78",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11913",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "d00b319b-a9d8-4dd4-9313-edbf85377b22",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225315Z:d00b319b-a9d8-4dd4-9313-edbf85377b22",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal; odata.streaming=true",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "6af329e4-5e4f-4adf-9c00-95bd86704c27",
+      "Body" : "{\r\n  \"status\":\"InProgress\",\"error\":{\r\n    \"code\":\"None\",\"message\":null\r\n  }\r\n}",
+      "x-ms-client-request-id" : "5653e195-340c-4a52-b03a-3e7e7d89e196",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/operationresults/35ab49ac-bba2-497f-b914-1201838eed41?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:53:44 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "78",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11912",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "2a34c06d-6fab-4282-9946-0e52527102d9",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225345Z:2a34c06d-6fab-4282-9946-0e52527102d9",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal; odata.streaming=true",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "a4abe23d-cb6e-4ccf-ad0f-87d13e3752de",
+      "Body" : "{\r\n  \"status\":\"InProgress\",\"error\":{\r\n    \"code\":\"None\",\"message\":null\r\n  }\r\n}",
+      "x-ms-client-request-id" : "a8d99e18-0288-4d56-a9d9-3c8e7138f192",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/operationresults/35ab49ac-bba2-497f-b914-1201838eed41?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:54:15 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "77",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11911",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "4cf33b00-6b2e-4c27-b718-a0ccffdeb527",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225416Z:4cf33b00-6b2e-4c27-b718-a0ccffdeb527",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal; odata.streaming=true",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "79828962-911e-4eaa-9b22-8bdf3dfa8d13",
+      "Body" : "{\r\n  \"status\":\"Succeeded\",\"error\":{\r\n    \"code\":\"None\",\"message\":null\r\n  }\r\n}",
+      "x-ms-client-request-id" : "ab9feb5f-370d-4f2a-ae35-e71a74301b2b",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999/endpoints/endpointcb76511415cbe3a2d1c94d978?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:54:17 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "942",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11910",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "3813feef-1df9-4182-9b3d-5ba23b59871d",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225417Z:3813feef-1df9-4182-9b3d-5ba23b59871d",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal; odata.streaming=true",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "96ab7eab-bc5f-471f-ac88-275bf29e31c9",
+      "Body" : "{\r\n  \"name\":\"endpointcb76511415cbe3a2d1c94d978\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999/endpoints/endpointcb76511415cbe3a2d1c94d978\",\"type\":\"Microsoft.Cdn/profiles/endpoints\",\"tags\":{\r\n    \r\n  },\"location\":\"EastUs\",\"properties\":{\r\n    \"hostName\":\"endpointcb76511415cbe3a2d1c94d978.azureedge.net\",\"originHostHeader\":null,\"provisioningState\":\"Succeeded\",\"resourceState\":\"Running\",\"isHttpAllowed\":true,\"isHttpsAllowed\":true,\"queryStringCachingBehavior\":\"IgnoreQueryString\",\"originPath\":null,\"origins\":[\r\n      {\r\n        \"name\":\"origin\",\"properties\":{\r\n          \"hostName\":\"www.bing.com\",\"httpPort\":null,\"httpsPort\":null\r\n        }\r\n      }\r\n    ],\"customDomains\":[\r\n      \r\n    ],\"contentTypesToCompress\":[\r\n      \r\n    ],\"isCompressionEnabled\":false,\"optimizationType\":null,\"probePath\":null,\"geoFilters\":[\r\n      \r\n    ],\"deliveryPolicy\":null\r\n  }\r\n}",
+      "x-ms-client-request-id" : "cef9ce86-2e63-4de7-858f-d4147d3d55b1",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999/endpoints/endpointcb76511415cbe3a2d1c94d978/customDomains?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:54:18 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "28",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11909",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "0f2b247f-9542-468c-942b-b4eafc6b47f9",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225419Z:0f2b247f-9542-468c-942b-b4eafc6b47f9",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal; odata.streaming=true",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "e3eb8964-0b49-4be9-9c95-d941e8d6391c",
+      "Body" : "{\r\n  \"value\":[\r\n    \r\n  ]\r\n}",
+      "x-ms-client-request-id" : "94c0ae56-aefc-48fe-aaf3-f35137e947d8",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999/endpoints/somenewnamefortheendpoint?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:54:36 GMT",
+      "content-length" : "1030",
+      "server" : "Microsoft-IIS/8.5",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1177",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "566c80e3-b3b6-45a5-88e3-775bd58fd188",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225437Z:566c80e3-b3b6-45a5-88e3-775bd58fd188",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "4a21c87f-b5bc-4678-b675-2e8cdaf97e2c",
+      "Body" : "{\r\n  \"name\":\"somenewnamefortheendpoint\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999/endpoints/somenewnamefortheendpoint\",\"type\":\"Microsoft.Cdn/profiles/endpoints\",\"tags\":{\r\n    \r\n  },\"location\":\"EastUs\",\"properties\":{\r\n    \"hostName\":\"somenewnamefortheendpoint.azureedge.net\",\"originHostHeader\":null,\"provisioningState\":\"Creating\",\"resourceState\":\"Creating\",\"isHttpAllowed\":true,\"isHttpsAllowed\":true,\"queryStringCachingBehavior\":\"IgnoreQueryString\",\"originPath\":null,\"origins\":[\r\n      {\r\n        \"name\":\"origin\",\"properties\":{\r\n          \"hostName\":\"www.contoso.com\",\"httpPort\":null,\"httpsPort\":null\r\n        }\r\n      }\r\n    ],\"customDomains\":[\r\n      \r\n    ],\"contentTypesToCompress\":[\r\n      \r\n    ],\"isCompressionEnabled\":false,\"optimizationType\":null,\"probePath\":null,\"geoFilters\":[\r\n      {\r\n        \"relativePath\":\"/path/music\",\"action\":\"Block\",\"countryCodes\":[\r\n          \"UM\"\r\n        ]\r\n      }\r\n    ],\"deliveryPolicy\":null\r\n  }\r\n}",
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/operationresults/d1470d0a-6b39-497f-8495-e1bd06582e5d?api-version=2017-10-12",
+      "x-ms-client-request-id" : "3c648229-e81c-4f9a-b89c-2521f553df89",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/operationresults/d1470d0a-6b39-497f-8495-e1bd06582e5d?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:54:37 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "78",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11908",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "04440d49-2f63-45d9-8394-216deb0f2b1e",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225437Z:04440d49-2f63-45d9-8394-216deb0f2b1e",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal; odata.streaming=true",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "af5023b8-bd37-4117-9a41-fa319159934b",
+      "Body" : "{\r\n  \"status\":\"InProgress\",\"error\":{\r\n    \"code\":\"None\",\"message\":null\r\n  }\r\n}",
+      "x-ms-client-request-id" : "f70884ef-266c-4726-8afb-1b7b932e255b",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/operationresults/d1470d0a-6b39-497f-8495-e1bd06582e5d?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:55:08 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "78",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11907",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "bef7d802-8849-40c4-b181-d3e31a6fd0ba",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225509Z:bef7d802-8849-40c4-b181-d3e31a6fd0ba",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal; odata.streaming=true",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "892390f6-4ab8-4243-ad07-33ee02d88b8a",
+      "Body" : "{\r\n  \"status\":\"InProgress\",\"error\":{\r\n    \"code\":\"None\",\"message\":null\r\n  }\r\n}",
+      "x-ms-client-request-id" : "91d46056-55fb-4934-8006-a25c2ae48f1c",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/operationresults/d1470d0a-6b39-497f-8495-e1bd06582e5d?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:55:39 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "77",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11906",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "efc26d1e-1252-44eb-a6bb-6df16a6edcc6",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225539Z:efc26d1e-1252-44eb-a6bb-6df16a6edcc6",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal; odata.streaming=true",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "0ffd0e4c-1314-4d81-b35a-47ad553b9522",
+      "Body" : "{\r\n  \"status\":\"Succeeded\",\"error\":{\r\n    \"code\":\"None\",\"message\":null\r\n  }\r\n}",
+      "x-ms-client-request-id" : "9e673f45-6da1-4fc0-b70c-a9846b99dff6",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999/endpoints/somenewnamefortheendpoint?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:55:41 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "1030",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11905",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "d453be2e-af0e-48bd-bebf-d84c4a683da5",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225541Z:d453be2e-af0e-48bd-bebf-d84c4a683da5",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal; odata.streaming=true",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "ecdf52e6-cb56-4758-9f49-2f6f9ac440ea",
+      "Body" : "{\r\n  \"name\":\"somenewnamefortheendpoint\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999/endpoints/somenewnamefortheendpoint\",\"type\":\"Microsoft.Cdn/profiles/endpoints\",\"tags\":{\r\n    \r\n  },\"location\":\"EastUs\",\"properties\":{\r\n    \"hostName\":\"somenewnamefortheendpoint.azureedge.net\",\"originHostHeader\":null,\"provisioningState\":\"Succeeded\",\"resourceState\":\"Running\",\"isHttpAllowed\":true,\"isHttpsAllowed\":true,\"queryStringCachingBehavior\":\"IgnoreQueryString\",\"originPath\":null,\"origins\":[\r\n      {\r\n        \"name\":\"origin\",\"properties\":{\r\n          \"hostName\":\"www.contoso.com\",\"httpPort\":null,\"httpsPort\":null\r\n        }\r\n      }\r\n    ],\"customDomains\":[\r\n      \r\n    ],\"contentTypesToCompress\":[\r\n      \r\n    ],\"isCompressionEnabled\":false,\"optimizationType\":null,\"probePath\":null,\"geoFilters\":[\r\n      {\r\n        \"relativePath\":\"/path/music\",\"action\":\"Block\",\"countryCodes\":[\r\n          \"UM\"\r\n        ]\r\n      }\r\n    ],\"deliveryPolicy\":null\r\n  }\r\n}",
+      "x-ms-client-request-id" : "2d4cf74d-079f-4c27-b4b7-a813bded6920",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999/endpoints/somenewnamefortheendpoint/customDomains?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:55:42 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "28",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11904",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "c3e8b8d2-e24d-4c95-8396-f125833314bb",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225542Z:c3e8b8d2-e24d-4c95-8396-f125833314bb",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal; odata.streaming=true",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "ddaa5b09-3354-4efa-bce0-3b0f336e284c",
+      "Body" : "{\r\n  \"value\":[\r\n    \r\n  ]\r\n}",
+      "x-ms-client-request-id" : "a4e69f2c-1d67-49fd-bc44-0f4d2de2f550",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999/endpoints/cdnEndpoint555999/origins/origin?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:55:52 GMT",
+      "content-length" : "405",
+      "server" : "Microsoft-IIS/8.5",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1176",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "2490bd77-89d2-4453-9f1b-98aafdcbdd35",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225552Z:2490bd77-89d2-4453-9f1b-98aafdcbdd35",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/operationresults/a3dc3778-8e10-487b-afa8-d5cfe0dca0ad/profileresults/cdnProfile555999/endpointresults/cdnEndpoint555999/originresults/origin?api-version=2017-10-12",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "36bd8143-0ab8-4a75-aec0-28c338ce4e1c",
+      "Body" : "{\r\n  \"name\":\"origin\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999/endpoints/cdnEndpoint555999/origins/origin\",\"type\":\"Microsoft.Cdn/profiles/endpoints/origins\",\"properties\":{\r\n    \"provisioningState\":\"Succeeded\",\"resourceState\":\"Active\",\"hostName\":\"mylinuxapp.azurewebsites.net\",\"httpPort\":1111,\"httpsPort\":444\r\n  }\r\n}",
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/operationresults/a3dc3778-8e10-487b-afa8-d5cfe0dca0ad?api-version=2017-10-12",
+      "x-ms-client-request-id" : "0f7301cb-b1bb-41fa-bf06-dd363e233c77",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999/endpoints/cdnEndpoint555999?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:56:01 GMT",
+      "content-length" : "916",
+      "server" : "Microsoft-IIS/8.5",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1175",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "636568aa-0dcd-423e-8f22-bd8eb797f930",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225602Z:636568aa-0dcd-423e-8f22-bd8eb797f930",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/operationresults/4a7ba0e8-0392-47e2-81d6-63ca500037a0/profileresults/cdnProfile555999/endpointresults/cdnEndpoint555999?api-version=2017-10-12",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "4e1e5394-f6be-4ae7-92b4-2d566dac9670",
+      "Body" : "{\r\n  \"name\":\"cdnEndpoint555999\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999/endpoints/cdnEndpoint555999\",\"type\":\"Microsoft.Cdn/profiles/endpoints\",\"tags\":{\r\n    \r\n  },\"location\":\"EastUs\",\"properties\":{\r\n    \"hostName\":\"cdnEndpoint555999.azureedge.net\",\"originHostHeader\":null,\"provisioningState\":\"Succeeded\",\"resourceState\":\"Running\",\"isHttpAllowed\":true,\"isHttpsAllowed\":true,\"queryStringCachingBehavior\":\"BypassCaching\",\"originPath\":null,\"origins\":[\r\n      {\r\n        \"name\":\"origin\",\"properties\":{\r\n          \"hostName\":\"mylinuxapp.azurewebsites.net\",\"httpPort\":1111,\"httpsPort\":444\r\n        }\r\n      }\r\n    ],\"customDomains\":[\r\n      \r\n    ],\"contentTypesToCompress\":[\r\n      \"text/plain\"\r\n    ],\"isCompressionEnabled\":true,\"optimizationType\":null,\"probePath\":null,\"geoFilters\":[\r\n      \r\n    ],\"deliveryPolicy\":null\r\n  }\r\n}",
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/operationresults/4a7ba0e8-0392-47e2-81d6-63ca500037a0?api-version=2017-10-12",
+      "x-ms-client-request-id" : "f9e198f6-233f-41ce-9004-45d37997a3cc",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:56:08 GMT",
+      "content-length" : "382",
+      "server" : "Microsoft-IIS/8.5",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1174",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "d4297e5e-aad9-47d7-8dbd-036379c9aba6",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225608Z:d4297e5e-aad9-47d7-8dbd-036379c9aba6",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/operationresults/409229f4-aab8-4752-8816-85e915fcb0f3/profileresults/cdnProfile555999?api-version=2017-10-12",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "c68933be-0bad-424d-b5ce-e3e007ec678b",
+      "Body" : "{\r\n  \"name\":\"cdnProfile555999\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999\",\"type\":\"Microsoft.Cdn/profiles\",\"tags\":{\r\n    \"provider\":\"Akamai\"\r\n  },\"location\":\"EastUs\",\"sku\":{\r\n    \"name\":\"Standard_Akamai\"\r\n  },\"properties\":{\r\n    \"provisioningState\":\"Succeeded\",\"resourceState\":\"Active\"\r\n  }\r\n}",
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/operationresults/409229f4-aab8-4752-8816-85e915fcb0f3?api-version=2017-10-12",
+      "x-ms-client-request-id" : "78d01e42-edcd-4a5b-8dcb-8be1bbe8b529",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg555999/providers/Microsoft.Cdn/profiles/cdnProfile555999?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:56:13 GMT",
+      "content-length" : "0",
+      "server" : "Microsoft-IIS/8.5",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14997",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "3e599c2b-7a1b-461b-8731-c4b1baa9d0b2",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225614Z:3e599c2b-7a1b-461b-8731-c4b1baa9d0b2",
+      "x-powered-by" : "ASP.NET",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/operationresults/3d89d373-c419-4dde-96bb-02410a8996fd/profileresults/cdnProfile555999?api-version=2017-10-12",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "37cef5df-f4ec-4dd6-ba6e-abe63a89c9c2",
+      "Body" : "",
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/operationresults/3d89d373-c419-4dde-96bb-02410a8996fd?api-version=2017-10-12",
+      "x-ms-client-request-id" : "08df7502-6870-4fee-bf90-e5ab0cc9b905"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/operationresults/3d89d373-c419-4dde-96bb-02410a8996fd?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:56:14 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "78",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11903",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "2bdfbf79-475d-4ad3-bcac-743808842449",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225614Z:2bdfbf79-475d-4ad3-bcac-743808842449",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal; odata.streaming=true",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "8e9f62bd-3daf-43e6-ad5c-320c7c056e66",
+      "Body" : "{\r\n  \"status\":\"InProgress\",\"error\":{\r\n    \"code\":\"None\",\"message\":null\r\n  }\r\n}",
+      "x-ms-client-request-id" : "224a281e-a336-4091-9ff3-2ee581c60a0e",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/operationresults/3d89d373-c419-4dde-96bb-02410a8996fd?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:56:45 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "78",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11902",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "d9af904b-6cfd-4907-b059-a65aa5c044b3",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225645Z:d9af904b-6cfd-4907-b059-a65aa5c044b3",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal; odata.streaming=true",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "e3a7aab8-ff14-43d1-9dfd-aabc66f1932f",
+      "Body" : "{\r\n  \"status\":\"InProgress\",\"error\":{\r\n    \"code\":\"None\",\"message\":null\r\n  }\r\n}",
+      "x-ms-client-request-id" : "114de9f5-93f1-4ed1-b4e4-738f92a5f2e8",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/operationresults/3d89d373-c419-4dde-96bb-02410a8996fd?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:57:16 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "78",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11901",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "464423c5-cb6f-49ca-be6a-877b1f1e5617",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225716Z:464423c5-cb6f-49ca-be6a-877b1f1e5617",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal; odata.streaming=true",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "702ee38a-3685-41d8-85ce-f20bebe7d34f",
+      "Body" : "{\r\n  \"status\":\"InProgress\",\"error\":{\r\n    \"code\":\"None\",\"message\":null\r\n  }\r\n}",
+      "x-ms-client-request-id" : "43f7087c-83e1-4ea5-b2c7-6a5a8735c3ec",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/operationresults/3d89d373-c419-4dde-96bb-02410a8996fd?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:57:46 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "78",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11900",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "d2448d5a-9f29-4371-a5ea-95c965cd1239",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225747Z:d2448d5a-9f29-4371-a5ea-95c965cd1239",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal; odata.streaming=true",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "ecf9d44e-9440-457e-9a1e-4699c2fa2337",
+      "Body" : "{\r\n  \"status\":\"InProgress\",\"error\":{\r\n    \"code\":\"None\",\"message\":null\r\n  }\r\n}",
+      "x-ms-client-request-id" : "c5814371-2efd-41e7-8663-b5a2f652de9f",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/operationresults/3d89d373-c419-4dde-96bb-02410a8996fd?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:58:16 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "78",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11899",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "e73e78d4-cb90-4240-a3f9-cd2e00c042ad",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225817Z:e73e78d4-cb90-4240-a3f9-cd2e00c042ad",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal; odata.streaming=true",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "471c9e3a-5699-4c28-a776-8da44bcce0a4",
+      "Body" : "{\r\n  \"status\":\"InProgress\",\"error\":{\r\n    \"code\":\"None\",\"message\":null\r\n  }\r\n}",
+      "x-ms-client-request-id" : "025d6d49-0062-4f63-a0e0-8d6af1fa679b",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999/providers/Microsoft.Cdn/operationresults/3d89d373-c419-4dde-96bb-02410a8996fd?api-version=2017-10-12",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (CdnManagementClient, 2017-10-12)"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:58:47 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "77",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11898",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "9cdd0506-6273-4a10-8a75-1852c768a6c3",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225848Z:9cdd0506-6273-4a10-8a75-1852c768a6c3",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata.metadata=minimal; odata.streaming=true",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "338fcf3d-8cf5-4dc9-b61b-2f325ebee57e",
+      "Body" : "{\r\n  \"status\":\"Succeeded\",\"error\":{\r\n    \"code\":\"None\",\"message\":null\r\n  }\r\n}",
+      "x-ms-client-request-id" : "518217e8-32ed-4045-a839-e9c9d07fb1be",
+      "odata-version" : "4.0"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg555999?api-version=2020-06-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d3fc60ad002f4c863d99d3beb851e8edf973a5248d395e580e9f144e262d969c Java:1.8.0_221 (ResourceManagementClient, 2019-08-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Sun, 13 Oct 2019 22:58:53 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14996",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "770bbe23-d739-4499-881b-a5a2532f7e83",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20191013T225854Z:770bbe23-d739-4499-881b-a5a2532f7e83",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzU1NTk5OS1FQVNUVVMiLCJqb2JMb2NhdGlvbiI6ImVhc3R1cyJ9?api-version=2019-08-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "770bbe23-d739-4499-881b-a5a2532f7e83",
+      "Body" : ""
+    }
+  } ],
+  "variables" : [ "555999", "4970d7df-2d2b-4e4f-8d45-6014a3c146d5", "d7c551d9-01af-4d01-9f2e-62b493f51b48", "c0b162ec-d6da-4660-a9f6-72fff81ba076", "12f6c973-8edc-408a-8f60-5263451647e4", "9d2e3e95-4e01-4bd2-8228-a77117cd3227", "1ae274af-df5f-4ff3-97e3-8d663e800420", "fe065db9-76e3-4b9f-9cb9-f115c52fd36d", "cb882282-536b-469f-8bbd-dc53aae0cd42", "a2978d34-dcb6-4e5b-9f35-06d57bc3775c", "c13cb543-6fe5-4b2c-a889-235a71f7a4e8", "endpointcb76511415cbe3a2d1c94d978", "8f802561-b217-4e6d-b02a-7959cbdb647c", "e15abdd7-0dff-4a09-819f-970b34244923" ]
+}

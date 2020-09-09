@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-client-sdk-parent</artifactId>
+    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>spring-integration-servicebus</artifactId>
+  <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-integration-servicebus;current} -->
+
+  <name>Azure Spring Integration Service Bus</name>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
+
+  <properties>
+    <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.15</jacoco.min.branchcoverage>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>spring-integration-azure-core</artifactId>
+      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-integration-azure-core;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-servicebus</artifactId>
+      <version>3.4.0</version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>spring-integration-azure-test</artifactId>
+      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-integration-azure-test;current} -->
+      <scope>test</scope>
+    </dependency>
+    <!-- Added this dependency to include necessary annotations used by reactor core.
+      Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
+      which is used in @Nullable annotation in reactor core classes -->
+    <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>jsr305</artifactId>
+      <version>3.0.2</version> <!-- {x-version-update;com.google.code.findbugs:jsr305;external_dependency} -->
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <includes>
+                <include>com.microsoft.azure:azure-servicebus:[3.4.0]</include> <!-- {x-include-update;com.microsoft.azure:azure-servicebus;external_dependency} -->
+                <include>com.microsoft.azure:spring-integration-azure-core:[1.2.8-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-integration-azure-core;current} -->
+              </includes>
+            </bannedDependencies>
+          </rules>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

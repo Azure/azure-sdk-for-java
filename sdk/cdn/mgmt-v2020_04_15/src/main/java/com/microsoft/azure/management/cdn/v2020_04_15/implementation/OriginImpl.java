@@ -12,7 +12,6 @@ import com.microsoft.azure.management.cdn.v2020_04_15.Origin;
 import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 import com.microsoft.azure.management.cdn.v2020_04_15.OriginUpdateParameters;
-import java.util.Map;
 import com.microsoft.azure.management.cdn.v2020_04_15.OriginResourceState;
 import com.microsoft.azure.management.cdn.v2020_04_15.PrivateEndpointStatus;
 import rx.functions.Func1;
@@ -122,11 +121,6 @@ class OriginImpl extends CreatableUpdatableImpl<Origin, OriginInner, OriginImpl>
     }
 
     @Override
-    public String location() {
-        return this.inner().location();
-    }
-
-    @Override
     public String name() {
         return this.inner().name();
     }
@@ -177,11 +171,6 @@ class OriginImpl extends CreatableUpdatableImpl<Origin, OriginInner, OriginImpl>
     }
 
     @Override
-    public Map<String, String> tags() {
-        return this.inner().getTags();
-    }
-
-    @Override
     public String type() {
         return this.inner().type();
     }
@@ -196,12 +185,6 @@ class OriginImpl extends CreatableUpdatableImpl<Origin, OriginInner, OriginImpl>
         this.resourceGroupName = resourceGroupName;
         this.profileName = profileName;
         this.endpointName = endpointName;
-        return this;
-    }
-
-    @Override
-    public OriginImpl withLocation(String location) {
-        this.inner().withLocation(location);
         return this;
     }
 
@@ -301,16 +284,6 @@ class OriginImpl extends CreatableUpdatableImpl<Origin, OriginInner, OriginImpl>
             this.inner().withPrivateLinkResourceId(privateLinkResourceId);
         } else {
             this.updateParameter.withPrivateLinkResourceId(privateLinkResourceId);
-        }
-        return this;
-    }
-
-    @Override
-    public OriginImpl withTags(Map<String, String> tags) {
-        if (isInCreateMode()) {
-            this.inner().withTags(tags);
-        } else {
-            this.updateParameter.withTags(tags);
         }
         return this;
     }

@@ -27,8 +27,7 @@ import static org.mockito.Mockito.when;
 @PowerMockIgnore({"com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*"})
 public class ManagedIdentityCredentialTest {
 
-    private final String tenantId = "contoso.com";
-    private final String clientId = UUID.randomUUID().toString();
+    private static final String CLIENT_ID = UUID.randomUUID().toString();
 
     @Test
     public void testVirtualMachineMSICredentialConfigurations() {
@@ -56,7 +55,7 @@ public class ManagedIdentityCredentialTest {
             PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
             // test
-            ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId(clientId).build();
+            ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId(CLIENT_ID).build();
             StepVerifier.create(credential.getToken(request1))
                 .expectNextMatches(token -> token1.equals(token.getToken())
                     && expiresAt.getSecond() == token.getExpiresAt().getSecond())
@@ -81,7 +80,7 @@ public class ManagedIdentityCredentialTest {
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
-        ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId(clientId).build();
+        ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId(CLIENT_ID).build();
         StepVerifier.create(credential.getToken(request))
                 .expectNextMatches(token -> token1.equals(token.getToken())
                         && expiresOn.getSecond() == token.getExpiresAt().getSecond())

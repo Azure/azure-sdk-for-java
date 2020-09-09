@@ -5,6 +5,8 @@ package com.azure.cosmos.implementation.encryption;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 
 public class EncryptionUtils {
@@ -17,5 +19,13 @@ public class EncryptionUtils {
         byte[] arr = new byte[buf.remaining()];
         buf.get(arr);
         return arr;
+    }
+
+    public static URI toURI(String uri) {
+        try {
+            return new URI(uri);
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 }

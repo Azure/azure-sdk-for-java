@@ -23,7 +23,7 @@ public final class TrainingDocumentInfo {
     /*
      * Status of the training operation.
      */
-    private final TrainingStatus trainingStatus;
+    private final TrainingStatus status;
 
     /*
      * Total number of pages trained.
@@ -33,29 +33,29 @@ public final class TrainingDocumentInfo {
     /*
      * List of errors.
      */
-    private final List<FormRecognizerError> documentErrors;
+    private final List<FormRecognizerError> errors;
 
     /**
      * Constructs a TrainingDocumentInfo object.
      *
-     * @param name Training document name.
-     * @param trainingStatus Status of the training operation.
-     * @param pageCount Total number of pages trained.
-     * @param documentErrors List of errors.
+     * @param name the training document name.
+     * @param status the status of the training operation for that document.
+     * @param pageCount the total number of pages trained.
+     * @param errors the list of errors.
      */
-    public TrainingDocumentInfo(final String name, final TrainingStatus trainingStatus, final int pageCount,
-                                final List<FormRecognizerError> documentErrors) {
+    public TrainingDocumentInfo(final String name, final TrainingStatus status, final int pageCount,
+                                final List<FormRecognizerError> errors) {
         this.name = name;
-        this.trainingStatus = trainingStatus;
+        this.status = status;
         this.pageCount = pageCount;
-        this.documentErrors = documentErrors == null ? null
-            : Collections.unmodifiableList(documentErrors);
+        this.errors = errors == null ? null
+            : Collections.unmodifiableList(errors);
     }
 
     /**
      * Get the training document name.
      *
-     * @return the documentName value.
+     * @return the training document name.
      */
     public String getName() {
         return this.name;
@@ -64,16 +64,16 @@ public final class TrainingDocumentInfo {
     /**
      * Get the status of the training operation.
      *
-     * @return the status value.
+     * @return the status of the training operation.
      */
-    public TrainingStatus getTrainingStatus() {
-        return this.trainingStatus;
+    public TrainingStatus getStatus() {
+        return this.status;
     }
 
     /**
      * Get the total number of pages trained.
      *
-     * @return the pages value.
+     * @return the total number of pages trained.
      */
     public int getPageCount() {
         return this.pageCount;
@@ -84,7 +84,7 @@ public final class TrainingDocumentInfo {
      *
      * @return the unmodifiable list of errors.
      */
-    public List<FormRecognizerError> getDocumentErrors() {
-        return this.documentErrors;
+    public List<FormRecognizerError> getErrors() {
+        return this.errors;
     }
 }

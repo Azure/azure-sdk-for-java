@@ -489,8 +489,8 @@ public class CosmosAsyncScripts {
     private Mono<CosmosStoredProcedureResponse> createStoredProcedureInternal(StoredProcedure sProc,
                                                                            CosmosStoredProcedureRequestOptions options) {
         return database.getDocClientWrapper()
-                       .createStoredProcedure(container.getLink(), sProc, ModelBridgeInternal.toRequestOptions(options))
-                       .map(response -> ModelBridgeInternal.createCosmosStoredProcedureResponse(response));
+            .createStoredProcedure(container.getLink(), sProc, ModelBridgeInternal.toRequestOptions(options)).map(response -> ModelBridgeInternal.createCosmosStoredProcedureResponse(response))
+            .single();
     }
 
     private Mono<CosmosUserDefinedFunctionResponse> createUserDefinedFunctionInternal(
@@ -508,8 +508,7 @@ public class CosmosAsyncScripts {
     private Mono<CosmosUserDefinedFunctionResponse> createUserDefinedFunctionInternal(
         UserDefinedFunction udf) {
         return database.getDocClientWrapper()
-                       .createUserDefinedFunction(container.getLink(), udf, null)
-                       .map(response -> ModelBridgeInternal.createCosmosUserDefinedFunctionResponse(response));
+            .createUserDefinedFunction(container.getLink(), udf, null).map(response -> ModelBridgeInternal.createCosmosUserDefinedFunctionResponse(response)).single();
     }
 
     private Mono<CosmosTriggerResponse> createTriggerInternal(CosmosTriggerProperties properties, Context context) {
@@ -525,8 +524,9 @@ public class CosmosAsyncScripts {
     private Mono<CosmosTriggerResponse> createTriggerInternal(CosmosTriggerProperties properties) {
         Trigger trigger = new Trigger(ModelBridgeInternal.toJsonFromJsonSerializable(ModelBridgeInternal.getResource(properties)));
         return database.getDocClientWrapper()
-                       .createTrigger(container.getLink(), trigger, null)
-                       .map(response -> ModelBridgeInternal.createCosmosTriggerResponse(response));
+            .createTrigger(container.getLink(), trigger, null)
+            .map(response -> ModelBridgeInternal.createCosmosTriggerResponse(response))
+            .single();
     }
 
 }

@@ -1,55 +1,55 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.azure.com/formrecognizer/v2.0-preview//layout/analyze",
+    "Uri" : "https://REDACTED.azure.com/formrecognizer/v2.0//layout/analyze",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.4 (11.0.5; Windows 10 10.0)",
-      "x-ms-client-request-id" : "151a41fe-b661-4638-86a9-737d57e9ada1",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.5 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "74a79c8c-a8ab-4780-adb3-b8a5605b8c6e",
       "Content-Type" : "application/json"
     },
     "Response" : null,
     "Exception" : {
       "ClassName" : "io.netty.channel.AbstractChannel$AnnotatedConnectException",
-      "ErrorMessage" : "Connection refused: no further information: notreal.azure.com/23.217.138.110:443"
+      "ErrorMessage" : "Connection refused: no further information: notreal.azure.com/23.202.231.169:443"
     }
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.azure.com/formrecognizer/v2.0-preview//layout/analyze",
+    "Uri" : "https://REDACTED.azure.com/formrecognizer/v2.0//layout/analyze",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.4 (11.0.5; Windows 10 10.0)",
-      "x-ms-client-request-id" : "151a41fe-b661-4638-86a9-737d57e9ada1",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.5 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "74a79c8c-a8ab-4780-adb3-b8a5605b8c6e",
       "Content-Type" : "application/json"
     },
     "Response" : null,
     "Exception" : {
       "ClassName" : "io.netty.channel.AbstractChannel$AnnotatedConnectException",
-      "ErrorMessage" : "Connection refused: no further information: notreal.azure.com/23.217.138.110:443"
+      "ErrorMessage" : "Connection refused: no further information: notreal.azure.com/23.202.231.169:443"
     }
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.azure.com/formrecognizer/v2.0-preview//layout/analyze",
+    "Uri" : "https://REDACTED.azure.com/formrecognizer/v2.0//layout/analyze",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.4 (11.0.5; Windows 10 10.0)",
-      "x-ms-client-request-id" : "151a41fe-b661-4638-86a9-737d57e9ada1",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.5 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "74a79c8c-a8ab-4780-adb3-b8a5605b8c6e",
       "Content-Type" : "application/json"
     },
     "Response" : null,
     "Exception" : {
       "ClassName" : "io.netty.channel.AbstractChannel$AnnotatedConnectException",
-      "ErrorMessage" : "Connection refused: no further information: notreal.azure.com/23.217.138.110:443"
+      "ErrorMessage" : "Connection timed out: no further information: notreal.azure.com/23.202.231.169:443"
     }
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.azure.com/formrecognizer/v2.0-preview//layout/analyze",
+    "Uri" : "https://REDACTED.azure.com/formrecognizer/v2.0//layout/analyze",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.4 (11.0.5; Windows 10 10.0)",
-      "x-ms-client-request-id" : "151a41fe-b661-4638-86a9-737d57e9ada1",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.5 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "74a79c8c-a8ab-4780-adb3-b8a5605b8c6e",
       "Content-Type" : "application/json"
     },
     "Response" : null,
     "Exception" : {
       "ClassName" : "io.netty.channel.AbstractChannel$AnnotatedConnectException",
-      "ErrorMessage" : "Connection refused: no further information: notreal.azure.com/23.217.138.110:443"
+      "ErrorMessage" : "Connection refused: no further information: notreal.azure.com/23.202.231.169:443"
     }
   } ],
   "variables" : [ ]

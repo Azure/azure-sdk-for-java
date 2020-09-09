@@ -288,8 +288,8 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the NotebookWorkspaceInner object if successful.
      */
-    public NotebookWorkspaceInner createOrUpdate(String resourceGroupName, String accountName, NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, accountName, notebookCreateUpdateParameters).toBlocking().last().body();
+    public NotebookWorkspaceInner createOrUpdate(String resourceGroupName, String accountName) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().last().body();
     }
 
     /**
@@ -301,8 +301,8 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<NotebookWorkspaceInner> createOrUpdateAsync(String resourceGroupName, String accountName, NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters, final ServiceCallback<NotebookWorkspaceInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, accountName, notebookCreateUpdateParameters), serviceCallback);
+    public ServiceFuture<NotebookWorkspaceInner> createOrUpdateAsync(String resourceGroupName, String accountName, final ServiceCallback<NotebookWorkspaceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
     }
 
     /**
@@ -313,8 +313,8 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<NotebookWorkspaceInner> createOrUpdateAsync(String resourceGroupName, String accountName, NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, accountName, notebookCreateUpdateParameters).map(new Func1<ServiceResponse<NotebookWorkspaceInner>, NotebookWorkspaceInner>() {
+    public Observable<NotebookWorkspaceInner> createOrUpdateAsync(String resourceGroupName, String accountName) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<NotebookWorkspaceInner>, NotebookWorkspaceInner>() {
             @Override
             public NotebookWorkspaceInner call(ServiceResponse<NotebookWorkspaceInner> response) {
                 return response.body();
@@ -330,7 +330,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<NotebookWorkspaceInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String accountName, NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters) {
+    public Observable<ServiceResponse<NotebookWorkspaceInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String accountName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -342,7 +342,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
         }
         final String notebookWorkspaceName = "default";
         final String apiVersion = "2020-04-01";
-        Observable<Response<ResponseBody>> observable = service.createOrUpdate(this.client.subscriptionId(), resourceGroupName, accountName, notebookWorkspaceName, apiVersion, this.client.acceptLanguage(), notebookCreateUpdateParameters, this.client.userAgent());
+        Observable<Response<ResponseBody>> observable = service.createOrUpdate(this.client.subscriptionId(), resourceGroupName, accountName, notebookWorkspaceName, apiVersion, this.client.acceptLanguage(), new NotebookWorkspaceCreateUpdateParameters(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<NotebookWorkspaceInner>() { }.getType());
     }
 
@@ -356,8 +356,8 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the NotebookWorkspaceInner object if successful.
      */
-    public NotebookWorkspaceInner beginCreateOrUpdate(String resourceGroupName, String accountName, NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, accountName, notebookCreateUpdateParameters).toBlocking().single().body();
+    public NotebookWorkspaceInner beginCreateOrUpdate(String resourceGroupName, String accountName) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().body();
     }
 
     /**
@@ -369,8 +369,8 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<NotebookWorkspaceInner> beginCreateOrUpdateAsync(String resourceGroupName, String accountName, NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters, final ServiceCallback<NotebookWorkspaceInner> serviceCallback) {
-        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, accountName, notebookCreateUpdateParameters), serviceCallback);
+    public ServiceFuture<NotebookWorkspaceInner> beginCreateOrUpdateAsync(String resourceGroupName, String accountName, final ServiceCallback<NotebookWorkspaceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
     }
 
     /**
@@ -381,8 +381,8 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the NotebookWorkspaceInner object
      */
-    public Observable<NotebookWorkspaceInner> beginCreateOrUpdateAsync(String resourceGroupName, String accountName, NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, accountName, notebookCreateUpdateParameters).map(new Func1<ServiceResponse<NotebookWorkspaceInner>, NotebookWorkspaceInner>() {
+    public Observable<NotebookWorkspaceInner> beginCreateOrUpdateAsync(String resourceGroupName, String accountName) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<NotebookWorkspaceInner>, NotebookWorkspaceInner>() {
             @Override
             public NotebookWorkspaceInner call(ServiceResponse<NotebookWorkspaceInner> response) {
                 return response.body();
@@ -398,7 +398,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the NotebookWorkspaceInner object
      */
-    public Observable<ServiceResponse<NotebookWorkspaceInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String accountName, NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters) {
+    public Observable<ServiceResponse<NotebookWorkspaceInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String accountName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -410,7 +410,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
         }
         final String notebookWorkspaceName = "default";
         final String apiVersion = "2020-04-01";
-        return service.beginCreateOrUpdate(this.client.subscriptionId(), resourceGroupName, accountName, notebookWorkspaceName, apiVersion, this.client.acceptLanguage(), notebookCreateUpdateParameters, this.client.userAgent())
+        return service.beginCreateOrUpdate(this.client.subscriptionId(), resourceGroupName, accountName, notebookWorkspaceName, apiVersion, this.client.acceptLanguage(), new NotebookWorkspaceCreateUpdateParameters(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<NotebookWorkspaceInner>>>() {
                 @Override
                 public Observable<ServiceResponse<NotebookWorkspaceInner>> call(Response<ResponseBody> response) {

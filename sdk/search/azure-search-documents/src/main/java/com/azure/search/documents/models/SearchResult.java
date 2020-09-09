@@ -4,28 +4,30 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.documents.SearchDocument;
-import com.azure.search.documents.implementation.SerializationUtil;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+
+import static com.azure.core.util.serializer.TypeReference.createInstance;
+import static com.azure.search.documents.implementation.util.Utility.initializeSerializerAdapter;
 
 /**
  * Contains a document found by a search query, plus associated metadata.
  */
 @Fluent
 public final class SearchResult {
-    private static final ObjectMapper MAPPER;
-    static {
-        MAPPER = new JacksonAdapter().serializer();
-        SerializationUtil.configureMapper(MAPPER);
-        MAPPER.setSerializationInclusion(JsonInclude.Include.ALWAYS);
-    }
+    private final ClientLogger logger = new ClientLogger(SearchResult.class);
 
     /*
      * Unmatched properties from the message are deserialized this collection
@@ -48,6 +50,11 @@ public final class SearchResult {
     @JsonProperty(value = "@search.highlights", access = JsonProperty.Access.WRITE_ONLY)
     private Map<String, List<String>> highlights;
 
+    @JsonIgnore
+    private JsonSerializer jsonSerializer;
+
+    private static final JacksonAdapter searchJacksonAdapter = (JacksonAdapter) initializeSerializerAdapter();
+
     /**
      * Constructor of {@link SearchResult}.
      *
@@ -67,9 +74,21 @@ public final class SearchResult {
      * @param modelClass The model class converts to.
      * @param <T> Convert document to the generic type.
      * @return the additionalProperties value.
+     * @throws RuntimeException if there is IO error occurs.
      */
     public <T> T getDocument(Class<T> modelClass) {
-        return MAPPER.convertValue(this.additionalProperties, modelClass);
+        if (jsonSerializer == null) {
+            try {
+                String serializedJson = searchJacksonAdapter.serialize(additionalProperties, SerializerEncoding.JSON);
+                return searchJacksonAdapter.deserialize(serializedJson, modelClass, SerializerEncoding.JSON);
+            } catch (IOException ex) {
+                throw logger.logExceptionAsError(new RuntimeException("Something wrong with the serialization."));
+            }
+        }
+        ByteArrayOutputStream sourceStream = new ByteArrayOutputStream();
+        jsonSerializer.serialize(sourceStream, additionalProperties);
+        return jsonSerializer.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()),
+            createInstance(modelClass));
     }
 
     /**

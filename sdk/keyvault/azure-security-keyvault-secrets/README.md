@@ -16,7 +16,7 @@ Maven dependency for the Azure Key Vault Secrets client library. Add it to your 
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-secrets</artifactId>
-    <version>4.1.5</version>
+    <version>4.2.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -121,7 +121,7 @@ The following sections provide several code snippets covering some of the most c
 
 ### Create a secret
 Create a secret to be stored in the Azure Key Vault.
-- `setSecret` creates a new secret in the Azure Key Vault. If the secret with name already exists then a new version of the secret is created.
+- `setSecret` creates a new secret in the Azure Key Vault. If a secret with the given name already exists then a new version of the secret is created.
 
 ```Java
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -135,7 +135,7 @@ SecretClient secretClient = new SecretClientBuilder()
     .buildClient();
 
 KeyVaultSecret secret = secretClient.setSecret("<secret-name>", "<secret-value>");
-System.out.printf("Secret created with name \"%s\" and value \"%s\"\n", secret.getName(), secret.getValue());
+System.out.printf("Secret created with name \"%s\" and value \"%s\"%n", secret.getName(), secret.getValue());
 ```
 
 ### Retrieve a secret
@@ -143,7 +143,7 @@ Retrieve a previously stored secret by calling `getSecret`.
 
 ```Java
 KeyVaultSecret secret = secretClient.getSecret("<secret-name>");
-System.out.printf("Retrieved secret with name \"%s\" and value \"%s\"\n", secret.getName(), secret.getValue());
+System.out.printf("Retrieved secret with name \"%s\" and value \"%s\"%n", secret.getName(), secret.getValue());
 ```
 
 ### Update an existing secret
@@ -155,7 +155,7 @@ KeyVaultSecret secret = secretClient.getSecret("<secret-name>");
 // Update the expiry time of the secret.
 secret.getProperties().setExpiresOn(OffsetDateTime.now().plusDays(30));
 SecretProperties updatedSecretProperties = secretClient.updateSecretProperties(secret.getProperties());
-System.out.printf("Secret's updated expiry time: %s\n", updatedSecretProperties.getExpiresOn().toString());
+System.out.printf("Secret's updated expiry time: %s%n", updatedSecretProperties.getExpiresOn());
 ```
 
 ### Delete a secret
@@ -168,7 +168,7 @@ SyncPoller<DeletedSecret, Void> deletedSecretPoller = secretClient.beginDeleteSe
 PollResponse<DeletedSecret> deletedSecretPollResponse = deletedSecretPoller.poll();
 
 // Deletion date only works for a SoftDelete-enabled Key Vault.
-System.out.println("Deletion date: \"%s\"" + deletedSecretPollResponse.getValue().getDeletedOn().toString());
+System.out.printf("Deletion date: %s%n", deletedSecretPollResponse.getValue().getDeletedOn());
 
 // Secret is being deleted on server.
 deletedSecretPoller.waitForCompletion();
@@ -178,10 +178,11 @@ deletedSecretPoller.waitForCompletion();
 List the secrets in the Azure Key Vault by calling `listPropertiesOfSecrets`.
 
 ```Java
-// List operations don't return the secrets with value information. So, for each returned secret we call getSecret to get the secret with its value information.
+// List operations don't return the secrets with value information. So, for each returned secret we call getSecret to
+// get the secret with its value information.
 for (SecretProperties secretProperties : secretClient.listPropertiesOfSecrets()) {
-    KeyVaultSecret secretWithValue  = secretClient.getSecret(secretProperties.getName(), secretProperties.getVersion());
-    System.out.printf("Retreieved secret with name \"%s\" and value \"%s\"\n", secretWithValue.getName(),
+    KeyVaultSecret secretWithValue = secretClient.getSecret(secretProperties.getName(), secretProperties.getVersion());
+    System.out.printf("Retrieved secret with name \"%s\" and value \"%s\"%n", secretWithValue.getName(),
         secretWithValue.getValue());
 }
 ```
@@ -198,7 +199,7 @@ The following sections provide several code snippets covering some of the most c
 
 ### Create a secret asynchronously
 Create a secret to be stored in the Azure Key Vault.
-- `setSecret` creates a new secret in the Azure Key Vault. if the secret with name already exists then a new version of the secret is created.
+- `setSecret` creates a new secret in the Azure Key Vault. If a secret with the given name already exists then a new version of the secret is created.
 
 ```Java
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -212,7 +213,7 @@ SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
 
 secretAsyncClient.setSecret("<secret-name>", "<secret-value>")
     .subscribe(secret ->
-        System.out.printf("Created secret with name \"%s\" and value \"%s\"\n", secret.getName(), secret.getValue()));
+        System.out.printf("Created secret with name \"%s\" and value \"%s\"%n", secret.getName(), secret.getValue()));
 ```
 
 ### Retrieve a secret asynchronously
@@ -221,7 +222,7 @@ Retrieve a previously stored secret by calling `getSecret`.
 ```Java
 secretAsyncClient.getSecret("<secret-name>")
     .subscribe(secret ->
-        System.out.printf("Retrieved secret with name \"%s\" and value \"%s\"\n", secret.getName(), secret.getValue()));
+        System.out.printf("Retrieved secret with name \"%s\" and value \"%s\"%n", secret.getName(), secret.getValue()));
 ```
 
 ### Update an existing secret asynchronously
@@ -234,8 +235,7 @@ secretAsyncClient.getSecret("<secret-name>")
         secret.getProperties().setExpiresOn(OffsetDateTime.now().plusDays(50));
         secretAsyncClient.updateSecretProperties(secret.getProperties())
             .subscribe(updatedSecretProperties ->
-                System.out.printf("Secret's updated expiry time: %s\n",
-                    updatedSecretProperties.getExpiresOn().toString()));
+                System.out.printf("Secret's updated expiry time: %s%n", updatedSecretProperties.getExpiresOn()));
     });
 ```
 
@@ -245,9 +245,9 @@ Delete an existing secret by calling `beginDeleteSecret`.
 ```Java
 secretAsyncClient.beginDeleteSecret("<secret-name>")
     .subscribe(pollResponse -> {
-        System.out.println("Deletion status: " + pollResponse.getStatus().toString());
-        System.out.println("Deleted secret name: " + pollResponse.getValue().getName());
-        System.out.println("Deleted secret value: " + pollResponse.getValue().getValue());
+        System.out.printf("Deletion status: %s%n", pollResponse.getStatus());
+        System.out.printf("Deleted secret name: %s%n", pollResponse.getValue().getName());
+        System.out.printf("Deleted secret value: %s%n", pollResponse.getValue().getValue());
     });
 ```
 
@@ -255,13 +255,13 @@ secretAsyncClient.beginDeleteSecret("<secret-name>")
 List the secrets in the Azure Key Vault by calling `listPropertiesOfSecrets`.
 
 ```Java
-// The List Secrets operation returns secrets without their value, so for each secret returned we call `getSecret`
+// The List secrets operation returns secrets without their value, so for each secret returned we call `getSecret`
 // to get its value as well.
 secretAsyncClient.listPropertiesOfSecrets()
     .subscribe(secretProperties ->
         secretAsyncClient.getSecret(secretProperties.getName(), secretProperties.getVersion())
             .subscribe(secretResponse ->
-                System.out.printf("Retrieved secret with name \"%s\" and value \"%s\"", secretResponse.getName(),
+                System.out.printf("Retrieved secret with name \"%s\" and value \"%s\"%n", secretResponse.getName(),
                     secretResponse.getValue())));
 ```
 

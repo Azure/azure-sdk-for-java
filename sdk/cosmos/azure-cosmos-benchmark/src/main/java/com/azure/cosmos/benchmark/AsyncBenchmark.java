@@ -33,22 +33,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.net.InetSocketAddress;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
 abstract class AsyncBenchmark<T> {
     private final MetricRegistry metricsRegistry = new MetricRegistry();
     private ScheduledReporter reporter;
 
-    private Meter successMeter;
-    private Meter failureMeter;
+    private volatile Meter successMeter;
+    private volatile Meter failureMeter;
     private boolean databaseCreated;
     private boolean collectionCreated;
 
@@ -62,6 +65,12 @@ abstract class AsyncBenchmark<T> {
     final List<PojoizedJson> docsToRead;
     final Semaphore concurrencyControlSemaphore;
     Timer latency;
+
+    private static final String SUCCESS_COUNTER_METER_NAME = "#Successful Operations";
+    private static final String FAILURE_COUNTER_METER_NAME = "#Unsuccessful Operations";
+    private static final String LATENCY_METER_NAME = "latency";
+
+    private AtomicBoolean warmupMode = new AtomicBoolean(false);
 
     AsyncBenchmark(Configuration cfg) {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
@@ -205,16 +214,46 @@ abstract class AsyncBenchmark<T> {
     protected void onSuccess() {
     }
 
+    protected void initializeMetersIfSkippedEnoughOperations(AtomicLong count) {
+        if (configuration.getSkipWarmUpOperations() > 0) {
+            if (count.get() >= configuration.getSkipWarmUpOperations()) {
+                if (warmupMode.get()) {
+                    synchronized (this) {
+                        if (warmupMode.get()) {
+                            logger.info("Warmup phase finished. Starting capturing perf numbers ....");
+                            resetMeters();
+                            initializeMeter();
+                            reporter.start(configuration.getPrintingInterval(), TimeUnit.SECONDS);
+                            warmupMode.set(false);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     protected void onError(Throwable throwable) {
     }
 
     protected abstract void performWorkload(BaseSubscriber<T> baseSubscriber, long i) throws Exception;
 
-    void run() throws Exception {
+    private void resetMeters() {
+        metricsRegistry.remove(SUCCESS_COUNTER_METER_NAME);
+        metricsRegistry.remove(FAILURE_COUNTER_METER_NAME);
+        if (latencyAwareOperations(configuration.getOperationType())) {
+            metricsRegistry.remove(LATENCY_METER_NAME);
+        }
+    }
 
-        successMeter = metricsRegistry.meter("#Successful Operations");
-        failureMeter = metricsRegistry.meter("#Unsuccessful Operations");
+    private void initializeMeter() {
+        successMeter = metricsRegistry.meter(SUCCESS_COUNTER_METER_NAME);
+        failureMeter = metricsRegistry.meter(FAILURE_COUNTER_METER_NAME);
+        if (latencyAwareOperations(configuration.getOperationType())) {
+            latency = metricsRegistry.timer(LATENCY_METER_NAME);
+        }
+    }
 
+    private boolean latencyAwareOperations(Configuration.Operation operation) {
         switch (configuration.getOperationType()) {
             case ReadLatency:
             case WriteLatency:
@@ -228,13 +267,22 @@ abstract class AsyncBenchmark<T> {
             case QueryAggregateTopOrderby:
             case QueryTopOrderby:
             case Mixed:
-                latency = metricsRegistry.timer("Latency");
-                break;
+            case ReadAllItemsOfLogicalPartition:
+                return true;
             default:
-                break;
+                return false;
+        }
+    }
+
+    void run() throws Exception {
+        initializeMeter();
+        if (configuration.getSkipWarmUpOperations() > 0) {
+            logger.info("Starting warm up phase. Executing {} operations to warm up ...", configuration.getSkipWarmUpOperations());
+            warmupMode.set(true);
+        } else {
+            reporter.start(configuration.getPrintingInterval(), TimeUnit.SECONDS);
         }
 
-        reporter.start(configuration.getPrintingInterval(), TimeUnit.SECONDS);
         long startTime = System.currentTimeMillis();
 
         AtomicLong count = new AtomicLong(0);
@@ -260,6 +308,7 @@ abstract class AsyncBenchmark<T> {
 
                 @Override
                 protected void hookOnComplete() {
+                    initializeMetersIfSkippedEnoughOperations(count);
                     successMeter.mark();
                     concurrencyControlSemaphore.release();
                     AsyncBenchmark.this.onSuccess();
@@ -272,7 +321,9 @@ abstract class AsyncBenchmark<T> {
 
                 @Override
                 protected void hookOnError(Throwable throwable) {
+                    initializeMetersIfSkippedEnoughOperations(count);
                     failureMeter.mark();
+
                     logger.error("Encountered failure {} on thread {}" ,
                         throwable.getMessage(), Thread.currentThread().getName(), throwable);
                     concurrencyControlSemaphore.release();
@@ -300,5 +351,18 @@ abstract class AsyncBenchmark<T> {
 
         reporter.report();
         reporter.close();
+    }
+
+    protected Mono sparsityMono(long i) {
+        Duration duration = configuration.getSparsityWaitTime();
+        if (duration != null && !duration.isZero()) {
+            if (configuration.getSkipWarmUpOperations() > i) {
+                // don't wait on the initial warm up time.
+                return null;
+            }
+
+            return Mono.delay(duration);
+        }
+        else return null;
     }
 }

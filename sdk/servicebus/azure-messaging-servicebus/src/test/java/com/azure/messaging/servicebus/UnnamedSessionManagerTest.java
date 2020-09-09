@@ -140,7 +140,7 @@ class UnnamedSessionManagerTest {
     @Test
     void receiveNull() {
         // Arrange
-        ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, Duration.ZERO, null, true, 5);
+        ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, null, true, 5);
         sessionManager = new UnnamedSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
             TIMEOUT, tracerProvider, messageSerializer, receiverOptions);
 
@@ -156,15 +156,14 @@ class UnnamedSessionManagerTest {
     @Test
     void singleUnnamedSession() {
         // Arrange
-        ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1,
-            Duration.ofSeconds(20), null, false, null);
+        ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, null, false, null);
         sessionManager = new UnnamedSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
             TIMEOUT, tracerProvider, messageSerializer, receiverOptions);
 
         final String sessionId = "session-1";
         final String lockToken = "a-lock-token";
         final String linkName = "my-link-name";
-        final Instant sessionLockedUntil = Instant.now().plus(Duration.ofSeconds(60));
+        final Instant sessionLockedUntil = Instant.now().plus(Duration.ofSeconds(30));
 
         final Message message = mock(Message.class);
         final ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
@@ -199,8 +198,8 @@ class UnnamedSessionManagerTest {
             .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
             .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
             .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
-            .expectComplete()
-            .verify();
+            .thenCancel()
+            .verify(Duration.ofSeconds(45));
     }
 
     /**
@@ -209,8 +208,7 @@ class UnnamedSessionManagerTest {
     @Test
     void multipleSessions() {
         // Arrange
-        final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1,
-            Duration.ofSeconds(8), null, true, 1);
+        final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, null, true, 1);
         sessionManager = new UnnamedSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
             TIMEOUT, tracerProvider, messageSerializer, receiverOptions);
 

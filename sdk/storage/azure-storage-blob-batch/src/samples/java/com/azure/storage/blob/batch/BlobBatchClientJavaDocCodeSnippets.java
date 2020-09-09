@@ -4,6 +4,7 @@
 package com.azure.storage.blob.batch;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
@@ -21,8 +22,13 @@ import java.util.List;
  * Code snippets for {@link BlobBatchClient}
  */
 public class BlobBatchClientJavaDocCodeSnippets {
-    private BlobBatchClient batchClient = new BlobBatchClientBuilder(new BlobServiceClientBuilder().buildClient())
-        .buildClient();
+    private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_FILE_ENDPOINT");
+    private static final String SASTOKEN = Configuration.getGlobalConfiguration().get("SAS_TOKEN");
+
+    private BlobBatchClient batchClient = new BlobBatchClientBuilder(new BlobServiceClientBuilder()
+                                                                        .endpoint(ENDPOINT)
+                                                                        .sasToken(SASTOKEN).buildClient())
+                                                                    .buildClient();
     private Duration timeout = Duration.ofSeconds(30);
 
     /**

@@ -127,7 +127,7 @@ public class EndpointInner extends Resource {
      * List of keys used to validate the signed URL hashes.
      */
     @JsonProperty(value = "properties.urlSigningKeys")
-    private UrlSigningKey urlSigningKeys;
+    private List<UrlSigningKey> urlSigningKeys;
 
     /**
      * A policy that specifies the delivery rules to be used for an endpoint.
@@ -400,7 +400,7 @@ public class EndpointInner extends Resource {
      *
      * @return the urlSigningKeys value
      */
-    public UrlSigningKey urlSigningKeys() {
+    public List<UrlSigningKey> urlSigningKeys() {
         return this.urlSigningKeys;
     }
 
@@ -410,7 +410,7 @@ public class EndpointInner extends Resource {
      * @param urlSigningKeys the urlSigningKeys value to set
      * @return the EndpointInner object itself.
      */
-    public EndpointInner withUrlSigningKeys(UrlSigningKey urlSigningKeys) {
+    public EndpointInner withUrlSigningKeys(List<UrlSigningKey> urlSigningKeys) {
         this.urlSigningKeys = urlSigningKeys;
         return this;
     }

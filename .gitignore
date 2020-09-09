@@ -3,6 +3,14 @@
 #Javadoc files
 dist/
 .publish/
+output/
+temp/
+
+# Spring
+**/*packageOutputDirectory*
+
+# Sensitive files
+*.json.env
 
 #javadoc overview files generated from README.md
 readme_overview.html
@@ -69,3 +77,6 @@ package-lock.json
 .vscode/
 .factorypath
 jacoco.exec
+
+# Generated client pom file
+ClientAggregatePom.xml

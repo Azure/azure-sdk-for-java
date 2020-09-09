@@ -6,22 +6,23 @@ package com.azure.cosmos.implementation.encryption;
 import java.time.Instant;
 
 class CachedDekProperties {
-    private final DataEncryptionKeyProperties ServerProperties ;
-    private final Instant ServerPropertiesExpiryUtc;
+    private final DataEncryptionKeyProperties serverProperties;
+    private final Instant serverPropertiesExpiryUtc;
 
     public CachedDekProperties(
         DataEncryptionKeyProperties serverProperties,
         Instant serverPropertiesExpiryUtc) {
         assert(serverProperties != null);
-
-        this.ServerProperties = serverProperties;
-        this.ServerPropertiesExpiryUtc = serverPropertiesExpiryUtc;
+        // TODO: when contentResponseOnWriteEnabled = false we fail with NPE.
+        // TODO: consider the above scenario / add NPE validation
+        this.serverProperties = serverProperties;
+        this.serverPropertiesExpiryUtc = serverPropertiesExpiryUtc;
     }
 
     public DataEncryptionKeyProperties getServerProperties() {
-        return ServerProperties;
+        return serverProperties;
     }
     public Instant getServerPropertiesExpiryUtc() {
-        return ServerPropertiesExpiryUtc;
+        return serverPropertiesExpiryUtc;
     }
 }

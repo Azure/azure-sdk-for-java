@@ -246,17 +246,9 @@ class RxGatewayStoreModel implements RxStoreModel {
             HttpHeaders httpResponseHeaders = httpResponse.headers();
             int httpResponseStatus = httpResponse.statusCode();
 
-            Mono<byte[]> contentObservable;
-
-            if (request.getOperationType() == OperationType.Delete) {
-                // for delete we don't expect any body
-                contentObservable = Mono.just(EMPTY_BYTE_ARRAY);
-            } else {
-                // transforms the ByteBufFlux to Flux<String>
-                contentObservable = httpResponse
-                                        .bodyAsByteArray()
-                                        .switchIfEmpty(Mono.just(EMPTY_BYTE_ARRAY));
-            }
+            Mono<byte[]> contentObservable = httpResponse
+                .bodyAsByteArray()
+                .switchIfEmpty(Mono.just(EMPTY_BYTE_ARRAY));
 
             return contentObservable
                        .map(content -> {
@@ -282,7 +274,8 @@ class RxGatewayStoreModel implements RxStoreModel {
                                    DirectBridgeInternal.setCosmosDiagnostics(rsp, request.requestContext.cosmosDiagnostics);
                                }
                                return rsp;
-                       });
+                       })
+                       .single();
 
         }).map(RxDocumentServiceResponse::new)
                    .onErrorResume(throwable -> {
@@ -362,7 +355,7 @@ class RxGatewayStoreModel implements RxStoreModel {
     }
 
     private Mono<RxDocumentServiceResponse> invokeAsync(RxDocumentServiceRequest request) {
-        Callable<Mono<RxDocumentServiceResponse>> funcDelegate = () -> invokeAsyncInternal(request);
+        Callable<Mono<RxDocumentServiceResponse>> funcDelegate = () -> invokeAsyncInternal(request).single();
         return BackoffRetryUtility.executeRetry(funcDelegate, new WebExceptionRetryPolicy());
     }
 

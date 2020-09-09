@@ -14,10 +14,10 @@ param (
   $DocRepoContentLocation = "docs-ref-services/" # within the doc repo, where does our readme go?
 )
 
-
-# import artifact parsing and semver handling
 . (Join-Path $PSScriptRoot artifact-metadata-parsing.ps1)
 . (Join-Path $PSScriptRoot SemVer.ps1)
+
+$releaseReplaceRegex = "(https://github.com/$RepoId/(?:blob|tree)/)master"
 
 function GetMetaData($lang){
   switch ($lang) {
@@ -43,7 +43,7 @@ function GetMetaData($lang){
     }
   }
 
-  $metadataResponse = Invoke-WebRequest-WithHandling -url $metadataUri -method "GET" | ConvertFrom-Csv
+  $metadataResponse = Invoke-RestMethod -Uri $metadataUri -method "GET" -MaximumRetryCount 3 -RetryIntervalSec 10 | ConvertFrom-Csv
 
   return $metadataResponse
 }
@@ -77,6 +77,10 @@ function GetAdjustedReadmeContent($pkgInfo, $lang){
     if ($headerContentMatches) {
       $foundTitle = $headerContentMatches.Matches[0]
       $fileContent = $pkgInfo.ReadmeContent -replace $foundTitle, "$foundTitle - Version $($pkgInfo.PackageVersion) `n"
+
+      # Replace github master link with release tag.
+      $ReplacementPattern = "`${1}$($pkgInfo.Tag)"
+      $fileContent = $fileContent -replace $releaseReplaceRegex, $ReplacementPattern
     }
 
     $header = "---`ntitle: $foundTitle`nkeywords: Azure, $lang, SDK, API, $($pkgInfo.PackageId), $service`nauthor: maggiepint`nms.author: magpint`nms.date: $date`nms.topic: article`nms.prod: azure`nms.technology: azure`nms.devlang: $lang`nms.service: $service`n---`n"

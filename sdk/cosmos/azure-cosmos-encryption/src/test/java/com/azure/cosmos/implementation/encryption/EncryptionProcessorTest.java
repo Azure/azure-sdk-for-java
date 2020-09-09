@@ -94,8 +94,8 @@ public class EncryptionProcessorTest {
         byte[] inputAsByteArray = toByteArray(testDate);
 
 
-        byte[] itemObjectWithEncryptedSensitiveDataAsByteArray = EncryptionProcessor.encryptAsync(inputAsByteArray, encryptor, encryptionOptions);
-        byte[] itemObjectWithDecryptedSensitiveDataAsByteArray = EncryptionProcessor.decryptAsync(itemObjectWithEncryptedSensitiveDataAsByteArray, encryptor);
+        byte[] itemObjectWithEncryptedSensitiveDataAsByteArray = EncryptionProcessor.encrypt(inputAsByteArray, encryptor, encryptionOptions).block();
+        byte[] itemObjectWithDecryptedSensitiveDataAsByteArray = EncryptionProcessor.decrypt(itemObjectWithEncryptedSensitiveDataAsByteArray, encryptor).block();
 
         assertThat(itemObjectWithDecryptedSensitiveDataAsByteArray).isEqualTo(inputAsByteArray);
     }

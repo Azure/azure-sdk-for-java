@@ -31,6 +31,7 @@ import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusSharedKeyCredential;
 import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.SubQueue;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -38,7 +39,6 @@ import reactor.core.scheduler.Schedulers;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
-import java.time.Duration;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -58,6 +58,8 @@ public final class ServiceBusClientBuilder {
 
     private static final String SERVICE_BUS_PROPERTIES_FILE = "azure-messaging-servicebus.properties";
     private static final String SUBSCRIPTION_ENTITY_PATH_FORMAT = "%s/subscriptions/%s";
+    private static final String DEAD_LETTER_QUEUE_NAME_SUFFIX = "/$deadletterqueue";
+    private static final String TRANSFER_DEAD_LETTER_QUEUE_NAME_SUFFIX = "/$Transfer/$deadletterqueue";
 
     // Using 0 pre-fetch count for both receive modes, to avoid message lock lost exceptions in application
     // receiving messages at a slow rate. Applications can set it to a higher value if they need better performance.
@@ -104,8 +106,7 @@ public final class ServiceBusClientBuilder {
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
         final TokenCredential tokenCredential;
         try {
-            tokenCredential = new ServiceBusSharedKeyCredential(properties.getSharedAccessKeyName(),
-                properties.getSharedAccessKey(), ServiceBusConstants.TOKEN_VALIDITY);
+            tokenCredential = getTokenCredential(properties);
         } catch (Exception e) {
             throw logger.logExceptionAsError(
                 new AzureException("Could not create the ServiceBusSharedKeyCredential.", e));
@@ -119,6 +120,17 @@ public final class ServiceBusClientBuilder {
         }
 
         return credential(properties.getEndpoint().getHost(), tokenCredential);
+    }
+
+    private TokenCredential getTokenCredential(ConnectionStringProperties properties) {
+        TokenCredential tokenCredential;
+        if (properties.getSharedAccessSignature() == null) {
+            tokenCredential = new ServiceBusSharedKeyCredential(properties.getSharedAccessKeyName(),
+                properties.getSharedAccessKey(), ServiceBusConstants.TOKEN_VALIDITY);
+        } else {
+            tokenCredential = new ServiceBusSharedKeyCredential(properties.getSharedAccessSignature());
+        }
+        return tokenCredential;
     }
 
     /**
@@ -234,15 +246,6 @@ public final class ServiceBusClientBuilder {
      */
     public ServiceBusSessionReceiverClientBuilder sessionReceiver() {
         return new ServiceBusSessionReceiverClientBuilder();
-    }
-
-    /**
-     * A new instance of {@link ServiceBusDeadLetterReceiverClientBuilder} used to configure Service Bus message
-     * consumers from dead letter queue.
-     * @return A new instance of {@link ServiceBusDeadLetterReceiverClientBuilder}.
-     */
-    public ServiceBusDeadLetterReceiverClientBuilder deadLetterReceiver() {
-        return new ServiceBusDeadLetterReceiverClientBuilder();
     }
 
     /**
@@ -426,9 +429,9 @@ public final class ServiceBusClientBuilder {
     }
 
     private static String getEntityPath(ClientLogger logger, MessagingEntityType entityType, String queueName,
-        String topicName, String subscriptionName) {
+        String topicName, String subscriptionName, SubQueue subQueue) {
 
-        final String entityPath;
+        String entityPath;
         switch (entityType) {
             case QUEUE:
                 entityPath = queueName;
@@ -447,13 +450,25 @@ public final class ServiceBusClientBuilder {
                     new IllegalArgumentException("Unknown entity type: " + entityType));
         }
 
-        return entityPath;
-    }
+        if (subQueue ==  null) {
+            return entityPath;
+        }
 
-    private static String getDeadLetterEntityPath(ClientLogger logger, MessagingEntityType entityType, String queueName,
-        String topicName, String subscriptionName) {
-        String entityPath = getEntityPath(logger, entityType, queueName, topicName, subscriptionName);
-        return entityPath + "/$deadletterqueue";
+        switch (subQueue) {
+            case NONE:
+                break;
+            case TRANSFER_DEAD_LETTER_QUEUE:
+                entityPath += TRANSFER_DEAD_LETTER_QUEUE_NAME_SUFFIX;
+                break;
+            case DEAD_LETTER_QUEUE:
+                entityPath += DEAD_LETTER_QUEUE_NAME_SUFFIX;
+                break;
+            default:
+                throw logger.logExceptionAsError(new IllegalArgumentException("Unsupported value of subqueue type: "
+                    + subQueue));
+        }
+
+        return entityPath;
     }
 
     /**
@@ -468,6 +483,7 @@ public final class ServiceBusClientBuilder {
         private String queueName;
         private String topicName;
         private String viaQueueName;
+        private String viaTopicName;
 
         private ServiceBusSenderClientBuilder() {
         }
@@ -495,6 +511,20 @@ public final class ServiceBusClientBuilder {
          */
         public ServiceBusSenderClientBuilder viaQueueName(String viaQueueName) {
             this.viaQueueName = viaQueueName;
+            return this;
+        }
+
+        /**
+         * Sets the name of the initial destination Service Bus topic to publish messages to.
+         *
+         * @param viaTopicName The initial destination of the message.
+         *
+         * @return The modified {@link ServiceBusSenderClientBuilder} object.
+         *
+         * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-transactions#transfers-and-send-via">Send Via</a>
+         */
+        public ServiceBusSenderClientBuilder viaTopicName(String viaTopicName) {
+            this.viaTopicName = viaTopicName;
             return this;
         }
 
@@ -530,9 +560,13 @@ public final class ServiceBusClientBuilder {
             if (!CoreUtils.isNullOrEmpty(viaQueueName) && entityType == MessagingEntityType.SUBSCRIPTION) {
                 throw logger.logExceptionAsError(new IllegalStateException(String.format(
                     "(%s), Via queue feature work only with a queue.", viaQueueName)));
+            } else if (!CoreUtils.isNullOrEmpty(viaTopicName) && entityType == MessagingEntityType.QUEUE) {
+                throw logger.logExceptionAsError(new IllegalStateException(String.format(
+                    "(%s), Via topic feature work only with a topic.", viaTopicName)));
             }
 
             final String entityName;
+            final String viaEntityName = !CoreUtils.isNullOrEmpty(viaQueueName) ? viaQueueName : viaTopicName;
             switch (entityType) {
                 case QUEUE:
                     entityName = queueName;
@@ -549,7 +583,7 @@ public final class ServiceBusClientBuilder {
             }
 
             return new ServiceBusSenderAsyncClient(entityName, entityType, connectionProcessor, retryOptions,
-                tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose, viaQueueName);
+                tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose, viaEntityName);
         }
 
         /**
@@ -585,21 +619,8 @@ public final class ServiceBusClientBuilder {
         private String sessionId;
         private String subscriptionName;
         private String topicName;
-        private Duration maxAutoLockRenewalDuration;
 
         private ServiceBusSessionReceiverClientBuilder() {
-        }
-
-        /**
-         * Enables auto-lock renewal by renewing each session lock until the {@code maxAutoLockRenewalDuration} has
-         * elapsed.
-         *
-         * @param maxAutoLockRenewalDuration Maximum amount of time to renew the session lock.
-         * @return The modified {@link ServiceBusSessionReceiverClientBuilder} object.
-         */
-        public ServiceBusSessionReceiverClientBuilder maxAutoLockRenewalDuration(Duration maxAutoLockRenewalDuration) {
-            this.maxAutoLockRenewalDuration = maxAutoLockRenewalDuration;
-            return this;
         }
 
         /**
@@ -716,13 +737,14 @@ public final class ServiceBusClientBuilder {
         public ServiceBusReceiverAsyncClient buildAsyncClient() {
             final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
                 queueName);
-            final String entityPath = getEntityPath(logger, entityType, queueName, topicName, subscriptionName);
+            final String entityPath = getEntityPath(logger, entityType, queueName, topicName, subscriptionName,
+                SubQueue.NONE);
 
-            validateAndThrow(prefetchCount, maxAutoLockRenewalDuration);
+            validateAndThrow(prefetchCount);
 
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
-                maxAutoLockRenewalDuration, sessionId, isRollingSessionReceiver(), maxConcurrentSessions);
+                sessionId, isRollingSessionReceiver(), maxConcurrentSessions);
 
             if (CoreUtils.isNullOrEmpty(sessionId)) {
                 final UnnamedSessionManager sessionManager = new UnnamedSessionManager(entityPath, entityType,
@@ -787,24 +809,12 @@ public final class ServiceBusClientBuilder {
     public final class ServiceBusReceiverClientBuilder {
         private int prefetchCount = DEFAULT_PREFETCH_COUNT;
         private String queueName;
+        private SubQueue subQueue;
         private ReceiveMode receiveMode = ReceiveMode.PEEK_LOCK;
         private String subscriptionName;
         private String topicName;
-        private Duration maxAutoLockRenewalDuration;
 
         private ServiceBusReceiverClientBuilder() {
-        }
-
-        /**
-         * Enables auto-lock renewal by renewing each message lock renewal until the {@code maxAutoLockRenewalDuration}
-         * has elapsed.
-         *
-         * @param maxAutoLockRenewalDuration Maximum amount of time to renew the session lock.
-         * @return The modified {@link ServiceBusReceiverClientBuilder} object.
-         */
-        public ServiceBusReceiverClientBuilder maxAutoLockRenewalDuration(Duration maxAutoLockRenewalDuration) {
-            this.maxAutoLockRenewalDuration = maxAutoLockRenewalDuration;
-            return this;
         }
 
         /**
@@ -845,6 +855,19 @@ public final class ServiceBusClientBuilder {
          */
         public ServiceBusReceiverClientBuilder receiveMode(ReceiveMode receiveMode) {
             this.receiveMode = receiveMode;
+            return this;
+        }
+
+        /**
+         * Sets the type of the {@link SubQueue} to connect to.
+         *
+         * @param subQueue The type of the sub queue.
+         *
+         * @return The modified {@link ServiceBusReceiverClientBuilder} object.
+         * @see #queueName A queuename or #topicName A topic name should be set as well.
+         */
+        public ServiceBusReceiverClientBuilder subQueue(SubQueue subQueue) {
+            this.subQueue = subQueue;
             return this;
         }
 
@@ -891,13 +914,12 @@ public final class ServiceBusClientBuilder {
         public ServiceBusReceiverAsyncClient buildAsyncClient() {
             final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
                 queueName);
-            final String entityPath = getEntityPath(logger, entityType, queueName, topicName, subscriptionName);
-
-            validateAndThrow(prefetchCount, maxAutoLockRenewalDuration);
+            final String entityPath = getEntityPath(logger, entityType, queueName, topicName, subscriptionName,
+                subQueue);
+            validateAndThrow(prefetchCount);
 
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
-            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
-                maxAutoLockRenewalDuration);
+            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount);
 
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
                 entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
@@ -921,161 +943,10 @@ public final class ServiceBusClientBuilder {
         }
     }
 
-    /**
-     * Azure Service Bus queues and topic subscriptions provide a secondary subqueue, called a dead-letter queue (DLQ).
-     * The dead-letter queue doesn't need to be explicitly created and can't be deleted or otherwise managed
-     * independent of the main entity.
-     * <p>
-     * This is builder for creating  {@link ServiceBusReceiverClient} and {@link ServiceBusReceiverAsyncClient} to
-     * consume dead-letter messages from Service Bus entity.
-     * @see ServiceBusReceiverAsyncClient
-     * @see ServiceBusReceiverClient
-     */
-    @ServiceClientBuilder(serviceClients = {ServiceBusReceiverClient.class, ServiceBusReceiverAsyncClient.class})
-    public final class ServiceBusDeadLetterReceiverClientBuilder {
-        private int prefetchCount = DEFAULT_PREFETCH_COUNT;
-        private String queueName;
-        private ReceiveMode receiveMode = ReceiveMode.PEEK_LOCK;
-        private String subscriptionName;
-        private String topicName;
-        private Duration maxAutoLockRenewalDuration;
-
-        private ServiceBusDeadLetterReceiverClientBuilder() {
-        }
-
-        /**
-         * Enables auto-lock renewal by renewing each message lock renewal until the {@code maxAutoLockRenewalDuration}
-         * has elapsed.
-         * @param maxAutoLockRenewalDuration Maximum amount of time to renew the session lock.
-         *
-         * @return The modified {@link ServiceBusDeadLetterReceiverClientBuilder} object.
-         */
-        public ServiceBusDeadLetterReceiverClientBuilder maxAutoLockRenewalDuration(
-            Duration maxAutoLockRenewalDuration) {
-            this.maxAutoLockRenewalDuration = maxAutoLockRenewalDuration;
-            return this;
-        }
-
-        /**
-         * Sets the prefetch count of the receiver. For both {@link ReceiveMode#PEEK_LOCK PEEK_LOCK} and {@link
-         * ReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} modes the default value is 1.
-         * <p>
-         * Prefetch speeds up the message flow by aiming to have a message readily available for local retrieval when
-         * and before the application asks for one using {@link ServiceBusReceiverAsyncClient#receiveMessages()}.
-         * Setting a non-zero value will prefetch that number of messages. Setting the value to zero turns prefetch off.
-         * @param prefetchCount The prefetch count.
-         *
-         * @return The modified {@link ServiceBusDeadLetterReceiverClientBuilder} object.
-         */
-        public ServiceBusDeadLetterReceiverClientBuilder prefetchCount(int prefetchCount) {
-            this.prefetchCount = prefetchCount;
-            return this;
-        }
-
-        /**
-         * Sets the name of the queue to create a receiver for.
-         * @param queueName Name of the queue.
-         *
-         * @return The modified {@link ServiceBusDeadLetterReceiverClientBuilder} object.
-         */
-        public ServiceBusDeadLetterReceiverClientBuilder queueName(String queueName) {
-            this.queueName = queueName;
-            return this;
-        }
-
-        /**
-         * Sets the receive mode for the receiver.
-         * @param receiveMode Mode for receiving messages.
-         *
-         * @return The modified {@link ServiceBusDeadLetterReceiverClientBuilder} object.
-         */
-        public ServiceBusDeadLetterReceiverClientBuilder receiveMode(ReceiveMode receiveMode) {
-            this.receiveMode = receiveMode;
-            return this;
-        }
-
-        /**
-         * Sets the name of the subscription in the topic to listen to. <b>{@link #topicName(String)} must also be set.
-         * </b>
-         * @param subscriptionName Name of the subscription.
-         *
-         * @return The modified {@link ServiceBusDeadLetterReceiverClientBuilder} object.
-         * @see ServiceBusDeadLetterReceiverClientBuilder#topicName(String) A topic name should be set as well...
-         */
-        public ServiceBusDeadLetterReceiverClientBuilder subscriptionName(String subscriptionName) {
-            this.subscriptionName = subscriptionName;
-            return this;
-        }
-
-        /**
-         * Sets the name of the topic. <b>{@link #subscriptionName(String)} must also be set.</b>
-         * @param topicName Name of the topic.
-         *
-         * @return The modified {@link ServiceBusDeadLetterReceiverClientBuilder} object.
-         * @see ServiceBusDeadLetterReceiverClientBuilder#subscriptionName(String) A subscription name should be set
-         * as well.
-         */
-        public ServiceBusDeadLetterReceiverClientBuilder topicName(String topicName) {
-            this.topicName = topicName;
-            return this;
-        }
-
-        /**
-         * Creates an <b>asynchronous</b> Service Bus receiver responsible for reading {@link ServiceBusMessage
-         * messages} from secondary subqueue, called a dead-letter queue (DLQ).
-         * @return An new {@link ServiceBusReceiverAsyncClient} that receives messages from secondary subqueue, called
-         * a dead-letter queue (DLQ).
-         * @throws IllegalStateException if {@link #queueName(String) queueName} or {@link #topicName(String)
-         *     topicName} are not set or, both of these fields are set. It is also thrown if the Service Bus {@link
-         *     #connectionString(String) connectionString} contains an {@code EntityPath} that does not match one set in
-         *     {@link #queueName(String) queueName} or {@link #topicName(String) topicName}. Lastly, if a {@link
-         *     #topicName(String) topicName} is set, but {@link #subscriptionName(String) subscriptionName} is not.
-         * @throws IllegalArgumentException Queue or topic name are not set via {@link #queueName(String)
-         *     queueName()} or {@link #topicName(String) topicName()}, respectively.
-         */
-        public ServiceBusReceiverAsyncClient buildAsyncClient() {
-            final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
-                queueName);
-            final String entityPath = getDeadLetterEntityPath(logger, entityType, queueName, topicName,
-                subscriptionName);
-
-            validateAndThrow(prefetchCount, maxAutoLockRenewalDuration);
-
-            final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
-            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
-                maxAutoLockRenewalDuration);
-
-            return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
-                entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
-                tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose);
-        }
-
-        /**
-         * Creates <b>synchronous</b> Service Bus receiver responsible for reading {@link ServiceBusMessage messages}
-         * from secondary subqueue, called a dead-letter queue (DLQ).
-         *
-         * @return An new {@link ServiceBusReceiverClient} that receives messages from secondary subqueue, called a
-         * dead-letter queue (DLQ).
-         * @throws IllegalStateException if {@link #queueName(String) queueName} or {@link #topicName(String)
-         *     topicName} are not set or, both of these fields are set. It is also thrown if the Service Bus {@link
-         *     #connectionString(String) connectionString} contains an {@code EntityPath} that does not match one set in
-         *     {@link #queueName(String) queueName} or {@link #topicName(String) topicName}. Lastly, if a {@link
-         *     #topicName(String) topicName} is set, but {@link #subscriptionName(String) subscriptionName} is not.
-         * @throws IllegalArgumentException Queue or topic name are not set via {@link #queueName(String)
-         *     queueName()} or {@link #topicName(String) topicName()}, respectively.
-         */
-        public ServiceBusReceiverClient buildClient() {
-            return new ServiceBusReceiverClient(buildAsyncClient(), retryOptions.getTryTimeout());
-        }
-    }
-
-    private void validateAndThrow(int prefetchCount, Duration maxAutoLockRenewalDuration) {
+    private void validateAndThrow(int prefetchCount) {
         if (prefetchCount < 1) {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
                 "prefetchCount (%s) cannot be less than 1.", prefetchCount)));
-        } else if (maxAutoLockRenewalDuration != null && maxAutoLockRenewalDuration.isNegative()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                "maxAutoLockRenewalDuration (%s) cannot be negative.", maxAutoLockRenewalDuration)));
         }
     }
 }

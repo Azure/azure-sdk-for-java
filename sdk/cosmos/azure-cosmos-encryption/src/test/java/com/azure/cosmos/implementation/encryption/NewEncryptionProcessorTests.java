@@ -17,6 +17,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Mono;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
@@ -40,29 +41,29 @@ public class NewEncryptionProcessorTests {
             @Override
             public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
 
-                byte[] plainText = invocationOnMock.getArgumentAt(0, byte[].class);
+                byte[] plainText = invocationOnMock.getArgument(0, byte[].class);
 
                 if (dekId == NewEncryptionProcessorTests.dekId) {
-                    return TestCommon.EncryptData(plainText);
+                    return Mono.just(TestCommon.EncryptData(plainText));
                 } else {
                     throw new IllegalArgumentException("DEK not found.");
                 }
             }
-        }).when(NewEncryptionProcessorTests.mockEncryptor).encryptAsync(Mockito.any(), Mockito.any(), Mockito.any());
+        }).when(NewEncryptionProcessorTests.mockEncryptor).encrypt(Mockito.any(), Mockito.any(), Mockito.any());
 
         Mockito.doAnswer(new Answer() {
             @Override
             public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
 
-                byte[] plainText = invocationOnMock.getArgumentAt(0, byte[].class);
+                byte[] plainText = invocationOnMock.getArgument(0, byte[].class);
 
                 if (dekId == NewEncryptionProcessorTests.dekId) {
-                    return TestCommon.DecryptData(plainText);
+                    return Mono.just(TestCommon.DecryptData(plainText));
                 } else {
                     throw new IllegalArgumentException("Null DEK was returned.");
                 }
             }
-        }).when(NewEncryptionProcessorTests.mockEncryptor).decryptAsync(Mockito.any(), Mockito.any(), Mockito.any());
+        }).when(NewEncryptionProcessorTests.mockEncryptor).decrypt(Mockito.any(), Mockito.any(), Mockito.any());
 
     }
 
@@ -76,7 +77,7 @@ public class NewEncryptionProcessorTests {
             .setPathsToEncrypt(ImmutableList.of("/SensitiveStr", "/Invalid"));
 
         try {
-            EncryptionProcessor.encryptAsync(
+            EncryptionProcessor.encrypt(
                 testDoc.ToStream(),
                 NewEncryptionProcessorTests.mockEncryptor,
                 encryptionOptionsWithInvalidPathToEncrypt);
@@ -111,9 +112,9 @@ public class NewEncryptionProcessorTests {
         TestCommon.TestDoc testDoc = TestCommon.TestDoc.Create();
 
         ObjectNode encryptedDoc = NewEncryptionProcessorTests.VerifyEncryptionSucceeded(testDoc);
-        ObjectNode decryptedDoc = EncryptionProcessor.decryptAsync(
+        ObjectNode decryptedDoc = EncryptionProcessor.decrypt(
             encryptedDoc,
-            NewEncryptionProcessorTests.mockEncryptor);
+            NewEncryptionProcessorTests.mockEncryptor).block();
 
         NewEncryptionProcessorTests.VerifyDecryptionSucceeded(
             decryptedDoc,
@@ -163,10 +164,10 @@ public class NewEncryptionProcessorTests {
 //}
 //
     private static ObjectNode VerifyEncryptionSucceeded(TestCommon.TestDoc testDoc) {
-        byte[] encryptedStream = EncryptionProcessor.encryptAsync(
+        byte[] encryptedStream = EncryptionProcessor.encrypt(
             testDoc.ToStream(),
             NewEncryptionProcessorTests.mockEncryptor,
-            NewEncryptionProcessorTests.encryptionOptions);
+            NewEncryptionProcessorTests.encryptionOptions).block();
 
 //    ObjectNode encryptedDoc = NewEncryptionProcessor.BaseSerializer.FromStream<JObject>(encryptedStream);
         ObjectNode encryptedDoc = Utils.parse(encryptedStream, ObjectNode.class);

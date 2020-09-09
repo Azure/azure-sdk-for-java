@@ -7,6 +7,7 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClient;
 import reactor.core.publisher.Mono;
 
@@ -19,6 +20,7 @@ class AppServiceMsiCredential {
     private final String msiSecret;
     private final IdentityClient identityClient;
     private final String clientId;
+    private final ClientLogger logger = new ClientLogger(AppServiceMsiCredential.class);
 
     /**
      * Creates an instance of {@link AppServiceMsiCredential}.
@@ -32,6 +34,10 @@ class AppServiceMsiCredential {
         this.msiSecret = configuration.get(Configuration.PROPERTY_MSI_SECRET);
         this.identityClient = identityClient;
         this.clientId = clientId;
+        if (!(msiEndpoint.startsWith("https") || msiEndpoint.startsWith("http"))) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("MSI Endpoint should start with 'https' or 'http' scheme."));
+        }
     }
 
     /**

@@ -4,34 +4,33 @@
 package com.azure.storage.blob
 
 import com.azure.core.http.rest.Response
-import com.azure.core.util.paging.ContinuablePage
 import com.azure.core.util.Context
+import com.azure.core.util.paging.ContinuablePage
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.models.BlobAnalyticsLogging
 import com.azure.storage.blob.models.BlobContainerItem
 import com.azure.storage.blob.models.BlobContainerListDetails
 import com.azure.storage.blob.models.BlobCorsRule
 import com.azure.storage.blob.models.BlobMetrics
-import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.models.BlobRetentionPolicy
 import com.azure.storage.blob.models.BlobServiceProperties
+import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.CustomerProvidedKey
-import com.azure.storage.blob.options.FindBlobsOptions
 import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.StaticWebsite
-
-import com.azure.storage.blob.models.BlobStorageException
+import com.azure.storage.blob.options.BlobParallelUploadOptions
+import com.azure.storage.blob.options.FindBlobsOptions
 import com.azure.storage.blob.options.UndeleteBlobContainerOptions
 import com.azure.storage.common.policy.RequestRetryOptions
-import com.azure.storage.common.policy.RequestRetryPolicy
+import com.azure.storage.common.policy.RetryPolicyType
 import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
-import spock.lang.Ignore
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
+import spock.lang.Ignore
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -678,8 +677,9 @@ class ServiceAPITest extends APISpec {
     def "Invalid account name"() {
         setup:
         def badURL = new URL("http://fake.blobfake.core.windows.net")
-        def client = getServiceClient(primaryCredential, badURL.toString(),
-            new RequestRetryPolicy(new RequestRetryOptions(null, 2, null, null, null, null)))
+        def client = getServiceClientBuilder(primaryCredential, badURL.toString())
+            .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 2, 60, 100, 1000, null))
+            .buildClient()
 
         when:
         client.getProperties()

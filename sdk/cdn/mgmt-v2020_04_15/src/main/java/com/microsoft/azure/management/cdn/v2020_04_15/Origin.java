@@ -17,7 +17,6 @@ import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.cdn.v2020_04_15.implementation.CdnManager;
-import java.util.Map;
 
 /**
  * Type representing Origin.
@@ -47,11 +46,6 @@ public interface Origin extends HasInner<OriginInner>, Indexable, Refreshable<Or
      * @return the id value.
      */
     String id();
-
-    /**
-     * @return the location value.
-     */
-    String location();
 
     /**
      * @return the name value.
@@ -104,11 +98,6 @@ public interface Origin extends HasInner<OriginInner>, Indexable, Refreshable<Or
     OriginResourceState resourceState();
 
     /**
-     * @return the tags value.
-     */
-    Map<String, String> tags();
-
-    /**
      * @return the type value.
      */
     String type();
@@ -121,7 +110,7 @@ public interface Origin extends HasInner<OriginInner>, Indexable, Refreshable<Or
     /**
      * The entirety of the Origin definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithEndpoint, DefinitionStages.WithLocation, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithEndpoint, DefinitionStages.WithCreate {
     }
 
     /**
@@ -145,19 +134,7 @@ public interface Origin extends HasInner<OriginInner>, Indexable, Refreshable<Or
             * @param endpointName Name of the endpoint under the profile which is unique globally
             * @return the next definition stage
             */
-            WithLocation withExistingEndpoint(String resourceGroupName, String profileName, String endpointName);
-        }
-
-        /**
-         * The stage of the origin definition allowing to specify Location.
-         */
-        interface WithLocation {
-           /**
-            * Specifies location.
-            * @param location Resource location
-            * @return the next definition stage
-            */
-            WithCreate withLocation(String location);
+            WithCreate withExistingEndpoint(String resourceGroupName, String profileName, String endpointName);
         }
 
         /**
@@ -281,18 +258,6 @@ public interface Origin extends HasInner<OriginInner>, Indexable, Refreshable<Or
         }
 
         /**
-         * The stage of the origin definition allowing to specify Tags.
-         */
-        interface WithTags {
-            /**
-             * Specifies tags.
-             * @param tags Resource tags
-             * @return the next definition stage
-             */
-            WithCreate withTags(Map<String, String> tags);
-        }
-
-        /**
          * The stage of the origin definition allowing to specify Weight.
          */
         interface WithWeight {
@@ -309,13 +274,13 @@ public interface Origin extends HasInner<OriginInner>, Indexable, Refreshable<Or
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<Origin>, DefinitionStages.WithEnabled, DefinitionStages.WithHostName, DefinitionStages.WithHttpPort, DefinitionStages.WithHttpsPort, DefinitionStages.WithOriginHostHeader, DefinitionStages.WithPriority, DefinitionStages.WithPrivateLinkAlias, DefinitionStages.WithPrivateLinkApprovalMessage, DefinitionStages.WithPrivateLinkLocation, DefinitionStages.WithPrivateLinkResourceId, DefinitionStages.WithTags, DefinitionStages.WithWeight {
+        interface WithCreate extends Creatable<Origin>, DefinitionStages.WithEnabled, DefinitionStages.WithHostName, DefinitionStages.WithHttpPort, DefinitionStages.WithHttpsPort, DefinitionStages.WithOriginHostHeader, DefinitionStages.WithPriority, DefinitionStages.WithPrivateLinkAlias, DefinitionStages.WithPrivateLinkApprovalMessage, DefinitionStages.WithPrivateLinkLocation, DefinitionStages.WithPrivateLinkResourceId, DefinitionStages.WithWeight {
         }
     }
     /**
      * The template for a Origin update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Origin>, UpdateStages.WithEnabled, UpdateStages.WithHostName, UpdateStages.WithHttpPort, UpdateStages.WithHttpsPort, UpdateStages.WithOriginHostHeader, UpdateStages.WithPriority, UpdateStages.WithPrivateLinkAlias, UpdateStages.WithPrivateLinkApprovalMessage, UpdateStages.WithPrivateLinkLocation, UpdateStages.WithPrivateLinkResourceId, UpdateStages.WithTags, UpdateStages.WithWeight {
+    interface Update extends Appliable<Origin>, UpdateStages.WithEnabled, UpdateStages.WithHostName, UpdateStages.WithHttpPort, UpdateStages.WithHttpsPort, UpdateStages.WithOriginHostHeader, UpdateStages.WithPriority, UpdateStages.WithPrivateLinkAlias, UpdateStages.WithPrivateLinkApprovalMessage, UpdateStages.WithPrivateLinkLocation, UpdateStages.WithPrivateLinkResourceId, UpdateStages.WithWeight {
     }
 
     /**
@@ -440,18 +405,6 @@ public interface Origin extends HasInner<OriginInner>, Indexable, Refreshable<Or
              * @return the next update stage
              */
             Update withPrivateLinkResourceId(String privateLinkResourceId);
-        }
-
-        /**
-         * The stage of the origin update allowing to specify Tags.
-         */
-        interface WithTags {
-            /**
-             * Specifies tags.
-             * @param tags Origin tags
-             * @return the next update stage
-             */
-            Update withTags(Map<String, String> tags);
         }
 
         /**

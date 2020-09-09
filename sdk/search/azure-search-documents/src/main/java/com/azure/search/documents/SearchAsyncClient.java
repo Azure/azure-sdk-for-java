@@ -12,10 +12,11 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
 import com.azure.search.documents.implementation.SearchIndexClientImplBuilder;
-import com.azure.search.documents.implementation.SerializationUtil;
 import com.azure.search.documents.implementation.converters.AutocompleteModeConverter;
 import com.azure.search.documents.implementation.converters.FacetResultConverter;
 import com.azure.search.documents.implementation.converters.IndexBatchBaseConverter;
@@ -53,11 +54,11 @@ import com.azure.search.documents.util.SearchPagedFlux;
 import com.azure.search.documents.util.SearchPagedResponse;
 import com.azure.search.documents.util.SuggestPagedFlux;
 import com.azure.search.documents.util.SuggestPagedResponse;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -67,6 +68,8 @@ import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.serializer.TypeReference.createInstance;
+import static com.azure.search.documents.implementation.util.Utility.initializeSerializerAdapter;
 
 /**
  * This class provides a client that contains the operations for querying an index and uploading, merging, or deleting
@@ -111,29 +114,26 @@ public final class SearchAsyncClient {
      */
     private final HttpPipeline httpPipeline;
 
-    private static final ObjectMapper MAPPER;
+    private final JsonSerializer serializer;
 
-    static {
-        MAPPER = new JacksonAdapter().serializer();
-        SerializationUtil.configureMapper(MAPPER);
-        MAPPER.setSerializationInclusion(JsonInclude.Include.ALWAYS);
-    }
+    private static final SerializerAdapter ADAPTER = initializeSerializerAdapter();
 
     /**
      * Package private constructor to be used by {@link SearchClientBuilder}
      */
     SearchAsyncClient(String endpoint, String indexName, SearchServiceVersion serviceVersion,
-        HttpPipeline httpPipeline) {
-
+        HttpPipeline httpPipeline, JsonSerializer serializer) {
         this.endpoint = endpoint;
         this.indexName = indexName;
         this.serviceVersion = serviceVersion;
         this.httpPipeline = httpPipeline;
+        this.serializer = serializer;
 
         restClient = new SearchIndexClientImplBuilder()
             .endpoint(endpoint)
             .indexName(indexName)
             .pipeline(httpPipeline)
+            .serializerAdapter(ADAPTER)
             .buildClient();
     }
 
@@ -470,7 +470,7 @@ public final class SearchAsyncClient {
         try {
             IndexDocumentsOptions documentsOptions = (options == null) ? new IndexDocumentsOptions() : options;
             return restClient.getDocuments()
-                .indexWithResponseAsync(IndexBatchBaseConverter.map(batch), null, context)
+                .indexWithResponseAsync(IndexBatchBaseConverter.map(batch, serializer), null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .flatMap(response -> (response.getStatusCode() == MULTI_STATUS_CODE
                     && documentsOptions.throwOnAnyError())
@@ -537,16 +537,22 @@ public final class SearchAsyncClient {
                 .getWithResponseAsync(key, selectedFields, null, context)
                 .onErrorMap(DocumentResponseConversions::exceptionMapper)
                 .map(res -> {
-                    if (SearchDocument.class == modelClass) {
-                        TypeReference<Map<String, Object>> typeReference = new TypeReference<Map<String, Object>>() {
-                        };
-                        SearchDocument doc = new SearchDocument(MAPPER.convertValue(res.getValue(), typeReference));
-                        return new SimpleResponse<T>(res, (T) doc);
+                    if (serializer == null) {
+                        try {
+                            String serializedJson = ADAPTER.serialize(res.getValue(), SerializerEncoding.JSON);
+                            T document = ADAPTER.deserialize(serializedJson, modelClass, SerializerEncoding.JSON);
+                            return new SimpleResponse<>(res, document);
+                        } catch (IOException ex) {
+                            throw logger.logExceptionAsError(
+                                new RuntimeException("Something wrong with the serialization."));
+                        }
                     }
-                    T document = MAPPER.convertValue(res.getValue(), modelClass);
-                    return new SimpleResponse<>(res, document);
-                })
-                .map(Function.identity());
+                    ByteArrayOutputStream sourceStream = new ByteArrayOutputStream();
+                    serializer.serialize(sourceStream, res.getValue());
+                    T doc = serializer.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()),
+                        createInstance(modelClass));
+                    return new SimpleResponse<>(res, doc);
+                }).map(Function.identity());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -685,9 +691,9 @@ public final class SearchAsyncClient {
             });
     }
 
-    private static List<SearchResult> getSearchResults(SearchDocumentsResult result) {
+    private List<SearchResult> getSearchResults(SearchDocumentsResult result) {
         return result.getResults().stream()
-            .map(SearchResultConverter::map)
+            .map(searchResult -> SearchResultConverter.map(searchResult, serializer))
             .collect(Collectors.toList());
     }
 
@@ -957,4 +963,5 @@ public final class SearchAsyncClient {
 
         return new IndexDocumentsBatch<T>().addActions(actions);
     }
+
 }

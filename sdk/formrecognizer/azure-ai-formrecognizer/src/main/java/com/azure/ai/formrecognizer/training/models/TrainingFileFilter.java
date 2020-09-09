@@ -21,13 +21,13 @@ public final class TrainingFileFilter {
      * A flag to indicate if sub folders within the set of prefix folders will
      * also need to be included when searching for content to be preprocessed.
      */
-    private boolean includeSubFolders;
+    private boolean includeSubfolders;
 
     /**
      * Get the case-sensitive prefix string to filter
      * documents in the source path for training.
      *
-     * @return the prefix value.
+     * @return the case-sensitive prefix string to filter documents for training.
      */
     public String getPrefix() {
         return this.prefix;
@@ -37,6 +37,7 @@ public final class TrainingFileFilter {
      * Set the case-sensitive prefix string to filter documents in the source path for training.
      *
      * @param prefix the prefix value to set.
+     *
      * @return the TrainingFileFilter object itself.
      */
     public TrainingFileFilter setPrefix(String prefix) {
@@ -47,22 +48,25 @@ public final class TrainingFileFilter {
     /**
      * Get the flag to indicate if sub folders within the set of prefix folders will also need to be included when
      * searching for content to be preprocessed.
+     * Not supported if training with labels.
      *
-     * @return the includeSubFolders value.
+     * @return the includeSubfolders value.
      */
-    public Boolean isIncludeSubFolders() {
-        return this.includeSubFolders;
+    public Boolean isSubfoldersIncluded() {
+        return this.includeSubfolders;
     }
 
     /**
-     * Set the includeSubFolders flag to indicate if sub folders are also to be included when
+     * Set the includeSubfolders flag to indicate if sub folders are also to be included when
      * searching for content to be preprocessed.
+     * Not supported if training with labels.
      *
-     * @param includeSubFolders the includeSubFolders value to set.
+     * @param includeSubfolders the includeSubfolders value to set.
+     *
      * @return the TrainingFileFilter object itself.
      */
-    public TrainingFileFilter setIncludeSubFolders(boolean includeSubFolders) {
-        this.includeSubFolders = includeSubFolders;
+    public TrainingFileFilter setSubfoldersIncluded(boolean includeSubfolders) {
+        this.includeSubfolders = includeSubfolders;
         return this;
     }
 }

@@ -10,6 +10,7 @@ import com.azure.core.util.Configuration;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSenderClientBuilder;
 import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.SubQueue;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -25,6 +26,8 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ServiceBusClientBuilderTest {
     private static final String NAMESPACE_NAME = "dummyNamespaceName";
@@ -33,9 +36,12 @@ class ServiceBusClientBuilderTest {
     private static final String QUEUE_NAME = "test-queue-name";
     private static final String VIA_QUEUE_NAME = "test-via-queue-name";
     private static final String TOPIC_NAME = "test-topic-name";
+    private static final String VIA_TOPIC_NAME = "test-via-queue-name";
     private static final String SHARED_ACCESS_KEY_NAME = "dummySasKeyName";
     private static final String SHARED_ACCESS_KEY = "dummySasKey";
     private static final String ENDPOINT = getUri(ENDPOINT_FORMAT, NAMESPACE_NAME, DEFAULT_DOMAIN_NAME).toString();
+    private static final String DEAD_LETTER_QUEUE_NAME_SUFFIX = "/$deadletterqueue";
+    private static final String TRANSFER_DEAD_LETTER_QUEUE_NAME_SUFFIX = "/$Transfer/$deadletterqueue";
 
     private static final String PROXY_HOST = "127.0.0.1";
     private static final String PROXY_PORT = "3128";
@@ -60,6 +66,19 @@ class ServiceBusClientBuilderTest {
     }
 
     @Test
+    void viaTopicNameWithQueueNotAllowed() {
+        // Arrange
+        ServiceBusSenderClientBuilder builder = new ServiceBusClientBuilder()
+            .connectionString(NAMESPACE_CONNECTION_STRING)
+            .sender()
+            .queueName(QUEUE_NAME)
+            .viaTopicName(VIA_TOPIC_NAME);
+
+        // Act & Assert
+        assertThrows(IllegalStateException.class, () -> builder.buildAsyncClient());
+    }
+
+    @Test
     void queueClientWithViaQueueName() {
         // Arrange
         final ServiceBusSenderClientBuilder builder = new ServiceBusClientBuilder()
@@ -73,6 +92,56 @@ class ServiceBusClientBuilderTest {
 
         // Assert
         assertNotNull(client);
+        assertEquals(client.getEntityPath(), QUEUE_NAME);
+    }
+
+    @Test
+    void topicClientWithViaTopicName() {
+        // Arrange
+        final ServiceBusSenderClientBuilder builder = new ServiceBusClientBuilder()
+            .connectionString(NAMESPACE_CONNECTION_STRING)
+            .sender()
+            .topicName(TOPIC_NAME)
+            .viaTopicName(VIA_TOPIC_NAME);
+
+        // Act
+        final ServiceBusSenderAsyncClient client = builder.buildAsyncClient();
+
+        // Assert
+        assertNotNull(client);
+        assertEquals(client.getEntityPath(), TOPIC_NAME);
+    }
+
+    @Test
+    void deadLetterqueueClient() {
+        // Arrange
+        final ServiceBusReceiverClientBuilder builder = new ServiceBusClientBuilder()
+            .connectionString(NAMESPACE_CONNECTION_STRING)
+            .receiver()
+            .queueName(QUEUE_NAME)
+            .subQueue(SubQueue.DEAD_LETTER_QUEUE);
+
+        // Act
+        final ServiceBusReceiverAsyncClient client = builder.buildAsyncClient();
+
+        // Assert
+        assertTrue(client.getEntityPath().endsWith(DEAD_LETTER_QUEUE_NAME_SUFFIX));
+    }
+
+    @Test
+    void transferDeadLetterqueueClient() {
+        // Arrange
+        final ServiceBusReceiverClientBuilder builder = new ServiceBusClientBuilder()
+            .connectionString(NAMESPACE_CONNECTION_STRING)
+            .receiver()
+            .queueName(QUEUE_NAME)
+            .subQueue(SubQueue.TRANSFER_DEAD_LETTER_QUEUE);
+
+        // Act
+        final ServiceBusReceiverAsyncClient client = builder.buildAsyncClient();
+
+        // Assert
+        assertTrue(client.getEntityPath().endsWith(TRANSFER_DEAD_LETTER_QUEUE_NAME_SUFFIX));
     }
 
     @Test
@@ -218,6 +287,22 @@ class ServiceBusClientBuilderTest {
         }
 
         Assertions.assertEquals(expectedClientCreation, clientCreated);
+    }
+
+    @Test
+    public void testConnectionStringWithSas() {
+        String connectionStringWithEntityPath = "Endpoint=sb://sb-name.servicebus.windows.net/;"
+            + "SharedAccessSignature=SharedAccessSignature test-value;EntityPath=sb-name";
+        assertNotNull(new ServiceBusClientBuilder()
+            .connectionString(connectionStringWithEntityPath));
+
+        assertThrows(IllegalArgumentException.class,
+            () -> new ServiceBusClientBuilder()
+                .connectionString("SharedAccessSignature=SharedAccessSignature test-value;EntityPath=sb-name"));
+
+        assertThrows(IllegalArgumentException.class,
+            () -> new ServiceBusClientBuilder()
+                .connectionString("Endpoint=sb://sb-name.servicebus.windows.net/;EntityPath=sb-name"));
     }
 
     private static Stream<Arguments> getProxyConfigurations() {

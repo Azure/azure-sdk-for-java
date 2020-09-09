@@ -1,63 +1,42 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.0-preview//custom/models",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.0//custom/models",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.4 (11.0.5; Windows 10 10.0)",
-      "x-ms-client-request-id" : "c5db467c-f224-4d4c-9b37-8e530cbb5a34",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.5 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "19f1a65c-6f85-498d-826b-50781c23f344",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "112",
+      "x-envoy-upstream-service-time" : "10305",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "c30ed8ff-d515-4b1c-85ee-ea4eadb48a04",
+      "apim-request-id" : "baf3aa3a-8669-4488-b36a-c4f19a415643",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "Date" : "Sun, 28 Jun 2020 22:50:52 GMT",
-      "Location" : "https://savaity-formrecognizer.cognitiveservices.azure.com/formrecognizer/v2.0-preview/custom/models/203c2893-b4d4-407d-b41f-cecca43d862f"
+      "Date" : "Thu, 06 Aug 2020 22:48:16 GMT",
+      "Location" : "https://westus2formrecognizershawn.cognitiveservices.azure.com/formrecognizer/v2.0/custom/models/ecb50724-0687-4f33-a52d-8766926140a3"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.0-preview//custom/models/203c2893-b4d4-407d-b41f-cecca43d862f?includeKeys=true",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.0//custom/models/ecb50724-0687-4f33-a52d-8766926140a3?includeKeys=true",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.4 (11.0.5; Windows 10 10.0)",
-      "x-ms-client-request-id" : "1b77a842-e818-4dd6-a352-79692beba262"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.5 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "64186d70-059c-434d-a27d-0814f274c9b7"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "30",
+      "x-envoy-upstream-service-time" : "32",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "f0eceb2e-4202-46f2-a16c-1f1acbc0fee4",
+      "apim-request-id" : "4bfa7590-296c-4853-9739-0b5fa765ec1e",
       "retry-after" : "0",
       "StatusCode" : "200",
       "x-ms-cs-error-code" : "2014",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"203c2893-b4d4-407d-b41f-cecca43d862f\",\"status\":\"invalid\",\"createdDateTime\":\"2020-06-28T22:50:52Z\",\"lastUpdatedDateTime\":\"2020-06-28T22:50:53Z\"},\"keys\":{\"clusters\":{}},\"trainResult\":{\"trainingDocuments\":[],\"errors\":[{\"code\":\"2014\",\"message\":\"No valid blobs found in the specified Azure blob container. Please conform to the document format/size/page/dimensions requirements.\"}]}}",
-      "Date" : "Sun, 28 Jun 2020 22:50:57 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.0-preview//custom/models/203c2893-b4d4-407d-b41f-cecca43d862f?includeKeys=true",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.4 (11.0.5; Windows 10 10.0)",
-      "x-ms-client-request-id" : "0244254e-3adc-4687-8c5b-73666ccd0a8d"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "127",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "4cafeb54-de12-4895-b650-52abe5b5b76c",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "x-ms-cs-error-code" : "2014",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"203c2893-b4d4-407d-b41f-cecca43d862f\",\"status\":\"invalid\",\"createdDateTime\":\"2020-06-28T22:50:52Z\",\"lastUpdatedDateTime\":\"2020-06-28T22:50:53Z\"},\"keys\":{\"clusters\":{}},\"trainResult\":{\"trainingDocuments\":[],\"errors\":[{\"code\":\"2014\",\"message\":\"No valid blobs found in the specified Azure blob container. Please conform to the document format/size/page/dimensions requirements.\"}]}}",
-      "Date" : "Sun, 28 Jun 2020 22:50:57 GMT",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"ecb50724-0687-4f33-a52d-8766926140a3\",\"status\":\"invalid\",\"createdDateTime\":\"2020-08-06T22:48:12Z\",\"lastUpdatedDateTime\":\"2020-08-06T22:48:17Z\"},\"keys\":{\"clusters\":{}},\"trainResult\":{\"trainingDocuments\":[],\"errors\":[{\"code\":\"2014\",\"message\":\"No valid blobs found in the specified Azure blob container. Please conform to the document format/size/page/dimensions requirements.\"}]}}",
+      "Date" : "Thu, 06 Aug 2020 22:48:22 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

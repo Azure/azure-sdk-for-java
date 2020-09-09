@@ -8,6 +8,7 @@ import com.azure.storage.blob.specialized.BlobOutputStream;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Path;
 
 /**
  * Provides an OutputStream to write to a file stored as an Azure Blob.
@@ -16,13 +17,16 @@ public final class NioBlobOutputStream extends OutputStream {
     private final ClientLogger logger = new ClientLogger(NioBlobOutputStream.class);
 
     private final BlobOutputStream blobOutputStream;
+    private final Path path;
 
-    NioBlobOutputStream(BlobOutputStream blobOutputStream) {
+    NioBlobOutputStream(BlobOutputStream blobOutputStream, Path path) {
         this.blobOutputStream = blobOutputStream;
+        this.path = path;
     }
 
     @Override
     public synchronized void write(int i) throws IOException {
+        AzurePath.ensureFileSystemOpen(path);
         try {
             this.blobOutputStream.write(i);
             /*
@@ -36,6 +40,7 @@ public final class NioBlobOutputStream extends OutputStream {
 
     @Override
     public synchronized void write(byte[] b) throws IOException {
+        AzurePath.ensureFileSystemOpen(path);
         try {
             this.blobOutputStream.write(b);
             /*
@@ -49,6 +54,7 @@ public final class NioBlobOutputStream extends OutputStream {
 
     @Override
     public synchronized void write(byte[] b, int off, int len) throws IOException {
+        AzurePath.ensureFileSystemOpen(path);
         try {
             this.blobOutputStream.write(b, off, len);
             /*
@@ -65,6 +71,7 @@ public final class NioBlobOutputStream extends OutputStream {
 
     @Override
     public synchronized void flush() throws IOException {
+        AzurePath.ensureFileSystemOpen(path);
         try {
             this.blobOutputStream.flush();
             /*
@@ -78,6 +85,7 @@ public final class NioBlobOutputStream extends OutputStream {
 
     @Override
     public synchronized void close() throws IOException {
+        AzurePath.ensureFileSystemOpen(path);
         try {
             this.blobOutputStream.close();
             /*

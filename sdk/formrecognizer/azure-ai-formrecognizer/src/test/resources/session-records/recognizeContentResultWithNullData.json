@@ -1,4 +1,56 @@
 {
-  "networkCallRecords" : [ ],
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.0//layout/analyze",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.5 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a2f2e20f-7fa9-4d30-a7c5-fc9a7de3e7fb",
+      "Content-Type" : "image/jpeg"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "java.lang.NullPointerException",
+      "ErrorMessage" : null
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.0//layout/analyze",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.5 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a2f2e20f-7fa9-4d30-a7c5-fc9a7de3e7fb",
+      "Content-Type" : "image/jpeg"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "java.lang.NullPointerException",
+      "ErrorMessage" : null
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.0//layout/analyze",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.5 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a2f2e20f-7fa9-4d30-a7c5-fc9a7de3e7fb",
+      "Content-Type" : "image/jpeg"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "java.lang.NullPointerException",
+      "ErrorMessage" : null
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.0//layout/analyze",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.5 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a2f2e20f-7fa9-4d30-a7c5-fc9a7de3e7fb",
+      "Content-Type" : "image/jpeg"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "java.lang.NullPointerException",
+      "ErrorMessage" : null
+    }
+  } ],
   "variables" : [ ]
 }

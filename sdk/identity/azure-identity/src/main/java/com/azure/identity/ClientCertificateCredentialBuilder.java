@@ -23,6 +23,7 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
      * @return An updated instance of this builder.
      */
     public ClientCertificateCredentialBuilder pemCertificate(String certificatePath) {
+        ValidationUtil.validateFilePath(getClass().getSimpleName(), certificatePath, "Pem Certificate Path");
         this.clientCertificate = certificatePath;
         return this;
     }
@@ -35,6 +36,7 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
      * @return An updated instance of this builder.
      */
     public ClientCertificateCredentialBuilder pfxCertificate(String certificatePath, String clientCertificatePassword) {
+        ValidationUtil.validateFilePath(getClass().getSimpleName(), certificatePath, "Pfx Certificate Path");
         this.clientCertificate = certificatePath;
         this.clientCertificatePassword = clientCertificatePassword;
         return this;

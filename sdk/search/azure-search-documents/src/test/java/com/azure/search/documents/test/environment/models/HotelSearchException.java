@@ -9,8 +9,6 @@ import com.azure.search.documents.indexes.SearchableFieldProperty;
  * The data object model is to test exception case.
  */
 public class HotelSearchException {
-
-    @SearchableFieldProperty
     private int hotelId;
 
     /**
@@ -18,6 +16,7 @@ public class HotelSearchException {
      *
      * @return Get hotel id
      */
+    @SearchableFieldProperty
     public int getHotelId() {
         return hotelId;
     }

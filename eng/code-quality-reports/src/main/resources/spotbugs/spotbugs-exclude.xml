@@ -381,7 +381,7 @@
     <Class name="com.azure.core.auth.credentials.AzureCliCredentials"/>
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
-  
+
   <!-- The fields are checked for null in the build method and throw exceptions if values for fields are not specified. -->
   <Match>
       <Class name="com.azure.identity.InteractiveBrowserCredentialBuilder"/>
@@ -633,7 +633,6 @@
           name="com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials$AuthorizationHeaderProvider"/>
       <Class name="com.azure.messaging.eventhubs.EventData$SystemProperties"/>
       <Class name="com.azure.messaging.eventhubs.implementation.ReactorSender$WeightedDeliveryTag"/>
-      <Class name="com.azure.identity.implementation.AuthorizationCodeListener"/>
     </Or>
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
   </Match>
@@ -809,6 +808,11 @@
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
 
+  <Match>
+    <Class name="com.azure.cosmos.implementation.BaseAuthorizationTokenProvider"/>
+    <Method name="reInitializeIfPossible"/>
+    <Bug pattern="ES_COMPARING_STRINGS_WITH_EQ"/>
+  </Match>
 
   <Match>
     <Class name="com.azure.cosmos.implementation.encryption.SecurityUtility"/>
@@ -858,6 +862,30 @@
     <Class name="com.azure.cosmos.implementation.directconnectivity.GoneAndRetryWithRetryPolicy" />
     <Method name="shouldRetry"/>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.cosmos.encryption.KeyVaultAccessClient" />
+    <Method name="unwrapKeyAsync"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.cosmos.encryption.KeyVaultAccessClient" />
+    <Method name="wrapKeyAsync"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.cosmos.encryption.AzureKeyVaultKeyWrapProvider" />
+    <Method name="unwrapKey"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.cosmos.encryption.AzureKeyVaultKeyWrapProvider" />
+    <Method name="wrapKey"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 
   <!-- DB is retrieved synchronously (Flux::block()) after creating it, so no chance of null  -->
@@ -1229,6 +1257,13 @@
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
+  <!-- FormRecognizerException fields re serializable -->
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.models.FormRecognizerException" />
+    <Field name="errorInformationList" />
+    <Bug pattern="SE_BAD_FIELD" />
+  </Match>
+
   <!-- Exception is required to catch, ref: code comment in the OrderbyRowComparer::compare() method  -->
   <Match>
     <Class name="com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer"/>
@@ -1474,6 +1509,13 @@
   <Match>
     <Class name="com.azure.cosmos.implementation.query.AggregateDocumentQueryExecutionContext"/>
     <Method name="~(.*)\$(drainAsync|null)\$(.*)"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_INFERRED"/>
+  </Match>
+
+    <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9092 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.QueryMetrics"/>
+    <Method name="mergeQueryMetricsMap"/>
     <Bug pattern="RV_RETURN_VALUE_IGNORED_INFERRED"/>
   </Match>
 
@@ -2092,10 +2134,12 @@
     <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE,SIC_INNER_SHOULD_BE_STATIC_ANON,SKIPPED_CLASS_TOO_BIG"/>
   </Match>
 
-  <!-- Exclude REC_CATCH_EXCEPTION for management samples. All samples in management catch Exception instead of throw it. -->
+  <!-- Exclude REC_CATCH_EXCEPTION and false positive error for management samples. All samples in management catch Exception instead of throw it. -->
   <Match>
     <Package name="~com\.azure\.resourcemanager(\.[^.]+)*\.samples(\.[^.]+)*"/>
-    <Bug pattern="REC_CATCH_EXCEPTION"/>
+    <Bug pattern="REC_CATCH_EXCEPTION,
+                  RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE,
+                  RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
 
   <!-- Exclude from spring related classes -->
@@ -2117,6 +2161,19 @@
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
   </Match>
 
+  <Match>
+    <Or>
+      <Class name="com.microsoft.azure.spring.integration.servicebus.queue.ServiceBusQueueTemplate$QueueMessageHandler"/> <!-- false positive -->
+      <Class name="com.microsoft.azure.spring.integration.servicebus.topic.ServiceBusTopicTemplate$TopicMessageHandler"/> <!-- false positive -->
+    </Or>
+    <Method name="OnCloseSessionAsync"/>
+    <Bug pattern="NM_METHOD_NAMING_CONVENTION"/>
+  </Match>
+
+  <Match>
+    <Class name="com.microsoft.azure.spring.messaging.config.AzureListenerEndpointRegistrar" />
+    <Bug pattern="NP_NULL_ON_SOME_PATH"/>
+  </Match>
 
   <!-- These fields are designed to be not written. They are for deserializing. -->
   <Match>
@@ -2150,4 +2207,49 @@
     <Bug pattern="IP_PARAMETER_IS_DEAD_BUT_OVERWRITTEN"/>
   </Match>
 
+  <Match>
+    <Class name="com.azure.core.experimental.serializer.JsonSerializer"/>
+    <Bug pattern="NM_SAME_SIMPLE_NAME_AS_INTERFACE"/>
+  </Match>
+
+  <!-- Use the property to take the custom serializer from SearchClient. -->
+  <Match>
+    <Class name="~com\.azure\.search\.documents\.models\.(SearchResult|SuggestResult)" />
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" />
+  </Match>
+
+  <!-- Use abstract TypeReference class for serialize and deserialize API. -->
+  <Match>
+    <Class name="~com\.azure\.search\.documents\.models\.(SearchResult|SuggestResult)" />
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON" />
+  </Match>
+
+  <Match>
+    <Or>
+      <Class name="com.azure.core.serializer.json.jackson.JacksonJsonSerializer"/>
+      <Class name="com.azure.core.serializer.json.gson.GsonJsonSerializer"/>
+    </Or>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+  <!-- Setup in Identity Test classes, required for the tests to work properly.-->
+  <Match>
+      <Class name="com.azure.identity.ClientCertificateCredentialTest" />
+      <Bug pattern="DMI_HARDCODED_ABSOLUTE_FILENAME"/>
+  </Match>
+
+  <Match>
+      <Or>
+          <Class name="com.azure.identity.implementation.IdentityClientTests"/>
+          <Class name="com.azure.identity.implementation.SynchronizedAccessorTests"/>
+      </Or>
+      <Or>
+          <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/> <!-- false positive -->
+          <Bug pattern="UI_INHERITANCE_UNSAFE_GETRESOURCE"/>
+      </Or>
+  </Match>
+
+  <Match>
+    <Bug pattern="EI_EXPOSE_REP"/>
+    <Class name="com.azure.core.implementation.AccessibleByteArrayOutputStream"/>
+  </Match>
 </FindBugsFilter>

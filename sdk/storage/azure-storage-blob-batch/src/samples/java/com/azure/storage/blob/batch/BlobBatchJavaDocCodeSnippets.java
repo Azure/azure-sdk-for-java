@@ -4,6 +4,7 @@
 package com.azure.storage.blob.batch;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.Configuration;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.batch.options.BlobBatchSetBlobAccessTierOptions;
 import com.azure.storage.blob.models.AccessTier;
@@ -14,8 +15,13 @@ import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
  * Code snippets for {@link BlobBatch}
  */
 public class BlobBatchJavaDocCodeSnippets {
-    private BlobBatch batch = new BlobBatchClientBuilder(new BlobServiceClientBuilder().buildClient())
-        .buildClient().getBlobBatch();
+    private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_FILE_ENDPOINT");
+    private static final String SASTOKEN = Configuration.getGlobalConfiguration().get("SAS_TOKEN");
+
+    private BlobBatch batch = new BlobBatchClientBuilder(new BlobServiceClientBuilder()
+                                                            .endpoint(ENDPOINT)
+                                                            .sasToken(SASTOKEN).buildClient())
+                                                        .buildClient().getBlobBatch();
 
     /**
      * Code snippet showing an example of an illegal batching operation.

@@ -1,7 +1,12 @@
 # Release History
 
-## 4.1.0-beta.5 (Unreleased)
+## 4.2.0-beta.1 (Unreleased)
 
+
+## 4.1.0 (2020-08-12)
+- Added support for service version `7.1`.
+- Added `retryPolicy` setter in `CertificateClientBuilder`.
+- Added `recoverableDays` property to `CertificateProperties`.
 
 ## 4.1.0-beta.4 (2020-07-08)
 - Updated versions for azure-core, azure-identity.
@@ -111,9 +116,9 @@ For details on the Azure SDK for Java (August 2019 Preview) release refer to the
 
 This library is not a direct replacement for certificates management operations from [microsoft-azure-keyvault](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/microsoft-azure-keyvault). Applications using that library would require code changes to use `azure-keyvault-certificates`.
 This package's
-[documentation](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/azure-keyvault-certificates/README.md)
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-certificates/README.md)
 and
-[samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/azure-keyvault-certificates/src/samples/java)
+[samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/azure-security-keyvault-certificates/src/samples/java)
 demonstrate the new API.
 
 
@@ -127,8 +132,8 @@ only)
 - Reactive streams support using [Project Reactor](https://projectreactor.io/).
 - Authentication using `azure-identity` credentials
   - see this package's
-  [documentation](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/azure-keyvault-certificates/README.md)
+  [documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-certificates/README.md)
   , and the
-  [Azure Identity documentation](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity/README.md)
+  [Azure Identity documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity/README.md)
   for more information
 - Added support for HTTP challenge based authentication, allowing clients to interact with vaults in sovereign clouds.

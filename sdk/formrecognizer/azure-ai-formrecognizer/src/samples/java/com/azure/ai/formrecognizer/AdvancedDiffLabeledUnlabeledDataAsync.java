@@ -4,8 +4,8 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.FormContentType;
-import com.azure.ai.formrecognizer.models.OperationResult;
-import com.azure.ai.formrecognizer.models.RecognizeOptions;
+import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
+import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.PollerFlux;
@@ -54,19 +54,21 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
             + "forms/Form_1.jpg");
         byte[] fileContent = Files.readAllBytes(analyzeFile.toPath());
 
-        PollerFlux<OperationResult, List<RecognizedForm>> labeledCustomFormPoller =
-            client.beginRecognizeCustomForms(toFluxByteBuffer(new ByteArrayInputStream(fileContent)),
-                analyzeFile.length(), "{labeled_model_Id}",
-                new RecognizeOptions()
-                    .setContentType(FormContentType.APPLICATION_PDF)
+        PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> labeledCustomFormPoller =
+            client.beginRecognizeCustomForms("{labeled_model_Id}",
+                toFluxByteBuffer(new ByteArrayInputStream(fileContent)),
+                analyzeFile.length(),
+                    new RecognizeCustomFormsOptions()
+                    .setContentType(FormContentType.IMAGE_JPEG)
                     .setFieldElementsIncluded(true)
                     .setPollInterval(Duration.ofSeconds(5)));
 
-        PollerFlux<OperationResult, List<RecognizedForm>> unlabeledCustomFormPoller =
-            client.beginRecognizeCustomForms(toFluxByteBuffer(new ByteArrayInputStream(fileContent)),
-                analyzeFile.length(), "{unlabeled_model_Id}",
-                new RecognizeOptions()
-                    .setContentType(FormContentType.APPLICATION_PDF)
+        PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> unlabeledCustomFormPoller =
+            client.beginRecognizeCustomForms("{unlabeled_model_Id}",
+                toFluxByteBuffer(new ByteArrayInputStream(fileContent)),
+                analyzeFile.length(),
+                    new RecognizeCustomFormsOptions()
+                    .setContentType(FormContentType.IMAGE_JPEG)
                     .setFieldElementsIncluded(true)
                     .setPollInterval(Duration.ofSeconds(5)));
 
@@ -106,8 +108,8 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
                     formField.getValueData().getBoundingBox().getPoints().stream().map(point -> String.format("[%.2f,"
                         + " %.2f]", point.getX(), point.getY())).forEach(boundingBoxStr::append);
                 }
-                System.out.printf("Field %s has value data text %s based on %s within bounding box %s with a confidence score "
-                        + "of %.2f.%n",
+                System.out.printf("Field %s has value data text %s based on %s within bounding box %s with "
+                        + "a confidence score of %.2f.%n",
                     label, formField.getValueData().getText(), formField.getValueData().getText(), boundingBoxStr,
                     formField.getConfidence());
 
@@ -156,8 +158,8 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
                         label, formField.getLabelData().getText(), "", formField.getConfidence());
                 }
 
-                System.out.printf("Field %s has value data text %s based on %s within bounding box %s with a confidence "
-                        + "score of %.2f.%n",
+                System.out.printf("Field %s has value data text %s based on %s within bounding box %s with "
+                        + "a confidence score of %.2f.%n",
                     label, formField.getValueData().getText(), formField.getValueData().getText(), boundingBoxStr,
                     formField.getConfidence());
 

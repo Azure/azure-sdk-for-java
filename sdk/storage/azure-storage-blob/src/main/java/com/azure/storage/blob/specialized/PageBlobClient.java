@@ -9,11 +9,13 @@ import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CopyStatusType;
+import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
 import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.models.PageBlobItem;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
@@ -606,8 +608,33 @@ public final class PageBlobClient extends BlobClientBase {
      */
     public Response<CopyStatusType> copyIncrementalWithResponse(String source, String snapshot,
         RequestConditions modifiedRequestConditions, Duration timeout, Context context) {
-        Mono<Response<CopyStatusType>> response = pageBlobAsyncClient
-            .copyIncrementalWithResponse(source, snapshot, modifiedRequestConditions, context);
+        return copyIncrementalWithResponse(new PageBlobCopyIncrementalOptions(source, snapshot)
+            .setRequestConditions(
+                ModelHelper.populateBlobDestinationRequestConditions(modifiedRequestConditions)),
+            timeout, context);
+    }
+
+    /**
+     * Begins an operation to start an incremental copy from one page blob's snapshot to this page blob. The snapshot is
+     * copied such that only the differential changes between the previously copied snapshot are transferred to the
+     * destination. The copied snapshots are complete copies of the original snapshot and can be read or copied from as
+     * usual. For more information, see the Azure Docs <a href="https://docs.microsoft.com/rest/api/storageservices/incremental-copy-blob">here</a>
+     * and
+     * <a href="https://docs.microsoft.com/en-us/azure/virtual-machines/windows/incremental-snapshots">here</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.copyIncrementalWithResponse#PageBlobCopyIncrementalOptions-Duration-Context}
+     *
+     * @param options {@link PageBlobCopyIncrementalOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return The copy status.
+     * @throws IllegalArgumentException If {@code source} is a malformed {@link URL}.
+     */
+    public Response<CopyStatusType> copyIncrementalWithResponse(PageBlobCopyIncrementalOptions options,
+        Duration timeout, Context context) {
+        Mono<Response<CopyStatusType>> response = pageBlobAsyncClient.copyIncrementalWithResponse(options, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 }

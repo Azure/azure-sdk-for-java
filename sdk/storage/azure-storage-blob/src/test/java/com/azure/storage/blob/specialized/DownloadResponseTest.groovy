@@ -9,11 +9,10 @@ import com.azure.storage.blob.HttpGetterInfo
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.DownloadRetryOptions
 import reactor.core.Exceptions
-import reactor.core.scheduler.Schedulers
 import reactor.test.StepVerifier
-import spock.lang.Requires
 import spock.lang.Unroll
 
+import java.time.Duration
 import java.util.concurrent.TimeoutException
 
 class DownloadResponseTest extends APISpec {
@@ -151,8 +150,6 @@ class DownloadResponseTest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    @Requires({ liveMode() })
-    // Because this test is inherently slow
     @Unroll
     def "Timeout"() {
         setup:
@@ -161,11 +158,11 @@ class DownloadResponseTest extends APISpec {
         DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(retryCount)
         HttpGetterInfo info = new HttpGetterInfo().setETag("etag")
 
-        when:
-        ReliableDownload response = flux.setOptions(options).getter(info).block()
-
-        then:
-        StepVerifier.create(response.getValue().subscribeOn(Schedulers.elastic()).then())
+        expect:
+        StepVerifier.withVirtualTime({ flux.setOptions(options).getter(info)
+            .flatMapMany({ it.getValue() }) })
+            .expectSubscription()
+            .thenAwait(Duration.ofSeconds((retryCount + 1) * 61))
             .verifyErrorMatches({ Exceptions.unwrap(it) instanceof TimeoutException })
 
         where:

@@ -80,10 +80,14 @@ public class DistinctQueryTests extends TestSuiteBase {
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
-    public void queryDocuments(boolean qmEnabled) {
+    public void queryDocuments(Boolean qmEnabled) {
         String query = "SELECT DISTINCT c.name from c";
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-        options.setQueryMetricsEnabled(qmEnabled);
+
+        if (qmEnabled != null) {
+            options.setQueryMetricsEnabled(qmEnabled);
+        }
+
         options.setMaxDegreeOfParallelism(2);
         CosmosPagedFlux<InternalObjectNode> queryObservable =
             createdCollection.queryItems(query,
@@ -241,10 +245,14 @@ public class DistinctQueryTests extends TestSuiteBase {
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
-    public void queryDocumentsForDistinctIntValues(boolean qmEnabled) {
+    public void queryDocumentsForDistinctIntValues(Boolean qmEnabled) {
         String query = "SELECT DISTINCT c.intprop from c";
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-        options.setQueryMetricsEnabled(qmEnabled);
+
+        if (qmEnabled != null) {
+            options.setQueryMetricsEnabled(qmEnabled);
+        }
+
         options.setMaxDegreeOfParallelism(2);
         CosmosPagedFlux<InternalObjectNode> queryObservable = createdCollection.queryItems(query, options,
                                                                                              InternalObjectNode.class);

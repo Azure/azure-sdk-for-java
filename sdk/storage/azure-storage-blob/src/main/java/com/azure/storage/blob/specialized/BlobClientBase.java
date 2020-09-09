@@ -13,6 +13,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.models.BlobProperties;
@@ -315,7 +316,8 @@ public class BlobClientBase {
             RehydratePriority priority, RequestConditions sourceModifiedRequestConditions,
             BlobRequestConditions destRequestConditions, Duration pollInterval) {
         return this.beginCopy(new BlobBeginCopyOptions(sourceUrl).setMetadata(metadata).setTier(tier)
-            .setRehydratePriority(priority).setSourceRequestConditions(sourceModifiedRequestConditions)
+            .setRehydratePriority(priority).setSourceRequestConditions(
+                ModelHelper.populateBlobSourceRequestConditions(sourceModifiedRequestConditions))
             .setDestinationRequestConditions(destRequestConditions).setPollInterval(pollInterval));
     }
 

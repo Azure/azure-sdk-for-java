@@ -12,7 +12,10 @@
     <module>azure-cosmos</module>
     <module>azure-cosmos-benchmark</module>
     <module>azure-cosmos-encryption</module>
-    <module>azure-spring-data-cosmos</module>
+    <module>azure-spring-data-2-2-cosmos</module>
+    <module>azure-spring-data-2-3-cosmos</module>
+    <module>azure-spring-data-cosmos-core</module>
+    <module>azure-spring-data-cosmos-test</module>
   </modules>
 
 </project>

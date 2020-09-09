@@ -69,7 +69,7 @@ public class UploadUtils {
             })
             .next()
             // If nothing was emitted from the stream upload an empty blob.
-            .switchIfEmpty(uploadFull.apply(Flux.empty(), 0L));
+            .switchIfEmpty(Mono.defer(() -> uploadFull.apply(Flux.empty(), 0L)));
     }
 
     /**

@@ -53,7 +53,7 @@ public class EncryptionPropertiesTest {
         assertThat(objectNode.get("_ed").isBinary()).isTrue();
         assertThat(objectNode.get("_ed").binaryValue()).isEqualTo(new byte[] {3, 4});
 
-        assertThat(objectNode.fieldNames()).hasSize(4);
+        assertThat(objectNode.fieldNames()).toIterable().hasSize(4);
     }
 
     @Test(groups = "unit")

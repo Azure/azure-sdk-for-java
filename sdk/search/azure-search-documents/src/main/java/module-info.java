@@ -5,6 +5,7 @@ module com.azure.search.documents {
     requires transitive com.azure.core;
     requires com.fasterxml.jackson.datatype.jsr310;
     requires jakarta.activation;
+    requires com.fasterxml.jackson.annotation;
 
     opens com.azure.search.documents to com.fasterxml.jackson.databind;
     opens com.azure.search.documents.models to com.fasterxml.jackson.databind;

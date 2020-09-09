@@ -71,12 +71,7 @@ public final class AzureQueueStorageBuilder {
      */
     public AzureQueueStorageImpl build() {
         if (pipeline == null) {
-            this.pipeline = new HttpPipelineBuilder()
-                                .policies(
-                                    new UserAgentPolicy(),
-                                    new RetryPolicy(),
-                                    new CookiePolicy())
-                                .build();
+            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build();
         }
         AzureQueueStorageImpl client = new AzureQueueStorageImpl(pipeline);
         if (this.url != null) {

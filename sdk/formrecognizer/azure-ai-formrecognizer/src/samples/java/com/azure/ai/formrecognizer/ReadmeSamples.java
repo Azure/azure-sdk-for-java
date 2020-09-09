@@ -9,7 +9,7 @@ import com.azure.ai.formrecognizer.training.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.models.FieldValueType;
 import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.FormPage;
-import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.training.FormTrainingClient;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
@@ -87,8 +87,8 @@ public class ReadmeSamples {
     public void recognizeCustomForm() {
         String formUrl = "{form_url}";
         String modelId = "{custom_trained_model_id}";
-        SyncPoller<OperationResult, List<RecognizedForm>> recognizeFormPoller =
-            formRecognizerClient.beginRecognizeCustomFormsFromUrl(formUrl, modelId);
+        SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> recognizeFormPoller =
+            formRecognizerClient.beginRecognizeCustomFormsFromUrl(modelId, formUrl);
 
         List<RecognizedForm> recognizedForms = recognizeFormPoller.getFinalResult();
 
@@ -115,7 +115,7 @@ public class ReadmeSamples {
         byte[] fileContent = Files.readAllBytes(form.toPath());
         InputStream inputStream = new ByteArrayInputStream(fileContent);
 
-        SyncPoller<OperationResult, List<FormPage>> recognizeContentPoller =
+        SyncPoller<FormRecognizerOperationResult, List<FormPage>> recognizeContentPoller =
             formRecognizerClient.beginRecognizeContent(inputStream, form.length());
 
         List<FormPage> contentPageResults = recognizeContentPoller.getFinalResult();
@@ -137,9 +137,9 @@ public class ReadmeSamples {
     }
 
     public void recognizeReceipt() {
-        String receiptUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media"
+        String receiptUrl = "https://docs.microsoft.com/azure/cognitive-services/form-recognizer/media"
             + "/contoso-allinone.jpg";
-        SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
+        SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
             formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptUrl);
         List<RecognizedForm> receiptPageResults = syncPoller.getFinalResult();
 
@@ -149,7 +149,7 @@ public class ReadmeSamples {
             System.out.printf("----------- Recognizing receipt info for page %d -----------%n", i);
             FormField merchantNameField = recognizedFields.get("MerchantName");
             if (merchantNameField != null) {
-                if (FieldValueType.STRING == merchantNameField.getValue().getType()) {
+                if (FieldValueType.STRING == merchantNameField.getValue().getValueType()) {
                     String merchantName = merchantNameField.getValue().asString();
                     System.out.printf("Merchant Name: %s, confidence: %.2f%n",
                         merchantName, merchantNameField.getConfidence());
@@ -158,7 +158,7 @@ public class ReadmeSamples {
 
             FormField merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
             if (merchantPhoneNumberField != null) {
-                if (FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getValue().getType()) {
+                if (FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getValue().getValueType()) {
                     String merchantAddress = merchantPhoneNumberField.getValue().asPhoneNumber();
                     System.out.printf("Merchant Phone number: %s, confidence: %.2f%n",
                         merchantAddress, merchantPhoneNumberField.getConfidence());
@@ -167,7 +167,7 @@ public class ReadmeSamples {
 
             FormField transactionDateField = recognizedFields.get("TransactionDate");
             if (transactionDateField != null) {
-                if (FieldValueType.DATE == transactionDateField.getValue().getType()) {
+                if (FieldValueType.DATE == transactionDateField.getValue().getValueType()) {
                     LocalDate transactionDate = transactionDateField.getValue().asDate();
                     System.out.printf("Transaction Date: %s, confidence: %.2f%n",
                         transactionDate, transactionDateField.getConfidence());
@@ -177,15 +177,15 @@ public class ReadmeSamples {
             FormField receiptItemsField = recognizedFields.get("Items");
             if (receiptItemsField != null) {
                 System.out.printf("Receipt Items: %n");
-                if (FieldValueType.LIST == receiptItemsField.getValue().getType()) {
+                if (FieldValueType.LIST == receiptItemsField.getValue().getValueType()) {
                     List<FormField> receiptItems = receiptItemsField.getValue().asList();
                     receiptItems.stream()
-                        .filter(receiptItem -> FieldValueType.MAP == receiptItem.getValue().getType())
+                        .filter(receiptItem -> FieldValueType.MAP == receiptItem.getValue().getValueType())
                         .map(formField -> formField.getValue().asMap())
                         .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
                             if ("Quantity".equals(key)) {
-                                if (FieldValueType.DOUBLE == formField.getValue().getType()) {
-                                    Double quantity = formField.getValue().asDouble();
+                                if (FieldValueType.FLOAT == formField.getValue().getValueType()) {
+                                    Float quantity = formField.getValue().asFloat();
                                     System.out.printf("Quantity: %f, confidence: %.2f%n",
                                         quantity, formField.getConfidence());
                                 }
@@ -198,7 +198,7 @@ public class ReadmeSamples {
 
     public void trainModel() {
         String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
-        SyncPoller<OperationResult, CustomFormModel> trainingPoller =
+        SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
             formTrainingClient.beginTraining(trainingFilesUrl, false);
 
         CustomFormModel customFormModel = trainingPoller.getFinalResult();

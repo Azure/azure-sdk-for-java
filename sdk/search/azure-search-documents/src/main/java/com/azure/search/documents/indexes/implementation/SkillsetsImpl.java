@@ -45,7 +45,8 @@ public final class SkillsetsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     SkillsetsImpl(SearchServiceClientImpl client) {
-        this.service = RestProxy.create(SkillsetsService.class, client.getHttpPipeline());
+        this.service =
+                RestProxy.create(SkillsetsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 

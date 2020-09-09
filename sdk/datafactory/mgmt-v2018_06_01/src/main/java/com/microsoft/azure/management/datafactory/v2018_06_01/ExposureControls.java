@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.datafactory.v2018_06_01;
 
 import rx.Observable;
+import java.util.List;
 
 /**
  * Type representing ExposureControls.
@@ -34,5 +35,16 @@ public interface ExposureControls {
      * @return the observable for the request
      */
     Observable<ExposureControlResponse> getFeatureValueByFactoryAsync(String resourceGroupName, String factoryName, ExposureControlRequest exposureControlRequest);
+
+    /**
+     * Get list of exposure control features for specific factory.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param exposureControlRequests List of exposure control features.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ExposureControlBatchResponse> queryFeatureValuesByFactoryAsync(String resourceGroupName, String factoryName, List<ExposureControlRequest> exposureControlRequests);
 
 }

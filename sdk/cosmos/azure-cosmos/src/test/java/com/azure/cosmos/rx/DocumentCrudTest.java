@@ -5,16 +5,16 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.TestObject;
-import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.TestObject;
+import com.azure.cosmos.implementation.FailureValidator;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.implementation.InternalObjectNode;
-import com.azure.cosmos.implementation.FailureValidator;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -240,6 +240,35 @@ public class DocumentCrudTest extends TestSuiteBase {
         Mono<CosmosItemResponse<InternalObjectNode>> readObservable = container.readItem(documentId,
                                                                           new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(docDefinition, "mypk")),
                                                                           options, InternalObjectNode.class);
+        FailureValidator notFoundValidator = new FailureValidator.Builder()
+            .resourceNotFound()
+            .documentClientExceptionToStringExcludesHeader(HttpConstants.HttpHeaders.AUTHORIZATION)
+            .build();
+        validateItemFailure(readObservable, notFoundValidator);
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
+    public void deleteDocumentUsingEntity(String documentId) throws InterruptedException {
+        InternalObjectNode docDefinition = getDocumentDefinition(documentId);
+
+        CosmosItemResponse<InternalObjectNode> documentResponse = container.createItem(docDefinition,
+            new CosmosItemRequestOptions()).block();
+
+        CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+        Mono<CosmosItemResponse<Object>> deleteObservable = container.deleteItem(documentResponse.getItem(), options);
+
+        CosmosItemResponseValidator validator =
+            new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
+                .nullResource()
+                .build();
+        this.validateItemSuccess(deleteObservable, validator);
+
+        // attempt to read document which was deleted
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
+
+        Mono<CosmosItemResponse<InternalObjectNode>> readObservable = container.readItem(documentId,
+            new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(docDefinition, "mypk")),
+            options, InternalObjectNode.class);
         FailureValidator notFoundValidator = new FailureValidator.Builder()
             .resourceNotFound()
             .documentClientExceptionToStringExcludesHeader(HttpConstants.HttpHeaders.AUTHORIZATION)

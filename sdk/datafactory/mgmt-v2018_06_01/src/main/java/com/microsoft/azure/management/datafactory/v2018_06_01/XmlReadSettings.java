@@ -33,6 +33,20 @@ public class XmlReadSettings extends FormatReadSettings {
     private Object validationMode;
 
     /**
+     * Indicates whether type detection is enabled when reading the xml files.
+     * Type: boolean (or Expression with resultType boolean).
+     */
+    @JsonProperty(value = "detectDataType")
+    private Object detectDataType;
+
+    /**
+     * Indicates whether namespace is enabled when reading the xml files. Type:
+     * boolean (or Expression with resultType boolean).
+     */
+    @JsonProperty(value = "namespaces")
+    private Object namespaces;
+
+    /**
      * Namespace uri to prefix mappings to override the prefixes in column
      * names when namespace is enabled, if no prefix is defined for a namespace
      * uri, the prefix of xml element/attribute name in the xml data file will
@@ -79,6 +93,46 @@ public class XmlReadSettings extends FormatReadSettings {
      */
     public XmlReadSettings withValidationMode(Object validationMode) {
         this.validationMode = validationMode;
+        return this;
+    }
+
+    /**
+     * Get indicates whether type detection is enabled when reading the xml files. Type: boolean (or Expression with resultType boolean).
+     *
+     * @return the detectDataType value
+     */
+    public Object detectDataType() {
+        return this.detectDataType;
+    }
+
+    /**
+     * Set indicates whether type detection is enabled when reading the xml files. Type: boolean (or Expression with resultType boolean).
+     *
+     * @param detectDataType the detectDataType value to set
+     * @return the XmlReadSettings object itself.
+     */
+    public XmlReadSettings withDetectDataType(Object detectDataType) {
+        this.detectDataType = detectDataType;
+        return this;
+    }
+
+    /**
+     * Get indicates whether namespace is enabled when reading the xml files. Type: boolean (or Expression with resultType boolean).
+     *
+     * @return the namespaces value
+     */
+    public Object namespaces() {
+        return this.namespaces;
+    }
+
+    /**
+     * Set indicates whether namespace is enabled when reading the xml files. Type: boolean (or Expression with resultType boolean).
+     *
+     * @param namespaces the namespaces value to set
+     * @return the XmlReadSettings object itself.
+     */
+    public XmlReadSettings withNamespaces(Object namespaces) {
+        this.namespaces = namespaces;
         return this;
     }
 

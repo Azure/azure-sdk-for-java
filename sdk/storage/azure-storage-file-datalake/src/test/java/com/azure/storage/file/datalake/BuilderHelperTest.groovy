@@ -14,6 +14,7 @@ import com.azure.core.util.DateTimeRfc1123
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.policy.RequestRetryOptions
+import com.azure.storage.common.policy.RetryPolicyType
 import com.azure.storage.file.datalake.implementation.util.BuilderHelper
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -23,6 +24,7 @@ import spock.lang.Specification
 class BuilderHelperTest extends Specification {
     static def credentials = new StorageSharedKeyCredential("accountName", "accountKey")
     static def endpoint = "https://account.blob.windows.core.net/"
+    static def requestRetryOptions = new RequestRetryOptions(RetryPolicyType.FIXED, 2, 2, 1000, 4000, null)
 
     static HttpRequest request(String url) {
         return new HttpRequest(HttpMethod.HEAD, new URL(url), new HttpHeaders().put("Content-Length", "0"),
@@ -34,7 +36,7 @@ class BuilderHelperTest extends Specification {
      */
     def "Fresh date applied on retry"() {
         when:
-        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, endpoint, new RequestRetryOptions(), null,
+        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, endpoint, requestRetryOptions, null,
             new FreshDateTestClient(), new ArrayList<>(), null, new ClientLogger(BuilderHelperTest.class))
 
         then:
@@ -52,6 +54,7 @@ class BuilderHelperTest extends Specification {
             .endpoint(endpoint)
             .credential(credentials)
             .httpClient(new FreshDateTestClient())
+            .retryOptions(requestRetryOptions)
             .buildClient()
 
         then:
@@ -70,6 +73,7 @@ class BuilderHelperTest extends Specification {
             .fileSystemName("fileSystem")
             .credential(credentials)
             .httpClient(new FreshDateTestClient())
+            .retryOptions(requestRetryOptions)
             .buildClient()
 
         then:
@@ -88,6 +92,7 @@ class BuilderHelperTest extends Specification {
             .fileSystemName("fileSystem")
             .pathName("path")
             .credential(credentials)
+            .retryOptions(requestRetryOptions)
 
         when:
         def directoryClient = pathClientBuilder.httpClient(new FreshDateTestClient()).buildDirectoryClient()

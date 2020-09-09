@@ -54,7 +54,7 @@ $StartTime = $(get-date)
 # This is the for the bannedDependencies include exceptions. All <include> entries need to be of the
 # form <include>groupId:artifactId:[version]</include> which locks to a specific version. The exception
 # to this is the blanket, wildcard include for com.azure and com.microsoft.azure libraries.
-$ComAzureAllowlistIncludes = ("com.azure:*", "com.microsoft.azure:*")
+$ComAzureAllowlistIncludes = ("com.azure:*", "com.azure.resourcemanager:*", "com.microsoft.azure:*")
 
 function Write-Error-With-Color([string]$msg)
 {

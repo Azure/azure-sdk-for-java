@@ -23,15 +23,16 @@ import java.util.List;
  */
 public class CosmosDataEncryptionKeyProvider implements DataEncryptionKeyProvider {
     // TODO: proper sample and documentation on container
-    private static final String ContainerPartitionKeyPath = "/id";
+    private static final String CONTAINER_PARTITION_KEY_PATH = "/id";
     // TODO: moderakh
     // Is it a requirement on container definition?
     //Then the code-docs and samples needs to explicit cover it.
     private final DataEncryptionKeyContainerCore dataEncryptionKeyContainerCore;
-    private final DekCache DekCache;
-    private final com.azure.cosmos.encryption.EncryptionKeyWrapProvider EncryptionKeyWrapProvider;
+    private final DekCache dekCache;
+    private final EncryptionKeyWrapProvider encryptionKeyWrapProvider;
     private CosmosAsyncContainer container;
 
+    // TODO: change to package private
     public CosmosDataEncryptionKeyProvider(EncryptionKeyWrapProvider encryptionKeyWrapProvider) {
         this(encryptionKeyWrapProvider, null);
     }
@@ -43,9 +44,9 @@ public class CosmosDataEncryptionKeyProvider implements DataEncryptionKeyProvide
      */
     public CosmosDataEncryptionKeyProvider(EncryptionKeyWrapProvider encryptionKeyWrapProvider,
                                            Duration dekPropertiesTimeToLive) {
-        this.EncryptionKeyWrapProvider = encryptionKeyWrapProvider;
+        this.encryptionKeyWrapProvider = encryptionKeyWrapProvider;
         this.dataEncryptionKeyContainerCore = new DataEncryptionKeyContainerCore(this);
-        this.DekCache = new DekCache(dekPropertiesTimeToLive);
+        this.dekCache = new DekCache(dekPropertiesTimeToLive);
     }
 
     CosmosAsyncContainer getContainer() {
@@ -61,28 +62,29 @@ public class CosmosDataEncryptionKeyProvider implements DataEncryptionKeyProvide
      * @return EncryptionKeyWrapProvider
      */
     EncryptionKeyWrapProvider getEncryptionKeyWrapProvider() {
-        return EncryptionKeyWrapProvider;
+        return encryptionKeyWrapProvider;
     }
 
     /**
      * Gets Container for data encryption keys.
      * @return DataEncryptionKeyContainer
      */
-    DataEncryptionKeyContainer getDataEncryptionKeyContainer() {
+    public DataEncryptionKeyContainer getDataEncryptionKeyContainer() {
         return dataEncryptionKeyContainerCore;
     }
 
     DekCache getDekCache() {
-        return DekCache;
+        return dekCache;
     }
 
+    // TODO: can this be changed to package private?
     // TODO: @moderakh look into if this method needs to be async.
     /**
      * Initialize Cosmos DB container for CosmosDataEncryptionKeyProvider to store wrapped DEKs
      * @param database Database
      * @param containerId ontainer id
      */
-    void initialize(CosmosAsyncDatabase database,
+    public void initialize(CosmosAsyncDatabase database,
                     String containerId) {
         Preconditions.checkNotNull(database, "database");
         Preconditions.checkNotNull(containerId, "containerId");
@@ -90,26 +92,25 @@ public class CosmosDataEncryptionKeyProvider implements DataEncryptionKeyProvide
         Preconditions.checkState(this.container == null, "CosmosDataEncryptionKeyProvider has already been initialized.");
         Preconditions.checkNotNull(database, "database is null");
 
-        CosmosContainerResponse containerResponse = database.createContainerIfNotExists(containerId, CosmosDataEncryptionKeyProvider.ContainerPartitionKeyPath).block();
+        CosmosContainerResponse containerResponse = database.createContainerIfNotExists(containerId, CosmosDataEncryptionKeyProvider.CONTAINER_PARTITION_KEY_PATH).block();
         List<String> partitionKeyPath = containerResponse.getProperties().getPartitionKeyDefinition().getPaths();
 
-        if (partitionKeyPath.size() != 1 || !StringUtils.equals(partitionKeyPath.get(0), CosmosDataEncryptionKeyProvider.ContainerPartitionKeyPath)) {
+        if (partitionKeyPath.size() != 1 || !StringUtils.equals(partitionKeyPath.get(0), CosmosDataEncryptionKeyProvider.CONTAINER_PARTITION_KEY_PATH)) {
             throw new IllegalArgumentException(String.format("Provided container %s did not have the appropriate partition key definition. " +
                     "The container needs to be created with PartitionKeyPath set to %s.",
-                containerId, ContainerPartitionKeyPath));
+                containerId, CONTAINER_PARTITION_KEY_PATH));
         }
 
         this.container = database.getContainer(containerId);
     }
 
     @Override
-    public DataEncryptionKey getDataEncryptionKey(String id,
+    public Mono<DataEncryptionKey> getDataEncryptionKey(String id,
                                                   String encryptionAlgorithm) {
         Mono<Tuple2<DataEncryptionKeyProperties, InMemoryRawDek>> fetchUnwrapMono = this
-            .dataEncryptionKeyContainerCore.fetchUnwrappedAsync(id);
+            .dataEncryptionKeyContainerCore.fetchUnwrapped(id);
 
         return fetchUnwrapMono
-            .map(fetchUnwrap -> fetchUnwrap.getT2().getDataEncryptionKey())
-            .block(); // TODO: @moderakh I will be looking at if we should do this API async or non async.
+            .map(fetchUnwrap -> fetchUnwrap.getT2().getDataEncryptionKey());
     }
 }

@@ -4,11 +4,11 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.administration.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
-import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
-
+import com.azure.messaging.servicebus.models.SubQueue;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
@@ -20,8 +20,9 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -48,10 +49,10 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClientIntegrationTest.class);
     private final AtomicInteger messagesPending = new AtomicInteger();
     private final List<Long> messagesDeferredPending = new ArrayList<>();
+    private final boolean isSessionEnabled = false;
 
     private ServiceBusReceiverAsyncClient receiver;
     private ServiceBusSenderAsyncClient sender;
-    private boolean isSessionEnabled;
 
     /**
      * Receiver used to clean up resources in {@link #afterTest()}.
@@ -132,7 +133,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can create transaction and complete.
      */
-    @MethodSource("messagingEntityProvider")
+    @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
     @ParameterizedTest
     void createTransactionAndRollbackMessagesTest(MessagingEntityType entityType) {
         // Arrange
@@ -159,7 +160,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         assertNotNull(receivedMessage);
 
         // Assert & Act
-        StepVerifier.create(receiver.complete(receivedMessage.getLockToken(), transaction.get()))
+        StepVerifier.create(receiver.complete(receivedMessage, transaction.get()))
             .verifyComplete();
 
         StepVerifier.create(receiver.rollbackTransaction(transaction.get()))
@@ -167,66 +168,9 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * This specifically test that we can use lockToken. This use case is valid when a message is moved from one
-     * machine to another machine and user just have access to lock token.
-     * Verifies that we can complete a message with lock token only with a transaction and rollback.
+     * Verifies that we can do following using shared connection and on non session entity. 1. create transaction 2.
+     * receive and settle with transactionContext. 3. commit Rollback this transaction.
      */
-    @Test
-    void transactionWithLockTokenTest() {
-
-        // Arrange
-        MessagingEntityType entityType = MessagingEntityType.QUEUE;
-        setSenderAndReceiver(entityType, 0, isSessionEnabled);
-
-        ServiceBusReceiverAsyncClient receiverNonConnectionSharing = getReceiverBuilder(false, entityType, 0,
-            Function.identity(), false).buildAsyncClient();
-
-        final String messageId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
-
-        sendMessage(message).block(TIMEOUT);
-
-        // Assert & Act
-        AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
-
-        // create a transaction.
-        StepVerifier.create(receiverNonConnectionSharing.createTransaction())
-            .assertNext(txn -> {
-                transaction.set(txn);
-                assertNotNull(transaction);
-            })
-            .verifyComplete();
-
-        AtomicReference<String> messageLockToken = new AtomicReference<>();
-
-        // receive a message and get lock token.
-        StepVerifier.create(receiver.receiveMessages().next()
-            .map(messageContext -> {
-                ServiceBusReceivedMessage received =  messageContext.getMessage();
-                messageLockToken.set(received.getLockToken());
-                return messageContext;
-            }))
-            .assertNext(receivedMessage -> assertMessageEquals(receivedMessage, messageId, isSessionEnabled))
-            .verifyComplete();
-
-        // complete the message using lock token only using a receiver which represent a different machine
-        StepVerifier.create(receiverNonConnectionSharing.complete(messageLockToken.get(), transaction.get()))
-            .verifyComplete();
-
-        // commit the transaction.
-        StepVerifier.create(receiverNonConnectionSharing.commitTransaction(transaction.get()))
-            .verifyComplete();
-
-        messagesPending.decrementAndGet();
-    }
-
-    /**
-     * Verifies that we can do following using shared connection and on non session entity.
-     * 1. create transaction
-     * 2. receive and settle with transactionContext.
-     * 3. commit Rollback this transaction.
-     */
-
     @ParameterizedTest
     @EnumSource(DispositionStatus.class)
     void transactionSendReceiveAndCommit(DispositionStatus dispositionStatus) {
@@ -261,19 +205,19 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final Mono<Void> operation;
         switch (dispositionStatus) {
             case COMPLETED:
-                operation = receiver.complete(receivedMessage.getLockToken(), transaction.get());
+                operation = receiver.complete(receivedMessage, transaction.get());
                 messagesPending.decrementAndGet();
                 break;
             case ABANDONED:
-                operation = receiver.abandon(receivedMessage.getLockToken(), null, transaction.get());
+                operation = receiver.abandon(receivedMessage, null, transaction.get());
                 break;
             case SUSPENDED:
                 DeadLetterOptions deadLetterOptions = new DeadLetterOptions().setDeadLetterReason(deadLetterReason);
-                operation = receiver.deadLetter(receivedMessage.getLockToken(), deadLetterOptions, transaction.get());
+                operation = receiver.deadLetter(receivedMessage, deadLetterOptions, transaction.get());
                 messagesPending.decrementAndGet();
                 break;
             case DEFERRED:
-                operation = receiver.defer(receivedMessage.getLockToken(), null, transaction.get());
+                operation = receiver.defer(receivedMessage, null, transaction.get());
                 break;
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException(
@@ -292,10 +236,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * Verifies that we can do following on different clients i.e. sender and receiver.
-     * 1. create transaction using sender
-     * 2. receive and complete with transactionContext.
-     * 3. Commit this transaction using sender.
+     * Verifies that we can do following on different clients i.e. sender and receiver. 1. create transaction using
+     * sender 2. receive and complete with transactionContext. 3. Commit this transaction using sender.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
     @ParameterizedTest
@@ -326,7 +268,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusReceivedMessage receivedMessage = receivedContext.getMessage();
         assertNotNull(receivedMessage);
 
-        StepVerifier.create(receiver.complete(receivedMessage.getLockToken(), transaction.get()))
+        StepVerifier.create(receiver.complete(receivedMessage, transaction.get()))
             .verifyComplete();
 
         StepVerifier.create(sender.commitTransaction(transaction.get()))
@@ -344,7 +286,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
-        final List<String> lockTokens = new ArrayList<>();
+        final List<ServiceBusReceivedMessage> receivedMessages = new ArrayList<>();
 
         Mono.when(sendMessage(message), sendMessage(message)).block(TIMEOUT);
 
@@ -352,17 +294,17 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         try {
             StepVerifier.create(receiver.receiveMessages())
                 .assertNext(receivedMessage -> {
-                    lockTokens.add(receivedMessage.getMessage().getLockToken());
+                    receivedMessages.add(receivedMessage.getMessage());
                     assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                 })
                 .assertNext(receivedMessage -> {
-                    lockTokens.add(receivedMessage.getMessage().getLockToken());
+                    receivedMessages.add(receivedMessage.getMessage());
                     assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                 })
                 .thenCancel()
                 .verify();
         } finally {
-            int numberCompleted = completeMessages(receiver, lockTokens);
+            int numberCompleted = completeMessages(receiver, receivedMessages);
             messagesPending.addAndGet(-numberCompleted);
         }
     }
@@ -378,7 +320,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
-        final List<String> lockTokens = new ArrayList<>();
+        final List<ServiceBusReceivedMessage> receivedMessages = new ArrayList<>();
 
         sendMessage(message).block(TIMEOUT);
 
@@ -386,13 +328,13 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         try {
             StepVerifier.create(receiver.receiveMessages())
                 .assertNext(receivedMessage -> {
-                    lockTokens.add(receivedMessage.getMessage().getLockToken());
+                    receivedMessages.add(receivedMessage.getMessage());
                     assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                 })
                 .thenCancel()
                 .verify();
         } finally {
-            int numberCompleted = completeMessages(receiver, lockTokens);
+            int numberCompleted = completeMessages(receiver, receivedMessages);
             messagesPending.addAndGet(-numberCompleted);
         }
     }
@@ -428,7 +370,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
-        final Instant scheduledEnqueueTime = Instant.now().plusSeconds(2);
+        final OffsetDateTime scheduledEnqueueTime = OffsetDateTime.now().plusSeconds(2);
 
         sender.scheduleMessage(message, scheduledEnqueueTime).block(TIMEOUT);
 
@@ -452,7 +394,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
-        final Instant scheduledEnqueueTime = Instant.now().plusSeconds(10);
+        final OffsetDateTime scheduledEnqueueTime = OffsetDateTime.now().plusSeconds(10);
         final Duration delayDuration = Duration.ofSeconds(3);
 
         final Long sequenceNumber = sender.scheduleMessage(message, scheduledEnqueueTime).block(TIMEOUT);
@@ -503,7 +445,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 })
                 .verifyComplete();
         } finally {
-            receiver.complete(receivedMessage.getLockToken())
+            receiver.complete(receivedMessage)
                 .block(Duration.ofSeconds(10));
             messagesPending.decrementAndGet();
         }
@@ -604,7 +546,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         assertNotNull(receivedMessage);
 
         // Assert & Act
-        StepVerifier.create(receiver.deadLetter(receivedMessage.getLockToken()))
+        StepVerifier.create(receiver.deadLetter(receivedMessage))
             .verifyComplete();
 
         messagesPending.decrementAndGet();
@@ -628,7 +570,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         assertNotNull(receivedMessage);
 
         // Assert & Act
-        StepVerifier.create(receiver.complete(receivedMessage.getLockToken()))
+        StepVerifier.create(receiver.complete(receivedMessage))
             .verifyComplete();
 
         messagesPending.decrementAndGet();
@@ -656,7 +598,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         assertNotNull(receivedMessage);
         assertNotNull(receivedMessage.getLockedUntil());
 
-        final Instant initialLock = receivedMessage.getLockedUntil();
+        final OffsetDateTime initialLock = receivedMessage.getLockedUntil();
         logger.info("Received message. Seq: {}. lockedUntil: {}", receivedMessage.getSequenceNumber(), initialLock);
 
         // Assert & Act
@@ -673,7 +615,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         } finally {
             logger.info("Completing message. Seq: {}.", receivedMessage.getSequenceNumber());
 
-            receiver.complete(receivedMessage.getLockToken())
+            receiver.complete(receivedMessage)
                 .doOnSuccess(aVoid -> messagesPending.decrementAndGet())
                 .block(TIMEOUT);
         }
@@ -702,16 +644,16 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 assertNotNull(received.getLockToken());
 
                 logger.info("{}: lockToken[{}]. lockedUntil[{}]. now[{}]", received.getSequenceNumber(),
-                    received.getLockToken(), received.getLockedUntil(), Instant.now());
+                    received.getLockToken(), received.getLockedUntil(), OffsetDateTime.now());
 
-                final Instant initial = received.getLockedUntil();
-                final Instant timeToStop = initial.plusSeconds(5);
-                Instant latest = Instant.MIN;
+                final OffsetDateTime initial = received.getLockedUntil();
+                final OffsetDateTime timeToStop = initial.plusSeconds(5);
+                OffsetDateTime latest = OffsetDateTime.MIN;
 
                 // Simulate some sort of long processing.
                 final AtomicInteger iteration = new AtomicInteger();
-                while (Instant.now().isBefore(timeToStop)) {
-                    logger.info("Iteration {}: {}. Time to stop: {}", iteration.incrementAndGet(), Instant.now(), timeToStop);
+                while (OffsetDateTime.now().isBefore(timeToStop)) {
+                    logger.info("Iteration {}: {}. Time to stop: {}", iteration.incrementAndGet(), OffsetDateTime.now(), timeToStop);
 
                     try {
                         TimeUnit.SECONDS.sleep(4);
@@ -728,7 +670,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                         "Latest should be after or equal to initial. initial: %s. latest: %s", initial, latest));
                 } finally {
                     logger.info("Completing message.");
-                    receiver.complete(received.getLockToken()).block(Duration.ofSeconds(15));
+                    receiver.complete(received).block(Duration.ofSeconds(15));
                     messagesPending.decrementAndGet();
                 }
             })
@@ -755,7 +697,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         assertNotNull(receivedMessage);
 
         // Assert & Act
-        StepVerifier.create(receiver.abandon(receivedMessage.getLockToken()))
+        StepVerifier.create(receiver.abandon(receivedMessage))
             .verifyComplete();
 
         messagesPending.decrementAndGet();
@@ -780,7 +722,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         assertNotNull(receivedMessage);
 
         // Act & Assert
-        StepVerifier.create(receiver.defer(receivedMessage.getLockToken()))
+        StepVerifier.create(receiver.defer(receivedMessage))
             .verifyComplete();
 
         messagesPending.decrementAndGet();
@@ -806,7 +748,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusReceivedMessage receivedMessage = receivedContext.getMessage();
         assertNotNull(receivedMessage);
 
-        receiver.defer(receivedMessage.getLockToken()).block(TIMEOUT);
+        receiver.defer(receivedMessage).block(TIMEOUT);
 
         final ServiceBusReceivedMessage receivedDeferredMessage = receiver
             .receiveDeferredMessage(receivedMessage.getSequenceNumber())
@@ -818,14 +760,14 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final Mono<Void> operation;
         switch (dispositionStatus) {
             case ABANDONED:
-                operation = receiver.abandon(receivedDeferredMessage.getLockToken());
+                operation = receiver.abandon(receivedDeferredMessage);
                 messagesDeferredPending.add(receivedDeferredMessage.getSequenceNumber());
                 break;
             case SUSPENDED:
-                operation = receiver.deadLetter(receivedDeferredMessage.getLockToken());
+                operation = receiver.deadLetter(receivedDeferredMessage);
                 break;
             case COMPLETED:
-                operation = receiver.complete(receivedDeferredMessage.getLockToken());
+                operation = receiver.complete(receivedDeferredMessage);
                 break;
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException(
@@ -841,7 +783,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             messagesPending.decrementAndGet();
         }
     }
-
 
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
     @ParameterizedTest
@@ -908,15 +849,14 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         sendMessage(messageToSend).block(Duration.ofSeconds(10));
 
         // Act
-        AtomicReference<String> messageLockToken = new AtomicReference<>();
-        AtomicReference<String> session = new AtomicReference<>();
+        AtomicReference<ServiceBusReceivedMessage> receivedMessage = new AtomicReference<>();
+        //AtomicReference<String> session = new AtomicReference<>();
         StepVerifier.create(receiver.receiveMessages()
             .take(1)
             .flatMap(m -> {
                 logger.info("SessionId: {}. LockToken: {}. LockedUntil: {}. Message received.",
                     m.getSessionId(), m.getMessage().getLockToken(), m.getMessage().getLockedUntil());
-                messageLockToken.set(m.getMessage().getLockToken());
-                session.set(m.getSessionId());
+                receivedMessage.set(m.getMessage());
                 return receiver.setSessionState(sessionId, sessionState);
             }))
             .expectComplete()
@@ -929,7 +869,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             })
             .verifyComplete();
 
-        receiver.complete(messageLockToken.get(), session.get()).block(Duration.ofSeconds(15));
+        receiver.complete(receivedMessage.get()).block(Duration.ofSeconds(15));
         messagesPending.decrementAndGet();
     }
 
@@ -948,32 +888,69 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
-        final List<String> lockTokens = new ArrayList<>();
+        final List<ServiceBusReceivedMessage> receivedMessages = new ArrayList<>();
 
         sendMessage(message).block(TIMEOUT);
 
-        final ServiceBusReceivedMessageContext receivedContext = receiver.receiveMessages().next().block(OPERATION_TIMEOUT);
+        final ServiceBusReceivedMessageContext receivedContext = receiver.receiveMessages().next()
+            .block(OPERATION_TIMEOUT);
         assertNotNull(receivedContext);
 
         final ServiceBusReceivedMessage receivedMessage = receivedContext.getMessage();
         assertNotNull(receivedMessage);
 
-        StepVerifier.create(receiver.deadLetter(receivedMessage.getLockToken()))
+        StepVerifier.create(receiver.deadLetter(receivedMessage))
             .verifyComplete();
 
         // Assert & Act
         try {
             StepVerifier.create(deadLetterReceiver.receiveMessages().take(1))
                 .assertNext(messageContext -> {
-                    lockTokens.add(messageContext.getMessage().getLockToken());
+                    receivedMessages.add(messageContext.getMessage());
                     assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                 })
                 .thenCancel()
                 .verify();
         } finally {
-            int numberCompleted = completeMessages(deadLetterReceiver, lockTokens);
+            int numberCompleted = completeMessages(deadLetterReceiver, receivedMessages);
             messagesPending.addAndGet(-numberCompleted);
         }
+    }
+
+    @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
+    @ParameterizedTest
+    void renewMessageLock(MessagingEntityType entityType) throws InterruptedException {
+        // Arrange
+        final boolean isSessionEnabled = false;
+        setSenderAndReceiver(entityType, 0, isSessionEnabled);
+
+        final Duration maximumDuration = Duration.ofSeconds(35);
+        final Duration sleepDuration = maximumDuration.plusMillis(500);
+        final String messageId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
+
+        final ServiceBusReceivedMessageContext receivedContext = sendMessage(message)
+            .then(receiver.receiveMessages().next())
+            .block(TIMEOUT);
+        assertNotNull(receivedContext);
+
+        final ServiceBusReceivedMessage receivedMessage = receivedContext.getMessage();
+        assertNotNull(receivedMessage);
+
+        final OffsetDateTime lockedUntil = receivedMessage.getLockedUntil();
+        assertNotNull(lockedUntil);
+
+        // Assert & Act
+        StepVerifier.create(receiver.getAutoRenewMessageLock(receivedMessage.getLockToken(), maximumDuration))
+            .thenAwait(sleepDuration)
+            .then(() -> {
+                logger.info("Completing message.");
+                int numberCompleted = completeMessages(receiver, Collections.singletonList(receivedMessage));
+
+                messagesPending.addAndGet(-numberCompleted);
+            })
+            .expectComplete()
+            .verify(Duration.ofMinutes(3));
     }
 
     /**
@@ -984,16 +961,18 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created with
-     * shared connection as needed.
+     * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created with shared
+     * connection as needed.
      */
-    private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled, boolean shareConnection) {
-        this.sender = getSenderBuilder(false, entityType, entityIndex, isSessionEnabled, shareConnection).buildAsyncClient();
-
+    private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled,
+        boolean shareConnection) {
+        this.sender = getSenderBuilder(false, entityType, entityIndex, isSessionEnabled, shareConnection)
+            .buildAsyncClient();
 
         if (isSessionEnabled) {
             assertNotNull(sessionId, "'sessionId' should have been set.");
-            this.receiver = getSessionReceiverBuilder(false, entityType, entityIndex, Function.identity(), shareConnection)
+            this.receiver = getSessionReceiverBuilder(false, entityType, entityIndex, Function.identity(),
+                shareConnection)
                 .sessionId(sessionId)
                 .buildAsyncClient();
             this.receiveAndDeleteReceiver = getSessionReceiverBuilder(false, entityType, entityIndex,
@@ -1003,9 +982,11 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                 .buildAsyncClient();
         } else {
-            this.receiver = getReceiverBuilder(false, entityType, entityIndex, Function.identity(), shareConnection)
+            this.receiver = getReceiverBuilder(false, entityType, entityIndex, Function.identity(),
+                shareConnection)
                 .buildAsyncClient();
-            this.receiveAndDeleteReceiver = getReceiverBuilder(false, entityType, entityIndex, Function.identity(), shareConnection)
+            this.receiveAndDeleteReceiver = getReceiverBuilder(false, entityType, entityIndex,
+                Function.identity(), shareConnection)
                 .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                 .buildAsyncClient();
         }
@@ -1025,7 +1006,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         });
     }
 
-    private int completeMessages(ServiceBusReceiverAsyncClient client, List<String> lockTokens) {
+    private int completeMessages(ServiceBusReceiverAsyncClient client, List<ServiceBusReceivedMessage> lockTokens) {
         Mono.when(lockTokens.stream().map(e -> client.complete(e))
             .collect(Collectors.toList()))
             .block(TIMEOUT);
@@ -1037,10 +1018,13 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusReceivedMessage receivedDeferredMessage = client
             .receiveDeferredMessage(receivedMessage.getSequenceNumber())
             .block(TIMEOUT);
-        receiver.complete(receivedDeferredMessage.getLockToken()).block(TIMEOUT);
+
+        assertNotNull(receivedDeferredMessage);
+
+        receiver.complete(receivedDeferredMessage).block(TIMEOUT);
     }
 
-    private ServiceBusClientBuilder.ServiceBusDeadLetterReceiverClientBuilder getDeadLetterReceiverBuilder(boolean useCredentials,
+    private ServiceBusClientBuilder.ServiceBusReceiverClientBuilder getDeadLetterReceiverBuilder(boolean useCredentials,
         MessagingEntityType entityType, int entityIndex, Function<ServiceBusClientBuilder, ServiceBusClientBuilder> onBuilderCreate) {
 
         ServiceBusClientBuilder builder = getBuilder(useCredentials);
@@ -1051,14 +1035,14 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 final String queueName = getQueueName(entityIndex);
                 assertNotNull(queueName, "'queueName' cannot be null.");
 
-                return builder.deadLetterReceiver().queueName(queueName);
+                return builder.receiver().queueName(queueName).subQueue(SubQueue.DEAD_LETTER_QUEUE);
             case SUBSCRIPTION:
                 final String topicName = getTopicName(entityIndex);
                 final String subscriptionName = getSubscriptionBaseName();
                 assertNotNull(topicName, "'topicName' cannot be null.");
                 assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
 
-                return builder.deadLetterReceiver().topicName(topicName).subscriptionName(subscriptionName);
+                return builder.receiver().topicName(topicName).subscriptionName(subscriptionName).subQueue(SubQueue.DEAD_LETTER_QUEUE);
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
         }

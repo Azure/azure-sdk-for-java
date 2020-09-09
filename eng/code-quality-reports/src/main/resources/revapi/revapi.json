@@ -18,7 +18,8 @@
             "javax\\.servlet(\\..+)?",
             "io\\.micrometer(\\..+)?",
             "com\\.azure\\.data\\.cosmos(\\..+)?",
-            "com\\.azure\\.spring\\.data\\.cosmos\\..+"
+            "com\\.azure\\.spring\\.data\\.cosmos\\..+",
+            "org\\.springframework\\.data\\..+"
           ]
         }
       }
@@ -110,8 +111,14 @@
       {
         "regex": true,
         "code": "java\\.class\\.externalClassExposedInAPI",
-        "new": "(class|interface|enum) com\\.azure\\.management\\..*",
-        "justification": "azure-management classes are allowed to be exposed."
+        "new": "(class|interface|enum) com\\.azure\\.resourcemanager\\..*",
+        "justification": "resourcemanager classes are allowed to be exposed."
+      },
+      {
+        "regex": true,
+        "code": "java\\.class\\.externalClassExposedInAPI",
+        "new": "(class|interface|enum) com\\.azure\\.security\\.keyvault\\..*",
+        "justification": "keyvault classes are allowed to be exposed."
       },
       {
         "regex": true,
