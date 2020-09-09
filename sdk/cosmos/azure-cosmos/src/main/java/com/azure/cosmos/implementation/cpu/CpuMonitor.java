@@ -7,49 +7,54 @@ package com.azure.cosmos.implementation.cpu;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.ref.WeakReference;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * Monitors history of CPU consumption.
  */
-public class CpuMonitor implements AutoCloseable {
+public class CpuMonitor {
     private final static int DEFAULT_REFRESH_INTERVAL_IN_SECONDS = 10;
     private final static int HISTORY_LENGTH = 6;
-
     private static Duration refreshInterval = Duration.ofSeconds(DEFAULT_REFRESH_INTERVAL_IN_SECONDS);
+
+
+    private static final Logger logger = LoggerFactory.getLogger(CpuMonitor.class);
+    private static final CpuReader cpuReader = new CpuReader();
+    private static final ScheduledThreadPoolExecutor scheduledExecutorService = new ScheduledThreadPoolExecutor(1, new DaemonThreadFactory());
+
+    static {
+        scheduledExecutorService.setRemoveOnCancelPolicy(true);
+    }
+
+    private static final ReentrantReadWriteLock rwLock = new ReentrantReadWriteLock();
+    private static final List<WeakReference<CpuListener>> cpuListeners = new ArrayList<>();
+    private static final Object lifeCycleLock = new Object();
+
+    private static CpuLoadHistory currentReading = new CpuLoadHistory(Collections.emptyList(), refreshInterval); // Guarded by rwLock.
 
     /*
      * there is a singleton instance of {@link CpuMonitor}.
      * If there are multiple clients they will share the same instance.
      */
-    private static final AtomicInteger cnt = new AtomicInteger(0);
+    private static final CpuLoad[] buffer = new CpuLoad[CpuMonitor.HISTORY_LENGTH];
 
-    private static CpuMonitor instance;
-
-    private final Logger logger = LoggerFactory.getLogger(CpuMonitor.class);
-    private final ReentrantReadWriteLock rwLock = new ReentrantReadWriteLock();
-    private final ScheduledThreadPoolExecutor scheduledExecutorService;
-    private final CpuReader cpuReader;
-
-    private ScheduledFuture<?> future;
+    private static ScheduledFuture<?> future;
 
     // CpuMonitor users get a copy of the internal buffer to avoid racing
     // against changes.
-    private CpuLoad[] buffer = new CpuLoad[CpuMonitor.HISTORY_LENGTH];
-    private int clockHand = 0;
+    private static int clockHand = 0;
 
-    private CpuLoadHistory currentReading; // Guarded by rwLock.
 
     /**
      * Gets a singleton instance of CpuMonitor, if no instance available will initialize one. The caller needs to ensure
@@ -57,68 +62,55 @@ public class CpuMonitor implements AutoCloseable {
      *
      * @return CpuMonitor an instance of CpuMonitor.
      */
-    public static CpuMonitor initializeAndGet() {
-        synchronized (CpuMonitor.class) {
-            if (cnt.getAndIncrement() <= 0) {
-                instance = new CpuMonitor();
-                instance.start();
+    public static void register(CpuListener listener) {
+        synchronized (lifeCycleLock) {
+            if (cpuListeners.size() == 0) {
+                start();
             }
 
-            assert instance != null;
-            return instance;
+            cpuListeners.add(new WeakReference<>(listener));
         }
     }
 
-    /**
-     * Gets a reference to the existing instance of CPUMonitor
-     *
-     * @return CpuMonitor reference.
-     */
-    public static CpuMonitor getInstanceReference() {
-        if (instance == null) {
-            throw new IllegalStateException("CPUMonitor not initialized");
-        }
+    public static void unregister(CpuListener listener) {
+        synchronized (lifeCycleLock) {
+            Iterator<WeakReference<CpuListener>> it = cpuListeners.iterator();
 
-        return instance;
-    }
+            while (it.hasNext()) {
+                WeakReference<CpuListener> reference = it.next();
+                CpuListener val = reference.get();
 
-    private CpuMonitor() {
-        this.cpuReader = new CpuReader();
-        this.scheduledExecutorService = new ScheduledThreadPoolExecutor(1, new DaemonThreadFactory());
-        this.scheduledExecutorService.setRemoveOnCancelPolicy(true);
-    }
+                if (val == null || val == listener) {
+                    it.remove();
+                }
+            }
 
-    @Override
-    public void close() {
-        synchronized (CpuMonitor.class) {
-            if (cnt.decrementAndGet() <= 0) {
+            if (cpuListeners.isEmpty()) {
                 closeInternal();
             }
         }
     }
 
-    private void closeInternal() {
-        this.rwLock.writeLock().lock();
-        try {
-            this.scheduledExecutorService.shutdown();
-            instance = null;
-        } finally {
-            this.rwLock.writeLock().unlock();
+    private static void closeInternal() {
+        synchronized (lifeCycleLock) {
+            future.cancel(false);
+            future = null;
         }
+
     }
 
     // Returns a read-only collection of CPU load measurements, or null if
     // no results are available yet.
-    public CpuLoadHistory getCpuLoad() {
-        this.rwLock.readLock().lock();
+    public static CpuLoadHistory getCpuLoad() {
+        rwLock.readLock().lock();
         try {
-            return this.currentReading;
+            return currentReading;
         } finally {
-            this.rwLock.readLock().unlock();
+            rwLock.readLock().unlock();
         }
     }
 
-    private void refresh() {
+    private static void refresh() {
         try {
             Instant now = Instant.now();
             float currentUtilization = (float) cpuReader.getSystemWideCpuUsage() * 100;
@@ -140,11 +132,15 @@ public class CpuMonitor implements AutoCloseable {
                     }
                 }
 
-                this.rwLock.writeLock().lock();
+                synchronized (lifeCycleLock) {
+                    unregister(null);
+                }
+
+                rwLock.writeLock().lock();
                 try {
-                    this.currentReading = newReading;
+                    currentReading = newReading;
                 } finally {
-                    this.rwLock.writeLock().unlock();
+                    rwLock.writeLock().unlock();
                 }
             }
         } catch (Exception e) {
@@ -152,22 +148,22 @@ public class CpuMonitor implements AutoCloseable {
         }
     }
 
-    private void start() {
-        this.rwLock.writeLock().lock();
+    private static void start() {
+        rwLock.writeLock().lock();
         try {
             // sets a dummy value for current reading.
-            this.currentReading = new CpuLoadHistory(Collections.emptyList(), refreshInterval);
-            this.future = scheduledExecutorService.scheduleAtFixedRate(
+            currentReading = new CpuLoadHistory(Collections.emptyList(), refreshInterval);
+            future = scheduledExecutorService.scheduleAtFixedRate(
                 () -> refresh(),
                 0,
                 refreshInterval.toMillis() / 1000,
                 TimeUnit.SECONDS);
         } finally {
-            this.rwLock.writeLock().unlock();
+            rwLock.writeLock().unlock();
         }
     }
 
-    public class DaemonThreadFactory implements ThreadFactory {
+    private static class DaemonThreadFactory implements ThreadFactory {
 
         @Override
         public Thread newThread(Runnable r) {
@@ -175,5 +171,8 @@ public class CpuMonitor implements AutoCloseable {
             t.setDaemon(true);
             return t;
         }
+    }
+
+    public static interface CpuListener {
     }
 }

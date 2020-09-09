@@ -8,59 +8,83 @@ import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Future;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CpuLoadMonitorTest {
     @Test(groups = "unit")
     public void noInstance() throws Exception {
-        assertThat(ReflectionUtils.getCpuMonitorReferenceCounter().get()).isEqualTo(0);
-        assertThat(ReflectionUtils.getCpuMonitorInstance()).isNull();
+        assertThat(ReflectionUtils.getListeners()).hasSize(0);
+        assertThat(ReflectionUtils.getFuture()).isNull();
     }
 
     @Test(groups = "unit")
     public void multipleInstances() throws Exception {
-        List<CpuMonitor> cpuMonitorList = new ArrayList<>();
-        for ( int i = 0 ; i < 10; i++) {
-            CpuMonitor cpuMonitor = CpuMonitor.initializeAndGet();
-            cpuMonitorList.add(cpuMonitor);
+        List<CpuMonitor.CpuListener> cpuMonitorList = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            CpuMonitor.CpuListener listener = new CpuMonitor.CpuListener() {
+            };
+            CpuMonitor.register(listener);
+            cpuMonitorList.add(listener);
 
-            assertThat(ReflectionUtils.getCpuMonitorInstance()).isNotNull();
-            assertThat(ReflectionUtils.getCpuMonitorReferenceCounter().get()).isEqualTo(cpuMonitorList.size());
-            Thread.sleep(1000);
+            Future workFuture = ReflectionUtils.getFuture();
+            assertThat(workFuture).isNotNull();
+            assertThat(workFuture.isCancelled()).isFalse();
+            assertThat(ReflectionUtils.getListeners()).hasSize(cpuMonitorList.size());
+            Thread.sleep(10);
         }
 
-        for ( int i = 0 ; i < 9; i++) {
-            CpuMonitor cpuMonitor = cpuMonitorList.remove(0);
-            cpuMonitor.close();
-
+        for (int i = 0; i < 9; i++) {
+            CpuMonitor.CpuListener cpuListener = cpuMonitorList.remove(0);
             assertThat(cpuMonitorList).hasSizeGreaterThan(0);
 
-            assertThat(ReflectionUtils.getCpuMonitorReferenceCounter().get()).isEqualTo(cpuMonitorList.size());
+            CpuMonitor.unregister(cpuListener);
 
-            assertThat(ReflectionUtils.getCpuMonitorInstance()).isNotNull();
+            assertThat(ReflectionUtils.getListeners()).hasSize(cpuMonitorList.size());
+
+            Future workFuture = ReflectionUtils.getFuture();
+            assertThat(workFuture).isNotNull();
+            assertThat(workFuture.isCancelled()).isFalse();
         }
 
-        CpuMonitor cpuMonitor = cpuMonitorList.remove(0);
-        cpuMonitor.close();
-        assertThat(ReflectionUtils.getCpuMonitorReferenceCounter().get()).isEqualTo(cpuMonitorList.size());
-        assertThat(ReflectionUtils.getCpuMonitorInstance()).isNull();
+        // register a new one here
+        CpuMonitor.CpuListener newListener = new CpuMonitor.CpuListener() {
+        };
+        CpuMonitor.register(newListener);
+        CpuMonitor.unregister(newListener);
+
+        assertThat(ReflectionUtils.getListeners()).hasSize(cpuMonitorList.size());
+        Future workFuture = ReflectionUtils.getFuture();
+        assertThat(workFuture).isNotNull();
+        assertThat(workFuture.isCancelled()).isFalse();
+
+        CpuMonitor.CpuListener cpuListener = cpuMonitorList.remove(0);
+        CpuMonitor.unregister(cpuListener);
+
+        assertThat(ReflectionUtils.getListeners()).hasSize(cpuMonitorList.size());
+
+        workFuture = ReflectionUtils.getFuture();
+        assertThat(workFuture).isNull();
     }
 
-//    @Test(groups = "unit")
-//    public void multipleClose() throws Exception {
-//        assertThat(ReflectionUtils.getCpuMonitorReferenceCounter().get()).isEqualTo(0);
-//        assertThat(ReflectionUtils.getCpuMonitorInstance()).isNull();
-//
-//        CpuMonitor cpuMonitor = CpuMonitor.initializeAndGet();
-//
-//        cpuMonitor.close();
-//        assertThat(ReflectionUtils.getCpuMonitorReferenceCounter().get()).isEqualTo(0);
-//        assertThat(ReflectionUtils.getCpuMonitorInstance()).isNull();
-//
-//        cpuMonitor.close();
-//
-//        assertThat(ReflectionUtils.getCpuMonitorReferenceCounter().get()).isEqualTo(0);
-//        assertThat(ReflectionUtils.getCpuMonitorInstance()).isNull();
-//    }
+    @Test(groups = "unit")
+    public void handleLeak() throws Throwable {
+        TestListener listener = new TestListener();
+        CpuMonitor.register(listener);
+        listener.finalize();
+        listener = null;
+        System.gc();
+        Thread.sleep(2000);
+
+        assertThat(ReflectionUtils.getListeners()).hasSize(0);
+        assertThat(ReflectionUtils.getFuture()).isNull();
+    }
+
+    class TestListener implements CpuMonitor.CpuListener {
+        @Override
+        public void finalize() throws Throwable {
+            super.finalize();
+        }
+    }
 }

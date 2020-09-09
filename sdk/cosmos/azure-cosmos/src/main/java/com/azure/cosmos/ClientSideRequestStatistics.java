@@ -312,7 +312,7 @@ class ClientSideRequestStatistics {
                 systemInformation.usedMemory = totalMemory - freeMemory + " KB";
                 systemInformation.availableMemory = (maxMemory - (totalMemory - freeMemory)) + " KB";
 
-                systemInformation.systemCpuLoad = CpuMonitor.getInstanceReference().getCpuLoad().toString();
+                systemInformation.systemCpuLoad = CpuMonitor.getCpuLoad().toString();
                 generator.writeObjectField("systemInformation", systemInformation);
             } catch (Exception e) {
                 // Error while evaluating system information, do nothing

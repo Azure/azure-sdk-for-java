@@ -17,8 +17,11 @@ import com.azure.cosmos.implementation.cpu.CpuMonitor;
 import com.azure.cosmos.implementation.http.HttpClient;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
+import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
+import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -152,11 +155,11 @@ public class ReflectionUtils {
         return get(UserAgentContainer.class, rxDocumentClient, "userAgentContainer");
     }
 
-    public static CpuMonitor getCpuMonitorInstance() {
-        return getStaticField(CpuMonitor.class, "instance");
+    public static Future getFuture() {
+        return getStaticField(CpuMonitor.class, "future");
     }
 
-    public static AtomicInteger getCpuMonitorReferenceCounter() {
-        return getStaticField(CpuMonitor.class, "cnt");
+    public static List<WeakReference<CpuMonitor.CpuListener>> getListeners() {
+        return getStaticField(CpuMonitor.class, "cpuListeners");
     }
 }

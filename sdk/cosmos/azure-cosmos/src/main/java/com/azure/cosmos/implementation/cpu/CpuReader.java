@@ -32,10 +32,10 @@ public class CpuReader {
                 return operatingSystemMXBean.getSystemCpuLoad();
             }
 
-            return -1;
+            return Double.NaN;
         } catch (Throwable t) {
             logger.error("Failed to get System CPU", t);
-            return -1;
+            return Double.NaN;
         }
     }
 

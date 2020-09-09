@@ -78,7 +78,7 @@ import static com.azure.cosmos.models.ModelBridgeInternal.toDatabaseAccount;
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
  */
-public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorizationTokenProvider {
+public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorizationTokenProvider, CpuMonitor.CpuListener {
 
     private static final String DUMMY_SQL_QUERY = "this is dummy and only used in creating " +
         "ParallelDocumentQueryExecutioncontext, but not used";
@@ -94,7 +94,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final boolean hasAuthKeyResourceToken;
     private final Configs configs;
     private final boolean connectionSharingAcrossClientsEnabled;
-    private final CpuMonitor cpuMonitor;
     private AzureKeyCredential credential;
     private CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver;
     private SessionContainer sessionContainer;
@@ -260,7 +259,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.globalEndpointManager = new GlobalEndpointManager(asDatabaseAccountManagerInternal(), this.connectionPolicy, /**/configs);
             this.retryPolicy = new RetryPolicy(this.globalEndpointManager, this.connectionPolicy);
             this.resetSessionTokenRetryPolicy = retryPolicy;
-            this.cpuMonitor = CpuMonitor.initializeAndGet();
+            CpuMonitor.register(this);
         } catch (RuntimeException e) {
             logger.error("unexpected failure in initializing client.", e);
             close();
@@ -3339,7 +3338,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         logger.info("Shutting down reactorHttpClient ...");
         LifeCycleUtils.closeQuietly(this.reactorHttpClient);
         logger.info("Shutting down CpuMonitor ...");
-        LifeCycleUtils.closeQuietly(this.cpuMonitor);
+        CpuMonitor.unregister(this);
         logger.info("Shutting down completed.");
     }
 
