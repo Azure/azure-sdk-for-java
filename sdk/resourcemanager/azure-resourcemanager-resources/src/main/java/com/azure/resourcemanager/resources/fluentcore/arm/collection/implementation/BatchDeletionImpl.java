@@ -17,7 +17,7 @@ import java.util.function.BiFunction;
 public class BatchDeletionImpl {
 
     public static Flux<String> deleteByIdsAsync(Collection<String> ids,
-                                                BiFunction<String, String, Mono<Void>> deleteByIdAsync) {
+                                                BiFunction<String, String, Mono<Void>> deleteByGroupAndNameAsync) {
         if (ids == null || ids.isEmpty()) {
             return Flux.empty();
         } else {
@@ -25,7 +25,7 @@ public class BatchDeletionImpl {
                 .flatMapDelayError(id -> {
                     final String resourceGroupName = ResourceUtils.groupFromResourceId(id);
                     final String name = ResourceUtils.nameFromResourceId(id);
-                    return ReactorMapper.map(deleteByIdAsync.apply(resourceGroupName, name), id);
+                    return ReactorMapper.map(deleteByGroupAndNameAsync.apply(resourceGroupName, name), id);
                 }, 32, 32);
         }
     }
