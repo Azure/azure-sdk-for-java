@@ -112,6 +112,13 @@ public final class EventRoutesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<EventRoute>> listSinglePageAsync(
             EventRoutesListOptions eventRoutesListOptions, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (eventRoutesListOptions != null) {
+            eventRoutesListOptions.validate();
+        }
         Integer maxItemCountInternal = null;
         if (eventRoutesListOptions != null) {
             maxItemCountInternal = eventRoutesListOptions.getMaxItemCount();
@@ -142,6 +149,13 @@ public final class EventRoutesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<EventRoute>> getByIdWithResponseAsync(String id, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (id == null) {
+            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        }
         return service.getById(this.client.getHost(), id, this.client.getApiVersion(), context);
     }
 
@@ -159,6 +173,16 @@ public final class EventRoutesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> addWithResponseAsync(String id, EventRoute eventRoute, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (id == null) {
+            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        }
+        if (eventRoute != null) {
+            eventRoute.validate();
+        }
         return service.add(this.client.getHost(), id, this.client.getApiVersion(), eventRoute, context);
     }
 
@@ -175,6 +199,13 @@ public final class EventRoutesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String id, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (id == null) {
+            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        }
         return service.delete(this.client.getHost(), id, this.client.getApiVersion(), context);
     }
 
@@ -190,6 +221,9 @@ public final class EventRoutesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<EventRoute>> listNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return service.listNext(nextLink, context)
                 .map(
                         res ->
