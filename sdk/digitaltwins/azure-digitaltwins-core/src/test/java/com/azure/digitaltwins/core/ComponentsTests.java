@@ -11,6 +11,8 @@ import com.azure.digitaltwins.core.util.DigitalTwinsResponse;
 import com.azure.digitaltwins.core.util.UpdateComponentRequestOptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.opentest4j.AssertionFailedError;
+
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ComponentsTests extends ComponentsTestBase {
 
-    private final ClientLogger logger = new ClientLogger(ModelsTestBase.class);
+    private final ClientLogger logger = new ClientLogger(ComponentsTests.class);
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
@@ -56,14 +58,14 @@ public class ComponentsTests extends ComponentsTestBase {
             assertEquals(getComponentResponse.getStatusCode(), HttpURLConnection.HTTP_OK);
 
             // Update component
-            DigitalTwinsResponse<Void> upDateComponentResponse = client.updateComponentWithResponse(
+            DigitalTwinsResponse<Void> updateComponentResponse = client.updateComponentWithResponse(
                 roomWithWifiTwinId,
                 wifiComponentName,
                 TestAssetsHelper.getWifiComponentUpdatePayload(),
                 new UpdateComponentRequestOptions(),
                 Context.NONE);
 
-            assertEquals(upDateComponentResponse.getStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
+            assertEquals(updateComponentResponse.getStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
         }
         // clean up
         finally {
@@ -84,7 +86,7 @@ public class ComponentsTests extends ComponentsTestBase {
             }
             catch (Exception ex)
             {
-                fail("Test clean up failed: " + ex.getMessage());
+                throw new AssertionFailedError("Test celanup failed", ex);
             }
         }
     }

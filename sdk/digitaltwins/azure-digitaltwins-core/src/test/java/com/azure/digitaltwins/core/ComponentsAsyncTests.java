@@ -7,6 +7,7 @@ import com.azure.digitaltwins.core.serialization.BasicDigitalTwin;
 import com.azure.digitaltwins.core.util.UpdateComponentRequestOptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.opentest4j.AssertionFailedError;
 import reactor.test.StepVerifier;
 
 import java.net.HttpURLConnection;
@@ -19,7 +20,7 @@ import static com.azure.digitaltwins.core.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS
 
 public class ComponentsAsyncTests extends ComponentsTestBase {
 
-    private final ClientLogger logger = new ClientLogger(ModelsAsyncTest.class);
+    private final ClientLogger logger = new ClientLogger(ComponentsAsyncTests.class);
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
@@ -85,7 +86,7 @@ public class ComponentsAsyncTests extends ComponentsTestBase {
             }
             catch (Exception ex)
             {
-                fail("Test clean up failed: " + ex.getMessage());
+                throw new AssertionFailedError("Test celanup failed", ex);
             }
         }
     }
