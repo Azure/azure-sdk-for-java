@@ -18,10 +18,12 @@ import com.azure.storage.blob.models.StorageAccountInfo;
 
 public class BlobStorageHealthIndicator implements HealthIndicator {
 
-    private ApplicationContext applicationContext;
+    private BlobServiceAsyncClient internalClient;
 
     public BlobStorageHealthIndicator(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
+        BlobServiceClientBuilder blobStorageClientBuilder = applicationContext.getBean(BlobServiceClientBuilder.class);
+        internalClient = blobStorageClientBuilder.buildAsyncClient();
+
     }
 
     @Override
@@ -29,16 +31,13 @@ public class BlobStorageHealthIndicator implements HealthIndicator {
         Health.Builder healthBuilder = new Health.Builder();
 
         try {
-            BlobServiceClientBuilder blobStorageClientBuilder = applicationContext
-                    .getBean(BlobServiceClientBuilder.class);
-            BlobServiceAsyncClient client = blobStorageClientBuilder.buildAsyncClient();
-            if (client == null) { // Not configured
+            if (internalClient == null) { // Not configured
                 healthBuilder.status(NOT_CONFIGURED_STATUS);
             } else {
-                healthBuilder.withDetail(URL_FIELD, client.getAccountUrl());
+                healthBuilder.withDetail(URL_FIELD, internalClient.getAccountUrl());
                 StorageAccountInfo info = null;
                 try {
-                    info = client.getAccountInfo().block(POLL_TIMEOUT);
+                    info = internalClient.getAccountInfo().block(POLL_TIMEOUT);
                     if (info != null) {
                         healthBuilder.up();
                     }

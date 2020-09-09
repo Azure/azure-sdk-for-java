@@ -36,5 +36,6 @@
     <module>sdk/template</module>
     <module>sdk/textanalytics</module>
     <module>sdk/spring</module>
+    <module>sdk/spring/azure-spring-cloud-test-storage</module>
   </modules>
 </project>

@@ -24,11 +24,6 @@
     </dependency>
 
     <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>spring-cloud-azure-telemetry</artifactId>
-      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-telemetry;current} -->
-    </dependency>
-    <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
       <version>12.8.0</version>  <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
@@ -140,7 +135,6 @@
             <bannedDependencies>
               <includes>
                 <include>com.microsoft.azure:spring-cloud-azure-context:[1.2.8-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-context;current} -->
-                <include>com.microsoft.azure:spring-cloud-azure-telemetry:[1.2.8-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-telemetry;current} -->
                 <include>com.microsoft.azure:spring-integration-storage-queue:[1.2.8-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-integration-storage-queue;current} -->
                 <include>org.hibernate.validator:hibernate-validator:[6.1.5.Final]</include> <!-- {x-include-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->

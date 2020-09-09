@@ -19,10 +19,12 @@ import com.azure.storage.file.share.models.ShareServiceProperties;
 
 public class FileStorageHealthIndicator implements HealthIndicator {
 
-    private ApplicationContext applicationContext;
+    private ShareServiceAsyncClient internalClient;
 
     public FileStorageHealthIndicator(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
+        ShareServiceClientBuilder shareStorageClientBuilder = applicationContext
+            .getBean(ShareServiceClientBuilder.class);
+        internalClient = shareStorageClientBuilder.buildAsyncClient();
     }
 
     @Override
@@ -30,13 +32,10 @@ public class FileStorageHealthIndicator implements HealthIndicator {
         Health.Builder healthBuilder = new Health.Builder();
 
         try {
-            ShareServiceClientBuilder shareStorageClientBuilder = applicationContext
-                    .getBean(ShareServiceClientBuilder.class);
-            ShareServiceAsyncClient client = shareStorageClientBuilder.buildAsyncClient();
-            healthBuilder.withDetail(URL_FIELD, client.getFileServiceUrl());
+            healthBuilder.withDetail(URL_FIELD, internalClient.getFileServiceUrl());
             Response<ShareServiceProperties> infoResponse = null;
             try {
-                infoResponse = client.getPropertiesWithResponse().block(POLL_TIMEOUT);
+                infoResponse = internalClient.getPropertiesWithResponse().block(POLL_TIMEOUT);
                 if (infoResponse != null) {
                     healthBuilder.up();
                 }
