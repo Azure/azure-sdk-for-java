@@ -159,26 +159,6 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
         assertTrue(afterRequestSessionToken.getLSN() > beforeRequestSessionToken.getLSN(), "Response session token should be more than request session token");
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT * 10)
-    public void batchLargerThanServerRequestAsync() {
-        CosmosAsyncContainer container = this.jsonContainer;
-
-        int operationCount = 20;
-        int appxDocSize = MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES / operationCount;
-
-        // Increase the doc size by a bit so all docs won't fit in one server request.
-        appxDocSize = (int)(appxDocSize * 1.05);
-        TransactionalBatch batch = container.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
-
-        for (int i = 0; i < operationCount; i++) {
-            TestDoc doc = this.populateTestDoc(this.partitionKey1, appxDocSize);
-            batch.createItem(doc);
-        }
-
-        TransactionalBatchResponse batchResponse = batch.executeAsync().block();
-        assertEquals(HttpResponseStatus.REQUEST_ENTITY_TOO_LARGE.code(), batchResponse.getResponseStatus());
-    }
-
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void batchWithTooManyOperationsAsync() {
         CosmosAsyncContainer container = this.jsonContainer;
@@ -193,31 +173,6 @@ public class BatchSinglePartitionKeyTests extends BatchTestBase {
 
         TransactionalBatchResponse batchResponse = batch.executeAsync().block();
         assertEquals(HttpResponseStatus.BAD_REQUEST.code(), batchResponse.getResponseStatus());
-    }
-
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT * 10)
-    public void batchServerResponseTooLargeAsync() {
-
-        CosmosAsyncContainer container = this.jsonContainer;
-        int operationCount = 10;
-        int appxDocSizeInBytes = 1 * 1024 * 1024;
-
-        TestDoc doc = this.createJsonTestDocAsync(container, this.partitionKey1, appxDocSizeInBytes);
-
-        TransactionalBatch batch = container.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
-        for (int i = 0; i < operationCount; i++) {
-            batch.readItem(doc.getId());
-        }
-
-        TransactionalBatchResponse batchResponse = batch.executeAsync().block();
-
-        this.verifyBatchProcessed(
-            batchResponse,
-            operationCount,
-            HttpResponseStatus.REQUEST_ENTITY_TOO_LARGE);
-
-        assertEquals(HttpResponseStatus.FAILED_DEPENDENCY.code(), batchResponse.get(0).getResponseStatus());
-        assertEquals(HttpResponseStatus.REQUEST_ENTITY_TOO_LARGE.code(), batchResponse.get(operationCount - 1).getResponseStatus());
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
