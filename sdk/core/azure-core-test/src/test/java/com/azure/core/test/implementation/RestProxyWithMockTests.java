@@ -173,6 +173,8 @@ public class RestProxyWithMockTests extends RestProxyTests {
         assertNotNull(dateTime);
         assertEquals(OffsetDateTime.ofInstant(Instant.ofEpochMilli(0), ZoneOffset.UTC), dateTime);
     }
+
+
     @Host("http://localhost")
     @ServiceInterface(name = "ServiceErrorWithCharsetService")
     interface ServiceErrorWithCharsetService {
