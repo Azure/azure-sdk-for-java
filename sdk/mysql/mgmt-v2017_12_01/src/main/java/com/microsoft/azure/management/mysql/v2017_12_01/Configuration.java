@@ -16,12 +16,12 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.mysql.v2017_12_01.implementation.MySQLManager;
+import com.microsoft.azure.management.mysql.v2017_12_01.implementation.DBForMySQLManager;
 
 /**
  * Type representing Configuration.
  */
-public interface Configuration extends HasInner<ConfigurationInner>, Indexable, Refreshable<Configuration>, Updatable<Configuration.Update>, HasManager<MySQLManager> {
+public interface Configuration extends HasInner<ConfigurationInner>, Indexable, Refreshable<Configuration>, Updatable<Configuration.Update>, HasManager<DBForMySQLManager> {
     /**
      * @return the allowedValues value.
      */
@@ -89,7 +89,7 @@ public interface Configuration extends HasInner<ConfigurationInner>, Indexable, 
         interface WithServer {
            /**
             * Specifies resourceGroupName, serverName.
-            * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal
+            * @param resourceGroupName The name of the resource group. The name is case insensitive
             * @param serverName The name of the server
             * @return the next definition stage
             */
