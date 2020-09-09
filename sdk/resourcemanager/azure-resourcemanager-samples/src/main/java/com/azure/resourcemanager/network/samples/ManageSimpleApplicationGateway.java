@@ -14,6 +14,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * Azure network sample for managing application gateways.
@@ -59,7 +60,7 @@ public final class ManageSimpleApplicationGateway {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws IOException {
         final String rgName = azure.sdkContext().randomResourceName("rgNEAGS", 15);
         try {
             //=======================================================================

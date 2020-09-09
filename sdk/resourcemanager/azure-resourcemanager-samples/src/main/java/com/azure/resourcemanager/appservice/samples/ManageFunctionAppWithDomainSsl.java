@@ -18,6 +18,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Locale;
 
 
@@ -38,7 +39,7 @@ public final class ManageFunctionAppWithDomainSsl {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws IOException {
         // New resources
         final String app1Name       = azure.sdkContext().randomResourceName("webapp1-", 20);
         final String app2Name       = azure.sdkContext().randomResourceName("webapp2-", 20);

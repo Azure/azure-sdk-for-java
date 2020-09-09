@@ -24,6 +24,7 @@ import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfile;
 import com.azure.resourcemanager.trafficmanager.models.TrafficRoutingMethod;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Locale;
 
 
@@ -50,7 +51,7 @@ public final class ManageLinuxWebAppWithTrafficManager {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws IOException {
         rgName = azure.sdkContext().randomResourceName("rgNEMV_", 24);
 
         if (ManageLinuxWebAppWithTrafficManager.azure == null) {

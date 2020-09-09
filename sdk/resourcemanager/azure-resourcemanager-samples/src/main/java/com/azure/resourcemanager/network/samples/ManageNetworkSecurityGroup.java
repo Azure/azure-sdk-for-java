@@ -20,7 +20,9 @@ import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.SSHShell;
 import com.azure.resourcemanager.samples.Utils;
+import com.jcraft.jsch.JSchException;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 /**
@@ -41,7 +43,7 @@ public final class ManageNetworkSecurityGroup {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws UnsupportedEncodingException, JSchException {
         final Region region = Region.US_NORTH_CENTRAL;
         final String frontEndNSGName = azure.sdkContext().randomResourceName("fensg", 24);
         final String backEndNSGName = azure.sdkContext().randomResourceName("bensg", 24);

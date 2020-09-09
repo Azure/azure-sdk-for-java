@@ -17,6 +17,8 @@ import com.azure.resourcemanager.sql.models.SqlDatabase;
 import com.azure.resourcemanager.sql.models.SqlServer;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 
+import java.io.IOException;
+
 /**
  * Azure App Service basic sample for managing web apps.
  *  - Create a SQL database in a new SQL server
@@ -33,7 +35,7 @@ public final class ManageLinuxWebAppSqlConnection {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws IOException {
         // New resources
         final String suffix = ".azurewebsites.net";
         final String appName = azure.sdkContext().randomResourceName("webapp1-", 20);

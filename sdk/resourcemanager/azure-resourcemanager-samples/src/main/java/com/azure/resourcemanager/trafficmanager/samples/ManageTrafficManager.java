@@ -22,6 +22,7 @@ import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfile;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -48,7 +49,7 @@ public final class ManageTrafficManager {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws IOException {
         final String rgName                     = azure.sdkContext().randomResourceName("rgNEMV_", 24);
         final String domainName                 = azure.sdkContext().randomResourceName("jsdkdemo-", 20) + ".com";
         // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]

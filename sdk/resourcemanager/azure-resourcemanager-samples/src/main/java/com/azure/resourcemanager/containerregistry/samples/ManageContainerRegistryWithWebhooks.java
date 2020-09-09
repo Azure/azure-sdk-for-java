@@ -27,6 +27,7 @@ import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.Image;
 import com.github.dockerjava.core.command.PushImageResultCallback;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -48,7 +49,7 @@ public class ManageContainerRegistryWithWebhooks {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws IOException, InterruptedException {
         final String rgName = azure.sdkContext().randomResourceName("rgACR", 15);
         final String acrName = azure.sdkContext().randomResourceName("acrsample", 20);
         final Region region = Region.US_WEST_CENTRAL;

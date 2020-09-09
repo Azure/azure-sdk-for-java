@@ -17,6 +17,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PushCommand;
+import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.transport.RefSpec;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
@@ -40,7 +41,7 @@ public final class ManageFunctionAppSourceControl {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws GitAPIException {
         // New resources
         final String suffix         = ".azurewebsites.net";
         final String app1Name       = azure.sdkContext().randomResourceName("webapp1-", 20);

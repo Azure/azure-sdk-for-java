@@ -38,7 +38,7 @@ public final class DeployUsingARMTemplateAsync {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(final Azure azure) {
+    public static boolean runSample(final Azure azure) throws InterruptedException {
         final String rgPrefix = azure.sdkContext().randomResourceName("rgJavaTest", 16);
         final String deploymentPrefix = azure.sdkContext().randomResourceName("javaTest", 16);
         final String sshKey = getSSHPublicKey();

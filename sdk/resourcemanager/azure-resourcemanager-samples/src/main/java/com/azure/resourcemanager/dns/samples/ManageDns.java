@@ -26,6 +26,8 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 
+import java.io.IOException;
+
 /**
  * Azure DNS sample for managing DNS zones.
  *  - Create a root DNS zone (contoso.com)
@@ -46,7 +48,7 @@ public class ManageDns {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws IOException {
         final String customDomainName         = "THE CUSTOM DOMAIN THAT YOU OWN (e.g. contoso.com)";
         final String rgName                   = azure.sdkContext().randomResourceName("rgNEMV_", 24);
         final String webAppName               = azure.sdkContext().randomResourceName("webapp1-", 20);

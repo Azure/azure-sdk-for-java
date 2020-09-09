@@ -89,7 +89,7 @@ public class ManageEventHubGeoDisasterRecovery {
                 pairing = pairing.refresh();
                 SdkContext.sleep(15 * 1000);
                 if (pairing.provisioningState() == ProvisioningStateDR.FAILED) {
-                    throw new Exception("Provisioning state of the pairing is FAILED");
+                    throw new IllegalStateException("Provisioning state of the pairing is FAILED");
                 }
             }
 
