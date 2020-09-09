@@ -99,10 +99,7 @@ public class ModelsTest extends ModelsTestBase {
         });
 
         assertRestException(
-            () -> client.createModels(modelsToCreate).forEach((modelData) -> {
-                // Don't need to do anything here. Only calling .forEach to force the client to attempt to return the first
-                // created model. That should trigger the call to throw a conflict exception
-            }),
+            () -> client.createModels(modelsToCreate),
             HttpURLConnection.HTTP_CONFLICT);
     }
 
