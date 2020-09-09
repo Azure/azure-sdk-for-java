@@ -6,65 +6,155 @@ package com.azure.data.schemaregistry.avro;
 import com.azure.core.experimental.serializer.ObjectSerializer;
 import com.azure.core.experimental.serializer.TypeReference;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.schemaregistry.SchemaRegistrySerializer;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
+import com.azure.data.schemaregistry.models.SchemaRegistryProperties;
+import com.azure.data.schemaregistry.models.SerializationType;
 import reactor.core.publisher.Mono;
+
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Collections;
+import java.io.UncheckedIOException;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
- * Asynchronous registry-based serializer implementation.
+ * Schema Registry-based serializer implementation for Avro data format.
  */
-public final class SchemaRegistryAvroSerializer extends SchemaRegistrySerializer implements ObjectSerializer {
+public final class SchemaRegistryAvroSerializer implements ObjectSerializer {
     private final ClientLogger logger = new ClientLogger(SchemaRegistryAvroSerializer.class);
 
-    /**
-     *
-     * @param registryClient
-     * @param codec
-     * @param schemaGroup
-     * @param autoRegisterSchemas
-     */
-    SchemaRegistryAvroSerializer(SchemaRegistryAsyncClient registryClient, AvroSchemaRegistryCodec codec,
+    static final int SCHEMA_ID_SIZE = 32;
+    private final SchemaRegistryAsyncClient schemaRegistryClient;
+    private final AvroSchemaRegistryUtils codec;
+    private final String schemaGroup;
+    private final Boolean autoRegisterSchemas;
+
+    SchemaRegistryAvroSerializer(SchemaRegistryAsyncClient registryClient, AvroSchemaRegistryUtils codec,
                                       String schemaGroup, Boolean autoRegisterSchemas) {
-        super(registryClient, codec, Collections.singletonList(codec), autoRegisterSchemas, schemaGroup);
+        this.schemaRegistryClient = registryClient;
+        this.codec = codec;
+        this.schemaGroup = schemaGroup;
+        this.autoRegisterSchemas = autoRegisterSchemas;
     }
 
     @Override
     public <T> T deserialize(InputStream stream, TypeReference<T> typeReference) {
-        return null;
+        return deserializeAsync(stream, typeReference).block();
     }
 
     @Override
     public <T> Mono<T> deserializeAsync(InputStream stream,
         TypeReference<T> typeReference) {
-        return null;
+
+        if (stream == null) {
+            return Mono.empty();
+        }
+
+        return Mono.fromCallable(() -> {
+            byte[] payload = new byte[stream.available()];
+
+            while (true) {
+                if (stream.read(payload) == -1) {
+                    break;
+                }
+            }
+            return payload;
+        })
+            .flatMap(payload -> {
+                if (payload == null || payload.length == 0) {
+                    return Mono.empty();
+                }
+
+                ByteBuffer buffer = ByteBuffer.wrap(payload);
+                String schemaId = getSchemaIdFromPayload(buffer);
+
+                return this.schemaRegistryClient.getSchema(schemaId)
+                    .handle((registryObject, sink) -> {
+                        byte[] payloadSchema = registryObject.getSchema();
+
+                        if (payloadSchema == null) {
+                            sink.error(logger.logExceptionAsError(
+                                new NullPointerException(
+                                    String.format("Payload schema returned as null. Schema type: %s, Schema ID: %s",
+                                        registryObject.getSerializationType(), registryObject.getSchemaId()))));
+                            return;
+                        }
+
+                        int start = buffer.position() + buffer.arrayOffset();
+                        int length = buffer.limit() - SCHEMA_ID_SIZE;
+                        byte[] b = Arrays.copyOfRange(buffer.array(), start, start + length);
+
+                        sink.next(codec.decode(b, payloadSchema));
+                    });
+            });
     }
 
     @Override
     public <S extends OutputStream> S serialize(S stream, Object value) {
-        return null;
+        return serializeAsync(stream, value).block();
     }
 
     @Override
-    public <S extends OutputStream> Mono<S> serializeAsync(S stream, Object object) {
+    public <S extends OutputStream> Mono<S> serializeAsync(S outputStream, Object object) {
+
         if (object == null) {
-            return Mono.empty();
+            return monoError(logger, new NullPointerException(
+                "Null object, behavior should be defined in concrete serializer implementation."));
         }
 
-        return super.serializeAsync(stream, object);
+        String schemaString = codec.getSchemaString(object);
+        String schemaName = codec.getSchemaName(object);
+
+        return this.maybeRegisterSchema(this.schemaGroup, schemaName, schemaString)
+            .handle((id, sink) -> {
+                ByteBuffer idBuffer = ByteBuffer.allocate(SCHEMA_ID_SIZE)
+                    .put(id.getBytes(StandardCharsets.UTF_8));
+                try {
+                    outputStream.write(idBuffer.array());
+                    outputStream.write(codec.encode(object));
+                } catch (IOException e) {
+                    sink.error(new UncheckedIOException(e.getMessage(), e));
+                }
+                sink.next(outputStream);
+            });
     }
 
-//    @Override
-//    public <T> Mono<T> deserialize(InputStream stream, Class<T> clazz) {
-//        return this.deserialize(stream)
-//            .map(o -> {
-//                if (clazz.isInstance(o)) {
-//                    return clazz.cast(o);
-//                }
-//                throw logger.logExceptionAsError(new IllegalStateException("Deserialized object not of class %s"));
-//            });
-//    }
+    /**
+     * @param buffer full payload bytes
+     * @return String representation of schema ID
+     */
+    private String getSchemaIdFromPayload(ByteBuffer buffer) {
+        byte[] schemaGuidByteArray = new byte[SCHEMA_ID_SIZE];
+        buffer.get(schemaGuidByteArray);
+
+        return new String(schemaGuidByteArray, StandardCharsets.UTF_8);
+    }
+
+    /**
+     * If auto-registering is enabled, register schema against Schema Registry.
+     * If auto-registering is disabled, fetch schema ID for provided schema. Requires pre-registering of schema
+     * against registry.
+     *
+     * @param schemaGroup Schema group where schema should be registered.
+     * @param schemaName name of schema
+     * @param schemaString string representation of schema being stored - must match group schema type
+     * @return string representation of schema ID
+     */
+    private Mono<String> maybeRegisterSchema(
+        String schemaGroup, String schemaName, String schemaString) {
+        if (this.autoRegisterSchemas) {
+            return this.schemaRegistryClient
+                .registerSchema(schemaGroup, schemaName, schemaString, SerializationType.AVRO)
+                .map(SchemaRegistryProperties::getSchemaId);
+        } else {
+
+            return this.schemaRegistryClient.getSchemaId(
+                schemaGroup, schemaName, schemaString, SerializationType.AVRO);
+        }
+    }
 }
 

@@ -4,25 +4,29 @@
 package com.azure.data.schemaregistry.avro;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.schemaregistry.SchemaRegistryCodec;
 import com.azure.data.schemaregistry.models.SerializationType;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericDatumReader;
 import org.apache.avro.generic.GenericDatumWriter;
-import org.apache.avro.io.*;
+import org.apache.avro.io.BinaryEncoder;
+import org.apache.avro.io.DatumReader;
+import org.apache.avro.io.DatumWriter;
+import org.apache.avro.io.DecoderFactory;
+import org.apache.avro.io.EncoderFactory;
 import org.apache.avro.specific.SpecificDatumReader;
 import org.apache.avro.specific.SpecificDatumWriter;
 import org.apache.avro.specific.SpecificRecord;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 /**
  * Base Codec class for Avro encoder and decoder implementations
  */
-public class AvroSchemaRegistryCodec implements SchemaRegistryCodec {
-    private final ClientLogger logger = new ClientLogger(AvroSchemaRegistryCodec.class);
+class AvroSchemaRegistryUtils {
+    private final ClientLogger logger = new ClientLogger(AvroSchemaRegistryUtils.class);
     private static final EncoderFactory ENCODER_FACTORY = EncoderFactory.get();
     private static final DecoderFactory DECODER_FACTORY = DecoderFactory.get();
     private static final Boolean AVRO_SPECIFIC_READER_DEFAULT = false;
@@ -33,17 +37,15 @@ public class AvroSchemaRegistryCodec implements SchemaRegistryCodec {
      * Instantiates AvroCodec instance
      * @param avroSpecificReader flag indicating if decoder should decode records as SpecificRecords
      */
-    public AvroSchemaRegistryCodec(Boolean avroSpecificReader) {
+    AvroSchemaRegistryUtils(Boolean avroSpecificReader) {
         if (avroSpecificReader == null) {
-            this.avroSpecificReader = AvroSchemaRegistryCodec.AVRO_SPECIFIC_READER_DEFAULT;
-        }
-        else {
+            this.avroSpecificReader = AvroSchemaRegistryUtils.AVRO_SPECIFIC_READER_DEFAULT;
+        } else {
             this.avroSpecificReader = avroSpecificReader;
         }
     }
 
-    @Override
-    public SerializationType getSerializationType() {
+    SerializationType getSerializationType() {
         return SerializationType.AVRO;
     }
 
@@ -51,8 +53,7 @@ public class AvroSchemaRegistryCodec implements SchemaRegistryCodec {
      * @param schemaString string representation of schema
      * @return avro schema
      */
-    @Override
-    public Schema parseSchemaString(String schemaString) {
+    Schema parseSchemaString(String schemaString) {
         return (new Schema.Parser()).parse(schemaString);
     }
 
@@ -62,8 +63,7 @@ public class AvroSchemaRegistryCodec implements SchemaRegistryCodec {
      * @see AvroSchemaUtils for distinction between primitive and Avro schema generation
      * @return string representation of schema
      */
-    @Override
-    public String getSchemaString(Object object) {
+    String getSchemaString(Object object) {
         Schema schema = AvroSchemaUtils.getSchema(object);
         return schema.toString();
     }
@@ -74,13 +74,11 @@ public class AvroSchemaRegistryCodec implements SchemaRegistryCodec {
      * @param object Schema object used to generate schema path
      * @return schema name as string
      */
-    @Override
-    public String getSchemaName(Object object) {
+    String getSchemaName(Object object) {
         return AvroSchemaUtils.getSchema(object).getFullName();
     }
 
-    @Override
-    public String getSchemaGroup() {
+    String getSchemaGroup() {
         return "$Default";
     }
 
@@ -89,8 +87,7 @@ public class AvroSchemaRegistryCodec implements SchemaRegistryCodec {
      * @param object Object to be encoded into byte stream
      * @return closed ByteArrayOutputStream
      */
-    @Override
-    public byte[] encode(Object object) {
+    byte[] encode(Object object) {
         Schema schema = AvroSchemaUtils.getSchema(object);
 
         try {
@@ -119,35 +116,21 @@ public class AvroSchemaRegistryCodec implements SchemaRegistryCodec {
 
     /**
      * @param b byte array containing encoded bytes
-     * @param object schema for Avro reader read - fetched from Azure Schema Registry
+     * @param schemaBytes schema content for Avro reader read - fetched from Azure Schema Registry
      * @return deserialized object
      */
-    @Override
-    public Object decode(byte[] b, Object object) {
-        Objects.requireNonNull(object, "Schema must not be null.");
+    <T> T decode(byte[] b, byte[] schemaBytes) {
+        Objects.requireNonNull(schemaBytes, "Schema must not be null.");
 
-        if (!(object instanceof Schema)) {
-            throw logger.logExceptionAsError(
-                new IllegalStateException("Object must be an Avro schema."));
-        }
-        Schema schema = (Schema) object;
+        String schemaString = new String(schemaBytes, StandardCharsets.UTF_8);
+        Schema schemaObject = parseSchemaString(schemaString);
 
-        if (schema.getType().equals(Schema.Type.BYTES)) {
-            return b;
-        }
-
-        DatumReader<?> reader = getDatumReader(schema);
+        DatumReader<T> reader = getDatumReader(schemaObject);
 
         try {
-            Object result = reader.read(null, DECODER_FACTORY.binaryDecoder(b, null));
-
-            if (schema.getType().equals(Schema.Type.STRING)) {
-                return result.toString();
-            }
-
+            T result = reader.read(null, DECODER_FACTORY.binaryDecoder(b, null));
             return result;
         } catch (IOException | RuntimeException e) {
-            // avro deserialization may throw AvroRuntimeException, NullPointerException, etc
             throw logger.logExceptionAsError(new IllegalStateException("Error deserializing Avro message.", e));
         }
     }
@@ -158,7 +141,7 @@ public class AvroSchemaRegistryCodec implements SchemaRegistryCodec {
      * @param writerSchema Avro schema fetched from schema registry store
      * @return correct Avro DatumReader object given encoder configuration
      */
-    private DatumReader<?> getDatumReader(Schema writerSchema) {
+    private <T> DatumReader<T> getDatumReader(Schema writerSchema) {
         boolean writerSchemaIsPrimitive = AvroSchemaUtils.getPrimitiveSchemas().values().contains(writerSchema);
         // do not use SpecificDatumReader if writerSchema is a primitive
         if (avroSpecificReader && !writerSchemaIsPrimitive) {

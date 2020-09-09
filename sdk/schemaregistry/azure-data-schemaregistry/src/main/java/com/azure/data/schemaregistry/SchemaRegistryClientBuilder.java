@@ -209,34 +209,6 @@ public class SchemaRegistryClientBuilder {
     }
 
     /**
-     * Loads a parser method Function object used to convert schema strings returned from the Schema Registry
-     * service into useable schema objects.
-     *
-     * Any com.azure.data.schemaregistry.Codec class will implement
-     * - schemaType(), which specifies schema type, and
-     * - parseSchemaString(), which parses schemas of the specified schema type from String to Object.
-     *
-     * The parseMethod argument should be a stateless, idempotent function.
-     *
-     * @param schemaRegistryCodec Codec class implementation
-     * @return The updated {@link SchemaRegistryClientBuilder} object.
-     */
-    public SchemaRegistryClientBuilder addSchemaRegistryCodec(SchemaRegistryCodec schemaRegistryCodec) {
-        Objects.requireNonNull(schemaRegistryCodec, "'codec' cannot be null.");
-        if (schemaRegistryCodec.getSerializationType() == null) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("Serialization type cannot be null or empty."));
-        }
-        if (this.typeParserMap.containsKey(schemaRegistryCodec.getSerializationType())) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("Multiple parse methods for single serialization type may not be added."));
-        }
-        this.typeParserMap.put(schemaRegistryCodec.getSerializationType().toString(),
-            schemaRegistryCodec::parseSchemaString);
-        return this;
-    }
-
-    /**
      * Creates a {@link SchemaRegistryAsyncClient} based on options set in the builder.
      * Every time {@code buildClient()} is called a new instance of {@link SchemaRegistryAsyncClient} is created.
      *
@@ -302,7 +274,7 @@ public class SchemaRegistryClientBuilder {
      *
      * @return {@link SchemaRegistryClient} with the options set from the builder.
      */
-     public SchemaRegistryClient buildClient() {
+    public SchemaRegistryClient buildClient() {
         return new SchemaRegistryClient(this.buildAsyncClient());
-     }
+    }
 }

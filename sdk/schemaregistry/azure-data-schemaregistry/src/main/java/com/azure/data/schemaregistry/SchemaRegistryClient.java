@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.data.schemaregistry;
 
 import com.azure.core.annotation.ReturnType;
@@ -5,13 +8,15 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryRestService;
-import com.azure.data.schemaregistry.models.SchemaRegistryObject;
+import com.azure.data.schemaregistry.models.SchemaRegistryProperties;
 import com.azure.data.schemaregistry.models.SerializationType;
 
-@ServiceClient(
-    builder = SchemaRegistryClientBuilder.class,
-    serviceInterfaces = AzureSchemaRegistryRestService.class)
+/**
+ * HTTP-based client that interacts with Azure Schema Registry service to store and retrieve schemas on demand.
+ *
+ * @see SchemaRegistryClientBuilder Follows builder pattern for object instantiation
+ */
+@ServiceClient(builder = SchemaRegistryClientBuilder.class)
 public final class SchemaRegistryClient {
     private final SchemaRegistryAsyncClient asyncClient;
 
@@ -19,39 +24,90 @@ public final class SchemaRegistryClient {
         this.asyncClient = asyncClient;
     }
 
+    /**
+     *
+     * @param schemaGroup The schema group.
+     * @param schemaName The schema name.
+     * @param schemaString The string representation of the schema.
+     * @param serializationType The serialization type of this schema.
+     * @return The schema properties on successful registration of the schema.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SchemaRegistryObject registerSchema(String schemaGroup, String schemaName, String schemaString,
-        SerializationType schemaType) {
-        return registerSchemaWithResponse(schemaGroup, schemaName, schemaString, schemaType, Context.NONE).getValue();
+    public SchemaRegistryProperties registerSchema(String schemaGroup, String schemaName, String schemaString,
+                                                   SerializationType serializationType) {
+        return registerSchemaWithResponse(schemaGroup, schemaName, schemaString, serializationType, Context.NONE)
+            .getValue();
     }
 
+    /**
+     *
+     * @param schemaGroup The schema group.
+     * @param schemaName The schema name.
+     * @param schemaString The string representation of the schema.
+     * @param serializationType The serialization type of this schema.
+     * @param context The context to pass to the Http pipeline.
+     * @return The schema properties on successful registration of the schema.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SchemaRegistryObject> registerSchemaWithResponse(String schemaGroup, String schemaName,
-        String schemaString, SerializationType serializationType, Context context) {
+    public Response<SchemaRegistryProperties> registerSchemaWithResponse(String schemaGroup, String schemaName,
+                                         String schemaString, SerializationType serializationType, Context context) {
         return this.asyncClient.registerSchemaWithResponse(schemaGroup, schemaName, schemaString, serializationType,
             context).block();
     }
 
+    /**
+     * Gets the schema properties of the schema associated with the unique schemaId.
+     * @param schemaId The unique identifier of the schema.
+     *
+     * @return The {@link SchemaRegistryProperties} associated with the given {@code schemaId}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SchemaRegistryObject getSchema(String schemaId) {
+    public SchemaRegistryProperties getSchema(String schemaId) {
         return getSchemaWithResponse(schemaId, Context.NONE).getValue();
     }
 
+    /**
+     * Gets the schema properties of the schema associated with the unique schemaId.
+     * @param schemaId The unique identifier of the schema.
+     * @param context The context to pass to the Http pipeline.
+     * @return The {@link SchemaRegistryProperties} associated with the given {@code schemaId} along with the HTTP
+     * response.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SchemaRegistryObject> getSchemaWithResponse(String schemaId, Context context) {
+    public Response<SchemaRegistryProperties> getSchemaWithResponse(String schemaId, Context context) {
         return this.asyncClient.getSchemaWithResponse(schemaId).block();
     }
 
+    /**
+     *
+     * @param schemaGroup The schema group.
+     * @param schemaName The schema name.
+     * @param schemaString The string representation of the schema.
+     * @param serializationType The serialization type of this schema.
+     *
+     * @return The unique identifier for this schema.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public String getSchemaId(String schemaGroup, String schemaName, String schemaString, SerializationType serializationType) {
-        return getSchemaIdWithResponse(schemaGroup, schemaName, schemaString, serializationType, Context.NONE).getValue();
+    public String getSchemaId(String schemaGroup, String schemaName, String schemaString,
+                              SerializationType serializationType) {
+        return getSchemaIdWithResponse(schemaGroup, schemaName, schemaString, serializationType, Context.NONE)
+            .getValue();
     }
 
+    /**
+     *
+     * @param schemaGroup The schema group.
+     * @param schemaName The schema name.
+     * @param schemaString The string representation of the schema.
+     * @param serializationType The serialization type of this schema.
+     * @param context The context to pass to the Http pipeline.
+     * @return The unique identifier for this schema.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<String> getSchemaIdWithResponse(String schemaGroup, String schemaName, String schemaString,
         SerializationType serializationType, Context context) {
-        return this.asyncClient.getSchemaIdWithResponse(schemaGroup, schemaName, schemaString, serializationType, context)
-            .block();
+        return this.asyncClient
+            .getSchemaIdWithResponse(schemaGroup, schemaName, schemaString, serializationType, context).block();
     }
 
     void clearCache() {
