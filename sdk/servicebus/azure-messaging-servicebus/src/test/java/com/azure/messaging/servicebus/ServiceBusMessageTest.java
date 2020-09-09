@@ -29,7 +29,8 @@ public class ServiceBusMessageTest {
     private static final byte[] PAYLOAD_BYTES = PAYLOAD.getBytes(UTF_8);
 
     /**
-     * Verifies we correctly set values via copy constructor for {@link ServiceBusMessage}.
+     * Verifies we correctly set values via copy constructor for {@link ServiceBusMessage}. And ensure system properties
+     * are cleared.
      */
     @Test
     public void copyConstructorTest() {
