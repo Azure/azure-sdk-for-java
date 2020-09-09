@@ -85,5 +85,16 @@ public class FlatMapSequentialTests {
         )
             .expectNext(1, 3)
             .verifyErrorMessage("Test");
+
+        StepVerifier.create(Flux.just(1, 3, 5, 7)
+            .flatMapDelayError(i -> {
+                if (i == 5) {
+                    return Mono.error(new RuntimeException("Test"));
+                }
+                return Mono.just(i);
+            }, 32, 32)
+        )
+            .expectNext(1, 3, 7)
+            .verifyErrorMessage("Test");
     }
 }
