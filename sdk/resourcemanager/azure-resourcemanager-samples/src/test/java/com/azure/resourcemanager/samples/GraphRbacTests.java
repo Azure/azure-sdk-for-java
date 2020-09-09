@@ -28,7 +28,7 @@ public class GraphRbacTests extends ResourceManagerTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageUsersGroupsAndRoles() throws Exception {
+    public void testManageUsersGroupsAndRoles() {
         if (skipInPlayback()) {
             return;
         }
@@ -37,13 +37,13 @@ public class GraphRbacTests extends ResourceManagerTestBase {
     }
 
 //    @Test
-//    public void testManageServicePrincipal() throws Exception {
+//    public void testManageServicePrincipal() {
 //        Assertions.assertTrue(ManageServicePrincipal.runSample(authenticated, defaultSubscription));
 //    }
 
     @Test
     @DoNotRecord
-    public void testManageServicePrincipalCredentials() throws Exception {
+    public void testManageServicePrincipalCredentials() {
         if (skipInPlayback()) {
             return;
         }

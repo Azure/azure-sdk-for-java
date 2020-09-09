@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 public class PrivateDnsSampleTests extends SamplesTestBase {
     @Test
-    public void testManagePrivateDns() throws Exception {
+    public void testManagePrivateDns() {
         Assertions.assertTrue(ManagePrivateDns.runSample(azure));
     }
 }

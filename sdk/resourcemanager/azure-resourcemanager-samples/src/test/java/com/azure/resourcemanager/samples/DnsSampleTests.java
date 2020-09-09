@@ -12,7 +12,7 @@ public class DnsSampleTests extends SamplesTestBase {
 
     @Test
     @Disabled("The domain name 'the custom domain that you own (e.g. contoso.com)' is invalid.")
-    public void testManageDns() throws Exception {
+    public void testManageDns() {
         Assertions.assertTrue(ManageDns.runSample(azure));
     }
 

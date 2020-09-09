@@ -12,17 +12,17 @@ import org.junit.jupiter.api.Test;
 
 public class StorageSampleTests extends SamplesTestBase {
     @Test
-    public void testManageStorageAccount() throws Exception {
+    public void testManageStorageAccount() {
         Assertions.assertTrue(ManageStorageAccount.runSample(azure));
     }
 
     @Test
-    public void testManageStorageAccountAsync() throws Exception {
+    public void testManageStorageAccountAsync() {
         Assertions.assertTrue(ManageStorageAccountAsync.runSample(azure));
     }
 
     @Test
-    public void testManageStorageAccountNetworkRules() throws Exception {
+    public void testManageStorageAccountNetworkRules() {
         Assertions.assertTrue(ManageStorageAccountNetworkRules.runSample(azure));
     }
 }

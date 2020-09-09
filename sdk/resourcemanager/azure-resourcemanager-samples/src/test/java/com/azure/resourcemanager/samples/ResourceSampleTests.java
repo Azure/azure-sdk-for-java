@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 
 public class ResourceSampleTests extends SamplesTestBase {
     @Test
-    public void testDeployUsingARMTemplate() throws Exception {
+    public void testDeployUsingARMTemplate() {
         if (isPlaybackMode()) {
             return;
         }
@@ -25,17 +25,17 @@ public class ResourceSampleTests extends SamplesTestBase {
     }
 
     @Test
-    public void testDeployUsingARMTemplateWithProgress() throws Exception {
+    public void testDeployUsingARMTemplateWithProgress() {
         Assertions.assertTrue(DeployUsingARMTemplateWithProgress.runSample(azure));
     }
 
     @Test
-    public void testDeployUsingARMTemplateAsync() throws Exception {
+    public void testDeployUsingARMTemplateAsync() {
         Assertions.assertTrue(DeployUsingARMTemplateAsync.runSample(azure));
     }
 
     @Test()
-    public void testDeployUsingARMTemplateWithDeploymentOperations() throws Exception {
+    public void testDeployUsingARMTemplateWithDeploymentOperations() {
         if (isPlaybackMode()) {
             Assertions.assertTrue(DeployUsingARMTemplateWithDeploymentOperations.runSample(azure, 0));
         } else {
@@ -44,22 +44,22 @@ public class ResourceSampleTests extends SamplesTestBase {
     }
 
     @Test
-    public void testDeployUsingARMTemplateWithTags() throws Exception {
+    public void testDeployUsingARMTemplateWithTags() {
         Assertions.assertTrue(DeployUsingARMTemplateWithTags.runSample(azure));
     }
 
     @Test
-    public void testManageResource() throws Exception {
+    public void testManageResource() {
         Assertions.assertTrue(ManageResource.runSample(azure));
     }
 
     @Test
-    public void testManageResourceGroup() throws Exception {
+    public void testManageResourceGroup() {
         Assertions.assertTrue(ManageResourceGroup.runSample(azure));
     }
 
     @Test
-    public void testDeployVirtualMachineUsingARMTemplate() throws Exception {
+    public void testDeployVirtualMachineUsingARMTemplate() {
         Assertions.assertTrue(DeployVirtualMachineUsingARMTemplate.runSample(azure));
     }
 }

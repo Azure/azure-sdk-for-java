@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 public class RedisCacheSampleTests extends SamplesTestBase {
     @Test
-    public void testManageRedisCache() throws Exception {
+    public void testManageRedisCache() {
         Assertions.assertTrue(ManageRedisCache.runSample(azure));
     }
 }

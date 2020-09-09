@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 public class MonitorTests extends SamplesTestBase {
 
     @Test
-    public void testQueryMetricsAndActivityLogs() throws Exception {
+    public void testQueryMetricsAndActivityLogs() {
         // Skip test in "playback" mode due to HTTP calls made outside of the management plane which can not be recorded at this time
         if (!isPlaybackMode()) {
             Assertions.assertTrue(QueryMetricsAndActivityLogs.runSample(azure));
@@ -22,17 +22,17 @@ public class MonitorTests extends SamplesTestBase {
     }
 
     @Test
-    public void testSecurityBreachOrRiskActivityLogAlerts() throws Exception {
+    public void testSecurityBreachOrRiskActivityLogAlerts() {
         Assertions.assertTrue(SecurityBreachOrRiskActivityLogAlerts.runSample(azure));
     }
 
     @Test
-    public void testWebAppPerformanceMonitoringAlerts() throws Exception {
+    public void testWebAppPerformanceMonitoringAlerts() {
         Assertions.assertTrue(WebAppPerformanceMonitoringAlerts.runSample(azure));
     }
 
     @Test
-    public void testAutoscaleSettingsBasedOnPerformanceOrSchedule() throws Exception {
+    public void testAutoscaleSettingsBasedOnPerformanceOrSchedule() {
         // Skip test in "playback" mode due to HTTP calls made outside of the management plane which can not be recorded at this time
         if (!isPlaybackMode()) {
             Assertions.assertTrue(AutoscaleSettingsBasedOnPerformanceOrSchedule.runSample(azure));

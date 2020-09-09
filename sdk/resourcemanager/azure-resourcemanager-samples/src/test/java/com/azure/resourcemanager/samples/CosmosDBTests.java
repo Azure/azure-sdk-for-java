@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 public class CosmosDBTests extends SamplesTestBase {
 
     @Test
-    public void testCreateCosmosDBWithEventualConsistency() throws Exception {
+    public void testCreateCosmosDBWithEventualConsistency() {
         // Skip test in "playback" mode due to HTTP calls made outside of the management plane which can not be recorded at this time
         if (!isPlaybackMode()) {
             Assertions.assertTrue(CreateCosmosDBWithEventualConsistency.runSample(azure));
@@ -22,17 +22,17 @@ public class CosmosDBTests extends SamplesTestBase {
     }
 
     @Test
-    public void testCreateCosmosDBWithIPRange() throws Exception {
+    public void testCreateCosmosDBWithIPRange() {
         Assertions.assertTrue(CreateCosmosDBWithIPRange.runSample(azure));
     }
 
     @Test
-    public void testCreateCosmosDBTableWithVirtualNetworkRule() throws Exception {
+    public void testCreateCosmosDBTableWithVirtualNetworkRule() {
         Assertions.assertTrue(CreateCosmosDBTableWithVirtualNetworkRule.runSample(azure));
     }
 
     @Test
-    public void testCreateCosmosDBWithKindMongoDB() throws Exception {
+    public void testCreateCosmosDBWithKindMongoDB() {
         // Skip test in "playback" mode due to HTTP calls made outside of the management plane which can not be recorded at this time
         if (!isPlaybackMode()) {
             Assertions.assertTrue(CreateCosmosDBWithKindMongoDB.runSample(azure));
@@ -40,7 +40,7 @@ public class CosmosDBTests extends SamplesTestBase {
     }
 
     @Test
-    public void testManageHACosmosDB() throws Exception {
+    public void testManageHACosmosDB() {
         // Skip test in "playback" mode due to HTTP calls made outside of the management plane which can not be recorded at this time
         if (!isPlaybackMode()) {
             Assertions.assertTrue(ManageHACosmosDB.runSample(azure));

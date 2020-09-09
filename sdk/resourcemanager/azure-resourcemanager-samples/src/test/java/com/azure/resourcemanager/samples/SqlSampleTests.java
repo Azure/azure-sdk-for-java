@@ -24,7 +24,7 @@ import java.nio.file.Paths;
 public class SqlSampleTests extends SamplesTestBase {
 
     @Test
-    public void testManageSqlDatabase() throws Exception {
+    public void testManageSqlDatabase() {
         if (isPlaybackMode()) {
             return; // TODO: fix playback random fail
         }
@@ -32,17 +32,17 @@ public class SqlSampleTests extends SamplesTestBase {
     }
 
     @Test
-    public void testManageSqlDatabaseInElasticPool() throws Exception {
+    public void testManageSqlDatabaseInElasticPool() {
         Assertions.assertTrue(ManageSqlDatabaseInElasticPool.runSample(azure));
     }
 
     @Test
-    public void testManageSqlDatabasesAcrossDifferentDataCenters() throws Exception {
+    public void testManageSqlDatabasesAcrossDifferentDataCenters() {
         Assertions.assertTrue(ManageSqlDatabasesAcrossDifferentDataCenters.runSample(azure));
     }
 
     @Test
-    public void testManageSqlFirewallRules() throws Exception {
+    public void testManageSqlFirewallRules() {
         if (isPlaybackMode()) {
             return; // TODO: fix playback random fail
         }
@@ -50,17 +50,17 @@ public class SqlSampleTests extends SamplesTestBase {
     }
 
     @Test
-    public void testManageSqlServerSecurityAlertPolicy() throws Exception {
+    public void testManageSqlServerSecurityAlertPolicy() {
         Assertions.assertTrue(ManageSqlServerSecurityAlertPolicy.runSample(azure));
     }
 
     @Test
-    public void testManageSqlVirtualNetworkRules() throws Exception {
+    public void testManageSqlVirtualNetworkRules() {
         Assertions.assertTrue(ManageSqlVirtualNetworkRules.runSample(azure));
     }
 
     @Test
-    public void testManageSqlImportExportDatabase() throws Exception {
+    public void testManageSqlImportExportDatabase() {
         // Skip test in "playback" mode due to HTTP calls made outside of the management plane which can not be recorded at this time
         if (!isPlaybackMode()) {
             Assertions.assertTrue(ManageSqlImportExportDatabase.runSample(azure));
@@ -68,7 +68,7 @@ public class SqlSampleTests extends SamplesTestBase {
     }
 
     @Test
-    public void testManageSqlWithRecoveredOrRestoredDatabase() throws Exception {
+    public void testManageSqlWithRecoveredOrRestoredDatabase() {
         if (isPlaybackMode()) {
             return; // TODO: fix playback random fail
         }
@@ -77,12 +77,12 @@ public class SqlSampleTests extends SamplesTestBase {
     }
 
     @Test
-    public void testManageSqlFailoverGroups() throws Exception {
+    public void testManageSqlFailoverGroups() {
         Assertions.assertTrue(ManageSqlFailoverGroups.runSample(azure));
     }
 
     @Test
-    public void testGettingSqlServerMetrics() throws Exception {
+    public void testGettingSqlServerMetrics() {
         // Skip test in "playback" mode due to HTTP calls made outside of the management plane which can not be recorded at this time
         if (!isPlaybackMode()) {
             Assertions.assertTrue(GettingSqlServerMetrics.runSample(azure));
@@ -90,7 +90,7 @@ public class SqlSampleTests extends SamplesTestBase {
     }
 
     @Test
-    public void testManageSqlServerDnsAliases() throws Exception {
+    public void testManageSqlServerDnsAliases() {
         // Skip test in "playback" mode due to HTTP calls made outside of the management plane which can not be recorded at this time
         if (!isPlaybackMode()) {
             Assertions.assertTrue(ManageSqlServerDnsAliases.runSample(azure));
@@ -98,7 +98,7 @@ public class SqlSampleTests extends SamplesTestBase {
     }
 
     @Test
-    public void testManageSqlServerKeysWithAzureKeyVaultKey() throws Exception {
+    public void testManageSqlServerKeysWithAzureKeyVaultKey() {
         // Skip test in "playback" mode due to HTTP calls made outside of the management plane which can not be recorded at this time
         if (!isPlaybackMode()) {
             //=============================================================

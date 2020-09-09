@@ -13,7 +13,7 @@ public class ContainerRegistryTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageContainerRegistry() throws Exception {
+    public void testManageContainerRegistry() {
         if (skipInPlayback()) {
             return;
         }
@@ -23,7 +23,7 @@ public class ContainerRegistryTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageContainerRegistryWithWebhooks() throws Exception {
+    public void testManageContainerRegistryWithWebhooks() {
         if (skipInPlayback()) {
             return;
         }

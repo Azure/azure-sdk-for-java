@@ -25,79 +25,79 @@ import org.junit.jupiter.api.Test;
 public class NetworkSampleTests extends SamplesTestBase {
 
     @Test
-    public void testManageNetworkPeeringInSameSubscription() throws Exception {
+    public void testManageNetworkPeeringInSameSubscription() {
         Assertions.assertTrue(ManageNetworkPeeringInSameSubscription.runSample(azure));
     }
 
     @Test
     @Disabled("Get error `Cannot create more than 1 network watchers for this subscription in this region.` with test subscription")
-    public void testVerifyNetworkPeeringWithNetworkWatcher() throws Exception {
+    public void testVerifyNetworkPeeringWithNetworkWatcher() {
         Assertions.assertTrue(VerifyNetworkPeeringWithNetworkWatcher.runSample(azure));
     }
 
     @Test
-    public void testManageApplicationGateway() throws Exception {
+    public void testManageApplicationGateway() {
         Assertions.assertTrue(ManageApplicationGateway.runSample(azure));
     }
 
     @Test
-    public void testManageInternalLoadBalancer() throws Exception {
+    public void testManageInternalLoadBalancer() {
         Assertions.assertTrue(ManageInternalLoadBalancer.runSample(azure));
     }
 
     @Test
-    public void testCreateSimpleInternetFacingLoadBalancer() throws Exception {
+    public void testCreateSimpleInternetFacingLoadBalancer() {
         Assertions.assertTrue(CreateSimpleInternetFacingLoadBalancer.runSample(azure));
     }
 
     @Test
-    public void testManageInternetFacingLoadBalancer() throws Exception {
+    public void testManageInternetFacingLoadBalancer() {
         Assertions.assertTrue(ManageInternetFacingLoadBalancer.runSample(azure));
     }
 
     @Test
-    public void testManageIPAddress() throws Exception {
+    public void testManageIPAddress() {
         Assertions.assertTrue(ManageIPAddress.runSample(azure));
     }
 
     @Test
-    public void testManageNetworkInterface() throws Exception {
+    public void testManageNetworkInterface() {
         Assertions.assertTrue(ManageNetworkInterface.runSample(azure));
     }
 
     @Test
-    public void testManageNetworkSecurityGroup() throws Exception {
+    public void testManageNetworkSecurityGroup() {
         Assertions.assertTrue(ManageNetworkSecurityGroup.runSample(azure));
     }
 
     @Test
-    public void testManageSimpleApplicationGateway() throws Exception {
+    public void testManageSimpleApplicationGateway() {
         Assertions.assertTrue(ManageSimpleApplicationGateway.runSample(azure));
     }
 
     @Test
-    public void testManageVirtualMachinesInParallelWithNetwork() throws Exception {
+    public void testManageVirtualMachinesInParallelWithNetwork() {
         Assertions.assertTrue(ManageVirtualMachinesInParallelWithNetwork.runSample(azure));
     }
 
     @Test
-    public void testManageVirtualNetwork() throws Exception {
+    public void testManageVirtualNetwork() {
         Assertions.assertTrue(ManageVirtualNetwork.runSample(azure));
     }
 
     @Test
-    public void testManageVirtualNetworkAsync() throws Exception {
+    public void testManageVirtualNetworkAsync() {
         Assertions.assertTrue(ManageVirtualNetworkAsync.runSample(azure));
     }
 
     @Test
-    public void testManageVpnGatewaySite2SiteConnection() throws Exception {
+    public void testManageVpnGatewaySite2SiteConnection() {
         Assertions.assertTrue(ManageVpnGatewaySite2SiteConnection.runSample(azure));
     }
 
     @Test
     @Disabled("Need root certificate file and client certificate thumbprint to run the sample")
-    public void testManageVpnGatewayPoint2SiteConnection() throws Exception {
+    public void testManageVpnGatewayPoint2SiteConnection() {
         Assertions.assertTrue(ManageVpnGatewayPoint2SiteConnection.runSample(azure));
     }
 }
