@@ -171,11 +171,6 @@ public final class ManageAvailabilitySet {
 
             System.out.println("Deleted availability set: " + availSet2.id());
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
 
             try {
@@ -188,7 +183,6 @@ public final class ManageAvailabilitySet {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

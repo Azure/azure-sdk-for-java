@@ -257,9 +257,6 @@ public final class CreateVirtualMachinesAsyncTrackingRelatedResources {
             System.out.println(String.format("Remaining availability sets (should be %d): %d", actualVMCount, actualAvailabilitySetCount));
 
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
         } finally {
             try {
                 System.out.println("Starting the deletion of resource group: " + resourceGroupName);
@@ -270,7 +267,6 @@ public final class CreateVirtualMachinesAsyncTrackingRelatedResources {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

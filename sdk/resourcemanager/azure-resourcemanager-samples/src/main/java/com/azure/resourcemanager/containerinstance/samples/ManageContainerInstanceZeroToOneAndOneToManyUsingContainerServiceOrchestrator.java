@@ -28,6 +28,7 @@ import com.github.dockerjava.api.model.AuthConfig;
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.Image;
 import com.github.dockerjava.core.command.PushImageResultCallback;
+import com.jcraft.jsch.JSchException;
 import io.fabric8.kubernetes.api.model.LoadBalancerIngress;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.NamespaceBuilder;
@@ -46,6 +47,7 @@ import org.apache.commons.codec.binary.Base64;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -85,7 +87,7 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
      * @param secret secondary service principal secret
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure, String clientId, String secret) {
+    public static boolean runSample(Azure azure, String clientId, String secret) throws IOException, InterruptedException, JSchException {
         final String rgName = azure.sdkContext().randomResourceName("rgaci", 15);
         final Region region = Region.US_EAST2;
 
@@ -477,9 +479,6 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
             kubernetesClient.namespaces().delete(ns);
 
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -491,7 +490,6 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

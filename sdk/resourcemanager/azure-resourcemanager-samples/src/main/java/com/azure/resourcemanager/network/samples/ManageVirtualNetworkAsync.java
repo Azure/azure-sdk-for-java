@@ -251,9 +251,6 @@ public final class ManageVirtualNetworkAsync {
             }
 
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -265,8 +262,6 @@ public final class ManageVirtualNetworkAsync {
                 g.printStackTrace();
             }
         }
-
-        return false;
     }
 
     /**

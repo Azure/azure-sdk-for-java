@@ -138,9 +138,6 @@ public final class ManageWebAppBasic {
                 Utils.print(webApp);
             }
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rg1Name);
@@ -155,7 +152,6 @@ public final class ManageWebAppBasic {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**

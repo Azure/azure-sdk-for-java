@@ -23,6 +23,7 @@ import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfile;
 import com.azure.resourcemanager.trafficmanager.models.TrafficRoutingMethod;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Locale;
 
 /**
@@ -48,7 +49,7 @@ public final class ManageWebAppWithTrafficManager {
      * @param azure instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure) throws IOException {
         rgName = azure.sdkContext().randomResourceName("rgNEMV_", 24);
 
         if (ManageWebAppWithTrafficManager.azure == null) {
@@ -223,9 +224,6 @@ public final class ManageWebAppWithTrafficManager {
             Utils.print(plan3);
 
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -237,8 +235,6 @@ public final class ManageWebAppWithTrafficManager {
                 g.printStackTrace();
             }
         }
-
-        return false;
     }
 
     private static AppServicePlan createAppServicePlan(String name, Region region) {
