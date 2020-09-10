@@ -751,18 +751,19 @@ public final class DigitalTwinsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteEventRoute(String eventRouteId)
     {
-        deleteEventRouteWithResponse(eventRouteId);
+        deleteEventRouteWithResponse(eventRouteId, Context.NONE);
     }
 
     /**
      * Delete an event route.
      * @param eventRouteId The Id of the event route to delete.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} containing no parsed value.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteEventRouteWithResponse(String eventRouteId)
+    public Response<Void> deleteEventRouteWithResponse(String eventRouteId, Context context)
     {
-        return this.digitalTwinsAsyncClient.deleteEventRouteWithResponse(eventRouteId, Context.NONE).block();
+        return this.digitalTwinsAsyncClient.deleteEventRouteWithResponse(eventRouteId, context).block();
     }
 
     /**

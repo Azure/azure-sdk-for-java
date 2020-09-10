@@ -50,11 +50,11 @@ public class EventRoutesSyncSamples {
         String existingEventRouteId = null;
         for (EventRoute eventRoute : eventRoutes) {
             existingEventRouteId = eventRoute.getId();
-            ConsoleLogger.print(String.format("     EventRouteId: %s", eventRoute.getId()));
-            ConsoleLogger.print(String.format("     EventRouteEndpointName: %s", eventRoute.getEndpointName()));
+            ConsoleLogger.print(String.format("\tEventRouteId: %s", eventRoute.getId()));
+            ConsoleLogger.print(String.format("\tEventRouteEndpointName: %s", eventRoute.getEndpointName()));
             if (eventRoute.getFilter() != null)
             {
-                ConsoleLogger.print(String.format("     Filter: %s", eventRoute.getFilter()));
+                ConsoleLogger.print(String.format("\tFilter: %s", eventRoute.getFilter()));
             }
             ConsoleLogger.print("");
         }
@@ -65,11 +65,11 @@ public class EventRoutesSyncSamples {
             try {
                 EventRoute existingEventRoute = client.getEventRoute(existingEventRouteId);
                 ConsoleLogger.print(String.format("Successfully retrieved event route with Id %s", existingEventRouteId));
-                ConsoleLogger.print(String.format("     EventRouteId: %s", existingEventRoute.getId()));
-                ConsoleLogger.print(String.format("     EventRouteEndpointName: %s", existingEventRoute.getEndpointName()));
+                ConsoleLogger.print(String.format("\tEventRouteId: %s", existingEventRoute.getId()));
+                ConsoleLogger.print(String.format("\tEventRouteEndpointName: %s", existingEventRoute.getEndpointName()));
                 if (existingEventRoute.getFilter() != null)
                 {
-                    ConsoleLogger.print(String.format("     Filter: %s", existingEventRoute.getFilter()));
+                    ConsoleLogger.print(String.format("\tFilter: %s", existingEventRoute.getFilter()));
                 }
             } catch (ErrorResponseException ex) {
                 ConsoleLogger.printFatal(String.format("Failed to get event route with Id %s", existingEventRouteId));
