@@ -717,10 +717,11 @@ public final class DigitalTwinsClient {
      * @param eventRouteId The id of the event route to create.
      * @param eventRoute The event route to create.
      * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createEventRouteWithResponse(String eventRouteId, EventRoute eventRoute, Context context) {
-        this.digitalTwinsAsyncClient.createEventRouteWithResponse(eventRouteId, eventRoute, context).block();
+    public Response createEventRouteWithResponse(String eventRouteId, EventRoute eventRoute, Context context) {
+        return this.digitalTwinsAsyncClient.createEventRouteWithResponse(eventRouteId, eventRoute, context).block();
     }
 
     /**
