@@ -25,12 +25,14 @@ public class ReceiveLinkHandler extends LinkHandler {
     private final DirectProcessor<Delivery> deliveries;
     private final FluxSink<Delivery> deliverySink;
     private final Set<Delivery> queuedDeliveries = Collections.newSetFromMap(new ConcurrentHashMap<>());
+    private final String entityPath;
 
     public ReceiveLinkHandler(String connectionId, String hostname, String linkName, String entityPath) {
         super(connectionId, hostname, entityPath, new ClientLogger(ReceiveLinkHandler.class));
         this.deliveries = DirectProcessor.create();
         this.deliverySink = deliveries.sink(FluxSink.OverflowStrategy.BUFFER);
         this.linkName = linkName;
+        this.entityPath = entityPath;
     }
 
     public String getLinkName() {
@@ -58,8 +60,8 @@ public class ReceiveLinkHandler extends LinkHandler {
     public void onLinkLocalOpen(Event event) {
         final Link link = event.getLink();
         if (link instanceof Receiver) {
-            logger.info("onLinkLocalOpen connectionId[{}], linkName[{}], localSource[{}]",
-                getConnectionId(), link.getName(), link.getSource());
+            logger.info("onLinkLocalOpen connectionId[{}], entityPath[{}], linkName[{}], localSource[{}]",
+                getConnectionId(), entityPath, link.getName(), link.getSource());
         }
     }
 
@@ -71,15 +73,15 @@ public class ReceiveLinkHandler extends LinkHandler {
         }
 
         if (link.getRemoteSource() != null) {
-            logger.info("onLinkRemoteOpen connectionId[{}], linkName[{}], remoteSource[{}]",
-                getConnectionId(), link.getName(), link.getRemoteSource());
+            logger.info("onLinkRemoteOpen connectionId[{}], entityPath[{}], linkName[{}], remoteSource[{}]",
+                getConnectionId(), entityPath, link.getName(), link.getRemoteSource());
 
             if (isFirstResponse.getAndSet(false)) {
                 onNext(EndpointState.ACTIVE);
             }
         } else {
-            logger.info("onLinkRemoteOpen connectionId[{}], linkName[{}], action[waitingForError]",
-                getConnectionId(), link.getName());
+            logger.info("onLinkRemoteOpen connectionId[{}], entityPath[{}], linkName[{}], action[waitingForError]",
+                getConnectionId(), entityPath, link.getName());
         }
     }
 
@@ -102,9 +104,9 @@ public class ReceiveLinkHandler extends LinkHandler {
             // before we fix proton-j - this work around ensures that we ignore the duplicate Delivery event
             if (delivery.isSettled()) {
                 if (link != null) {
-                    logger.verbose("onDelivery connectionId[{}], linkName[{}], updatedLinkCredit[{}], remoteCredit[{}],"
-                            + " remoteCondition[{}], delivery.isSettled[{}]",
-                        getConnectionId(), link.getName(), link.getCredit(), link.getRemoteCredit(),
+                    logger.verbose("onDelivery connectionId[{}], entityPath[{}], linkName[{}], updatedLinkCredit[{}],"
+                            + " remoteCredit[{}], remoteCondition[{}], delivery.isSettled[{}]",
+                        getConnectionId(), entityPath, link.getName(), link.getCredit(), link.getRemoteCredit(),
                         link.getRemoteCondition(), delivery.isSettled());
                 } else {
                     logger.warning("connectionId[{}], delivery.isSettled[{}]", getConnectionId(), delivery.isSettled());
@@ -126,10 +128,10 @@ public class ReceiveLinkHandler extends LinkHandler {
         }
 
         if (link != null) {
-            logger.verbose("onDelivery connectionId[{}], linkName[{}], updatedLinkCredit[{}], remoteCredit[{}],"
-                    + " remoteCondition[{}], delivery.isPartial[{}]",
-                getConnectionId(), link.getName(), link.getCredit(), link.getRemoteCredit(), link.getRemoteCondition(),
-                delivery.isPartial());
+            logger.verbose("onDelivery connectionId[{}], entityPath[{}], linkName[{}], updatedLinkCredit[{}],"
+                    + "remoteCredit[{}], remoteCondition[{}], delivery.isPartial[{}]",
+                getConnectionId(), entityPath, link.getName(), link.getCredit(), link.getRemoteCredit(),
+                link.getRemoteCondition(), delivery.isPartial());
         }
     }
 
