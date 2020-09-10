@@ -1,7 +1,8 @@
 # Release History
 
 ## 12.7.0-beta.1 (Unreleased)
-- Fixed a bug that would cause auth failures when building a client by passing an endpoint which had a sas token with protocol set to https,http
+- Fixed a bug where getProperties on a file client would throw a HttpResponseException instead of ShareStorageException.
+- Fixed a bug that would cause auth failures when building a client by passing an endpoint which had a sas token with protocol set to https,http.
 - Fixed a bug where snapshot would be appended to a share snapshot instead of sharesnapshot.
 
 - Added support for the 2020-02-10 service version. 
