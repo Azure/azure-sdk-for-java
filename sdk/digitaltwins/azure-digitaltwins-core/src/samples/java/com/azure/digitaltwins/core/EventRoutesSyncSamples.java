@@ -12,8 +12,9 @@ import java.util.UUID;
 
 /**
  * This sample will list all the current event routes in your Azure Digital Twins instance,
- * then it will retrieve a particular event route, then it will create a new event route,
- * and finally it will delete that newly created event route.
+ * then it will retrieve a particular event route. If the parameter for an existing event
+ * route endpoint name is provided then it will also create a new event route, and it will
+ * delete that newly created event route.
  */
 public class EventRoutesSyncSamples {
     private static DigitalTwinsClient client;
