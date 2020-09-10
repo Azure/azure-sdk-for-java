@@ -31,7 +31,7 @@ import static com.microsoft.azure.telemetry.TelemetryData.SERVICE_NAME;
 import static com.microsoft.azure.telemetry.TelemetryData.getClassPackageSimpleName;
 
 /**
- * {@link EnableAutoConfiguration Auto-configuration} for Azure Active Authentication filters .
+ * {@link EnableAutoConfiguration Auto-configuration} for Azure Active Authentication filters.
  * <p>
  * The configuration will not be activated if no {@literal azure.activedirectory.client-id} property provided.
  * <p>
@@ -48,7 +48,6 @@ import static com.microsoft.azure.telemetry.TelemetryData.getClassPackageSimpleN
 public class AADAuthenticationFilterAutoConfiguration {
     public static final String PROPERTY_PREFIX = "azure.activedirectory";
     private static final Logger LOG = LoggerFactory.getLogger(AADAuthenticationProperties.class);
-    private static final String PROPERTY_SESSION_STATELESS = "session-stateless";
 
     private final AADAuthenticationProperties aadAuthProps;
     private final ServiceEndpointsProperties serviceEndpointsProps;
@@ -80,7 +79,7 @@ public class AADAuthenticationFilterAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(AADAppRoleStatelessAuthenticationFilter.class)
-    @ConditionalOnProperty(prefix = PROPERTY_PREFIX, value = PROPERTY_SESSION_STATELESS, havingValue = "true")
+    @ConditionalOnExpression("${azure.activedirectory.session-stateless:false} == true")
     public AADAppRoleStatelessAuthenticationFilter azureADStatelessAuthFilter(ResourceRetriever resourceRetriever) {
         LOG.info("Creating AzureADStatelessAuthFilter bean.");
         final boolean useExplicitAudienceCheck = true;
