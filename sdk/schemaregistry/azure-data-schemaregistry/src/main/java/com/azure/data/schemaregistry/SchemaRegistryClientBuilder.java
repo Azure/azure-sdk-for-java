@@ -23,8 +23,8 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryRestService;
-import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryRestServiceClientBuilder;
+import com.azure.data.schemaregistry.implementation.AzureSchemaRegistry;
+import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryBuilder;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.temporal.ChronoUnit;
@@ -55,6 +55,7 @@ public class SchemaRegistryClientBuilder {
     private final String clientVersion;
 
     private String schemaRegistryUrl;
+    private String host;
     private HttpClient httpClient;
     private Integer maxSchemaMapSize;
     private TokenCredential credential;
@@ -75,7 +76,7 @@ public class SchemaRegistryClientBuilder {
         this.retryPolicy = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.put("api-version", "2017-04");
+        headers.put("api-version", "2020-09-01-preview");
         policies.add(new AddHeadersPolicy(headers));
 
         Map<String, String> properties = CoreUtils.getProperties(CLIENT_PROPERTIES);
@@ -95,7 +96,8 @@ public class SchemaRegistryClientBuilder {
         Objects.requireNonNull(schemaRegistryUrl, "'schemaRegistryUrl' cannot be null.");
 
         try {
-            new URL(schemaRegistryUrl);
+            URL url = new URL(schemaRegistryUrl);
+            this.host = url.getHost();
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsWarning(
                 new IllegalArgumentException("'schemaRegistryUrl' must be a valid URL.", ex));
@@ -256,8 +258,8 @@ public class SchemaRegistryClientBuilder {
                 .build();
         }
 
-        AzureSchemaRegistryRestService restService = new AzureSchemaRegistryRestServiceClientBuilder()
-            .host(this.schemaRegistryUrl)
+        AzureSchemaRegistry restService = new AzureSchemaRegistryBuilder()
+            .endpoint(host)
             .pipeline(pipeline)
             .buildClient();
 

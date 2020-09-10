@@ -5,11 +5,10 @@ package com.azure.data.schemaregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.net.URL;
 
-/** The GetSchemaVersionHeaders model. */
+/** The SchemasQueryIdByContentHeaders model. */
 @Fluent
-public final class GetSchemaVersionHeaders {
+public final class SchemasQueryIdByContentHeaders {
     /*
      * The X-Schema-Version property.
      */
@@ -32,7 +31,7 @@ public final class GetSchemaVersionHeaders {
      * The X-Schema-Id-Location property.
      */
     @JsonProperty(value = "X-Schema-Id-Location")
-    private URL xSchemaIdLocation;
+    private String xSchemaIdLocation;
 
     /*
      * The Location property.
@@ -53,9 +52,9 @@ public final class GetSchemaVersionHeaders {
      * Set the xSchemaVersion property: The X-Schema-Version property.
      *
      * @param xSchemaVersion the xSchemaVersion value to set.
-     * @return the GetSchemaVersionHeaders object itself.
+     * @return the SchemasQueryIdByContentHeaders object itself.
      */
-    public GetSchemaVersionHeaders setXSchemaVersion(Integer xSchemaVersion) {
+    public SchemasQueryIdByContentHeaders setXSchemaVersion(Integer xSchemaVersion) {
         this.xSchemaVersion = xSchemaVersion;
         return this;
     }
@@ -73,9 +72,9 @@ public final class GetSchemaVersionHeaders {
      * Set the xSchemaType property: The X-Schema-Type property.
      *
      * @param xSchemaType the xSchemaType value to set.
-     * @return the GetSchemaVersionHeaders object itself.
+     * @return the SchemasQueryIdByContentHeaders object itself.
      */
-    public GetSchemaVersionHeaders setXSchemaType(String xSchemaType) {
+    public SchemasQueryIdByContentHeaders setXSchemaType(String xSchemaType) {
         this.xSchemaType = xSchemaType;
         return this;
     }
@@ -93,9 +92,9 @@ public final class GetSchemaVersionHeaders {
      * Set the xSchemaId property: The X-Schema-Id property.
      *
      * @param xSchemaId the xSchemaId value to set.
-     * @return the GetSchemaVersionHeaders object itself.
+     * @return the SchemasQueryIdByContentHeaders object itself.
      */
-    public GetSchemaVersionHeaders setXSchemaId(String xSchemaId) {
+    public SchemasQueryIdByContentHeaders setXSchemaId(String xSchemaId) {
         this.xSchemaId = xSchemaId;
         return this;
     }
@@ -105,7 +104,7 @@ public final class GetSchemaVersionHeaders {
      *
      * @return the xSchemaIdLocation value.
      */
-    public URL getXSchemaIdLocation() {
+    public String getXSchemaIdLocation() {
         return this.xSchemaIdLocation;
     }
 
@@ -113,9 +112,9 @@ public final class GetSchemaVersionHeaders {
      * Set the xSchemaIdLocation property: The X-Schema-Id-Location property.
      *
      * @param xSchemaIdLocation the xSchemaIdLocation value to set.
-     * @return the GetSchemaVersionHeaders object itself.
+     * @return the SchemasQueryIdByContentHeaders object itself.
      */
-    public GetSchemaVersionHeaders setXSchemaIdLocation(URL xSchemaIdLocation) {
+    public SchemasQueryIdByContentHeaders setXSchemaIdLocation(String xSchemaIdLocation) {
         this.xSchemaIdLocation = xSchemaIdLocation;
         return this;
     }
@@ -133,9 +132,9 @@ public final class GetSchemaVersionHeaders {
      * Set the location property: The Location property.
      *
      * @param location the location value to set.
-     * @return the GetSchemaVersionHeaders object itself.
+     * @return the SchemasQueryIdByContentHeaders object itself.
      */
-    public GetSchemaVersionHeaders setLocation(String location) {
+    public SchemasQueryIdByContentHeaders setLocation(String location) {
         this.location = location;
         return this;
     }
@@ -145,5 +144,5 @@ public final class GetSchemaVersionHeaders {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    public void validate() { }
+    public void validate() {}
 }

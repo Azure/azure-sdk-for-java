@@ -10,8 +10,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryRestService;
-import com.azure.data.schemaregistry.implementation.models.SchemaId;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SerializationType;
 
@@ -23,6 +21,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.function.Function;
 
+import com.azure.data.schemaregistry.implementation.AzureSchemaRegistry;
+import com.azure.data.schemaregistry.implementation.models.SchemaId;
 import reactor.core.publisher.Mono;
 
 /**
@@ -38,14 +38,14 @@ public final class SchemaRegistryAsyncClient {
     static final int MAX_SCHEMA_MAP_SIZE_DEFAULT = 1000;
     static final int MAX_SCHEMA_MAP_SIZE_MINIMUM = 10;
 
-    private final AzureSchemaRegistryRestService restService;
+    private final AzureSchemaRegistry restService;
     private final Integer maxSchemaMapSize;
     private final ConcurrentSkipListMap<String, Function<String, Object>> typeParserMap;
     private final Map<String, SchemaProperties> idCache;
     private final Map<String, SchemaProperties> schemaStringCache;
 
     SchemaRegistryAsyncClient(
-        AzureSchemaRegistryRestService restService,
+        AzureSchemaRegistry restService,
         int maxSchemaMapSize,
         ConcurrentSkipListMap<String, Function<String, Object>> typeParserMap) {
         this.restService = restService;
@@ -57,7 +57,7 @@ public final class SchemaRegistryAsyncClient {
 
     // testing - todo remove constructor and replace with mock
     SchemaRegistryAsyncClient(
-        AzureSchemaRegistryRestService restService,
+        AzureSchemaRegistry restService,
         Map<String, SchemaProperties> idCache,
         Map<String, SchemaProperties> schemaStringCache,
         ConcurrentSkipListMap<String, Function<String, Object>> typeParserMap) {
@@ -103,18 +103,19 @@ public final class SchemaRegistryAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SchemaProperties>> registerSchemaWithResponse(String schemaGroup, String schemaName,
-                                                                       String schemaString, SerializationType serializationType) {
+                                   String schemaString, SerializationType serializationType) {
         return registerSchemaWithResponse(schemaGroup, schemaName, schemaString, serializationType, Context.NONE);
     }
 
     Mono<Response<SchemaProperties>> registerSchemaWithResponse(String schemaGroup, String schemaName,
-                                                                String schemaString, SerializationType serializationType, Context context) {
+                                    String schemaString, SerializationType serializationType, Context context) {
         logger.verbose(
             "Registering schema. Group: '{}', name: '{}', serialization type: '{}', payload: '{}'",
             schemaGroup, schemaName, serializationType, schemaString);
 
         return this.restService
-            .createSchemaWithResponseAsync(schemaGroup, schemaName, serializationType.toString(), schemaString)
+            .getSchemas().registerWithResponseAsync(schemaGroup, schemaName,
+                com.azure.data.schemaregistry.implementation.models.SerializationType.AVRO, schemaString)
             .handle((response, sink) -> {
                 if (response == null) {
                     sink.error(logger.logExceptionAsError(
@@ -175,7 +176,7 @@ public final class SchemaRegistryAsyncClient {
 
     Mono<Response<SchemaProperties>> getSchemaWithResponse(String schemaId, Context context) {
         Objects.requireNonNull(schemaId, "'schemaId' should not be null");
-        return this.restService.getSchemaByIdWithResponseAsync(schemaId)
+        return this.restService.getSchemas().getByIdWithResponseAsync(schemaId)
             .handle((response, sink) -> {
                 if (response == null) {
                     sink.error(logger.logExceptionAsError(
@@ -246,9 +247,9 @@ public final class SchemaRegistryAsyncClient {
     Mono<Response<String>> getSchemaIdWithResponse(String schemaGroup, String schemaName, String schemaString,
                                                    SerializationType serializationType, Context context) {
 
-        return this.restService
-            .getIdBySchemaContentWithResponseAsync(schemaGroup, schemaName, serializationType.toString(),
-                schemaString)
+        return this.restService.getSchemas()
+            .queryIdByContentWithResponseAsync(schemaGroup, schemaName,
+                com.azure.data.schemaregistry.implementation.models.SerializationType.AVRO, schemaString)
             .handle((response, sink) -> {
                 if (response == null) {
                     sink.error(logger.logExceptionAsError(

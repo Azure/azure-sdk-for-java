@@ -33,9 +33,6 @@ public class GetSchemaIdSample {
             .subscribe(schemaId -> {
                 System.out.println("Successfully retrieved the schema id: " + schemaId);
                 countDownLatch.countDown();
-            }, ex -> {
-                System.out.println("Failed to get schema id: " + ex.getMessage());
-                countDownLatch.countDown();
             });
 
         // wait for the async task to complete

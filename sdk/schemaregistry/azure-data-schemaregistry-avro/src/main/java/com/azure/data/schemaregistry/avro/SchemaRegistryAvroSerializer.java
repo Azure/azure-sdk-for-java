@@ -151,7 +151,6 @@ public final class SchemaRegistryAvroSerializer implements ObjectSerializer {
                 .registerSchema(schemaGroup, schemaName, schemaString, SerializationType.AVRO)
                 .map(SchemaProperties::getSchemaId);
         } else {
-
             return this.schemaRegistryClient.getSchemaId(
                 schemaGroup, schemaName, schemaString, SerializationType.AVRO);
         }

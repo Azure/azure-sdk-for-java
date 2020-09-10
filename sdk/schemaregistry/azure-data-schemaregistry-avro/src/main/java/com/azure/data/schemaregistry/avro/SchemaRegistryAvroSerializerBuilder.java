@@ -19,7 +19,7 @@ public final class SchemaRegistryAvroSerializerBuilder {
      * Supplies client defaults.
      */
     public SchemaRegistryAvroSerializerBuilder() {
-        this.autoRegisterSchemas = null;
+        this.autoRegisterSchemas = false;
         this.avroSpecificReader = false;
     }
 

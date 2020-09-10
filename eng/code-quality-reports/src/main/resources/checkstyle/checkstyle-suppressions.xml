@@ -416,7 +416,7 @@
   <!-- Suppress the check on code-gen classes -->
   <suppress checks="LineLength" files="com.azure.ai.textanalytics.implementation.TextAnalyticsClientImplBuilder"/>
   <suppress checks="LineLength" files="com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl"/>
-  <suppress checks="." files="AzureSchemaRegistryRestService"/>
+  <suppress checks="[a-zA-Z0-9]*" files="com.azure.data.schemaregistry.implementation.*"/>
 
   <!-- Suppress the check on code-gen classes -->
   <suppress checks="LineLength" files="com.azure.ai.formrecognizer.implementation.FormRecognizerClientImplBuilder"/>

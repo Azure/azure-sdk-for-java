@@ -32,9 +32,6 @@ public class RegisterSchemaSample {
             .subscribe(schemaProperties -> {
                 System.out.println("Successfully registered a schema with id " + schemaProperties.getSchemaId());
                 countDownLatch.countDown();
-            }, ex -> {
-                System.out.println("Failed to register schema: " + ex.getMessage());
-                countDownLatch.countDown();
             });
 
         // wait for the async task to complete

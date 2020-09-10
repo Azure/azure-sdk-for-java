@@ -25,6 +25,7 @@ public class SchemaRegistryAvroSerializationSample {
     public static void main(String[] args) {
         // Create AAD token credential
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+
         // Create the schema registry async client
         SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBuilder()
             .credential(tokenCredential)
@@ -37,7 +38,6 @@ public class SchemaRegistryAvroSerializationSample {
             .schemaRegistryAsyncClient(schemaRegistryAsyncClient)
             .schemaGroup("{schema-group}")
             .avroSpecificReader(true)
-            .autoRegisterSchema(true)
             .buildSerializer();
 
         PlayingCard playingCard = new PlayingCard();
@@ -46,6 +46,7 @@ public class SchemaRegistryAvroSerializationSample {
         playingCard.setPlayingCardSuit(PlayingCardSuit.SPADES);
 
         OutputStream outputStream = new ByteArrayOutputStream();
+
         // Serialize the playing card object and write to the output stream.
         schemaRegistryAvroSerializer.serialize(outputStream, playingCard);
     }

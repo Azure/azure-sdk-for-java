@@ -50,7 +50,7 @@ public final class SchemaRegistryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SchemaProperties> registerSchemaWithResponse(String schemaGroup, String schemaName,
-                                                                 String schemaString, SerializationType serializationType, Context context) {
+                                 String schemaString, SerializationType serializationType, Context context) {
         return this.asyncClient.registerSchemaWithResponse(schemaGroup, schemaName, schemaString, serializationType,
             context).block();
     }

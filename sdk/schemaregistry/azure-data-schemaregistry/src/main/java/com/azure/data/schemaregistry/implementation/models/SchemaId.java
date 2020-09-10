@@ -10,13 +10,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SchemaId {
     /*
-     * The id property.
+     * Schema ID that uniquely identifies a schema in the registry namespace.
      */
     @JsonProperty(value = "id")
     private String id;
 
     /**
-     * Get the id property: The id property.
+     * Get the id property: Schema ID that uniquely identifies a schema in the registry namespace.
      *
      * @return the id value.
      */
@@ -25,7 +25,7 @@ public final class SchemaId {
     }
 
     /**
-     * Set the id property: The id property.
+     * Set the id property: Schema ID that uniquely identifies a schema in the registry namespace.
      *
      * @param id the id value to set.
      * @return the SchemaId object itself.
@@ -40,5 +40,5 @@ public final class SchemaId {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    public void validate() { }
+    public void validate() {}
 }

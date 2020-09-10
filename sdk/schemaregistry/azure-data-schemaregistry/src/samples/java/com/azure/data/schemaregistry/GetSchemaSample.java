@@ -31,9 +31,6 @@ public class GetSchemaSample {
             .subscribe(schemaProperties -> {
                 System.out.println("Successfully retrieved the schema " + schemaProperties.getSchemaName());
                 countDownLatch.countDown();
-            }, ex -> {
-                System.out.println("Failed to get schema: " + ex.getMessage());
-                countDownLatch.countDown();
             });
 
         // wait for the async task to complete
