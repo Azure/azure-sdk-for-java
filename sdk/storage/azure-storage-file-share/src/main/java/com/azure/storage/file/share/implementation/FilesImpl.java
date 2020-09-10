@@ -94,6 +94,7 @@ public final class FilesImpl {
 
         @Head("{shareName}/{filePath}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<FilesGetPropertiesResponse> getProperties(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-lease-id") String leaseId, Context context);
 
         @Delete("{shareName}/{filePath}")
