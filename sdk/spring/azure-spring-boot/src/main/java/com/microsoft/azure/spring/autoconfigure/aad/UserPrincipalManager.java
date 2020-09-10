@@ -162,7 +162,7 @@ public class UserPrincipalManager {
         final JWSKeySelector<SecurityContext> keySelector = new JWSVerificationKeySelector<>(jwsAlgorithm, keySource);
         jwtProcessor.setJWSKeySelector(keySelector);
         //TODO: would it make sense to inject it? and make it configurable or even allow to provide own implementation
-        jwtProcessor.setJWTClaimsSetVerifier(new DefaultJWTClaimsVerifier<>() {
+        jwtProcessor.setJWTClaimsSetVerifier(new DefaultJWTClaimsVerifier<SecurityContext>() {
             @Override
             public void verify(JWTClaimsSet claimsSet, SecurityContext ctx) throws BadJWTException {
                 super.verify(claimsSet, ctx);
