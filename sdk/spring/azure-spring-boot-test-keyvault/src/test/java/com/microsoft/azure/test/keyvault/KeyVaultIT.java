@@ -133,7 +133,6 @@ public class KeyVaultIT {
     }
 
     @Test
-    @Ignore
     public void keyVaultWithVirtualMachineMSI() throws Exception {
         final VirtualMachine vm = AZURE.virtualMachines().getByResourceGroup(SPRING_RESOURCE_GROUP, VM_NAME);
 
@@ -164,7 +163,9 @@ public class KeyVaultIT {
             AZURE_KEYVAULT_URI,
             "app.jar"));
 
-        vm.runCommand(new RunCommandInput().withCommandId("RunShellScript").withScript(commands));
+        try (SSHShell sshShell = SSHShell.open(host, 22, VM_USER_USERNAME, VM_USER_PASSWORD)) {
+            sshShell.runCommands(commands);
+        }
 
         final ResponseEntity<String> response = curlWithRetry(
             String.format("http://%s:8080/get", host),
