@@ -132,7 +132,6 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
                 null,
                 client.convertGroupsToGrantedAuthorities(principal.getUserGroups())
             );
-            authentication.setAuthenticated(true);
             LOGGER.info("Request token verification success. {}", authentication);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (MalformedURLException | ParseException | BadJOSEException | JOSEException ex) {

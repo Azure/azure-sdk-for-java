@@ -84,7 +84,6 @@ public class AADAppRoleStatelessAuthenticationFilter extends OncePerRequestFilte
                 null,
                 rolesToGrantedAuthorities(roles)
             );
-            authentication.setAuthenticated(true);
             LOGGER.info("Request token verification success. {}", authentication);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             return true;
