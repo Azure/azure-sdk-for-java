@@ -107,12 +107,7 @@
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts/fileServices', variables('storageAccountName'), 'default')]",
         "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
-      ],
-      "properties": {
-        "accessTier": "TransactionOptimized",
-        "shareQuota": 5120,
-        "enabledProtocols": "SMB"
-      }
+      ]
     }
   ],
   "outputs": {

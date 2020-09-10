@@ -30,8 +30,17 @@ public class ActuatorIT {
             app.property("management.endpoints.web.exposure.include", "*");
             //start app
             app.start();
-            final String response = REST_TEMPLATE.getForObject(
-                "http://localhost:" + app.port() + "/actuator/health/blobStorage", String.class);
+            String response = null;
+            int count = 3;
+            while (count > 0) {
+                try {
+                    response = REST_TEMPLATE.getForObject(
+                        "http://localhost:" + app.port() + "/actuator/health/blobStorage", String.class);
+                    break;
+                } catch (Exception e) {
+                    count--;
+                }
+            }
             assertTrue(response != null && response.contains("\"status\":\"UP\""));
         }
     }
@@ -46,9 +55,17 @@ public class ActuatorIT {
             app.property("management.endpoint.health.show-details", "always");
             //start app
             app.start();
-
-            final String response = REST_TEMPLATE.getForObject(
-                "http://localhost:" + app.port() + "/actuator/health/fileStorage", String.class);
+            String response = null;
+            int count = 3;
+            while (count > 0) {
+                try {
+                    response = REST_TEMPLATE.getForObject(
+                        "http://localhost:" + app.port() + "/actuator/health/fileStorage", String.class);
+                    break;
+                } catch (Exception e) {
+                    count--;
+                }
+            }
             assertTrue(response != null && response.contains("\"status\":\"UP\""));
         }
     }
